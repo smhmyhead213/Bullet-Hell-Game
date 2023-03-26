@@ -15,13 +15,14 @@ namespace bullethellwhatever
     public class Boss : NPC
     {
         public bool HasChosenChargeDirection;
+        public float SpiralStartTime;
         public Boss(Vector2 position, Vector2 velocity)
         {
             Position = position;
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 100;
+            Health = 150;
             AITimer = 0f;
             IFrames = 5f;
             HasChosenChargeDirection = false;
@@ -59,7 +60,7 @@ namespace bullethellwhatever
             //If the timer reaches 10, execute the attack and reset timer.
 
 
-            if (AITimer % 40 == 0 && AITimer < 550)
+            if (AITimer % 40 == 0 && AITimer < 1000)
             {
                 BasicShotgunBlast(Position, 5f, 24);
             }
@@ -67,16 +68,32 @@ namespace bullethellwhatever
             if (AITimer == 330)
                 HasChosenChargeDirection = false;
 
-            if (AITimer > 330 && AITimer < 500)
+            if (AITimer > 330 && AITimer < 1000)
             {
                 Charge();
             }
 
+            if (AITimer == 1000)
+                SpiralStartTime = AITimer;
+
+            if (AITimer > 1000)
+            {
+                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
+            }
+
+            if (AITimer > 1100)
+            { 
+                if (AITimer % 20f == 0)
+                    Spiral(AITimer / 60 * MathF.PI / 8f); //rotate by an angle based on AI timer
+            }
+
+            if (AITimer > 3000)
+                AITimer = 0;
             //if (AITimer % 300 == 0)
             //    HasChosenChargeDirection = false;
 
-            if (AITimer > 550)
-                AITimer = 0;
+
+
 
 
 
@@ -124,6 +141,21 @@ namespace bullethellwhatever
             }
 
             HandleBounces();
+        }
+
+        public void Spiral(float offsetBasedOnAITimer)
+        {
+            List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
+            
+
+            int projectilesInSpiral = 8;
+
+            for (int i = 0; i < projectilesInSpiral; i++)
+            {
+                projectilesToShoot.Add(new BasicProjectile());
+                Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, - 1), Utilities.ToRadians(i * 45) + offsetBasedOnAITimer), Vector2.Zero);
+                projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
+            }
         }
 
         public void HandleBounces()

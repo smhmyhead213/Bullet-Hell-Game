@@ -35,7 +35,7 @@ namespace bullethellwhatever
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
-            Health = 15; //make all these values changeable
+            Health = 20; //make all these values changeable
             Size = 1f;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
