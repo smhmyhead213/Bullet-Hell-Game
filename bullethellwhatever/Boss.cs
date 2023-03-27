@@ -93,14 +93,18 @@ namespace bullethellwhatever
                 Velocity = new Vector2(-1.5f, 0);
             }
 
-            if (AITimer > 2000)
+            if (AITimer > 2000 && AITimer < 3000)
             {
                 
                 if (AITimer % 30f == 0)
                     ObnoxiouslyDenseBulletHell();
             }
 
-            if (AITimer > 3000)
+            if (AITimer > 3300 && AITimer < 4300)
+            {
+                MoveTowardsAndShotgun();
+            }
+            if (AITimer > 4300)
                 AITimer = 0;
             //if (AITimer % 300 == 0)
             //    HasChosenChargeDirection = false;
@@ -194,6 +198,36 @@ namespace bullethellwhatever
             }
 
             HandleBounces();
+        }
+
+        public void MoveTowardsAndShotgun()
+        {
+            Velocity = 1.3f * Utilities.Normalise(Main.player.Position - Position);
+
+            float frequency = 30f; //lower number means faster attacks
+
+            if (AITimer % frequency == 0)
+            {
+                frequency = frequency * 0.5f;
+
+                BasicProjectile singleShot = new BasicProjectile();
+                float numberOfProjectiles = 3;
+                float projectileSpeed = 13f;
+
+                singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1);
+
+                for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
+                {
+                    BasicProjectile shotgunBlast = new BasicProjectile();
+                    BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
+                    shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * MathF.PI / 12)), 1f, Texture, 1);
+                    shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * MathF.PI / 12)), 1f, Texture, 1);
+
+                }
+
+                HandleBounces();
+            }
+
         }
         public void HandleBounces()
         {
