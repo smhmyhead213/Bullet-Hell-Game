@@ -30,9 +30,9 @@ namespace bullethellwhatever
 
         public override bool ShouldRemoveOnEdgeTouch() => false;
 
-        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, float size)
+        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, float size, float MaxHealth)
         {
-            base.Spawn(position, initialVelocity, damage, texture, size);
+            base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth);
 
         }
 
@@ -61,7 +61,7 @@ namespace bullethellwhatever
 
 
             if (AITimer % 40 == 0 && AITimer < 1000)
-            {
+            {   
                 BasicShotgunBlast(Position, 5f, 24);
             }
 
@@ -76,15 +76,28 @@ namespace bullethellwhatever
             if (AITimer == 1000)
                 SpiralStartTime = AITimer;
 
-            if (AITimer > 1000)
+            if (AITimer > 1000 && AITimer < 2000)
             {
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
             }
 
-            if (AITimer > 1100)
+            if (AITimer > 1250 && AITimer < 2000)
             { 
-                if (AITimer % 20f == 0)
+                if (AITimer % 5f == 0)
                     Spiral(AITimer / 60 * MathF.PI / 8f); //rotate by an angle based on AI timer
+            }
+
+            if (AITimer == 2000)
+            {
+                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 18);
+                Velocity = new Vector2(-1.5f, 0);
+            }
+
+            if (AITimer > 2000)
+            {
+                
+                if (AITimer % 30f == 0)
+                    ObnoxiouslyDenseBulletHell();
             }
 
             if (AITimer > 3000)
@@ -103,10 +116,12 @@ namespace bullethellwhatever
             {
                 if (isCollidingWithPlayerProjectile(projectile) && IFrames == 0)
                 {
-                    IFrames = 5f;
-                    Health = Health - projectile.Damage;
-                    projectile.DeleteNextFrame = true;
-                    
+                    if (IFrames == 0)
+                    {
+                        IFrames = 5f;
+                        Health = Health - projectile.Damage;
+                        projectile.DeleteNextFrame = true;
+                    }
                 }
             }
         }
@@ -148,7 +163,7 @@ namespace bullethellwhatever
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
             
 
-            int projectilesInSpiral = 8;
+            int projectilesInSpiral = 10;
 
             for (int i = 0; i < projectilesInSpiral; i++)
             {
@@ -156,8 +171,30 @@ namespace bullethellwhatever
                 Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, - 1), Utilities.ToRadians(i * 45) + offsetBasedOnAITimer), Vector2.Zero);
                 projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
             }
+
+            
         }
 
+        public void ObnoxiouslyDenseBulletHell()
+        {
+            int projectilesPerWave = 30;
+
+            List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
+
+            Random rnd = new Random();
+            
+            Vector2 projectileDirection = new Vector2(1, 0);
+            for (int i = 0; i < projectilesPerWave; i++)
+            {
+                projectilesToShoot.Add(new BasicProjectile());
+                
+                projectilesToShoot[i].Spawn(Position, 5f * Vector2.Normalize(Utilities.RotateVectorCounterClockwise(projectileDirection, i * MathF.PI / projectilesPerWave)), 1f, Texture, 1);
+                
+
+            }
+
+            HandleBounces();
+        }
         public void HandleBounces()
         {
             if (touchingLeft(this))

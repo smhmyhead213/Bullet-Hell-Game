@@ -50,14 +50,6 @@ namespace bullethellwhatever
             HandleMovement();
         }
 
-        public bool isCollidingWithPlayer() //you need to refactor this whole thing if you wanna use rectangles
-        {
-            float totalwidth = Hitbox.Width + Main.player.Hitbox.Width;
-
-            if (Math.Abs(Position.X - Main.player.Position.X) <= totalwidth && Math.Abs(Position.Y - Main.player.Position.Y) <= totalwidth)
-                return true;
-
-            return false;
-        }
+        
     }
 }

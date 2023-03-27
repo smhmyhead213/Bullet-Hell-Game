@@ -23,6 +23,7 @@ namespace bullethellwhatever
         public Rectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
         public float Size; //relative to player being 1
         public float Health;
+        public float MaxHP;
         public bool DeleteNextFrame;
 
         public static bool touchingBottom(Entity entity, int screenHeight) //hieght is height of texture
@@ -62,6 +63,16 @@ namespace bullethellwhatever
             {
                 return true;
             }
+
+            return false;
+        }
+
+        public bool isCollidingWithPlayer() //you need to refactor this whole thing if you wanna use rectangles
+        {
+            float totalwidth = Hitbox.Width + Main.player.Hitbox.Width;
+
+            if (Math.Abs(Position.X - Main.player.Position.X) <= totalwidth && Math.Abs(Position.Y - Main.player.Position.Y) <= totalwidth)
+                return true;
 
             return false;
         }

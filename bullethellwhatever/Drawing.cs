@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
+
 namespace bullethellwhatever
 {
     public class Drawing
@@ -38,6 +40,18 @@ namespace bullethellwhatever
             {
                 Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
             }
+            if (Main.activeNPCs.Count > 0)
+            {
+                float healthRatio = Main.activeNPCs[0].MaxHP / Main.activeNPCs[0].Health;
+                float BarWidth = 120f;
+                //HP bar foreground.
+                //HP bar background.
+                Main._spriteBatch.Draw(Main.player.Texture, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20 * 19), null, Color.LimeGreen, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth, 3), SpriteEffects.None, 0f);
+
+                Main._spriteBatch.Draw(Main.player.Texture, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20 * 19), null, Color.Red, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth / healthRatio, 3), SpriteEffects.None, 0f);
+            }
+
+
         }
     }
 }

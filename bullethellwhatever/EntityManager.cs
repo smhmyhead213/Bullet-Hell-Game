@@ -41,7 +41,7 @@ namespace bullethellwhatever
         public static void SpawnBoss()
         {
             Main.activeNPCs.Add(new Boss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(0, 0)));
-            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 10, Main.playerTexture, 5f);
+            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 10, Main.playerTexture, 5f, 200f);
         }
 
     }

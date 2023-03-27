@@ -114,9 +114,15 @@ namespace bullethellwhatever
                 {
                     if (projectile.isCollidingWithPlayer() && IFrames == 0f)
                     {
-                        Health = Health - projectile.Damage;
-                        IFrames = 20f;
+                        TakeDamage(projectile);
                     }
+
+                }
+
+                foreach (NPC npc in Main.activeNPCs)
+                {
+                    if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
+                        TakeDamage(npc);
 
                 }
 
@@ -176,6 +182,12 @@ namespace bullethellwhatever
 
 
             }
+        }
+
+        public void TakeDamage(Entity entity) //take damage from an entity
+        {
+            Health = Health - entity.Damage;
+            IFrames = 20f;
         }
     }
 }

@@ -38,6 +38,7 @@ namespace bullethellwhatever
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            //_graphics.IsFullScreen = true;
         }
 
         
@@ -46,7 +47,7 @@ namespace bullethellwhatever
             
             // TODO: use this.Content to load your game content here
         }
-
+        
         protected override void Initialize()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
