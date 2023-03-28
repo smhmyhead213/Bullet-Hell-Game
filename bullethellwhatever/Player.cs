@@ -13,7 +13,7 @@ namespace bullethellwhatever
 {
     public class Player : Entity
     {
-        
+        #region Fields 
         public float IFrames;
         public float ShotCooldown;
         public float ShotCooldownRemaining;
@@ -27,6 +27,9 @@ namespace bullethellwhatever
         }
 
         public Weapons ActiveWeapon;
+
+        #endregion
+        #region Spawning
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture) //initialise player data
         {
             Position = position;
@@ -36,11 +39,15 @@ namespace bullethellwhatever
             isBoss = false;
             IFrames = 0;
             Health = 20; //make all these values changeable
+            MaxHP = Health;
             Size = 1f;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
             Hitbox = new((int)position.X - (texture.Width / 2), (int)position.Y - (texture.Height / 2), texture.Width, texture.Height);
         }
+        #endregion
+
+        #region Input Handling
         public override void HandleMovement() //and input
         {
             var kstate = Keyboard.GetState();
@@ -83,12 +90,13 @@ namespace bullethellwhatever
 
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
-                Health = 15f;
+                Health = MaxHP;
                 EntityManager.SpawnBoss();
             }
 
         }
 
+        #endregion
         public override bool ShouldRemoveOnEdgeTouch() => false;
 
         public override void AI() //cooldowns and iframes and stuff are handled here
@@ -134,7 +142,7 @@ namespace bullethellwhatever
             }
             else
             {
-                Health = 15;
+                Health = MaxHP;
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
                 Main.activeNPCs.Clear();
                 Main.activeProjectiles.Clear();
@@ -156,7 +164,7 @@ namespace bullethellwhatever
 
                 
 
-                playerProjectile.Spawn(Position, 20f * Utilities.Normalise(mousePosition - Position), 3f, Main.player.Texture, 1);
+                playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0);
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -167,7 +175,7 @@ namespace bullethellwhatever
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.5f, Main.player.Texture, 1);
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.25f, Main.player.Texture, 0);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -178,7 +186,7 @@ namespace bullethellwhatever
 
                 
 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.3f, Main.player.Texture, 20);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0);
 
 
             }

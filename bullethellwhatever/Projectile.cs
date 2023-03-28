@@ -14,15 +14,16 @@ namespace bullethellwhatever
     public class Projectile : Entity
     {
         public int Updates; //typically 1, use a higher number for accurate homing
-        public bool DeleteNextFrame;
+        
+        public float Acceleration;
         public float TimeAlive;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, int updates)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
-            Updates = updates;
+            Acceleration = acceleration;
             Main.activeProjectiles.Add(this);
             HandleMovement();
             DeleteNextFrame = false;
@@ -32,6 +33,9 @@ namespace bullethellwhatever
 
         public override void HandleMovement() //and drawing
         {
+            if (Acceleration != 0)
+                Velocity = Velocity * Acceleration; //acceleration values must be very very small
+
             Position = Position + Velocity;
 
             if (Updates > 1)

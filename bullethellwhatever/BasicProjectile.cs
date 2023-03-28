@@ -9,16 +9,11 @@ namespace bullethellwhatever
 {
     public class BasicProjectile : HarmfulProjectile
     {
-        
-
-        public override void HandleMovement()
-        {
-            Position = Position + Velocity;
-        }
 
         public override void AI()
         {
-            base.AI();
+            HandleMovement();
+            TimeAlive++;
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => true;
