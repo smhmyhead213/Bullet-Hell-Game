@@ -76,6 +76,8 @@ namespace bullethellwhatever
 
             return false;
         }
+
+        
         public virtual bool ShouldRemoveOnEdgeTouch() => false;
 
         public virtual bool IsHarmful() => false; //is harmful to player

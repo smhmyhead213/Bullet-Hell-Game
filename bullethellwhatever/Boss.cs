@@ -323,7 +323,7 @@ namespace bullethellwhatever
 
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            if (AITimer % 5 == 0 && AITimer > 240)
+            if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 1000)
             {
                 int projectilesInSpiral = 10;
                 float rotation = (AITimer / 10 * MathF.PI / 40f) * (AITimer / 100f);

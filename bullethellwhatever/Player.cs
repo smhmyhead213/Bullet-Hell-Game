@@ -88,6 +88,7 @@ namespace bullethellwhatever
                 ActiveWeapon = Weapons.Homing;
             }
 
+
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
                 Health = MaxHP;

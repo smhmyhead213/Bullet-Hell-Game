@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -42,16 +43,29 @@ namespace bullethellwhatever
             }
             if (Main.activeNPCs.Count > 0)
             {
-                float healthRatio = Main.activeNPCs[0].MaxHP / Main.activeNPCs[0].Health;
-                float BarWidth = 120f;
-                //HP bar foreground.
-                //HP bar background.
-                Main._spriteBatch.Draw(Main.player.Texture, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20 * 19), null, Color.LimeGreen, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth, 3), SpriteEffects.None, 0f);
-
-                Main._spriteBatch.Draw(Main.player.Texture, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20 * 19), null, Color.Red, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth / healthRatio, 3), SpriteEffects.None, 0f);
+                DrawHealthBar(Main._spriteBatch, Main.activeNPCs[0], new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20 * 19), 120f, 3f);
             }
 
+            DrawHealthBar(Main._spriteBatch, Main.player, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), 30f, 3f);
+        }
 
+        public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
+        {
+            float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;
+            
+            float emptySpaceOnLeft = (BarWidth * (1 - healthRatio)) / 2;
+
+            Vector2 topLeft = new Vector2(positionOfBar.X - BarWidth / 2, positionOfBar.Y - BarHeight / 2);
+
+            Rectangle HPBar = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)BarWidth, (int)BarHeight);
+
+            float opacity = HPBar.Intersects(Main.player.Hitbox) ? 0.5f : 1f;
+
+            //HP bar foreground.
+            //HP bar background.
+            _spriteBatch.Draw(Main.player.Texture, positionOfBar , null, Color.LimeGreen * opacity, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth, BarHeight), SpriteEffects.None, 0f);
+
+            _spriteBatch.Draw(Main.player.Texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * Main.player.Texture.Width, positionOfBar.Y), null, Color.Red * opacity, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth * healthRatio, BarHeight), SpriteEffects.None, 0f);
         }
     }
 }
