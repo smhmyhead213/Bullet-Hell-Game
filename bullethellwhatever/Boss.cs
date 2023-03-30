@@ -114,7 +114,7 @@ namespace bullethellwhatever
         public void BasicShotgunBlast(ref float AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
         {
 
-            if (AITimer % 40 == 0)
+            if (AITimer % 40 == 0 && AITimer < 601) //1 added so the 15th burst goes off
             {
                 BasicProjectile singleShot = new BasicProjectile();
                 singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0);
@@ -129,7 +129,7 @@ namespace bullethellwhatever
                 }
             }
 
-            if (AITimer == 600)
+            if (AITimer == 750)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -148,9 +148,11 @@ namespace bullethellwhatever
 
             if (!HasChosenChargeDirection)
             {
-                Velocity = 6f * Utilities.Normalise(Main.player.Position - Position);
+                Velocity = 9f * Utilities.Normalise(Main.player.Position - Position);
                 HasChosenChargeDirection = true; //charge
             }
+
+            Velocity = 5f * Utilities.SafeNormalise(Velocity * (MathF.Sin((AITimer))+ 1f), Vector2.Zero); //smoother charging
 
             if (AITimer % 150 == 0)
             {
@@ -163,7 +165,7 @@ namespace bullethellwhatever
                 projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.02f);
             }
 
-            if (AITimer == 600)
+            if (AITimer == 900)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 ContactDamage = false;
