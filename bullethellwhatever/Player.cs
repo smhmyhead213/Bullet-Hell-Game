@@ -107,6 +107,7 @@ namespace bullethellwhatever
 
             HandleMovement();
 
+            //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             Hitbox = new((int)Position.X - (Texture.Width / 2), (int)Position.Y - (Texture.Height / 2),Texture.Width, Texture.Height);
 
             if (Health > 0)
