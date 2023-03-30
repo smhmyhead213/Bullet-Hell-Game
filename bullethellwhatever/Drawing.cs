@@ -20,26 +20,22 @@ namespace bullethellwhatever
         {
             float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
 
-            Main._spriteBatch.Draw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
+            Main._spriteBatch.Draw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
 
-            Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font);
-            Utilities.drawTextInDrawMethod(Main.player.Health.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 6, Main._graphics.PreferredBackBufferHeight / 6), Main._spriteBatch, Main.font);
-            if (Main.activeNPCs.Count > 0)
-                Utilities.drawTextInDrawMethod(Main.activeNPCs[0].Health.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 8, Main._graphics.PreferredBackBufferHeight / 8), Main._spriteBatch, Main.font);
 
             foreach (NPC npc in Main.activeNPCs)
             {
-                Main._spriteBatch.Draw(Main.player.Texture, npc.Position, null, npc.Colour(), 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(npc.Size, npc.Size), SpriteEffects.None, 0f); 
+                Main._spriteBatch.Draw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(npc.Size, npc.Size), SpriteEffects.None, 0f); 
             }
 
             foreach (Projectile projectile in Main.activeProjectiles)
             {
-                Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
+                Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
             }
 
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
-                Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
+                Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
             }
             if (Main.activeNPCs.Count > 0)
             {

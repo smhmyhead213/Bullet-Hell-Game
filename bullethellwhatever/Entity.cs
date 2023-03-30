@@ -25,6 +25,7 @@ namespace bullethellwhatever
         public float Health;
         public float MaxHP;
         public bool DeleteNextFrame;
+        public float Rotation;
 
         public static bool touchingBottom(Entity entity, int screenHeight) //hieght is height of texture
         {

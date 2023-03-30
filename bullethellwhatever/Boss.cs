@@ -18,6 +18,7 @@ namespace bullethellwhatever
         public float SpiralStartTime;
         public int AttackNumber; //position in pattern
         public float ShotgunFrequency;
+        
         public Boss(Vector2 position, Vector2 velocity)
         {
             Position = position;
@@ -183,10 +184,13 @@ namespace bullethellwhatever
 
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            if (AITimer % 5 == 0 && AITimer > 240)
+            if (AITimer % 2 == 0 && AITimer > 240)
             {
                 int projectilesInSpiral = 10;
-                float rotation = (AITimer / 10 * MathF.PI / 40f) * (AITimer / 1250f); 
+                float acceleration = 0.5f * MathF.Cos(AITimer / 250 - MathF.PI / 6);
+                float rotation = (AITimer / 15 * MathF.PI / 40f) * acceleration;
+
+                Rotation = rotation;
 
                 for (int i = 0; i < projectilesInSpiral; i++)
                 {
@@ -196,10 +200,14 @@ namespace bullethellwhatever
                     Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 45) + rotation), Vector2.Zero);
                     
                     projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
+
+                    
                 }
+
+                
             }
 
-            if (AITimer == 1100)
+            if (AITimer == 1400)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -235,6 +243,15 @@ namespace bullethellwhatever
                 }
             }
 
+            if (Main.player.Position.Y < Position.Y) //have fun cheesing this one sean
+            {
+                BasicProjectile projectile = new BasicProjectile();
+                projectile.Spawn(Position, 5f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.03f);
+                Velocity = Velocity * 1.01f;
+
+                
+            }
+
             if (AITimer == 750)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
@@ -246,7 +263,7 @@ namespace bullethellwhatever
 
         public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber)
         {
-            Velocity = 1.3f * Utilities.Normalise(Main.player.Position - Position);
+            Velocity = 1.1f * Utilities.Normalise(Main.player.Position - Position);
 
             if (AITimer == 450)
             {
@@ -323,23 +340,30 @@ namespace bullethellwhatever
 
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 1000)
+            if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 950)
             {
                 int projectilesInSpiral = 10;
                 float rotation = (AITimer / 10 * MathF.PI / 40f) * (AITimer / 100f);
+
+                Rotation = rotation;
 
                 for (int i = 0; i < projectilesInSpiral; i++)
                 {
                     projectilesToShoot.Add(new BasicProjectile()); //add a projectile
 
                     // shoot projectiles in a ring and rotate it based on time
-                    Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 45) + rotation), Vector2.Zero);
+                    Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 45) + rotation), Vector2.Zero);
 
                     projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
                 }
             }
 
-            if (AITimer == 1100)
+            if (AITimer == 951)
+            {
+                Rotation = 0;
+            }
+
+            if (AITimer == 1150)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -376,6 +400,7 @@ namespace bullethellwhatever
         public void EndAttack(ref float AITimer, ref int AttackNumber)
         {
             AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
+            Rotation = 0;
             AttackNumber++;
         }
 

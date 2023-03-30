@@ -16,6 +16,7 @@ namespace bullethellwhatever
         
         public float IFrames;
         public bool ContactDamage;
+        
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float size, float MaxHealth)
         {
             Position = position;
