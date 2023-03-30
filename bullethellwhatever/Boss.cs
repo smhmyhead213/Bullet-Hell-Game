@@ -152,7 +152,7 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = true; //charge
             }
 
-            Velocity = 5f * Utilities.SafeNormalise(Velocity * (MathF.Sin((AITimer))+ 1f), Vector2.Zero); //smoother charging
+            Velocity = 5f * Utilities.SafeNormalise(Velocity * (MathF.Sin(AITimer)+ 1f), Vector2.Zero); //smoother charging
 
             if (AITimer % 150 == 0)
             {
