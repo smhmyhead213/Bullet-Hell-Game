@@ -94,6 +94,7 @@ namespace bullethellwhatever
             }
 
 
+
             //Every frame, add 1 to the timer.
             AITimer++;
 
@@ -152,7 +153,10 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = true; //charge
             }
 
-            Velocity = 5f * Utilities.SafeNormalise(Velocity * (MathF.Sin(AITimer)+ 1f), Vector2.Zero); //smoother charging
+            Velocity = 7.5f * Utilities.SafeNormalise(Velocity * (MathF.Sin(AITimer) + 1f), Vector2.Zero); //smoother charging
+
+
+            SpinUpClockwise(ref Rotation, 20f);
 
             if (AITimer % 150 == 0)
             {
@@ -186,10 +190,15 @@ namespace bullethellwhatever
 
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            if (AITimer % 2 == 0 && AITimer > 240)
+            if (AITimer <= 240)
+            {
+                SpinUpCounterClockwise(ref Rotation, 60f);
+            }
+
+            if (AITimer % 2 == 0 && AITimer > 240 && AITimer < 1700)
             {
                 int projectilesInSpiral = 10;
-                float acceleration = 0.5f * MathF.Cos(AITimer / 250 - MathF.PI / 6);
+                float acceleration = 0.52f * MathF.Cos(AITimer / 250 + MathF.PI / 3);
                 float rotation = (AITimer / 15 * MathF.PI / 40f) * acceleration;
 
                 Rotation = rotation;
@@ -209,7 +218,7 @@ namespace bullethellwhatever
                 
             }
 
-            if (AITimer == 1400)
+            if (AITimer == 1800)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -265,19 +274,21 @@ namespace bullethellwhatever
 
         public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber)
         {
-            Velocity = 1.1f * Utilities.Normalise(Main.player.Position - Position);
+            
 
-            if (AITimer == 450)
+            if (AITimer == 510)
             {
                 ShotgunFrequency = 10f;
             }
 
-            if (AITimer % ShotgunFrequency == 0 && (AITimer < 350 || AITimer > 449)) //the sputtering is to do with this modulo division not being a whole number
+            if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 60) 
             {
                 
                 BasicProjectile singleShot = new BasicProjectile();
                 float numberOfProjectiles = 3;
                 float projectileSpeed = 13f;
+
+                Velocity = 1.1f * Utilities.Normalise(Position - Main.player.Position);
 
                 singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0);
 
@@ -291,6 +302,11 @@ namespace bullethellwhatever
                 }
 
                 
+            }
+
+            if ((AITimer > 410 && AITimer < 509) || AITimer < 60)
+            {
+                Velocity = 5f * Utilities.Normalise(Main.player.Position - Position);
             }
 
             if (AITimer == 800)
@@ -338,6 +354,11 @@ namespace bullethellwhatever
             {
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
                 Velocity = Vector2.Zero; //amke it sit in the middle
+            }
+
+            if (AITimer <= 240)
+            {
+                SpinUpClockwise(ref Rotation, 80);
             }
 
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
@@ -406,5 +427,14 @@ namespace bullethellwhatever
             AttackNumber++;
         }
 
+        public void SpinUpClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
+        {
+            rotation = Rotation + (MathF.PI / 90) * AITimer / 80f; //spin up
+        }
+
+        public void SpinUpCounterClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
+        {
+            rotation = Rotation - (MathF.PI / 90) * AITimer / 80f; //spin up
+        }
     }
 }

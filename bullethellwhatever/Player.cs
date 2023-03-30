@@ -38,7 +38,7 @@ namespace bullethellwhatever
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
-            Health = 20; //make all these values changeable
+            Health = 15; //make all these values changeable
             MaxHP = Health;
             Size = 1f;
             ShotCooldown = 20f;
@@ -87,9 +87,7 @@ namespace bullethellwhatever
             {
                 ActiveWeapon = Weapons.Homing;
             }
-
             
-
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
                 Health = MaxHP;
