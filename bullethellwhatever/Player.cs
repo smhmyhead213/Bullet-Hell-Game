@@ -99,7 +99,7 @@ namespace bullethellwhatever
 
         #endregion
         public override bool ShouldRemoveOnEdgeTouch() => false;
-
+        #region AI
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
             var mouseState = Mouse.GetState();
@@ -150,7 +150,8 @@ namespace bullethellwhatever
                 Main.activeFriendlyProjectiles.Clear();
             }
         }
-
+        #endregion
+        #region Shooting
         public void Shoot()
         {
             var mouseState = Mouse.GetState();
@@ -192,7 +193,7 @@ namespace bullethellwhatever
 
             }
         }
-
+        #endregion
         public void TakeDamage(Entity entity) //take damage from an entity
         {
             Health = Health - entity.Damage;
