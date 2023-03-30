@@ -43,7 +43,7 @@ namespace bullethellwhatever
             Size = 1f;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
-            Hitbox = new((int)position.X - (texture.Width / 2), (int)position.Y - (texture.Height / 2), texture.Width, texture.Height);
+            
         }
         #endregion
 
@@ -88,6 +88,7 @@ namespace bullethellwhatever
                 ActiveWeapon = Weapons.Homing;
             }
 
+            
 
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
@@ -105,6 +106,8 @@ namespace bullethellwhatever
             var mouseState = Mouse.GetState();
 
             HandleMovement();
+
+            Hitbox = new((int)Position.X - (Texture.Width / 2), (int)Position.Y - (Texture.Height / 2),Texture.Width, Texture.Height);
 
             if (Health > 0)
             {

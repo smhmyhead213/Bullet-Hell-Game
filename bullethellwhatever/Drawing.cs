@@ -49,17 +49,21 @@ namespace bullethellwhatever
             DrawHealthBar(Main._spriteBatch, Main.player, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), 30f, 3f);
         }
 
-        public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
+        public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
         {
             float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;
             
-            float emptySpaceOnLeft = (BarWidth * (1 - healthRatio)) / 2;
+            float emptySpaceOnLeft = BarWidth * (1 - healthRatio) / 2;
 
-            Vector2 topLeft = new Vector2(positionOfBar.X - BarWidth / 2, positionOfBar.Y - BarHeight / 2);
+            Vector2 topLeft = new (positionOfBar.X - BarWidth / 2 * Main.player.Texture.Width, positionOfBar.Y - BarHeight / 2 * Main.player.Texture.Height);
 
-            Rectangle HPBar = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)BarWidth, (int)BarHeight);
+            Rectangle HPBar = new ((int)topLeft.X, (int)topLeft.Y, (int)(BarWidth * Main.player.Texture.Width), (int)(BarHeight * Main.player.Texture.Height));
 
-            float opacity = HPBar.Intersects(Main.player.Hitbox) ? 0.5f : 1f;
+            float opacity = HPBar.Intersects(Main.player.Hitbox) ? 0.2f : 1f;
+
+            //debug key
+
+            var kstate = Keyboard.GetState();
 
             //HP bar foreground.
             //HP bar background.
