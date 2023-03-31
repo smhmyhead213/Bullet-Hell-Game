@@ -43,6 +43,7 @@ namespace bullethellwhatever
             Size = 1f;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
+            ActiveWeapon = Weapons.Sharpshooter;
             
         }
         #endregion
@@ -51,7 +52,7 @@ namespace bullethellwhatever
         public override void HandleMovement() //and input
         {
             var kstate = Keyboard.GetState();
-
+            var mouseState = Mouse.GetState();
 
             if (kstate.IsKeyDown(Keys.W) && !touchingTop(this))
             {
@@ -73,17 +74,17 @@ namespace bullethellwhatever
                 Position.X += Velocity.X;
             }
 
-            if (kstate.IsKeyDown(Keys.D1))
+            if ((mouseState.ScrollWheelValue / 120) % 3 == 0)  //are you happy now gemma??????????????????????
             {
                 ActiveWeapon = Weapons.Sharpshooter;
             }
 
-            if (kstate.IsKeyDown(Keys.D2))
+            if ((mouseState.ScrollWheelValue / 120) % 3 == 1)
             {
                 ActiveWeapon = Weapons.MachineGun;
             }
 
-            if (kstate.IsKeyDown(Keys.D3))
+            if ((mouseState.ScrollWheelValue / 120) % 3 == 2)
             {
                 ActiveWeapon = Weapons.Homing;
             }

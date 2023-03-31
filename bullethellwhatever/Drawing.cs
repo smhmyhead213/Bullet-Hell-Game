@@ -43,6 +43,19 @@ namespace bullethellwhatever
             }
 
             DrawHealthBar(Main._spriteBatch, Main.player, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), 30f, 3f);
+
+            switch (Main.player.ActiveWeapon)
+            {
+                case Player.Weapons.Sharpshooter:
+                    Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + " , use the scroll wheel to switch weapons.", new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.Yellow);
+                    break;
+                case Player.Weapons.MachineGun:
+                    Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + " , use the scroll wheel to switch weapons.", new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.SkyBlue);
+                    break;
+                case Player.Weapons.Homing:
+                    Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + " , use the scroll wheel to switch weapons.", new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.LimeGreen);
+                    break;
+            }
         }
 
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
@@ -59,7 +72,8 @@ namespace bullethellwhatever
 
             //debug key
 
-            var kstate = Keyboard.GetState();
+            
+
 
             //HP bar foreground.
             //HP bar background.

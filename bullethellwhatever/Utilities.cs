@@ -31,10 +31,10 @@ namespace bullethellwhatever
             }
         }
 
-        public static void drawTextInDrawMethod(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font)
+        public static void drawTextInDrawMethod(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour)
         {
             //_spriteBatch.Begin();
-            _spriteBatch.DrawString(font, stringg, position, Color.White);
+            _spriteBatch.DrawString(font, stringg, position, colour);
             //_spriteBatch.End();
         }
 
