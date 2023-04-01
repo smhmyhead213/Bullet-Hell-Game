@@ -21,14 +21,24 @@ namespace bullethellwhatever
         public static SpriteBatch _spriteBatch;
 
         public static Texture2D playerTexture;
-        public static SpriteFont font; 
+        public static Texture2D startButton;
+        public static Texture2D easyButton;
+        public static Texture2D normalButton;
+        public static Texture2D hardButton;
+        public static Texture2D insaneButton;
+        public static Texture2D bossButton;
+        public static SpriteFont font;
 
+        public static GameStateHandler gameStateHandler = new GameStateHandler();
+        public static GameState gameState = new GameState();
 
         public static List<NPC> activeNPCs = new List<NPC>();
         public static List<Projectile> activeProjectiles = new List<Projectile>();
         public static List<FriendlyProjectile> activeFriendlyProjectiles = new List<FriendlyProjectile>();
 
         public static Player player = new Player();
+
+        public static List<Button> activeButtons = new List<Button>();
         public Main() : base()
         {
             MainInstance = this;
@@ -53,13 +63,19 @@ namespace bullethellwhatever
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
             playerTexture = Content.Load<Texture2D>("box");
+            easyButton = Content.Load<Texture2D>("EasyButton");
+            normalButton = Content.Load<Texture2D>("NormalButton");
+            hardButton = Content.Load<Texture2D>("HardButton");
+            insaneButton = Content.Load<Texture2D>("InsaneButton");
+            bossButton = Content.Load<Texture2D>("InsaneButton");
+            startButton = Content.Load<Texture2D>("StartButton");
 
+            GameState.State = GameState.GameStates.TitleScreen;
 
             // TODO: Add your initialization logic here
             //player.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             //player.Velocity = new Vector2(100, 100);
-            EntityManager.SpawnBoss();
-            player.Spawn(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), new Vector2(5, 5), 10, playerTexture);
+            
             
             base.Initialize();
         }
@@ -68,13 +84,16 @@ namespace bullethellwhatever
 
         protected override void Update(GameTime gameTime)
         {
+            
+
             if (MainInstance.IsActive)
             {
+                gameStateHandler.HandleGame();
+
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
 
-                EntityManager.RemoveEntites(); //remove all entities queued for deletion
-                EntityManager.RunAIs();
+                
 
                 // TODO: Add your update logic here
             }
@@ -85,13 +104,20 @@ namespace bullethellwhatever
         {
             GraphicsDevice.Clear(Color.Black);
 
+            switch (GameState.State)
+            {
+                case GameState.GameStates.TitleScreen:
+                    Drawing.DrawTitleScreen(_spriteBatch);
+                    break;
+                case GameState.GameStates.BossSelect:
+                    Drawing.DrawBossSelect(_spriteBatch);
+                    break;
+                case GameState.GameStates.InGame:
+                    Drawing.DrawGame();
+                    break;
+            }
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
-            //player drawing
 
-            Drawing.DrawGame();
-
-            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
