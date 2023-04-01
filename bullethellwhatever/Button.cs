@@ -29,22 +29,22 @@ namespace bullethellwhatever
             Scale = scale;
         }
 
-        public static bool IsButtonClicked(Button button)
+        public bool IsButtonClicked()
         {
             var mouseState = Mouse.GetState();
             var mousePosition = new Point(mouseState.X, mouseState.Y);
 
-            return button.ButtonRectangle.Contains(mousePosition) && mouseState.LeftButton == ButtonState.Pressed;
+            return ButtonRectangle.Contains(mousePosition) && mouseState.LeftButton == ButtonState.Pressed;
         }
 
         public void HandleClick()
-        {
-            
+        { 
             GameState.State = Destination;
 
             foreach (Button button in Main.activeButtons)
             {
-                DeleteNextFrame = true;
+                //I HATE YOU I HATE YOU I HATE YOU I HATE UI I HATE UI I HATE UI
+                button.DeleteNextFrame = true;
             }
         }
     }

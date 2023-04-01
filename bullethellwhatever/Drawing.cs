@@ -90,6 +90,7 @@ namespace bullethellwhatever
         {
             Button startButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton, GameState.GameStates.BossSelect, new Vector2(3,3));
 
+
             if (!Main.activeButtons.Contains(startButton))
                 Main.activeButtons.Add(startButton);
 
@@ -100,15 +101,16 @@ namespace bullethellwhatever
 
         public static void DrawBossSelect(SpriteBatch _spriteBatch)
         {
-            Button bossButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton, GameState.GameStates.InGame, new Vector2(3, 3));
+            Button bossButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton, GameState.GameStates.DifficultySelect, new Vector2(3, 3));
             
             if (!Main.activeButtons.Contains(bossButton))
                 Main.activeButtons.Add(bossButton);
 
             _spriteBatch.Begin();
-
             _spriteBatch.Draw(bossButton.Texture, bossButton.Position, null, Color.White, 0f, new Vector2(bossButton.Texture.Width / 2, bossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
             _spriteBatch.End();
         }
+
+        
     }
 }

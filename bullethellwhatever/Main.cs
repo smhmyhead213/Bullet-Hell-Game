@@ -67,7 +67,7 @@ namespace bullethellwhatever
             normalButton = Content.Load<Texture2D>("NormalButton");
             hardButton = Content.Load<Texture2D>("HardButton");
             insaneButton = Content.Load<Texture2D>("InsaneButton");
-            bossButton = Content.Load<Texture2D>("InsaneButton");
+            bossButton = Content.Load<Texture2D>("BossButton");
             startButton = Content.Load<Texture2D>("StartButton");
 
             GameState.State = GameState.GameStates.TitleScreen;

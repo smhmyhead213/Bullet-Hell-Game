@@ -28,11 +28,10 @@ namespace bullethellwhatever
 
                 foreach (Button button in Main.activeButtons)
                 {
-                    if (Button.IsButtonClicked(button) && ButtonCooldown == 0)
+                    if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
                         ButtonCooldown = 5;
                         button.HandleClick();
-                        
                     }
                 }
 
@@ -45,9 +44,10 @@ namespace bullethellwhatever
 
                 foreach (Button button in Main.activeButtons)
                 {
-                    if (Button.IsButtonClicked(button) && ButtonCooldown == 0)
+                    if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
                         ButtonCooldown = 5;
+                        
                         button.HandleClick();
                     }
                 }
@@ -64,7 +64,7 @@ namespace bullethellwhatever
                     isGameStarted = true;
                 }
 
-                EntityManager.RemoveEntites(); //remove all entities queued for deletion
+                EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
             }
         }

@@ -9,7 +9,7 @@ namespace bullethellwhatever
 {
     public class EntityManager
     {
-        public static void RemoveEntites()
+        public static void RemoveEntities()
         {
             Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(NPC, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight));
             Main.activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.hasDesperation() == false);
