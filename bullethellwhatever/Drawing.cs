@@ -111,6 +111,16 @@ namespace bullethellwhatever
             _spriteBatch.End();
         }
 
-        
+        public static void DrawDifficultySelect(SpriteBatch _spriteBatch)
+        {
+            Button hardButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.hardButton, GameState.GameStates.InGame, new Vector2(3, 3));
+
+            if (!Main.activeButtons.Contains(hardButton))
+                Main.activeButtons.Add(hardButton);
+
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(hardButton.Texture, hardButton.Position, null, Color.White, 0f, new Vector2(hardButton.Texture.Width / 2, hardButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
+            _spriteBatch.End();
+        }
     }
 }

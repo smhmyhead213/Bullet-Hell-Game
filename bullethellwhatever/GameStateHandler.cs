@@ -55,6 +55,23 @@ namespace bullethellwhatever
                 Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
             }
 
+            if (GameState.State == GameState.GameStates.DifficultySelect)
+            {
+                isGameStarted = false;
+
+                foreach (Button button in Main.activeButtons)
+                {
+                    if (button.IsButtonClicked() && ButtonCooldown == 0)
+                    {
+                        ButtonCooldown = 5;
+
+                        button.HandleClick();
+                    }
+                }
+
+                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+            }
+
             if (GameState.State == GameState.GameStates.InGame)
             {
                 if (!isGameStarted)

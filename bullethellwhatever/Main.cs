@@ -112,6 +112,9 @@ namespace bullethellwhatever
                 case GameState.GameStates.BossSelect:
                     Drawing.DrawBossSelect(_spriteBatch);
                     break;
+                case GameState.GameStates.DifficultySelect:
+                    Drawing.DrawDifficultySelect(_spriteBatch);
+                    break;
                 case GameState.GameStates.InGame:
                     Drawing.DrawGame();
                     break;
