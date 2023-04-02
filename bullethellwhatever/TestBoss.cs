@@ -61,37 +61,22 @@ namespace bullethellwhatever
                 IFrames--;
             }
             //If the timer reaches 10, execute the attack and reset timer.
-
-            switch (AttackNumber)
+            switch (GameState.Difficulty)
             {
-                case 1:
-                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
+                case GameState.Difficulties.Easy:
+                    ExecuteEasyAttackPattern();
                     break;
-                case 2:
-                    Charge(ref AITimer, ref AttackNumber);
+                case GameState.Difficulties.Normal:
+                    ExecuteNormalAttackPattern();
                     break;
-                case 3:
-                    Spiral(ref AITimer, ref AttackNumber);
+                case GameState.Difficulties.Hard:
+                    ExecuteHardAttackPattern();
                     break;
-                case 4:
-                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber);
-                    break;
-                case 5:
-                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber);
-                    break;
-                case 6:
-                    MutantBulletHell(ref AITimer, ref AttackNumber);
-                    break;
-                case 7:
-                    if (AITimer % 2 == 0)
-                        HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber);
-                    break;
-                default:
-                    AttackNumber = 1;
+                case GameState.Difficulties.Insane:
+                    ExecuteInsaneAttackPattern();
                     break;
 
             }
-
 
 
             //Every frame, add 1 to the timer.
@@ -110,7 +95,134 @@ namespace bullethellwhatever
                 }
             }
         }
+        public void ExecuteEasyAttackPattern()
+        {
+            switch (AttackNumber)
+            {
+                case 1:
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
+                    break;
+                case 2:
+                    Charge(ref AITimer, ref AttackNumber, 5f, 1f);
+                    break;
+                case 3:
+                    Spiral(ref AITimer, ref AttackNumber, 4, 70f);
+                    break;
+                case 4:
+                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 15);
+                    break;
+                case 5:
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 1, 8f);
+                    break;
+                case 6:
+                    MutantBulletHell(ref AITimer, ref AttackNumber, 6);
+                    break;
+                case 7:
+                    if (AITimer % 2 == 0)
+                        HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 3f);
+                    break;
+                default:
+                    AttackNumber = 1;
+                    break;
 
+            }
+        }
+        public void ExecuteNormalAttackPattern()
+        {
+            switch (AttackNumber)
+            {
+                case 1:
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 20);
+                    break;
+                case 2:
+                    Charge(ref AITimer, ref AttackNumber, 7.5f, 1.01f);
+                    break;
+                case 3:
+                    Spiral(ref AITimer, ref AttackNumber, 6, 60f);
+                    break;
+                case 4:
+                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 20);
+                    break;
+                case 5:
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 11f);
+                    break;
+                case 6:
+                    MutantBulletHell(ref AITimer, ref AttackNumber, 8);
+                    break;
+                case 7:
+                    if (AITimer % 2 == 0)
+                        HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 5f);
+                    break;
+                default:
+                    AttackNumber = 1;
+                    break;
+
+            }
+        }
+        public void ExecuteHardAttackPattern()
+        {
+            switch (AttackNumber)
+            {
+                case 1:
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
+                    break;
+                case 2:
+                    Charge(ref AITimer, ref AttackNumber, 9f, 1.02f);
+                    break;
+                case 3:
+                    Spiral(ref AITimer, ref AttackNumber, 8, 60f);
+                    break;
+                case 4:
+                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                    break;
+                case 5:
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 13f);
+                    break;
+                case 6:
+                    MutantBulletHell(ref AITimer, ref AttackNumber, 10);
+                    break;
+                case 7:
+                    if (AITimer % 2 == 0)
+                        HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 6.5f);
+                    break;
+                default:
+                    AttackNumber = 1;
+                    break;
+
+            }
+        }
+
+        public void ExecuteInsaneAttackPattern()
+        {
+            switch (AttackNumber)
+            {
+                case 1:
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 30);
+                    break;
+                case 2:
+                    Charge(ref AITimer, ref AttackNumber, 10.5f, 1.03f);
+                    break;
+                case 3:
+                    Spiral(ref AITimer, ref AttackNumber, 10, 45f);
+                    break;
+                case 4:
+                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 30);
+                    break;
+                case 5:
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 5, 16f);
+                    break;
+                case 6:
+                    MutantBulletHell(ref AITimer, ref AttackNumber, 12);
+                    break;
+                case 7:
+                    HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 8f);
+                    break;
+                default:
+                    AttackNumber = 1;
+                    break;
+
+            }
+        }
         public void BasicShotgunBlast(ref float AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
         {
 
@@ -139,7 +251,7 @@ namespace bullethellwhatever
 
         }
 
-        public void Charge(ref float AITimer, ref int AttackNumber)
+        public void Charge(ref float AITimer, ref int AttackNumber, float chargeSpeed, float chargeProjectileAcceleration)
         {
             if (AITimer == 0)
             {
@@ -148,11 +260,11 @@ namespace bullethellwhatever
 
             if (!HasChosenChargeDirection)
             {
-                Velocity = 9f * Utilities.Normalise(Main.player.Position - Position);
+                Velocity = chargeSpeed * Utilities.Normalise(Main.player.Position - Position);
                 HasChosenChargeDirection = true; //charge
             }
 
-            Velocity = 7.5f * Utilities.SafeNormalise(Velocity * (MathF.Sin(AITimer) + 1f), Vector2.Zero); //smoother charging
+            Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity * (MathF.Sin(AITimer) + 1f), Vector2.Zero); //smoother charging
 
 
             SpinUpClockwise(ref Rotation, 20f);
@@ -165,7 +277,7 @@ namespace bullethellwhatever
             if (AITimer % 150 > 0 && AITimer % 150 < 76 && (AITimer % 30) % 2 == 0)// check if aitimer is between 1 and 15 and if its even
             {
                 BasicProjectile projectile = new BasicProjectile();
-                projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.02f);
+                projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration);
             }
 
             if (AITimer == 900)
@@ -179,7 +291,7 @@ namespace bullethellwhatever
             HandleBounces();
         }
 
-        public void Spiral(ref float AITimer, ref int AttackNumber)
+        public void Spiral(ref float AITimer, ref int AttackNumber, int projectilesInSpiral, float rotationSpeed) //rotation speed 40 by default, increase to make easier
         {
             if (AITimer == 0)
             {
@@ -196,9 +308,9 @@ namespace bullethellwhatever
 
             if (AITimer % 2 == 0 && AITimer > 240 && AITimer < 1700)
             {
-                int projectilesInSpiral = 10;
+                
                 float acceleration = 0.52f * MathF.Cos(AITimer / 250 + MathF.PI / 3);
-                float rotation = (AITimer / 15 * MathF.PI / 40f) * acceleration;
+                float rotation = (AITimer / 15 * MathF.PI / rotationSpeed) * acceleration;
 
                 Rotation = rotation;
 
@@ -207,7 +319,7 @@ namespace bullethellwhatever
                     projectilesToShoot.Add(new BasicProjectile()); //add a projectile
 
                     // shoot projectiles in a ring and rotate it based on time
-                    Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 45) + rotation), Vector2.Zero);
+                    Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
                     projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
 
@@ -225,7 +337,7 @@ namespace bullethellwhatever
 
         }
 
-        public void ObnoxiouslyDenseBulletHell(ref float AITimer, ref int AttackNumber)
+        public void ObnoxiouslyDenseBulletHell(ref float AITimer, ref int AttackNumber, int projectilesPerWave)
         {
             if (AITimer == 0)
             {
@@ -235,8 +347,6 @@ namespace bullethellwhatever
 
             if (AITimer % 30 == 0 && AITimer < 500)
             {
-                int projectilesPerWave = 25;
-
                 List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
                 Random rnd = new Random();
@@ -271,7 +381,7 @@ namespace bullethellwhatever
             HandleBounces();
         }
 
-        public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber)
+        public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber, float numberOfProjectiles, float projectileSpeed)
         {
 
 
@@ -284,8 +394,7 @@ namespace bullethellwhatever
             {
 
                 BasicProjectile singleShot = new BasicProjectile();
-                float numberOfProjectiles = 3;
-                float projectileSpeed = 13f;
+
 
                 Velocity = 1.1f * Utilities.Normalise(Position - Main.player.Position);
 
@@ -318,10 +427,10 @@ namespace bullethellwhatever
             HandleBounces();
         }
 
-        public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber)
+        public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber, float moveSpeed)
         {
             float screenFraction = 8f;
-            float moveSpeed = 6f;
+            
 
             if (AITimer % 400 == 0)
             {
@@ -347,7 +456,7 @@ namespace bullethellwhatever
 
         }
 
-        public void MutantBulletHell(ref float AITimer, ref int AttackNumber) //this is literqally spiral but with 100f instead of 1250f
+        public void MutantBulletHell(ref float AITimer, ref int AttackNumber, int projectilesInSpiral) //this is literqally spiral but with 100f instead of 1250f
         {
             if (AITimer == 0)
             {
@@ -364,7 +473,6 @@ namespace bullethellwhatever
 
             if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 950)
             {
-                int projectilesInSpiral = 10;
                 float rotation = (AITimer / 10 * MathF.PI / 40f) * (AITimer / 100f);
 
                 Rotation = rotation;

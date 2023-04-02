@@ -127,7 +127,7 @@ namespace bullethellwhatever
             foreach (Texture2D texture in buttonTexturesToDraw)
             {
                 DifficultySelectButton button = new DifficultySelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth /  (buttonTexturesToDraw.Length + 1) * counter , Main._graphics.PreferredBackBufferHeight / 2), texture,
-                    GameState.GameStates.InGame, (GameState.Difficulties)counter, new Vector2(3, 3));
+                    GameState.GameStates.InGame, (GameState.Difficulties)(counter - 1), new Vector2(3, 3));
 
                 Main.activeButtons.Add(button);
 
