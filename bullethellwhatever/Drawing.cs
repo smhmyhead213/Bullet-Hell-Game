@@ -14,8 +14,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace bullethellwhatever
 {
-    public class Drawing
+    public static class Drawing
     {
+        public static bool AreButtonsDrawn;
         public static void DrawGame()
         {
             Main._spriteBatch.Begin();
@@ -88,7 +89,8 @@ namespace bullethellwhatever
 
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
-            Button startButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton, GameState.GameStates.BossSelect, new Vector2(3,3));
+            TitleScreenButton startButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
+                GameState.GameStates.BossSelect, new Vector2(3,3));
 
 
             if (!Main.activeButtons.Contains(startButton))
@@ -101,26 +103,43 @@ namespace bullethellwhatever
 
         public static void DrawBossSelect(SpriteBatch _spriteBatch)
         {
-            Button bossButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton, GameState.GameStates.DifficultySelect, new Vector2(3, 3));
+            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
+                GameState.GameStates.DifficultySelect, GameState.Bosses.TestBoss, new Vector2(3, 3));
             
-            if (!Main.activeButtons.Contains(bossButton))
-                Main.activeButtons.Add(bossButton);
+
+            if (!Main.activeButtons.Contains(testBossButton))
+                Main.activeButtons.Add(testBossButton);
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(bossButton.Texture, bossButton.Position, null, Color.White, 0f, new Vector2(bossButton.Texture.Width / 2, bossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(testBossButton.Texture, testBossButton.Position, null, Color.White, 0f, new Vector2(testBossButton.Texture.Width / 2, testBossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
             _spriteBatch.End();
         }
 
         public static void DrawDifficultySelect(SpriteBatch _spriteBatch)
-        {
-            Button hardButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.hardButton, GameState.GameStates.InGame, new Vector2(3, 3));
+        { //add this to other menus
 
-            if (!Main.activeButtons.Contains(hardButton))
-                Main.activeButtons.Add(hardButton);
+            Texture2D[] buttonTexturesToDraw = {Main.easyButton, Main.normalButton, Main.hardButton, Main.insaneButton};
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(hardButton.Texture, hardButton.Position, null, Color.White, 0f, new Vector2(hardButton.Texture.Width / 2, hardButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
+
+            int counter = 1;
+
+            foreach (Texture2D texture in buttonTexturesToDraw)
+            {
+                DifficultySelectButton button = new DifficultySelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth /  (buttonTexturesToDraw.Length + 1) * counter , Main._graphics.PreferredBackBufferHeight / 2), texture,
+                    GameState.GameStates.InGame, (GameState.Difficulties)counter, new Vector2(3, 3));
+
+                Main.activeButtons.Add(button);
+
+                _spriteBatch.Draw(button.Texture, button.Position, null, Color.White, 0f, new Vector2(button.Texture.Width / 2, button.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
+
+                counter = counter + 1;
+
+            }
+
             _spriteBatch.End();
+            
+            
         }
     }
 }

@@ -17,17 +17,12 @@ namespace bullethellwhatever
         public Vector2 Position;
         public Vector2 Scale; //how muhc the button is scaled up when drawn
         public Texture2D Texture;
-        public GameState.GameStates Destination;
+ 
+
         public bool DeleteNextFrame;
         public Rectangle ButtonRectangle => new((int)Position.X - (Texture.Width / 2 * (int)Scale.X), (int)Position.Y - (Texture.Height / 2 * (int)Scale.Y), Texture.Width * (int)Scale.X, Texture.Height * (int)Scale.Y);
 
-        public Button(Vector2 position, Texture2D texture, GameState.GameStates destination, Vector2 scale)
-        {
-            Position = position;
-            Texture = texture;
-            Destination = destination;
-            Scale = scale;
-        }
+       
 
         public bool IsButtonClicked()
         {
@@ -37,16 +32,7 @@ namespace bullethellwhatever
             return ButtonRectangle.Contains(mousePosition) && mouseState.LeftButton == ButtonState.Pressed;
         }
 
-        public void HandleClick()
-        { 
-            GameState.State = Destination;
-
-            foreach (Button button in Main.activeButtons)
-            {
-                //I HATE YOU I HATE YOU I HATE YOU I HATE UI I HATE UI I HATE UI
-                button.DeleteNextFrame = true;
-            }
-        }
+        public virtual void HandleClick() { }
     }
 }
 

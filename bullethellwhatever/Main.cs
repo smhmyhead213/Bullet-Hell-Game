@@ -70,6 +70,7 @@ namespace bullethellwhatever
             bossButton = Content.Load<Texture2D>("BossButton");
             startButton = Content.Load<Texture2D>("StartButton");
 
+            
             GameState.State = GameState.GameStates.TitleScreen;
 
             // TODO: Add your initialization logic here

@@ -54,7 +54,7 @@ namespace bullethellwhatever
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            if (kstate.IsKeyDown(Keys.W) && !touchingTop(this))
+            if (kstate.IsKeyDown(Keys.W) && !touchingTop(this)) //fix the movement so you dont move faster diagonally, future you's problem
             {
                 Position.Y -= Velocity.Y;
             }

@@ -15,6 +15,7 @@ namespace bullethellwhatever
     {
         public bool isGameStarted;
         public int ButtonCooldown;
+        public string activeBoss; //use a swicth statement to spawn a boss in
         public void HandleGame()
         {
             if (ButtonCooldown > 0)

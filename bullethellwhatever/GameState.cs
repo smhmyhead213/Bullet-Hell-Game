@@ -26,5 +26,11 @@ namespace bullethellwhatever
         }
 
         public static Difficulties Difficulty;
+        public enum Bosses
+        {
+            TestBoss,
+        }
+
+        public static Bosses Boss;
     }
 }

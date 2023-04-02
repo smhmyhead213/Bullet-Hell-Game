@@ -40,7 +40,13 @@ namespace bullethellwhatever
 
         public static void SpawnBoss()
         {
-            Main.activeNPCs.Add(new Boss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(0, 0)));
+            switch (GameState.Boss)
+            {
+                case GameState.Bosses.TestBoss:
+                    Main.activeNPCs.Add(new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(0, 0)));
+                    break;
+            }
+            
             Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 1, Main.playerTexture, 5f, 200f);
         }
 
