@@ -17,7 +17,7 @@ namespace bullethellwhatever
         public float IFrames;
         public float ShotCooldown;
         public float ShotCooldownRemaining;
-        
+        public float MoveSpeed;
         public enum Weapons
         {
             Sharpshooter,
@@ -44,6 +44,7 @@ namespace bullethellwhatever
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Sharpshooter;
+            MoveSpeed = 5f;
             
         }
         #endregion
@@ -54,25 +55,29 @@ namespace bullethellwhatever
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
+            Velocity = Vector2.Zero;
+
             if (kstate.IsKeyDown(Keys.W) && !touchingTop(this)) //fix the movement so you dont move faster diagonally, future you's problem
             {
-                Position.Y -= Velocity.Y;
+                Velocity.Y = Velocity.Y - 1f;
             }
 
             if (kstate.IsKeyDown(Keys.S) && !touchingBottom(this, Main._graphics.PreferredBackBufferHeight))
             {
-                Position.Y += Velocity.Y;
+                Velocity.Y = Velocity.Y + 1f;
             }
 
             if (kstate.IsKeyDown(Keys.A) && !touchingLeft(this))
             {
-                Position.X -= Velocity.X;
+                Velocity.X = Velocity.X - 1f;
             }
 
             if (kstate.IsKeyDown(Keys.D) && !touchingRight(this, Main._graphics.PreferredBackBufferWidth))
             {
-                Position.X += Velocity.X;
+                Velocity.X = Velocity.X + 1f;
             }
+
+            Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
             if ((mouseState.ScrollWheelValue / 120) % 3 == 0)  //are you happy now gemma??????????????????????
             {
