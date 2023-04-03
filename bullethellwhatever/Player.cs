@@ -17,6 +17,7 @@ namespace bullethellwhatever
         public float IFrames;
         public float ShotCooldown;
         public float ShotCooldownRemaining;
+        public float ScrollCooldown;
         public float MoveSpeed;
         public enum Weapons
         {
@@ -45,6 +46,7 @@ namespace bullethellwhatever
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Sharpshooter;
             MoveSpeed = 5f;
+            ScrollCooldown = 0f;
             
         }
         #endregion
@@ -54,6 +56,11 @@ namespace bullethellwhatever
         {
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
+
+            if (ScrollCooldown > 0)
+            {
+                ScrollCooldown--;
+            }
 
             Velocity = Vector2.Zero;
 
@@ -78,28 +85,60 @@ namespace bullethellwhatever
             }
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
-
-            if ((mouseState.ScrollWheelValue / 120) % 3 == 0)  //are you happy now gemma??????????????????????
+            if (GameState.WeaponSwitchControl) //if scroll wheel controls
             {
-                ActiveWeapon = Weapons.Sharpshooter;
+                if ((mouseState.ScrollWheelValue / 120) % 3 == 0 && ScrollCooldown == 0)  //are you happy now gemma??????????????????????
+                {
+                    ActiveWeapon = Weapons.Sharpshooter;
+                    ScrollCooldown = 3f;
+                }
+
+                if ((mouseState.ScrollWheelValue / 120) % 3 == 1 && ScrollCooldown == 0)
+                {
+                    ActiveWeapon = Weapons.MachineGun;
+                    ScrollCooldown = 3f;
+                }
+
+                if ((mouseState.ScrollWheelValue / 120) % 3 == 2 && ScrollCooldown == 0)
+                {
+                    ActiveWeapon = Weapons.Homing;
+                    ScrollCooldown = 3f;
+                }
+
+                if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
+                {
+                    Health = MaxHP;
+                    EntityManager.SpawnBoss();
+                }
             }
 
-            if ((mouseState.ScrollWheelValue / 120) % 3 == 1)
+            else
             {
-                ActiveWeapon = Weapons.MachineGun;
+                if (kstate.IsKeyDown(Keys.D1))  //are you happy now gemma??????????????????????
+                {
+                    ActiveWeapon = Weapons.Sharpshooter;
+                    ScrollCooldown = 3f;
+                }
+
+                if (kstate.IsKeyDown(Keys.D2))
+                {
+                    ActiveWeapon = Weapons.MachineGun;
+                    ScrollCooldown = 3f;
+                }
+
+                if (kstate.IsKeyDown(Keys.D3))
+                {
+                    ActiveWeapon = Weapons.Homing;
+                    ScrollCooldown = 3f;
+                }
             }
 
-            if ((mouseState.ScrollWheelValue / 120) % 3 == 2)
-            {
-                ActiveWeapon = Weapons.Homing;
-            }
-            
+
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
             }
-
         }
 
         #endregion

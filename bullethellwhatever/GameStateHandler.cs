@@ -73,6 +73,21 @@ namespace bullethellwhatever
                 Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
             }
 
+            if (GameState.State == GameState.GameStates.Settings)
+            {
+                isGameStarted = false;
+
+                foreach (Button button in Main.activeButtons)
+                {
+                    if (button.IsButtonClicked() && ButtonCooldown == 0)
+                    {
+                        ButtonCooldown = 5;
+
+                        button.HandleClick();
+                    }
+                }
+            }
+
             if (GameState.State == GameState.GameStates.InGame)
             {
                 if (!isGameStarted)
@@ -80,6 +95,7 @@ namespace bullethellwhatever
                     EntityManager.SpawnBoss();
                     Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0), 10, Main.playerTexture);
                     isGameStarted = true;
+                    
                 }
 
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion

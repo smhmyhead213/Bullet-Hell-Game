@@ -27,6 +27,10 @@ namespace bullethellwhatever
         public static Texture2D hardButton;
         public static Texture2D insaneButton;
         public static Texture2D bossButton;
+        public static Texture2D settingsButton;
+        public static Texture2D numberKeysButton;
+        public static Texture2D scrollWheelButton;
+        public static Texture2D backButton;
         public static SpriteFont font;
 
         public static GameStateHandler gameStateHandler = new GameStateHandler();
@@ -69,8 +73,12 @@ namespace bullethellwhatever
             insaneButton = Content.Load<Texture2D>("InsaneButton");
             bossButton = Content.Load<Texture2D>("BossButton");
             startButton = Content.Load<Texture2D>("StartButton");
+            settingsButton = Content.Load<Texture2D>("SettingsButton");
+            numberKeysButton = Content.Load<Texture2D>("NumberKeys");
+            scrollWheelButton = Content.Load<Texture2D>("Scroll");
+            backButton = Content.Load<Texture2D>("Back");
 
-            
+
             GameState.State = GameState.GameStates.TitleScreen;
 
             // TODO: Add your initialization logic here
@@ -115,6 +123,9 @@ namespace bullethellwhatever
                     break;
                 case GameState.GameStates.DifficultySelect:
                     Drawing.DrawDifficultySelect(_spriteBatch);
+                    break;
+                case GameState.GameStates.Settings:
+                    Drawing.DrawSettings(_spriteBatch);
                     break;
                 case GameState.GameStates.InGame:
                     Drawing.DrawGame();

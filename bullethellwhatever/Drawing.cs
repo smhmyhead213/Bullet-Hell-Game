@@ -89,15 +89,22 @@ namespace bullethellwhatever
 
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
-            TitleScreenButton startButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
+            TitleScreenButton startButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
                 GameState.GameStates.BossSelect, new Vector2(3,3));
 
+            TitleScreenButton settingsButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.settingsButton,
+                GameState.GameStates.Settings, new Vector2(3, 3));
 
-            if (!Main.activeButtons.Contains(startButton))
+            if (Main.activeButtons.Count < 2)
                 Main.activeButtons.Add(startButton);
 
+            if (Main.activeButtons.Count < 2)
+                Main.activeButtons.Add(settingsButton);
+
             _spriteBatch.Begin();
-            _spriteBatch.Draw(startButton.Texture, startButton.Position, null, Color.White, 0f, new Vector2(startButton.Texture.Width / 2, startButton.Texture.Height / 2), new Vector2(3,3), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(startButton.Texture, startButton.Position, null, Color.White, 0f, new Vector2(startButton.Texture.Width / 2, startButton.Texture.Height / 2), startButton.Scale, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(settingsButton.Texture, settingsButton.Position, null, Color.White, 0f, new Vector2(settingsButton.Texture.Width / 2, settingsButton.Texture.Height / 2), settingsButton.Scale, SpriteEffects.None, 0f);
+
             _spriteBatch.End();
         }
 
@@ -129,7 +136,8 @@ namespace bullethellwhatever
                 DifficultySelectButton button = new DifficultySelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth /  (buttonTexturesToDraw.Length + 1) * counter , Main._graphics.PreferredBackBufferHeight / 2), texture,
                     GameState.GameStates.InGame, (GameState.Difficulties)(counter - 1), new Vector2(3, 3));
 
-                Main.activeButtons.Add(button);
+                if (Main.activeButtons.Count < buttonTexturesToDraw.Length)
+                    Main.activeButtons.Add(button);
 
                 _spriteBatch.Draw(button.Texture, button.Position, null, Color.White, 0f, new Vector2(button.Texture.Width / 2, button.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
 
@@ -140,6 +148,37 @@ namespace bullethellwhatever
             _spriteBatch.End();
             
             
+        }
+
+        public static void DrawSettings(SpriteBatch _spriteBatch)
+        {
+            SettingsControlSchemeButton numberKeysButton = new SettingsControlSchemeButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 , Main._graphics.PreferredBackBufferHeight / 2), Main.numberKeysButton,
+                new Vector2(3, 3), false);
+
+            SettingsControlSchemeButton scrollWheelButton = new SettingsControlSchemeButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.scrollWheelButton,
+                new Vector2(3, 3), true);
+
+            //using a titlescreenbutton as it has a destination, which is what i need
+
+            TitleScreenButton backButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+                GameState.GameStates.TitleScreen, new Vector2(3, 3));
+
+            if (Main.activeButtons.Count < 3)
+                Main.activeButtons.Add(numberKeysButton);
+
+            if (Main.activeButtons.Count < 3)
+                Main.activeButtons.Add(scrollWheelButton);
+
+            if (Main.activeButtons.Count < 3)
+                Main.activeButtons.Add(backButton);
+
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(numberKeysButton.Texture, numberKeysButton.Position, null, Color.White, 0f, new Vector2(numberKeysButton.Texture.Width / 2, numberKeysButton.Texture.Height / 2), numberKeysButton.Scale, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(scrollWheelButton.Texture, scrollWheelButton.Position, null, Color.White, 0f, new Vector2(scrollWheelButton.Texture.Width / 2, scrollWheelButton.Texture.Height / 2), scrollWheelButton.Scale, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(backButton.Texture, backButton.Position, null, Color.White, 0f, new Vector2(backButton.Texture.Width / 2, backButton.Texture.Height / 2), backButton.Scale, SpriteEffects.None, 0f);
+
+            _spriteBatch.End();
         }
     }
 }

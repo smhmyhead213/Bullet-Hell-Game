@@ -11,6 +11,7 @@ namespace bullethellwhatever
         public enum GameStates
         {
             TitleScreen,
+            Settings,
             BossSelect,
             DifficultySelect,
             InGame,
@@ -32,5 +33,7 @@ namespace bullethellwhatever
         }
 
         public static Bosses Boss;
+
+        public static bool WeaponSwitchControl; //true for scroll, false for number keys
     }
 }
