@@ -24,7 +24,7 @@ namespace bullethellwhatever
                 ButtonCooldown--;
             }
 
-            if (GameState.State == GameState.GameStates.TitleScreen)
+            if (GameState.State == GameState.GameStates.TitleScreen) //fix this at some point
             {
                 isGameStarted = false;
 
@@ -97,6 +97,16 @@ namespace bullethellwhatever
                     Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0), 10, Main.playerTexture);
                     isGameStarted = true;
                     
+                }
+
+                foreach (Button button in Main.activeButtons)
+                {
+                    if (button.IsButtonClicked() && ButtonCooldown == 0)
+                    {
+                        ButtonCooldown = 5;
+
+                        button.HandleClick();
+                    }
                 }
 
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
