@@ -103,7 +103,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 5f, 1f);
+                    Charge(ref AITimer, ref AttackNumber, 9f, 1.1f, 1f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 4, 70f);
@@ -135,7 +135,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 20);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 7.5f, 1.01f);
+                    Charge(ref AITimer, ref AttackNumber, 11f, 1.1f, 1.01f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 6, 60f);
@@ -167,7 +167,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 9f, 1.02f);
+                    Charge(ref AITimer, ref AttackNumber, 7f, 1.1f, 1.02f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 8, 60f);
@@ -200,7 +200,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 30);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 10.5f, 1.03f);
+                    Charge(ref AITimer, ref AttackNumber, 20f, 1.1f, 1.03f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 10, 45f);
@@ -251,7 +251,7 @@ namespace bullethellwhatever
 
         }
 
-        public void Charge(ref float AITimer, ref int AttackNumber, float chargeSpeed, float chargeProjectileAcceleration)
+        public void Charge(ref float AITimer, ref int AttackNumber, float chargeSpeed, float chargeAcceleration, float chargeProjectileAcceleration)
         {
             if (AITimer == 0)
             {
@@ -264,7 +264,9 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = true; //charge
             }
 
-            Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity * (MathF.Sin(AITimer) + 1f), Vector2.Zero); //smoother charging
+            chargeSpeed = chargeSpeed * (MathF.Cos(AITimer % 150 / 75f) + 0.5f); //the velocity follows a sine curve, so the acceleration follows its derived graph, cos x
+
+            Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero); 
 
 
             SpinUpClockwise(ref Rotation, 20f);
@@ -398,14 +400,14 @@ namespace bullethellwhatever
 
                 Velocity = 1.1f * Utilities.Normalise(Position - Main.player.Position);
 
-                singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0);
+                singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.01f);
 
                 for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
                     BasicProjectile shotgunBlast = new BasicProjectile();
                     BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
-                    shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * MathF.PI / 13)), 1f, Texture, 0);
-                    shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * MathF.PI / 12)), 1f, Texture, 0);
+                    shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * MathF.PI / 13)), 1f, Texture, 1.01f);
+                    shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * MathF.PI / 12)), 1f, Texture, 1.01f);
 
                 }
 
