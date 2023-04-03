@@ -182,11 +182,34 @@ namespace bullethellwhatever
 
             _spriteBatch.Begin();
 
+            ConfirmControlSettingsChange(_spriteBatch);
+
             _spriteBatch.Draw(numberKeysButton.Texture, numberKeysButton.Position, null, Color.White, 0f, new Vector2(numberKeysButton.Texture.Width / 2, numberKeysButton.Texture.Height / 2), numberKeysButton.Scale, SpriteEffects.None, 0f);
             _spriteBatch.Draw(scrollWheelButton.Texture, scrollWheelButton.Position, null, Color.White, 0f, new Vector2(scrollWheelButton.Texture.Width / 2, scrollWheelButton.Texture.Height / 2), scrollWheelButton.Scale, SpriteEffects.None, 0f);
             _spriteBatch.Draw(backButton.Texture, backButton.Position, null, Color.White, 0f, new Vector2(backButton.Texture.Width / 2, backButton.Texture.Height / 2), backButton.Scale, SpriteEffects.None, 0f);
 
             _spriteBatch.End();
+        }
+
+        public static void ConfirmControlSettingsChange(SpriteBatch spriteBatch)
+        {
+            string ControlChangedTo = "";
+
+            if (GameState.HasASettingBeenChanged)
+            {
+                if (GameState.WeaponSwitchControl)
+                {
+                    ControlChangedTo = "Weapon switch control switched to scroll wheel.";
+                }
+
+                else
+                {
+                    ControlChangedTo = "Weapon switch control switched to number keys.";
+                }
+            }
+            Utilities.drawTextInDrawMethod(ControlChangedTo, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 7), Main._spriteBatch, Main.font, Color.White);
+
+
         }
     }
 }

@@ -31,6 +31,7 @@ namespace bullethellwhatever
             {
                 //I HATE YOU I HATE YOU I HATE YOU I HATE UI I HATE UI I HATE UI
                 button.DeleteNextFrame = true;
+                GameState.HasASettingBeenChanged = false;
             }
         }
     }

@@ -21,6 +21,10 @@ namespace bullethellwhatever
         public override void HandleClick()
         {
             GameState.WeaponSwitchControl = WeaponSwitchControl;
+            GameState.HasASettingBeenChanged = true;
+
+            
+
         }
     }
 }

@@ -35,5 +35,7 @@ namespace bullethellwhatever
         public static Bosses Boss;
 
         public static bool WeaponSwitchControl; //true for scroll, false for number keys
+
+        public static bool HasASettingBeenChanged;
     }
 }
