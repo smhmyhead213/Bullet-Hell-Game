@@ -264,6 +264,7 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = true; //charge
             }
 
+            //maths really is beautiful
             chargeSpeed = chargeSpeed * (MathF.Cos(AITimer % chargeFrequency / (chargeFrequency / 2)) + 0.5f); //the velocity follows a sine curve, so the acceleration follows its derived graph, cos x
 
             Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero); 
