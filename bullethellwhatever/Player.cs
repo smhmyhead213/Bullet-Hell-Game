@@ -45,7 +45,7 @@ namespace bullethellwhatever
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Sharpshooter;
-            MoveSpeed = 5f;
+            MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
             
         }

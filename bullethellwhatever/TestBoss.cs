@@ -103,7 +103,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 9f, 1.1f, 1f);
+                    Charge(ref AITimer, ref AttackNumber, 3f, 180f, 1f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 4, 70f);
@@ -135,7 +135,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 20);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 11f, 1.1f, 1.01f);
+                    Charge(ref AITimer, ref AttackNumber, 5f, 165f, 1.01f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 6, 60f);
@@ -167,7 +167,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 7f, 1.1f, 1.02f);
+                    Charge(ref AITimer, ref AttackNumber, 7f, 150f, 1.035f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 8, 60f);
@@ -200,7 +200,7 @@ namespace bullethellwhatever
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 30);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 20f, 1.1f, 1.03f);
+                    Charge(ref AITimer, ref AttackNumber, 9f, 140f, 1.04f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 10, 45f);
@@ -251,7 +251,7 @@ namespace bullethellwhatever
 
         }
 
-        public void Charge(ref float AITimer, ref int AttackNumber, float chargeSpeed, float chargeAcceleration, float chargeProjectileAcceleration)
+        public void Charge(ref float AITimer, ref int AttackNumber, float chargeSpeed, float chargeFrequency, float chargeProjectileAcceleration)
         {
             if (AITimer == 0)
             {
@@ -264,25 +264,25 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = true; //charge
             }
 
-            chargeSpeed = chargeSpeed * (MathF.Cos(AITimer % 150 / 75f) + 0.5f); //the velocity follows a sine curve, so the acceleration follows its derived graph, cos x
+            chargeSpeed = chargeSpeed * (MathF.Cos(AITimer % chargeFrequency / (chargeFrequency / 2)) + 0.5f); //the velocity follows a sine curve, so the acceleration follows its derived graph, cos x
 
             Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero); 
 
 
             SpinUpClockwise(ref Rotation, 20f);
 
-            if (AITimer % 150 == 0)
+            if (AITimer % chargeFrequency == 0)
             {
                 HasChosenChargeDirection = false; //enable the next charge to start
             }
 
-            if (AITimer % 150 > 0 && AITimer % 150 < 76 && (AITimer % 30) % 2 == 0)// check if aitimer is between 1 and 15 and if its even
+            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 1f) && (AITimer % 30) % 2 == 0)// check if aitimer is between 1 and 15 and if its even
             {
                 BasicProjectile projectile = new BasicProjectile();
                 projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration);
             }
 
-            if (AITimer == 900)
+            if (AITimer == chargeFrequency * 6)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 ContactDamage = false;

@@ -95,6 +95,7 @@ namespace bullethellwhatever
                 {
                     EntityManager.SpawnBoss();
                     Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0), 10, Main.playerTexture);
+                    Main.activeProjectiles.Clear();
                     isGameStarted = true;
                     
                 }
