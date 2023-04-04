@@ -17,17 +17,17 @@ namespace bullethellwhatever
         public float IFrames;
         public bool ContactDamage;
         
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float size, float MaxHealth)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
-            Main.activeNPCs.Add(this);
+            Main.NPCsToAddNextFrame.Add(this);
             Size = size;
             Hitbox = new((int)position.X - (texture.Width / 2), (int)position.Y - (texture.Height / 2), texture.Width, texture.Height);
-            Hitbox.Width = Hitbox.Width * (int)size;
-            Hitbox.Height = Hitbox.Height * (int)size;
+            Hitbox.Width = Hitbox.Width * (int)size.X;
+            Hitbox.Height = Hitbox.Height * (int)size.Y;
             Health = MaxHealth;
             MaxHP = MaxHealth;
             ContactDamage = false;

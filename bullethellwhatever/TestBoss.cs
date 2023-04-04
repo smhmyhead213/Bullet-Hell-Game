@@ -34,7 +34,7 @@ namespace bullethellwhatever
 
         public override bool ShouldRemoveOnEdgeTouch() => false;
 
-        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, float size, float MaxHealth)
+        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {
             base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth);
 
@@ -103,11 +103,11 @@ namespace bullethellwhatever
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 4, 70f);
                     break;
-                case 4:
-                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 15);
+                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 1, 9f);
                     break;
                 case 5:
-                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 1, 8f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 10f);
                     break;
                 case 6:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 6);
@@ -135,11 +135,11 @@ namespace bullethellwhatever
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 6, 60f);
                     break;
-                case 4:
-                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 20);
+                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 11f);
                     break;
                 case 5:
-                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 11f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 15f);
                     break;
                 case 6:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 8);
@@ -159,7 +159,7 @@ namespace bullethellwhatever
             switch (AttackNumber)
             {
                 case 1:
-                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 1);
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
                     break;
                 case 2:
                     Charge(ref AITimer, ref AttackNumber, 7f, 150f, 1.035f);
@@ -167,11 +167,11 @@ namespace bullethellwhatever
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 8, 60f);
                     break;
-                case 4:
-                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
-                    break;
-                case 5:
+                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 13f);
+                    break;
+                case 5:                    
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 20f);
                     break;
                 case 6:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 10);
@@ -200,11 +200,11 @@ namespace bullethellwhatever
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 10, 45f);
                     break;
-                case 4:
-                    ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 30);
+                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 5, 15f);
                     break;
                 case 5:
-                    MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 5, 16f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 25f);
                     break;
                 case 6:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 12);
@@ -220,22 +220,23 @@ namespace bullethellwhatever
         }
         public void BasicShotgunBlast(ref float AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
         {
+            float projectileOscillationFrequency = 10f;
 
-            if (AITimer % 40 == 0 && AITimer < 601) //1 added so the 15th burst goes off
+            if (AITimer % 40 == 0 && AITimer < 600)
             {
-                OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(40f);
+                OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
 
-                singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0);
+                singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0, Vector2.One);
 
-                //for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
-                //{
-                //    OscillatingSpeedProjectile shotgunBlast = new OscillatingSpeedProjectile(40f);
-                //    OscillatingSpeedProjectile shotgunBlast2 = new OscillatingSpeedProjectile(40f); //one for each side of middle
-                    
-                //    shotgunBlast.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 0);
-                //    shotgunBlast2.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 0);
+                for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
+                {
+                    OscillatingSpeedProjectile shotgunBlast = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
+                    OscillatingSpeedProjectile shotgunBlast2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed); //one for each side of middle
 
-                //}
+                    shotgunBlast.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
+                    shotgunBlast2.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
+
+                }
             }
 
             if (AITimer == 750)
@@ -274,10 +275,10 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = false; //enable the next charge to start
             }
 
-            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 1f) && (AITimer % 30) % 2 == 0)// check if aitimer is between 1 and 15 and if its even
+            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && (AITimer % 30) % 2 == 0)// check if aitimer is between 1 and 15 and if its even
             {
                 BasicProjectile projectile = new BasicProjectile();
-                projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration);
+                projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One);
             }
 
             if (AITimer == chargeFrequency * 6)
@@ -321,7 +322,7 @@ namespace bullethellwhatever
                     // shoot projectiles in a ring and rotate it based on time
                     Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
-                    projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
+                    projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One);
 
 
                 }
@@ -357,7 +358,7 @@ namespace bullethellwhatever
                     projectilesToShoot.Add(new BasicProjectile());
 
                     //Shoot projectiles based on an offset.
-                    projectilesToShoot[i].Spawn(Position, 5f * Vector2.Normalize(Utilities.RotateVectorCounterClockwise(projectileDirection, i * MathF.PI / projectilesPerWave)), 1f, Texture, 0);
+                    projectilesToShoot[i].Spawn(Position, 5f * Vector2.Normalize(Utilities.RotateVectorCounterClockwise(projectileDirection, i * MathF.PI / projectilesPerWave)), 1f, Texture, 0, Vector2.One);
 
 
                 }
@@ -366,7 +367,7 @@ namespace bullethellwhatever
             if (Main.player.Position.Y < Position.Y) //have fun cheesing this one sean
             {
                 BasicProjectile projectile = new BasicProjectile();
-                projectile.Spawn(Position, 5f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.03f);
+                projectile.Spawn(Position, 5f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.03f, Vector2.One);
                 Velocity = Velocity * 1.01f;
 
 
@@ -398,21 +399,21 @@ namespace bullethellwhatever
 
                 Velocity = 1.1f * Utilities.Normalise(Position - Main.player.Position);
 
-                singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.01f);
+                singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.01f, Vector2.One);
 
                 for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
                     BasicProjectile shotgunBlast = new BasicProjectile();
                     BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
-                    shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * MathF.PI / 13)), 1f, Texture, 1.01f);
-                    shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * MathF.PI / 12)), 1f, Texture, 1.01f);
+                    shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * MathF.PI / 13)), 1f, Texture, 1.01f, Vector2.One);
+                    shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
 
                 }
 
 
             }
 
-            if ((AITimer > 410 && AITimer < 509) || AITimer < 60)
+            if (AITimer > 410 && AITimer < 509)
             {
                 Velocity = 5f * Utilities.Normalise(Main.player.Position - Position);
             }
@@ -452,7 +453,7 @@ namespace bullethellwhatever
             }
 
             BasicProjectile projectile = new BasicProjectile();
-            projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.03f);
+            projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.03f, Vector2.One);
 
         }
 
@@ -484,7 +485,7 @@ namespace bullethellwhatever
                     // shoot projectiles in a ring and rotate it based on time
                     Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 45) + rotation), Vector2.Zero);
 
-                    projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1);
+                    projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One);
                 }
             }
 
@@ -494,6 +495,30 @@ namespace bullethellwhatever
             }
 
             if (AITimer == 1150)
+            {
+                EndAttack(ref AITimer, ref AttackNumber);
+                return;
+            }
+        }
+
+        public void ExplodingProjectiles(ref float AITimer, ref int AttackNumber, float numberOfProjectiles)
+        {
+            Velocity = 1.1f * Utilities.Normalise(Main.player.Position - Position);
+
+            if (AITimer % 30 == 0 && AITimer < 590 && AITimer > 240)
+            {
+                ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f);
+
+                Vector2 direction = Utilities.RotateVectorClockwise((Main.player.Position - Position), Utilities.ToRadians(AITimer - 250f));
+
+                
+
+                explodingProjectile.Spawn(Position, 5f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2,2));
+            }
+
+            Rotation = Utilities.ToRadians((AITimer - 250f));
+
+            if (AITimer == 990)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;

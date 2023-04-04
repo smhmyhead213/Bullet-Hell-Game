@@ -13,8 +13,24 @@ namespace bullethellwhatever
         {
             Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(NPC, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight));
             Main.activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.hasDesperation() == false);
-            Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight));
+            Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
             Main.activeFriendlyProjectiles.RemoveAll(projectile => (projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame));
+        }
+
+        public static void AddEntitiesNextFrame()
+        {
+            foreach (NPC npc in Main.NPCsToAddNextFrame)
+                Main.activeNPCs.Add(npc);
+
+            foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
+            {
+                Main.activeProjectiles.Add(projectile);
+            }
+
+            foreach (FriendlyProjectile projectile in Main.friendlyProjectilesToAddNextFrame)
+            {
+                Main.activeFriendlyProjectiles.Add(projectile);
+            }
         }
 
         public static void RunAIs()
@@ -47,7 +63,7 @@ namespace bullethellwhatever
                     break;
             }
             
-            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 1, Main.playerTexture, 5f, 200f);
+            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 1, Main.playerTexture, new Vector2(5,5), 200f);
         }
 
     }

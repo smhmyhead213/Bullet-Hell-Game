@@ -41,7 +41,7 @@ namespace bullethellwhatever
             IFrames = 0;
             Health = 15; //make all these values changeable
             MaxHP = Health;
-            Size = 1f;
+            Size = Vector2.One;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Sharpshooter;
@@ -209,7 +209,7 @@ namespace bullethellwhatever
 
                 
 
-                playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0);
+                playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0, Vector2.One);
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -220,7 +220,7 @@ namespace bullethellwhatever
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.25f, Main.player.Texture, 0);
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.25f, Main.player.Texture, 0, Vector2.One);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -231,7 +231,7 @@ namespace bullethellwhatever
 
                 
 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0, Vector2.One);
 
 
             }

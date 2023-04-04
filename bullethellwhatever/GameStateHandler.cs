@@ -19,6 +19,27 @@ namespace bullethellwhatever
         
         public void HandleGame()
         {
+            foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
+            {
+                Main.activeProjectiles.Add(projectile);
+            }
+
+            Main.enemyProjectilesToAddNextFrame.Clear();
+
+            foreach (FriendlyProjectile projectile in Main.friendlyProjectilesToAddNextFrame)
+            {
+                Main.activeFriendlyProjectiles.Add(projectile);
+            }
+
+            Main.friendlyProjectilesToAddNextFrame.Clear();
+
+            foreach (NPC npc in Main.NPCsToAddNextFrame)
+            {
+                Main.activeNPCs.Add(npc);
+            }
+
+            Main.NPCsToAddNextFrame.Clear();
+
             if (ButtonCooldown > 0)
             {
                 ButtonCooldown--;

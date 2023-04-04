@@ -39,6 +39,9 @@ namespace bullethellwhatever
         public static List<NPC> activeNPCs = new List<NPC>();
         public static List<Projectile> activeProjectiles = new List<Projectile>();
         public static List<FriendlyProjectile> activeFriendlyProjectiles = new List<FriendlyProjectile>();
+        public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
+        public static List<FriendlyProjectile> friendlyProjectilesToAddNextFrame = new List<FriendlyProjectile>();
+        public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
 
         public static Player player = new Player();
 
@@ -101,10 +104,6 @@ namespace bullethellwhatever
 
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
-
-                
-
-                // TODO: Add your update logic here
             }
             base.Update(gameTime);
         }

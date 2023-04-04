@@ -13,19 +13,18 @@ namespace bullethellwhatever
 {
     public class Projectile : Entity
     {
-        public int Updates; //typically 1, use a higher number for accurate homing
-        
         public float Acceleration;
         public float TimeAlive;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
             Acceleration = acceleration;
-            Main.activeProjectiles.Add(this);
+            Main.enemyProjectilesToAddNextFrame.Add(this);
             DeleteNextFrame = false;
+            Size = size;
         }
 
          //and drawing

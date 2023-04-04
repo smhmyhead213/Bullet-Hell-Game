@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace bullethellwhatever
 {
-    public abstract class Entity
+    public abstract class Entity //wait til he finds out he has to rework the hitbox system to work with different square sizes! get a load of this guy!
     {
         public Vector2 Position;
         public Vector2 Velocity;
@@ -21,7 +21,7 @@ namespace bullethellwhatever
         public float AITimer;
         public float Damage;
         public Rectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
-        public float Size; //relative to player being 1
+        public Vector2 Size; //relative to player being 1
         public float Health;
         public float MaxHP;
         public bool DeleteNextFrame;
