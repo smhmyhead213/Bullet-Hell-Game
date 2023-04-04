@@ -25,35 +25,21 @@ namespace bullethellwhatever
             Texture = texture;
             Acceleration = acceleration;
             Main.activeProjectiles.Add(this);
-            HandleMovement();
             DeleteNextFrame = false;
-
-            
         }
 
-        public override void HandleMovement() //and drawing
-        {
-            if (Acceleration != 0)
-                Velocity = Velocity * Acceleration; //acceleration values must be very very small
-
-            Position = Position + Velocity;
-
-            if (Updates > 1)
-            {
-                Main._spriteBatch.Begin();
-                Main._spriteBatch.Draw(Texture, Position, null, Colour(), 0f, new Vector2(Texture.Width / 2, Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
-                Main._spriteBatch.End();
-            }
-
-            
-        }
+         //and drawing
+        
         public override bool ShouldRemoveOnEdgeTouch() => true;
         public override void AI()
         {
             TimeAlive++;
-            HandleMovement();
+            if (Acceleration != 0)
+                Velocity = Velocity * Acceleration; //acceleration values must be very very small
+
+            Position = Position + Velocity;
         }
 
-        
+
     }
 }

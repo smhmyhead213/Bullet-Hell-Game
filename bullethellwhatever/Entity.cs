@@ -85,7 +85,7 @@ namespace bullethellwhatever
 
         public virtual bool hasDesperation() => false; 
         public virtual Color Colour() => Color.White;
-        public abstract void HandleMovement();
+        
         public abstract void AI();
     }
 }

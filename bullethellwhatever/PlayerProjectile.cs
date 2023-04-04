@@ -13,15 +13,9 @@ namespace bullethellwhatever
 {
     public class PlayerProjectile : FriendlyProjectile
     {
-
-        public override void HandleMovement()
-        {
-            Position = Position + Velocity;
-        }
-
         public override void AI()
         {
-            base.AI();
+            Position = Position + Velocity;
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => true;

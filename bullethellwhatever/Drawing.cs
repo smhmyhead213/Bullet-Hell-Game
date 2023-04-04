@@ -21,6 +21,19 @@ namespace bullethellwhatever
         {
             Main._spriteBatch.Begin();
 
+            if (Main.activeNPCs.Count == 0)
+            {
+                Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
+                TitleScreenButton backToTitle = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), Main.startButton,
+                GameState.GameStates.TitleScreen, new Vector2(3, 3));
+
+                if (Main.activeButtons.Count < 1)
+                    Main.activeButtons.Add(backToTitle);
+
+                Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
+
+            }
+
             float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
 
             Main._spriteBatch.Draw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
@@ -63,18 +76,7 @@ namespace bullethellwhatever
                     break;
             }
 
-            if (Main.activeNPCs.Count == 0)
-            {
-                Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
-                TitleScreenButton backToTitle = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), Main.startButton,
-                GameState.GameStates.TitleScreen, new Vector2(3, 3));
-
-                if (Main.activeButtons.Count < 1)
-                    Main.activeButtons.Add(backToTitle);
-
-                Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
-
-            }
+            
 
             Main._spriteBatch.End();
         }

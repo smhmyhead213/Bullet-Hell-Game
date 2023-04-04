@@ -9,17 +9,7 @@ namespace bullethellwhatever
 {
     public class BasicProjectile : HarmfulProjectile
     {
-
-        public override void AI()
-        {
-            HandleMovement();
-            TimeAlive++;
-        }
-
         public override bool ShouldRemoveOnEdgeTouch() => true;
-
-
-
         public override Color Colour() => Color.Red;
 
     }

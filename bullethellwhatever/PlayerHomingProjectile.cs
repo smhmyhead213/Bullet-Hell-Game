@@ -11,14 +11,11 @@ namespace bullethellwhatever
     public class PlayerHomingProjectile : FriendlyProjectile
     {
         public float HomingFactor; //how strong the homing is
-        
-        public override void HandleMovement()
+        public override void AI()
         {
-
-            Updates--;
-
             NPC closestNPC = new NPC(); //the target
             float minDistance = float.MaxValue;
+            TimeAlive++;
 
             if (TimeAlive > 30f)
             {
@@ -31,23 +28,12 @@ namespace bullethellwhatever
                         closestNPC = npc;
                     }
                 }
-
-                Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
-
-
-
-                
-
-
-
+                //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
                 Velocity = Vector2.Normalize(closestNPC.Position - Position) * (TimeAlive - 30f);
             }
 
             Position = Position + Velocity;
-
-
         }
-
         public override Color Colour() => Color.LimeGreen;
 
     }

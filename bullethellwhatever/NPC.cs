@@ -37,12 +37,6 @@ namespace bullethellwhatever
         {
             
         }
-
-        public override void HandleMovement()
-        {
-            
-        }
-
         public bool isCollidingWithPlayerProjectile(FriendlyProjectile projectile)
         {
             float totalwidth = Hitbox.Width + projectile.Hitbox.Width;

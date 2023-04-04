@@ -19,10 +19,7 @@ namespace bullethellwhatever
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
-            
             Main.activeFriendlyProjectiles.Add(this);
-            
-            HandleMovement();
         }
 
         

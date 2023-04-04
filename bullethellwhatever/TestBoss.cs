@@ -40,11 +40,6 @@ namespace bullethellwhatever
 
         }
 
-        public override void HandleMovement()
-        {
-
-        }
-
         public override void AI()
         {
             if (Health < 0)
@@ -164,7 +159,7 @@ namespace bullethellwhatever
             switch (AttackNumber)
             {
                 case 1:
-                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 1);
                     break;
                 case 2:
                     Charge(ref AITimer, ref AttackNumber, 7f, 150f, 1.035f);
@@ -228,17 +223,19 @@ namespace bullethellwhatever
 
             if (AITimer % 40 == 0 && AITimer < 601) //1 added so the 15th burst goes off
             {
-                BasicProjectile singleShot = new BasicProjectile();
+                OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(40f);
+
                 singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0);
 
-                for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
-                {
-                    BasicProjectile shotgunBlast = new BasicProjectile();
-                    BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
-                    shotgunBlast.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 0);
-                    shotgunBlast2.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 0);
+                //for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
+                //{
+                //    OscillatingSpeedProjectile shotgunBlast = new OscillatingSpeedProjectile(40f);
+                //    OscillatingSpeedProjectile shotgunBlast2 = new OscillatingSpeedProjectile(40f); //one for each side of middle
+                    
+                //    shotgunBlast.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 0);
+                //    shotgunBlast2.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 0);
 
-                }
+                //}
             }
 
             if (AITimer == 750)

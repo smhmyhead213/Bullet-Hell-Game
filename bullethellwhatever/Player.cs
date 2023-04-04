@@ -52,7 +52,11 @@ namespace bullethellwhatever
         #endregion
 
         #region Input Handling
-        public override void HandleMovement() //and input
+
+        #endregion
+        public override bool ShouldRemoveOnEdgeTouch() => false;
+        #region AI
+        public override void AI() //cooldowns and iframes and stuff are handled here
         {
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
@@ -139,16 +143,8 @@ namespace bullethellwhatever
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
             }
-        }
 
-        #endregion
-        public override bool ShouldRemoveOnEdgeTouch() => false;
-        #region AI
-        public override void AI() //cooldowns and iframes and stuff are handled here
-        {
-            var mouseState = Mouse.GetState();
 
-            HandleMovement();
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             Hitbox = new((int)Position.X - (Texture.Width / 2), (int)Position.Y - (Texture.Height / 2),Texture.Width, Texture.Height);
