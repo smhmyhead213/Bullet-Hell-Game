@@ -1,38 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework;
 
-namespace bullethellwhatever
+namespace bullethellwhatever;
+
+public class TitleScreenButton : Button
 {
-    public class TitleScreenButton : Button
+    public GameState.GameStates Destination;
+
+    public TitleScreenButton(Vector2 position, Texture2D texture, GameState.GameStates destination, Vector2 scale)
     {
-        public GameState.GameStates Destination;
+        Position = position;
+        Texture = texture;
+        Scale = scale;
+        Destination = destination;
+    }
 
-        public TitleScreenButton(Vector2 position, Texture2D texture, GameState.GameStates destination, Vector2 scale)
+    public override void HandleClick()
+    {
+        GameState.State = Destination;
+
+        foreach (var button in Main.activeButtons)
         {
-            Position = position;
-            Texture = texture;
-            Scale = scale;
-            Destination = destination;
-        }
-
-        public override void HandleClick()
-        {
-            GameState.State = Destination;
-
-            foreach (Button button in Main.activeButtons)
-            {
-                //I HATE YOU I HATE YOU I HATE YOU I HATE UI I HATE UI I HATE UI
-                button.DeleteNextFrame = true;
-                GameState.HasASettingBeenChanged = false;
-            }
+            //I HATE YOU I HATE YOU I HATE YOU I HATE UI I HATE UI I HATE UI
+            button.DeleteNextFrame = true;
+            GameState.HasASettingBeenChanged = false;
         }
     }
 }

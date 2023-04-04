@@ -1,40 +1,30 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Microsoft.Xna.Framework;
 
+namespace bullethellwhatever;
 
-namespace bullethellwhatever
+public class OscillatingSpeedProjectile : BasicProjectile
 {
-    public class OscillatingSpeedProjectile : BasicProjectile
+    public float OscillationFrequency;
+    public float ProjectileSpeed;
+
+    public OscillatingSpeedProjectile(float oscillationFrequency, float projectileSpeed)
     {
-        public float OscillationFrequency;
-        public float ProjectileSpeed;
+        OscillationFrequency = oscillationFrequency;
+        ProjectileSpeed = projectileSpeed;
+    }
 
-        public OscillatingSpeedProjectile(float oscillationFrequency, float projectileSpeed)
-        {
-            OscillationFrequency = oscillationFrequency;
-            ProjectileSpeed = projectileSpeed;
-        }
+    public override void AI() //and drawing
+    {
+        TimeAlive++;
 
-        public override void AI() //and drawing
-        {
-            TimeAlive++;
+        if (Acceleration != 0)
+            Velocity = Velocity * Acceleration; //acceleration values must be very very small
 
-            if (Acceleration != 0)
-                Velocity = Velocity * Acceleration; //acceleration values must be very very small
+        var speed = ProjectileSpeed * (MathF.Sin(TimeAlive / OscillationFrequency) + 1.5f);
 
-            float speed = ProjectileSpeed * (MathF.Sin(TimeAlive / OscillationFrequency) + 1.5f);
+        Velocity = speed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
-            Velocity = speed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
-
-            Position = Position + Velocity;
-        }
+        Position = Position + Velocity;
     }
 }

@@ -1,40 +1,38 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace bullethellwhatever
+namespace bullethellwhatever;
+
+public class PlayerHomingProjectile : FriendlyProjectile
 {
-    public class PlayerHomingProjectile : FriendlyProjectile
-    {
-        public float HomingFactor; //how strong the homing is
-        public override void AI()
-        {
-            NPC closestNPC = new NPC(); //the target
-            float minDistance = float.MaxValue;
-            TimeAlive++;
+    public float HomingFactor; //how strong the homing is
 
-            if (TimeAlive > 30f)
+    public override void AI()
+    {
+        var closestNPC = new NPC(); //the target
+        var minDistance = float.MaxValue;
+        TimeAlive++;
+
+        if (TimeAlive > 30f)
+        {
+            foreach (var npc in Main.activeNPCs)
             {
-                foreach (NPC npc in Main.activeNPCs)
+                var distance = Utilities.DistanceBetweenEntities(this, npc);
+                if (distance < minDistance)
                 {
-                    float distance = Utilities.DistanceBetweenEntities(this, npc);
-                    if (distance < minDistance)
-                    {
-                        minDistance = distance;
-                        closestNPC = npc;
-                    }
+                    minDistance = distance;
+                    closestNPC = npc;
                 }
-                //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
-                Velocity = Vector2.Normalize(closestNPC.Position - Position) * (TimeAlive - 30f);
             }
 
-            Position = Position + Velocity;
+            //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
+            Velocity = Vector2.Normalize(closestNPC.Position - Position) * (TimeAlive - 30f);
         }
-        public override Color Colour() => Color.LimeGreen;
 
+        Position = Position + Velocity;
+    }
+
+    public override Color Colour()
+    {
+        return Color.LimeGreen;
     }
 }
