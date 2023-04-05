@@ -131,6 +131,8 @@ namespace bullethellwhatever
                     }
                 }
 
+                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
             }

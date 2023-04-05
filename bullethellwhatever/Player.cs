@@ -142,6 +142,7 @@ namespace bullethellwhatever
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
+                Main.activeButtons.Clear();
             }
 
 

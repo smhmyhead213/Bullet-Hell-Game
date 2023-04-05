@@ -63,7 +63,7 @@ namespace bullethellwhatever
                     break;
             }
             
-            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 1, Main.playerTexture, new Vector2(5,5), 200f);
+            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 1, Main.playerTexture, new Vector2(5,5), 1f);
         }
 
     }

@@ -15,13 +15,14 @@ namespace bullethellwhatever
     {
         public GameState.Bosses BossToSpawn;
         public GameState.GameStates Destination;
-        public BossSelectButton(Vector2 position, Texture2D texture, GameState.GameStates destination, GameState.Bosses boss, Vector2 scale)
+        public BossSelectButton(Vector2 position, Texture2D texture, GameState.GameStates destination, GameState.Bosses boss, Vector2 scale, bool deleteNextFrame)
         {
             Position = position;
             Texture = texture;
             Scale = scale;
             BossToSpawn = boss;
             Destination = destination;
+            DeleteNextFrame = deleteNextFrame;
         }
 
         public override void HandleClick()

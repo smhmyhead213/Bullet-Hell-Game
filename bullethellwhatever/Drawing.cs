@@ -32,7 +32,12 @@ namespace bullethellwhatever
 
                 Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
 
+
+
             }
+
+            Utilities.drawTextInDrawMethod(Main.activeButtons.Count.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main._spriteBatch, Main.font, Color.White);
+
 
             float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
 
@@ -140,7 +145,7 @@ namespace bullethellwhatever
         public static void DrawBossSelect(SpriteBatch _spriteBatch)
         {
             BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
-                GameState.GameStates.DifficultySelect, GameState.Bosses.TestBoss, new Vector2(3, 3));
+                GameState.GameStates.DifficultySelect, GameState.Bosses.TestBoss, new Vector2(3, 3), true);
             
 
             if (!Main.activeButtons.Contains(testBossButton))
