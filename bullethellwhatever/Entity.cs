@@ -26,6 +26,7 @@ namespace bullethellwhatever
         public float MaxHP;
         public bool DeleteNextFrame;
         public float Rotation;
+        public bool IsDesperationOver;
 
         public static bool touchingBottom(Entity entity, int screenHeight) //hieght is height of texture
         {
@@ -82,10 +83,8 @@ namespace bullethellwhatever
         public virtual bool ShouldRemoveOnEdgeTouch() => false;
 
         public virtual bool IsHarmful() => false; //is harmful to player
-
-        public virtual bool hasDesperation() => false; 
-        public virtual Color Colour() => Color.White;
         
+        public virtual Color Colour() => Color.White;
         public abstract void AI();
     }
 }

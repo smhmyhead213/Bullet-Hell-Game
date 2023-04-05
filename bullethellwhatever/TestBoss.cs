@@ -17,6 +17,12 @@ namespace bullethellwhatever
         public float SpiralStartTime;
         public int AttackNumber; //position in pattern
         public float ShotgunFrequency;
+        public float DespBombFrequencyInitially;
+        public float DespBombFrequency;
+        public bool HasDesperationStarted;
+        public float DespBombTimer;
+        public int DespBombCounter;
+
 
         public TestBoss(Vector2 position, Vector2 velocity)
         {
@@ -30,10 +36,17 @@ namespace bullethellwhatever
             HasChosenChargeDirection = false;
             AttackNumber = 1;
             ShotgunFrequency = 15f;
+            IsDesperationOver = false;
+            DespBombFrequencyInitially = 30f;
+            DespBombFrequency = DespBombFrequencyInitially;
+            DespBombTimer = 0f;
+            DespBombCounter = 0;
+            HasDesperationStarted = false;
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => false;
 
+        
         public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {
             base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth);
@@ -42,7 +55,7 @@ namespace bullethellwhatever
 
         public override void AI()
         {
-            if (Health < 0)
+            if (Health < 0 & IsDesperationOver)
                 DeleteNextFrame = true;
 
 
@@ -55,6 +68,7 @@ namespace bullethellwhatever
             {
                 IFrames--;
             }
+
             //If the timer reaches 10, execute the attack and reset timer.
             switch (GameState.Difficulty)
             {
@@ -156,6 +170,12 @@ namespace bullethellwhatever
         }
         public void ExecuteHardAttackPattern()
         {
+            if (Health <= 0 && !HasDesperationStarted)
+            {
+                AttackNumber = 0; //desperation
+                AITimer = 0f;
+                HasDesperationStarted = true;
+            }
             switch (AttackNumber)
             {
                 case 1:
@@ -180,6 +200,9 @@ namespace bullethellwhatever
                     if (AITimer % 2 == 0)
                         HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 6.5f);
                     break;
+                case 0:
+                    Desperation(ref AITimer, ref DespBombTimer, ref DespBombFrequency, DespBombFrequencyInitially, 18);
+                    break;
                 default:
                     AttackNumber = 1;
                     break;
@@ -189,6 +212,13 @@ namespace bullethellwhatever
 
         public void ExecuteInsaneAttackPattern()
         {
+            if (Health <= 0 && !HasDesperationStarted)
+            {
+                AttackNumber = 0; //desperation
+                AITimer = 0f;
+                HasDesperationStarted = true;
+            }
+
             switch (AttackNumber)
             {
                 case 1:
@@ -211,6 +241,9 @@ namespace bullethellwhatever
                     break;
                 case 7:
                     HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 8f);
+                    break;
+                case 0:
+                    Desperation(ref AITimer, ref DespBombTimer, ref DespBombFrequency, DespBombFrequencyInitially, 18);
                     break;
                 default:
                     AttackNumber = 1;
@@ -239,8 +272,13 @@ namespace bullethellwhatever
                 }
             }
 
-            if (AITimer == 750)
+            if (AITimer == 800)
             {
+                foreach (Projectile projectile in Main.activeProjectiles)
+                {
+                    projectile.Velocity = projectile.Velocity * 2;
+                }
+
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
             }
@@ -507,7 +545,7 @@ namespace bullethellwhatever
 
             if (AITimer % 30 == 0 && AITimer < 590 && AITimer > 240)
             {
-                ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f);
+                ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f, true, true);
 
                 Vector2 direction = Utilities.RotateVectorClockwise((Main.player.Position - Position), Utilities.ToRadians(AITimer - 250f));
 
@@ -522,6 +560,65 @@ namespace bullethellwhatever
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
+            }
+        }
+
+        public void Desperation(ref float AITimer, ref float despBombTimer, ref float despBombFrequency, float despBombFrequencyInitially, int projectilesPerBomb)
+        {
+
+            if (AITimer == 0)
+            {
+                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
+                Velocity = Vector2.Zero; //amke it sit in the middle
+                Rotation = 0;
+            }
+
+            if (AITimer > 200)
+            {
+                float bombRotation = MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
+
+                despBombTimer++;
+
+                if (despBombTimer >= despBombFrequency)
+                {
+                    ExplodingProjectile explodingProjectile1 = new ExplodingProjectile(projectilesPerBomb, 90, false, false);
+                    ExplodingProjectile explodingProjectile2 = new ExplodingProjectile(projectilesPerBomb, 90, false, false);
+
+                    explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1f, new Vector2(1.3f, 1.3f));
+                    explodingProjectile2.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1f, new Vector2(1.3f, 1.3f));
+
+
+
+                    DespBombCounter++;
+
+                    if (despBombFrequency < 5f)
+                        despBombFrequency++;
+
+
+
+                    despBombTimer = 0;
+                }
+                if (GameState.Difficulty == GameState.Difficulties.Insane)
+                {
+                    if (AITimer > 200 & AITimer % 100 == 0)
+                    {
+                        BasicProjectile oscillatingSpeedProjectile = new BasicProjectile();
+
+                        oscillatingSpeedProjectile.Spawn(Position, 2f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.01f, new Vector2(0.9f, 0.9f));
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+            if (AITimer == 3000)
+            {
+                IsDesperationOver = true; //die
             }
         }
         public void HandleBounces()

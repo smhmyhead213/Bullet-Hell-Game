@@ -11,12 +11,15 @@ namespace bullethellwhatever
     {
         public float NumberOfProjectiles;
         public float ExplosionDelay;
+        public bool ShouldSlowDown;
+        public bool ShouldAccelerate;
 
-        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay)
+        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay, bool shouldSlowDown, bool shouldAccelerate)
         {
             NumberOfProjectiles = numberOfProjectiles;
             ExplosionDelay = explosionDelay;
             Size = new Vector2(2, 2);
+            ShouldSlowDown = shouldSlowDown;
         }
 
         public override void AI()
@@ -26,7 +29,8 @@ namespace bullethellwhatever
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
 
-            Velocity = Velocity * 0.99f; //slow down to a stop
+            if (ShouldSlowDown)
+                Velocity = Velocity * 0.99f; //slow down to a stop
 
             if (TimeAlive == 120f)
             {
@@ -34,7 +38,9 @@ namespace bullethellwhatever
                 {
                     BasicProjectile projectile = new BasicProjectile();
 
-                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, (MathF.PI * 2 / NumberOfProjectiles) * i), 1f, Texture, 1.005f, Vector2.One);
+                    float accel = ShouldAccelerate ? 1.005f : 1f;
+
+                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, (MathF.PI * 2 / NumberOfProjectiles) * i), 1f, Texture, accel, Vector2.One);
 
                     DeleteNextFrame = true;
                 }
