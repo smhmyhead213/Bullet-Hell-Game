@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 
-namespace bullethellwhatever
+namespace bullethellwhatever.BaseClasses
 {
     public class Boss : NPC
     {

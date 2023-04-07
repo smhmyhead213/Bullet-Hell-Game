@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever.Buttons
+namespace bullethellwhatever.Bosses
 {
-    internal class BackButton
+    public class SecondBoss
     {
     }
 }

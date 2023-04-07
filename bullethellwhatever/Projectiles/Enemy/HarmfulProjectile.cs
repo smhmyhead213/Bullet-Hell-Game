@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever
+using bullethellwhatever.BaseClasses;
+
+namespace bullethellwhatever.Projectiles.Enemy
 {
     public class HarmfulProjectile : Projectile
     {

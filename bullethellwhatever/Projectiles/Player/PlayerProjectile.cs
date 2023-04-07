@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever
+namespace bullethellwhatever.Projectiles.Player
 {
     public class PlayerProjectile : FriendlyProjectile
     {

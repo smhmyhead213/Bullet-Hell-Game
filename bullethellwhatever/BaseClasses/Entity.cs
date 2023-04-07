@@ -1,15 +1,10 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using System;
 
-namespace bullethellwhatever
+using bullethellwhatever.MainFiles;
+
+namespace bullethellwhatever.BaseClasses
 {
     public abstract class Entity //wait til he finds out he has to rework the hitbox system to work with different square sizes! get a load of this guy!
     {

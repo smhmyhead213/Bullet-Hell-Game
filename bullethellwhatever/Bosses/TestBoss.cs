@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles.Base;
 
-namespace bullethellwhatever
+namespace bullethellwhatever.Bosses
 {
     public class TestBoss : Boss
     {
@@ -267,11 +264,11 @@ namespace bullethellwhatever
 
                 for (int i = 1; i < numberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
-                    OscillatingSpeedProjectile shotgunBlast = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
-                    OscillatingSpeedProjectile shotgunBlast2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed); //one for each side of middle
+                    OscillatingSpeedProjectile oscillatingSpeedProjectile = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
+                    OscillatingSpeedProjectile oscillatingSpeedProjectile2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed); //one for each side of middle
 
-                    shotgunBlast.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
-                    shotgunBlast2.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
+                    oscillatingSpeedProjectile.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
+                    oscillatingSpeedProjectile2.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)), 1f, Texture, 1.01f, Vector2.One);
 
                 }
             }

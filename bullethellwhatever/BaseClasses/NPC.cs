@@ -1,15 +1,11 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using System;
 
-namespace bullethellwhatever
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles.Player;
+
+namespace bullethellwhatever.BaseClasses
 {
     public class NPC : Entity
     {
@@ -23,6 +19,7 @@ namespace bullethellwhatever
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
+
             Main.NPCsToAddNextFrame.Add(this);
             Size = size;
             Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);

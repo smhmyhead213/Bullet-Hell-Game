@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
 
-namespace bullethellwhatever
+using bullethellwhatever.Buttons;
+using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles.Player;
+
+namespace bullethellwhatever.MainFiles
 {
     //to do 26th march 2023: fix those hitboxes 
     public class Main : Game

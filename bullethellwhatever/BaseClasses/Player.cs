@@ -1,16 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles.Player;
 
 
-namespace bullethellwhatever
+namespace bullethellwhatever.BaseClasses
 {
     public class Player : Entity
     {

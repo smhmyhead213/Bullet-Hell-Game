@@ -1,17 +1,12 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using bullethellwhatever.Buttons;
+using bullethellwhatever.BaseClasses;
 
-
-namespace bullethellwhatever
+namespace bullethellwhatever.MainFiles
 {
     public static class Drawing
     {

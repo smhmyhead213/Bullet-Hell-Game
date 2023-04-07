@@ -1,11 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace bullethellwhatever
+using bullethellwhatever.BaseClasses;
+
+namespace bullethellwhatever.Projectiles.Base
 {
     public class ExplodingProjectile : Projectile
     {

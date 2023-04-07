@@ -1,15 +1,9 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
+﻿using Microsoft.Xna.Framework;
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 
-namespace bullethellwhatever
+using bullethellwhatever.BaseClasses;
+
+namespace bullethellwhatever.Projectiles.Base
 {
     public class OscillatingSpeedProjectile : BasicProjectile
     {

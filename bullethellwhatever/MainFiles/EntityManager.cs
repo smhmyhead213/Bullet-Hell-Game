@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Media;
 
+using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles.Player;
+using bullethellwhatever.Bosses;
 
-namespace bullethellwhatever
+namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {

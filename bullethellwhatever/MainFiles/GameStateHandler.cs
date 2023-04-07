@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
+﻿using bullethellwhatever.Projectiles.Player;
 using Microsoft.Xna.Framework;
 
+using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Buttons;
 
-namespace bullethellwhatever
+namespace bullethellwhatever.MainFiles
 {
     public class GameStateHandler
     {

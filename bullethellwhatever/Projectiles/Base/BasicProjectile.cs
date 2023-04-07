@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever
+using bullethellwhatever.Projectiles.Enemy;
+
+namespace bullethellwhatever.Projectiles.Base
 {
     public class BasicProjectile : HarmfulProjectile
     {

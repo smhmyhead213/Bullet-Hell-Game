@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 
 
-namespace bullethellwhatever
+namespace bullethellwhatever.Buttons
 {
     public class Button
     {
