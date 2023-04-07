@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
+
 namespace bullethellwhatever
 {
     public class SettingsControlSchemeButton : Button
@@ -23,7 +24,7 @@ namespace bullethellwhatever
             GameState.WeaponSwitchControl = WeaponSwitchControl;
             GameState.HasASettingBeenChanged = true;
 
-            
+
 
         }
     }

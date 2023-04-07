@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace bullethellwhatever
 {
     public class Player : Entity
@@ -47,7 +48,7 @@ namespace bullethellwhatever
             ActiveWeapon = Weapons.Sharpshooter;
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
-            
+
         }
         #endregion
 
@@ -91,19 +92,19 @@ namespace bullethellwhatever
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
             if (GameState.WeaponSwitchControl) //if scroll wheel controls
             {
-                if ((mouseState.ScrollWheelValue / 120) % 3 == 0 && ScrollCooldown == 0)  //are you happy now gemma??????????????????????
+                if (mouseState.ScrollWheelValue / 120 % 3 == 0 && ScrollCooldown == 0)  //are you happy now gemma??????????????????????
                 {
                     ActiveWeapon = Weapons.Sharpshooter;
                     ScrollCooldown = 3f;
                 }
 
-                if ((mouseState.ScrollWheelValue / 120) % 3 == 1 && ScrollCooldown == 0)
+                if (mouseState.ScrollWheelValue / 120 % 3 == 1 && ScrollCooldown == 0)
                 {
                     ActiveWeapon = Weapons.MachineGun;
                     ScrollCooldown = 3f;
                 }
 
-                if ((mouseState.ScrollWheelValue / 120) % 3 == 2 && ScrollCooldown == 0)
+                if (mouseState.ScrollWheelValue / 120 % 3 == 2 && ScrollCooldown == 0)
                 {
                     ActiveWeapon = Weapons.Homing;
                     ScrollCooldown = 3f;
@@ -148,7 +149,7 @@ namespace bullethellwhatever
 
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
-            Hitbox = new((int)Position.X - (Texture.Width / 2), (int)Position.Y - (Texture.Height / 2),Texture.Width, Texture.Height);
+            Hitbox = new((int)Position.X - Texture.Width / 2, (int)Position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
 
             if (Health > 0)
             {
@@ -208,7 +209,7 @@ namespace bullethellwhatever
 
                 PlayerSharpShooterProjectile playerProjectile = new PlayerSharpShooterProjectile();
 
-                
+
 
                 playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0, Vector2.One);
             }
@@ -230,7 +231,7 @@ namespace bullethellwhatever
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
 
-                
+
 
                 projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0, Vector2.One);
 

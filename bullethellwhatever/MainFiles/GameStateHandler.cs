@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 
+
 namespace bullethellwhatever
 {
     public class GameStateHandler
@@ -16,7 +17,7 @@ namespace bullethellwhatever
         public bool isGameStarted;
         public int ButtonCooldown;
         public string activeBoss; //use a swicth statement to spawn a boss in
-        
+
         public void HandleGame()
         {
             foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
@@ -70,7 +71,7 @@ namespace bullethellwhatever
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
                         ButtonCooldown = 5;
-                        
+
                         button.HandleClick();
                     }
                 }
@@ -118,7 +119,7 @@ namespace bullethellwhatever
                     Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0), 10, Main.playerTexture);
                     Main.activeProjectiles.Clear();
                     isGameStarted = true;
-                    
+
                 }
 
                 foreach (Button button in Main.activeButtons)

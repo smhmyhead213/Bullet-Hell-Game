@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 
+
 namespace bullethellwhatever
 {
     public class TestBoss : Boss
@@ -36,17 +37,17 @@ namespace bullethellwhatever
             HasChosenChargeDirection = false;
             AttackNumber = 1;
             ShotgunFrequency = 15f;
-            IsDesperationOver = false;
             DespBombFrequencyInitially = 30f;
             DespBombFrequency = DespBombFrequencyInitially;
             DespBombTimer = 0f;
             DespBombCounter = 0;
             HasDesperationStarted = false;
+            IsDesperationOver = false;
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => false;
 
-        
+
         public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {
             base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth);
@@ -55,6 +56,9 @@ namespace bullethellwhatever
 
         public override void AI()
         {
+
+            CheckForAndTakeDamage();
+
             if (Health < 0 & IsDesperationOver)
                 DeleteNextFrame = true;
 
@@ -91,21 +95,16 @@ namespace bullethellwhatever
             //Every frame, add 1 to the timer.
             AITimer++;
 
-            foreach (FriendlyProjectile projectile in Main.activeFriendlyProjectiles)
-            {
-                if (isCollidingWithPlayerProjectile(projectile) && IFrames == 0)
-                {
-                    if (IFrames == 0)
-                    {
-                        IFrames = 5f;
-                        Health = Health - projectile.Damage;
-                        projectile.DeleteNextFrame = true;
-                    }
-                }
-            }
+            
         }
         public void ExecuteEasyAttackPattern()
         {
+            if (Health <= 0)
+            {
+                IsDesperationOver = true;
+            }
+
+
             switch (AttackNumber)
             {
                 case 1:
@@ -138,6 +137,11 @@ namespace bullethellwhatever
         }
         public void ExecuteNormalAttackPattern()
         {
+            if (Health <= 0)
+            {
+                IsDesperationOver = true;
+            }
+
             switch (AttackNumber)
             {
                 case 1:
@@ -190,7 +194,7 @@ namespace bullethellwhatever
                 case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 13f);
                     break;
-                case 5:                    
+                case 5:
                     ExplodingProjectiles(ref AITimer, ref AttackNumber, 20f);
                     break;
                 case 6:
@@ -261,7 +265,7 @@ namespace bullethellwhatever
 
                 singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0, Vector2.One);
 
-                for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
+                for (int i = 1; i < numberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
                     OscillatingSpeedProjectile shotgunBlast = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
                     OscillatingSpeedProjectile shotgunBlast2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed); //one for each side of middle
@@ -303,7 +307,7 @@ namespace bullethellwhatever
             //maths really is beautiful
             chargeSpeed = chargeSpeed * (MathF.Cos(AITimer % chargeFrequency / (chargeFrequency / 2)) + 0.5f); //the velocity follows a sine curve, so the acceleration follows its derived graph, cos x
 
-            Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero); 
+            Velocity = chargeSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
 
             SpinUpClockwise(ref Rotation, 20f);
@@ -313,7 +317,7 @@ namespace bullethellwhatever
                 HasChosenChargeDirection = false; //enable the next charge to start
             }
 
-            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && (AITimer % 30) % 2 == 0)// check if aitimer is between 1 and 15 and if its even
+            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0)// check if aitimer is between 1 and 15 and if its even
             {
                 BasicProjectile projectile = new BasicProjectile();
                 projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One);
@@ -347,9 +351,9 @@ namespace bullethellwhatever
 
             if (AITimer % 2 == 0 && AITimer > 240 && AITimer < 1700)
             {
-                
+
                 float acceleration = 0.52f * MathF.Cos(AITimer / 250 + MathF.PI / 3);
-                float rotation = (AITimer / 15 * MathF.PI / rotationSpeed) * acceleration;
+                float rotation = AITimer / 15 * MathF.PI / rotationSpeed * acceleration;
 
                 Rotation = rotation;
 
@@ -439,7 +443,7 @@ namespace bullethellwhatever
 
                 singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.01f, Vector2.One);
 
-                for (int i = 1; i < (numberOfProjectiles / 2) + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
+                for (int i = 1; i < numberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
                     BasicProjectile shotgunBlast = new BasicProjectile();
                     BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
@@ -469,7 +473,7 @@ namespace bullethellwhatever
         public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber, float moveSpeed)
         {
             float screenFraction = 8f;
-            
+
 
             if (AITimer % 400 == 0)
             {
@@ -512,7 +516,7 @@ namespace bullethellwhatever
 
             if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 950)
             {
-                float rotation = (AITimer / 10 * MathF.PI / 40f) * (AITimer / 100f);
+                float rotation = AITimer / 10 * MathF.PI / 40f * (AITimer / 100f);
 
                 Rotation = rotation;
 
@@ -547,14 +551,14 @@ namespace bullethellwhatever
             {
                 ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f, true, true);
 
-                Vector2 direction = Utilities.RotateVectorClockwise((Main.player.Position - Position), Utilities.ToRadians(AITimer - 250f));
+                Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Position, Utilities.ToRadians(AITimer - 250f));
 
-                
 
-                explodingProjectile.Spawn(Position, 5f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2,2));
+
+                explodingProjectile.Spawn(Position, 5f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2, 2));
             }
 
-            Rotation = Utilities.ToRadians((AITimer - 250f));
+            Rotation = Utilities.ToRadians(AITimer - 250f);
 
             if (AITimer == 990)
             {
@@ -658,12 +662,12 @@ namespace bullethellwhatever
 
         public void SpinUpClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
         {
-            rotation = Rotation + (MathF.PI / 90) * AITimer / 80f; //spin up
+            rotation = Rotation + MathF.PI / 90 * AITimer / 80f; //spin up
         }
 
         public void SpinUpCounterClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
         {
-            rotation = Rotation - (MathF.PI / 90) * AITimer / 80f; //spin up
+            rotation = Rotation - MathF.PI / 90 * AITimer / 80f; //spin up
         }
     }
 }

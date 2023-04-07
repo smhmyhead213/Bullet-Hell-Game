@@ -10,6 +10,7 @@ namespace bullethellwhatever
 {
     public class PlayerSharpShooterProjectile : FriendlyProjectile
     {
+
         public override Color Colour() => Color.Yellow;
     }
 }

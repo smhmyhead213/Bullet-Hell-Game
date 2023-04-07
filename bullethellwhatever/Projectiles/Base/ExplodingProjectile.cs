@@ -40,7 +40,7 @@ namespace bullethellwhatever
 
                     float accel = ShouldAccelerate ? 1.005f : 1f;
 
-                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, (MathF.PI * 2 / NumberOfProjectiles) * i), 1f, Texture, accel, Vector2.One);
+                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI * 2 / NumberOfProjectiles * i), 1f, Texture, accel, Vector2.One);
 
                     DeleteNextFrame = true;
                 }

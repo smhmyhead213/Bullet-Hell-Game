@@ -13,10 +13,10 @@ namespace bullethellwhatever
 {
     public class NPC : Entity
     {
-        
+
         public float IFrames;
         public bool ContactDamage;
-        
+
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {
             Position = position;
@@ -25,7 +25,7 @@ namespace bullethellwhatever
             Texture = texture;
             Main.NPCsToAddNextFrame.Add(this);
             Size = size;
-            Hitbox = new((int)position.X - (texture.Width / 2), (int)position.Y - (texture.Height / 2), texture.Width, texture.Height);
+            Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);
             Hitbox.Width = Hitbox.Width * (int)size.X;
             Hitbox.Height = Hitbox.Height * (int)size.Y;
             Health = MaxHealth;
@@ -35,8 +35,9 @@ namespace bullethellwhatever
 
         public override void AI()
         {
-            
+            CheckForAndTakeDamage();
         }
+
         public bool isCollidingWithPlayerProjectile(FriendlyProjectile projectile)
         {
             float totalwidth = Hitbox.Width + projectile.Hitbox.Width;
@@ -47,6 +48,27 @@ namespace bullethellwhatever
             return false;
         }
 
-
+        public void CheckForAndTakeDamage()
+        {
+            foreach (FriendlyProjectile projectile in Main.activeFriendlyProjectiles)
+            {
+                if (isCollidingWithPlayerProjectile(projectile) && IFrames == 0)
+                {
+                    if (IFrames == 0)
+                    {
+                        IFrames = 5f;
+                        if (projectile is PlayerSharpShooterProjectile) //give the sharpshooter projectile its damage multiplier against moveing targets
+                        {
+                            Health = Health - (projectile.Damage * (Velocity.Length() / 7f) + 0.3f);
+                        }
+                        else
+                        {
+                            Health = Health - projectile.Damage;
+                        }
+                        projectile.DeleteNextFrame = true;
+                    }
+                }
+            }
+        }
     }
 }
