@@ -30,6 +30,7 @@ namespace bullethellwhatever.MainFiles
         public enum Bosses
         {
             TestBoss,
+            SecondBoss,
         }
 
         public static Bosses Boss;

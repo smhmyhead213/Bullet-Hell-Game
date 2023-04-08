@@ -11,13 +11,15 @@ namespace bullethellwhatever.Projectiles.Base
         public float ExplosionDelay;
         public bool ShouldSlowDown;
         public bool ShouldAccelerate;
+        public float Offset;
 
-        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay, bool shouldSlowDown, bool shouldAccelerate)
+        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay, float offset, bool shouldSlowDown, bool shouldAccelerate)
         {
             NumberOfProjectiles = numberOfProjectiles;
             ExplosionDelay = explosionDelay;
             Size = new Vector2(2, 2);
             ShouldSlowDown = shouldSlowDown;
+            Offset = offset;
         }
 
         public override void AI()
@@ -38,7 +40,9 @@ namespace bullethellwhatever.Projectiles.Base
 
                     float accel = ShouldAccelerate ? 1.005f : 1f;
 
-                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI * 2 / NumberOfProjectiles * i), 1f, Texture, accel, Vector2.One);
+                    //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
+                    
+                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset), 1f, Texture, accel, Vector2.One);
 
                     DeleteNextFrame = true;
                 }

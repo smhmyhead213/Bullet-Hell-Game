@@ -60,9 +60,13 @@ namespace bullethellwhatever.MainFiles
                 case GameState.Bosses.TestBoss:
                     Main.activeNPCs.Add(new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(0, 0)));
                     break;
+                case GameState.Bosses.SecondBoss:
+                    Main.activeNPCs.Add(new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0)));
+                    break;
+
             }
 
-            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2f, 0f), 1, Main.playerTexture, new Vector2(5, 5), 200f);
+            Main.activeNPCs[0].Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0f, 0f), 1, Main.playerTexture, new Vector2(5, 5), 200f);
         }
 
     }

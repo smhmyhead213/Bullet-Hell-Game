@@ -148,15 +148,22 @@ namespace bullethellwhatever.MainFiles
 
         public static void DrawBossSelect(SpriteBatch _spriteBatch)
         {
-            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
+            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
                 GameState.GameStates.DifficultySelect, GameState.Bosses.TestBoss, new Vector2(3, 3), true);
+
+            BossSelectButton secondBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
+                GameState.GameStates.DifficultySelect, GameState.Bosses.SecondBoss, new Vector2(3, 3), true);
 
 
             if (!Main.activeButtons.Contains(testBossButton))
                 Main.activeButtons.Add(testBossButton);
 
+            if (!Main.activeButtons.Contains(secondBossButton))
+                Main.activeButtons.Add(secondBossButton);
+
             _spriteBatch.Begin();
             _spriteBatch.Draw(testBossButton.Texture, testBossButton.Position, null, Color.White, 0f, new Vector2(testBossButton.Texture.Width / 2, testBossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(secondBossButton.Texture, secondBossButton.Position, null, Color.White, 0f, new Vector2(secondBossButton.Texture.Width / 2, secondBossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
             _spriteBatch.End();
         }
 

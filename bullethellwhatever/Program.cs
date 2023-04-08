@@ -1,3 +1,4 @@
 ﻿
-using var game = new bullethellwhatever.Main();
+using var game = new bullethellwhatever.MainFiles.Main();
 game.Run();
+
