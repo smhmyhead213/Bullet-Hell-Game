@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -44,6 +45,7 @@ namespace bullethellwhatever.MainFiles
         public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<FriendlyProjectile> friendlyProjectilesToAddNextFrame = new List<FriendlyProjectile>();
         public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
+        public static List<DialogueObject> activeDialogues = new List<DialogueObject>();
 
         public static Player player = new Player();
 

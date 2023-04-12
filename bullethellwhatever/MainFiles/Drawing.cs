@@ -5,6 +5,7 @@ using System.Linq;
 
 using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -14,6 +15,8 @@ namespace bullethellwhatever.MainFiles
         public static void DrawGame()
         {
             Main._spriteBatch.Begin();
+
+            DrawDialogues(Main._spriteBatch);
 
             if (Main.activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
             {
@@ -248,5 +251,16 @@ namespace bullethellwhatever.MainFiles
 
 
         }
+
+        public static void DrawDialogues(SpriteBatch spriteBatch)
+        {
+            foreach (DialogueObject dialogue in Main.activeDialogues)
+            {
+                Vector2 drawPosition = new Vector2(dialogue.Position.X - 3 * dialogue.Text.Length, dialogue.Position.Y);
+                Utilities.drawTextInDrawMethod(dialogue.Text, drawPosition, spriteBatch, Main.font, Color.White);               
+            }
+        }
     }
+
+    
 }

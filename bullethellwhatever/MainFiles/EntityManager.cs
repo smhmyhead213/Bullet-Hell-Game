@@ -3,6 +3,7 @@
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.Bosses;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -14,6 +15,8 @@ namespace bullethellwhatever.MainFiles
             Main.activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
             Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
             Main.activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
+
+            Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
         }
 
         public static void AddEntitiesNextFrame()

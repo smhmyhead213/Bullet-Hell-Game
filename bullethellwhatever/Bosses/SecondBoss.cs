@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.Bosses
 {
@@ -13,8 +14,8 @@ namespace bullethellwhatever.Bosses
     {
         public bool HasChosenChargeDirection;        
         public int AttackNumber; //position in pattern
-       
-
+        public DialogueSystem dialogueSystem;
+        
 
         public SecondBoss(Vector2 position, Vector2 velocity)
         {
@@ -28,10 +29,14 @@ namespace bullethellwhatever.Bosses
             HasChosenChargeDirection = false;
             AttackNumber = 1;
             IsDesperationOver = false;
+            dialogueSystem = new DialogueSystem(this);
         }
+
+        
 
         public override void AI()
         {
+            
 
             CheckForAndTakeDamage();
 
@@ -49,9 +54,11 @@ namespace bullethellwhatever.Bosses
                 IFrames--;
             }
 
-            AITimer++;
+            
 
             ExecuteEasyAttackPattern();
+
+            AITimer++;
         }
 
         public void ExecuteEasyAttackPattern()
@@ -61,11 +68,12 @@ namespace bullethellwhatever.Bosses
                 IsDesperationOver = true;
             }
 
+            
 
             switch (AttackNumber)
             {
                 case 1:
-                    Explosions(ref AITimer, ref AttackNumber, 4);
+                    DialogueTest(ref AITimer, ref AttackNumber);
                     break;                
                 default:
                     AttackNumber = 1;
@@ -74,7 +82,7 @@ namespace bullethellwhatever.Bosses
             }
         }
 
-        public void Explosions(ref float AITimer, ref int AttackNumber, int numberOfProjectiles) // this needs fixed
+        public void Explosions(ref float AITimer, ref int AttackNumber, int numberOfProjectiles) // this needs fixed 
         {
             float offset = MathF.PI / 500f * AITimer;
 
@@ -91,7 +99,27 @@ namespace bullethellwhatever.Bosses
             }
         }
 
-        
+        public void DialogueTest(ref float AITimer, ref int AttackNumber)
+        {
+
+            Vector2 dialoguePosition = new Vector2(Position.X, Position.Y - 50f);
+            if (AITimer < 200)
+            {
+                dialogueSystem.Dialogue(dialoguePosition, "Giotto was a slab boy!", 4, 300);
+            }
+
+            if (AITimer == 300)
+            {
+                dialogueSystem.ClearDialogue();
+            }
+
+            if (AITimer > 300)
+            {
+                dialogueSystem.Dialogue(dialoguePosition, "what have i become", 4, 300);
+            }
+        }
+
+
         public void EndAttack(ref float AITimer, ref int AttackNumber)
         {
             AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
