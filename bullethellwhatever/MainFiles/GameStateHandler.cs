@@ -81,7 +81,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 10;
+                        ButtonCooldown = 15;
 
                         button.HandleClick();
                     }
@@ -98,7 +98,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 10;
+                        ButtonCooldown = 15;
 
                         button.HandleClick();
                     }
@@ -120,7 +120,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 5;
+                        ButtonCooldown = 15;
 
                         button.HandleClick();
                     }

@@ -65,7 +65,7 @@ namespace bullethellwhatever.Bosses
             switch (AttackNumber)
             {
                 case 1:
-                    Explosions(ref AITimer, ref AttackNumber, 5);
+                    Explosions(ref AITimer, ref AttackNumber, 4);
                     break;                
                 default:
                     AttackNumber = 1;
@@ -74,7 +74,7 @@ namespace bullethellwhatever.Bosses
             }
         }
 
-        public void Explosions(ref float AITimer, ref int AttackNumber, int numberOfProjectiles)
+        public void Explosions(ref float AITimer, ref int AttackNumber, int numberOfProjectiles) // this needs fixed
         {
             float offset = MathF.PI / 500f * AITimer;
 
@@ -82,7 +82,7 @@ namespace bullethellwhatever.Bosses
             {
                 for (int i = 0; i < numberOfProjectiles; i++)
                 {
-                    ExplodingProjectile explodingProjectile = new ExplodingProjectile(8, 90, 0, false, false);
+                    ExplodingProjectile explodingProjectile = new ExplodingProjectile(4, 120, -0.5f * offset, false, false, true);
 
                     float angle = (2 * MathF.PI / numberOfProjectiles) * i;
 

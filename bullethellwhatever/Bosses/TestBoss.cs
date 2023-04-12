@@ -546,7 +546,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer % 30 == 0 && AITimer < 590 && AITimer > 240)
             {
-                ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f, 0, true, true);
+                ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f, 0, true, true, false);
 
                 Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Position, Utilities.ToRadians(AITimer - 250f));
 
@@ -566,6 +566,7 @@ namespace bullethellwhatever.Bosses
 
         public void Desperation(ref float AITimer, ref float despBombTimer, ref float despBombFrequency, float despBombFrequencyInitially, int projectilesPerBomb)
         {
+            Random random = new Random();
 
             if (AITimer == 0)
             {
@@ -582,8 +583,8 @@ namespace bullethellwhatever.Bosses
 
                 if (despBombTimer >= despBombFrequency)
                 {
-                    ExplodingProjectile explodingProjectile1 = new ExplodingProjectile(projectilesPerBomb, 90, 0, false, false);
-                    ExplodingProjectile explodingProjectile2 = new ExplodingProjectile(projectilesPerBomb, 90, 0, false, false);
+                    ExplodingProjectile explodingProjectile1 = new ExplodingProjectile(projectilesPerBomb, 120, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
+                    ExplodingProjectile explodingProjectile2 = new ExplodingProjectile(projectilesPerBomb, 120, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
 
                     explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1f, new Vector2(1.3f, 1.3f));
                     explodingProjectile2.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1f, new Vector2(1.3f, 1.3f));

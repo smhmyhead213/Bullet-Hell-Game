@@ -11,14 +11,17 @@ namespace bullethellwhatever.Projectiles.Base
         public float ExplosionDelay;
         public bool ShouldSlowDown;
         public bool ShouldAccelerate;
+        public bool ShouldAccountForVelocityInOrientation;
         public float Offset;
 
-        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay, float offset, bool shouldSlowDown, bool shouldAccelerate)
+        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay, float offset, bool shouldSlowDown, bool shouldAccelerate, bool shouldAccountForVelocityInOrientation)
         {
             NumberOfProjectiles = numberOfProjectiles;
             ExplosionDelay = explosionDelay;
             Size = new Vector2(2, 2);
             ShouldSlowDown = shouldSlowDown;
+            ShouldAccelerate = shouldAccelerate;
+            ShouldAccountForVelocityInOrientation = shouldAccountForVelocityInOrientation;
             Offset = offset;
         }
 
@@ -32,7 +35,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (ShouldSlowDown)
                 Velocity = Velocity * 0.99f; //slow down to a stop
 
-            if (TimeAlive == 120f)
+            if (TimeAlive == ExplosionDelay)
             {
                 for (int i = 0; i < NumberOfProjectiles; i++)
                 {
@@ -41,8 +44,9 @@ namespace bullethellwhatever.Projectiles.Base
                     float accel = ShouldAccelerate ? 1.005f : 1f;
 
                     //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
-                    
-                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset), 1f, Texture, accel, Vector2.One);
+                    if (ShouldAccountForVelocityInOrientation)
+                        projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset), 1f, Texture, accel, Vector2.One);
+                    else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset), 1f, Texture, accel, Vector2.One);
 
                     DeleteNextFrame = true;
                 }
