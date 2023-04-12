@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.Bosses
 {
@@ -20,6 +21,7 @@ namespace bullethellwhatever.Bosses
         public bool HasDesperationStarted;
         public float DespBombTimer;
         public int DespBombCounter;
+        
 
 
         public TestBoss(Vector2 position, Vector2 velocity)
@@ -28,7 +30,7 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 150;
+            Health = 200;
             AITimer = 0f;
             IFrames = 5f;
             HasChosenChargeDirection = false;
@@ -40,6 +42,7 @@ namespace bullethellwhatever.Bosses
             DespBombCounter = 0;
             HasDesperationStarted = false;
             IsDesperationOver = false;
+            dialogueSystem = new DialogueSystem(this);
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => false;
@@ -423,7 +426,7 @@ namespace bullethellwhatever.Bosses
 
         public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber, float numberOfProjectiles, float projectileSpeed)
         {
-
+            dialogueSystem.Dialogue(Position, "Test dialogue", 4, 800);
 
             if (AITimer == 510)
             {
@@ -432,6 +435,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 60)
             {
+                
 
                 BasicProjectile singleShot = new BasicProjectile();
 
@@ -460,6 +464,7 @@ namespace bullethellwhatever.Bosses
             if (AITimer == 800)
             {
                 ShotgunFrequency = 15f;
+                dialogueSystem.ClearDialogue();
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
             }
@@ -568,15 +573,31 @@ namespace bullethellwhatever.Bosses
         {
             Random random = new Random();
 
+            int despStartTime = 400;
+
+            
+
             if (AITimer == 0)
             {
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
                 Velocity = Vector2.Zero; //amke it sit in the middle
                 Rotation = 0;
+
             }
 
-            if (AITimer > 200)
+            if (AITimer < despStartTime)
             {
+                
+                
+                dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
+                Drawing.ScreenShake(5, 3000);
+
+            }
+
+            if (AITimer > despStartTime)
+            {
+                Drawing.ScreenShake(4, 3000);
+
                 float bombRotation = MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
 
                 despBombTimer++;
@@ -602,7 +623,7 @@ namespace bullethellwhatever.Bosses
                 }
                 if (GameState.Difficulty == GameState.Difficulties.Insane)
                 {
-                    if (AITimer > 200 & AITimer % 100 == 0)
+                    if (AITimer > despStartTime & AITimer % 100 == 0)
                     {
                         BasicProjectile oscillatingSpeedProjectile = new BasicProjectile();
 

@@ -12,9 +12,16 @@ namespace bullethellwhatever.MainFiles
     public static class Drawing
     {
         public static bool AreButtonsDrawn;
+        public static Vector2 ScreenShakeMagnitude;
+        public static int ScreenShakeDuration;
+        public static int ScreenShakeTimer;
+        public static bool IsScreenShaking;
+        
         public static void DrawGame()
         {
             Main._spriteBatch.Begin();
+
+            HandleScreenShake();
 
             DrawDialogues(Main._spriteBatch);
 
@@ -31,35 +38,34 @@ namespace bullethellwhatever.MainFiles
                     Main.activeButtons.Add(backToTitle);
 
                 //Draw the button.
-                Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
-            }
-            else
-            {
-                Utilities.drawTextInDrawMethod(Main.activeNPCs[0].Velocity.Length().ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main._spriteBatch, Main.font, Color.White);
+                BetterDraw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, backToTitle.Scale, SpriteEffects.None, 0f);
+                //Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
             }
 
             //Calculate transparency based on the player's remaining immunity frames.
+
             float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
-            Main._spriteBatch.Draw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(1, 1), SpriteEffects.None, 0f);
+
+            BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, Vector2.One, SpriteEffects.None, 0f);
 
             //Draw every active NPC.
             foreach (NPC npc in Main.activeNPCs)
             {
-                Main._spriteBatch.Draw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), npc.Size, SpriteEffects.None, 0f);
+                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, npc.Size, SpriteEffects.None, 0f);
             }
 
             //Draw every enemy projectile.
             foreach (Projectile projectile in Main.activeProjectiles)
             {
-                Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), projectile.Size, SpriteEffects.None, 0f);
+                BetterDraw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, projectile.Size, SpriteEffects.None, 0f);
             }
 
             //Draw every player projectile.
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
-                Main._spriteBatch.Draw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), projectile.Size, SpriteEffects.None, 0f);
+                BetterDraw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, projectile.Size, SpriteEffects.None, 0f);
             }
 
             //Draw the boss health bar. Note that active bosses will always be the first entries in the ActiveNPCs list.
@@ -93,6 +99,45 @@ namespace bullethellwhatever.MainFiles
             Main._spriteBatch.End();
         }
 
+        public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
+        {
+            //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
+
+            //Draw the item at the position, moved by the amount the screen is shaking.
+            Vector2 positionWithScreenShake = new(position.X + ScreenShakeMagnitude.X, position.Y + ScreenShakeMagnitude.Y);
+
+            Main._spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2),  scale, spriteEffects, layerDepth);
+        }
+
+        public static void ScreenShake(int magnitude, int duration) //the way screenshakes are accessed outwith Draw
+        {
+            ScreenShakeMagnitude = new Vector2(magnitude, magnitude);
+
+            if (ScreenShakeTimer >= 0 && ScreenShakeTimer < duration)
+            {
+                ScreenShakeTimer++;
+                IsScreenShaking = true;                
+            }
+            else
+            {
+                IsScreenShaking = false;
+            }
+            
+            
+        }
+
+        private static void HandleScreenShake() //under the hood screen shaking
+        {
+            if (IsScreenShaking)
+            {
+                Random rng = new Random();
+
+                ScreenShakeMagnitude = new Vector2(rng.Next((int)ScreenShakeMagnitude.X), rng.Next((int)ScreenShakeMagnitude.X)); //you could use a lerp later on to make the shaking increase then decrease towards the end
+            }
+
+            else ScreenShakeMagnitude = Vector2.Zero;
+
+        }
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
         {
             float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;
@@ -254,10 +299,14 @@ namespace bullethellwhatever.MainFiles
 
         public static void DrawDialogues(SpriteBatch spriteBatch)
         {
-            foreach (DialogueObject dialogue in Main.activeDialogues)
+            foreach (NPC npc in Main.activeNPCs)
             {
-                Vector2 drawPosition = new Vector2(dialogue.Position.X - 3 * dialogue.Text.Length, dialogue.Position.Y);
-                Utilities.drawTextInDrawMethod(dialogue.Text, drawPosition, spriteBatch, Main.font, Color.White);               
+                if (npc.dialogueSystem.dialogueObject.Text is not null)
+                {
+                    Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3 * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
+
+                    Utilities.drawTextInDrawMethod(npc.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
+                }
             }
         }
     }

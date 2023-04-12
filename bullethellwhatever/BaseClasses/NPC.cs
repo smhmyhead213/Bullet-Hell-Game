@@ -4,6 +4,7 @@ using System;
 
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Player;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -12,6 +13,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float IFrames;
         public bool ContactDamage;
+        public DialogueSystem dialogueSystem;
 
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {

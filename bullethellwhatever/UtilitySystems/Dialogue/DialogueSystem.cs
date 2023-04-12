@@ -16,9 +16,10 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
         public string StringWritten;
         public DialogueObject dialogueObject;
         public Entity Owner;
+        public bool HasWritingStarted;
         public DialogueSystem(Entity owner)
         {
-            //DialogueTimer = 0;
+            DialogueTimer = 0;
             CharactersWritten = 0;
             Owner = owner;
             
@@ -26,42 +27,45 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
         public void Dialogue(Vector2 position, string dialogueToWrite, int framesBetweenLetters, int duration)
         {
-            dialogueObject.Position = position;
-            dialogueObject.Owner = Owner;
+            dialogueObject.Position = new Vector2(position.X, position.Y - 50f);
 
-            if (MainFiles.Main.activeDialogues.Contains(dialogueObject))
-                MainFiles.Main.activeDialogues.Remove(dialogueObject);
-
-            if (DialogueTimer % framesBetweenLetters == 0)
+            //fix this drawing every possible string every frame
+            if (DialogueTimer / framesBetweenLetters == CharactersWritten + 1)
             {
-                CharactersWritten = DialogueTimer / framesBetweenLetters; //increment CharactersWritten
+                if (CharactersWritten <= dialogueToWrite.Length)
+                {
+                    //dialogueObject = new DialogueObject(position, dialogueToWrite.Substring(0, CharactersWritten), Owner);                    
+                    dialogueObject.Text = dialogueToWrite.Substring(0, CharactersWritten);
+                }
 
-                if (dialogueToWrite.Length >= CharactersWritten)
-                    dialogueObject = new DialogueObject(position, dialogueToWrite.Substring(0, CharactersWritten), Owner);                   
                 else
+                {
                     dialogueObject.DeleteNextFrame = true;
+                }
+
+                CharactersWritten++;
+
+                HasWritingStarted = true;             
             }
-
-            MainFiles.Main.activeDialogues.Add(dialogueObject);
-
             DialogueTimer++;
         }
 
         public void ClearDialogue()
         {
-            if (MainFiles.Main.activeDialogues.Contains(dialogueObject))
-                MainFiles.Main.activeDialogues.Remove(dialogueObject);
-
             dialogueObject.Text = string.Empty;
             DialogueTimer = 0;
+            CharactersWritten = 0;
+        }
 
-            //for (int i = 0; i < MainFiles.Main.activeDialogues.Count; i++)
-            //{
-            //    if (MainFiles.Main.activeDialogues[i].Owner == Owner)
-            //    {
-            //        MainFiles.Main.activeDialogues[i].Owner.DeleteNextFrame = true;
-            //    }
-            //}
+        public void MakeSureThisIsTheOnlyActiveDialogue()
+        {
+            for (int i = 0; i < MainFiles.Main.activeDialogues.Count; i++) //Delete all previoous instances of itself; each boss only has 1 dialogue active at once.
+            {
+                if (MainFiles.Main.activeDialogues[i].Owner == Owner)
+                {
+                    MainFiles.Main.activeDialogues[i].Owner.DeleteNextFrame = true;
+                }
+            }
         }
     }
 }
