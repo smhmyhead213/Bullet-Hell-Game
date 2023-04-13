@@ -68,6 +68,12 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
+#begin GradientShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:GradientShader.fx
+
 #begin HardButton.png
 /importer:TextureImporter
 /processor:TextureProcessor

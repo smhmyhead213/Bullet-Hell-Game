@@ -16,6 +16,7 @@ namespace bullethellwhatever.MainFiles
         public static int ScreenShakeDuration;
         public static int ScreenShakeTimer;
         public static bool IsScreenShaking;
+        public static int Timer;
         
         public static void DrawGame()
         {
@@ -42,6 +43,7 @@ namespace bullethellwhatever.MainFiles
                 //Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
             }
 
+            
             //Calculate transparency based on the player's remaining immunity frames.
 
             float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
@@ -51,10 +53,8 @@ namespace bullethellwhatever.MainFiles
             BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, Vector2.One, SpriteEffects.None, 0f);
 
             //Draw every active NPC.
-            foreach (NPC npc in Main.activeNPCs)
-            {
-                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, npc.Size, SpriteEffects.None, 0f);
-            }
+
+
 
             //Draw every enemy projectile.
             foreach (Projectile projectile in Main.activeProjectiles)
@@ -94,6 +94,22 @@ namespace bullethellwhatever.MainFiles
                     break;
             }
 
+
+
+            Main._spriteBatch.End();
+
+            //Begin using the shader.
+
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+
+            Main.gradientShader.Parameters["uTime"]?.SetValue(Timer);
+
+            Main.gradientShader.CurrentTechnique.Passes[0].Apply();
+
+            foreach (NPC npc in Main.activeNPCs) //move this back later
+            {
+                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+            }
 
 
             Main._spriteBatch.End();
@@ -303,7 +319,7 @@ namespace bullethellwhatever.MainFiles
             {
                 if (npc.dialogueSystem.dialogueObject.Text is not null)
                 {
-                    Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3 * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
+                    Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3.5f * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
 
                     Utilities.drawTextInDrawMethod(npc.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
                 }

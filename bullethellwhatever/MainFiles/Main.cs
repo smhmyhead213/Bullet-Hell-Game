@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.IO;
 
 using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
@@ -23,6 +24,8 @@ namespace bullethellwhatever.MainFiles
         public static GraphicsDeviceManager _graphics;
         public static SpriteBatch _spriteBatch;
 
+        public static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+
         public static Texture2D playerTexture;
         public static Texture2D startButton;
         public static Texture2D easyButton;
@@ -34,6 +37,9 @@ namespace bullethellwhatever.MainFiles
         public static Texture2D numberKeysButton;
         public static Texture2D scrollWheelButton;
         public static Texture2D backButton;
+
+        public static Effect gradientShader;
+
         public static SpriteFont font;
 
         public static GameStateHandler gameStateHandler = new GameStateHandler();
@@ -56,6 +62,7 @@ namespace bullethellwhatever.MainFiles
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -72,6 +79,14 @@ namespace bullethellwhatever.MainFiles
         protected override void Initialize()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            string[] files = Directory.GetFiles("Content", ".png", SearchOption.AllDirectories);
+
+            foreach (string file in files)
+            {
+                textures.Add(file, Content.Load<Texture2D>(file.Substring(0, file.Length - 4))); //remove .png
+            }
+
             font = Content.Load<SpriteFont>("font");
             playerTexture = Content.Load<Texture2D>("box");
             easyButton = Content.Load<Texture2D>("EasyButton");
@@ -85,13 +100,9 @@ namespace bullethellwhatever.MainFiles
             scrollWheelButton = Content.Load<Texture2D>("Scroll");
             backButton = Content.Load<Texture2D>("Back");
 
+            gradientShader = Content.Load<Effect>("GradientShader");
 
             GameState.State = GameState.GameStates.TitleScreen;
-
-            // TODO: Add your initialization logic here
-            //player.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            //player.Velocity = new Vector2(100, 100);
-            
             
             base.Initialize();
         }
@@ -115,6 +126,8 @@ namespace bullethellwhatever.MainFiles
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+
+            Drawing.Timer++;
 
             switch (GameState.State)
             {

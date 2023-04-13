@@ -107,18 +107,19 @@ namespace bullethellwhatever.Bosses
             if (AITimer < 200)
             {
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
-
-                if (AITimer == 400)
-                {
-                    dialogueSystem.ClearDialogue();
-                }
-
-                if (AITimer > 400)
-                {
-                    dialogueSystem.Dialogue(Position, "i had a good job until my boss accused me of stealing *jail bar closing sound* i BETTER CALL SAUL i was out partying minding my own business *crash sound and cat screech sound* you are under arrest I BETTER CALL SAUL Hi, I’m Saul Goodman. Did you know that you have rights? The Constitution says you do. And so do I. I believe that until proven guilty, every man, woman, and child in this country is innocent. And that’s why I fight for you, Albuquerque! Better call Saul!Hi, I’m Saul Goodman. Did you know that you have rights? The Constitution says you do. And so do I. I believe that until proven guilty, every man, woman, and child in this country is innocent. And that’s why I fight for you, Albuquerque! Better call Saul!Hi, I’m Saul Goodman. Did you know that you have rights? The Constitution says you do. And so do I. I believe that until proven guilty, every man, woman, and child in this country is innocent. And that’s why I fight for you, Albuquerque! Better call Saul", 4, 9999999);
-                }
-
             }
+
+            if (AITimer == 400)
+            {
+                dialogueSystem.ClearDialogue();
+            }
+
+            if (AITimer > 400)
+            {
+                dialogueSystem.Dialogue(Position, "i had a good job until my boss accused me of stealing *jail bar closing sound* i BETTER CALL SAUL i was out partying minding my own business *crash sound and cat screech sound* you are under arrest I BETTER CALL SAUL Hi, I'm Saul Goodman. Did you know that you have rights? The Constitution says you do. And so do I. I believe that until proven guilty, every man, woman, and child in this country is innocent. And that's why I fight for you, Albuquerque! Better call Saul", 4, 9999999);
+            }
+
+
         }
 
             public void EndAttack(ref float AITimer, ref int AttackNumber)
