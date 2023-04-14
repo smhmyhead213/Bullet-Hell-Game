@@ -13,6 +13,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float IFrames;
         public bool ContactDamage;
+        public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
 
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)

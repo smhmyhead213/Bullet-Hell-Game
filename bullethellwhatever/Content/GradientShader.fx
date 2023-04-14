@@ -1,15 +1,50 @@
-﻿float uTime;
+﻿sampler mainTexture : register(s0);
 
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+matrix worldViewProjection;
+float uTime;
+float bossHPRatio;
+
+struct VertexShaderInput
 {
-    //float blue = lerp(0, 1, (sin(uTime * 0.1) + 1)/ 2);
+    float4 Position : POSITION0;
+    float4 Color : COLOR0;
+    float2 TextureCoordinates : TEXCOORD0;
+    // TODO: add input channels such as texture
+    // coordinates and vertex colors here.
+};
+
+
+struct VertexShaderOutput
+{
+    float4 Position : POSITION0;
+    float4 Color : COLOR0;
+    float2 TextureCoordinates : TEXCOORD0;
+    // TODO: add vertex shader outputs such as colors and texture
+    // coordinates here. These values will automatically be interpolated
+    // over the triangle, and provided as input to your pixel shader.
+};
+
+VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
+{
+    VertexShaderOutput output = (VertexShaderOutput) 0;
+    float4 pos = mul(input.Position, worldViewProjection);
+    output.Position = pos;
     
-    float3 red = float3(1, 0, 0);
-    float3 green = float3(0, 1, 0);
+    output.Color = input.Color;
+    output.TextureCoordinates = input.TextureCoordinates;
+
+    return output;
+}
+
+float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+{
+    float blue = lerp(0, 1, (sin(uTime * 0.05) + 1)/ 2);
     
-    float3 test = lerp(red, green, coords.x);
+    float test = (sin(uTime * 0.05) + 1) / 2;
     
-    return float4(test, 1);
+    float green = lerp(1 - test, 0, input.TextureCoordinates.x);
+    
+    return float4(1, green, 1, bossHPRatio);
 }
 
 Technique Technique1

@@ -108,7 +108,9 @@ namespace bullethellwhatever.MainFiles
 
             foreach (NPC npc in Main.activeNPCs) //move this back later
             {
-                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+                Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
+
+                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour() , npc.Rotation, npc.Size, SpriteEffects.None, 0f);
             }
 
 
