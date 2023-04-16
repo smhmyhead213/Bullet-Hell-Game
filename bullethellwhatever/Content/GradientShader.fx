@@ -3,7 +3,7 @@
 matrix worldViewProjection;
 float uTime;
 float bossHPRatio;
-int AngularVelocity;
+float AngularVelocity;
 
 struct VertexShaderInput
 {
@@ -39,19 +39,24 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    float blue = lerp(0, 1, (sin(uTime * 0.05) + 1)/ 2);
+    float offsetDueToVelocity = input.TextureCoordinates.y / 10.0;
     
-    float test = (sin(uTime * 0.05) + 1) / 2;
+    float minimumWidth = lerp(0.1, 0.5, input.TextureCoordinates.y) - offsetDueToVelocity;
+    float maximumWidth = lerp(0.9, 0.5, input.TextureCoordinates.y) - offsetDueToVelocity;
     
-    float green = 1 - lerp(1 - test, 0, input.TextureCoordinates.y);
+    if (input.TextureCoordinates.x > minimumWidth && input.TextureCoordinates.x < maximumWidth)
+    {
+        return float4(1 - input.TextureCoordinates.y, 0, 0, 0.3);
+    }
+    else
+        return float4(0, 0, 0, 0);
     
-    return float4(sin(AngularVelocity), 0, 0, 0.3);
 }
 
 Technique Technique1
 {
     pass ShaderPass
-    {       
+    {
         PixelShader = compile ps_4_0 PixelShaderFunction();
     }
 }

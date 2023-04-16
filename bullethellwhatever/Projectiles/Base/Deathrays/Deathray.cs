@@ -23,7 +23,7 @@ namespace bullethellwhatever.Projectiles.Base
         public float Length;
         public float Width;
         public float AngularVelocity;
-        public virtual void Spawn(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration)
+        public virtual void Spawn(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, Entity owner)
         {
             Origin = origin;
             Rotation = initialRotation;
@@ -32,6 +32,7 @@ namespace bullethellwhatever.Projectiles.Base
             Texture = texture;
             AngularVelocity = angularVelocity;
             Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
+            Owner = owner;
 
             Main.enemyProjectilesToAddNextFrame.Add(this);
         }
@@ -59,7 +60,7 @@ namespace bullethellwhatever.Projectiles.Base
             return IsThePlayerInTheBeam(entity.Position.X, entity.Position.Y, this);
         }
 
-        public static bool IsThePlayerInTheBeam(float xcoord, float ycoord, Deathray deathray)
+        public static bool IsThePlayerInTheBeam(float xcoord, float ycoord, Deathray deathray) 
         {
             if (Utilities.DistanceBetweenVectors(new Vector2(xcoord, ycoord), deathray.Origin) < deathray.Length)
             {
@@ -124,9 +125,9 @@ namespace bullethellwhatever.Projectiles.Base
 
             spritebatch.Begin(SpriteSortMode.Deferred);
 
-            Utilities.drawTextInDrawMethod(deathray.Rotation.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
+            //Utilities.drawTextInDrawMethod(deathray.Rotation.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
 
-            Utilities.drawTextInDrawMethod(deathray.AngularVelocity.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
+            //Utilities.drawTextInDrawMethod(deathray.AngularVelocity.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
 
         }
     }

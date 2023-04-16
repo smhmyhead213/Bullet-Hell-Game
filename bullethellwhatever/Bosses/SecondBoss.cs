@@ -99,6 +99,7 @@ namespace bullethellwhatever.Bosses
             }
         }
 
+        
         public void DialogueTest(ref float AITimer, ref int AttackNumber)
         {
             Drawing.ScreenShake(3, 300);
@@ -107,7 +108,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == 0)
             {
-                deathray.Spawn(Position, 0f, 1f, Texture, 20f, 500f, DeathrayAngularVelocity, 1f);
+                deathray.Spawn(Position, 0, 1f, Texture, 40f, 500f, DeathrayAngularVelocity, 0f, this);
             }            
 
             if (AITimer > 0)
