@@ -607,15 +607,13 @@ namespace bullethellwhatever.Bosses
 
                 if (AITimer == despStartTime)
                 {
-                    deathray.Spawn(Position, MathF.PI, 1f, Texture, 40f, 1500f, 40f, 0f, this);
+                    int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
+
+                    deathray.Spawn(Position, MathF.PI, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, this);
                 }
 
                 if (AITimer > despStartTime)
                 {
-                    int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
-
-                    deathray.AngularVelocity = deathray.AngularVelocity * directionToRotate;
-
                     Drawing.ScreenShake(4, 3000);
 
                     float bombRotation = MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
