@@ -15,7 +15,7 @@ namespace bullethellwhatever.Bosses
         public bool HasChosenChargeDirection;
         public int AttackNumber; //position in pattern
 
-
+        public float DeathrayAngularVelocity;
 
         public SecondBoss(Vector2 position, Vector2 velocity)
         {
@@ -30,17 +30,18 @@ namespace bullethellwhatever.Bosses
             AttackNumber = 1;
             IsDesperationOver = false;
             dialogueSystem = new DialogueSystem(this);
+            DeathrayAngularVelocity = 180f;
         }
 
 
 
         public override void AI()
         {
-
+           
 
             CheckForAndTakeDamage();
 
-            if (Health < 0 & IsDesperationOver)
+            if (Health < 0 && IsDesperationOver)
                 DeleteNextFrame = true;
 
 
@@ -103,6 +104,18 @@ namespace bullethellwhatever.Bosses
         {
             Drawing.ScreenShake(3, 300);
 
+            Deathray deathray = new Deathray();
+
+            if (AITimer == 0)
+            {
+                deathray.Spawn(Position, 0f, 1f, Texture, 20f, 500f, DeathrayAngularVelocity);
+            }            
+
+            if (AITimer > 0)
+            {
+                DeathrayAngularVelocity = DeathrayAngularVelocity + AITimer / 20f;
+                deathray.AngularVelocity = DeathrayAngularVelocity;
+            }
 
             if (AITimer < 200)
             {

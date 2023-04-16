@@ -33,6 +33,8 @@ namespace bullethellwhatever.MainFiles
             {
                 Main.activeFriendlyProjectiles.Add(projectile);
             }
+
+            
         }
 
         public static void RunAIs()

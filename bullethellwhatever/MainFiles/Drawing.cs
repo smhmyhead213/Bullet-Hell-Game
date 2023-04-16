@@ -6,6 +6,7 @@ using System.Linq;
 using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using bullethellwhatever.Projectiles.Base;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -52,14 +53,26 @@ namespace bullethellwhatever.MainFiles
 
             BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, Vector2.One, SpriteEffects.None, 0f);
 
-            //Draw every active NPC.
-
-
+            //Draw every active NPC.           
 
             //Draw every enemy projectile.
             foreach (Projectile projectile in Main.activeProjectiles)
             {
-                BetterDraw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, projectile.Size, SpriteEffects.None, 0f);
+                if (projectile is Deathray)
+                {
+                    Deathray.DrawDeathray(Main._spriteBatch, (Deathray)projectile);
+                }
+                else
+                {
+                    BetterDraw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, projectile.Size, SpriteEffects.None, 0f);
+                }
+            }
+
+            foreach (NPC npc in Main.activeNPCs) //move this back later
+            {
+                Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
+
+                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, npc.Size, SpriteEffects.None, 0f);
             }
 
             //Draw every player projectile.
@@ -100,21 +113,7 @@ namespace bullethellwhatever.MainFiles
 
             //Begin using the shader.
 
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
-
-            Main.gradientShader.Parameters["uTime"]?.SetValue(Timer);
-
-            Main.gradientShader.CurrentTechnique.Passes[0].Apply();
-
-            foreach (NPC npc in Main.activeNPCs) //move this back later
-            {
-                Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
-
-                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour() , npc.Rotation, npc.Size, SpriteEffects.None, 0f);
-            }
-
-
-            Main._spriteBatch.End();
+            
         }
 
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)

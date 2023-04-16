@@ -10,6 +10,7 @@ namespace bullethellwhatever.MainFiles
     {
         public bool isGameStarted;
         public int ButtonCooldown;
+        public int DefaultButtonCooldown => 25;
         public string activeBoss; //use a swicth statement to spawn a boss in
 
         public void HandleGame()
@@ -48,7 +49,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 5;
+                        ButtonCooldown = DefaultButtonCooldown;
                         button.HandleClick();
                     }
                 }
@@ -64,7 +65,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 10;
+                        ButtonCooldown = DefaultButtonCooldown;
 
                         button.HandleClick();
                     }
@@ -81,7 +82,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 15;
+                        ButtonCooldown = DefaultButtonCooldown;
 
                         button.HandleClick();
                     }
@@ -98,7 +99,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 15;
+                        ButtonCooldown = DefaultButtonCooldown;
 
                         button.HandleClick();
                     }
@@ -120,7 +121,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
                     {
-                        ButtonCooldown = 15;
+                        ButtonCooldown = DefaultButtonCooldown;
 
                         button.HandleClick();
                     }

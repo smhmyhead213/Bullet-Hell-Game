@@ -5,7 +5,7 @@ using System;
 
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Player;
-
+using bullethellwhatever.BaseClasses;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -163,7 +163,7 @@ namespace bullethellwhatever.BaseClasses
 
                 foreach (Projectile projectile in Main.activeProjectiles)
                 {
-                    if (projectile.isCollidingWithPlayer() && IFrames == 0f)
+                    if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0f)
                     {
                         TakeDamage(projectile);
                     }

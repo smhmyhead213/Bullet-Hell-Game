@@ -3,6 +3,7 @@
 matrix worldViewProjection;
 float uTime;
 float bossHPRatio;
+int AngularVelocity;
 
 struct VertexShaderInput
 {
@@ -42,9 +43,9 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float test = (sin(uTime * 0.05) + 1) / 2;
     
-    float green = lerp(1 - test, 0, input.TextureCoordinates.x);
+    float green = 1 - lerp(1 - test, 0, input.TextureCoordinates.y);
     
-    return float4(1, green, 1, bossHPRatio);
+    return float4(1, 0, 0, 0.3);
 }
 
 Technique Technique1

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using bullethellwhatever.MainFiles;
+using System.Runtime.CompilerServices;
+using System;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -33,6 +35,15 @@ namespace bullethellwhatever.BaseClasses
             Position = Position + Velocity;
         }
 
+        public virtual bool IsCollidingWithEntity(Projectile projectile, Entity entity)
+        {
+            float totalwidth = Hitbox.Width + entity.Hitbox.Width;
+
+            if (Math.Abs(Position.X - entity.Position.X) <= totalwidth && Math.Abs(Position.Y - entity.Position.Y) <= totalwidth)
+                return true;
+
+            return false;
+        }
 
     }
 }

@@ -48,6 +48,15 @@ namespace bullethellwhatever
             return MathF.Sqrt(MathF.Pow((entity1.Position.X - entity2.Position.X), 2) + MathF.Pow((entity1.Position.Y - entity2.Position.Y), 2));
         }
 
+        public static float DistanceBetweenVectors(Vector2 v1, Vector2 v2)
+        {
+            return MathF.Sqrt(MathF.Pow((v1.X - v2.X), 2) + MathF.Pow((v1.Y - v2.Y), 2));
+        }
+
+        public static float VectorToAngle(Vector2 vector)
+        {
+            return MathF.Atan(vector.Y / vector.X);
+        }
         public static float AngleBetween(Vector2 v1, Vector2 v2)
         {
             return MathF.Acos(Vector2.Dot(SafeNormalise(v1, Vector2.Zero), SafeNormalise(v2, Vector2.Zero)));

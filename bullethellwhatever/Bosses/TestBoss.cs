@@ -59,7 +59,7 @@ namespace bullethellwhatever.Bosses
 
             CheckForAndTakeDamage();
 
-            if (Health < 0 & IsDesperationOver)
+            if (Health < 0 && IsDesperationOver)
                 DeleteNextFrame = true;
 
 
