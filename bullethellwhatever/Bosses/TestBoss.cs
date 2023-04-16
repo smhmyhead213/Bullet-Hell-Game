@@ -30,7 +30,7 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 1;
+            Health = 200;
             AITimer = 0f;
             IFrames = 5f;
             HasChosenChargeDirection = false;
