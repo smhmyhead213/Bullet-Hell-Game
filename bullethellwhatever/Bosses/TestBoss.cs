@@ -30,7 +30,7 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 200;
+            Health = 1;
             AITimer = 0f;
             IFrames = 5f;
             HasChosenChargeDirection = false;
@@ -597,12 +597,9 @@ namespace bullethellwhatever.Bosses
 
                 if (AITimer < despStartTime)
                 {
-
-
                     dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
 
                     Drawing.ScreenShake(5, 3000);
-
                 }
 
                 if (AITimer == despStartTime)

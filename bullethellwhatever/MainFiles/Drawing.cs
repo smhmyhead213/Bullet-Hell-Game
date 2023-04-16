@@ -128,6 +128,8 @@ namespace bullethellwhatever.MainFiles
 
         public static void ScreenShake(int magnitude, int duration) //the way screenshakes are accessed outwith Draw
         {
+
+            // there is a bug i need to fix where screenshake can only occur once ever, i need to reset it when a new screenshake is applied
             ScreenShakeMagnitude = new Vector2(magnitude, magnitude);
 
             if (ScreenShakeTimer >= 0 && ScreenShakeTimer < duration)
