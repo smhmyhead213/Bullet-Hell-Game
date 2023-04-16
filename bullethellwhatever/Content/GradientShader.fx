@@ -45,7 +45,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float green = 1 - lerp(1 - test, 0, input.TextureCoordinates.y);
     
-    return float4(1, 0, 0, 0.3);
+    return float4(sin(AngularVelocity), 0, 0, 0.3);
 }
 
 Technique Technique1

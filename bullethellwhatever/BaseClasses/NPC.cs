@@ -5,6 +5,7 @@ using System;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using System.Collections.Generic;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -15,7 +16,6 @@ namespace bullethellwhatever.BaseClasses
         public bool ContactDamage;
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
-
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
         {
             Position = position;

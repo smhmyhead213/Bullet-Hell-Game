@@ -14,7 +14,6 @@ namespace bullethellwhatever.Bosses
     {
         public bool HasChosenChargeDirection;
         public int AttackNumber; //position in pattern
-
         public float DeathrayAngularVelocity;
 
         public SecondBoss(Vector2 position, Vector2 velocity)
@@ -95,7 +94,7 @@ namespace bullethellwhatever.Bosses
 
                     float angle = (2 * MathF.PI / numberOfProjectiles) * i;
 
-                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One);
+                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One, this);
                 }
             }
         }
@@ -108,7 +107,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == 0)
             {
-                deathray.Spawn(Position, 0f, 1f, Texture, 20f, 500f, DeathrayAngularVelocity);
+                deathray.Spawn(Position, 0f, 1f, Texture, 20f, 500f, DeathrayAngularVelocity, 1f);
             }            
 
             if (AITimer > 0)

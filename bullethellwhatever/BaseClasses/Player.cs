@@ -208,7 +208,7 @@ namespace bullethellwhatever.BaseClasses
 
 
 
-                playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0, Vector2.One);
+                playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0, Vector2.One, this);
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -219,7 +219,7 @@ namespace bullethellwhatever.BaseClasses
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.25f, Main.player.Texture, 0, Vector2.One);
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.25f, Main.player.Texture, 0, Vector2.One, this);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -230,7 +230,7 @@ namespace bullethellwhatever.BaseClasses
 
 
 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0, Vector2.One);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0, Vector2.One, this);
 
 
             }

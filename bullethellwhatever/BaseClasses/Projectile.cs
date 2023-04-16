@@ -11,7 +11,8 @@ namespace bullethellwhatever.BaseClasses
     {
         public float Acceleration;
         public float TimeAlive;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size)
+        public Entity Owner;
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner)
         {
             Position = position;
             Velocity = velocity;
@@ -21,6 +22,7 @@ namespace bullethellwhatever.BaseClasses
             Main.enemyProjectilesToAddNextFrame.Add(this);
             DeleteNextFrame = false;
             Size = size;
+            owner = Owner;
         }
 
          //and drawing

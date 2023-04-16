@@ -23,7 +23,7 @@ namespace bullethellwhatever.Projectiles.Base
         public float Length;
         public float Width;
         public float AngularVelocity;
-        public virtual void Spawn(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity)
+        public virtual void Spawn(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration)
         {
             Origin = origin;
             Rotation = initialRotation;
@@ -31,6 +31,7 @@ namespace bullethellwhatever.Projectiles.Base
             Length = length;
             Texture = texture;
             AngularVelocity = angularVelocity;
+            Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
 
             Main.enemyProjectilesToAddNextFrame.Add(this);
         }
@@ -41,7 +42,9 @@ namespace bullethellwhatever.Projectiles.Base
         {
             TimeAlive++;
 
-            Rotation = (Rotation + MathF.PI / AngularVelocity) % (MathF.PI * 2); //The rotation is always 0 < r < 360.
+            AngularVelocity = AngularVelocity + Acceleration;
+
+            Rotation = (Rotation + MathF.PI * AngularVelocity / 21600f) % (MathF.PI * 2); //The rotation is always 0 < r < 360.
             
             //if (TimeAlive % AngularVelocity * 2 == 0) // Reset rotation after the beam has gone a full turn. This will need to be adjusted for rays whose Angular Velocity changes with time.
             //{
@@ -107,6 +110,7 @@ namespace bullethellwhatever.Projectiles.Base
             spritebatch.Begin(SpriteSortMode.Immediate);
 
             Main.gradientShader.Parameters["uTime"]?.SetValue(deathray.TimeAlive);
+            Main.gradientShader.Parameters["AngularVelocity"]?.SetValue(deathray.AngularVelocity);
 
             Main.gradientShader.CurrentTechnique.Passes[0].Apply();
 
@@ -125,111 +129,5 @@ namespace bullethellwhatever.Projectiles.Base
             Utilities.drawTextInDrawMethod(deathray.AngularVelocity.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
 
         }
-        //public static bool IsAnXCoordinateInTheBeam(float xcoord, Deathray deathray) // Rotation is an angle with THE VERTICAL
-        //{
-
-        //    float minimum = deathray.Origin.X - (deathray.Width / 2 * MathF.Cos(deathray.Rotation));
-
-        //    float maximum = deathray.Origin.X + (deathray.Length * MathF.Sin(deathray.Rotation));
-
-        //    if ((xcoord > minimum && xcoord < maximum) || ((xcoord < minimum && xcoord > maximum))) //account for trig screwery with angles greater than 90 degrees
-        //    {
-        //        deathray.xtrue = true;
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        deathray.xtrue = false;
-        //        return false;
-        //    }
-
-        //}
-
-        //public static bool IsAYCoordinateInTheBeam(float xcoord, float ycoord, Deathray deathray)
-        //{
-
-        //}
-
-
-        //public static bool IsAYCoordinateInTheBeam(float ycoord, Deathray deathray)
-        //{
-        //    float minimum = deathray.Origin.Y + (deathray.Width / 2 * MathF.Sin(deathray.Rotation)); //going downwards adds to y
-
-        //    float maximum = deathray.Origin.Y - (deathray.Length * MathF.Cos(deathray.Rotation)); //going upwards subtracts from y
-
-
-
-
-
-
-        //    if ((ycoord < minimum && ycoord > maximum) || (ycoord > minimum && ycoord < maximum))
-        //    {
-        //        deathray.ytrue = true;
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        deathray.ytrue = false;
-        //        return false;
-        //    }
-        //}
-
-
-
-        //public static bool IsAYCoordinateInTheBeam(float xcoord, float ycoord, Deathray deathray)
-        //{
-        //    float strictlyVerticalHeight = deathray.Width / MathF.Sin(MathF.PI * 2 - deathray.Rotation);
-
-        //    float originToBottomVerticalDistance = deathray.Width / 2 * MathF.Sin(MathF.PI * 2 - deathray.Rotation);
-
-        //    float originToBottomHorizontalDistance = deathray.Width / 2 * MathF.Cos(MathF.PI * 2 - deathray.Rotation);
-
-        //    float originToEntityHorizontalDistance = MathF.Abs(deathray.Origin.X - xcoord);
-
-        //    float bottomToEntityHorizontalDistance = MathF.Abs(originToEntityHorizontalDistance - originToBottomHorizontalDistance);
-
-        //    float heightFromEntityToBeam = bottomToEntityHorizontalDistance / MathF.Tan(MathF.PI * 2 - deathray.Rotation);
-
-        //    float lowest = ycoord + heightFromEntityToBeam;
-
-        //    float highest = ycoord + heightFromEntityToBeam + strictlyVerticalHeight;
-
-        //    if ((ycoord > lowest && ycoord < highest) || (ycoord < lowest && ycoord > highest))
-        //    {
-        //        deathray.ytrue = true;
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        deathray.ytrue = false;
-        //        return true;
-        //    }
-        //}
-
-
-        //public static bool IsAYCoordinateInTheBeam(float xcoord, float ycoord, Deathray deathray)
-        //{
-        //    float gradient = MathF.Tan(MathF.PI / 2 - deathray.Rotation);
-
-        //    var kstate = Microsoft.Xna.Framework.Input.Keyboard.GetState();
-
-        //    if (kstate.IsKeyDown(Keys.E))
-        //    {
-        //        deathray.amogus = true;
-        //    }
-
-        //    if (ycoord > gradient * xcoord + deathray.Origin.Y - 1f && ycoord < gradient * xcoord + deathray.Origin.Y + 1f)
-        //    {
-        //        deathray.ytrue = true;
-        //        return true;
-        //    }
-
-        //    deathray.ytrue = false;
-        //    return false;
-        //}
-
-
-
-
     }
 }
