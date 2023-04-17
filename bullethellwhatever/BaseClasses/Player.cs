@@ -6,6 +6,7 @@ using System;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles.Base;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -17,9 +18,11 @@ namespace bullethellwhatever.BaseClasses
         public float ShotCooldownRemaining;
         public float ScrollCooldown;
         public float MoveSpeed;
+        private Deathray playerDeathray = new Deathray();
+
         public enum Weapons
         {
-            Sharpshooter,
+            Laser,
             MachineGun,
             Homing,
 
@@ -42,10 +45,9 @@ namespace bullethellwhatever.BaseClasses
             Size = Vector2.One;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
-            ActiveWeapon = Weapons.Sharpshooter;
+            ActiveWeapon = Weapons.Laser;
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
-
         }
         #endregion
 
@@ -58,6 +60,13 @@ namespace bullethellwhatever.BaseClasses
         {
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
+
+            playerDeathray.Origin = Position;
+
+            if (!(mouseState.LeftButton == ButtonState.Pressed))
+            {
+                Main.activeFriendlyProjectiles.Remove(playerDeathray);
+            }
 
             if (ScrollCooldown > 0)
             {
@@ -91,7 +100,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 if (mouseState.ScrollWheelValue / 120 % 3 == 0 && ScrollCooldown == 0)  //are you happy now gemma??????????????????????
                 {
-                    ActiveWeapon = Weapons.Sharpshooter;
+                    ActiveWeapon = Weapons.Laser;
                     ScrollCooldown = 3f;
                 }
 
@@ -118,7 +127,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 if (kstate.IsKeyDown(Keys.D1))  //are you happy now gemma??????????????????????
                 {
-                    ActiveWeapon = Weapons.Sharpshooter;
+                    ActiveWeapon = Weapons.Laser;
                     ScrollCooldown = 3f;
                 }
 
@@ -200,15 +209,14 @@ namespace bullethellwhatever.BaseClasses
 
             Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
 
-            if (ActiveWeapon == Weapons.Sharpshooter)
+            if (ActiveWeapon == Weapons.Laser)
             {
-                ShotCooldown = 20f;
+                ShotCooldown = 1f;
 
-                PlayerSharpShooterProjectile playerProjectile = new PlayerSharpShooterProjectile();
+                float initialRotation = MathF.PI / 2 + Utilities.VectorToAngle(mousePosition - Position);
 
-
-
-                playerProjectile.Spawn(Position, 30f * Utilities.Normalise(mousePosition - Position), 2f, Main.player.Texture, 0, Vector2.One, this);
+                playerDeathray.SpawnDeathray(Position, initialRotation, 0.1f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Red);
+                
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -219,7 +227,8 @@ namespace bullethellwhatever.BaseClasses
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))), 0.25f, Main.player.Texture, 0, Vector2.One, this);
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
+                    0.25f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -230,7 +239,7 @@ namespace bullethellwhatever.BaseClasses
 
 
 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0, Vector2.One, this);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.4f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen);
 
 
             }

@@ -11,18 +11,25 @@ namespace bullethellwhatever.BaseClasses
     {
         public float Acceleration;
         public float TimeAlive;
+        public bool IsHarmful;
         public Entity Owner;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
             Acceleration = acceleration;
-            Main.enemyProjectilesToAddNextFrame.Add(this);
+            Colour = colour;
             DeleteNextFrame = false;
             Size = size;
-            owner = Owner;
+            Owner = owner;
+
+            IsHarmful = isHarmful;
+
+            if (isHarmful)
+                Main.enemyProjectilesToAddNextFrame.Add(this);
+            else Main.friendlyProjectilesToAddNextFrame.Add(this);
         }
 
          //and drawing
@@ -45,6 +52,11 @@ namespace bullethellwhatever.BaseClasses
                 return true;
 
             return false;
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            Drawing.BetterDraw(Main.player.Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
         }
 
     }

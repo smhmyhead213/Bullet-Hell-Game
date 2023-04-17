@@ -16,13 +16,13 @@ namespace bullethellwhatever.BaseClasses
         public bool ContactDamage;
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
             Texture = texture;
-
+            Colour = colour;
             Main.NPCsToAddNextFrame.Add(this);
             Size = size;
             Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);
@@ -38,7 +38,7 @@ namespace bullethellwhatever.BaseClasses
             CheckForAndTakeDamage();
         }
 
-        public bool isCollidingWithPlayerProjectile(FriendlyProjectile projectile)
+        public bool isCollidingWithPlayerProjectile(Projectile projectile)
         {
             float totalwidth = Hitbox.Width + projectile.Hitbox.Width;
 
@@ -50,21 +50,16 @@ namespace bullethellwhatever.BaseClasses
 
         public void CheckForAndTakeDamage()
         {
-            foreach (FriendlyProjectile projectile in Main.activeFriendlyProjectiles)
+            foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
                 if (isCollidingWithPlayerProjectile(projectile) && IFrames == 0)
                 {
                     if (IFrames == 0)
                     {
                         IFrames = 5f;
-                        if (projectile is PlayerSharpShooterProjectile) //give the sharpshooter projectile its damage multiplier against moveing targets
-                        {
-                            Health = Health - (projectile.Damage * (Velocity.Length() / 7f) + 0.3f);
-                        }
-                        else
-                        {
-                            Health = Health - projectile.Damage;
-                        }
+                        
+                        Health = Health - projectile.Damage;
+                        
                         projectile.DeleteNextFrame = true;
                     }
                 }

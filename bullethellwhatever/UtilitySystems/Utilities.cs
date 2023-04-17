@@ -50,12 +50,12 @@ namespace bullethellwhatever
 
         public static float DistanceBetweenVectors(Vector2 v1, Vector2 v2)
         {
-            return MathF.Sqrt(MathF.Pow((v1.X - v2.X), 2) + MathF.Pow((v1.Y - v2.Y), 2));
+            return MathF.Sqrt(MathF.Pow(v1.X - v2.X, 2) + MathF.Pow(v1.Y - v2.Y, 2));
         }
 
         public static float VectorToAngle(Vector2 vector)
         {
-            return MathF.Atan(vector.Y / vector.X);
+            return MathF.Atan2(vector.Y, vector.X);
         }
         public static float AngleBetween(Vector2 v1, Vector2 v2)
         {

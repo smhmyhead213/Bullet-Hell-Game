@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {
@@ -24,7 +25,18 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             Owner = owner;
             
         }
+        public static void DrawDialogues(SpriteBatch spriteBatch)
+        {
+            foreach (NPC npc in Main.activeNPCs)
+            {
+                if (npc.dialogueSystem.dialogueObject.Text is not null)
+                {
+                    Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3.5f * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
 
+                    Utilities.drawTextInDrawMethod(npc.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
+                }
+            }
+        }
         public void Dialogue(Vector2 position, string dialogueToWrite, int framesBetweenLetters, int duration)
         {
             dialogueObject.Position = new Vector2(position.X, position.Y - 50f);
@@ -59,7 +71,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
         public void MakeSureThisIsTheOnlyActiveDialogue()
         {
-            for (int i = 0; i < MainFiles.Main.activeDialogues.Count; i++) //Delete all previoous instances of itself; each boss only has 1 dialogue active at once.
+            for (int i = 0; i < Main.activeDialogues.Count; i++) //Delete all previoous instances of itself; each boss only has 1 dialogue active at once.
             {
                 if (MainFiles.Main.activeDialogues[i].Owner == Owner)
                 {

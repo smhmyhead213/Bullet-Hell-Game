@@ -1,5 +1,4 @@
-﻿using bullethellwhatever.Projectiles.Player;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Buttons;
@@ -22,7 +21,7 @@ namespace bullethellwhatever.MainFiles
 
             Main.enemyProjectilesToAddNextFrame.Clear();
 
-            foreach (FriendlyProjectile projectile in Main.friendlyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in Main.friendlyProjectilesToAddNextFrame)
             {
                 Main.activeFriendlyProjectiles.Add(projectile);
             }

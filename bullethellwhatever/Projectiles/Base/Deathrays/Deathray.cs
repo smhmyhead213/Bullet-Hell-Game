@@ -23,7 +23,7 @@ namespace bullethellwhatever.Projectiles.Base
         public float Length;
         public float Width;
         public float AngularVelocity;
-        public virtual void Spawn(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, Entity owner)
+        public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, Entity owner, bool isHarmful, Color colour)
         {
             Origin = origin;
             Rotation = initialRotation;
@@ -33,8 +33,11 @@ namespace bullethellwhatever.Projectiles.Base
             AngularVelocity = angularVelocity;
             Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
             Owner = owner;
+            Colour = colour;
 
-            Main.enemyProjectilesToAddNextFrame.Add(this);
+            if (isHarmful)
+                Main.enemyProjectilesToAddNextFrame.Add(this);
+            else Main.friendlyProjectilesToAddNextFrame.Add(this);
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => false;
@@ -104,22 +107,22 @@ namespace bullethellwhatever.Projectiles.Base
 
             else return false;
         }
-        public static void DrawDeathray(SpriteBatch spritebatch, Deathray deathray)
+        public override void Draw(SpriteBatch spritebatch)
         {
             spritebatch.End();
 
             spritebatch.Begin(SpriteSortMode.Immediate);
 
-            Main.gradientShader.Parameters["uTime"]?.SetValue(deathray.TimeAlive);
-            Main.gradientShader.Parameters["AngularVelocity"]?.SetValue(deathray.AngularVelocity);
+            Main.gradientShader.Parameters["uTime"]?.SetValue(TimeAlive);
+            Main.gradientShader.Parameters["AngularVelocity"]?.SetValue(AngularVelocity);
 
             Main.gradientShader.CurrentTechnique.Passes[0].Apply();
 
-            Vector2 size = new Vector2(deathray.Width / deathray.Texture.Width, deathray.Length / deathray.Texture.Height); //Scale the beam up to the required width and length.
+            Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(Main.player.Texture, deathray.Origin, null, Color.LightBlue, MathF.PI + deathray.Rotation, originOffset, size, SpriteEffects.None, 0);
+            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
 
             spritebatch.End();
 

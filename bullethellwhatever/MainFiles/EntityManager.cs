@@ -29,7 +29,7 @@ namespace bullethellwhatever.MainFiles
                 Main.activeProjectiles.Add(projectile);
             }
 
-            foreach (FriendlyProjectile projectile in Main.friendlyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in Main.friendlyProjectilesToAddNextFrame)
             {
                 Main.activeFriendlyProjectiles.Add(projectile);
             }
@@ -72,7 +72,7 @@ namespace bullethellwhatever.MainFiles
             }
 
             Drawing.ScreenShakeTimer = 0;
-            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.playerTexture, new Vector2(5, 5), Main.activeNPCs[0].Health);
+            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.playerTexture, new Vector2(5, 5), Main.activeNPCs[0].Health, Color.White);
         }
 
     }

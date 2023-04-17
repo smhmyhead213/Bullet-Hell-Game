@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using bullethellwhatever.Projectiles.Enemy;
+using bullethellwhatever.BaseClasses;
 
 namespace bullethellwhatever.Projectiles.Base
 {
-    public class BasicProjectile : HarmfulProjectile
+    public class BasicProjectile : Projectile
     {
         public override bool ShouldRemoveOnEdgeTouch() => true;
-        public override Color Colour() => Color.Red;
 
     }
 }

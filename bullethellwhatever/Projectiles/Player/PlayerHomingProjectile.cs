@@ -6,7 +6,7 @@ using bullethellwhatever.Projectiles.Player;
 
 namespace bullethellwhatever.Projectiles.Player
 {
-    public class PlayerHomingProjectile : FriendlyProjectile
+    public class PlayerHomingProjectile : Projectile
     {
         public float HomingFactor; //how strong the homing is
         public override void AI()
@@ -32,7 +32,6 @@ namespace bullethellwhatever.Projectiles.Player
 
             Position = Position + Velocity;
         }
-        public override Color Colour() => Color.LimeGreen;
 
     }
 }

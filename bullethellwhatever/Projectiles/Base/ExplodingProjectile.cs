@@ -45,8 +45,10 @@ namespace bullethellwhatever.Projectiles.Base
 
                     //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
                     if (ShouldAccountForVelocityInOrientation)
-                        projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset), 1f, Texture, accel, Vector2.One, this);
-                    else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset), 1f, Texture, accel, Vector2.One, this);
+                        projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
+                            1f, Texture, accel, Vector2.One, this, true, Color.Red);
+                    else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
+                            1f, Texture, accel, Vector2.One, this, true, Color.Red);
 
                     DeleteNextFrame = true;
                 }
@@ -54,7 +56,5 @@ namespace bullethellwhatever.Projectiles.Base
 
             Position = Position + Velocity;
         }
-
-        public override Color Colour() => Color.Red;
     }
 }

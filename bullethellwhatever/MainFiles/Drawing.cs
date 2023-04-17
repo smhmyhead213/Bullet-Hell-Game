@@ -25,7 +25,7 @@ namespace bullethellwhatever.MainFiles
 
             HandleScreenShake();
 
-            DrawDialogues(Main._spriteBatch);
+            DialogueSystem.DrawDialogues(Main._spriteBatch);
 
             if (Main.activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
             {
@@ -57,28 +57,21 @@ namespace bullethellwhatever.MainFiles
 
             //Draw every enemy projectile.
             foreach (Projectile projectile in Main.activeProjectiles)
-            {
-                if (projectile is Deathray)
-                {
-                    Deathray.DrawDeathray(Main._spriteBatch, (Deathray)projectile);
-                }
-                else
-                {
-                    BetterDraw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, projectile.Size, SpriteEffects.None, 0f);
-                }
+            {                
+                    projectile.Draw(Main._spriteBatch);
             }
 
             foreach (NPC npc in Main.activeNPCs) //move this back later
             {
                 Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
 
-                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour(), npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
             }
 
             //Draw every player projectile.
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
-                BetterDraw(Main.player.Texture, projectile.Position, null, projectile.Colour(), projectile.Rotation, projectile.Size, SpriteEffects.None, 0f);
+                projectile.Draw(Main._spriteBatch);
             }
 
             //Draw the boss health bar. Note that active bosses will always be the first entries in the ActiveNPCs list.
@@ -96,7 +89,7 @@ namespace bullethellwhatever.MainFiles
             //Write different text depending on which weapon is active
             switch (Main.player.ActiveWeapon)
             {
-                case Player.Weapons.Sharpshooter:
+                case Player.Weapons.Laser:
                     Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.Yellow);
                     break;
                 case Player.Weapons.MachineGun:
@@ -316,18 +309,7 @@ namespace bullethellwhatever.MainFiles
 
         }
 
-        public static void DrawDialogues(SpriteBatch spriteBatch)
-        {
-            foreach (NPC npc in Main.activeNPCs)
-            {
-                if (npc.dialogueSystem.dialogueObject.Text is not null)
-                {
-                    Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3.5f * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
-
-                    Utilities.drawTextInDrawMethod(npc.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
-                }
-            }
-        }
+        
     }
 
     

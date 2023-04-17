@@ -94,7 +94,7 @@ namespace bullethellwhatever.Bosses
 
                     float angle = (2 * MathF.PI / numberOfProjectiles) * i;
 
-                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One, this);
+                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One, this, true, Color.Red);
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == 0)
             {
-                deathray.Spawn(Position, 0, 1f, Texture, 40f, 500f, DeathrayAngularVelocity, 0f, this);
+                deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 500f, DeathrayAngularVelocity, 0f, this, true, Color.Red);
             }            
 
             if (AITimer > 0)

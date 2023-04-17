@@ -8,10 +8,11 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.BaseClasses;
 
 namespace bullethellwhatever.Projectiles.Player
 {
-    public class PlayerProjectile : FriendlyProjectile
+    public class PlayerProjectile : Projectile
     {
         public override void AI()
         {
@@ -19,6 +20,5 @@ namespace bullethellwhatever.Projectiles.Player
         }
 
         public override bool ShouldRemoveOnEdgeTouch() => true;
-        public override Color Colour() => Color.LightBlue;
     }
 }
