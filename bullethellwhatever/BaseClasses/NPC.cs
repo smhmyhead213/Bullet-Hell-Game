@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 using bullethellwhatever.MainFiles;
-using bullethellwhatever.Projectiles.Player;
+using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
-using System.Collections.Generic;
+using bullethellwhatever.Projectiles.Base;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -52,15 +52,18 @@ namespace bullethellwhatever.BaseClasses
         {
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
-                if (isCollidingWithPlayerProjectile(projectile) && IFrames == 0)
+                if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0)
                 {
                     if (IFrames == 0)
                     {
                         IFrames = 5f;
                         
                         Health = Health - projectile.Damage;
-                        
-                        projectile.DeleteNextFrame = true;
+
+                        if (projectile is not Deathray)
+                        {
+                            projectile.DeleteNextFrame = true;
+                        }
                     }
                 }
             }

@@ -23,6 +23,7 @@ namespace bullethellwhatever.Projectiles.Base
         public float Length;
         public float Width;
         public float AngularVelocity;
+        public bool IsActive;
         public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, Entity owner, bool isHarmful, Color colour)
         {
             Origin = origin;
@@ -34,6 +35,8 @@ namespace bullethellwhatever.Projectiles.Base
             Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
             Owner = owner;
             Colour = colour;
+            IsActive = true;
+            Damage = damage;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -60,78 +63,87 @@ namespace bullethellwhatever.Projectiles.Base
         public override bool IsCollidingWithEntity(Projectile projectile, Entity entity) //dont forget to add a check to see if the player is within the beams length, to ensure that the beam doesnt have infinite range
         {
             //return IsAnXCoordinateInTheBeam(entity.Position.X, this) && IsAYCoordinateInTheBeam(entity.Position.X, entity.Position.Y, this);
-            return IsThePlayerInTheBeam(entity.Position.X, entity.Position.Y, this);
+            return IsTheTargetInTheBeam(entity.Position.X, entity.Position.Y, this);
         }
 
-        public static bool IsThePlayerInTheBeam(float xcoord, float ycoord, Deathray deathray) 
+        public static bool IsTheTargetInTheBeam(float xcoord, float ycoord, Deathray deathray) 
         {
-            if (Utilities.DistanceBetweenVectors(new Vector2(xcoord, ycoord), deathray.Origin) < deathray.Length)
+            if (deathray.IsActive)
             {
-                Vector2 playerVector = new Vector2(xcoord, ycoord);
-
-                //Find the angle between the player and the vertical using the dot/scalar product.
-
-                float dotProduct = Vector2.Dot(Vector2.UnitY, playerVector - deathray.Origin);
-
-                float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Origin).Length());
-
-
-                // For the collision checks, small degrees of error like PI / 90 are used to account for Angle and Rotation never being exactly equal due to floating point jank.
-
-                if (deathray.Rotation >= 0) // Check if the beam is moving clockwise. In this case, Rotation is positive.
+                if (Utilities.DistanceBetweenVectors(new Vector2(xcoord, ycoord), deathray.Origin) < deathray.Length)
                 {
-                    if (playerVector.X >= deathray.Origin.X) // If the player is on the right, do no adjustments as Rotation and Angle here are both angles clockwise from the vertical.
+                    Vector2 playerVector = new Vector2(xcoord, ycoord);
+
+                    //Find the angle between the player and the vertical using the dot/scalar product.
+
+                    float dotProduct = Vector2.Dot(Vector2.UnitY, playerVector - deathray.Origin);
+
+                    float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Origin).Length());
+
+                    float angleTolerance = MathF.PI / 30f;
+
+                    // For the collision checks, small degrees of error are used to account for Angle and Rotation never being exactly equal due to floating point jank.
+
+                    if (deathray.Rotation >= 0) // Check if the beam is moving clockwise. In this case, Rotation is positive.
                     {
-                        return deathray.Rotation > angle - MathF.PI / 90f && deathray.Rotation < angle + Math.PI / 90f;
+                        if (playerVector.X >= deathray.Origin.X) // If the player is on the right, do no adjustments as Rotation and Angle here are both angles clockwise from the vertical.
+                        {
+                            return deathray.Rotation > angle - angleTolerance && deathray.Rotation < angle + angleTolerance;
+                        }
+
+                        else // Otherwise, adjust Angle to be an angle clockwise from the vertical due to the dot products nature of giving an angle 0 < theta < 180.
+                        {
+                            return deathray.Rotation > MathF.PI * 2 - angle - angleTolerance && deathray.Rotation < MathF.PI * 2 - angle + angleTolerance;
+                        }
                     }
 
-                    else // Otherwise, adjust Angle to be an angle clockwise from the vertical due to the dot products nature of giving an angle 0 < theta < 180.
+                    else // The beam is moving counter-clockwise. Rotation is negative.
                     {
-                        return deathray.Rotation > MathF.PI * 2 - angle - MathF.PI / 90f && deathray.Rotation < MathF.PI * 2 - angle + Math.PI / 90f;
+                        if (playerVector.X >= deathray.Origin.X) // If the player is on the right, colliding values of Angle and Rotation differ by a full 360 degrees. 
+                        {
+                            return deathray.Rotation > angle - MathF.PI * 2 - angleTolerance && deathray.Rotation < angle - MathF.PI * 2 + angleTolerance;
+                        }
+
+                        else // Otherwise, corresponding values of Angle and Rotation differ by sign.
+                        {
+                            return MathF.Abs(deathray.Rotation) > angle - angleTolerance && MathF.Abs(deathray.Rotation) < angle + angleTolerance;
+                        }
                     }
                 }
 
-                else // The beam is moving counter-clockwise. Rotation is negative.
-                {
-                    if (playerVector.X >= deathray.Origin.X) // If the player is on the right, colliding values of Angle and Rotation differ by a full 360 degrees. 
-                    {
-                        return deathray.Rotation > angle - MathF.PI * 2 - MathF.PI / 90f && deathray.Rotation < angle - MathF.PI * 2 + Math.PI / 90f;
-                    }
-
-                    else // Otherwise, corresponding values of Angle and Rotation differ by sign.
-                    {
-                        return MathF.Abs(deathray.Rotation) > angle - MathF.PI / 90f && MathF.Abs(deathray.Rotation) < angle + Math.PI / 90f;
-                    }
-                }
+                else return false;
             }
 
-            else return false;
+            return false;
         }
         public override void Draw(SpriteBatch spritebatch)
         {
-            spritebatch.End();
+            if (IsActive)
+            {
+                spritebatch.End();
 
-            spritebatch.Begin(SpriteSortMode.Immediate);
+                spritebatch.Begin(SpriteSortMode.Immediate);
 
-            Main.gradientShader.Parameters["uTime"]?.SetValue(TimeAlive);
-            Main.gradientShader.Parameters["AngularVelocity"]?.SetValue(AngularVelocity);
+                Main.gradientShader.Parameters["uTime"]?.SetValue(TimeAlive);
+                Main.gradientShader.Parameters["AngularVelocity"]?.SetValue(AngularVelocity);
 
-            Main.gradientShader.CurrentTechnique.Passes[0].Apply();
+                Main.gradientShader.CurrentTechnique.Passes[0].Apply();
 
-            Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
+                Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
-            Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
+                Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
 
-            spritebatch.End();
+                spritebatch.End();
 
-            spritebatch.Begin(SpriteSortMode.Deferred);
+                spritebatch.Begin(SpriteSortMode.Deferred);
 
-            //Utilities.drawTextInDrawMethod(deathray.Rotation.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
+                //Utilities.drawTextInDrawMethod(deathray.Rotation.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
 
-            //Utilities.drawTextInDrawMethod(deathray.AngularVelocity.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
+                //Utilities.drawTextInDrawMethod(deathray.AngularVelocity.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
 
+            }
         }
     }
 }

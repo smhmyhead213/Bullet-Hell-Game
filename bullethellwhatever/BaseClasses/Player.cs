@@ -18,7 +18,7 @@ namespace bullethellwhatever.BaseClasses
         public float ShotCooldownRemaining;
         public float ScrollCooldown;
         public float MoveSpeed;
-        private Deathray playerDeathray = new Deathray();
+        private Deathray PlayerDeathray = new Deathray();
 
         public enum Weapons
         {
@@ -45,7 +45,7 @@ namespace bullethellwhatever.BaseClasses
             Size = Vector2.One;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
-            ActiveWeapon = Weapons.Laser;
+            ActiveWeapon = Weapons.Homing;
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
         }
@@ -61,12 +61,7 @@ namespace bullethellwhatever.BaseClasses
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            playerDeathray.Origin = Position;
-
-            if (!(mouseState.LeftButton == ButtonState.Pressed))
-            {
-                Main.activeFriendlyProjectiles.Remove(playerDeathray);
-            }
+            PlayerDeathray.Origin = Position;
 
             if (ScrollCooldown > 0)
             {
@@ -191,6 +186,11 @@ namespace bullethellwhatever.BaseClasses
                     ShotCooldownRemaining = ShotCooldown;
                     Shoot();
                 }
+
+                if (!(mouseState.LeftButton == ButtonState.Pressed))
+                {
+                    PlayerDeathray.IsActive = false;
+                }
             }
             else
             {
@@ -215,7 +215,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = MathF.PI / 2 + Utilities.VectorToAngle(mousePosition - Position);
 
-                playerDeathray.SpawnDeathray(Position, initialRotation, 0.1f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Red);
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.1f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Yellow);
                 
             }
 
