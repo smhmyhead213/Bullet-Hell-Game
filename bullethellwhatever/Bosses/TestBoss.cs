@@ -610,7 +610,7 @@ namespace bullethellwhatever.Bosses
                 if (AITimer == despStartTime)
                 {
                     int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
-
+                    Main.activeProjectiles.Clear();
                     deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, this, true, Color.Red);
                 }
 
