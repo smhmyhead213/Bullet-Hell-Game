@@ -473,7 +473,7 @@ namespace bullethellwhatever.Bosses
 
                 if (AITimer > 410 && AITimer < 509)
                 {
-                    Velocity = 5f * Utilities.Normalise(Main.player.Position - Position);
+                    Velocity = MathHelper.Lerp(1f, 5f, Utilities.DistanceBetweenEntities(Main.player, this) / 1000f) * Utilities.Normalise(Main.player.Position - Position);
                 }
 
                 if (AITimer == 800)
