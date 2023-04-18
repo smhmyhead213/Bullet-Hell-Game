@@ -216,7 +216,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = MathF.PI / 2 + Utilities.VectorToAngle(mousePosition - Position);
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f * 100f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Yellow);
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Yellow);
                 
             }
 
