@@ -51,7 +51,7 @@ namespace bullethellwhatever.MainFiles
         public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
-        public static List<DialogueObject> activeDialogues = new List<DialogueObject>();
+        //public static List<DialogueObject> activeDialogues = new List<DialogueObject>();
 
         public static Player player = new Player();
 

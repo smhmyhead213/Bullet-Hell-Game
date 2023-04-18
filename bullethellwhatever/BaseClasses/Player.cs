@@ -221,6 +221,8 @@ namespace bullethellwhatever.BaseClasses
 
             else if (ActiveWeapon == Weapons.MachineGun)
             {
+                PlayerDeathray.IsActive = false;
+
                 ShotCooldown = 3f;
 
                 PlayerProjectile playerProjectile = new PlayerProjectile();
@@ -233,6 +235,8 @@ namespace bullethellwhatever.BaseClasses
 
             else if (ActiveWeapon == Weapons.Homing)
             {
+                PlayerDeathray.IsActive = false;
+
                 ShotCooldown = 10f;
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();

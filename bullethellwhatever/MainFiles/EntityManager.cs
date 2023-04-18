@@ -16,7 +16,7 @@ namespace bullethellwhatever.MainFiles
             Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
             Main.activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
 
-            Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
+            //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
         }
 
         public static void AddEntitiesNextFrame()

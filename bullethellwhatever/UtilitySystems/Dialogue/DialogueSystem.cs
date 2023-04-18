@@ -68,16 +68,5 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             DialogueTimer = 0;
             CharactersWritten = 0;
         }
-
-        public void MakeSureThisIsTheOnlyActiveDialogue()
-        {
-            for (int i = 0; i < Main.activeDialogues.Count; i++) //Delete all previoous instances of itself; each boss only has 1 dialogue active at once.
-            {
-                if (MainFiles.Main.activeDialogues[i].Owner == Owner)
-                {
-                    MainFiles.Main.activeDialogues[i].Owner.DeleteNextFrame = true;
-                }
-            }
-        }
     }
 }

@@ -597,11 +597,12 @@ namespace bullethellwhatever.Bosses
                     Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
                     Velocity = Vector2.Zero; //amke it sit in the middle
                     Rotation = 0;
+                    dialogueSystem.ClearDialogue();
 
                 }
 
                 if (AITimer < despStartTime)
-                {
+                {                    
                     dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
 
                     Drawing.ScreenShake(5, 3000);

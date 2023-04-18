@@ -54,6 +54,11 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
 
+        //public override void DealDamage(Entity entity)
+        //{
+
+        //}
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Drawing.BetterDraw(Main.player.Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
