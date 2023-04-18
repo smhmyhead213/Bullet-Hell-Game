@@ -105,6 +105,13 @@ namespace bullethellwhatever.MainFiles
                 }
             }
 
+            if (!(GameState.State == GameState.GameStates.InGame))
+            {
+                Main.activeNPCs.Clear();
+                Main.activeProjectiles.Clear();
+                Main.activeFriendlyProjectiles.Clear();
+            }
+
             if (GameState.State == GameState.GameStates.InGame)
             {
                 if (!isGameStarted)

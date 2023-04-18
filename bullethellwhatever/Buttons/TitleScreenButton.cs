@@ -21,10 +21,6 @@ namespace bullethellwhatever.Buttons
         {
             GameState.State = Destination;
 
-            Main.activeNPCs.Clear();
-            Main.activeProjectiles.Clear();
-            Main.activeFriendlyProjectiles.Clear(); //please work
-
             foreach (Button button in Main.activeButtons)
             {
                 //I HATE YOU I HATE YOU I HATE YOU I HATE UI I HATE UI I HATE UI
