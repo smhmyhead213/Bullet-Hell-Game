@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles.TelegraphLines;
+using System.Collections.Generic;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -24,6 +26,7 @@ namespace bullethellwhatever.BaseClasses
         public float Rotation;
         public bool IsDesperationOver;
         public Color Colour;
+        public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
 
         public static bool touchingBottom(Entity entity, int screenHeight) //hieght is height of texture
         {

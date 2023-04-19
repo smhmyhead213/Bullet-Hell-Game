@@ -6,6 +6,8 @@ using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
+using System.Collections.Generic;
+using bullethellwhatever.Projectiles.TelegraphLines;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -14,6 +16,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float IFrames;
         public bool ContactDamage;
+
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour)
@@ -31,6 +34,7 @@ namespace bullethellwhatever.BaseClasses
             Health = MaxHealth;
             MaxHP = MaxHealth;
             ContactDamage = false;
+
         }
 
         public override void AI()

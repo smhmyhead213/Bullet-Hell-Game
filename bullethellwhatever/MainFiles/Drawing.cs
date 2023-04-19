@@ -8,6 +8,8 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.UtilitySystems;
+using System.Diagnostics.Contracts;
+using bullethellwhatever.Projectiles.TelegraphLines;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -59,7 +61,9 @@ namespace bullethellwhatever.MainFiles
             //Draw every enemy projectile.
             foreach (Projectile projectile in Main.activeProjectiles)
             {                
-                    projectile.Draw(Main._spriteBatch);
+                projectile.Draw(Main._spriteBatch);
+                DrawTelegraphs(projectile);
+                    
             }
 
             foreach (NPC npc in Main.activeNPCs) //move this back later
@@ -67,12 +71,14 @@ namespace bullethellwhatever.MainFiles
                 Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
 
                 BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+                DrawTelegraphs(npc);
             }
 
             //Draw every player projectile.
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
                 projectile.Draw(Main._spriteBatch);
+                DrawTelegraphs(projectile);
             }
 
             //Draw the boss health bar. Note that active bosses will always be the first entries in the ActiveNPCs list.
@@ -131,11 +137,15 @@ namespace bullethellwhatever.MainFiles
             }
 
             else Main._spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
-
-
-
         }
 
+        public static void DrawTelegraphs(Entity entity)
+        {
+            foreach (TelegraphLine telegraphLine in entity.activeTelegraphs)
+            {
+                telegraphLine.Draw(Main._spriteBatch);
+            }
+        }
         public static void ScreenShake(int magnitude, int duration) 
         {
             if (magnitude > screenShakeObject.Magnitude.X) //always apply strongest screen shake

@@ -39,6 +39,7 @@ namespace bullethellwhatever.MainFiles
         public static Texture2D backButton;
 
         public static Effect gradientShader;
+        public static Effect telegraphLineShader;
 
         public static SpriteFont font;
 
@@ -101,6 +102,7 @@ namespace bullethellwhatever.MainFiles
             backButton = Content.Load<Texture2D>("Back");
 
             gradientShader = Content.Load<Effect>("GradientShader");
+            telegraphLineShader = Content.Load<Effect>("TelegraphLineShader");
 
             GameState.State = GameState.GameStates.TitleScreen;
             

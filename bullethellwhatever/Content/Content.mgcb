@@ -158,3 +158,9 @@
 /processorParam:TextureFormat=Color
 /build:StartButton.png
 
+#begin TelegraphLineShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:TelegraphLineShader.fx
+

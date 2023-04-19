@@ -161,10 +161,6 @@ namespace bullethellwhatever.Projectiles.Base
 
                 spritebatch.Begin(SpriteSortMode.Deferred);
 
-                //Utilities.drawTextInDrawMethod(deathray.Rotation.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
-
-                //Utilities.drawTextInDrawMethod(deathray.AngularVelocity.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 4), spritebatch, Main.font, Color.White);
-
             }
         }
     }
