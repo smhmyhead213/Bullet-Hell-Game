@@ -55,7 +55,7 @@ namespace bullethellwhatever
 
         public static float VectorToAngle(Vector2 vector)
         {
-            return MathF.Atan2(vector.Y, vector.X);
+            return MathF.Atan2(vector.Y, vector.X) + MathF.PI; //ANGLES ARE FROM THE LEFT
         }
         public static float AngleBetween(Vector2 v1, Vector2 v2)
         {

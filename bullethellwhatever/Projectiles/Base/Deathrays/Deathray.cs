@@ -63,16 +63,16 @@ namespace bullethellwhatever.Projectiles.Base
         public override bool IsCollidingWithEntity(Projectile projectile, Entity entity) //dont forget to add a check to see if the player is within the beams length, to ensure that the beam doesnt have infinite range
         {
             //return IsAnXCoordinateInTheBeam(entity.Position.X, this) && IsAYCoordinateInTheBeam(entity.Position.X, entity.Position.Y, this);
-            return IsTheTargetInTheBeam(entity.Position.X, entity.Position.Y, this);
+            return IsTheTargetInTheBeam(entity, this);
         }
 
-        public static bool IsTheTargetInTheBeam(float xcoord, float ycoord, Deathray deathray) 
+        public static bool IsTheTargetInTheBeam(Entity entity, Deathray deathray) 
         {
             if (deathray.IsActive)
             {
-                if (Utilities.DistanceBetweenVectors(new Vector2(xcoord, ycoord), deathray.Origin) < deathray.Length)
+                if (Utilities.DistanceBetweenVectors(new Vector2(entity.Position.X, entity.Position.Y), deathray.Origin) < deathray.Length)
                 {
-                    Vector2 playerVector = new Vector2(xcoord, ycoord);
+                    Vector2 playerVector = new Vector2(entity.Position.X, entity.Position.Y);
 
                     //Find the angle between the player and the vertical using the dot/scalar product.
 
@@ -80,7 +80,9 @@ namespace bullethellwhatever.Projectiles.Base
 
                     float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Origin).Length());
 
-                    float angleTolerance = MathF.PI / 30f;
+                    float diagonalOfTarget = MathF.Sqrt(MathF.Pow(entity.Hitbox.Width, 2) + MathF.Pow(entity.Hitbox.Height, 2));
+
+                    float angleTolerance = MathF.Atan(diagonalOfTarget / 2 / Utilities.DistanceBetweenVectors(deathray.Origin, entity.Position));
 
                     // For the collision checks, small degrees of error are used to account for Angle and Rotation never being exactly equal due to floating point jank.
 
@@ -116,6 +118,26 @@ namespace bullethellwhatever.Projectiles.Base
 
             return false;
         }
+
+        public override void DealDamage()
+        {
+            foreach (NPC npc in Main.activeNPCs)
+            {
+                if (npc.IsHarmful != IsHarmful)
+                {
+                    if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0)
+                    {
+                        if (npc.IFrames == 0)
+                        {
+                            npc.IFrames = 5f;
+
+                            npc.Health = npc.Health - Damage;
+                        }
+                    }
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)

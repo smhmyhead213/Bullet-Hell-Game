@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.MainFiles;
 using System.Runtime.CompilerServices;
 using System;
+using bullethellwhatever.Projectiles.Base;
+using SharpDX.Direct3D9;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -11,7 +13,6 @@ namespace bullethellwhatever.BaseClasses
     {
         public float Acceleration;
         public float TimeAlive;
-        public bool IsHarmful;
         public Entity Owner;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour)
         {
@@ -54,10 +55,27 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
 
-        //public override void DealDamage(Entity entity)
-        //{
+        public virtual void DealDamage()
+        {
+            foreach (NPC npc in Main.activeNPCs)
+            {
+                if (npc.IsHarmful != IsHarmful)
+                {
+                    if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0)
+                    {
+                        if (npc.IFrames == 0)
+                        {
+                            npc.IFrames = 5f;
 
-        //}
+                            npc.Health = npc.Health - Damage;
+
+                            DeleteNextFrame = true;
+
+                        }
+                    }
+                }
+            }
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

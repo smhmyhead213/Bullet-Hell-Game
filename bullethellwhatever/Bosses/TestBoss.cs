@@ -42,6 +42,7 @@ namespace bullethellwhatever.Bosses
             DespBombCounter = 0;
             HasDesperationStarted = false;
             IsDesperationOver = false;
+            IsHarmful = true;
             dialogueSystem = new DialogueSystem(this);
         }
 
@@ -56,8 +57,6 @@ namespace bullethellwhatever.Bosses
 
         public override void AI()
         {
-
-            CheckForAndTakeDamage();
 
             if (Health < 0 && IsDesperationOver)
             {

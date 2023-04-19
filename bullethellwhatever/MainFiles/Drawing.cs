@@ -44,7 +44,6 @@ namespace bullethellwhatever.MainFiles
                 //Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
             }
 
-            
             //Calculate transparency based on the player's remaining immunity frames.
 
             float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes

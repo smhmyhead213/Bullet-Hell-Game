@@ -30,15 +30,13 @@ namespace bullethellwhatever.Bosses
             IsDesperationOver = false;
             dialogueSystem = new DialogueSystem(this);
             DeathrayAngularVelocity = 180f;
+            IsHarmful = true;
         }
 
 
 
         public override void AI()
         {
-           
-
-            CheckForAndTakeDamage();
 
             if (Health < 0 && IsDesperationOver)
                 DeleteNextFrame = true;
@@ -108,6 +106,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == 0)
             {
+                dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
                 deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 500f, DeathrayAngularVelocity, 0f, this, true, Color.Red);
             }            
 
@@ -117,22 +116,10 @@ namespace bullethellwhatever.Bosses
                 deathray.AngularVelocity = DeathrayAngularVelocity;
             }
 
-            if (AITimer < 200)
+            if (AITimer == 450)
             {
-                dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
+                dialogueSystem.Dialogue(Position, "among us", 4, 400);
             }
-
-            if (AITimer == 400)
-            {
-                dialogueSystem.ClearDialogue();
-            }
-
-            if (AITimer > 400)
-            {
-                dialogueSystem.Dialogue(Position, "i had a good job until my boss accused me of stealing *jail bar closing sound* i BETTER CALL SAUL i was out partying minding my own business *crash sound and cat screech sound* you are under arrest I BETTER CALL SAUL Hi, I'm Saul Goodman. Did you know that you have rights? The Constitution says you do. And so do I. I believe that until proven guilty, every man, woman, and child in this country is innocent. And that's why I fight for you, Albuquerque! Better call Saul", 4, 9999999);
-            }
-
-
         }
 
             public void EndAttack(ref float AITimer, ref int AttackNumber)

@@ -14,6 +14,6 @@ namespace bullethellwhatever.BaseClasses
 {
     public class Boss : NPC
     {
-
+        
     }
 }

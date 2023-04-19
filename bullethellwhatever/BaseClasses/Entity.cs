@@ -13,6 +13,7 @@ namespace bullethellwhatever.BaseClasses
         public Texture2D Texture;
         public bool isBoss;
         public bool isPlayer;
+        public bool IsHarmful;
         public float AITimer;
         public float Damage;
         public Rectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2

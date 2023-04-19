@@ -70,7 +70,7 @@ namespace bullethellwhatever.BaseClasses
 
             Velocity = Vector2.Zero;
 
-            if (kstate.IsKeyDown(Keys.W) && !touchingTop(this)) //fix the movement so you dont move faster diagonally, future you's problem
+            if (kstate.IsKeyDown(Keys.W) && !touchingTop(this)) 
             {
                 Velocity.Y = Velocity.Y - 1f;
             }
@@ -214,7 +214,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 ShotCooldown = 1f;
 
-                float initialRotation = MathF.PI / 2 + Utilities.VectorToAngle(mousePosition - Position);
+                float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2;
 
                 PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Yellow);
                 

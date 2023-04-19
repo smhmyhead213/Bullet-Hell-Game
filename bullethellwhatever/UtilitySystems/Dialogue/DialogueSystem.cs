@@ -37,29 +37,10 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
                 }
             }
         }
+
         public void Dialogue(Vector2 position, string dialogueToWrite, int framesBetweenLetters, int duration)
         {
-            dialogueObject.Position = new Vector2(position.X, position.Y - 50f);
-
-            //fix this drawing every possible string every frame
-            if (DialogueTimer / framesBetweenLetters == CharactersWritten + 1)
-            {
-                if (CharactersWritten <= dialogueToWrite.Length)
-                {
-                    //dialogueObject = new DialogueObject(position, dialogueToWrite.Substring(0, CharactersWritten), Owner);                    
-                    dialogueObject.Text = dialogueToWrite.Substring(0, CharactersWritten);
-                }
-
-                else
-                {
-                    dialogueObject.DeleteNextFrame = true;
-                }
-
-                CharactersWritten++;
-
-                HasWritingStarted = true;             
-            }
-            DialogueTimer++;
+            dialogueObject = new DialogueObject(position, dialogueToWrite, Owner, framesBetweenLetters, duration);
         }
 
         public void ClearDialogue()

@@ -9,20 +9,56 @@ using bullethellwhatever.BaseClasses;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {
-    public struct DialogueObject
+    public class DialogueObject
     {
         public Vector2 Position;
         public string Text;
-        public bool DeleteNextFrame;
+        public string TextToWrite;
         public Entity Owner;
+        public int FramesBetweenLetters;
+        public int Duration;
+        public int DialogueTimer;
 
-        public DialogueObject(Vector2 position, string text, Entity owner)
+        public bool DeleteNextFrame;
+        public int CharactersWritten;
+
+        public DialogueObject(Vector2 position, string text, Entity owner, int framesBetweenLetters, int duration)
         {
             Position = position;
-            Text = text;
+            Text = string.Empty;
+            TextToWrite = text;
             DeleteNextFrame = false;
+            FramesBetweenLetters = framesBetweenLetters;
+            Duration = duration;
             Owner = owner;
 
+            DialogueTimer = 0;
+
+        }
+
+        public void DoDialogue()
+        {
+            Position = new Vector2(Owner.Position.X, Owner.Position.Y - 50f);
+
+            //fix this drawing every possible string every frame
+            if (DialogueTimer / FramesBetweenLetters == CharactersWritten)
+            {
+                if (CharactersWritten <= TextToWrite.Length)
+                {
+                    //dialogueObject = new DialogueObject(position, dialogueToWrite.Substring(0, CharactersWritten), Owner);                    
+                    Text = TextToWrite.Substring(0, CharactersWritten);
+                }
+
+                CharactersWritten++;
+              
+            }
+
+            DialogueTimer++;
+
+            if (DialogueTimer == Duration)
+            {
+                Text = string.Empty;
+            }
         }
     }
 }

@@ -42,16 +42,19 @@ namespace bullethellwhatever.MainFiles
             foreach (NPC npc in Main.activeNPCs)
             {
                 npc.AI();
+                npc.dialogueSystem.dialogueObject.DoDialogue();
             }
 
             foreach (Projectile projectile in Main.activeProjectiles)
             {
                 projectile.AI();
+                projectile.DealDamage();
             }
 
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
                 projectile.AI();
+                projectile.DealDamage();
             }
 
 
