@@ -75,6 +75,9 @@ namespace bullethellwhatever.MainFiles
             }
 
             Drawing.ScreenShakeTimer = 0;
+
+            Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
+
             Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.playerTexture, new Vector2(5, 5), Main.activeNPCs[0].Health, Color.White);
         }
 

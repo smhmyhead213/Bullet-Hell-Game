@@ -7,12 +7,14 @@ using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.MainFiles
 {
     public static class Drawing
     {
         public static bool AreButtonsDrawn;
+        public static ScreenShakeObject screenShakeObject;
         public static Vector2 ScreenShakeMagnitude;
         public static int ScreenShakeDuration;
         public static int ScreenShakeTimer;
@@ -113,42 +115,38 @@ namespace bullethellwhatever.MainFiles
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
 
             //Draw the item at the position, moved by the amount the screen is shaking.
-            Vector2 positionWithScreenShake = new(position.X + ScreenShakeMagnitude.X, position.Y + ScreenShakeMagnitude.Y);
 
-            Main._spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2),  scale, spriteEffects, layerDepth);
+            if (screenShakeObject.Timer > 0)
+            {
+                Random rng = new Random();
+
+                //int randomNumber = rng.Next(screenShakeObject.MaxMagnitude);
+
+                if (Timer % 3 == 0)
+                    screenShakeObject.Magnitude = new Vector2(rng.Next(screenShakeObject.MaxMagnitude), rng.Next(screenShakeObject.MaxMagnitude));
+
+                Vector2 positionWithScreenShake = new(position.X + screenShakeObject.Magnitude.X, position.Y + screenShakeObject.Magnitude.Y);
+
+                Main._spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
+            }
+
+            else Main._spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
+
+
+
         }
 
-        public static void ScreenShake(int magnitude, int duration) //the way screenshakes are accessed outwith Draw
+        public static void ScreenShake(int magnitude, int duration) 
         {
-
-            // there is a bug i need to fix where screenshake can only occur once ever, i need to reset it when a new screenshake is applied
-            ScreenShakeMagnitude = new Vector2(magnitude, magnitude);
-
-            if (ScreenShakeTimer >= 0 && ScreenShakeTimer < duration)
-            {
-                ScreenShakeTimer++;
-                IsScreenShaking = true;                
-            }
-            else
-            {
-                IsScreenShaking = false;
-            }
-            
-            
+            if (magnitude > screenShakeObject.Magnitude.X) //always apply strongest screen shake
+                screenShakeObject = new ScreenShakeObject(magnitude, duration);
         }
 
         private static void HandleScreenShake() //under the hood screen shaking
         {
-            if (IsScreenShaking)
-            {
-                Random rng = new Random();
-
-                ScreenShakeMagnitude = new Vector2(rng.Next((int)ScreenShakeMagnitude.X), rng.Next((int)ScreenShakeMagnitude.X)); //you could use a lerp later on to make the shaking increase then decrease towards the end
-            }
-
-            else ScreenShakeMagnitude = Vector2.Zero;
-
+            screenShakeObject.TickDownDuration();
         }
+
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
         {
             float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;

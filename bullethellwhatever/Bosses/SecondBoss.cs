@@ -100,14 +100,13 @@ namespace bullethellwhatever.Bosses
         
         public void DialogueTest(ref float AITimer, ref int AttackNumber)
         {
-            Drawing.ScreenShake(3, 300);
-
             Deathray deathray = new Deathray();
 
             if (AITimer == 0)
             {
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
                 deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 500f, DeathrayAngularVelocity, 0f, this, true, Color.Red);
+                Drawing.ScreenShake(4, 300);
             }            
 
             if (AITimer > 0)
