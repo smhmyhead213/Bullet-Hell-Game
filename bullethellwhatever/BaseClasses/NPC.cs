@@ -52,7 +52,7 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
 
-        public void CheckForAndTakeDamage()
+        public void CheckForAndTakeDamage() // delete this (you dont need it anymore)
         {
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
