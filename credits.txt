@@ -2,6 +2,11 @@ coders:
 
 smh my head
 
+spriters:
+
+GemmAH
+anonymoose
+
 helpful people:
 
 Dominic Karma
@@ -10,7 +15,6 @@ Toasty
 testers:
 
 Gis
-GemmAH
 Dixie Normus
 Mikiosmo2006
 SALAAK
@@ -21,9 +25,9 @@ KevinWasntHere
 MphWtzll
 Chloedorf
 CATTE
-anonymoose
 Adoum Koga
 WyvernElement
 Olixx12
 Shipmans AGLA
 Jav
+The Pyro
