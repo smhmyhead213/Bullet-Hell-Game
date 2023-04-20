@@ -73,14 +73,20 @@ namespace bullethellwhatever.Projectiles.Base
                 {
                     Vector2 playerVector = new Vector2(entity.Position.X, entity.Position.Y);
 
-                    //Find the angle between the player and the vertical using the dot/scalar product.
+                    // Find the angle between the player and the vertical using the dot/scalar product.
 
                     float dotProduct = Vector2.Dot(Vector2.UnitY, playerVector - deathray.Origin);
-
+                    
+                    // Find the angle that the deathray and entity must share approximtely for a collision.
+                    
                     float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Origin).Length());
-
+                    
+                    // Find the diagonal length of the entity to collide with.
+                    
                     float diagonalOfTarget = MathF.Sqrt(MathF.Pow(entity.Hitbox.Width, 2) + MathF.Pow(entity.Hitbox.Height, 2));
-
+                    
+                    // Find the appropriate angle tolerance needed to perfectly encapsulate the entity.
+                    
                     float angleTolerance = MathF.Atan(diagonalOfTarget / 2 / Utilities.DistanceBetweenVectors(deathray.Origin, entity.Position));
 
                     // For the collision checks, small degrees of error are used to account for Angle and Rotation never being exactly equal due to floating point jank.
