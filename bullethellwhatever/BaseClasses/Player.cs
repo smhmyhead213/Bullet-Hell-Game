@@ -61,7 +61,7 @@ namespace bullethellwhatever.BaseClasses
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            PlayerDeathray.Origin = Position;
+            PlayerDeathray.Origin = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
 
             if (ScrollCooldown > 0)
             {
@@ -91,9 +91,10 @@ namespace bullethellwhatever.BaseClasses
             }
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
+            
             if (GameState.WeaponSwitchControl) //if scroll wheel controls
             {
-                if (mouseState.ScrollWheelValue / 120 % 3 == 0 && ScrollCooldown == 0)  //are you happy now gemma??????????????????????
+                if (mouseState.ScrollWheelValue / 120 % 3 == 0 && ScrollCooldown == 0)  //are you happy now Gemma??????????????????????
                 {
                     ActiveWeapon = Weapons.Laser;
                     ScrollCooldown = 3f;
@@ -120,7 +121,7 @@ namespace bullethellwhatever.BaseClasses
 
             else
             {
-                if (kstate.IsKeyDown(Keys.D1))  //are you happy now gemma??????????????????????
+                if (kstate.IsKeyDown(Keys.D1))  
                 {
                     ActiveWeapon = Weapons.Laser;
                     ScrollCooldown = 3f;
@@ -139,15 +140,12 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
                 Main.activeButtons.Clear();
             }
-
-
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             Hitbox = new((int)Position.X - Texture.Width / 2, (int)Position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
@@ -171,14 +169,12 @@ namespace bullethellwhatever.BaseClasses
                     {
                         TakeDamage(projectile);
                     }
-
                 }
 
                 foreach (NPC npc in Main.activeNPCs)
                 {
                     if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
                         TakeDamage(npc);
-
                 }
 
                 if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0)
@@ -214,10 +210,9 @@ namespace bullethellwhatever.BaseClasses
             {
                 ShotCooldown = 1f;
 
-                float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2;
+                float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Yellow);
-                
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, Texture, 5f, 2000f, 0f, 0f, this, false, Color.Yellow);               
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -237,13 +232,10 @@ namespace bullethellwhatever.BaseClasses
             else if (ActiveWeapon == Weapons.Homing)
             {
                 PlayerDeathray.IsActive = false;
-
                 ShotCooldown = 10f;
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
-
-
-
+                
                 projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.3f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen);
 
 
