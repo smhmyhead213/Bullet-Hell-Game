@@ -19,7 +19,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public float Width;
         public float Length;
         public int TimeAlive;
-
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, Texture2D texture, Entity owner)
         {
             Rotation = rotation;

@@ -59,19 +59,21 @@ namespace bullethellwhatever.MainFiles
             //Draw every active NPC.           
 
             //Draw every enemy projectile.
+
             foreach (Projectile projectile in Main.activeProjectiles)
-            {                
+            {
                 projectile.Draw(Main._spriteBatch);
                 DrawTelegraphs(projectile);
-                    
+
             }
 
             foreach (NPC npc in Main.activeNPCs) //move this back later
             {
                 Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
 
-                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
                 DrawTelegraphs(npc);
+                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+                
             }
 
             //Draw every player projectile.

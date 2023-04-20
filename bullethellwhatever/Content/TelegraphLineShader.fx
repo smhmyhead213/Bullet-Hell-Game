@@ -39,8 +39,11 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
+    float distanceFromCentre = abs(input.TextureCoordinates.x - 0.5) * 2;
     
-    return float4(-4 * input.TextureCoordinates.x * (input.TextureCoordinates.x - 1), 0, 0, 0);
+    float opacity = 1 - pow(distanceFromCentre, 1.5);
+    
+    return float4(1, 0, 0, 1) * opacity * 0.5;
     
 }
 
