@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.Projectiles.Base; //bad code
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 
