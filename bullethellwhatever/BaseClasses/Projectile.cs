@@ -25,7 +25,6 @@ namespace bullethellwhatever.BaseClasses
             DeleteNextFrame = false;
             Size = size;
             Owner = owner;
-
             IsHarmful = isHarmful;
 
             if (isHarmful)
@@ -61,7 +60,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 if (npc.IsHarmful != IsHarmful)
                 {
-                    if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0)
+                    if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0) //why am i checking this twice? remove
                     {
                         if (npc.IFrames == 0)
                         {
