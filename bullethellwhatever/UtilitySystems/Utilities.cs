@@ -57,6 +57,11 @@ namespace bullethellwhatever
         {
             return MathF.Atan2(vector.Y, vector.X) + MathF.PI; //ANGLES ARE FROM THE LEFT
         }
+
+        public static Vector2 AngleToVector(float angle)
+        {
+            return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
+        }
         public static float AngleBetween(Vector2 v1, Vector2 v2)
         {
             return MathF.Acos(Vector2.Dot(SafeNormalise(v1, Vector2.Zero), SafeNormalise(v2, Vector2.Zero)));

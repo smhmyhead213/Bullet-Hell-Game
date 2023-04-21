@@ -69,10 +69,10 @@ namespace bullethellwhatever.MainFiles
 
             foreach (NPC npc in Main.activeNPCs) //move this back later
             {
-                Main.gradientShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
+                Main.deathrayShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
 
                 DrawTelegraphs(npc);
-                BetterDraw(Main.player.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+                BetterDraw(npc.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
                 
             }
 

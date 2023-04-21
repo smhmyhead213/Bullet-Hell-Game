@@ -37,8 +37,9 @@ namespace bullethellwhatever.MainFiles
         public static Texture2D numberKeysButton;
         public static Texture2D scrollWheelButton;
         public static Texture2D backButton;
+        public static Texture2D deathrayNoiseMap;
 
-        public static Effect gradientShader;
+        public static Effect deathrayShader;
         public static Effect telegraphLineShader;
 
         public static SpriteFont font;
@@ -101,8 +102,11 @@ namespace bullethellwhatever.MainFiles
             scrollWheelButton = Content.Load<Texture2D>("Scroll");
             backButton = Content.Load<Texture2D>("Back");
 
-            gradientShader = Content.Load<Effect>("GradientShader");
-            telegraphLineShader = Content.Load<Effect>("TelegraphLineShader");
+            deathrayNoiseMap = Content.Load<Texture2D>("Shaders/RayNoiseMap");
+            
+            deathrayShader = Content.Load<Effect>("Shaders/DeathrayShader");
+
+            telegraphLineShader = Content.Load<Effect>("Shaders/TelegraphLineShader");
 
             GameState.State = GameState.GameStates.TitleScreen;
             

@@ -143,6 +143,31 @@ namespace bullethellwhatever.Projectiles.Base
             }
         }
 
+        public struct VertexPosition2DColor : IVertexType
+        {
+            public Vector2 _position;
+            public Color _color;
+            public Vector2 _textureCoordinates;
+
+            public VertexDeclaration VertexDeclaration => _vertexDeclaration;
+
+            // This is used via the interface for the FNA prim drawer to read the information about the point and properly
+            // draw our primitive.
+            private static readonly VertexDeclaration _vertexDeclaration = new(new VertexElement[]
+            {
+                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
+                new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+                new VertexElement(12, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
+            });
+
+            public VertexPosition2DColor(Vector2 position, Color color, Vector2 textureCoordinates)
+            {
+                _position = position;
+                _color = color;
+                _textureCoordinates = textureCoordinates;
+            }
+        }
+
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
@@ -151,16 +176,40 @@ namespace bullethellwhatever.Projectiles.Base
 
                 spritebatch.Begin(SpriteSortMode.Immediate);
 
-                Main.gradientShader.Parameters["uTime"]?.SetValue(TimeAlive);
-                Main.gradientShader.Parameters["AngularVelocity"]?.SetValue(AngularVelocity);
+                List<VertexPosition2DColor> vertices = new();
+                // either set this here or use one you already have.
+                // Whatever it is for you.
+                Vector2 laserEndPos = Origin + (Utilities.AngleToVector(Rotation) * Length);
+                    // set this to the rotation the laser is facing times the length added to the start pos
 
-                Main.gradientShader.CurrentTechnique.Passes[0].Apply();
+                for (int i = 0; i < 8; i++)
+                {
+                    float progress = (float)i / 8f;
+
+                    Vector2 position = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, -MathHelper.PiOver2)) * Width;
+                    Vector2 position2 = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, MathHelper.PiOver2)) * Width;
+
+                    Vector2 textureCoords = new(progress, 0f);
+                    Vector2 textureCoords2 = new(progress, 1f);
+
+                    vertices.Add(new VertexPosition2DColor(position, Colour, textureCoords));
+                    vertices.Add(new VertexPosition2DColor(position2, Colour, textureCoords2));
+                }
+
+                Main.deathrayShader.Parameters["uTime"]?.SetValue(TimeAlive);
+                //Main.deathrayShader.Parameters["noiseMap"]?.SetValue(Main.deathrayNoiseMap);
+
+                Main._graphics.GraphicsDevice.Textures[1] = Main.deathrayNoiseMap;
+
+                Main.deathrayShader.CurrentTechnique.Passes[0].Apply();
 
                 Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
                 Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-                spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                //spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+
+                Main._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count - 2);
 
                 spritebatch.End();
 

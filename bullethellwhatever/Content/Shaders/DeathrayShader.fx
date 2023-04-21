@@ -1,9 +1,12 @@
 ﻿sampler mainTexture : register(s0);
 
+texture noiseMap;
+sampler noiseMapSampler : register(s1);
+
 matrix worldViewProjection;
+
 float uTime;
-float bossHPRatio;
-float AngularVelocity;
+int direction; // 1 or -1
 
 struct VertexShaderInput
 {
@@ -27,6 +30,7 @@ struct VertexShaderOutput
 
 VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 {
+    
     VertexShaderOutput output = (VertexShaderOutput) 0;
     float4 pos = mul(input.Position, worldViewProjection);
     output.Position = pos;
@@ -38,18 +42,33 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 }
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
-{
-    float offsetDueToVelocity = input.TextureCoordinates.y / 10.0;
+{   
+    //direction = 1;
     
-    float minimumWidth = lerp(0.1, 0.5, input.TextureCoordinates.y) - offsetDueToVelocity;
-    float maximumWidth = lerp(0.9, 0.5, input.TextureCoordinates.y) - offsetDueToVelocity;
+    //float2 uv = input.TextureCoordinates;
+
+    ////float opacity = tex2D(noiseMap, float2(frac(uv.x + uTime * direction), uv.y)).b;
+
+    ////return float4(1, 0, 0, 1) * opacity;
     
-    if (input.TextureCoordinates.x > minimumWidth && input.TextureCoordinates.x < maximumWidth)
-    {
-        return float4(1 - input.TextureCoordinates.y, 0, 0, 0.3);
-    }
-    else
-        return float4(0, 0, 0, 0);
+    //return tex2D(noiseMapSampler, float2(frac(uv.x + uTime * direction), uv.y));
+    
+    float4 color = input.Color;
+    float2 coords = input.TextureCoordinates;
+    // Get the pixel from the provided streak/fade map.
+    float4 fadeMapColor = tex2D(noiseMapSampler, float2(frac(coords.x * 5 - uTime * 2.5), coords.y));
+    
+    // Define the shape fadeout.
+    float bloomFadeout = pow(sin(coords.y * 3.141), 6);
+
+    // Calcuate the grayscale version of the pixel and use it as the opacity.
+    float opacity = (fadeMapColor.r + 0.5) * bloomFadeout;
+    // Lerp between the base color, and the provided one.
+    //float4 colorCorrected = lerp(color, float4(uColor, opacity), opacity);
+
+    return opacity * 2.5;
+    
+    //return float4(1, 0, 0, 1);
     
 }
 

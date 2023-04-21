@@ -68,12 +68,6 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
-#begin GradientShader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:GradientShader.fx
-
 #begin HardButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -146,6 +140,30 @@
 /processorParam:TextureFormat=Color
 /build:SettingsButton.png
 
+#begin Shaders/DeathrayShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/DeathrayShader.fx
+
+#begin Shaders/RayNoiseMap.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Shaders/RayNoiseMap.png
+
+#begin Shaders/TelegraphLineShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/TelegraphLineShader.fx
+
 #begin StartButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -157,10 +175,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:StartButton.png
-
-#begin TelegraphLineShader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:TelegraphLineShader.fx
 
