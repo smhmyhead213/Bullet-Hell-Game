@@ -438,11 +438,15 @@ namespace bullethellwhatever.Bosses
 
             public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber, float numberOfProjectiles, float projectileSpeed)
             {
-                dialogueSystem.Dialogue(Position, "Test dialogue", 4, 800);
+                if (AITimer == 0)
+                {
+                    dialogueSystem.Dialogue(Position, "Test dialogue", 4, 800);
+                }
 
                 if (AITimer == 510)
                 {
                     ShotgunFrequency = 10f;
+                    dialogueSystem.ClearDialogue();
                 }
 
                 if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 60)
@@ -596,13 +600,13 @@ namespace bullethellwhatever.Bosses
                     Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
                     Velocity = Vector2.Zero; //amke it sit in the middle
                     Rotation = 0;
-                    dialogueSystem.ClearDialogue();
+                    dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
 
                 }
 
                 if (AITimer < despStartTime)
                 {                    
-                    dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
+                    
 
                     Drawing.ScreenShake(5, 3000);
                 }
@@ -612,6 +616,7 @@ namespace bullethellwhatever.Bosses
                     int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
                     Main.activeProjectiles.Clear();
                     deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, this, true, Color.Red);
+                    dialogueSystem.ClearDialogue();
                 }
 
                 if (AITimer > despStartTime)
