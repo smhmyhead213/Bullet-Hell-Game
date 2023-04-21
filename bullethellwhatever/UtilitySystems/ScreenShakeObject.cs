@@ -10,14 +10,14 @@ namespace bullethellwhatever.UtilitySystems
     public class ScreenShakeObject
     {
         public Vector2 Magnitude;
-        public int MaxMagnitude;
+        public Vector2 MaxMagnitude;
         public int Duration;
         public int Timer;
 
         public ScreenShakeObject(int magnitude, int duration)
         {
             Magnitude = new Vector2(magnitude, magnitude);
-            MaxMagnitude = magnitude;
+            MaxMagnitude = Magnitude;
             Duration = duration;
             Timer = duration;
         }
@@ -29,6 +29,7 @@ namespace bullethellwhatever.UtilitySystems
             if (Timer == 0)
             {
                 Magnitude = Vector2.Zero;
+                MaxMagnitude = Vector2.Zero;
             }
         }
 

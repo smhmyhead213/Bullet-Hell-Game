@@ -601,14 +601,7 @@ namespace bullethellwhatever.Bosses
                     Velocity = Vector2.Zero; //amke it sit in the middle
                     Rotation = 0;
                     dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
-
-                }
-
-                if (AITimer < despStartTime)
-                {                    
-                    
-
-                    Drawing.ScreenShake(5, 3000);
+                    Drawing.ScreenShake(4, 3000);
                 }
 
                 if (AITimer == despStartTime)
@@ -621,7 +614,7 @@ namespace bullethellwhatever.Bosses
 
                 if (AITimer > despStartTime)
                 {
-                    Drawing.ScreenShake(4, 3000);
+                    Drawing.ScreenShake(3, 3000);
 
                     float bombRotation = MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
 

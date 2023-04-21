@@ -125,14 +125,7 @@ namespace bullethellwhatever.MainFiles
             //Draw the item at the position, moved by the amount the screen is shaking.
 
             if (screenShakeObject.Timer > 0)
-            {
-                Random rng = new Random();
-
-                //int randomNumber = rng.Next(screenShakeObject.MaxMagnitude);
-
-                if (Timer % 3 == 0)
-                    screenShakeObject.Magnitude = new Vector2(rng.Next(screenShakeObject.MaxMagnitude), rng.Next(screenShakeObject.MaxMagnitude));
-
+            { 
                 Vector2 positionWithScreenShake = new(position.X + screenShakeObject.Magnitude.X, position.Y + screenShakeObject.Magnitude.Y);
 
                 Main._spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
@@ -157,6 +150,10 @@ namespace bullethellwhatever.MainFiles
         private static void HandleScreenShake() //under the hood screen shaking
         {
             screenShakeObject.TickDownDuration();
+
+            Random rng = new Random();
+
+            screenShakeObject.Magnitude = new(rng.Next((int)screenShakeObject.MaxMagnitude.X), rng.Next((int)screenShakeObject.MaxMagnitude.Y));
         }
 
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
