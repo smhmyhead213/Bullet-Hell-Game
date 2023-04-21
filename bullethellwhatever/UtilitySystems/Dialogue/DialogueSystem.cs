@@ -29,7 +29,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
         {
             foreach (NPC npc in Main.activeNPCs)
             {
-                if (npc.dialogueSystem.dialogueObject.Text is not null)
+                if (npc.dialogueSystem.dialogueObject is not null)
                 {
                     Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3.5f * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
 

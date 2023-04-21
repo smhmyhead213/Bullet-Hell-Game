@@ -106,7 +106,7 @@ namespace bullethellwhatever.Bosses
             if (AITimer == 0)
             {
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
-                deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 50f, 2000f, DeathrayAngularVelocity, 0f, this, true, Color.Red);
+                deathray.SpawnDeathray(Position, MathF.PI + MathF.PI / 6, 1f, Texture, 50f, 2000f, 0f, 0f, this, true, Color.Red);
                 TelegraphLine telegraph = new TelegraphLine(MathF.PI, 0f, 0f, 20f, 500f, 500, Position, Color.Yellow, Texture, this);
                 Drawing.ScreenShake(4, 300);
             }            

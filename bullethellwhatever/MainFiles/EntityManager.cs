@@ -42,7 +42,9 @@ namespace bullethellwhatever.MainFiles
             foreach (NPC npc in Main.activeNPCs)
             {
                 npc.AI();
-                npc.dialogueSystem.dialogueObject.DoDialogue();
+
+                if (npc.dialogueSystem.dialogueObject is not null)
+                    npc.dialogueSystem.dialogueObject.DoDialogue();
             }
 
             foreach (Projectile projectile in Main.activeProjectiles)

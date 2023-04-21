@@ -43,24 +43,23 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {   
-    float distanceFromCentre = abs(input.TextureCoordinates.x - 0.5);
+    float2 uv = input.TextureCoordinates;
     
-    float opacity = pow(1 - distanceFromCentre, sin(uTime / 2) + 5);
+    // Calculate how far from the centre of the beam the co-ordinate is.
     
-    return float4(1, 0, 0, 1) * opacity;
+    float distanceFromCentre = abs(uv.x - 0.5);
     
-    //float4 color = input.Color;
-    //float2 coords = input.TextureCoordinates;
-    // Get the pixel from the provided streak/fade map.
-    //float4 fadeMapColor = tex2D(noiseMapSampler, float2(frac(coords.x * 5 - uTime * 2.5), coords.y));
+    // Calculate the opacity of the point using an exponential function to make the opacity decrease drastically.
+    // A sine is used to vary the exponent to produce a pulsing effect.
     
-    // Define the shape fadeout.
-    //float bloomFadeout = pow(coords.x * 3.141, 6);
-
-    // Calcuate the grayscale version of the pixel and use it as the opacity.
-    //float opacity = (fadeMapColor.r + 0.5) * bloomFadeout;
-
-    //return opacity;
+    float opacity = pow(1 - distanceFromCentre, sin(uTime / 2 - uv.y * 20) + 5);
+    
+    // Adjust red and white values to achieve the desired effect.
+    
+    float red = 1.4 - distanceFromCentre;
+    float white = 0.75 - distanceFromCentre * 2;
+    
+    return float4(red, white, white, 1) * opacity;
     
 }
 
