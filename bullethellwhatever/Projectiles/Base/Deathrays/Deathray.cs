@@ -176,28 +176,27 @@ namespace bullethellwhatever.Projectiles.Base
 
                 spritebatch.Begin(SpriteSortMode.Immediate);
 
-                List<VertexPosition2DColor> vertices = new();
-                // either set this here or use one you already have.
-                // Whatever it is for you.
-                Vector2 laserEndPos = Origin + (Utilities.AngleToVector(Rotation) * Length);
-                    // set this to the rotation the laser is facing times the length added to the start pos
+                //List<VertexPosition2DColor> vertices = new();
+                //// either set this here or use one you already have.
+                //// Whatever it is for you.
+                //Vector2 laserEndPos = Origin + (Utilities.AngleToVector(Rotation) * Length);
+                //// set this to the rotation the laser is facing times the length added to the start pos
 
-                for (int i = 0; i < 8; i++)
-                {
-                    float progress = (float)i / 8f;
+                //for (int i = 0; i < 8; i++)
+                //{
+                //    float progress = (float)i / 8f;
 
-                    Vector2 position = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, -MathHelper.PiOver2)) * Width;
-                    Vector2 position2 = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, MathHelper.PiOver2)) * Width;
+                //    Vector2 position = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, -MathHelper.PiOver2)) * Width;
+                //    Vector2 position2 = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, MathHelper.PiOver2)) * Width;
 
-                    Vector2 textureCoords = new(progress, 0f);
-                    Vector2 textureCoords2 = new(progress, 1f);
+                //    Vector2 textureCoords = new(progress, 0f);
+                //    Vector2 textureCoords2 = new(progress, 1f);
 
-                    vertices.Add(new VertexPosition2DColor(position, Colour, textureCoords));
-                    vertices.Add(new VertexPosition2DColor(position2, Colour, textureCoords2));
-                }
+                //    vertices.Add(new VertexPosition2DColor(position, Colour, textureCoords));
+                //    vertices.Add(new VertexPosition2DColor(position2, Colour, textureCoords2));
+                //}
 
                 Main.deathrayShader.Parameters["uTime"]?.SetValue(TimeAlive);
-                //Main.deathrayShader.Parameters["noiseMap"]?.SetValue(Main.deathrayNoiseMap);
 
                 Main._graphics.GraphicsDevice.Textures[1] = Main.deathrayNoiseMap;
 
@@ -207,9 +206,9 @@ namespace bullethellwhatever.Projectiles.Base
 
                 Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-                //spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
 
-                Main._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count - 2);
+                //Main._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count - 2);
 
                 spritebatch.End();
 
