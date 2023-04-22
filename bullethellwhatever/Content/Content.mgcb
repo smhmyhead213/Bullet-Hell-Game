@@ -146,6 +146,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/DeathrayShader.fx
 
+#begin Shaders/DeathrayShader2.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/DeathrayShader2.fx
+
 #begin Shaders/RayNoiseMap.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -40,6 +40,8 @@ namespace bullethellwhatever.MainFiles
         public static Texture2D deathrayNoiseMap;
 
         public static Effect deathrayShader;
+        public static Effect deathrayShader2;
+
         public static Effect telegraphLineShader;
 
         public static SpriteFont font;
@@ -105,6 +107,7 @@ namespace bullethellwhatever.MainFiles
             deathrayNoiseMap = Content.Load<Texture2D>("Shaders/RayNoiseMap");
             
             deathrayShader = Content.Load<Effect>("Shaders/DeathrayShader");
+            deathrayShader2 = Content.Load<Effect>("Shaders/DeathrayShader2");
 
             telegraphLineShader = Content.Load<Effect>("Shaders/TelegraphLineShader");
 

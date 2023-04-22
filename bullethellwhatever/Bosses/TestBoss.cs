@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using System.Runtime.CompilerServices;
 
 namespace bullethellwhatever.Bosses
 {
@@ -266,6 +268,8 @@ namespace bullethellwhatever.Bosses
             }
             public void BasicShotgunBlast(ref float AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
             {
+                float angleBetweenShots = MathF.PI / numberOfProjectiles;
+
                 float projectileOscillationFrequency = 10f;
 
                 if (AITimer % 40 == 0 && AITimer < 600)
@@ -279,15 +283,15 @@ namespace bullethellwhatever.Bosses
                         OscillatingSpeedProjectile oscillatingSpeedProjectile = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
                         OscillatingSpeedProjectile oscillatingSpeedProjectile2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed); //one for each side of middle
 
-                        oscillatingSpeedProjectile.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)),
+                        oscillatingSpeedProjectile.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * angleBetweenShots)),
                             1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
-                        oscillatingSpeedProjectile2.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * MathF.PI / 12)),
+                        oscillatingSpeedProjectile2.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * angleBetweenShots)),
                             1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
 
                     }
                 }
 
-                if (AITimer == 800)
+                if (AITimer == 900)
                 {
                     foreach (Projectile projectile in Main.activeProjectiles)
                     {
@@ -438,7 +442,9 @@ namespace bullethellwhatever.Bosses
 
             public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber, float numberOfProjectiles, float projectileSpeed)
             {
-                if (AITimer == 0)
+                float angleBetweenProjectiles = MathF.PI / 12;
+
+                if (AITimer == 0) //this could be optimised by giving every entity a rotation from vertical field
                 {
                     dialogueSystem.Dialogue(Position, "Test dialogue", 4, 800);
                 }
@@ -449,10 +455,16 @@ namespace bullethellwhatever.Bosses
                     dialogueSystem.ClearDialogue();
                 }
 
+                if (AITimer == 60)
+                {
+                    foreach (TelegraphLine telegraphLine in activeTelegraphs)
+                    {
+                        telegraphLine.RotationalVelocity = 0;
+                    }
+                }
                 if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 60)
                 {
-
-
+                   
                     BasicProjectile singleShot = new BasicProjectile();
 
 
@@ -464,9 +476,9 @@ namespace bullethellwhatever.Bosses
                     {
                         BasicProjectile shotgunBlast = new BasicProjectile();
                         BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
-                        shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * MathF.PI / 13)),
+                        shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * angleBetweenProjectiles)),
                             1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
-                        shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * MathF.PI / 12)),
+                        shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * angleBetweenProjectiles)),
                             1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
 
                     }
@@ -608,7 +620,7 @@ namespace bullethellwhatever.Bosses
                 {
                     int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
                     Main.activeProjectiles.Clear();
-                    deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, this, true, Color.Red);
+                    deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, true, Color.Red, Main.deathrayShader, this);
                     dialogueSystem.ClearDialogue();
                 }
 

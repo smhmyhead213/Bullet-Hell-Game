@@ -23,7 +23,8 @@ namespace bullethellwhatever.Projectiles.Base
         public float Width;
         public float AngularVelocity;
         public bool IsActive;
-        public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, Entity owner, bool isHarmful, Color colour)
+        public Effect Shader;
+        public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
         {
             Origin = origin;
             Rotation = initialRotation;
@@ -36,6 +37,7 @@ namespace bullethellwhatever.Projectiles.Base
             Colour = colour;
             IsActive = true;
             Damage = damage;
+            Shader = shader;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -143,31 +145,6 @@ namespace bullethellwhatever.Projectiles.Base
             }
         }
 
-        public struct VertexPosition2DColor : IVertexType
-        {
-            public Vector2 _position;
-            public Color _color;
-            public Vector2 _textureCoordinates;
-
-            public VertexDeclaration VertexDeclaration => _vertexDeclaration;
-
-            // This is used via the interface for the FNA prim drawer to read the information about the point and properly
-            // draw our primitive.
-            private static readonly VertexDeclaration _vertexDeclaration = new(new VertexElement[]
-            {
-                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
-                new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),
-                new VertexElement(12, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
-            });
-
-            public VertexPosition2DColor(Vector2 position, Color color, Vector2 textureCoordinates)
-            {
-                _position = position;
-                _color = color;
-                _textureCoordinates = textureCoordinates;
-            }
-        }
-
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
@@ -196,11 +173,11 @@ namespace bullethellwhatever.Projectiles.Base
                 //    vertices.Add(new VertexPosition2DColor(position2, Colour, textureCoords2));
                 //}
 
-                Main.deathrayShader.Parameters["uTime"]?.SetValue(TimeAlive);
+                Shader.Parameters["uTime"]?.SetValue(TimeAlive);
 
                 Main._graphics.GraphicsDevice.Textures[1] = Main.deathrayNoiseMap;
 
-                Main.deathrayShader.CurrentTechnique.Passes[0].Apply();
+                Shader.CurrentTechnique.Passes[0].Apply();
 
                 Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 

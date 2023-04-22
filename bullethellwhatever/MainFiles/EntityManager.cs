@@ -4,6 +4,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.Bosses;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using bullethellwhatever.Projectiles.TelegraphLines;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -45,18 +46,33 @@ namespace bullethellwhatever.MainFiles
 
                 if (npc.dialogueSystem.dialogueObject is not null)
                     npc.dialogueSystem.dialogueObject.DoDialogue();
+
+                foreach (TelegraphLine telegraphLine in npc.activeTelegraphs)
+                {
+                    telegraphLine.AI();
+                }
             }
 
             foreach (Projectile projectile in Main.activeProjectiles)
             {
                 projectile.AI();
                 projectile.DealDamage();
+
+                foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
+                {
+                    telegraphLine.AI();
+                }
             }
 
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
                 projectile.AI();
                 projectile.DealDamage();
+
+                foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
+                {
+                    telegraphLine.AI();
+                }
             }
 
 

@@ -44,8 +44,10 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             Rotation = Rotation + RotationalVelocity;
 
-            Rotation = Rotation * RotationalAcceleration;
+            if (RotationalAcceleration != 0)
+                Rotation = Rotation * RotationalAcceleration;
 
+            Rotation = (Rotation + MathF.PI * RotationalVelocity / 21600f) % (MathF.PI * 2);
 
         }
         public void Draw(SpriteBatch spritebatch)
@@ -64,7 +66,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, Rotation, originOffset, size, SpriteEffects.None, 0);
 
             spritebatch.End();
 
