@@ -38,7 +38,7 @@ namespace bullethellwhatever.Bosses
             HasChosenChargeDirection = false;
             AttackNumber = 1;
             ShotgunFrequency = 15f;
-            DespBombFrequencyInitially = 30f;
+            DespBombFrequencyInitially = 40f;
             DespBombFrequency = DespBombFrequencyInitially;
             DespBombTimer = 0f;
             DespBombCounter = 0;
@@ -216,7 +216,7 @@ namespace bullethellwhatever.Bosses
                             HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 6.5f);
                         break;
                     case 0:
-                        Desperation(ref AITimer, ref DespBombTimer, ref DespBombFrequency, DespBombFrequencyInitially, 9);
+                        Desperation(ref AITimer, ref DespBombTimer, ref DespBombFrequency, DespBombFrequencyInitially, 5, 2);
                         break;
                     default:
                         AttackNumber = 1;
@@ -258,7 +258,7 @@ namespace bullethellwhatever.Bosses
                         HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 8f);
                         break;
                     case 0:
-                        Desperation(ref AITimer, ref DespBombTimer, ref DespBombFrequency, DespBombFrequencyInitially, 12);
+                        Desperation(ref AITimer, ref DespBombTimer, ref DespBombFrequency, DespBombFrequencyInitially, 6, 3);
                         break;
                     default:
                         AttackNumber = 1;
@@ -501,7 +501,7 @@ namespace bullethellwhatever.Bosses
 
                 HandleBounces();
             }
-
+            
             public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber, float moveSpeed)
             {
                 float screenFraction = 8f;
@@ -599,13 +599,13 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
-            public void Desperation(ref float AITimer, ref float despBombTimer, ref float despBombFrequency, float despBombFrequencyInitially, int projectilesPerBomb)
+            public void Desperation(ref float AITimer, ref float despBombTimer, ref float despBombFrequency, float despBombFrequencyInitially, int projectilesPerBomb, int blenderBeams)
             {
                 Random random = new Random();
 
                 int despStartTime = 400;
 
-                Deathray deathray = new Deathray();
+                List<Deathray> deathrays = new List<Deathray>();
 
                 if (AITimer == 0)
                 {
@@ -620,7 +620,11 @@ namespace bullethellwhatever.Bosses
                 {
                     int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
                     Main.activeProjectiles.Clear();
-                    deathray.SpawnDeathray(Position, MathF.PI, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, true, Color.Red, Main.deathrayShader, this);
+                    for (int i = 0; i < blenderBeams; i++)
+                    {
+                        deathrays.Add(new Deathray());
+                        deathrays[i].SpawnDeathray(Position, MathHelper.TwoPi / blenderBeams * i, 1f, Texture, 40f, 1500f, directionToRotate * 40f, 0f, true, Color.Red, Main.deathrayShader2, this);
+                    }
                     dialogueSystem.ClearDialogue();
                 }
 
@@ -636,10 +640,12 @@ namespace bullethellwhatever.Bosses
                     {
                         ExplodingProjectile explodingProjectile1 = new ExplodingProjectile(projectilesPerBomb, 60, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
                         ExplodingProjectile explodingProjectile2 = new ExplodingProjectile(projectilesPerBomb, 60, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
+                        TelegraphLine telegraphLine1 = new TelegraphLine(-bombRotation, 0, 0, 5, 1000, 60, Position, Color.White, Texture, this);
+                        TelegraphLine telegraphLine2 = new TelegraphLine(MathF.PI - bombRotation, 0, 0, 5, 1000, 60, Position, Color.White, Texture, this);
 
-                        explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
-                        explodingProjectile2.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
-
+                        explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
+                        explodingProjectile2.Spawn(Position, 10f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
+                        
 
 
                         DespBombCounter++;

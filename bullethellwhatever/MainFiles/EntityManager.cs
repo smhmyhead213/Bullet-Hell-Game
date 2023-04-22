@@ -5,11 +5,13 @@ using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.Bosses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
+using System.Collections.Generic;
 
 namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
+        public static List<TelegraphLine> telegraphsToRemove = new List<TelegraphLine>();
         public static void RemoveEntities()
         {
             Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(NPC, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight));
@@ -50,6 +52,10 @@ namespace bullethellwhatever.MainFiles
                 foreach (TelegraphLine telegraphLine in npc.activeTelegraphs)
                 {
                     telegraphLine.AI();
+                    if (telegraphLine.DeleteNextFrame)
+                    {
+                        telegraphsToRemove.Add(telegraphLine);
+                    }
                 }
             }
 
@@ -75,7 +81,11 @@ namespace bullethellwhatever.MainFiles
                 }
             }
 
-
+            for (int i = 0; i < telegraphsToRemove.Count; i++)
+            {
+                telegraphsToRemove[i].Owner.activeTelegraphs.Remove(telegraphsToRemove[i]);
+            }
+            
             Main.player.AI();
         }
 

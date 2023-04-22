@@ -19,6 +19,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public float Width;
         public float Length;
         public int TimeAlive;
+        public bool DeleteNextFrame;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, Texture2D texture, Entity owner)
         {
             Rotation = rotation;
@@ -48,6 +49,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
                 Rotation = Rotation * RotationalAcceleration;
 
             Rotation = (Rotation + MathF.PI * RotationalVelocity / 21600f) % (MathF.PI * 2);
+
+            if (TimeAlive > Duration)
+            {
+                DeleteNextFrame = true;
+            }
 
         }
         public void Draw(SpriteBatch spritebatch)
