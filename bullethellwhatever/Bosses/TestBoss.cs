@@ -354,7 +354,7 @@ namespace bullethellwhatever.Bosses
                 if (AITimer == 0)
                 {
                     Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
-                    Velocity = Vector2.Zero; //amke it sit in the middle
+                    Velocity = Vector2.Zero; //make it sit in the middle
                 }
 
                 List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
@@ -506,7 +506,7 @@ namespace bullethellwhatever.Bosses
             {
                 float screenFraction = 8f;
 
-
+                
                 if (AITimer % 400 == 0)
                 {
                     Position = new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction, Main._graphics.PreferredBackBufferHeight / screenFraction);
@@ -557,7 +557,7 @@ namespace bullethellwhatever.Bosses
                         projectilesToShoot.Add(new BasicProjectile()); //add a projectile
 
                         // shoot projectiles in a ring and rotate it based on time
-                        Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 45) + rotation), Vector2.Zero);
+                        Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
                         projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red);
                     }
