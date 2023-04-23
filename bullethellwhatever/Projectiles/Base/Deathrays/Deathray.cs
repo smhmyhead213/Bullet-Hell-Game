@@ -24,12 +24,14 @@ namespace bullethellwhatever.Projectiles.Base
         public float AngularVelocity;
         public bool IsActive;
         public Effect Shader;
-        public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
+        public int Duration;
+        public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, int duration, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
         {
             Origin = origin;
             Rotation = initialRotation;
             Width = width;
             Length = length;
+            Duration = duration;
             Texture = texture;
             AngularVelocity = angularVelocity;
             Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
@@ -52,10 +54,10 @@ namespace bullethellwhatever.Projectiles.Base
 
             Rotation = (Rotation + MathF.PI * AngularVelocity / 21600f) % (MathF.PI * 2); //The rotation is always 0 < r < 360.
             
-            //if (TimeAlive % AngularVelocity * 2 == 0) // Reset rotation after the beam has gone a full turn. This will need to be adjusted for rays whose Angular Velocity changes with time.
-            //{
-            //    Rotation = 0;
-            //}
+            if (TimeAlive > Duration && Owner is not BaseClasses.Player)
+            {
+                DeleteNextFrame = true;
+            }
         }
 
         //I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION
