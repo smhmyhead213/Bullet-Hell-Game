@@ -640,8 +640,8 @@ namespace bullethellwhatever.Bosses
                     {
                         ExplodingProjectile explodingProjectile1 = new ExplodingProjectile(projectilesPerBomb, 60, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
                         ExplodingProjectile explodingProjectile2 = new ExplodingProjectile(projectilesPerBomb, 60, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
-                        TelegraphLine telegraphLine1 = new TelegraphLine(-bombRotation, 0, 0, 5, 1000, 60, Position, Color.White, Texture, this);
-                        TelegraphLine telegraphLine2 = new TelegraphLine(MathF.PI - bombRotation, 0, 0, 5, 1000, 60, Position, Color.White, Texture, this);
+                        TelegraphLine telegraphLine1 = new TelegraphLine(-bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
+                        TelegraphLine telegraphLine2 = new TelegraphLine(MathF.PI - bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
 
                         explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
                         explodingProjectile2.Spawn(Position, 10f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
