@@ -113,7 +113,8 @@ namespace bullethellwhatever.Bosses
             switch (AttackNumber)
             {
                 case 1:
-                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
+                    //BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
+                    LaserBarrages(ref AITimer, ref AttackNumber);
                     break;
                 case 2:
                     Charge(ref AITimer, ref AttackNumber, 3f, 180f, 1f);
@@ -498,9 +499,23 @@ namespace bullethellwhatever.Bosses
 
         public void LaserBarrages(ref float AITimer, ref int AttackNumber)
         {
-            if (AITimer % 10 == 0)
-            {
+            float angleBetween = MathF.PI / 13;
 
+            if (AITimer == 0)
+            {
+                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
+                Velocity = Vector2.Zero;
+            }
+
+            if (AITimer % 8 == 0)
+            {
+                TelegraphLine TeleLine = new TelegraphLine(MathF.PI + (angleBetween * AITimer / 10 - 1f), 0f, 0f, 50, 1000, 30, Position, Color.White, Texture, this);
+
+                if (AITimer > 24)
+                {
+                    Deathray ray = new Deathray();
+                    ray.SpawnDeathray(Position, MathF.PI + (angleBetween * AITimer / 10  + 3f), 1f, 50, Texture, 30, 1000, 0, 0, true, Color.Red, Main.deathrayShader, this);
+                }
             }
         }
         public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber, float moveSpeed)

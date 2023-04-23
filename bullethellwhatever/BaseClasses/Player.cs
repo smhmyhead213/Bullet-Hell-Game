@@ -168,13 +168,17 @@ namespace bullethellwhatever.BaseClasses
                     if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0f)
                     {
                         TakeDamage(projectile);
+                        Drawing.ScreenShake(3, 10);
                     }
                 }
 
                 foreach (NPC npc in Main.activeNPCs)
                 {
                     if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
+                    {
                         TakeDamage(npc);
+                        Drawing.ScreenShake(3, 5);
+                    }
                 }
 
                 if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0)
