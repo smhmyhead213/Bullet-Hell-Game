@@ -19,7 +19,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch)
         {
             Position = position;
             Velocity = velocity;
@@ -34,6 +34,7 @@ namespace bullethellwhatever.BaseClasses
             Health = MaxHealth;
             MaxHP = MaxHealth;
             ContactDamage = false;
+            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
 
         }
 

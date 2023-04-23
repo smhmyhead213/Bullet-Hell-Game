@@ -18,7 +18,5 @@ namespace bullethellwhatever.Projectiles.Player
         {
             Position = Position + Velocity;
         }
-
-        public override bool ShouldRemoveOnEdgeTouch() => true;
     }
 }

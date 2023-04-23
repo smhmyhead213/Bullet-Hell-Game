@@ -24,8 +24,6 @@ namespace bullethellwhatever.Bosses
         public float DespBombTimer;
         public int DespBombCounter;
 
-
-
         public TestBoss(Vector2 position, Vector2 velocity)
         {
             Position = position;
@@ -47,13 +45,9 @@ namespace bullethellwhatever.Bosses
             IsHarmful = true;
             dialogueSystem = new DialogueSystem(this);
         }
-
-        public override bool ShouldRemoveOnEdgeTouch() => false;
-
-
-        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour)
+        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch)
         {
-            base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth, colour);
+            base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth, colour, shouldRemoveOnEdgeTouch);
 
         }
 
@@ -276,7 +270,7 @@ namespace bullethellwhatever.Bosses
                 {
                     OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
 
-                    singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0, Vector2.One, this, true, Color.Red);
+                    singleShot.Spawn(bossPosition, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 0, Vector2.One, this, true, Color.Red, true);
 
                     for (int i = 1; i < numberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                     {
@@ -284,9 +278,9 @@ namespace bullethellwhatever.Bosses
                         OscillatingSpeedProjectile oscillatingSpeedProjectile2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed); //one for each side of middle
 
                         oscillatingSpeedProjectile.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - bossPosition, i * angleBetweenShots)),
-                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
+                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red, true);
                         oscillatingSpeedProjectile2.Spawn(bossPosition, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - bossPosition, i * angleBetweenShots)),
-                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
+                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red, true);
 
                     }
                 }
@@ -335,7 +329,7 @@ namespace bullethellwhatever.Bosses
                 if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0)// check if aitimer is between 1 and 15 and if its even
                 {
                     BasicProjectile projectile = new BasicProjectile();
-                    projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red);
+                    projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true);
                 }
 
                 if (AITimer == chargeFrequency * 6)
@@ -379,7 +373,7 @@ namespace bullethellwhatever.Bosses
                         // shoot projectiles in a ring and rotate it based on time
                         Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
-                        projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red);
+                        projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red, true);
 
 
                     }
@@ -416,7 +410,7 @@ namespace bullethellwhatever.Bosses
 
                         //Shoot projectiles based on an offset.
                         projectilesToShoot[i].Spawn(Position, 5f * Vector2.Normalize(Utilities.RotateVectorCounterClockwise(projectileDirection, i * MathF.PI / projectilesPerWave)),
-                            1f, Texture, 0, Vector2.One, this, true, Color.Red);
+                            1f, Texture, 0, Vector2.One, this, true, Color.Red, true);
 
 
                     }
@@ -425,7 +419,7 @@ namespace bullethellwhatever.Bosses
                 if (Main.player.Position.Y < Position.Y) //have fun cheesing this one sean
                 {
                     BasicProjectile projectile = new BasicProjectile();
-                    projectile.Spawn(Position, 5f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.03f, Vector2.One, this, true, Color.Red);
+                    projectile.Spawn(Position, 5f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.03f, Vector2.One, this, true, Color.Red, true);
                     Velocity = Velocity * 1.01f;
 
 
@@ -470,16 +464,16 @@ namespace bullethellwhatever.Bosses
 
                     Velocity = 1.1f * Utilities.Normalise(Position - Main.player.Position);
 
-                    singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
+                    singleShot.Spawn(Position, projectileSpeed * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.01f, Vector2.One, this, true, Color.Red, true);
 
                     for (int i = 1; i < numberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                     {
                         BasicProjectile shotgunBlast = new BasicProjectile();
                         BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
                         shotgunBlast.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Position, i * angleBetweenProjectiles)),
-                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
+                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red, true);
                         shotgunBlast2.Spawn(Position, projectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Position, i * angleBetweenProjectiles)),
-                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red);
+                            1f, Texture, 1.01f, Vector2.One, this, true, Color.Red, true);
 
                     }
 
@@ -527,7 +521,7 @@ namespace bullethellwhatever.Bosses
                 }
 
                 BasicProjectile projectile = new BasicProjectile();
-                projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.03f, Vector2.One, this, true, Color.Red);
+                projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.03f, Vector2.One, this, true, Color.Red, true);
 
             }
 
@@ -559,7 +553,7 @@ namespace bullethellwhatever.Bosses
                         // shoot projectiles in a ring and rotate it based on time
                         Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
-                        projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red);
+                        projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red, true);
                     }
                 }
 
@@ -587,7 +581,7 @@ namespace bullethellwhatever.Bosses
 
 
 
-                    explodingProjectile.Spawn(Position, 5f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2, 2), this, true, Color.Red);
+                    explodingProjectile.Spawn(Position, 5f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2, 2), this, true, Color.Red, false);
                 }
 
                 Rotation = Utilities.ToRadians(AITimer - 250f);
@@ -643,8 +637,8 @@ namespace bullethellwhatever.Bosses
                         TelegraphLine telegraphLine1 = new TelegraphLine(-bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
                         TelegraphLine telegraphLine2 = new TelegraphLine(MathF.PI - bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
 
-                        explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
-                        explodingProjectile2.Spawn(Position, 10f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red);
+                        explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red, false);
+                        explodingProjectile2.Spawn(Position, 10f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red, false);
                         
 
 
@@ -663,7 +657,7 @@ namespace bullethellwhatever.Bosses
                         {
                             BasicProjectile oscillatingSpeedProjectile = new BasicProjectile();
 
-                            oscillatingSpeedProjectile.Spawn(Position, 2f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.01f, new Vector2(0.9f, 0.9f), this, true, Color.Red);
+                            oscillatingSpeedProjectile.Spawn(Position, 2f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 1.01f, new Vector2(0.9f, 0.9f), this, true, Color.Red, true);
                         }
                     }
                 }
@@ -681,7 +675,7 @@ namespace bullethellwhatever.Bosses
                         Velocity.X = Velocity.X * -1;
                 }
 
-                if (touchingRight(this, Main._graphics.PreferredBackBufferWidth))
+                if (touchingRight(this))
                 {
                     if (Velocity.X > 0)
                         Velocity.X = Velocity.X * -1;
@@ -694,7 +688,7 @@ namespace bullethellwhatever.Bosses
 
                 }
 
-                if (touchingBottom(this, Main._graphics.PreferredBackBufferHeight))
+                if (touchingBottom(this))
                 {
                     if (Velocity.Y > 0)
                         Velocity.Y = Velocity.Y * -1f;

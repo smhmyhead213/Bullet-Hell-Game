@@ -14,7 +14,7 @@ namespace bullethellwhatever.BaseClasses
         public float Acceleration;
         public float TimeAlive;
         public Entity Owner;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch)
         {
             Position = position;
             Velocity = velocity;
@@ -26,6 +26,7 @@ namespace bullethellwhatever.BaseClasses
             Size = size;
             Owner = owner;
             IsHarmful = isHarmful;
+            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -34,7 +35,6 @@ namespace bullethellwhatever.BaseClasses
 
          //and drawing
         
-        public override bool ShouldRemoveOnEdgeTouch() => true;
         public override void AI()
         {
             TimeAlive++;

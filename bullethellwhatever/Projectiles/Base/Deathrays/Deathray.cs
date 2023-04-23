@@ -44,8 +44,6 @@ namespace bullethellwhatever.Projectiles.Base
             else Main.friendlyProjectilesToAddNextFrame.Add(this);
         }
 
-        public override bool ShouldRemoveOnEdgeTouch() => false;
-
         public override void AI()
         {
             TimeAlive++;

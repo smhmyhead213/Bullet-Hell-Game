@@ -37,24 +37,33 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (TimeAlive == ExplosionDelay)
             {
-                for (int i = 0; i < NumberOfProjectiles; i++)
-                {
-                    BasicProjectile projectile = new BasicProjectile();
-
-                    float accel = ShouldAccelerate ? 1.005f : 1f;
-
-                    //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
-                    if (ShouldAccountForVelocityInOrientation)
-                        projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
-                            1f, Texture, accel, Vector2.One, this, true, Color.Red);
-                    else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
-                            1f, Texture, accel, Vector2.One, this, true, Color.Red);
-
-                    DeleteNextFrame = true;
-                }
+                Explode();
             }
 
+            if (touchingAnEdge(this))
+            {
+                Explode();
+            }
             Position = Position + Velocity;
+        }
+
+        public void Explode()
+        {
+            for (int i = 0; i < NumberOfProjectiles; i++)
+            {
+                ExplodingProjectileFragment projectile = new ExplodingProjectileFragment();
+
+                float accel = ShouldAccelerate ? 1.005f : 1f;
+
+                //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
+                if (ShouldAccountForVelocityInOrientation)
+                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
+                        1f, Texture, accel, Vector2.One, this, true, Color.Red, false);
+                else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
+                        1f, Texture, accel, Vector2.One, this, true, Color.Red, false);
+            }
+
+            DeleteNextFrame = true;
         }
     }
 }

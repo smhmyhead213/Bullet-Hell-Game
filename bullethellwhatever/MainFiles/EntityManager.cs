@@ -14,10 +14,10 @@ namespace bullethellwhatever.MainFiles
         public static List<TelegraphLine> telegraphsToRemove = new List<TelegraphLine>();
         public static void RemoveEntities()
         {
-            Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(NPC, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight));
+            Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
             Main.activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
-            Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
-            Main.activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch() && Entity.touchingAnEdge(projectile, Main._graphics.PreferredBackBufferWidth, Main._graphics.PreferredBackBufferHeight) || projectile.DeleteNextFrame);
+            Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) || projectile.DeleteNextFrame);
+            Main.activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) || projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
         }
@@ -106,7 +106,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
 
-            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.playerTexture, new Vector2(5, 5), Main.activeNPCs[0].Health, Color.White);
+            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.playerTexture, new Vector2(5, 5), Main.activeNPCs[0].Health, Color.White, false);
         }
 
     }

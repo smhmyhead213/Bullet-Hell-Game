@@ -48,13 +48,13 @@ namespace bullethellwhatever.BaseClasses
             ActiveWeapon = Weapons.Homing;
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
+            ShouldRemoveOnEdgeTouch = false;
         }
         #endregion
 
         #region Input Handling
 
         #endregion
-        public override bool ShouldRemoveOnEdgeTouch() => false;
         #region AI
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
@@ -75,7 +75,7 @@ namespace bullethellwhatever.BaseClasses
                 Velocity.Y = Velocity.Y - 1f;
             }
 
-            if (kstate.IsKeyDown(Keys.S) && !touchingBottom(this, Main._graphics.PreferredBackBufferHeight))
+            if (kstate.IsKeyDown(Keys.S) && !touchingBottom(this))
             {
                 Velocity.Y = Velocity.Y + 1f;
             }
@@ -85,7 +85,7 @@ namespace bullethellwhatever.BaseClasses
                 Velocity.X = Velocity.X - 1f;
             }
 
-            if (kstate.IsKeyDown(Keys.D) && !touchingRight(this, Main._graphics.PreferredBackBufferWidth))
+            if (kstate.IsKeyDown(Keys.D) && !touchingRight(this))
             {
                 Velocity.X = Velocity.X + 1f;
             }
@@ -226,7 +226,7 @@ namespace bullethellwhatever.BaseClasses
                 Random rnd = new Random();
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue);
+                    0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -236,7 +236,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
                 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.3f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.3f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen, true);
 
 
             }

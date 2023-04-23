@@ -25,12 +25,13 @@ namespace bullethellwhatever.BaseClasses
         public bool DeleteNextFrame;
         public float Rotation;
         public bool IsDesperationOver;
+        public bool ShouldRemoveOnEdgeTouch;
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
 
-        public static bool touchingBottom(Entity entity, int screenHeight) //hieght is height of texture
+        public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
-            if (entity.Position.Y + entity.Hitbox.Height / 2 >= screenHeight)
+            if (entity.Position.Y + entity.Hitbox.Height / 2 >= Main._graphics.PreferredBackBufferHeight)
                 return true;
             else return false;
             //if at the bottom
@@ -43,9 +44,9 @@ namespace bullethellwhatever.BaseClasses
             else return false;
         }
 
-        public static bool touchingRight(Entity entity,  int screenWidth)
+        public static bool touchingRight(Entity entity)
         {
-            if (entity.Position.X + entity.Hitbox.Width / 2 >= screenWidth)
+            if (entity.Position.X + entity.Hitbox.Width / 2 >= Main._graphics.PreferredBackBufferWidth)
                 return true;
             else return false;
         }
@@ -58,10 +59,10 @@ namespace bullethellwhatever.BaseClasses
             else return false;
         }
 
-        public static bool touchingAnEdge(Entity entity, int screenwidth, int screenHeight)
+        public static bool touchingAnEdge(Entity entity)
         {
-            if (touchingTop(entity) || touchingBottom(entity, screenHeight) ||
-                    touchingLeft(entity) || touchingRight(entity, screenwidth))
+            if (touchingTop(entity) || touchingBottom(entity) ||
+                    touchingLeft(entity) || touchingRight(entity))
             {
                 return true;
             }
@@ -78,9 +79,6 @@ namespace bullethellwhatever.BaseClasses
 
             return false;
         }
-
-        
-        public virtual bool ShouldRemoveOnEdgeTouch() => false;
         public abstract void AI();
     }
 }
