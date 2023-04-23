@@ -177,7 +177,7 @@ namespace bullethellwhatever.BaseClasses
                     if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
                     {
                         TakeDamage(npc);
-                        Drawing.ScreenShake(3, 5);
+                        Drawing.ScreenShake(3, 10);
                     }
                 }
 

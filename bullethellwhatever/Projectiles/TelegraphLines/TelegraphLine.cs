@@ -22,7 +22,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public bool DeleteNextFrame;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, Texture2D texture, Entity owner)
         {
-            Rotation = rotation;
+            Rotation = rotation + MathF.PI;
             RotationalVelocity = rotationalVelocity;
             RotationalAcceleration = rotationalAcceleration;
             Width = width;

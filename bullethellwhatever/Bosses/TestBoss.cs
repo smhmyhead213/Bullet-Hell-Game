@@ -499,7 +499,10 @@ namespace bullethellwhatever.Bosses
 
         public void LaserBarrages(ref float AITimer, ref int AttackNumber)
         {
-            float angleBetween = MathF.PI / 13;
+            float angleBetween = MathF.PI / 9.9f;
+
+            int timeBetweenRays = 8;
+            int numberOfRaysBetweenTelegraphAndBeam = 7;
 
             if (AITimer == 0)
             {
@@ -507,14 +510,14 @@ namespace bullethellwhatever.Bosses
                 Velocity = Vector2.Zero;
             }
 
-            if (AITimer % 8 == 0)
+            if (AITimer % timeBetweenRays == 0)
             {
-                TelegraphLine TeleLine = new TelegraphLine(MathF.PI + (angleBetween * AITimer / 10 - 1f), 0f, 0f, 50, 1000, 30, Position, Color.White, Texture, this);
+                TelegraphLine TeleLine = new TelegraphLine(angleBetween * AITimer / timeBetweenRays, 0f, 0f, 50, 2000, timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam, Position, Color.White, Texture, this);
 
-                if (AITimer > 24)
+                if (AITimer > timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam)
                 {
                     Deathray ray = new Deathray();
-                    ray.SpawnDeathray(Position, MathF.PI + (angleBetween * AITimer / 10  + 3f), 1f, 50, Texture, 30, 1000, 0, 0, true, Color.Red, Main.deathrayShader, this);
+                    ray.SpawnDeathray(Position, angleBetween * (AITimer - timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam) / timeBetweenRays, 1f, 50, Texture, 30, 2000, 0, 0, true, Color.Red, Main.deathrayShader, this);
                 }
             }
         }
