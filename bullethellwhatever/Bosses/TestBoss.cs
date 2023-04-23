@@ -346,20 +346,24 @@ namespace bullethellwhatever.Bosses
 
         public void Spiral(ref float AITimer, ref int AttackNumber, int projectilesInSpiral, float rotationSpeed) //rotation speed 40 by default, increase to make easier
         {
-            if (AITimer == 0)
-            {
-                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
-                Velocity = Vector2.Zero; //make it sit in the middle
-            }
-
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            if (AITimer <= 240)
+            int timeToStartAt = 240;
+            
+            if (AITimer <= timeToStartAt)
             {
+                Vector2 vectorToCentre = Utilities.CentreOfScreen() - Position;
+                float distanceToTravel = vectorToCentre.Length();
+                //Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * distanceToTravel / (timeToStartAt - AITimer);
+                Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (MathF.PI * distanceToTravel / (timeToStartAt)) * MathF.Sin(MathF.PI * AITimer / timeToStartAt);
                 SpinUpCounterClockwise(ref Rotation, 60f);
             }
 
-            if (AITimer % 2 == 0 && AITimer > 240 && AITimer < 1700)
+            if (AITimer == timeToStartAt)
+            {
+                Velocity = Vector2.Zero;
+            }
+            if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < 1700)
             {
 
                 float acceleration = 0.52f * MathF.Cos(AITimer / 250 + MathF.PI / 3);

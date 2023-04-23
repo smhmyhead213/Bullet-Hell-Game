@@ -82,6 +82,8 @@ namespace bullethellwhatever
             return new Vector2(input.X * MathF.Cos(2 * MathF.PI - angle) - input.Y * MathF.Sin(2 * MathF.PI - angle),
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
+
+        public static Vector2 CentreOfScreen() => new Vector2(MainFiles.Main._graphics.PreferredBackBufferWidth / 2, MainFiles.Main._graphics.PreferredBackBufferHeight / 2);
     }
 
 }
