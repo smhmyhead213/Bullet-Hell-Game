@@ -153,7 +153,7 @@ namespace bullethellwhatever.MainFiles
                     Drawing.DrawSettings(_spriteBatch);
                     break;
                 case GameState.GameStates.InGame:
-                    Drawing.DrawGame();
+                    Drawing.DrawGame(gameTime);
                     break;
             }
             // TODO: Add your drawing code here

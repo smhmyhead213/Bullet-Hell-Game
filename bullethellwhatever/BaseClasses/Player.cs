@@ -61,7 +61,7 @@ namespace bullethellwhatever.BaseClasses
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            PlayerDeathray.Origin = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
+            PlayerDeathray.Position = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
 
             if (ScrollCooldown > 0)
             {
@@ -168,7 +168,7 @@ namespace bullethellwhatever.BaseClasses
                     if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0f)
                     {
                         TakeDamage(projectile);
-                        Drawing.ScreenShake(3, 10);
+
                     }
                 }
 
@@ -177,7 +177,6 @@ namespace bullethellwhatever.BaseClasses
                     if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
                     {
                         TakeDamage(npc);
-                        Drawing.ScreenShake(3, 10);
                     }
                 }
 
@@ -216,7 +215,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f * 100f, 999, Texture, 5f, 2000f, 0f, 0f, false, Color.Yellow, Main.deathrayShader, this);               
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 999, Texture, 5f, 2000f, 0f, 0f, false, Color.Yellow, Main.deathrayShader, this);               
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -240,7 +239,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
                 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.3f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen, true);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.28f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen, true);
 
 
             }
@@ -250,6 +249,7 @@ namespace bullethellwhatever.BaseClasses
         {
             Health = Health - entity.Damage;
             IFrames = 20f;
+            Drawing.ScreenShake(3, 10);
         }
     }
 }

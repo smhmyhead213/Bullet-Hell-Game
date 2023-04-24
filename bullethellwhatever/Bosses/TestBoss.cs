@@ -44,6 +44,7 @@ namespace bullethellwhatever.Bosses
             IsDesperationOver = false;
             IsHarmful = true;
             dialogueSystem = new DialogueSystem(this);
+            dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
         }
         public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch)
         {
@@ -113,8 +114,7 @@ namespace bullethellwhatever.Bosses
             switch (AttackNumber)
             {
                 case 1:
-                    //BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
-                    LaserBarrages(ref AITimer, ref AttackNumber);
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
                     break;
                 case 2:
                     Charge(ref AITimer, ref AttackNumber, 3f, 180f, 1f);
@@ -122,16 +122,19 @@ namespace bullethellwhatever.Bosses
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 4, 70f);
                     break;
-                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                case 4:
+                    LaserBarrages(ref AITimer, ref AttackNumber, MathF.PI / 6.9f, 11, 8);
+                    break;
+                case 5: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 1, 9f);
                     break;
-                case 5:
+                case 6:
                     ExplodingProjectiles(ref AITimer, ref AttackNumber, 10f);
                     break;
-                case 6:
+                case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 6);
                     break;
-                case 7:
+                case 8:
                     if (AITimer % 2 == 0)
                         HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 3f);
                     break;
@@ -159,16 +162,19 @@ namespace bullethellwhatever.Bosses
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 6, 60f);
                     break;
-                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                case 4:
+                    LaserBarrages(ref AITimer, ref AttackNumber, MathF.PI / 7.9f, 9, 7);
+                    break;
+                case 5: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 11f);
                     break;
-                case 5:
+                case 6:
                     ExplodingProjectiles(ref AITimer, ref AttackNumber, 15f);
                     break;
-                case 6:
+                case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 8);
                     break;
-                case 7:
+                case 8:
                     if (AITimer % 2 == 0)
                         HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 5f);
                     break;
@@ -197,16 +203,19 @@ namespace bullethellwhatever.Bosses
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 8, 60f);
                     break;
-                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                case 4:
+                    LaserBarrages(ref AITimer, ref AttackNumber, MathF.PI / 9.1f, 7, 7);
+                    break;
+                case 5: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 13f);
                     break;
-                case 5:
+                case 6:
                     ExplodingProjectiles(ref AITimer, ref AttackNumber, 20f);
                     break;
-                case 6:
+                case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 10);
                     break;
-                case 7:
+                case 8:
                     if (AITimer % 2 == 0)
                         HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 6.5f);
                     break;
@@ -240,16 +249,19 @@ namespace bullethellwhatever.Bosses
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 10, 45f);
                     break;
-                case 4: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
+                case 4:
+                    LaserBarrages(ref AITimer, ref AttackNumber, MathF.PI / 11.1f, 11, 8);
+                    break;
+                case 5: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 5, 15f);
                     break;
-                case 5:
+                case 6:
                     ExplodingProjectiles(ref AITimer, ref AttackNumber, 25f);
                     break;
-                case 6:
+                case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 12);
                     break;
-                case 7:
+                case 8:
                     HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 8f);
                     break;
                 case 0:
@@ -263,6 +275,11 @@ namespace bullethellwhatever.Bosses
         }
         public void BasicShotgunBlast(ref float AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
         {
+            if (AITimer > 0 && AITimer < 5)
+            {
+                Velocity = new Vector2(2f, 0f);
+            }
+
             float angleBetweenShots = MathF.PI / numberOfProjectiles;
 
             float projectileOscillationFrequency = 10f;
@@ -344,18 +361,25 @@ namespace bullethellwhatever.Bosses
             HandleBounces();
         }
 
+        public void MoveToCentre(float AITImer, int duration)
+        {
+            Vector2 vectorToCentre = Utilities.CentreOfScreen() - Position;
+            float distanceToTravel = vectorToCentre.Length();
+            //Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * distanceToTravel / (timeToStartAt - AITimer);
+
+            // top 5 integration moments
+            Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (1.6f * MathF.PI * distanceToTravel / (duration)) * MathF.Sin(MathF.PI * AITimer / duration);
+        }
         public void Spiral(ref float AITimer, ref int AttackNumber, int projectilesInSpiral, float rotationSpeed) //rotation speed 40 by default, increase to make easier
         {
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
             int timeToStartAt = 240;
-            
+            int endTime = 1400;
+
             if (AITimer <= timeToStartAt)
             {
-                Vector2 vectorToCentre = Utilities.CentreOfScreen() - Position;
-                float distanceToTravel = vectorToCentre.Length();
-                //Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * distanceToTravel / (timeToStartAt - AITimer);
-                Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (MathF.PI * distanceToTravel / (timeToStartAt)) * MathF.Sin(MathF.PI * AITimer / timeToStartAt);
+                MoveToCentre(AITimer, timeToStartAt);
                 SpinUpCounterClockwise(ref Rotation, 60f);
             }
 
@@ -363,7 +387,7 @@ namespace bullethellwhatever.Bosses
             {
                 Velocity = Vector2.Zero;
             }
-            if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < 1700)
+            if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < endTime - 100)
             {
 
                 float acceleration = 0.52f * MathF.Cos(AITimer / 250 + MathF.PI / 3);
@@ -386,7 +410,7 @@ namespace bullethellwhatever.Bosses
 
             }
 
-            if (AITimer == 1800)
+            if (AITimer == endTime)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -501,12 +525,9 @@ namespace bullethellwhatever.Bosses
             HandleBounces();
         }
 
-        public void LaserBarrages(ref float AITimer, ref int AttackNumber)
+        public void LaserBarrages(ref float AITimer, ref int AttackNumber, float angleBetween, int timeBetweenRays, int numberOfRaysBetweenTelegraphAndBeam)
         {
-            float angleBetween = MathF.PI / 9.9f;
-
-            int timeBetweenRays = 8;
-            int numberOfRaysBetweenTelegraphAndBeam = 7;
+            float endTime = 200;
 
             if (AITimer == 0)
             {
@@ -516,13 +537,23 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer % timeBetweenRays == 0)
             {
-                TelegraphLine TeleLine = new TelegraphLine(angleBetween * AITimer / timeBetweenRays, 0f, 0f, 50, 2000, timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam, Position, Color.White, Texture, this);
+                if (AITimer < endTime - (timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam))
+                {
+                    TelegraphLine TeleLine = new TelegraphLine(angleBetween * AITimer / timeBetweenRays, 0f, 0f, 50, 2000, timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam, Position, Color.White, Texture, this);
+                }
 
                 if (AITimer > timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam)
                 {
                     Deathray ray = new Deathray();
                     ray.SpawnDeathray(Position, angleBetween * (AITimer - timeBetweenRays * numberOfRaysBetweenTelegraphAndBeam) / timeBetweenRays, 1f, 50, Texture, 30, 2000, 0, 0, true, Color.Red, Main.deathrayShader, this);
                 }
+            }
+
+            if (AITimer == endTime)
+            {
+                dialogueSystem.ClearDialogue();
+                EndAttack(ref AITimer, ref AttackNumber);
+                return;
             }
         }
         public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber, float moveSpeed)
@@ -556,14 +587,9 @@ namespace bullethellwhatever.Bosses
 
         public void MutantBulletHell(ref float AITimer, ref int AttackNumber, int projectilesInSpiral) //this is literqally spiral but with 100f instead of 1250f
         {
-            if (AITimer == 0)
-            {
-                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
-                Velocity = Vector2.Zero; //amke it sit in the middle
-            }
-
             if (AITimer <= 240)
             {
+                MoveToCentre(AITimer, 240);
                 SpinUpClockwise(ref Rotation, 80);
             }
 
@@ -630,11 +656,15 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == 0)
             {
-                Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
                 Velocity = Vector2.Zero; //amke it sit in the middle
                 Rotation = 0;
                 dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
                 Drawing.ScreenShake(4, 3000);
+            }
+
+            if (AITimer < despStartTime)
+            {
+                MoveToCentre(AITimer, despStartTime);
             }
 
             if (AITimer == despStartTime)

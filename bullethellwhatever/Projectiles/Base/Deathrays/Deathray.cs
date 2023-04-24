@@ -17,17 +17,16 @@ using SharpDX.MediaFoundation;
 namespace bullethellwhatever.Projectiles.Base
 {
     public class Deathray : Projectile
-    {
-        public Vector2 Origin;     
+    {    
         public float Length;
         public float Width;
         public float AngularVelocity;
         public bool IsActive;
         public Effect Shader;
         public int Duration;
-        public virtual void SpawnDeathray(Vector2 origin, float initialRotation, float damage, int duration, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
+        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
         {
-            Origin = origin;
+            Position = position;
             Rotation = initialRotation;
             Width = width;
             Length = length;
@@ -38,6 +37,7 @@ namespace bullethellwhatever.Projectiles.Base
             Owner = owner;
             Colour = colour;
             IsActive = true;
+            IsHarmful = isHarmful;
             Damage = damage;
             Shader = shader;
 
@@ -71,17 +71,17 @@ namespace bullethellwhatever.Projectiles.Base
         {
             if (deathray.IsActive)
             {
-                if (Utilities.DistanceBetweenVectors(new Vector2(entity.Position.X, entity.Position.Y), deathray.Origin) < deathray.Length)
+                if (Utilities.DistanceBetweenVectors(new Vector2(entity.Position.X, entity.Position.Y), deathray.Position) < deathray.Length)
                 {
                     Vector2 playerVector = new Vector2(entity.Position.X, entity.Position.Y);
 
                     // Find the angle between the player and the vertical using the dot/scalar product.
 
-                    float dotProduct = Vector2.Dot(Vector2.UnitY, playerVector - deathray.Origin);
+                    float dotProduct = Vector2.Dot(Vector2.UnitY, playerVector - deathray.Position);
                     
                     // Find the angle that the deathray and entity must share approximtely for a collision.
                     
-                    float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Origin).Length());
+                    float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Position).Length());
                     
                     // Find the diagonal length of the entity to collide with.
                     
@@ -89,13 +89,13 @@ namespace bullethellwhatever.Projectiles.Base
                     
                     // Find the appropriate angle tolerance needed to perfectly encapsulate the entity.
                     
-                    float angleTolerance = MathF.Atan(diagonalOfTarget / 2 / Utilities.DistanceBetweenVectors(deathray.Origin, entity.Position));
+                    float angleTolerance = MathF.Atan(diagonalOfTarget / 2 / Utilities.DistanceBetweenVectors(deathray.Position, entity.Position));
 
                     // For the collision checks, small degrees of error are used to account for Angle and Rotation never being exactly equal due to floating point jank.
 
                     if (deathray.Rotation >= 0) // Check if the beam is moving clockwise. In this case, Rotation is positive.
                     {
-                        if (playerVector.X >= deathray.Origin.X) // If the player is on the right, do no adjustments as Rotation and Angle here are both angles clockwise from the vertical.
+                        if (playerVector.X >= deathray.Position.X) // If the player is on the right, do no adjustments as Rotation and Angle here are both angles clockwise from the vertical.
                         {
                             return deathray.Rotation > angle - angleTolerance && deathray.Rotation < angle + angleTolerance;
                         }
@@ -108,7 +108,7 @@ namespace bullethellwhatever.Projectiles.Base
 
                     else // The beam is moving counter-clockwise. Rotation is negative.
                     {
-                        if (playerVector.X >= deathray.Origin.X) // If the player is on the right, colliding values of Angle and Rotation differ by a full 360 degrees. 
+                        if (playerVector.X >= deathray.Position.X) // If the player is on the right, colliding values of Angle and Rotation differ by a full 360 degrees. 
                         {
                             return deathray.Rotation > angle - MathF.PI * 2 - angleTolerance && deathray.Rotation < angle - MathF.PI * 2 + angleTolerance;
                         }
@@ -181,9 +181,13 @@ namespace bullethellwhatever.Projectiles.Base
 
                 Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
+                //spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, Vector2.Zero, size, SpriteEffects.None, 0);
+
                 Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-                spritebatch.Draw(Main.player.Texture, Origin, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+
+                //Drawing.BetterDraw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, size, SpriteEffects.None, 0);
 
                 //Main._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count - 2);
 

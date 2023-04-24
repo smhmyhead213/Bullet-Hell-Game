@@ -62,15 +62,11 @@ namespace bullethellwhatever.BaseClasses
                 {
                     if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0) //why am i checking this twice? remove
                     {
-                        if (npc.IFrames == 0)
-                        {
                             npc.IFrames = 5f;
 
                             npc.Health = npc.Health - Damage;
 
                             DeleteNextFrame = true;
-
-                        }
                     }
                 }
             }

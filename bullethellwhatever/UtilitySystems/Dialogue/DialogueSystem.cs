@@ -46,7 +46,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
         public void ClearDialogue()
         {
             dialogueObject.Text = string.Empty;
-            CharactersWritten = 0;
+            dialogueObject.CharactersWritten = 0;
         }
     }
 }
