@@ -40,6 +40,7 @@ namespace bullethellwhatever.Projectiles.Base
             IsHarmful = isHarmful;
             Damage = damage;
             Shader = shader;
+            RemoveOnHit = false;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -126,24 +127,24 @@ namespace bullethellwhatever.Projectiles.Base
             return false;
         }
 
-        public override void DealDamage()
-        {
-            foreach (NPC npc in Main.activeNPCs)
-            {
-                if (npc.IsHarmful != IsHarmful)
-                {
-                    if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0)
-                    {
-                        if (npc.IFrames == 0)
-                        {
-                            npc.IFrames = 5f;
+        //public override void DealDamage()
+        //{
+        //    foreach (NPC npc in Main.activeNPCs)
+        //    {
+        //        if (npc.IsHarmful != IsHarmful)
+        //        {
+        //            if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0)
+        //            {
+        //                if (npc.IFrames == 0)
+        //                {
+        //                    npc.IFrames = 5f;
 
-                            npc.Health = npc.Health - Damage;
-                        }
-                    }
-                }
-            }
-        }
+        //                    npc.Health = npc.Health - Damage;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         public override void Draw(SpriteBatch spritebatch)
         {
@@ -183,7 +184,7 @@ namespace bullethellwhatever.Projectiles.Base
 
                 //spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, Vector2.Zero, size, SpriteEffects.None, 0);
 
-                Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
+                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
                 spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
 

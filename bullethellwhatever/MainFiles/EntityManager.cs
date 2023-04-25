@@ -46,6 +46,8 @@ namespace bullethellwhatever.MainFiles
             {
                 npc.AI();
 
+                npc.CheckForAndTakeDamage();
+
                 if (npc.dialogueSystem.dialogueObject is not null)
                     npc.dialogueSystem.dialogueObject.DoDialogue();
 
@@ -62,7 +64,7 @@ namespace bullethellwhatever.MainFiles
             foreach (Projectile projectile in Main.activeProjectiles)
             {
                 projectile.AI();
-                projectile.DealDamage();
+                //projectile.DealDamage();
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
                 {
@@ -73,7 +75,7 @@ namespace bullethellwhatever.MainFiles
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
                 projectile.AI();
-                projectile.DealDamage();
+                //projectile.DealDamage();
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
                 {

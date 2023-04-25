@@ -40,7 +40,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void AI()
         {
-            CheckForAndTakeDamage();
+
         }
 
         public bool isCollidingWithPlayerProjectile(Projectile projectile)
@@ -53,7 +53,7 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
 
-        public void CheckForAndTakeDamage() // delete this (you dont need it anymore)
+        public void CheckForAndTakeDamage()
         {
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
@@ -65,7 +65,7 @@ namespace bullethellwhatever.BaseClasses
                         
                         Health = Health - projectile.Damage;
 
-                        if (projectile is not Deathray)
+                        if (projectile.RemoveOnHit)
                         {
                             projectile.DeleteNextFrame = true;
                         }

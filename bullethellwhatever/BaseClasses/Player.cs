@@ -169,6 +169,8 @@ namespace bullethellwhatever.BaseClasses
                     {
                         TakeDamage(projectile);
 
+                        if (projectile.RemoveOnHit)
+                            projectile.DeleteNextFrame = true;
                     }
                 }
 
@@ -229,7 +231,7 @@ namespace bullethellwhatever.BaseClasses
                 Random rnd = new Random();
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue, true);
+                    0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -239,7 +241,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
                 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.28f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen, true);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.28f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen, true, true);
 
 
             }

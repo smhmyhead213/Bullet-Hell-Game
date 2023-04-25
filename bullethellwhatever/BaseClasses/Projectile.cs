@@ -14,7 +14,8 @@ namespace bullethellwhatever.BaseClasses
         public float Acceleration;
         public float TimeAlive;
         public Entity Owner;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch)
+        public bool RemoveOnHit;
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Position = position;
             Velocity = velocity;
@@ -27,6 +28,7 @@ namespace bullethellwhatever.BaseClasses
             Owner = owner;
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            RemoveOnHit = removeOnHit;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -54,23 +56,23 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
 
-        public virtual void DealDamage()
-        {
-            foreach (NPC npc in Main.activeNPCs)
-            {
-                if (npc.IsHarmful != IsHarmful)
-                {
-                    if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0) //why am i checking this twice? remove
-                    {
-                            npc.IFrames = 5f;
+        //public virtual void DealDamage()
+        //{
+        //    foreach (NPC npc in Main.activeNPCs)
+        //    {
+        //        if (npc.IsHarmful != IsHarmful)
+        //        {
+        //            if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0) //why am i checking this twice? remove
+        //            {
+        //                    npc.IFrames = 5f;
 
-                            npc.Health = npc.Health - Damage;
+        //                    npc.Health = npc.Health - Damage;
 
-                            DeleteNextFrame = true;
-                    }
-                }
-            }
-        }
+        //                    DeleteNextFrame = true;
+        //            }
+        //        }
+        //    }
+        //}
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

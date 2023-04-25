@@ -93,7 +93,7 @@ namespace bullethellwhatever.Bosses
 
                     float angle = (2 * MathF.PI / numberOfProjectiles) * i;
 
-                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One, this, true, Color.Red, false);
+                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One, this, true, Color.Red, false, false);
                 }
             }
         }
