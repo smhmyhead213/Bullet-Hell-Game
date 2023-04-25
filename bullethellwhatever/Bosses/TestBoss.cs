@@ -250,7 +250,7 @@ namespace bullethellwhatever.Bosses
                     Spiral(ref AITimer, ref AttackNumber, 10, 45f);
                     break;
                 case 4:
-                    LaserBarrages(ref AITimer, ref AttackNumber, MathF.PI / 11.1f, 11, 8);
+                    LaserBarrages(ref AITimer, ref AttackNumber, MathF.PI / 11.1f, 5, 8);
                     break;
                 case 5: //ObnoxiouslyDenseBulletHell(ref AITimer, ref AttackNumber, 25);
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 5, 15f);
@@ -660,6 +660,11 @@ namespace bullethellwhatever.Bosses
                 Rotation = 0;
                 dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
                 Drawing.ScreenShake(4, 3000);
+
+                for (int i = 0; i < blenderBeams; i++)
+                {
+                    TelegraphLine telegraphLine = new TelegraphLine(MathHelper.TwoPi / blenderBeams * i, 0, 0 , 15, 1500f, despStartTime, Position, Color.White, Texture, this);
+                }
             }
 
             if (AITimer < despStartTime)
