@@ -67,40 +67,33 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
+            //Update the boss position based on its velocity.
+            Position = Position + Velocity;
 
+            if (IFrames > 0)
+            {
+                IFrames--;
+            }
 
-                //Update the boss position based on its velocity.
-                Position = Position + Velocity;
+            //If the timer reaches 10, execute the attack and reset timer.
+            switch (GameState.Difficulty)
+            {
+                case GameState.Difficulties.Easy:
+                    ExecuteEasyAttackPattern();
+                    break;
+                case GameState.Difficulties.Normal:
+                    ExecuteNormalAttackPattern();
+                    break;
+                case GameState.Difficulties.Hard:
+                    ExecuteHardAttackPattern();
+                    break;
+                case GameState.Difficulties.Insane:
+                    ExecuteInsaneAttackPattern();
+                    break;
 
-
-                if (IFrames > 0)
-                {
-                    IFrames--;
-                }
-
-                //If the timer reaches 10, execute the attack and reset timer.
-                switch (GameState.Difficulty)
-                {
-                    case GameState.Difficulties.Easy:
-                        ExecuteEasyAttackPattern();
-                        break;
-                    case GameState.Difficulties.Normal:
-                        ExecuteNormalAttackPattern();
-                        break;
-                    case GameState.Difficulties.Hard:
-                        ExecuteHardAttackPattern();
-                        break;
-                    case GameState.Difficulties.Insane:
-                        ExecuteInsaneAttackPattern();
-                        break;
-
-                }
-
-
-                //Every frame, add 1 to the timer.
-                AITimer++;
-
-
+            }
+            //Every frame, add 1 to the timer.
+            AITimer++;
         }
 
         public void ExecuteEasyAttackPattern()
@@ -368,7 +361,7 @@ namespace bullethellwhatever.Bosses
             //Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * distanceToTravel / (timeToStartAt - AITimer);
 
             // top 5 integration moments
-            Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (1.6f * MathF.PI * distanceToTravel / (duration)) * MathF.Sin(MathF.PI * AITimer / duration);
+            Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * AITimer / duration);
         }
         public void Spiral(ref float AITimer, ref int AttackNumber, int projectilesInSpiral, float rotationSpeed) //rotation speed 40 by default, increase to make easier
         {

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System;
 using bullethellwhatever.Projectiles.Base;
 using SharpDX.Direct3D9;
+using System.Threading;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -29,6 +30,9 @@ namespace bullethellwhatever.BaseClasses
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
+            Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);
+            Hitbox.Width = Hitbox.Width * (int)size.X;
+            Hitbox.Height = Hitbox.Height * (int)size.Y;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -39,6 +43,8 @@ namespace bullethellwhatever.BaseClasses
         
         public override void AI()
         {
+            
+
             TimeAlive++;
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
@@ -46,14 +52,52 @@ namespace bullethellwhatever.BaseClasses
             Position = Position + Velocity;
         }
 
-        public virtual bool IsCollidingWithEntity(Projectile projectile, Entity entity)
+        public virtual void CheckForHits()
         {
-            float totalwidth = Hitbox.Width + entity.Hitbox.Width;
+            Hitbox = new((int)Position.X - Texture.Width / 2, (int)Position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
 
-            if (Math.Abs(Position.X - entity.Position.X) <= totalwidth && Math.Abs(Position.Y - entity.Position.Y) <= totalwidth)
+            if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
+            {
+                foreach (NPC npc in Main.activeNPCs)
+                {
+                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0) //why am i checking this twice? remove
+                    {
+                        npc.IFrames = 5f;
+
+                        npc.Health = npc.Health - Damage;
+
+                        if (RemoveOnHit)
+                            DeleteNextFrame = true;
+                    }
+                }
+            }
+
+            if (IsHarmful)
+            {
+                if (IsCollidingWithEntity(Main.player) && Main.player.IFrames == 0)
+                {
+                    Main.player.IFrames = 20f;
+
+                    Main.player.Health = Main.player.Health - Damage;
+
+                    Drawing.ScreenShake(3, 10);
+
+                    if (RemoveOnHit)
+                        DeleteNextFrame = true;
+                }
+            }
+        }
+        public virtual bool IsCollidingWithEntity(Entity entity)
+        {
+            //float totalwidth = Hitbox.Width + entity.Hitbox.Width;
+
+            //if (Math.Abs(Position.X - entity.Position.X) <= totalwidth && Math.Abs(Position.Y - entity.Position.Y) <= totalwidth)
+            //    return true;
+
+            //return false;
+            if (entity.Hitbox.Intersects(Hitbox))
                 return true;
-
-            return false;
+            else return false;
         }
 
         //public virtual void DealDamage()

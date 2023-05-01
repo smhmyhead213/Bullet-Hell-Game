@@ -62,7 +62,7 @@ namespace bullethellwhatever.Projectiles.Base
         }
 
         //I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION
-        public override bool IsCollidingWithEntity(Projectile projectile, Entity entity) //dont forget to add a check to see if the player is within the beams length, to ensure that the beam doesnt have infinite range
+        public override bool IsCollidingWithEntity(Entity entity) //dont forget to add a check to see if the player is within the beams length, to ensure that the beam doesnt have infinite range
         {
             //return IsAnXCoordinateInTheBeam(entity.Position.X, this) && IsAYCoordinateInTheBeam(entity.Position.X, entity.Position.Y, this);
             return IsTheTargetInTheBeam(entity, this);

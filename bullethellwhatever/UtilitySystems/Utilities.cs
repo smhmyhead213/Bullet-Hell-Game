@@ -83,6 +83,19 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
+        public static Vector2[] moveVectorArrayElementsUpAndAddToStart(Vector2[] array, Vector2 newFirstPosition)
+        {
+            Vector2[] newArray = new Vector2[array.Length];
+            newArray[0] = newFirstPosition;
+
+            for (int i = 1; i < array.Length; i++)
+            {
+                newArray[i] = array[i - 1];
+            }
+
+            return newArray;
+        }
+
         public static Vector2 CentreOfScreen() => new Vector2(MainFiles.Main._graphics.PreferredBackBufferWidth / 2, MainFiles.Main._graphics.PreferredBackBufferHeight / 2);
     }
 

@@ -28,13 +28,11 @@ namespace bullethellwhatever.BaseClasses
             Colour = colour;
             Main.NPCsToAddNextFrame.Add(this);
             Size = size;
-            Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);
-            Hitbox.Width = Hitbox.Width * (int)size.X;
-            Hitbox.Height = Hitbox.Height * (int)size.Y;
             Health = MaxHealth;
             MaxHP = MaxHealth;
             ContactDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            SetHitbox(this);
 
         }
 
@@ -43,35 +41,43 @@ namespace bullethellwhatever.BaseClasses
 
         }
 
-        public bool isCollidingWithPlayerProjectile(Projectile projectile)
+        public virtual bool IsCollidingWithEntity(Entity entity)
         {
-            float totalwidth = Hitbox.Width + projectile.Hitbox.Width;
-
-            if (Math.Abs(Position.X - projectile.Position.X) <= totalwidth && Math.Abs(Position.Y - projectile.Position.Y) <= totalwidth)
-                return true;
-
-            return false;
+            return Hitbox.Intersects(entity.Hitbox);
         }
 
-        public void CheckForAndTakeDamage()
+        public virtual void CheckForHits()
         {
-            foreach (Projectile projectile in Main.activeFriendlyProjectiles)
-            {
-                if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0)
-                {
-                    if (IFrames == 0)
-                    {
-                        IFrames = 5f;
-                        
-                        Health = Health - projectile.Damage;
+            SetHitbox(this);
 
-                        if (projectile.RemoveOnHit)
-                        {
-                            projectile.DeleteNextFrame = true;
-                        }
+            if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
+            {
+                foreach (NPC npc in Main.activeNPCs)
+                {
+                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0) //why am i checking this twice? remove
+                    {
+                        npc.IFrames = 5f;
+
+                        npc.Health = npc.Health - Damage;
+
+                        DeleteNextFrame = true;
                     }
                 }
             }
-        }
+
+            if (IsHarmful)
+            {
+                if (IsCollidingWithEntity(Main.player) && Main.player.IFrames == 0)
+                {
+                    Main.player.IFrames = 20f;
+
+                    Main.player.Health = Main.player.Health - Damage;
+
+                    Drawing.ScreenShake(3, 10);
+
+                    DeleteNextFrame = true;
+                }
+            }
+        }    
     }
 }

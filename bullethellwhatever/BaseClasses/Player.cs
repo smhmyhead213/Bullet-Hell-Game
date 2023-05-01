@@ -148,7 +148,7 @@ namespace bullethellwhatever.BaseClasses
             }
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
-            Hitbox = new((int)Position.X - Texture.Width / 2, (int)Position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
+            SetHitbox(this);
 
             if (Health > 0)
             {
@@ -163,24 +163,23 @@ namespace bullethellwhatever.BaseClasses
 
                 }
 
-                foreach (Projectile projectile in Main.activeProjectiles)
-                {
-                    if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0f)
-                    {
-                        TakeDamage(projectile);
+                //foreach (Projectile projectile in Main.activeProjectiles)
+                //{
+                //    if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0f)
+                //    {
 
-                        if (projectile.RemoveOnHit)
-                            projectile.DeleteNextFrame = true;
-                    }
-                }
+                //        if (projectile.RemoveOnHit)
+                //            projectile.DeleteNextFrame = true;
+                //    }
+                //}
 
-                foreach (NPC npc in Main.activeNPCs)
-                {
-                    if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
-                    {
-                        TakeDamage(npc);
-                    }
-                }
+                //foreach (NPC npc in Main.activeNPCs)
+                //{
+                //    if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
+                //    {
+
+                //    }
+                //}
 
                 if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0)
                 {
@@ -230,7 +229,7 @@ namespace bullethellwhatever.BaseClasses
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-15, 15))),
                     0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
@@ -247,12 +246,12 @@ namespace bullethellwhatever.BaseClasses
             }
         }
         #endregion
-        public void TakeDamage(Entity entity) //take damage from an entity
-        {
-            Health = Health - entity.Damage;
-            IFrames = 20f;
-            Drawing.ScreenShake(3, 10);
-        }
+        //public void TakeDamage(Entity entity) //take damage from an entity
+        //{
+        //    Health = Health - entity.Damage;
+        //    IFrames = 20f;
+            
+        //}
     }
 }
 

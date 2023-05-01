@@ -29,6 +29,10 @@ namespace bullethellwhatever.BaseClasses
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
 
+        public static void SetHitbox(Entity entity)
+        {
+            entity.Hitbox = new((int)entity.Position.X - entity.Texture.Width / 2 * (int)entity.Size.X, (int)entity.Position.Y - entity.Texture.Height / 2 * (int)entity.Size.Y, entity.Texture.Width * (int)entity.Size.X, entity.Texture.Height * (int)entity.Size.Y);
+        }
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
             if (entity.Position.Y + entity.Hitbox.Height / 2 >= Main._graphics.PreferredBackBufferHeight)
