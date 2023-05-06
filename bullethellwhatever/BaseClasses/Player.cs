@@ -216,7 +216,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 999, Texture, 5f, 2000f, 0f, 0f, false, Color.Yellow, Main.deathrayShader, this);               
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 999, Texture, 10f, 2000f, 0f, 0f, false, Color.Yellow, Main.deathrayShader, this);               
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -229,7 +229,7 @@ namespace bullethellwhatever.BaseClasses
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-15, 15))),
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
                     0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 

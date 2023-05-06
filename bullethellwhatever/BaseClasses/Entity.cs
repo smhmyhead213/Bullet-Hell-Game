@@ -16,8 +16,9 @@ namespace bullethellwhatever.BaseClasses
         public bool isBoss;
         public bool isPlayer;
         public bool IsHarmful;
-        public float AITimer;
+        public int AITimer;
         public float Damage;
+        public float Opacity;
         public Rectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
         public Vector2 Size; //relative to player being 1
         public float Health;
@@ -33,6 +34,7 @@ namespace bullethellwhatever.BaseClasses
         {
             entity.Hitbox = new((int)entity.Position.X - entity.Texture.Width / 2 * (int)entity.Size.X, (int)entity.Position.Y - entity.Texture.Height / 2 * (int)entity.Size.Y, entity.Texture.Width * (int)entity.Size.X, entity.Texture.Height * (int)entity.Size.Y);
         }
+
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
             if (entity.Position.Y + entity.Hitbox.Height / 2 >= Main._graphics.PreferredBackBufferHeight)

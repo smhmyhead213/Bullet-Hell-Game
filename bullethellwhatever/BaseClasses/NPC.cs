@@ -32,6 +32,7 @@ namespace bullethellwhatever.BaseClasses
             MaxHP = MaxHealth;
             ContactDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            Opacity = 1f;
             SetHitbox(this);
 
         }

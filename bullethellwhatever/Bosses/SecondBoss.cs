@@ -24,7 +24,7 @@ namespace bullethellwhatever.Bosses
             isBoss = true;
             isPlayer = false;
             Health = 150;
-            AITimer = 0f;
+            AITimer = 0;
             IFrames = 5f;
             HasChosenChargeDirection = false;
             AttackNumber = 1;
@@ -99,7 +99,7 @@ namespace bullethellwhatever.Bosses
         }
 
         
-        public void DialogueTest(ref float AITimer, ref int AttackNumber)
+        public void DialogueTest(ref int AITimer, ref int AttackNumber)
         {
             if (AITimer == 0)
             {
@@ -119,8 +119,11 @@ namespace bullethellwhatever.Bosses
                 //activeTelegraphs[0].Rotation = angle - MathHelper.PiOver2;
             }
 
-            if (AITimer == 450)
+            if (AITimer == 10)
             {
+                ExplodingDeathrayProjectile explodingDeathrayProjectile = new ExplodingDeathrayProjectile(6, 60, 0, true, false, false);
+
+                explodingDeathrayProjectile.Spawn(Position, 3f * Vector2.UnitX, 1f, Texture, 0f, new Vector2(2f,2f), this, true, Color.Red, true, true);
                 dialogueSystem.Dialogue(Position, "among us", 4, 400);
             }
         }

@@ -8,13 +8,13 @@ namespace bullethellwhatever.Projectiles.Base
     public class ExplodingProjectile : Projectile
     {
         public float NumberOfProjectiles;
-        public float ExplosionDelay;
+        public int ExplosionDelay;
         public bool ShouldSlowDown;
         public bool ShouldAccelerate;
         public bool ShouldAccountForVelocityInOrientation;
         public float Offset;
 
-        public ExplodingProjectile(float numberOfProjectiles, float explosionDelay, float offset, bool shouldSlowDown, bool shouldAccelerate, bool shouldAccountForVelocityInOrientation)
+        public ExplodingProjectile(float numberOfProjectiles, int explosionDelay, float offset, bool shouldSlowDown, bool shouldAccelerate, bool shouldAccountForVelocityInOrientation)
         {
             NumberOfProjectiles = numberOfProjectiles;
             ExplosionDelay = explosionDelay;
@@ -47,7 +47,7 @@ namespace bullethellwhatever.Projectiles.Base
             Position = Position + Velocity;
         }
 
-        public void Explode()
+        public virtual void Explode()
         {
             for (int i = 0; i < NumberOfProjectiles; i++)
             {

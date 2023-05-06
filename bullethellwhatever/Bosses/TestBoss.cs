@@ -31,7 +31,7 @@ namespace bullethellwhatever.Bosses
             isBoss = true;
             isPlayer = false;
             Health = 200;
-            AITimer = 0f;
+            AITimer = 0;
             IFrames = 5f;
             HasChosenChargeDirection = false;
             AttackNumber = 1;
@@ -122,7 +122,7 @@ namespace bullethellwhatever.Bosses
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 1, 9f);
                     break;
                 case 6:
-                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 10f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 10);
                     break;
                 case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 6);
@@ -162,7 +162,7 @@ namespace bullethellwhatever.Bosses
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 11f);
                     break;
                 case 6:
-                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 15f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 15);
                     break;
                 case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 8);
@@ -182,12 +182,12 @@ namespace bullethellwhatever.Bosses
             if (Health <= 0 && !HasDesperationStarted)
             {
                 AttackNumber = 0; //desperation
-                AITimer = 0f;
+                AITimer = 0;
                 HasDesperationStarted = true;
             }
             switch (AttackNumber)
             {
-                case 1:
+                case 1:                    
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
                     break;
                 case 2:
@@ -203,7 +203,7 @@ namespace bullethellwhatever.Bosses
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 3, 13f);
                     break;
                 case 6:
-                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 20f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 20);
                     break;
                 case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 10);
@@ -227,7 +227,7 @@ namespace bullethellwhatever.Bosses
             if (Health <= 0 && !HasDesperationStarted)
             {
                 AttackNumber = 0; //desperation
-                AITimer = 0f;
+                AITimer = 0;
                 HasDesperationStarted = true;
             }
 
@@ -249,7 +249,7 @@ namespace bullethellwhatever.Bosses
                     MoveTowardsAndShotgun(ref AITimer, ref AttackNumber, 5, 15f);
                     break;
                 case 6:
-                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 25f);
+                    ExplodingProjectiles(ref AITimer, ref AttackNumber, 25);
                     break;
                 case 7:
                     MutantBulletHell(ref AITimer, ref AttackNumber, 12);
@@ -266,7 +266,7 @@ namespace bullethellwhatever.Bosses
 
             }
         }
-        public void BasicShotgunBlast(ref float AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
+        public void BasicShotgunBlast(ref int AITimer, ref int AttackNumber, Vector2 bossPosition, float projectileSpeed, int numberOfProjectiles)
         {
             if (AITimer > 0 && AITimer < 5)
             {
@@ -311,7 +311,7 @@ namespace bullethellwhatever.Bosses
 
         }
 
-        public void Charge(ref float AITimer, ref int AttackNumber, float chargeSpeed, float chargeFrequency, float chargeProjectileAcceleration)
+        public void Charge(ref int AITimer, ref int AttackNumber, float chargeSpeed, float chargeFrequency, float chargeProjectileAcceleration)
         {
             if (AITimer == 0)
             {
@@ -354,7 +354,7 @@ namespace bullethellwhatever.Bosses
             HandleBounces();
         }
 
-        public void MoveToCentre(float AITImer, int duration)
+        public void MoveToCentre(int AITImer, int duration)
         {
             Vector2 vectorToCentre = Utilities.CentreOfScreen() - Position;
             float distanceToTravel = vectorToCentre.Length();
@@ -363,7 +363,7 @@ namespace bullethellwhatever.Bosses
             // top 5 integration moments
             Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * AITimer / duration);
         }
-        public void Spiral(ref float AITimer, ref int AttackNumber, int projectilesInSpiral, float rotationSpeed) //rotation speed 40 by default, increase to make easier
+        public void Spiral(ref int AITimer, ref int AttackNumber, int projectilesInSpiral, float rotationSpeed) //rotation speed 40 by default, increase to make easier
         {
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
@@ -383,8 +383,8 @@ namespace bullethellwhatever.Bosses
             if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < endTime - 100)
             {
 
-                float acceleration = 0.52f * MathF.Cos(AITimer / 250 + MathF.PI / 3);
-                float rotation = AITimer / 15 * MathF.PI / rotationSpeed * acceleration;
+                float acceleration = 0.52f * MathF.Cos(AITimer / 250f + MathF.PI / 3);
+                float rotation = AITimer / 15f * MathF.PI / rotationSpeed * acceleration;
 
                 Rotation = rotation;
 
@@ -393,7 +393,7 @@ namespace bullethellwhatever.Bosses
                     projectilesToShoot.Add(new BasicProjectile()); //add a projectile
 
                     // shoot projectiles in a ring and rotate it based on time
-                    Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
+                    Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
                     projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red, true, false);
 
@@ -411,7 +411,7 @@ namespace bullethellwhatever.Bosses
 
         }
 
-        public void ObnoxiouslyDenseBulletHell(ref float AITimer, ref int AttackNumber, int projectilesPerWave)
+        public void ObnoxiouslyDenseBulletHell(ref int AITimer, ref int AttackNumber, int projectilesPerWave)
         {
             if (AITimer == 0)
             {
@@ -456,7 +456,7 @@ namespace bullethellwhatever.Bosses
             HandleBounces();
         }
 
-        public void MoveTowardsAndShotgun(ref float AITimer, ref int AttackNumber, float numberOfProjectiles, float projectileSpeed)
+        public void MoveTowardsAndShotgun(ref int AITimer, ref int AttackNumber, float numberOfProjectiles, float projectileSpeed)
         {
             float angleBetweenProjectiles = MathF.PI / 12;
 
@@ -478,7 +478,8 @@ namespace bullethellwhatever.Bosses
                     telegraphLine.RotationalVelocity = 0;
                 }
             }
-            if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 60)
+
+            if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 90)
             {
 
                 BasicProjectile singleShot = new BasicProjectile();
@@ -518,7 +519,7 @@ namespace bullethellwhatever.Bosses
             HandleBounces();
         }
 
-        public void LaserBarrages(ref float AITimer, ref int AttackNumber, float angleBetween, int timeBetweenRays, int numberOfRaysBetweenTelegraphAndBeam)
+        public void LaserBarrages(ref int AITimer, ref int AttackNumber, float angleBetween, int timeBetweenRays, int numberOfRaysBetweenTelegraphAndBeam)
         {
             float endTime = 600;
 
@@ -549,7 +550,7 @@ namespace bullethellwhatever.Bosses
                 return;
             }
         }
-        public void HorizontalChargesWithProjectiles(ref float AITimer, ref int AttackNumber, float moveSpeed)
+        public void HorizontalChargesWithProjectiles(ref int AITimer, ref int AttackNumber, float moveSpeed)
         {
             float screenFraction = 8f;
 
@@ -573,12 +574,12 @@ namespace bullethellwhatever.Bosses
                 return;
             }
 
-            BasicProjectile projectile = new BasicProjectile();
-            projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.03f, Vector2.One, this, true, Color.Red, true, false);
+            SizeChangingProjectile projectile = new SizeChangingProjectile(0.011f, 0.014f);
+            projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, 1.03f, new Vector2(0.6f, 0.6f), this, true, Color.Red, true, false);
 
         }
 
-        public void MutantBulletHell(ref float AITimer, ref int AttackNumber, int projectilesInSpiral) //this is literqally spiral but with 100f instead of 1250f
+        public void MutantBulletHell(ref int AITimer, ref int AttackNumber, int projectilesInSpiral) //this is literqally spiral but with 100f instead of 1250f
         {
             if (AITimer <= 240)
             {
@@ -590,7 +591,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 950)
             {
-                float rotation = AITimer / 10 * MathF.PI / 40f * (AITimer / 100f);
+                float rotation = AITimer / 10f * MathF.PI / 40f * (AITimer / 100f);
 
                 Rotation = rotation;
 
@@ -599,7 +600,7 @@ namespace bullethellwhatever.Bosses
                     projectilesToShoot.Add(new BasicProjectile()); //add a projectile
 
                     // shoot projectiles in a ring and rotate it based on time
-                    Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
+                    Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / projectilesInSpiral) + rotation), Vector2.Zero);
 
                     projectilesToShoot[i].Spawn(Position, velocity, 1f, Texture, 1, Vector2.One, this, true, Color.Red, true, false);
                 }
@@ -617,19 +618,23 @@ namespace bullethellwhatever.Bosses
             }
         }
 
-        public void ExplodingProjectiles(ref float AITimer, ref int AttackNumber, float numberOfProjectiles)
+        public void ExplodingProjectiles(ref int AITimer, ref int AttackNumber, int numberOfProjectiles)
         {
-            Velocity = 1.1f * Utilities.Normalise(Main.player.Position - Position);
+            Velocity = 0.55f * Utilities.Normalise(Main.player.Position - Position);
 
-            if (AITimer % 30 == 0 && AITimer < 590 && AITimer > 240)
+            int startTime = 270;
+            int endTime = 720;
+            int timeBetween = 45;
+
+            int explosionDelay = (int)(endTime - AITimer);
+
+            if (AITimer % timeBetween == 0 && AITimer <= endTime && AITimer >= startTime)
             {
-                ExplodingProjectile explodingProjectile = new ExplodingProjectile(numberOfProjectiles, 120f, 0, true, true, false);
+                ExplodingDeathrayProjectile explodingProjectile = new ExplodingDeathrayProjectile(numberOfProjectiles, 180, 0, true, true, false);
 
                 Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Position, Utilities.ToRadians(AITimer - 250f));
 
-
-
-                explodingProjectile.Spawn(Position, 5f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2, 2), this, true, Color.Red, false, false);
+                explodingProjectile.Spawn(Position, 15f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, Texture, 0, new Vector2(2, 2), this, true, Color.Red, false, false);
             }
 
             Rotation = Utilities.ToRadians(AITimer - 250f);
@@ -641,18 +646,22 @@ namespace bullethellwhatever.Bosses
             }
         }
 
-        public void Desperation(ref float AITimer, ref float despBombTimer, ref float despBombFrequency, float despBombFrequencyInitially, int projectilesPerBomb, int blenderBeams)
+        public void Desperation(ref int AITimer, ref float despBombTimer, ref float despBombFrequency, float despBombFrequencyInitially, int projectilesPerBomb, int blenderBeams)
         {
             Random random = new Random();
 
             int despStartTime = 400;
+            int despEndTime = 3000;
 
+            int despTime = despEndTime - despStartTime;
+            int despTimePassed = despTime - AITimer;
+            
             if (AITimer == 0)
             {
                 Velocity = Vector2.Zero; //amke it sit in the middle
                 Rotation = 0;
                 dialogueSystem.Dialogue(Position, "It's not over yet!", 4, despStartTime);
-                Drawing.ScreenShake(4, 3000);
+                Drawing.ScreenShake(4, despEndTime);
 
                 for (int i = 0; i < blenderBeams; i++)
                 {
@@ -675,13 +684,13 @@ namespace bullethellwhatever.Bosses
                     Deathray ray = new Deathray();
                     ray.SpawnDeathray(Position, MathHelper.TwoPi / blenderBeams * i, 1f, 2600, Texture, 40f, 1500f, directionToRotate * 40f, 0f, true, Color.Red, Main.deathrayShader2, this);
                 }
-
+                
                 dialogueSystem.ClearDialogue();
             }
 
             if (AITimer > despStartTime)
             {
-                Drawing.ScreenShake(3, 3000);
+                Drawing.ScreenShake(3, despEndTime);
 
                 float bombRotation = MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
 
@@ -720,7 +729,7 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
-            if (AITimer == 3000)
+            if (AITimer == despEndTime)
             {
                 IsDesperationOver = true; //die
             }
@@ -753,7 +762,7 @@ namespace bullethellwhatever.Bosses
             }
         }
 
-        public void EndAttack(ref float AITimer, ref int AttackNumber)
+        public void EndAttack(ref int AITimer, ref int AttackNumber)
         {
             AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
             Rotation = 0;

@@ -67,7 +67,7 @@ namespace bullethellwhatever
             return MathF.Acos(Vector2.Dot(SafeNormalise(v1, Vector2.Zero), SafeNormalise(v2, Vector2.Zero)));
         }
 
-        public static Vector2 RotateVectorCounterClockwise(Vector2 input, float angle) //angle counterclockwise
+        public static Vector2 RotateVectorClockwise(Vector2 input, float angle) //angle counterclockwise
         {
             //for insight as to how this works, check https://discord.com/channels/770381661098606612/770382926545813515/1089248352073433168
 
@@ -75,7 +75,7 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(angle) + input.Y * MathF.Cos(angle)); //perform rotation
         }
 
-        public static Vector2 RotateVectorClockwise(Vector2 input, float angle) //angle counterclockwise
+        public static Vector2 RotateVectorCounterClockwise(Vector2 input, float angle) //angle counterclockwise
         {
             //for insight as to how this works, check https://discord.com/channels/770381661098606612/770382926545813515/1089248352073433168
 
@@ -83,10 +83,10 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
-        public static Vector2[] moveVectorArrayElementsUpAndAddToStart(Vector2[] array, Vector2 newFirstPosition)
+        public static Vector2[] moveVectorArrayElementsUpAndAddToStart(Vector2[] array, Vector2 vectorToAdd)
         {
             Vector2[] newArray = new Vector2[array.Length];
-            newArray[0] = newFirstPosition;
+            newArray[0] = vectorToAdd;
 
             for (int i = 1; i < array.Length; i++)
             {

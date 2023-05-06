@@ -11,6 +11,7 @@ using bullethellwhatever.UtilitySystems;
 using System.Diagnostics.Contracts;
 using bullethellwhatever.Projectiles.TelegraphLines;
 
+
 namespace bullethellwhatever.MainFiles
 {
     public static class Drawing
@@ -56,11 +57,11 @@ namespace bullethellwhatever.MainFiles
 
             Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
-            float transparency = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
+            Main.player.Opacity = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
 
-            BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * transparency, Main.player.Rotation, Vector2.One, SpriteEffects.None, 0f);
+            BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Vector2.One, SpriteEffects.None, 0f);
 
             //Draw every active NPC.           
 
@@ -78,7 +79,7 @@ namespace bullethellwhatever.MainFiles
                 Main.deathrayShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
 
                 DrawTelegraphs(npc);
-                BetterDraw(npc.Texture, npc.Position, null, npc.Colour, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
+                BetterDraw(npc.Texture, npc.Position, null, npc.Colour * npc.Opacity, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
                 
             }
 

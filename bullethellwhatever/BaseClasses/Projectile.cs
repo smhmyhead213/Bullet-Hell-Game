@@ -33,6 +33,7 @@ namespace bullethellwhatever.BaseClasses
             Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);
             Hitbox.Width = Hitbox.Width * (int)size.X;
             Hitbox.Height = Hitbox.Height * (int)size.Y;
+            Opacity = 1f;
 
             if (isHarmful)
                 Main.enemyProjectilesToAddNextFrame.Add(this);
@@ -120,7 +121,7 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Drawing.BetterDraw(Main.player.Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Main.player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
         }
 
     }
