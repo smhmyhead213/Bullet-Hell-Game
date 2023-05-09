@@ -13,7 +13,7 @@ namespace bullethellwhatever.DrawCode
     {
         public static void DrawTheGame(GameTime gameTime)
         {
-            Main._spriteBatch.Begin();
+            
 
             Drawing.HandleScreenShake();
 
@@ -102,10 +102,6 @@ namespace bullethellwhatever.DrawCode
                     Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.LimeGreen);
                     break;
             }
-
-
-
-            Main._spriteBatch.End();
 
             //Begin using the shader.
 

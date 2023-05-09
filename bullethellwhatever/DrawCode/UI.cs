@@ -92,11 +92,11 @@ namespace bullethellwhatever.DrawCode
             if (!Main.activeButtons.Contains(secondBossButton))
                 Main.activeButtons.Add(secondBossButton);
 
-            _spriteBatch.Begin();
+            
             _spriteBatch.Draw(testBossButton.Texture, testBossButton.Position, null, Color.White, 0f, new Vector2(testBossButton.Texture.Width / 2, testBossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
             _spriteBatch.Draw(secondBossButton.Texture, secondBossButton.Position, null, Color.White, 0f, new Vector2(secondBossButton.Texture.Width / 2, secondBossButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
             _spriteBatch.Draw(backButton.Texture, backButton.Position, null, Color.White, 0f, new Vector2(backButton.Texture.Width / 2, backButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
-            _spriteBatch.End();
+            
         }
 
         public static void DrawDifficultySelect(SpriteBatch _spriteBatch)
@@ -110,7 +110,7 @@ namespace bullethellwhatever.DrawCode
             if (!Main.activeButtons.Contains(backButton))
                 Main.activeButtons.Add(backButton);
 
-            _spriteBatch.Begin();
+            
 
             int counter = 1;
 
@@ -130,7 +130,7 @@ namespace bullethellwhatever.DrawCode
             _spriteBatch.Draw(backButton.Texture, backButton.Position, null, Color.White, 0f, new Vector2(backButton.Texture.Width / 2, backButton.Texture.Height / 2), new Vector2(3, 3), SpriteEffects.None, 0f);
 
 
-            _spriteBatch.End();
+            
 
 
         }
@@ -157,7 +157,7 @@ namespace bullethellwhatever.DrawCode
             if (Main.activeButtons.Count < 3)
                 Main.activeButtons.Add(backButton);
 
-            _spriteBatch.Begin();
+            
 
             Drawing.ConfirmControlSettingsChange(_spriteBatch);
 
@@ -165,7 +165,7 @@ namespace bullethellwhatever.DrawCode
             _spriteBatch.Draw(scrollWheelButton.Texture, scrollWheelButton.Position, null, Color.White, 0f, new Vector2(scrollWheelButton.Texture.Width / 2, scrollWheelButton.Texture.Height / 2), scrollWheelButton.Scale, SpriteEffects.None, 0f);
             _spriteBatch.Draw(backButton.Texture, backButton.Position, null, Color.White, 0f, new Vector2(backButton.Texture.Width / 2, backButton.Texture.Height / 2), backButton.Scale, SpriteEffects.None, 0f);
 
-            _spriteBatch.End();
+            
         }
     }
 }
