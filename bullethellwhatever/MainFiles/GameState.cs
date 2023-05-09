@@ -14,6 +14,7 @@ namespace bullethellwhatever.MainFiles
             Settings,
             BossSelect,
             DifficultySelect,
+            Credits,
             InGame,
         }
 

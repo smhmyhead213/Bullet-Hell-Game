@@ -2,6 +2,7 @@
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Buttons;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -40,10 +41,11 @@ namespace bullethellwhatever.MainFiles
                 ButtonCooldown--;
             }
 
-            if (GameState.State == GameState.GameStates.TitleScreen) //fix this at some point
+            if (GameState.State == GameState.GameStates.TitleScreen) 
             {
                 isGameStarted = false;
 
+                Credits.ReadInCreditsAlready = false; // i know this is an awful way to do it, in the future make credits reset when opened 
                 foreach (Button button in Main.activeButtons)
                 {
                     if (button.IsButtonClicked() && ButtonCooldown == 0)
@@ -138,6 +140,20 @@ namespace bullethellwhatever.MainFiles
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
             }
+
+            if (GameState.State == GameState.GameStates.Credits)
+            {
+                foreach (Button button in Main.activeButtons)
+                {
+                    if (button.IsButtonClicked() && ButtonCooldown == 0)
+                    {
+                        ButtonCooldown = DefaultButtonCooldown;
+
+                        button.HandleClick();
+                    }
+                }
+            }
+
         }
     }
 }

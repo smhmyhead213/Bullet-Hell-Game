@@ -8,13 +8,13 @@ using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.MainFiles
 {
     //to do 26th march 2023: fix those hitboxes 
     public class Main : Game
     {
- 
         public static Main MainInstance
         {
             get;
@@ -138,24 +138,31 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Timer++;
 
+            _spriteBatch.Begin();
+
             switch (GameState.State)
             {
                 case GameState.GameStates.TitleScreen:
-                    Drawing.DrawTitleScreen(_spriteBatch);
+                    UI.DrawTitleScreen(_spriteBatch);
                     break;
                 case GameState.GameStates.BossSelect:
-                    Drawing.DrawBossSelect(_spriteBatch);
+                    UI.DrawBossSelect(_spriteBatch);
                     break;
                 case GameState.GameStates.DifficultySelect:
-                    Drawing.DrawDifficultySelect(_spriteBatch);
+                    UI.DrawDifficultySelect(_spriteBatch);
                     break;
                 case GameState.GameStates.Settings:
-                    Drawing.DrawSettings(_spriteBatch);
+                    UI.DrawSettings(_spriteBatch);
                     break;
                 case GameState.GameStates.InGame:
-                    Drawing.DrawGame(gameTime);
+                    DrawGame.DrawTheGame(gameTime);
+                    break;
+                case GameState.GameStates.Credits:
+                    Credits.CreditSequence(_spriteBatch);
                     break;
             }
+
+            _spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

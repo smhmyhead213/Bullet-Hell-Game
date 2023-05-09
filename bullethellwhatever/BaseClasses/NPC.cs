@@ -8,6 +8,7 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles.TelegraphLines;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.BaseClasses
 {

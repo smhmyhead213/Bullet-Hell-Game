@@ -8,6 +8,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base; //bad code
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Bosses
 {

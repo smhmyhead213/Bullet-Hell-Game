@@ -9,6 +9,7 @@ using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Bosses
 {

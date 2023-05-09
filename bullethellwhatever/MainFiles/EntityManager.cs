@@ -6,6 +6,7 @@ using bullethellwhatever.Bosses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.MainFiles
 {

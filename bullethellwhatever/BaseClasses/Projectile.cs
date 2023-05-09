@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.DrawCode;
 using System.Runtime.CompilerServices;
 using System;
 using bullethellwhatever.Projectiles.Base;
@@ -44,8 +45,7 @@ namespace bullethellwhatever.BaseClasses
         
         public override void AI()
         {
-            
-
+           
             TimeAlive++;
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
