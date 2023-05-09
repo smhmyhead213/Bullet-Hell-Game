@@ -49,6 +49,9 @@
 /processorParam:TextureFormat=Color
 /build:box.png
 
+#begin credits.txt
+/copy:credits.txt
+
 #begin EasyButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
