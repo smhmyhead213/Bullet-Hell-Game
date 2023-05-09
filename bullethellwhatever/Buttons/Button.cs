@@ -30,8 +30,13 @@ namespace bullethellwhatever.Buttons
             Scale = scale;
             DifficultyChange = difficultyChange;
             Destination = destination;
+            Main.activeButtons.Add(this);
         }
 
+        public void DrawButton(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Texture.Width / 2, Texture.Height / 2), Scale, SpriteEffects.None, 0f);
+        }
         public virtual void HandleClick()
         {
             if (DifficultyChange is not null)

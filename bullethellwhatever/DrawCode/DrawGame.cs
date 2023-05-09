@@ -12,9 +12,7 @@ namespace bullethellwhatever.DrawCode
     public static class DrawGame
     {
         public static void DrawTheGame(GameTime gameTime)
-        {
-            
-
+        {          
             Drawing.HandleScreenShake();
 
             DialogueSystem.DrawDialogues(Main._spriteBatch);
@@ -28,10 +26,6 @@ namespace bullethellwhatever.DrawCode
                 //Add in the title screen button. This uses TitleScreenButton as its attributes fit what I need.
                 Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), Main.startButton,
                 GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
-
-                //Only add the button to the list of active buttons if it has not yet been added to prevent it being added infinitely.
-                if (Main.activeButtons.Count < 1)
-                    Main.activeButtons.Add(backToTitle);
 
                 //Draw the button.
                 Drawing.BetterDraw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, backToTitle.Scale, SpriteEffects.None, 0f);
@@ -104,8 +98,6 @@ namespace bullethellwhatever.DrawCode
             }
 
             //Begin using the shader.
-
-
         }
 
     }

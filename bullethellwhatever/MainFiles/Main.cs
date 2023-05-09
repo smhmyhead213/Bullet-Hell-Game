@@ -59,6 +59,9 @@ namespace bullethellwhatever.MainFiles
 
         public static Player player = new Player();
 
+        public static int ScreenHeight;
+        public static int ScreenWidth;
+
         public static List<Button> activeButtons = new List<Button>();
         public Main() : base()
         {
@@ -112,7 +115,10 @@ namespace bullethellwhatever.MainFiles
             telegraphLineShader = Content.Load<Effect>("Shaders/TelegraphLineShader");
 
             GameState.State = GameState.GameStates.TitleScreen;
-            
+
+            ScreenWidth = _graphics.PreferredBackBufferWidth;
+            ScreenHeight = _graphics.PreferredBackBufferHeight;
+
             base.Initialize();
         }
 
@@ -161,6 +167,8 @@ namespace bullethellwhatever.MainFiles
                     Credits.CreditSequence(_spriteBatch);
                     break;
             }
+
+            UI.DrawButtons(_spriteBatch);
 
             _spriteBatch.End();
             // TODO: Add your drawing code here
