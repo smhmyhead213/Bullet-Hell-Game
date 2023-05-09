@@ -26,8 +26,8 @@ namespace bullethellwhatever.DrawCode
                 Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
 
                 //Add in the title screen button. This uses TitleScreenButton as its attributes fit what I need.
-                TitleScreenButton backToTitle = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), Main.startButton,
-                GameState.GameStates.TitleScreen, new Vector2(3, 3));
+                Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), Main.startButton,
+                GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
 
                 //Only add the button to the list of active buttons if it has not yet been added to prevent it being added infinitely.
                 if (Main.activeButtons.Count < 1)

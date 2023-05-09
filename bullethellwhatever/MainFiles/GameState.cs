@@ -18,7 +18,7 @@ namespace bullethellwhatever.MainFiles
             InGame,
         }
 
-        public static GameStates State;
+        public static GameStates? State;
         public enum Difficulties
         {
             Easy, //chloe gamemode
@@ -27,7 +27,7 @@ namespace bullethellwhatever.MainFiles
             Insane,
         }
 
-        public static Difficulties Difficulty;
+        public static Difficulties? Difficulty;
         public enum Bosses
         {
             TestBoss,

@@ -46,14 +46,14 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
-            TitleScreenButton startButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
-                GameState.GameStates.BossSelect, new Vector2(3, 3));
+            Button startButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
+                GameState.GameStates.BossSelect, null, new Vector2(3, 3));
 
-            TitleScreenButton settingsButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.settingsButton,
-                GameState.GameStates.Settings, new Vector2(3, 3));
+            Button settingsButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.settingsButton,
+                GameState.GameStates.Settings, null, new Vector2(3, 3));
 
-            TitleScreenButton creditsButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
-                GameState.GameStates.Credits, new Vector2(3, 3));
+            Button creditsButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
+                GameState.GameStates.Credits, null, new Vector2(3, 3));
 
             if (Main.activeButtons.Count < 3)
                 Main.activeButtons.Add(startButton);
@@ -80,8 +80,8 @@ namespace bullethellwhatever.DrawCode
             BossSelectButton secondBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
                 GameState.GameStates.DifficultySelect, GameState.Bosses.SecondBoss, new Vector2(3, 3), true);
 
-            TitleScreenButton backButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
-                GameState.GameStates.TitleScreen, new Vector2(3, 3));
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+                GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
 
             if (!Main.activeButtons.Contains(testBossButton))
                 Main.activeButtons.Add(testBossButton);
@@ -104,8 +104,8 @@ namespace bullethellwhatever.DrawCode
 
             Texture2D[] buttonTexturesToDraw = { Main.easyButton, Main.normalButton, Main.hardButton, Main.insaneButton };
 
-            TitleScreenButton backButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
-                GameState.GameStates.BossSelect, new Vector2(3, 3));
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+                GameState.GameStates.BossSelect, null, new Vector2(3, 3));
 
             if (!Main.activeButtons.Contains(backButton))
                 Main.activeButtons.Add(backButton);
@@ -116,7 +116,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Texture2D texture in buttonTexturesToDraw)
             {
-                DifficultySelectButton button = new DifficultySelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / (buttonTexturesToDraw.Length + 1) * counter, Main._graphics.PreferredBackBufferHeight / 2), texture,
+                Button button = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / (buttonTexturesToDraw.Length + 1) * counter, Main._graphics.PreferredBackBufferHeight / 2), texture,
                     GameState.GameStates.InGame, (GameState.Difficulties)(counter - 1), new Vector2(3, 3));
 
                 if (!Main.activeButtons.Contains(button))
@@ -145,8 +145,8 @@ namespace bullethellwhatever.DrawCode
 
             //using a titlescreenbutton as it has a destination, which is what i need
 
-            TitleScreenButton backButton = new TitleScreenButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
-                GameState.GameStates.TitleScreen, new Vector2(3, 3));
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+                GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
 
             if (Main.activeButtons.Count < 3)
                 Main.activeButtons.Add(numberKeysButton);
