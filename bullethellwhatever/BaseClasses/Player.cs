@@ -12,6 +12,11 @@ namespace bullethellwhatever.BaseClasses
 {
     public class Player : Entity
     {
+        public float DefaultMoveSpeed => 5.5f;
+        public int DashCooldown;
+        public int DashDuration;
+        public int DashTimer;
+        public Vector2 DefaultHitbox => new Vector2(1f, 1f);
         #region Fields 
         public float IFrames;
         public float ShotCooldown;
@@ -68,30 +73,47 @@ namespace bullethellwhatever.BaseClasses
                 ScrollCooldown--;
             }
 
-            Velocity = Vector2.Zero;
+            Velocity = Vector2.Zero; //this will change if anything is pressed
 
-            if (kstate.IsKeyDown(Keys.W) && !touchingTop(this)) 
+            bool upPressed = kstate.IsKeyDown(Keys.W);
+            bool downPressed = kstate.IsKeyDown(Keys.S);
+            bool rightPressed = kstate.IsKeyDown(Keys.D);
+            bool leftPressed = kstate.IsKeyDown(Keys.A);
+
+            if (upPressed && !touchingTop(this))
             {
                 Velocity.Y = Velocity.Y - 1f;
             }
 
-            if (kstate.IsKeyDown(Keys.S) && !touchingBottom(this))
+            if (downPressed && !touchingBottom(this))
             {
                 Velocity.Y = Velocity.Y + 1f;
             }
 
-            if (kstate.IsKeyDown(Keys.A) && !touchingLeft(this))
+            if (leftPressed && !touchingLeft(this))
             {
                 Velocity.X = Velocity.X - 1f;
             }
 
-            if (kstate.IsKeyDown(Keys.D) && !touchingRight(this))
+            if (rightPressed && !touchingRight(this))
             {
                 Velocity.X = Velocity.X + 1f;
             }
 
-            Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
-            
+            if (kstate.IsKeyDown(Keys.LeftShift))
+            {
+                MoveSpeed = DefaultMoveSpeed / 2;
+                Size = DefaultHitbox / 2;
+
+            }
+            else
+            {
+                MoveSpeed = DefaultMoveSpeed;
+                Size = DefaultHitbox;
+            }
+
+
+
             if (GameState.WeaponSwitchControl) //if scroll wheel controls
             {
                 if (mouseState.ScrollWheelValue / 120 % 3 == 0 && ScrollCooldown == 0)  //are you happy now Gemma??????????????????????
@@ -147,8 +169,29 @@ namespace bullethellwhatever.BaseClasses
                 Main.activeButtons.Clear();
             }
 
+            if (DashCooldown > 0) 
+                DashCooldown--;
+
+            if (DashTimer > 0)
+                DashTimer--;
+
+            if (kstate.IsKeyDown(Keys.E) && DashCooldown == 0)
+            {
+                MoveSpeed = MoveSpeed * 3;
+                DashCooldown = 30;
+                DashTimer = 10;
+                IFrames = 10;
+            }
+
+            if (DashTimer > 0)
+            {                
+                MoveSpeed = MoveSpeed * 3f;
+            }
+
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             SetHitbox(this);
+
+            Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
             if (Health > 0)
             {
@@ -163,24 +206,6 @@ namespace bullethellwhatever.BaseClasses
 
                 }
 
-                //foreach (Projectile projectile in Main.activeProjectiles)
-                //{
-                //    if (projectile.IsCollidingWithEntity(projectile, this) && IFrames == 0f)
-                //    {
-
-                //        if (projectile.RemoveOnHit)
-                //            projectile.DeleteNextFrame = true;
-                //    }
-                //}
-
-                //foreach (NPC npc in Main.activeNPCs)
-                //{
-                //    if (npc.isCollidingWithPlayer() && IFrames == 0f && npc.ContactDamage == true)
-                //    {
-
-                //    }
-                //}
-
                 if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0)
                 {
                     ShotCooldownRemaining = ShotCooldown;
@@ -191,6 +216,8 @@ namespace bullethellwhatever.BaseClasses
                 {
                     PlayerDeathray.IsActive = false;
                 }
+
+                
             }
             else
             {
@@ -203,6 +230,11 @@ namespace bullethellwhatever.BaseClasses
             }
         }
         #endregion
+
+        public void Dash()
+        {
+
+        }
         #region Shooting
         public void Shoot()
         {

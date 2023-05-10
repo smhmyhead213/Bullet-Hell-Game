@@ -42,7 +42,7 @@ namespace bullethellwhatever.DrawCode
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Vector2.One, SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
 
             //Draw every active NPC.           
 

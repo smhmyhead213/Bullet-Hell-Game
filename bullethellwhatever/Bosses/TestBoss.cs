@@ -338,7 +338,7 @@ namespace bullethellwhatever.Bosses
                 HasChosenChargeDirection = false; //enable the next charge to start
             }
 
-            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0)// check if aitimer is between 1 and 15 and if its even
+            if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0 && AITimer > 0)// check if aitimer is between 1 and 15 and if its even
             {
                 BasicProjectile projectile = new BasicProjectile();
                 projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);
@@ -384,7 +384,7 @@ namespace bullethellwhatever.Bosses
             if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < endTime - 100)
             {
 
-                float acceleration = 0.52f * MathF.Cos(AITimer / 250f + MathF.PI / 3);
+                float acceleration = 0.52f * MathF.Cos(AITimer / 250f + MathF.PI);
                 float rotation = AITimer / 15f * MathF.PI / rotationSpeed * acceleration;
 
                 Rotation = rotation;
