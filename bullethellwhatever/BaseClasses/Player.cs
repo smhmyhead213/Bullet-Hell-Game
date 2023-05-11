@@ -14,7 +14,7 @@ namespace bullethellwhatever.BaseClasses
     {
         public float DefaultMoveSpeed => 5.5f;
         public int DashCooldown;
-        public int DashDuration;
+        public int DashDuration => 10;
         public int DashTimer;
         public Vector2 DefaultHitbox => new Vector2(1f, 1f);
         #region Fields 
@@ -169,23 +169,31 @@ namespace bullethellwhatever.BaseClasses
                 Main.activeButtons.Clear();
             }
 
+            if (kstate.IsKeyDown(Keys.R))
+            {
+                Utilities.InitialiseGame();
+            }
+
             if (DashCooldown > 0) 
                 DashCooldown--;
 
             if (DashTimer > 0)
                 DashTimer--;
 
-            if (kstate.IsKeyDown(Keys.E) && DashCooldown == 0)
+            if (kstate.IsKeyDown(Keys.Space) && DashCooldown == 0)
             {
                 MoveSpeed = MoveSpeed * 3;
-                DashCooldown = 30;
-                DashTimer = 10;
-                IFrames = 10;
+                DashCooldown = 40;
+                DashTimer = DashDuration;
+                IFrames = DashDuration;
             }
 
             if (DashTimer > 0)
-            {                
-                MoveSpeed = MoveSpeed * 3f;
+            {
+                float dashSpeed = 5f;
+                
+                float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
+                MoveSpeed = MoveSpeed * multiplier;
             }
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
@@ -206,7 +214,7 @@ namespace bullethellwhatever.BaseClasses
 
                 }
 
-                if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0)
+                if ((mouseState.LeftButton == ButtonState.Pressed || kstate.IsKeyDown(Keys.Enter)) && ShotCooldownRemaining == 0)
                 {
                     ShotCooldownRemaining = ShotCooldown;
                     Shoot();

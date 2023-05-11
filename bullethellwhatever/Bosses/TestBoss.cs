@@ -10,6 +10,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using System.Runtime.CompilerServices;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.Projectiles.Enemy;
 
 namespace bullethellwhatever.Bosses
 {
@@ -24,7 +25,7 @@ namespace bullethellwhatever.Bosses
         public bool HasDesperationStarted;
         public float DespBombTimer;
         public int DespBombCounter;
-
+        public int DespBeamRotation;
         public TestBoss(Vector2 position, Vector2 velocity)
         {
             Position = position;
@@ -111,7 +112,7 @@ namespace bullethellwhatever.Bosses
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 14);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 3f, 180f, 1f);
+                    Charge(ref AITimer, ref AttackNumber, 3f, 180f, 1f, 6f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 4, 70f);
@@ -151,7 +152,7 @@ namespace bullethellwhatever.Bosses
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 20);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 5f, 165f, 1.01f);
+                    Charge(ref AITimer, ref AttackNumber, 5f, 165f, 1.01f, 9f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 6, 60f);
@@ -192,7 +193,7 @@ namespace bullethellwhatever.Bosses
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 7f, 150f, 1.035f);
+                    Charge(ref AITimer, ref AttackNumber, 7f, 150f, 1.035f, 13f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 8, 60f);
@@ -238,7 +239,7 @@ namespace bullethellwhatever.Bosses
                     BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 30);
                     break;
                 case 2:
-                    Charge(ref AITimer, ref AttackNumber, 9f, 140f, 1.04f);
+                    Charge(ref AITimer, ref AttackNumber, 9f, 140f, 1.04f, 15f);
                     break;
                 case 3:
                     Spiral(ref AITimer, ref AttackNumber, 10, 45f);
@@ -312,7 +313,7 @@ namespace bullethellwhatever.Bosses
 
         }
 
-        public void Charge(ref int AITimer, ref int AttackNumber, float chargeSpeed, float chargeFrequency, float chargeProjectileAcceleration)
+        public void Charge(ref int AITimer, ref int AttackNumber, float chargeSpeed, float chargeFrequency, float chargeProjectileAcceleration, float chargeProjSpeed)
         {
             if (AITimer == 0)
             {
@@ -340,8 +341,11 @@ namespace bullethellwhatever.Bosses
 
             if (!(AITimer % chargeFrequency > 0 && AITimer % chargeFrequency < chargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0 && AITimer > 0)// check if aitimer is between 1 and 15 and if its even
             {
-                BasicProjectile projectile = new BasicProjectile();
-                projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);
+                WeakHomingProjectile projectile = new WeakHomingProjectile(chargeProjSpeed, 120);
+                projectile.Spawn(Position, Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);
+
+                //BasicProjectile projectile = new BasicProjectile();
+                //projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);
             }
 
             if (AITimer == chargeFrequency * 6)
@@ -677,13 +681,13 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == despStartTime)
             {
-                int directionToRotate = Position.X > Main.player.Position.X ? 1 : -1;
+                DespBeamRotation = Position.X > Main.player.Position.X ? 1 : -1;
                 Main.activeProjectiles.Clear();
 
                 for (int i = 0; i < blenderBeams; i++)
                 {
                     Deathray ray = new Deathray();
-                    ray.SpawnDeathray(Position, MathHelper.TwoPi / blenderBeams * i, 1f, 2600, Texture, 40f, 1500f, directionToRotate * 40f, 0f, true, Color.Red, Main.deathrayShader2, this);
+                    ray.SpawnDeathray(Position, MathHelper.TwoPi / blenderBeams * i, 1f, 2600, Texture, 40f, 1500f, DespBeamRotation * 40f, 0f, true, Color.Red, Main.deathrayShader2, this);
                 }
                 
                 dialogueSystem.ClearDialogue();
@@ -693,7 +697,7 @@ namespace bullethellwhatever.Bosses
             {
                 Drawing.ScreenShake(3, despEndTime);
 
-                float bombRotation = MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
+                float bombRotation = -DespBeamRotation * MathF.PI / 9 * (despBombFrequencyInitially - DespBombCounter);
 
                 despBombTimer++;
 
@@ -701,8 +705,8 @@ namespace bullethellwhatever.Bosses
                 {
                     ExplodingProjectile explodingProjectile1 = new ExplodingProjectile(projectilesPerBomb, 60, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
                     ExplodingProjectile explodingProjectile2 = new ExplodingProjectile(projectilesPerBomb, 60, MathF.PI / (((float)random.NextDouble() + 0.5f) * 30f), false, false, false);
-                    TelegraphLine telegraphLine1 = new TelegraphLine(-bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
-                    TelegraphLine telegraphLine2 = new TelegraphLine(MathF.PI - bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
+                    TelegraphLine telegraphLine1 = new TelegraphLine(bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
+                    TelegraphLine telegraphLine2 = new TelegraphLine(MathF.PI + bombRotation, 0, 0, 10, 1000, 60, Position, Color.White, Texture, this);
 
                     explodingProjectile1.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Vector2.UnitY, bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red, false, false);
                     explodingProjectile2.Spawn(Position, 10f * Utilities.RotateVectorClockwise(Vector2.UnitY, MathF.PI + bombRotation), 1f, Texture, 1.02f, new Vector2(1.3f, 1.3f), this, true, Color.Red, false, false);

@@ -13,6 +13,7 @@ namespace bullethellwhatever.MainFiles
         public int DefaultButtonCooldown => 25;
         public string activeBoss; //use a swicth statement to spawn a boss in
 
+
         public void HandleGame()
         {
             foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
@@ -109,9 +110,7 @@ namespace bullethellwhatever.MainFiles
 
             if (!(GameState.State == GameState.GameStates.InGame))
             {
-                Main.activeNPCs.Clear();
-                Main.activeProjectiles.Clear();
-                Main.activeFriendlyProjectiles.Clear();
+                Utilities.InitialiseGame();
             }
 
             if (GameState.State == GameState.GameStates.InGame)

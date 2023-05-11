@@ -3,11 +3,18 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 using bullethellwhatever.BaseClasses;
-
+using bullethellwhatever.MainFiles;
 namespace bullethellwhatever
 {
     public class Utilities
     {
+        public static void InitialiseGame()
+        {
+            Main.activeNPCs.Clear();
+            Main.activeProjectiles.Clear();
+            Main.activeFriendlyProjectiles.Clear();
+        }
+
         public static Vector2 Normalise(Vector2 vectorToNormalise)
         {
             float distance = MathF.Sqrt(vectorToNormalise.X * vectorToNormalise.X + vectorToNormalise.Y * vectorToNormalise.Y);

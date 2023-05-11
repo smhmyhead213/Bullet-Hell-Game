@@ -9,6 +9,7 @@ using bullethellwhatever.Projectiles.Base; //bad code
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.Projectiles.Enemy;
 
 namespace bullethellwhatever.Bosses
 {
@@ -120,11 +121,11 @@ namespace bullethellwhatever.Bosses
                 //activeTelegraphs[0].Rotation = angle - MathHelper.PiOver2;
             }
 
-            if (AITimer == 10)
+            if (AITimer % 60 == 0)
             {
-                ExplodingDeathrayProjectile explodingDeathrayProjectile = new ExplodingDeathrayProjectile(6, 60, 0, true, false, false);
+                WeakHomingProjectile homingProjectile = new WeakHomingProjectile(12f, 90);
 
-                explodingDeathrayProjectile.Spawn(Position, 3f * Vector2.UnitX, 1f, Texture, 0f, new Vector2(2f,2f), this, true, Color.Red, true, true);
+                homingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 0f, Vector2.One, this, true, Color.Red, true, true);
                 dialogueSystem.Dialogue(Position, "among us", 4, 400);
             }
         }
