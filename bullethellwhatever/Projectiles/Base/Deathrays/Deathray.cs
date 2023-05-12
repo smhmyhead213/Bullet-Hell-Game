@@ -175,6 +175,7 @@ namespace bullethellwhatever.Projectiles.Base
                 //}
 
                 Shader.Parameters["uTime"]?.SetValue(TimeAlive);
+                Shader.Parameters["duration"]?.SetValue(Duration);
 
                 Main._graphics.GraphicsDevice.Textures[1] = Main.deathrayNoiseMap;
 

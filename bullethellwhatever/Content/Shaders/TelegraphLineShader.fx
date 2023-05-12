@@ -4,6 +4,7 @@ matrix worldViewProjection;
 
 float uTime;
 float AngularVelocity;
+int duration;
 
 struct VertexShaderInput
 {
@@ -42,6 +43,16 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float distanceFromCentre = abs(input.TextureCoordinates.x - 0.5);
     
     float opacity = pow(1 - distanceFromCentre, 7);
+    
+    if (uTime < duration / 10)
+    {
+        opacity = opacity * lerp(0, 1, uTime / (duration / 10));
+    }
+    
+    if (uTime > duration / 10 * 9)
+    {
+        opacity = opacity * lerp(0, 1, (duration - uTime) / (duration / 10));
+    }
     
     return (1, 1, 0, 1) * opacity * 0.35;
     

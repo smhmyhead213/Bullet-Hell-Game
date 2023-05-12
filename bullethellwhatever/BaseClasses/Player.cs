@@ -182,7 +182,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (kstate.IsKeyDown(Keys.Space) && DashCooldown == 0)
             {
-                MoveSpeed = MoveSpeed * 3;
+                //MoveSpeed = MoveSpeed * 3;
                 DashCooldown = 40;
                 DashTimer = DashDuration;
                 IFrames = DashDuration;
@@ -193,6 +193,7 @@ namespace bullethellwhatever.BaseClasses
                 float dashSpeed = 5f;
                 
                 float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
+                //multiplier = 3f;
                 MoveSpeed = MoveSpeed * multiplier;
             }
 

@@ -95,6 +95,12 @@
 /processorParam:TextureFormat=Color
 /build:InsaneButton.png
 
+#begin Music/TestBossMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/TestBossMusic.wav
+
 #begin NormalButton.png
 /importer:TextureImporter
 /processor:TextureProcessor

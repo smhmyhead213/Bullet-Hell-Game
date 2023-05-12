@@ -6,7 +6,9 @@ sampler noiseMapSampler : register(s1);
 matrix worldViewProjection;
 
 float uTime;
+int duration;
 int direction; // 1 or -1
+//float timeToStartFadingOut = duration / 10f * 9f;
 
 struct VertexShaderInput
 {
@@ -58,6 +60,16 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float red = 1.4 - distanceFromCentre;
     float white = 0.75 - distanceFromCentre * 2;
+    
+    if (uTime < duration / 10)
+    {
+        opacity = opacity * lerp(0, 1, uTime / (duration / 10));
+    }
+    
+    if (uTime > duration / 10 * 9)
+    {       
+        opacity = opacity * lerp(0, 1, (duration - uTime) / (duration / 10));
+    }
     
     return float4(red, white, white, 1) * opacity;
     

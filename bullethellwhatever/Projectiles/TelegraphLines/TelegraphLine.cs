@@ -65,6 +65,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Main.telegraphLineShader.Parameters["uTime"]?.SetValue(TimeAlive);
             Main.telegraphLineShader.Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
             Main.telegraphLineShader.Parameters["noiseMap"]?.SetValue(Main.deathrayNoiseMap);
+            Main.telegraphLineShader.Parameters["duration"]?.SetValue(Duration);
 
             Main.telegraphLineShader.CurrentTechnique.Passes[0].Apply();
 

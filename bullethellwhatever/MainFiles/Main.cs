@@ -9,6 +9,8 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.DrawCode;
+using Microsoft.Xna.Framework.Audio;
+using bullethellwhatever.UtilitySystems.SoundSystems;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -55,6 +57,12 @@ namespace bullethellwhatever.MainFiles
         public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
+
+        public static MusicSystem musicSystem = new MusicSystem();
+
+        public static SoundEffect music;
+        public static SoundEffectInstance musicInstance;
+
         //public static List<DialogueObject> activeDialogues = new List<DialogueObject>();
 
         public static Player player = new Player();
@@ -114,6 +122,9 @@ namespace bullethellwhatever.MainFiles
 
             telegraphLineShader = Content.Load<Effect>("Shaders/TelegraphLineShader");
 
+            music = Content.Load<SoundEffect>("Music/TestBossMusic");
+            musicInstance = music.CreateInstance();
+
             GameState.State = GameState.GameStates.TitleScreen;
 
             ScreenWidth = _graphics.PreferredBackBufferWidth;
@@ -126,14 +137,23 @@ namespace bullethellwhatever.MainFiles
 
         protected override void Update(GameTime gameTime)
         {
-            
+            //if (musicSystem.ActiveSong is not null)
+            //    musicSystem.PlayMusic();
 
             if (MainInstance.IsActive)
             {
                 gameStateHandler.HandleGame();
 
+                if (musicSystem.ActiveSong is not null)
+                    musicSystem.ActiveSong.Play();
+
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
+            }
+            else
+            {
+                if (musicSystem.ActiveSong is not null)
+                    musicSystem.ActiveSong.Pause();
             }
             base.Update(gameTime);
         }
