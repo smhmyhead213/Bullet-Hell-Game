@@ -20,12 +20,12 @@ namespace bullethellwhatever.BaseClasses
 
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             Colour = colour;
             Main.NPCsToAddNextFrame.Add(this);
             Size = size;
@@ -35,7 +35,6 @@ namespace bullethellwhatever.BaseClasses
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
             SetHitbox(this);
-
         }
 
         public override void AI()

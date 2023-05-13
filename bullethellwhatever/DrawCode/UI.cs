@@ -54,41 +54,41 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
-            Button startButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
+            Button startButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), "StartButton",
                 GameState.GameStates.BossSelect, null, new Vector2(3, 3));
 
-            Button settingsButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.settingsButton,
+            Button settingsButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 2, Main._graphics.PreferredBackBufferHeight / 2), "SettingsButton",
                 GameState.GameStates.Settings, null, new Vector2(3, 3));
 
-            Button creditsButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 2), Main.startButton,
+            Button creditsButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 2), "StartButton",
                 GameState.GameStates.Credits, null, new Vector2(3, 3));
            
         }
 
         public static void DrawBossSelect(SpriteBatch _spriteBatch)
         {
-            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
+            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
                 GameState.GameStates.DifficultySelect, GameState.Bosses.TestBoss, new Vector2(3, 3), true);
 
-            BossSelectButton secondBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.bossButton,
+            BossSelectButton secondBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
                 GameState.GameStates.DifficultySelect, GameState.Bosses.SecondBoss, new Vector2(3, 3), true);
 
-            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back",
                 GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
         }
 
         public static void DrawDifficultySelect(SpriteBatch _spriteBatch)
         { //add this to other menus
 
-            Texture2D[] buttonTexturesToDraw = { Main.easyButton, Main.normalButton, Main.hardButton, Main.insaneButton };
+            string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
-            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back",
                 GameState.GameStates.BossSelect, null, new Vector2(3, 3));
             
 
             int counter = 1;
 
-            foreach (Texture2D texture in buttonTexturesToDraw)
+            foreach (string texture in buttonTexturesToDraw)
             {
                 Button button = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / (buttonTexturesToDraw.Length + 1) * counter, Main._graphics.PreferredBackBufferHeight / 2), texture,
                     GameState.GameStates.InGame, (GameState.Difficulties)(counter - 1), new Vector2(3, 3));
@@ -99,15 +99,15 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawSettings(SpriteBatch _spriteBatch)
         {
-            SettingsControlSchemeButton numberKeysButton = new SettingsControlSchemeButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), Main.numberKeysButton,
+            SettingsControlSchemeButton numberKeysButton = new SettingsControlSchemeButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), "NumberKeys",
                 new Vector2(3, 3), false);
 
-            SettingsControlSchemeButton scrollWheelButton = new SettingsControlSchemeButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), Main.scrollWheelButton,
+            SettingsControlSchemeButton scrollWheelButton = new SettingsControlSchemeButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), "Scroll",
                 new Vector2(3, 3), true);
 
             //using a titlescreenbutton as it has a destination, which is what i need
 
-            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton,
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back",
                 GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
 
             Drawing.ConfirmControlSettingsChange(_spriteBatch);

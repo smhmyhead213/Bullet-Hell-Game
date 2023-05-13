@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses
 
                     float angle = (2 * MathF.PI / numberOfProjectiles) * i;
 
-                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, Texture, 1f, Vector2.One, this, true, Color.Red, false, false);
+                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, "box", 1f, Vector2.One, this, true, Color.Red, false, false);
                 }
             }
         }
@@ -108,9 +108,9 @@ namespace bullethellwhatever.Bosses
                 Deathray deathray = new Deathray();
                 //Deathray deathray2 = new Deathray();
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
-                deathray.SpawnDeathray(Position, 0, 1f, 4000, Texture, 50f, 2000f, 60, 0f, true, Color.Red, Main.deathrayShader, this);
+                deathray.SpawnDeathray(Position, 0, 1f, 4000, "box", 50f, 2000f, 60, 0f, true, Color.Red, "DeathrayShader", this);
                 //deathray2.SpawnDeathray(Position, MathF.PI / 6, 1f, 400, Texture, 50f, 2000f, 0f, 0f, true, Color.Red, Main.deathrayShader2, this);
-                activeTelegraphs.Add(new TelegraphLine(0f, MathF.PI / 2708f, 0f, 20f, 500f, 100, Position, Color.Yellow, Texture, this));
+                activeTelegraphs.Add(new TelegraphLine(0f, MathF.PI / 2708f, 0f, 20f, 500f, 100, Position, Color.Yellow, "box", this));
                 Drawing.ScreenShake(4, 300);
             }            
 
@@ -125,7 +125,7 @@ namespace bullethellwhatever.Bosses
             {
                 WeakHomingProjectile homingProjectile = new WeakHomingProjectile(12f, 90);
 
-                homingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, Texture, 0f, Vector2.One, this, true, Color.Red, true, true);
+                homingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, "box", 0f, Vector2.One, this, true, Color.Red, true, true);
                 dialogueSystem.Dialogue(Position, "among us", 4, 400);
             }
         }

@@ -27,7 +27,7 @@ namespace bullethellwhatever.DrawCode
                 ReadInCredits();
             }
 
-            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), Main.backButton, GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
+            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back", GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
 
             if (!Main.activeButtons.Contains(backButton))
                 Main.activeButtons.Add(backButton);

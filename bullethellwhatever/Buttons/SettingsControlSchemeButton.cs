@@ -8,10 +8,10 @@ namespace bullethellwhatever.Buttons
     public class SettingsControlSchemeButton : Button
     {
         public bool WeaponSwitchControl;
-        public SettingsControlSchemeButton(Vector2 position, Texture2D texture, Vector2 scale, bool weaponSwitchControl) : base(position, texture, null, null, scale)
+        public SettingsControlSchemeButton(Vector2 position, string texture, Vector2 scale, bool weaponSwitchControl) : base(position, texture, null, null, scale)
         {
             Position = position;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             Scale = scale;
             WeaponSwitchControl = weaponSwitchControl; //true for scroll, false for numbers
         }

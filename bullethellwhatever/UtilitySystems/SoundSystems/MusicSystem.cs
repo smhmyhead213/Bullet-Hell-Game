@@ -21,7 +21,6 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         public int SongTimer;
         public void SetMusic(SoundEffectInstance song, bool loop, float volume) //add fading out / in later
         {
-
             ActiveSong = song;
             ActiveSong.IsLooped = loop;
             ActiveSong.Volume = volume;

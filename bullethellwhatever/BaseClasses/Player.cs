@@ -37,11 +37,11 @@ namespace bullethellwhatever.BaseClasses
 
         #endregion
         #region Spawning
-        public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, Texture2D texture) //initialise player data
+        public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
             Position = position;
             Velocity = initialVelocity;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
@@ -257,7 +257,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 999, Texture, 10f, 2000f, 0f, 0f, false, Color.Yellow, Main.deathrayShader, this);               
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 999, "box", 10f, 2000f, 0f, 0f, false, Color.Yellow, "DeathrayShader", this);               
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -271,7 +271,7 @@ namespace bullethellwhatever.BaseClasses
                 Random rnd = new Random();
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, Main.player.Texture, 0, Vector2.One, this, false, Color.LightBlue, true, true);
+                    0.15f, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -281,7 +281,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
                 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.28f, Main.player.Texture, 0, Vector2.One, this, false, Color.LimeGreen, true, true);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.28f, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
 
 
             }

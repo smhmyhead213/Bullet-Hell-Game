@@ -23,10 +23,10 @@ namespace bullethellwhatever.Buttons
         public bool DeleteNextFrame;
         public Rectangle ButtonRectangle => new((int)Position.X - (Texture.Width / 2 * (int)Scale.X), (int)Position.Y - (Texture.Height / 2 * (int)Scale.Y), Texture.Width * (int)Scale.X, Texture.Height * (int)Scale.Y);
 
-        public Button(Vector2 position, Texture2D texture, GameState.GameStates? destination, GameState.Difficulties? difficultyChange, Vector2 scale)
+        public Button(Vector2 position, string texture, GameState.GameStates? destination, GameState.Difficulties? difficultyChange, Vector2 scale)
         {
             Position = position;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             Scale = scale;
             DifficultyChange = difficultyChange;
             Destination = destination;

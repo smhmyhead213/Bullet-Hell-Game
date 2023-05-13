@@ -25,7 +25,7 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 for (int i = 0; i < NumberOfProjectiles; i++)
                 {
-                    TelegraphLine teleLine = new TelegraphLine((MathF.PI * 2 / NumberOfProjectiles * i) + Offset, 0, 0, 10, 2000, ExplosionDelay, Position, Color.White, Texture, this);
+                    TelegraphLine teleLine = new TelegraphLine((MathF.PI * 2 / NumberOfProjectiles * i) + Offset, 0, 0, 10, 2000, ExplosionDelay, Position, Color.White, "box", this);
                 }
             }
 
@@ -58,7 +58,7 @@ namespace bullethellwhatever.Projectiles.Base
 
                 //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
 
-                ray.SpawnDeathray(Position, i * MathHelper.TwoPi / NumberOfProjectiles, 1f, 10, Texture, 10, 2000, 0, 0, true, Color.Red, MainFiles.Main.deathrayShader2, Owner);
+                ray.SpawnDeathray(Position, i * MathHelper.TwoPi / NumberOfProjectiles, 1f, 10, "box", 10, 2000, 0, 0, true, Color.Red, "DeathrayShader2", Owner);
 
                 DeleteNextFrame = true;
             }

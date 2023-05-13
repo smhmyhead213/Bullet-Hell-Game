@@ -17,12 +17,12 @@ namespace bullethellwhatever.BaseClasses
         public float TimeAlive;
         public Entity Owner;
         public bool RemoveOnHit;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Position = position;
             Velocity = velocity;
             Damage = damage;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             Acceleration = acceleration;
             Colour = colour;
             DeleteNextFrame = false;
@@ -31,7 +31,7 @@ namespace bullethellwhatever.BaseClasses
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
-            Hitbox = new((int)position.X - texture.Width / 2, (int)position.Y - texture.Height / 2, texture.Width, texture.Height);
+            Hitbox = new((int)position.X - Texture.Width / 2, (int)position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
             Hitbox.Width = Hitbox.Width * (int)size.X;
             Hitbox.Height = Hitbox.Height * (int)size.Y;
             Opacity = 1f;

@@ -8,10 +8,10 @@ namespace bullethellwhatever.Buttons
     public class BossSelectButton : Button
     {
         public GameState.Bosses BossToSpawn;
-        public BossSelectButton(Vector2 position, Texture2D texture, GameState.GameStates destination, GameState.Bosses boss, Vector2 scale, bool deleteNextFrame) : base(position, texture, destination, null, scale)
+        public BossSelectButton(Vector2 position, string texture, GameState.GameStates destination, GameState.Bosses boss, Vector2 scale, bool deleteNextFrame) : base(position, texture, destination, null, scale)
         {
             Position = position;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             Scale = scale;
             BossToSpawn = boss;
             Destination = destination;

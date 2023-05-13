@@ -24,7 +24,7 @@ namespace bullethellwhatever.DrawCode
                 Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
 
                 //Add in the title screen button. This uses TitleScreenButton as its attributes fit what I need.
-                Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), Main.startButton,
+                Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), "StartButton",
                 GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
 
                 //Draw the button.
@@ -57,7 +57,6 @@ namespace bullethellwhatever.DrawCode
 
             foreach (NPC npc in Main.activeNPCs) //move this back later
             {
-                Main.deathrayShader.Parameters["bossHPRatio"]?.SetValue(npc.HPRatio);
 
                 Drawing.DrawTelegraphs(npc);
                 Drawing.BetterDraw(npc.Texture, npc.Position, null, npc.Colour * npc.Opacity, npc.Rotation, npc.Size, SpriteEffects.None, 0f);

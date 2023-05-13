@@ -118,7 +118,7 @@ namespace bullethellwhatever.MainFiles
                 if (!isGameStarted)
                 {
                     EntityManager.SpawnBoss();
-                    Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, Main.playerTexture);
+                    Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
                     Main.activeProjectiles.Clear();
                     isGameStarted = true;
 

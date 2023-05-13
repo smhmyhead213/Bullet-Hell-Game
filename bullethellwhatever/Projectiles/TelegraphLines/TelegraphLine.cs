@@ -20,7 +20,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public float Length;
         public int TimeAlive;
         public bool DeleteNextFrame;
-        public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, Texture2D texture, Entity owner)
+        public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner)
         {
             Rotation = rotation + MathF.PI;
             RotationalVelocity = rotationalVelocity;
@@ -30,7 +30,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Duration = duration;
             Origin = origin;
             Colour = colour;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             Owner = owner;
             TimeAlive = 0;
 
@@ -62,12 +62,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             spritebatch.Begin(SpriteSortMode.Immediate);
 
-            Main.telegraphLineShader.Parameters["uTime"]?.SetValue(TimeAlive);
-            Main.telegraphLineShader.Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
-            Main.telegraphLineShader.Parameters["noiseMap"]?.SetValue(Main.deathrayNoiseMap);
-            Main.telegraphLineShader.Parameters["duration"]?.SetValue(Duration);
+            Main.Shaders["TelegraphLineShader"].Parameters["uTime"]?.SetValue(TimeAlive);
+            Main.Shaders["TelegraphLineShader"].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
+            Main.Shaders["TelegraphLineShader"].Parameters["duration"]?.SetValue(Duration);
 
-            Main.telegraphLineShader.CurrentTechnique.Passes[0].Apply();
+            Main.Shaders["TelegraphLineShader"].CurrentTechnique.Passes[0].Apply();
 
             Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 

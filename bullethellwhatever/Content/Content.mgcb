@@ -161,17 +161,11 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/DeathrayShader2.fx
 
-#begin Shaders/RayNoiseMap.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Shaders/RayNoiseMap.png
+#begin Shaders/PlayerDeathrayShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/PlayerDeathrayShader.fx
 
 #begin Shaders/TelegraphLineShader.fx
 /importer:EffectImporter

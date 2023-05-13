@@ -24,14 +24,15 @@ namespace bullethellwhatever.Projectiles.Base
         public bool IsActive;
         public Effect Shader;
         public int Duration;
-        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width, float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
+        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
+            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string shader, Entity owner)
         {
             Position = position;
             Rotation = initialRotation;
             Width = width;
             Length = length;
             Duration = duration;
-            Texture = texture;
+            Texture = Main.Assets[texture];
             AngularVelocity = angularVelocity;
             Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
             Owner = owner;
@@ -39,7 +40,7 @@ namespace bullethellwhatever.Projectiles.Base
             IsActive = true;
             IsHarmful = isHarmful;
             Damage = damage;
-            Shader = shader;
+            Shader = Main.Shaders[shader];
             RemoveOnHit = false;
 
             if (isHarmful)
@@ -176,8 +177,6 @@ namespace bullethellwhatever.Projectiles.Base
 
                 Shader.Parameters["uTime"]?.SetValue(TimeAlive);
                 Shader.Parameters["duration"]?.SetValue(Duration);
-
-                Main._graphics.GraphicsDevice.Textures[1] = Main.deathrayNoiseMap;
 
                 Shader.CurrentTechnique.Passes[0].Apply();
 
