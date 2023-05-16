@@ -58,10 +58,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         }
         public void Draw(SpriteBatch spritebatch)
         {
-            spritebatch.End();
-
-            spritebatch.Begin(SpriteSortMode.Immediate);
-
             Main.Shaders["TelegraphLineShader"].Parameters["uTime"]?.SetValue(TimeAlive);
             Main.Shaders["TelegraphLineShader"].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
             Main.Shaders["TelegraphLineShader"].Parameters["duration"]?.SetValue(Duration);
@@ -73,12 +69,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
             spritebatch.Draw(Main.player.Texture, Origin, null, Colour, Rotation, originOffset, size, SpriteEffects.None, 0);
-
-            spritebatch.End();
-
-            spritebatch.Begin(SpriteSortMode.Deferred);
-
-
         }
     }
 }

@@ -7,6 +7,7 @@ using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -23,7 +24,7 @@ namespace bullethellwhatever.BaseClasses
         public float ShotCooldownRemaining;
         public float ScrollCooldown;
         public float MoveSpeed;
-        private Deathray PlayerDeathray = new Deathray();
+        public Deathray PlayerDeathray = new Deathray();
 
         public enum Weapons
         {
@@ -54,6 +55,8 @@ namespace bullethellwhatever.BaseClasses
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
             ShouldRemoveOnEdgeTouch = false;
+            afterimagesPositions = new Vector2[DashDuration];
+            Colour = Color.White;
         }
         #endregion
 
@@ -63,6 +66,8 @@ namespace bullethellwhatever.BaseClasses
         #region AI
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
+            
+
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
@@ -193,7 +198,7 @@ namespace bullethellwhatever.BaseClasses
                 float dashSpeed = 5f;
                 
                 float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
-                //multiplier = 3f;
+                multiplier = 3f;
                 MoveSpeed = MoveSpeed * multiplier;
             }
 
@@ -201,6 +206,8 @@ namespace bullethellwhatever.BaseClasses
             SetHitbox(this);
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
+
+            afterimagesPositions = Utilities.moveVectorArrayElementsUpAndAddToStart(afterimagesPositions, Position);
 
             if (Health > 0)
             {
@@ -257,7 +264,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 999, "box", 10f, 2000f, 0f, 0f, false, Color.Yellow, "DeathrayShader", this);               
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 2, "box", 10f, 2000f, 0f, 0f, false, Color.Yellow, "DeathrayShader2", this);               
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
@@ -287,12 +294,27 @@ namespace bullethellwhatever.BaseClasses
             }
         }
         #endregion
-        //public void TakeDamage(Entity entity) //take damage from an entity
-        //{
-        //    Health = Health - entity.Damage;
-        //    IFrames = 20f;
-            
-        //}
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (DashTimer > 0)
+            {
+                for (int i = 0; i < afterimagesPositions.Length; i++)
+                {
+                    if (afterimagesPositions[i] != Vector2.Zero)
+                    {
+                        float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, Size * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                    }
+                }
+            }
+
+            Main.player.Opacity = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
+
+            //Draw the player, accounting for immunity frame transparency.
+
+            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
+        }
     }
 }
 

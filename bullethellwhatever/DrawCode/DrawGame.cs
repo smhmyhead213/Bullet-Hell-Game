@@ -4,15 +4,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
-
-
+using System.Collections.Generic;
+using bullethellwhatever.Projectiles;
+using bullethellwhatever.Projectiles.TelegraphLines;
 
 namespace bullethellwhatever.DrawCode
 {
     public static class DrawGame
     {
         public static void DrawTheGame(GameTime gameTime)
-        {          
+        {
             Drawing.HandleScreenShake();
 
             DialogueSystem.DrawDialogues(Main._spriteBatch);
@@ -32,43 +33,77 @@ namespace bullethellwhatever.DrawCode
                 //Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
             }
 
-            //Calculate transparency based on the player's remaining immunity frames.
-
-            //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), Main._spriteBatch, Main.font, Color.White);
-
             Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
-            Main.player.Opacity = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
+            List<Entity> toDrawWithoutShader = new List<Entity>();
+            List<Entity> toDrawWithShader = new List<Entity>();
 
-            //Draw the player, accounting for immunity frame transparency.
+            //Populate lists with entites to draw with and without shaders.
 
-            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
-
-            //Draw every active NPC.           
-
-            //Draw every enemy projectile.
+            if (Main.player is IDrawsShader)
+            {
+                toDrawWithShader.Add(Main.player);
+            }
+            else toDrawWithoutShader.Add(Main.player);
 
             foreach (Projectile projectile in Main.activeProjectiles)
             {
-                projectile.Draw(Main._spriteBatch);
-                Drawing.DrawTelegraphs(projectile);
-
+                if (projectile is IDrawsShader)
+                {
+                    toDrawWithShader.Add(projectile);
+                }
+                else toDrawWithoutShader.Add(projectile);
             }
 
-            foreach (NPC npc in Main.activeNPCs) //move this back later
+            foreach (NPC npc in Main.activeNPCs)
             {
-
-                Drawing.DrawTelegraphs(npc);
-                Drawing.BetterDraw(npc.Texture, npc.Position, null, npc.Colour * npc.Opacity, npc.Rotation, npc.Size, SpriteEffects.None, 0f);
-
+                if (npc is IDrawsShader)
+                {
+                    toDrawWithShader.Add(npc);
+                }
+                else toDrawWithoutShader.Add(npc);
             }
 
-            //Draw every player projectile.
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
-                projectile.Draw(Main._spriteBatch);
-                Drawing.DrawTelegraphs(projectile);
+                if (projectile is IDrawsShader)
+                {
+                    toDrawWithShader.Add(projectile);
+                }
+                else toDrawWithoutShader.Add(projectile);
             }
+
+            // Draw everything without a shader.
+
+            foreach (Entity entity in toDrawWithoutShader)
+            {
+                entity.Draw(Main._spriteBatch);
+            }
+
+            Main._spriteBatch.End();
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+
+            //Draw everything that does use a shader.
+
+            foreach (Entity entity in toDrawWithoutShader)
+            {
+                foreach (TelegraphLine t in entity.activeTelegraphs) 
+                {
+                    t.Draw(Main._spriteBatch);
+                }
+            }
+            foreach (Entity entity in toDrawWithShader)
+            {
+                entity.Draw(Main._spriteBatch);
+
+                foreach (TelegraphLine t in entity.activeTelegraphs)
+                {
+                    t.Draw(Main._spriteBatch);
+                }
+            }
+
+            Main._spriteBatch.End();
+            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
 
             //Draw the boss health bar. Note that active bosses will always be the first entries in the ActiveNPCs list.
             if (Main.activeNPCs.Count > 0)

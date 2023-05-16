@@ -1,7 +1,6 @@
 ﻿sampler mainTexture : register(s0);
 
 texture noiseMap;
-sampler noiseMapSampler : register(s1);
 
 matrix worldViewProjection;
 

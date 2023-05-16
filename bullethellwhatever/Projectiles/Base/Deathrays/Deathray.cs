@@ -9,23 +9,21 @@ using Microsoft.Xna.Framework.Input;
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
-using Microsoft.VisualBasic.Devices;
 
-using System.Diagnostics.Eventing.Reader;
-using SharpDX.MediaFoundation;
+
 
 namespace bullethellwhatever.Projectiles.Base
 {
-    public class Deathray : Projectile
+    public class Deathray : Projectile, IDrawsShader
     {    
         public float Length;
         public float Width;
         public float AngularVelocity;
         public bool IsActive;
-        public Effect Shader;
+        
         public int Duration;
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string shader, Entity owner)
+            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
             Position = position;
             Rotation = initialRotation;
@@ -40,7 +38,11 @@ namespace bullethellwhatever.Projectiles.Base
             IsActive = true;
             IsHarmful = isHarmful;
             Damage = damage;
-            Shader = Main.Shaders[shader];
+
+            if (shader != null)
+                Shader = Main.Shaders[shader];
+            else Shader = null;
+
             RemoveOnHit = false;
 
             if (isHarmful)
@@ -147,55 +149,24 @@ namespace bullethellwhatever.Projectiles.Base
         //    }
         //}
 
+        public void DrawWithShader(SpriteBatch spriteBatch)
+        {
+
+        }
+
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
             {
-                spritebatch.End();
-
-                spritebatch.Begin(SpriteSortMode.Immediate);
-
-                //List<VertexPosition2DColor> vertices = new();
-                //// either set this here or use one you already have.
-                //// Whatever it is for you.
-                //Vector2 laserEndPos = Origin + (Utilities.AngleToVector(Rotation) * Length);
-                //// set this to the rotation the laser is facing times the length added to the start pos
-
-                //for (int i = 0; i < 8; i++)
-                //{
-                //    float progress = (float)i / 8f;
-
-                //    Vector2 position = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, -MathHelper.PiOver2)) * Width;
-                //    Vector2 position2 = Vector2.Lerp(Origin, laserEndPos, progress) + Utilities.Normalise(Utilities.RotateVectorClockwise(laserEndPos - Origin, MathHelper.PiOver2)) * Width;
-
-                //    Vector2 textureCoords = new(progress, 0f);
-                //    Vector2 textureCoords2 = new(progress, 1f);
-
-                //    vertices.Add(new VertexPosition2DColor(position, Colour, textureCoords));
-                //    vertices.Add(new VertexPosition2DColor(position2, Colour, textureCoords2));
-                //}
-
                 Shader.Parameters["uTime"]?.SetValue(TimeAlive);
                 Shader.Parameters["duration"]?.SetValue(Duration);
-
                 Shader.CurrentTechnique.Passes[0].Apply();
 
                 Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
-                //spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, Vector2.Zero, size, SpriteEffects.None, 0);
-
                 Vector2 originOffset = new Vector2(Texture.Width / 2, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
                 spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
-
-                //Drawing.BetterDraw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, size, SpriteEffects.None, 0);
-
-                //Main._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count - 2);
-
-                spritebatch.End();
-
-                spritebatch.Begin(SpriteSortMode.Deferred);
-
             }
         }
     }

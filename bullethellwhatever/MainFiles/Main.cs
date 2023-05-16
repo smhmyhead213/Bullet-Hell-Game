@@ -32,24 +32,6 @@ namespace bullethellwhatever.MainFiles
         public static Dictionary<string, SoundEffect> Music = new Dictionary<string, SoundEffect>();
         public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
 
-        //public static Texture2D playerTexture;
-        //public static Texture2D startButton;
-        //public static Texture2D easyButton;
-        //public static Texture2D normalButton;
-        //public static Texture2D hardButton;
-        //public static Texture2D insaneButton;
-        //public static Texture2D bossButton;
-        //public static Texture2D settingsButton;
-        //public static Texture2D numberKeysButton;
-        //public static Texture2D scrollWheelButton;
-        //public static Texture2D backButton;
-        //public static Texture2D deathrayNoiseMap;
-
-        //public static Effect deathrayShader;
-        //public static Effect deathrayShader2;
-
-        //public static Effect telegraphLineShader;
-
         public static SpriteFont font;
 
         public static GameStateHandler gameStateHandler = new GameStateHandler();
@@ -64,10 +46,7 @@ namespace bullethellwhatever.MainFiles
 
         public static MusicSystem musicSystem = new MusicSystem();
 
-        //public static SoundEffect music;
         public static SoundEffectInstance musicInstance;
-
-        //public static List<DialogueObject> activeDialogues = new List<DialogueObject>();
 
         public static Player player = new Player();
 
@@ -120,7 +99,7 @@ namespace bullethellwhatever.MainFiles
 
                 toSaveAs = toSaveAs.Substring(0, indexOfDot);
 
-                if (fileExtension == ".xnb") //only do this for .xnbs, when this was written credits.txt would crash it as a .txt doesnt work as a Texture2D
+                if (fileExtension == ".xnb") //only do this for .xnbs, when this was written credits.txt would crash it as a .txt doesnt work
                 {
                     toSaveAs = toSaveAs.Substring(0, indexOfDot); //remove file extension
 
@@ -148,22 +127,6 @@ namespace bullethellwhatever.MainFiles
             }
 
             font = Content.Load<SpriteFont>("font");
-            //playerTexture = Content.Load<Texture2D>("box");
-            //easyButton = Content.Load<Texture2D>("EasyButton");
-            //normalButton = Content.Load<Texture2D>("NormalButton");
-            //hardButton = Content.Load<Texture2D>("HardButton");
-            //insaneButton = Content.Load<Texture2D>("InsaneButton");
-            //bossButton = Content.Load<Texture2D>("BossButton");
-            //startButton = Content.Load<Texture2D>("StartButton");
-            //settingsButton = Content.Load<Texture2D>("SettingsButton");
-            //numberKeysButton = Content.Load<Texture2D>("NumberKeys");
-            //scrollWheelButton = Content.Load<Texture2D>("Scroll");
-            //backButton = Content.Load<Texture2D>("Back");
-
-            //deathrayShader = Content.Load<Effect>("Shaders/DeathrayShader");
-            //deathrayShader2 = Content.Load<Effect>("Shaders/DeathrayShader2");
-
-            //telegraphLineShader = Content.Load<Effect>("Shaders/TelegraphLineShader");
 
             GameState.State = GameState.GameStates.TitleScreen;
 

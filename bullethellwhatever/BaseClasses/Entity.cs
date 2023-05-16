@@ -29,6 +29,9 @@ namespace bullethellwhatever.BaseClasses
         public bool ShouldRemoveOnEdgeTouch;
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
+        public Effect? Shader;
+
+        public Vector2[] afterimagesPositions; //when using afterimages, this needs to be initialised in the Spawn method of whatever has them.
 
         public static void SetHitbox(Entity entity)
         {
@@ -86,5 +89,7 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
         public abstract void AI();
+
+        public abstract void Draw(SpriteBatch spriteBatch);
     }
 }

@@ -79,6 +79,11 @@ namespace bullethellwhatever.BaseClasses
                     DeleteNextFrame = true;
                 }
             }
-        }    
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+        }
     }
 }
