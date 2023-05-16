@@ -18,7 +18,7 @@ namespace bullethellwhatever.BaseClasses
         public int DashDuration => 10;
         public int DashTimer;
         public Vector2 DefaultHitbox => new Vector2(1f, 1f);
-        #region Fields 
+
         public float IFrames;
         public float ShotCooldown;
         public float ShotCooldownRemaining;
@@ -36,7 +36,6 @@ namespace bullethellwhatever.BaseClasses
 
         public Weapons ActiveWeapon;
 
-        #endregion
         #region Spawning
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
@@ -64,21 +63,10 @@ namespace bullethellwhatever.BaseClasses
 
         #endregion
         #region AI
-        public override void AI() //cooldowns and iframes and stuff are handled here
+        public void HandleKeyPresses()
         {
-            
-
             var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
-
-            PlayerDeathray.Position = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
-
-            if (ScrollCooldown > 0)
-            {
-                ScrollCooldown--;
-            }
-
-            Velocity = Vector2.Zero; //this will change if anything is pressed
 
             bool upPressed = kstate.IsKeyDown(Keys.W);
             bool downPressed = kstate.IsKeyDown(Keys.S);
@@ -148,7 +136,7 @@ namespace bullethellwhatever.BaseClasses
 
             else
             {
-                if (kstate.IsKeyDown(Keys.D1))  
+                if (kstate.IsKeyDown(Keys.D1))
                 {
                     ActiveWeapon = Weapons.Laser;
                     ScrollCooldown = 3f;
@@ -179,7 +167,7 @@ namespace bullethellwhatever.BaseClasses
                 Utilities.InitialiseGame();
             }
 
-            if (DashCooldown > 0) 
+            if (DashCooldown > 0)
                 DashCooldown--;
 
             if (DashTimer > 0)
@@ -195,19 +183,35 @@ namespace bullethellwhatever.BaseClasses
 
             if (DashTimer > 0)
             {
-                float dashSpeed = 5f;
-                
-                float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
-                multiplier = 3f;
+                //float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
+                float multiplier = 3f;
                 MoveSpeed = MoveSpeed * multiplier;
             }
+        }
+        public override void AI() //cooldowns and iframes and stuff are handled here
+        {
+            
+
+            PlayerDeathray.Position = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
+
+            if (ScrollCooldown > 0)
+            {
+                ScrollCooldown--;
+            }
+
+            Velocity = Vector2.Zero; //this will change if anything is pressed
+
+            HandleKeyPresses();
+
+            var kstate = Keyboard.GetState();
+            var mouseState = Mouse.GetState();
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             SetHitbox(this);
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
-            afterimagesPositions = Utilities.moveVectorArrayElementsUpAndAddToStart(afterimagesPositions, Position);
+            Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
 
             if (Health > 0)
             {

@@ -90,7 +90,7 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
-        public static Vector2[] moveVectorArrayElementsUpAndAddToStart(Vector2[] array, Vector2 vectorToAdd)
+        public static void moveVectorArrayElementsUpAndAddToStart(ref Vector2[] array, Vector2 vectorToAdd)
         {
             Vector2[] newArray = new Vector2[array.Length];
             newArray[0] = vectorToAdd;
@@ -100,7 +100,7 @@ namespace bullethellwhatever
                 newArray[i] = array[i - 1];
             }
 
-            return newArray;
+            array = newArray;
         }
 
         public static Vector2 CentreOfScreen() => new Vector2(MainFiles.Main._graphics.PreferredBackBufferWidth / 2, MainFiles.Main._graphics.PreferredBackBufferHeight / 2);

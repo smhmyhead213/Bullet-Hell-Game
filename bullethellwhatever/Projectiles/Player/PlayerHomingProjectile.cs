@@ -30,7 +30,7 @@ namespace bullethellwhatever.Projectiles.Player
             float minDistance = float.MaxValue;
             TimeAlive++;
 
-            afterimagesPositions = Utilities.moveVectorArrayElementsUpAndAddToStart(afterimagesPositions, Position);
+            Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
 
             if (TimeAlive > HomingTime)
             {
