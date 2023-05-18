@@ -35,64 +35,63 @@ namespace bullethellwhatever.DrawCode
 
             Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
-            List<Entity> toDrawWithoutShader = new List<Entity>();
-            List<Entity> toDrawWithShader = new List<Entity>();
+            List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();
+            List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
+
+            List<Entity> NPCstoDrawWithoutShader = new List<Entity>();
+            List<Entity> NPCstoDrawWithShader = new List<Entity>();
 
             //Populate lists with entites to draw with and without shaders.
 
+            // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues
+            // Everything must be looped through in the Immediate sprite mode as all telegraph lines use a shader.
+
             if (Main.player is IDrawsShader)
             {
-                toDrawWithShader.Add(Main.player);
+                NPCstoDrawWithShader.Add(Main.player);
             }
-            else toDrawWithoutShader.Add(Main.player);
+            else NPCstoDrawWithoutShader.Add(Main.player);
 
             foreach (Projectile projectile in Main.activeProjectiles)
             {
                 if (projectile is IDrawsShader)
                 {
-                    toDrawWithShader.Add(projectile);
+                    ProjectilestoDrawWithShader.Add(projectile);
                 }
-                else toDrawWithoutShader.Add(projectile);
+                else ProjectilestoDrawWithoutShader.Add(projectile);
             }
 
             foreach (NPC npc in Main.activeNPCs)
             {
                 if (npc is IDrawsShader)
                 {
-                    toDrawWithShader.Add(npc);
+                    NPCstoDrawWithShader.Add(npc);
                 }
-                else toDrawWithoutShader.Add(npc);
+                else NPCstoDrawWithoutShader.Add(npc);
             }
 
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
                 if (projectile is IDrawsShader)
                 {
-                    toDrawWithShader.Add(projectile);
+                    ProjectilestoDrawWithShader.Add(projectile);
                 }
-                else toDrawWithoutShader.Add(projectile);
+                else ProjectilestoDrawWithoutShader.Add(projectile);
             }
 
-            // Draw everything without a shader.
+            // Draw all projectiles without shaders first.
 
-            foreach (Entity entity in toDrawWithoutShader)
+            foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
-                entity.Draw(Main._spriteBatch);
+                    entity.Draw(Main._spriteBatch);
             }
 
             Main._spriteBatch.End();
             Main._spriteBatch.Begin(SpriteSortMode.Immediate);
 
-            //Draw everything that does use a shader.
+            //Draw all projectiles that do use a shader.
 
-            foreach (Entity entity in toDrawWithoutShader)
-            {
-                foreach (TelegraphLine t in entity.activeTelegraphs) 
-                {
-                    t.Draw(Main._spriteBatch);
-                }
-            }
-            foreach (Entity entity in toDrawWithShader)
+            foreach (Entity entity in ProjectilestoDrawWithShader)
             {
                 entity.Draw(Main._spriteBatch);
 
@@ -102,8 +101,40 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
+            foreach (Entity entity in ProjectilestoDrawWithoutShader)
+            {
+                foreach (TelegraphLine t in entity.activeTelegraphs)
+                {
+                    t.Draw(Main._spriteBatch);
+                }
+            }
+
+            foreach (Entity entity in NPCstoDrawWithShader)
+            {
+                entity.Draw(Main._spriteBatch);
+
+                foreach (TelegraphLine t in entity.activeTelegraphs) 
+                {
+                    t.Draw(Main._spriteBatch);
+                }
+            }
+
+            foreach (Entity entity in NPCstoDrawWithoutShader)
+            {
+                foreach (TelegraphLine t in entity.activeTelegraphs)
+                {
+                    t.Draw(Main._spriteBatch);
+                }
+            }
+            
             Main._spriteBatch.End();
             Main._spriteBatch.Begin(SpriteSortMode.Deferred);
+
+            foreach (Entity entity in NPCstoDrawWithoutShader)
+            {
+                entity.Draw(Main._spriteBatch);
+            }
+
 
             //Draw the boss health bar. Note that active bosses will always be the first entries in the ActiveNPCs list.
             if (Main.activeNPCs.Count > 0)

@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 150;
+            Health = 1;
             AITimer = 0;
             IFrames = 5f;
             HasChosenChargeDirection = false;
@@ -121,13 +121,13 @@ namespace bullethellwhatever.Bosses
                 //activeTelegraphs[0].Rotation = angle - MathHelper.PiOver2;
             }
 
-            if (AITimer % 60 == 0)
-            {
-                WeakHomingProjectile homingProjectile = new WeakHomingProjectile(12f, 90);
+            //if (AITimer % 60 == 0)
+            //{
+            //    WeakHomingProjectile homingProjectile = new WeakHomingProjectile(12f, 90);
 
-                homingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, "box", 0f, Vector2.One, this, true, Color.Red, true, true);
-                dialogueSystem.Dialogue(Position, "among us", 4, 400);
-            }
+            //    homingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, "box", 0f, Vector2.One, this, true, Color.Red, true, true);
+            //    dialogueSystem.Dialogue(Position, "among us", 4, 400);
+            //}
         }
 
             public void EndAttack(ref float AITimer, ref int AttackNumber)

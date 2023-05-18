@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
 
-            Main.musicSystem.SetMusic("TestBossMusic", true, 0.25f);
+            Main.musicSystem.SetMusic("TestBossMusic", true, 0.15f);
 
             FramesPerMusicBeat = 24;
             BeatsPerBar = 4;

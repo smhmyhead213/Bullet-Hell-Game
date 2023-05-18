@@ -13,6 +13,7 @@ namespace bullethellwhatever
             Main.activeNPCs.Clear();
             Main.activeProjectiles.Clear();
             Main.activeFriendlyProjectiles.Clear();
+            Main.player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 
         public static Vector2 Normalise(Vector2 vectorToNormalise)

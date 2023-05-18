@@ -38,6 +38,7 @@ namespace bullethellwhatever.MainFiles
         public static GameState gameState = new GameState();
 
         public static List<NPC> activeNPCs = new List<NPC>();
+        public static List<NPC> activeFriendlyNPCs = new List<NPC>();
         public static List<Projectile> activeProjectiles = new List<Projectile>();
         public static List<Projectile> activeFriendlyProjectiles = new List<Projectile>();
         public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
@@ -140,9 +141,6 @@ namespace bullethellwhatever.MainFiles
 
         protected override void Update(GameTime gameTime)
         {
-            //if (musicSystem.ActiveSong is not null)
-            //    musicSystem.PlayMusic();
-
             if (MainInstance.IsActive)
             {
                 gameStateHandler.HandleGame();
@@ -158,6 +156,7 @@ namespace bullethellwhatever.MainFiles
                 if (musicSystem.ActiveSong is not null)
                     musicSystem.ActiveSong.Pause();
             }
+
             base.Update(gameTime);
         }
 

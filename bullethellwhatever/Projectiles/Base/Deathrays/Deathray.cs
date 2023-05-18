@@ -20,7 +20,7 @@ namespace bullethellwhatever.Projectiles.Base
         public float Width;
         public float AngularVelocity;
         public bool IsActive;
-        
+        public bool IsSpawned;
         public int Duration;
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
@@ -38,16 +38,22 @@ namespace bullethellwhatever.Projectiles.Base
             IsActive = true;
             IsHarmful = isHarmful;
             Damage = damage;
-
+            
             if (shader != null)
                 Shader = Main.Shaders[shader];
             else Shader = null;
 
             RemoveOnHit = false;
 
-            if (isHarmful)
-                Main.enemyProjectilesToAddNextFrame.Add(this);
-            else Main.friendlyProjectilesToAddNextFrame.Add(this);
+            if (!IsSpawned)
+            {
+                IsSpawned = true;
+                if (isHarmful)
+                {
+                        Main.enemyProjectilesToAddNextFrame.Add(this);
+                }
+                else Main.friendlyProjectilesToAddNextFrame.Add(this);
+            }
         }
 
         public override void AI()

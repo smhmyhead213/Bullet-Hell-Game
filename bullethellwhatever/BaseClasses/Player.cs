@@ -50,7 +50,7 @@ namespace bullethellwhatever.BaseClasses
             Size = Vector2.One;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
-            ActiveWeapon = Weapons.Homing;
+            ActiveWeapon = Weapons.Laser;
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
             ShouldRemoveOnEdgeTouch = false;
@@ -190,16 +190,9 @@ namespace bullethellwhatever.BaseClasses
         }
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
+
             var mouseState = Mouse.GetState();
-
-            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
-
-            PlayerDeathray.Position = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
-
-            float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
-
-
-            PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Yellow, "PlayerDeathrayShader", this);
+            var kstate = Keyboard.GetState();
 
             if (ScrollCooldown > 0)
             {
@@ -209,9 +202,6 @@ namespace bullethellwhatever.BaseClasses
             Velocity = Vector2.Zero; //this will change if anything is pressed
 
             HandleKeyPresses();
-
-            var kstate = Keyboard.GetState();
-
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             SetHitbox(this);
@@ -308,6 +298,9 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (Main.activeProjectiles.Count > 0)
+                Utilities.drawTextInDrawMethod(Main.activeFriendlyProjectiles.Count.ToString(), new Vector2(Main.ScreenWidth / 5, Main.ScreenHeight / 5), spriteBatch, Main.font, Color.White);
+
             if (DashTimer > 0)
             {
                 for (int i = 0; i < afterimagesPositions.Length; i++)
