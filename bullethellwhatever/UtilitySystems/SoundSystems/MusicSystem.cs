@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using bullethellwhatever.MainFiles;
+
 namespace bullethellwhatever.UtilitySystems.SoundSystems
 {
     public class MusicSystem
@@ -8,6 +9,11 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         public string ActiveSongName;
         public bool IsSongPlaying;
         public int SongTimer;
+
+        public void ManageMusic()
+        {
+
+        }
         public void SetMusic(string song, bool loop, float volume) //add fading out / in later
         {
             if (song != ActiveSongName)

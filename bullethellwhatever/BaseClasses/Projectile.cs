@@ -14,7 +14,7 @@ namespace bullethellwhatever.BaseClasses
     public class Projectile : Entity
     {
         public float Acceleration;
-        public float TimeAlive;
+        public int TimeAlive;
         public Entity Owner;
         public bool RemoveOnHit;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)

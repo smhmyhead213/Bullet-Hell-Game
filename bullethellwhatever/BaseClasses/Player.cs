@@ -190,9 +190,16 @@ namespace bullethellwhatever.BaseClasses
         }
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
-            
+            var mouseState = Mouse.GetState();
+
+            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
 
             PlayerDeathray.Position = Position; // Make sure the deathray is constantly centred on the player (abstract this away)
+
+            float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
+
+
+            PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Yellow, "PlayerDeathrayShader", this);
 
             if (ScrollCooldown > 0)
             {
@@ -204,7 +211,7 @@ namespace bullethellwhatever.BaseClasses
             HandleKeyPresses();
 
             var kstate = Keyboard.GetState();
-            var mouseState = Mouse.GetState();
+
 
             //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
             SetHitbox(this);
@@ -268,7 +275,7 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 2, "box", 10f, 2000f, 0f, 0f, false, Color.Yellow, "DeathrayShader2", this);               
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.13f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Yellow, "PlayerDeathrayShader", this);               
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
