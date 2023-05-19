@@ -309,6 +309,17 @@ namespace bullethellwhatever.BaseClasses
                     {
                         float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
                         Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, Size * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+
+                        // Draw another afterimage between this one and the last one, for a less choppy trail.
+
+                        if (i > 0)
+                        {
+                            colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+
+                            Drawing.BetterDraw(Main.player.Texture, Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f), null, Colour * colourMultiplier,
+                                Rotation, Size * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        }
+
                     }
                 }
             }
