@@ -60,7 +60,8 @@ namespace bullethellwhatever.Projectiles.Base
         {
             TimeAlive++;
 
-            AngularVelocity = AngularVelocity + Acceleration;
+            if (Acceleration != 0f)
+                AngularVelocity = AngularVelocity + Acceleration;
 
             Rotation = (Rotation + MathF.PI * AngularVelocity / 21600f) % (MathF.PI * 2); //The rotation is always 0 < r < 360.
             

@@ -46,7 +46,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Rotation = Rotation + RotationalVelocity;
 
             if (RotationalAcceleration != 0)
-                Rotation = Rotation * RotationalAcceleration;
+                Rotation = Rotation + RotationalAcceleration; //accel linearly
 
             Rotation = (Rotation + MathF.PI * RotationalVelocity / 21600f) % (MathF.PI * 2);
 

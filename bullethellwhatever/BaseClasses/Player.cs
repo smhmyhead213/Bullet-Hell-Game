@@ -298,9 +298,6 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (Main.activeProjectiles.Count > 0)
-                Utilities.drawTextInDrawMethod(Main.activeFriendlyProjectiles.Count.ToString(), new Vector2(Main.ScreenWidth / 5, Main.ScreenHeight / 5), spriteBatch, Main.font, Color.White);
-
             if (DashTimer > 0)
             {
                 for (int i = 0; i < afterimagesPositions.Length; i++)

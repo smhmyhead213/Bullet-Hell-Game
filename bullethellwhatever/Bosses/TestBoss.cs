@@ -8,7 +8,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems.Dialogue;
-using System.Runtime.CompilerServices;
+
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Enemy;
 
@@ -30,6 +30,8 @@ namespace bullethellwhatever.Bosses
         public int BeatsPerBar;
         public int BarDuration;
         public float FirstAttackTelegraphLineRotation;
+        public int CurrentBeat;
+        public bool JustStartedBeat;
         public TestBoss(Vector2 position, Vector2 velocity)
         {
             Position = position;
@@ -67,6 +69,9 @@ namespace bullethellwhatever.Bosses
 
         public override void AI()
         {
+            CurrentBeat = (int)((((float)AITimer / BarDuration) - MathF.Floor(AITimer / BarDuration)) * 4) + 1;
+
+            JustStartedBeat = AITimer % FramesPerMusicBeat == 0 ? true : false;
 
             if (Health < 0 && IsDesperationOver)
             {
@@ -200,8 +205,10 @@ namespace bullethellwhatever.Bosses
             }
             switch (AttackNumber)
             {
-                case 1:                    
-                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
+                case 1:
+                    //BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
+                    if (AITimer % 2 == 0)
+                        HorizontalChargesWithProjectiles(ref AITimer, ref AttackNumber, 6.5f);
                     break;
                 case 2:
                     Charge(ref AITimer, ref AttackNumber, 9f, BarDuration * 2, 1.035f, 13f);
@@ -291,25 +298,11 @@ namespace bullethellwhatever.Bosses
 
             float projectileOscillationFrequency = 10f;
 
-            if (AITimer % (FramesPerMusicBeat * BeatsPerBar) == 0 && AITimer < 1500)
+            if (CurrentBeat == 2 && JustStartedBeat)
             {
-                if (AITimer > 300)
+                if (AITimer > BarDuration * 4)
                 {
                     angleBetweenShots = angleBetweenShots * 2;
-                }
-
-                if (AITimer % (FramesPerMusicBeat * BeatsPerBar) == 0 && AITimer >= FramesPerMusicBeat * BeatsPerBar * 4)
-                {
-                    if (FirstAttackTelegraphLineRotation != -1f) //-1 is a flag for if the direction has not yet been decided
-                    {
-                        Deathray ray = new Deathray();
-                        ray.SpawnDeathray(Position, FirstAttackTelegraphLineRotation, 1f, FramesPerMusicBeat * BeatsPerBar / 2, "box", 20f, 2000f, 0f, 0f, true, Colour, "DeathrayShader", this);
-                    }
-
-                    //float predictionStrength = 500f;
-                    FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Position) - MathHelper.PiOver2;
-                    
-                    TelegraphLine telegraph = new TelegraphLine(FirstAttackTelegraphLineRotation, 0f, 0f, 20f, 2000f, FramesPerMusicBeat * BeatsPerBar, Position, Colour, "box", this);
                 }
 
                 OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(projectileOscillationFrequency, projectileSpeed);
@@ -328,12 +321,55 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
+            
+
+            if (AITimer >= BarDuration * 11 && AITimer <= BarDuration * 12)
+            {
+                float angle = Utilities.VectorToAngle(-Vector2.UnitY);
+
+                if (AITimer == BarDuration * 11)
+                {
+                    TelegraphLine t = new TelegraphLine(angle, MathF.PI / 3360, -MathF.PI / (336 * 96), 30f, 2000f, BarDuration, Position, Colour, "box", this);
+                }
+
+                if (AITimer == BarDuration * 12)
+                {
+                    Deathray ray = new Deathray();
+
+                    ray.SpawnDeathray(Position, angle, 1f, BarDuration * 3, "box", 30f, 2000f,
+                        150f, 0f, true, Colour, "DeathrayShader2", this);
+                }
+            }
+
+            if (AITimer > 300)
+            {              
+                if (CurrentBeat == 1 && JustStartedBeat)
+                {
+                    TelegraphLine telegraph = new TelegraphLine(FirstAttackTelegraphLineRotation, 0f, 0f, 20f, 2000f, FramesPerMusicBeat * 2, Position, Colour, "box", this);
+                }
+
+                if (CurrentBeat == 3 && JustStartedBeat)
+                {
+                    if (FirstAttackTelegraphLineRotation != -1f) //-1 is a flag for if the direction has not yet been decided
+                    {
+                        Deathray ray = new Deathray();
+                        ray.SpawnDeathray(Position, FirstAttackTelegraphLineRotation, 1f, FramesPerMusicBeat * 2, "box", 20f, 2000f, 0f, 0f, true, Colour, "DeathrayShader", this);
+                    }
+
+                    //float predictionStrength = 500f;
+                    FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Position) - MathHelper.PiOver2;
+
+                }
+
+            }
+
             if (AITimer == FramesPerMusicBeat * BeatsPerBar * 4)
             {
                 Position = new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 2);
                 Velocity = Vector2.Zero;
             }
-            if (AITimer == FramesPerMusicBeat * BeatsPerBar * 15)
+
+            if (AITimer == FramesPerMusicBeat * BeatsPerBar * 18)
             {
                 foreach (Projectile projectile in Main.activeProjectiles)
                 {
@@ -383,7 +419,7 @@ namespace bullethellwhatever.Bosses
                 //projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);
             }
 
-            if (AITimer == chargeFrequency * 6)
+            if (AITimer == chargeFrequency * 8)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 ContactDamage = false;
@@ -407,8 +443,8 @@ namespace bullethellwhatever.Bosses
         {
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            int timeToStartAt = 240;
-            int endTime = 1400;
+            int timeToStartAt = BarDuration * 2;
+            int endTime = timeToStartAt + BarDuration * 10;
 
             if (AITimer <= timeToStartAt)
             {
@@ -420,7 +456,7 @@ namespace bullethellwhatever.Bosses
             {
                 Velocity = Vector2.Zero;
             }
-            if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < endTime - 100)
+            if (AITimer % 2 == 0 && AITimer > timeToStartAt && AITimer < endTime - BarDuration)
             {
 
                 float acceleration = 0.52f * MathF.Cos(AITimer / 250f + MathF.PI);
@@ -519,7 +555,7 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
-            if (AITimer % ShotgunFrequency == 0 && (AITimer < 410 || AITimer > 509) && AITimer > 90)
+            if (AITimer % ShotgunFrequency == 0 && (AITimer < BarDuration * 4 || AITimer > BarDuration * 5) && AITimer > BarDuration)
             {
 
                 BasicProjectile singleShot = new BasicProjectile();
@@ -543,12 +579,12 @@ namespace bullethellwhatever.Bosses
 
             }
 
-            if (AITimer > 410 && AITimer < 509)
+            if (AITimer > BarDuration * 4 && AITimer < BarDuration * 5)
             {
                 Velocity = MathHelper.Lerp(1f, 5f, Utilities.DistanceBetweenEntities(Main.player, this) / 1000f) * Utilities.Normalise(Main.player.Position - Position);
             }
 
-            if (AITimer == 800)
+            if (AITimer == BarDuration * 7)
             {
                 ShotgunFrequency = 15f;
                 dialogueSystem.ClearDialogue();
@@ -561,7 +597,7 @@ namespace bullethellwhatever.Bosses
 
         public void LaserBarrages(ref int AITimer, ref int AttackNumber, float angleBetween, int timeBetweenRays, int numberOfRaysBetweenTelegraphAndBeam)
         {
-            float endTime = 600;
+            float endTime = BarDuration * 6;
 
             if (AITimer == 0)
             {
@@ -595,19 +631,19 @@ namespace bullethellwhatever.Bosses
             float screenFraction = 8f;
 
 
-            if (AITimer % 400 == 0)
+            if (AITimer % (BarDuration * 4) == 0)
             {
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction, Main._graphics.PreferredBackBufferHeight / screenFraction);
                 Velocity = moveSpeed * Utilities.Normalise(new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction * 1.33f, Main._graphics.PreferredBackBufferHeight / screenFraction) - Position); // go to target position from current
             }
 
-            if (AITimer % 400 == 200)
+            if (AITimer % (BarDuration * 4) == BarDuration * 2)
             {
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction * 7f, Main._graphics.PreferredBackBufferHeight / screenFraction * 7f);
                 Velocity = moveSpeed * Utilities.Normalise(new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction, Main._graphics.PreferredBackBufferHeight / screenFraction * 7f) - Position);
             }
 
-            if (AITimer == 480)
+            if (AITimer == BarDuration * 5)
             {
                 ShotgunFrequency = 15f;
                 EndAttack(ref AITimer, ref AttackNumber);
@@ -621,15 +657,15 @@ namespace bullethellwhatever.Bosses
 
         public void MutantBulletHell(ref int AITimer, ref int AttackNumber, int projectilesInSpiral) //this is literqally spiral but with 100f instead of 1250f
         {
-            if (AITimer <= 240)
+            if (AITimer <= BarDuration * 3)
             {
-                MoveToCentre(AITimer, 240);
+                MoveToCentre(AITimer, BarDuration * 3);
                 SpinUpClockwise(ref Rotation, 80);
             }
 
             List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
 
-            if (AITimer % 5 == 0 && AITimer > 240 && AITimer < 950)
+            if (AITimer % 5 == 0 && AITimer > BarDuration * 3 && AITimer < BarDuration * 10)
             {
                 float rotation = AITimer / 10f * MathF.PI / 40f * (AITimer / 100f);
 
@@ -646,12 +682,12 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
-            if (AITimer == 951)
+            if (AITimer == BarDuration * 10)
             {
                 Rotation = 0;
             }
 
-            if (AITimer == 1150)
+            if (AITimer == BarDuration * 12)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -664,7 +700,7 @@ namespace bullethellwhatever.Bosses
 
             int startTime = 270;
             int endTime = 720;
-            int timeBetween = 45;
+            int timeBetween = BarDuration / 2;
 
             int explosionDelay = (int)(endTime - AITimer);
 
@@ -679,7 +715,7 @@ namespace bullethellwhatever.Bosses
 
             Rotation = Utilities.ToRadians(AITimer - 250f);
 
-            if (AITimer == 990)
+            if (AITimer == BarDuration * 10)
             {
                 EndAttack(ref AITimer, ref AttackNumber);
                 return;
@@ -817,6 +853,13 @@ namespace bullethellwhatever.Bosses
         public void SpinUpCounterClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
         {
             rotation = Rotation - MathF.PI / 90 * AITimer / 80f; //spin up
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+
+            Utilities.drawTextInDrawMethod(CurrentBeat.ToString(), new Vector2(Main.ScreenWidth / 5, Main.ScreenHeight / 5), spriteBatch, Main.font, Colour);
         }
     }
 }
