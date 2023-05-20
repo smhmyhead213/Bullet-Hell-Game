@@ -111,23 +111,17 @@ namespace bullethellwhatever.Bosses
                 deathray.SpawnDeathray(Position, 0, 1f, 4000, "box", 50f, 2000f, 60, 0f, true, Color.Red, "DeathrayShader", this);
                 //deathray2.SpawnDeathray(Position, MathF.PI / 6, 1f, 400, Texture, 50f, 2000f, 0f, 0f, true, Color.Red, Main.deathrayShader2, this);
                 activeTelegraphs.Add(new TelegraphLine(0f, MathF.PI / 2708f, 0f, 20f, 500f, 100, Position, Color.Yellow, "box", this));
-                Drawing.ScreenShake(4, 300);
+
             }            
 
-            if (AITimer > 0)
+            if (AITimer == 0)
             {
-                //float angle = Utilities.VectorToAngle(Main.player.Position - Position);
+                ChargingEnemy enemy = new ChargingEnemy(60 , 120);
 
-                //activeTelegraphs[0].Rotation = angle - MathHelper.PiOver2;
+                enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, Color.White, false, true);
             }
 
-            //if (AITimer % 60 == 0)
-            //{
-            //    WeakHomingProjectile homingProjectile = new WeakHomingProjectile(12f, 90);
 
-            //    homingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero), 1f, "box", 0f, Vector2.One, this, true, Color.Red, true, true);
-            //    dialogueSystem.Dialogue(Position, "among us", 4, 400);
-            //}
         }
 
             public void EndAttack(ref float AITimer, ref int AttackNumber)

@@ -63,7 +63,7 @@ namespace bullethellwhatever.BaseClasses
                 {
                     if (IsCollidingWithEntity(npc) && npc.IFrames == 0) //why am i checking this twice? remove
                     {
-                        npc.IFrames = 5f;
+                        npc.IFrames = npc.MaxIFrames;
 
                         npc.Health = npc.Health - Damage;
 

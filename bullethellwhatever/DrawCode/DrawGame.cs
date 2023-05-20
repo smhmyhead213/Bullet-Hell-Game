@@ -7,6 +7,7 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
+using SharpDX.Direct2D1;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -135,11 +136,13 @@ namespace bullethellwhatever.DrawCode
                 entity.Draw(Main._spriteBatch);
             }
 
-
-            //Draw the boss health bar. Note that active bosses will always be the first entries in the ActiveNPCs list.
-            if (Main.activeNPCs.Count > 0)
+            foreach (NPC npc in Main.activeNPCs)
             {
-                UI.DrawHealthBar(Main._spriteBatch, Main.activeNPCs[0], new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20 * 19), 120f, 3f);
+                if (npc is not Boss)
+                {
+                    UI.DrawHealthBar(Main._spriteBatch, npc, npc.Position + new Vector2(0, 10f), 2f, 0.5f);
+                }
+                else UI.DrawHealthBar(Main._spriteBatch, npc, new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 20 * 19), 120f, 3f);
             }
 
             //Draw the player's health bar.
