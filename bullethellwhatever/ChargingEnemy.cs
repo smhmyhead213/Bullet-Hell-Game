@@ -33,16 +33,15 @@ namespace bullethellwhatever
 
         public override void AI()
         {
-            TimeAlive++;
 
-            if (TimeAlive < TimeToBeginActivity)
+            if (AITimer < TimeToBeginActivity)
             {
                 Velocity = Velocity * 0.99f;
             }
 
             else
             {
-                if (TimeAlive % 120 == 0)
+                if (AITimer % 120 == 0)
                 {
                     HasChosenChargeDirection = false;
                 }
