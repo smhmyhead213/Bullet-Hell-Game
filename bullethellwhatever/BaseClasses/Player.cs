@@ -50,7 +50,7 @@ namespace bullethellwhatever.BaseClasses
             Size = Vector2.One;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
-            ActiveWeapon = Weapons.Laser;
+            ActiveWeapon = Weapons.Homing;
             MoveSpeed = 5.5f;
             ScrollCooldown = 0f;
             ShouldRemoveOnEdgeTouch = false;
@@ -210,6 +210,12 @@ namespace bullethellwhatever.BaseClasses
 
             Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
 
+            if (ActiveWeapon != Weapons.Laser)
+            {
+                PlayerDeathray.IsSpawned = false;
+                Main.activeFriendlyProjectiles.Remove(PlayerDeathray); //i need to fix this crap one day
+            }
+
             if (Health > 0)
             {
                 if (IFrames > 0)
@@ -258,7 +264,8 @@ namespace bullethellwhatever.BaseClasses
             var mouseState = Mouse.GetState();
 
             Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
-
+            
+            
             if (ActiveWeapon == Weapons.Laser)
             {
                 ShotCooldown = 1f;

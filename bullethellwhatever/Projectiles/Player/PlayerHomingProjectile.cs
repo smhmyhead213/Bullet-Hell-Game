@@ -54,6 +54,8 @@ namespace bullethellwhatever.Projectiles.Player
         {
             Drawing.BetterDraw(Main.player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
 
+            Utilities.drawTextInDrawMethod(DeleteNextFrame.ToString(), Position + new Vector2(0, -10f), spriteBatch, Main.font, Color.White);
+
             for (int i = 0; i < afterimagesPositions.Length; i++)
             {
                 float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;

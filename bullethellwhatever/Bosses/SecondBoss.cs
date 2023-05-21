@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 1;
+            Health = 200;
             AITimer = 0;
             IFrames = 5f;
             HasChosenChargeDirection = false;
@@ -114,7 +114,7 @@ namespace bullethellwhatever.Bosses
 
             }            
 
-            if (AITimer == 0)
+            if (AITimer == 120)
             {
                 ChargingEnemy enemy = new ChargingEnemy(60 , 120);
 

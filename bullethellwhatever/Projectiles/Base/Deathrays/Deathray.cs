@@ -137,25 +137,6 @@ namespace bullethellwhatever.Projectiles.Base
             return false;
         }
 
-        //public override void DealDamage()
-        //{
-        //    foreach (NPC npc in Main.activeNPCs)
-        //    {
-        //        if (npc.IsHarmful != IsHarmful)
-        //        {
-        //            if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0)
-        //            {
-        //                if (npc.IFrames == 0)
-        //                {
-        //                    npc.IFrames = 5f;
-
-        //                    npc.Health = npc.Health - Damage;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         public void DrawWithShader(SpriteBatch spriteBatch)
         {
 

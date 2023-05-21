@@ -6,8 +6,7 @@ using bullethellwhatever.DrawCode;
 using System.Runtime.CompilerServices;
 using System;
 using bullethellwhatever.Projectiles.Base;
-using SharpDX.Direct3D9;
-using System.Threading;
+
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -90,12 +89,6 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual bool IsCollidingWithEntity(Entity entity)
         {
-            //float totalwidth = Hitbox.Width + entity.Hitbox.Width;
-
-            //if (Math.Abs(Position.X - entity.Position.X) <= totalwidth && Math.Abs(Position.Y - entity.Position.Y) <= totalwidth)
-            //    return true;
-
-            //return false;
             if (entity.Hitbox.Intersects(Hitbox))
                 return true;
             else return false;
