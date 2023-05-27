@@ -27,7 +27,6 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void AI()
         {
-            TimeAlive++;
 
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
@@ -35,7 +34,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (ShouldSlowDown)
                 Velocity = Velocity * 0.99f; //slow down to a stop
 
-            if (TimeAlive == ExplosionDelay)
+            if (AITimer == ExplosionDelay)
             {
                 Explode();
             }

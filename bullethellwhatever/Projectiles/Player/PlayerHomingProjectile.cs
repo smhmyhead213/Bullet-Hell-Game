@@ -28,11 +28,10 @@ namespace bullethellwhatever.Projectiles.Player
         {
             NPC closestNPC = new NPC(); //the target
             float minDistance = float.MaxValue;
-            TimeAlive++;
 
             Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
 
-            if (TimeAlive > HomingTime)
+            if (AITimer > HomingTime)
             {
                 foreach (NPC npc in Main.activeNPCs)
                 {
@@ -44,7 +43,7 @@ namespace bullethellwhatever.Projectiles.Player
                     }
                 }
                 //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
-                Velocity = 0.4f * Vector2.Normalize(closestNPC.Position - Position) * (TimeAlive - HomingTime);
+                Velocity = 0.4f * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
             }
 
             Position = Position + Velocity;

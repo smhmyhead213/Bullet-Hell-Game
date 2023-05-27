@@ -11,7 +11,6 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Enemy;
-using SharpDX.MediaFoundation;
 
 namespace bullethellwhatever.Bosses
 {
@@ -52,10 +51,7 @@ namespace bullethellwhatever.Bosses
             HasDesperationStarted = false;
             IsDesperationOver = false;
 
-            dialogueSystem = new DialogueSystem(this);
-            dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
-
-            Main.musicSystem.SetMusic("TestBossMusic", true, 0.15f);
+            Main.musicSystem.SetMusic("TestBossMusic", true, 0.01f);
 
             FramesPerMusicBeat = 24;
             BeatsPerBar = 4;
@@ -192,7 +188,7 @@ namespace bullethellwhatever.Bosses
             switch (AttackNumber)
             {
                 case 1:
-                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);                   
+                    BasicShotgunBlast(ref AITimer, ref AttackNumber, Position, 5f, 24);
                     break;
                 case 2:
                     Charge(ref AITimer, ref AttackNumber, 9f, BarDuration * 2, 1.035f, 13f);
@@ -669,7 +665,7 @@ namespace bullethellwhatever.Bosses
             }
 
             SizeChangingProjectile projectile = new SizeChangingProjectile(0.011f, 0.014f);
-            projectile.Spawn(Position, 2f * Utilities.Normalise(Main.player.Position - Position), 1f, "box", 1.03f, new Vector2(0.6f, 0.6f), this, true, Color.Red, true, false);
+            projectile.Spawn(Position, 0.5f * Utilities.Normalise(Main.player.Position - Position), 1f, "box", 1.03f, new Vector2(0.6f, 0.6f), this, true, Color.Red, true, false);
 
         }
 
@@ -878,8 +874,6 @@ namespace bullethellwhatever.Bosses
         public override void Draw(SpriteBatch spriteBatch)
         {
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
-
-            Utilities.drawTextInDrawMethod(CurrentBeat.ToString(), new Vector2(Main.ScreenWidth / 5, Main.ScreenHeight / 5), spriteBatch, Main.font, Colour);
         }
     }
 }

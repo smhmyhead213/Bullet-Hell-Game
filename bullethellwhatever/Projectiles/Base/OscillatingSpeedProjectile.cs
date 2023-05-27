@@ -18,12 +18,10 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void AI() //and drawing
         {
-            TimeAlive++;
-
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
 
-            float speed = ProjectileSpeed * (MathF.Sin(TimeAlive / OscillationFrequency) + 1.5f);
+            float speed = ProjectileSpeed * (MathF.Sin(AITimer / OscillationFrequency) + 1.5f);
 
             Velocity = speed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 

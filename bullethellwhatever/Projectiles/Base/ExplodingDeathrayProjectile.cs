@@ -20,8 +20,7 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void AI()
         {
-            TimeAlive++;
-            if (TimeAlive == 1)
+            if (AITimer == 1)
             {
                 for (int i = 0; i < NumberOfProjectiles; i++)
                 {
@@ -35,7 +34,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (ShouldSlowDown)
                 Velocity = Velocity * 0.98f; //slow down to a stop
 
-            if (TimeAlive == ExplosionDelay)
+            if (AITimer == ExplosionDelay)
             {
                 Explode();
             }
@@ -45,7 +44,7 @@ namespace bullethellwhatever.Projectiles.Base
                 Explode();
             }
 
-            Position = Position + (Velocity * (ExplosionDelay - TimeAlive) / ExplosionDelay);
+            Position = Position + (Velocity * (ExplosionDelay - AITimer) / ExplosionDelay);
         }
 
         public override void Explode()

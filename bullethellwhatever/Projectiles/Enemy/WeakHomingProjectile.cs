@@ -22,9 +22,7 @@ namespace bullethellwhatever.Projectiles.Enemy
         }
         public override void AI()
         {
-            TimeAlive++;
-
-            if (TimeAlive < HomingStopTime)
+            if (AITimer < HomingStopTime)
             {
                 if (!IsHarmful)
                 {
@@ -60,6 +58,7 @@ namespace bullethellwhatever.Projectiles.Enemy
                     Velocity = MoveSpeed * Utilities.SafeNormalise(Vector2.Lerp(Velocity, vectorToTarget, 0.003f), Vector2.Zero);
                 }
             }
+
             else
             {
                 Colour = Color.White;

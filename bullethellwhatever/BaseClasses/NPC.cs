@@ -35,7 +35,10 @@ namespace bullethellwhatever.BaseClasses
             ContactDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
-            
+
+            dialogueSystem = new DialogueSystem(this);
+            dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
+
             IsHarmful = isHarmful;
             SetHitbox(this);
         }

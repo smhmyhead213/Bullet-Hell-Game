@@ -58,14 +58,13 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void AI()
         {
-            TimeAlive++;
 
             if (Acceleration != 0f)
                 AngularVelocity = AngularVelocity + Acceleration;
 
             Rotation = (Rotation + MathF.PI * AngularVelocity / 21600f) % (MathF.PI * 2); //The rotation is always 0 < r < 360.
             
-            if (TimeAlive > Duration && Owner is not BaseClasses.Player)
+            if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
                 DeleteNextFrame = true;
             }
@@ -146,7 +145,7 @@ namespace bullethellwhatever.Projectiles.Base
         {
             if (IsActive)
             {
-                Shader.Parameters["uTime"]?.SetValue(TimeAlive);
+                Shader.Parameters["uTime"]?.SetValue(AITimer);
                 Shader.Parameters["duration"]?.SetValue(Duration);
                 Shader.CurrentTechnique.Passes[0].Apply();
 

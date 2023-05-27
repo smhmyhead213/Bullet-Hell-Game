@@ -10,13 +10,12 @@ namespace bullethellwhatever.Projectiles.Base
     {
         public override void AI()
         {
-            TimeAlive++;
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
 
             Position = Position + Velocity;
 
-            if (TimeAlive > 10)
+            if (AITimer > 10)
             {
                 ShouldRemoveOnEdgeTouch = true;
             }

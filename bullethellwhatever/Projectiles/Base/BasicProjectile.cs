@@ -11,6 +11,9 @@ namespace bullethellwhatever.Projectiles.Base
 {
     public class BasicProjectile : Projectile
     {
-
+        public override void AI()
+        {
+            base.AI();
+        }
     }
 }

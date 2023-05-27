@@ -28,10 +28,17 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         }
         public void PlayMusic()
         {
-            if (!(ActiveSong.State == SoundState.Playing))
+            if (!(ActiveSong.State == SoundState.Playing) )
             {
                 ActiveSong.Play();
             }
+        }
+
+        public void StopMusic()
+        {
+            ActiveSong.Stop();
+            ActiveSongName = string.Empty;
+            ActiveSong = null;
         }
     }
 }

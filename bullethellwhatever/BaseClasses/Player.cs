@@ -8,6 +8,7 @@ using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.Abilities;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -16,6 +17,9 @@ namespace bullethellwhatever.BaseClasses
         public float DefaultMoveSpeed => 5.5f;
         public int DashCooldown;
         public int DashDuration => 10;
+
+        public Dash DashAbility;
+        
         public int DashTimer;
         public Vector2 DefaultHitbox => new Vector2(1f, 1f);
 
@@ -56,6 +60,8 @@ namespace bullethellwhatever.BaseClasses
             ShouldRemoveOnEdgeTouch = false;
             afterimagesPositions = new Vector2[DashDuration];
             Colour = Color.White;
+
+            DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
         }
         #endregion
 
@@ -157,7 +163,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
             {
-                Health = MaxHP;
+                Health = MaxHP;               
                 EntityManager.SpawnBoss();
                 Main.activeButtons.Clear();
             }
@@ -173,20 +179,15 @@ namespace bullethellwhatever.BaseClasses
             if (DashTimer > 0)
                 DashTimer--;
 
-            if (kstate.IsKeyDown(Keys.Space) && DashCooldown == 0)
-            {
-                //MoveSpeed = MoveSpeed * 3;
-                DashCooldown = 40;
-                DashTimer = DashDuration;
-                IFrames = DashDuration;
-            }
+            DashAbility.Execute();
 
-            if (DashTimer > 0)
-            {
-                //float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
-                float multiplier = 3f;
-                MoveSpeed = MoveSpeed * multiplier;
-            }
+
+            //if (DashAbility.Timer > 0)
+            //{
+            //    //float multiplier = 1f + (dashSpeed - 1f) * (DashTimer - 1f) / (DashDuration - 1f);
+            //    float multiplier = 3f;
+            //    MoveSpeed = MoveSpeed * multiplier;
+            //}
         }
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
@@ -247,9 +248,9 @@ namespace bullethellwhatever.BaseClasses
                 Health = MaxHP;
                 Position = new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2);
 
-                Main.activeNPCs.Clear();
-                Main.activeProjectiles.Clear();
-                Main.activeFriendlyProjectiles.Clear();
+                Main.musicSystem.StopMusic();
+
+                Utilities.InitialiseGame();
             }
         }
         #endregion
@@ -305,7 +306,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (DashTimer > 0)
+            if (DashAbility.IsExecuting)
             {
                 for (int i = 0; i < afterimagesPositions.Length; i++)
                 {
@@ -328,7 +329,7 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-            Main.player.Opacity = 4f * (1f / (Main.player.IFrames + 1f)); //to indicate iframes
+            Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
 

@@ -10,6 +10,7 @@ namespace bullethellwhatever.Projectiles.Base
     public class SizeChangingProjectile : BasicProjectile
     {
         Vector2 GrowthRate;
+
         public SizeChangingProjectile(float horizontalGrowthRate, float verticalGrowthRate)
         {
             GrowthRate = new Vector2(horizontalGrowthRate, verticalGrowthRate);
@@ -17,8 +18,9 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void AI()
         {
-            TimeAlive++;
             Size = Size + GrowthRate;
+
+            //AITimer++;
 
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small

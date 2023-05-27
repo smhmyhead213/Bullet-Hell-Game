@@ -13,7 +13,7 @@ namespace bullethellwhatever.BaseClasses
     public class Projectile : Entity
     {
         public float Acceleration;
-        public int TimeAlive;
+        
         public Entity Owner;
         public bool RemoveOnHit;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
@@ -40,15 +40,18 @@ namespace bullethellwhatever.BaseClasses
             else Main.friendlyProjectilesToAddNextFrame.Add(this);
         }
 
-         //and drawing
-        
-        public override void AI()
+        //and drawing
+
+        public virtual void Update()
         {
-           
-            TimeAlive++;
+            AITimer++;
+
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
+        }
 
+        public override void AI()
+        {
             Position = Position + Velocity;
         }
 
