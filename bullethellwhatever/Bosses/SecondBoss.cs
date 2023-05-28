@@ -10,6 +10,7 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Enemy;
+using bullethellwhatever.Enemies;
 
 namespace bullethellwhatever.Bosses
 {

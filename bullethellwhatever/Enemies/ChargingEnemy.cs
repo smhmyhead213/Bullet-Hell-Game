@@ -12,8 +12,8 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.UtilitySystems.Dialogue;
 
 
-namespace bullethellwhatever
-{   
+namespace bullethellwhatever.Enemies
+{
     public class ChargingEnemy : NPC
     {
         public int TimeToBeginActivity;
@@ -59,7 +59,7 @@ namespace bullethellwhatever
                 Velocity = ChargeSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
             }
 
-            
+
         }
     }
 }

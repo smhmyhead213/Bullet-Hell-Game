@@ -5,6 +5,7 @@ using System;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
+using System.Security.Policy;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -30,6 +31,7 @@ namespace bullethellwhatever.BaseClasses
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
         public Effect? Shader;
+
 
         public Vector2[] afterimagesPositions; //when using afterimages, this needs to be initialised in the Spawn method of whatever has them.
 

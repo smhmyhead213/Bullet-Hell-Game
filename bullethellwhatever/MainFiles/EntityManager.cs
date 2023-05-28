@@ -3,6 +3,7 @@
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.Bosses;
+using bullethellwhatever.Bosses.TestBoss;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
