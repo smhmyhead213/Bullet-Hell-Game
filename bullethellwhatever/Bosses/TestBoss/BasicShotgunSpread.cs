@@ -110,7 +110,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                     }
 
                     //float predictionStrength = 500f;
-                    FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Owner.Position) - MathHelper.PiOver2;
+                    FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Owner.Position);
 
                 }
 

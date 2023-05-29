@@ -63,7 +63,13 @@ namespace bullethellwhatever
 
         public static float VectorToAngle(Vector2 vector)
         {
-            return MathF.Atan2(vector.Y, vector.X) + MathF.PI; //ANGLES ARE FROM THE LEFT
+            float output = MathF.Atan2(vector.Y, vector.X) + MathF.PI / 2; //ANGLES ARE FROM THE vertical
+
+            if (output > 0)
+            {
+                return output;
+            }
+            else return output + MathHelper.TwoPi;
         }
 
         public static Vector2 AngleToVector(float angle)

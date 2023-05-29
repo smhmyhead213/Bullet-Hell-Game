@@ -271,7 +271,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 ShotCooldown = 1f;
 
-                float initialRotation = Utilities.VectorToAngle(mousePosition - Position) - MathHelper.PiOver2; // Add an offset so it works I have no idea why
+                float initialRotation = Utilities.VectorToAngle(mousePosition - Position); // Add an offset so it works I have no idea why
 
                 PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.16f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Yellow, "PlayerDeathrayShader", this);               
             }
@@ -306,6 +306,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+
             if (DashAbility.IsExecuting)
             {
                 for (int i = 0; i < afterimagesPositions.Length; i++)
@@ -328,6 +329,10 @@ namespace bullethellwhatever.BaseClasses
                     }
                 }
             }
+
+            var mouseState = Mouse.GetState();
+
+            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
 
             Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 

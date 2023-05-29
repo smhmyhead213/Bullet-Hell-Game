@@ -29,12 +29,6 @@ namespace bullethellwhatever.DrawCode
 
             float opacity = HPBar.Intersects(Main.player.Hitbox) ? 0.2f : 1f;
 
-            //debug key
-
-
-
-
-            //HP bar foreground.
             //HP bar background.
             if (entityToDrawHPBarFor is not Player)
             {
@@ -54,6 +48,9 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
+            Utilities.drawTextInDrawMethod(
+                "Controls: WASD to move, Left Click or Enter to shoot, Space to dash, Shift for precision.", new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 5 * 2), _spriteBatch, Main.font, Color.White);
+
             Button startButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), "StartButton",
                 GameState.GameStates.BossSelect, null, new Vector2(3, 3));
 

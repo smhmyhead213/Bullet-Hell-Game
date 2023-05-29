@@ -91,10 +91,6 @@ namespace bullethellwhatever.Bosses.TestBoss
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Utilities.drawTextInDrawMethod(AttackNumber.ToString(), new Vector2(Main.ScreenWidth / 3 * 2, Main.ScreenHeight / 3 * 2), spriteBatch, Main.font, Colour);
-
-            Utilities.drawTextInDrawMethod(AITimer.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3), spriteBatch, Main.font, Colour);
-
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
         }
     }
