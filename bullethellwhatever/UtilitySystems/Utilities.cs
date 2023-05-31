@@ -22,7 +22,7 @@ namespace bullethellwhatever
             return new Vector2(vectorToNormalise.X / distance, vectorToNormalise.Y / distance);
         }
 
-        public static Vector2 SafeNormalise(Vector2 vectorToNormalise, Vector2 fallback)
+        public static Vector2 SafeNormalise(Vector2 vectorToNormalise, Vector2 fallback = default)
         {
             if (vectorToNormalise == Vector2.Zero)
                 return fallback;

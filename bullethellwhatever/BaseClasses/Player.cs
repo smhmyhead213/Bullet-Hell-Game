@@ -9,6 +9,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Abilities;
+using SharpDX.MediaFoundation;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -306,6 +307,13 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            var kstate = Keyboard.GetState();
+
+            if (kstate.IsKeyDown(Keys.K))
+            {
+                for (int i = 0; i < Main.activeProjectiles.Count; i++)
+                    Utilities.drawTextInDrawMethod(Main.activeProjectiles[i].ToString() + " " + Main.activeProjectiles[i].DeleteNextFrame.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;
+            }
 
             if (DashAbility.IsExecuting)
             {
@@ -330,13 +338,11 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-            var mouseState = Mouse.GetState();
-
-            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
-
             Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
+
+            Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(Main.ScreenWidth / 6, Main.ScreenHeight / 6), spriteBatch, Main.font, Colour);
 
             Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
         }

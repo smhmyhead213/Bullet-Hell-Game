@@ -18,7 +18,8 @@ namespace bullethellwhatever.MainFiles
         {
             Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
             Main.activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
-            Main.activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) || projectile.DeleteNextFrame);
+            Main.activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
+            Main.activeProjectiles.RemoveAll(projectile => (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile)) && projectile.AITimer > 60);
             Main.activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.AITimer > 5 || projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);

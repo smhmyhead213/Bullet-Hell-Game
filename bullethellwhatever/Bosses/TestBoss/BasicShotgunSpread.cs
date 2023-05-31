@@ -82,7 +82,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 if (AITimer == Owner.BarDuration * 11)
                 {
-                    TelegraphLine t = new TelegraphLine(angle, MathF.PI / 3360, -MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner);
+                    TelegraphLine t = new TelegraphLine(angle, MathF.PI / 3360, -MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);
                 }
 
                 if (AITimer == Owner.BarDuration * 12)
@@ -98,7 +98,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             {
                 if (Owner.CurrentBeat == 1 && Owner.JustStartedBeat)
                 {
-                    TelegraphLine telegraph = new TelegraphLine(FirstAttackTelegraphLineRotation, 0f, 0f, 20f, 2000f, Owner.FramesPerMusicBeat * 2, Owner.Position, Owner.Colour, "box", Owner);
+                    TelegraphLine telegraph = new TelegraphLine(FirstAttackTelegraphLineRotation, 0f, 0f, 20f, 2000f, Owner.FramesPerMusicBeat * 2, Owner.Position, Owner.Colour, "box", Owner, true);
                 }
 
                 if (Owner.CurrentBeat == 3 && Owner.JustStartedBeat)

@@ -20,9 +20,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public float Length;
         public int TimeAlive;
         public bool DeleteNextFrame;
-        public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner)
+        public bool StayWithOwner;
+        public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
-            Rotation = rotation + MathF.PI;
+            Rotation = rotation;
+
             RotationalVelocity = rotationalVelocity;
             RotationalAcceleration = rotationalAcceleration;
             Width = width;
@@ -33,22 +35,29 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Texture = Main.Assets[texture];
             Owner = owner;
             TimeAlive = 0;
+            StayWithOwner = stayWithOwner;
 
             Owner.activeTelegraphs.Add(this);
         }
 
         public void AI()
         {
-            TimeAlive++;
+            if (TimeAlive == 0)
+            {
+                Rotation = Rotation + MathF.PI; // kill me
+            }
 
-            Origin = Owner.Position;
+            TimeAlive++;
+            
+            if (StayWithOwner)
+                Origin = Owner.Position;
 
             Rotation = Rotation + RotationalVelocity;
 
             if (RotationalAcceleration != 0)
-                Rotation = Rotation + RotationalAcceleration; //accel linearly
+                RotationalVelocity = RotationalVelocity + RotationalAcceleration; //accel linearly
 
-            Rotation = (Rotation + MathF.PI * RotationalVelocity / 21600f) % (MathF.PI * 2);
+            Rotation = Rotation % (MathF.PI * 2);
 
             if (TimeAlive > Duration)
             {

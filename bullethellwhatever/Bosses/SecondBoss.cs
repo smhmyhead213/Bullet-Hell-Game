@@ -109,9 +109,14 @@ namespace bullethellwhatever.Bosses
                 Deathray deathray = new Deathray();
                 //Deathray deathray2 = new Deathray();
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
-                deathray.SpawnDeathray(Position, 0, 1f, 4000, "box", 50f, 2000f, 60, 0f, true, Color.Red, "DeathrayShader", this);
+                //deathray.SpawnDeathray(Position, 0, 1f, 4000, "box", 50f, 2000f, 60, 0f, true, Color.Red, "DeathrayShader", this);
                 //deathray2.SpawnDeathray(Position, MathF.PI / 6, 1f, 400, Texture, 50f, 2000f, 0f, 0f, true, Color.Red, Main.deathrayShader2, this);
-                activeTelegraphs.Add(new TelegraphLine(0f, MathF.PI / 2708f, 0f, 20f, 500f, 100, Position, Color.Yellow, "box", this));
+
+                activeTelegraphs.Add(new TelegraphLine(0f, MathF.PI / 2708f, 0f, 20f, 500f, 100, Position, Color.Yellow, "box", this, true));
+
+                ExplodingProjectile exploding = new ExplodingProjectile(8, 60, 0, false, false, false);
+
+                exploding.Spawn(new Vector2(Main.ScreenWidth / 2, 0), 5f * Vector2.UnitY, 1f, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
 
             }            
 
@@ -125,12 +130,19 @@ namespace bullethellwhatever.Bosses
 
         }
 
-            public void EndAttack(ref float AITimer, ref int AttackNumber)
-            {
-                AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
-                Rotation = 0;
-                AttackNumber++;
-            }
+        public void EndAttack(ref float AITimer, ref int AttackNumber)
+        {
+            AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
+            Rotation = 0;
+            AttackNumber++;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3), spriteBatch, Main.font, Color.White);
         }
     }
+}
 

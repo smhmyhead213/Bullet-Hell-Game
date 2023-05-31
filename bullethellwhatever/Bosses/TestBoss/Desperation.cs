@@ -59,7 +59,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 for (int i = 0; i < BlenderBeams; i++)
                 {
-                    TelegraphLine telegraphLine = new TelegraphLine(MathHelper.TwoPi / BlenderBeams * i, 0, 0, 15, 1500f, despStartTime, Owner.Position, Color.White, "box", Owner);
+                    TelegraphLine telegraphLine = new TelegraphLine(MathHelper.TwoPi / BlenderBeams * i, 0, 0, 15, 1500f, despStartTime, Owner.Position, Color.White, "box", Owner, true);
                 }
             }
 
@@ -71,7 +71,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             if (AITimer == 400)
             {
                 DespBeamRotation = Owner.Position.X > Main.player.Position.X ? 1 : -1;
-                Main.activeProjectiles.Clear();
+                //Main.activeProjectiles.Clear();
 
                 for (int i = 0; i < 2; i++)
                 {

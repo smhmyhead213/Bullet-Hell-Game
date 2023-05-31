@@ -61,7 +61,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             {
                 if (AITimer < EndTime - TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam)
                 {
-                    TelegraphLine TeleLine = new TelegraphLine(AngleBetween * AITimer / TimeBetweenRays, 0f, 0f, 20, 2000, TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam, Owner.Position, Color.White, "box", Owner);
+                    TelegraphLine TeleLine = new TelegraphLine(AngleBetween * AITimer / TimeBetweenRays, 0f, 0f, 20, 2000, TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam, Owner.Position, Color.White, "box", Owner, true);
                 }
 
                 if (AITimer > TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam)

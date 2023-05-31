@@ -12,7 +12,6 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Enemy;
 using bullethellwhatever.Enemies;
-using System.Security.Cryptography.X509Certificates;
 
 namespace bullethellwhatever.Bosses.TestBoss
 {
@@ -55,7 +54,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             BarDuration = FramesPerMusicBeat * BeatsPerBar;
 
             BossAttacks = new BossAttack[]
-            { new Desperation(BarDuration * 30),
+            { new Desperation(BarDuration * 30),                
                 new BasicShotgunSpread(BarDuration * 18),
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),
@@ -63,6 +62,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 new LaserBarrages(BarDuration * 7),
                 new MoveTowardsAndShotgun(BarDuration * 7),
                 new ExplodingProjectiles(BarDuration * 10),
+                new LiterallyJustABulletHell(BarDuration * 30),
                 new MutantBulletHell(BarDuration * 12),
                 new HorizontalChargesWithProjectiles(BarDuration * 5),
             };
@@ -92,6 +92,7 @@ namespace bullethellwhatever.Bosses.TestBoss
         public override void Draw(SpriteBatch spriteBatch)
         {
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+
         }
     }
 }

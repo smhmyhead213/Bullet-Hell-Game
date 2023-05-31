@@ -36,9 +36,12 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
 
         public void StopMusic()
         {
-            ActiveSong.Stop();
-            ActiveSongName = string.Empty;
-            ActiveSong = null;
+            if (ActiveSong is not null) //crash prevention
+            {
+                ActiveSong.Stop();
+                ActiveSongName = string.Empty;
+                ActiveSong = null;
+            }
         }
     }
 }

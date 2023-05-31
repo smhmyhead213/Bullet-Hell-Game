@@ -42,7 +42,9 @@ namespace bullethellwhatever.Projectiles.Base
             if (touchingAnEdge(this))
             {
                 Explode();
+                DeleteNextFrame = true;
             }
+
             Position = Position + Velocity;
         }
 
@@ -58,6 +60,7 @@ namespace bullethellwhatever.Projectiles.Base
                 if (ShouldAccountForVelocityInOrientation)
                     projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Velocity, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
                         1f, "box", accel, Vector2.One, this, true, Color.Red, false, false);
+
                 else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
                         1f, "box", accel, Vector2.One, this, true, Color.Red, false, false);
             }

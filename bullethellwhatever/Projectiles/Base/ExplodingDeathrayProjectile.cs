@@ -24,7 +24,7 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 for (int i = 0; i < NumberOfProjectiles; i++)
                 {
-                    TelegraphLine teleLine = new TelegraphLine((MathF.PI * 2 / NumberOfProjectiles * i) + Offset, 0, 0, 10, 2000, ExplosionDelay, Position, Color.White, "box", this);
+                    TelegraphLine teleLine = new TelegraphLine((MathF.PI * 2 / NumberOfProjectiles * i) + Offset, 0, 0, 10, 2000, ExplosionDelay, Position, Color.White, "box", this, true);
                 }
             }
 
