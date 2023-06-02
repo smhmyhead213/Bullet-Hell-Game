@@ -5,6 +5,7 @@ using bullethellwhatever.Buttons;
 using bullethellwhatever.DrawCode;
 using SharpDX.XAudio2;
 using static bullethellwhatever.MainFiles.GameState;
+using Microsoft.Xna.Framework.Input;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -12,6 +13,8 @@ namespace bullethellwhatever.MainFiles
     {
         public bool isGameStarted;
         public int ButtonCooldown;
+
+        public bool WasMouseDownLastFrame;
         public int DefaultButtonCooldown => 25;
         public string activeBoss; //use a swicth statement to spawn a boss in
 
@@ -71,6 +74,10 @@ namespace bullethellwhatever.MainFiles
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
             }
+
+            var mouseState = Mouse.GetState();
+
+            WasMouseDownLastFrame = mouseState.LeftButton == ButtonState.Pressed;
         }
 
         public void ManageLists()
@@ -101,7 +108,7 @@ namespace bullethellwhatever.MainFiles
         {
             foreach (Button button in Main.activeButtons)
             {
-                if (button.IsButtonClicked() && ButtonCooldown == 0)
+                if (button.IsButtonClicked() && ButtonCooldown == 0 && !WasMouseDownLastFrame)
                 {
                     ButtonCooldown = DefaultButtonCooldown;
 

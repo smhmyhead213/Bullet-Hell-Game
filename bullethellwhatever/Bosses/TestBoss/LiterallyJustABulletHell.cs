@@ -16,6 +16,8 @@ namespace bullethellwhatever.Bosses.TestBoss
    {
         List<Deathray> pendingDeathrays = new List<Deathray>();
         List<int> deathraySpawnTimes = new List<int>();
+
+        public int ProjectileFrequency;
         public LiterallyJustABulletHell(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -23,16 +25,30 @@ namespace bullethellwhatever.Bosses.TestBoss
 
         public override void InitialiseAttackValues()
         {
-            
+            switch (GameState.Difficulty)
+            {
+                case GameState.Difficulties.Easy:
+                    ProjectileFrequency = 30;
+                    break;
+                case GameState.Difficulties.Normal:
+                    ProjectileFrequency = 25;
+                    break;
+                case GameState.Difficulties.Hard:
+                    ProjectileFrequency = 20;
+                    break;
+                case GameState.Difficulties.Insane:
+                    ProjectileFrequency = 15;
+                    break;
+            }
         }
 
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             Owner.ContactDamage = false;
 
-            if (AITimer < EndTime)
+            if (AITimer > Owner.BarDuration * 2)
             {
-                if (AITimer % 15 == 0)
+                if (AITimer % ProjectileFrequency == 0)
                 {
                     Owner.Velocity = Vector2.Zero;
 
