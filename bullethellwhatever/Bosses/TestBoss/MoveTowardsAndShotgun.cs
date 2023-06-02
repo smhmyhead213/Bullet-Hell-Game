@@ -77,16 +77,16 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 Owner.Velocity = 1.1f * Utilities.Normalise(Owner.Position - Main.player.Position);
 
-                singleShot.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                singleShot.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
 
                 for (int i = 1; i < NumberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
                     BasicProjectile shotgunBlast = new BasicProjectile();
                     BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
                     shotgunBlast.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, i * angleBetweenProjectiles)),
-                        1f, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
                     shotgunBlast2.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Owner.Position, i * angleBetweenProjectiles)),
-                        1f, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
 
                 }
 

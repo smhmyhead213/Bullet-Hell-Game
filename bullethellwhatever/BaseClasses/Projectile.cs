@@ -13,12 +13,17 @@ namespace bullethellwhatever.BaseClasses
     public class Projectile : Entity
     {
         public float Acceleration;
-        
+
         public Entity Owner;
         public bool RemoveOnHit;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+
+        public int Pierce;
+        public int PierceRemaining;
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Position = position;
+            Pierce = pierce;
+            PierceRemaining = Pierce;
             Velocity = velocity;
             Damage = damage;
             Texture = Main.Assets[texture];
@@ -69,8 +74,7 @@ namespace bullethellwhatever.BaseClasses
 
                         npc.Health = npc.Health - Damage;
 
-                        if (RemoveOnHit)
-                            DeleteNextFrame = true;
+                        HandlePierce(npc.PierceToTake);
                     }
                 }
             }
@@ -85,35 +89,28 @@ namespace bullethellwhatever.BaseClasses
 
                     Drawing.ScreenShake(3, 10);
 
-                    if (RemoveOnHit)
-                        DeleteNextFrame = true;
+                    HandlePierce(1);
                 }
             }
         }
+
+        public void HandlePierce(int pierceToTake)
+        {
+            if (PierceRemaining > 0)
+            {
+                PierceRemaining = PierceRemaining - pierceToTake;
+            }
+
+            if (RemoveOnHit && PierceRemaining <= 0)
+                DeleteNextFrame = true;
+        }
+
         public virtual bool IsCollidingWithEntity(Entity entity)
         {
             if (entity.Hitbox.Intersects(Hitbox))
                 return true;
             else return false;
         }
-
-        //public virtual void DealDamage()
-        //{
-        //    foreach (NPC npc in Main.activeNPCs)
-        //    {
-        //        if (npc.IsHarmful != IsHarmful)
-        //        {
-        //            if (IsCollidingWithEntity(this, npc) && npc.IFrames == 0) //why am i checking this twice? remove
-        //            {
-        //                    npc.IFrames = 5f;
-
-        //                    npc.Health = npc.Health - Damage;
-
-        //                    DeleteNextFrame = true;
-        //            }
-        //        }
-        //    }
-        //}
 
         public override void Draw(SpriteBatch s)
         {

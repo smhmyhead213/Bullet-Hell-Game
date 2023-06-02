@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, Utilities.ToRadians(AITimer - 250f));
 
-                explodingProjectile.Spawn(Owner.Position, 15f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, "box", 0, new Vector2(2, 2), Owner, true, Color.Red, false, false);
+                explodingProjectile.Spawn(Owner.Position, 15f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, 1, "box", 0, new Vector2(2, 2), Owner, true, Color.Red, false, false);
             }
 
             Owner.Rotation = Utilities.ToRadians(AITimer - 250f);

@@ -96,7 +96,7 @@ namespace bullethellwhatever.Bosses
 
                     float angle = (2 * MathF.PI / numberOfProjectiles) * i;
 
-                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, "box", 1f, Vector2.One, this, true, Color.Red, false, false);
+                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, 1, "box", 1f, Vector2.One, this, true, Color.Red, false, false);
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace bullethellwhatever.Bosses
 
                 ExplodingProjectile exploding = new ExplodingProjectile(8, 60, 0, false, false, false);
 
-                exploding.Spawn(new Vector2(Main.ScreenWidth / 2, 0), 5f * Vector2.UnitY, 1f, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
+                exploding.Spawn(new Vector2(Main.ScreenWidth / 2, 0), 5f * Vector2.UnitY, 1f, 1, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
 
             }            
 
@@ -124,7 +124,7 @@ namespace bullethellwhatever.Bosses
             {
                 ChargingEnemy enemy = new ChargingEnemy(60 , 120);
 
-                enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, Color.White, false, true);
+                enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
             }
 
 

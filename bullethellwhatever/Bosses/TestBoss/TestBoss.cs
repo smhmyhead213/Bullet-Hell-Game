@@ -73,9 +73,9 @@ namespace bullethellwhatever.Bosses.TestBoss
                 BossAttacks[i].InitialiseAttackValues();
             }
         }
-        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
+        public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
-            base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth, colour, shouldRemoveOnEdgeTouch, isHarmful);
+            base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth, pierceToTake, colour, shouldRemoveOnEdgeTouch, isHarmful);
         }
 
         public override void AI()

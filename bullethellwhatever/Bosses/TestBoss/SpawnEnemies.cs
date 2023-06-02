@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 Vector2 toPlayer = Utilities.SafeNormalise(Main.player.Position - Owner.Position, Vector2.Zero);
 
-                enemy.Spawn(Owner.Position, 5f * Utilities.RotateVectorClockwise(toPlayer, MathHelper.TwoPi / NumberOfEnemies * AITimer / (Owner.BarDuration / NumberOfEnemies)), 1f, "box", Vector2.One, 1f, Color.White,
+                enemy.Spawn(Owner.Position, 5f * Utilities.RotateVectorClockwise(toPlayer, MathHelper.TwoPi / NumberOfEnemies * AITimer / (Owner.BarDuration / NumberOfEnemies)), 1f, "box", Vector2.One, 1f, 1, Color.White,
                     false, true);
             }
         }

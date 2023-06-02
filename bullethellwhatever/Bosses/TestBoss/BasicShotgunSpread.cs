@@ -60,7 +60,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(projectileOscillationFrequency, ProjectileSpeed);
 
-                singleShot.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                singleShot.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
 
                 for (int i = 1; i < NumberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
@@ -68,9 +68,9 @@ namespace bullethellwhatever.Bosses.TestBoss
                     OscillatingSpeedProjectile oscillatingSpeedProjectile2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, ProjectileSpeed); //one for each side of middle
 
                     oscillatingSpeedProjectile.Spawn(Owner.Position, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, i * angleBetweenShots)),
-                        1f, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
                     oscillatingSpeedProjectile2.Spawn(Owner.Position, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Owner.Position, i * angleBetweenShots)),
-                        1f, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
                 }
             }
 

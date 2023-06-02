@@ -73,7 +73,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                     // shoot projectiles in a ring and rotate it based on time
                     Vector2 velocity = 7f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / ProjectilesInSpiral) + rotation), Vector2.Zero);
 
-                    projectilesToShoot[i].Spawn(Owner.Position, velocity, 1f, "box", 1, Vector2.One, Owner, true, Color.Red, true, false);
+                    projectilesToShoot[i].Spawn(Owner.Position, velocity, 1f, 1, "box", 1, Vector2.One, Owner, true, Color.Red, true, false);
 
 
                 }

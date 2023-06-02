@@ -113,7 +113,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
 
-            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, "box", new Vector2(5, 5), Main.activeNPCs[0].Health, Color.White, false, true);
+            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, "box", new Vector2(5, 5), Main.activeNPCs[0].Health, 200, Color.White, false, true);
         }
 
     }

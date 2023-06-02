@@ -54,7 +54,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                         Color colour = possibleProjectiles[projIndexToSpawn] is OscillatingSpeedProjectile ? Color.White : Color.Red;
 
-                        possibleProjectiles[projIndexToSpawn].Spawn(new Vector2(side, height), 5f * new Vector2(direction, 0), 1f, "box", 0f, Vector2.One, Owner, true, colour, true, false);
+                        possibleProjectiles[projIndexToSpawn].Spawn(new Vector2(side, height), 5f * new Vector2(direction, 0), 1f, 1, "box", 0f, Vector2.One, Owner, true, colour, true, false);
 
                         Projectile projectile = new Projectile();
 
@@ -74,7 +74,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                         side = sideDeterminant * Main.ScreenWidth;
 
-                        projectile.Spawn(new Vector2(width, side), 5f * new Vector2(0, direction), 1f, "box", 0f, Vector2.One, Owner, true, colour, true, false);
+                        projectile.Spawn(new Vector2(width, side), 5f * new Vector2(0, direction), 1f, 1, "box", 0f, Vector2.One, Owner, true, colour, true, false);
                     }
                     else
                     {

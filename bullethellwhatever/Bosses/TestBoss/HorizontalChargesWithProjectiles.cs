@@ -54,7 +54,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             }
 
             SizeChangingProjectile projectile = new SizeChangingProjectile(0.011f, 0.014f);
-            projectile.Spawn(Owner.Position, 0.5f * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, "box", 1.03f, new Vector2(0.6f, 0.6f), Owner, true, Color.Red, true, false);
+            projectile.Spawn(Owner.Position, 0.5f * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", 1.03f, new Vector2(0.6f, 0.6f), Owner, true, Color.Red, true, false);
         }
     }
 }

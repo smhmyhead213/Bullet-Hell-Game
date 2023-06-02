@@ -19,9 +19,11 @@ namespace bullethellwhatever.BaseClasses
         public int MaxIFrames;
 
         public bool ContactDamage;
+
+        public int PierceToTake;
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Position = position;
             Velocity = velocity;
@@ -32,6 +34,8 @@ namespace bullethellwhatever.BaseClasses
             Size = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
+            PierceToTake = pierceToTake;
+
             ContactDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
