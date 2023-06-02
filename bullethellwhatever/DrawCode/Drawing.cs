@@ -25,8 +25,10 @@ namespace bullethellwhatever.DrawCode
         public static bool IsScreenShaking;
         public static int Timer;
 
-        
-
+        public static void Initialise()
+        {
+            screenShakeObject = new ScreenShakeObject(0, 0);
+        }
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
         {
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
@@ -58,11 +60,14 @@ namespace bullethellwhatever.DrawCode
 
         public static void HandleScreenShake() //under the hood screen shaking
         {
-            screenShakeObject.TickDownDuration();
+            if (screenShakeObject is not null)
+            {
+                screenShakeObject.TickDownDuration();
 
-            Random rng = new Random();
+                Random rng = new Random();
 
-            screenShakeObject.Magnitude = new(rng.Next((int)screenShakeObject.MaxMagnitude.X), rng.Next((int)screenShakeObject.MaxMagnitude.Y));
+                screenShakeObject.Magnitude = new(rng.Next((int)screenShakeObject.MaxMagnitude.X), rng.Next((int)screenShakeObject.MaxMagnitude.Y));
+            }
         }
 
         public static void ConfirmControlSettingsChange(SpriteBatch spriteBatch)

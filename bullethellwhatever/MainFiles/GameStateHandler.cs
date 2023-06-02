@@ -3,6 +3,8 @@
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Buttons;
 using bullethellwhatever.DrawCode;
+using SharpDX.XAudio2;
+using static bullethellwhatever.MainFiles.GameState;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -15,6 +17,63 @@ namespace bullethellwhatever.MainFiles
 
 
         public void HandleGame()
+        {
+            ManageLists();
+
+            if (ButtonCooldown > 0)
+            {
+                ButtonCooldown--;
+            }
+
+            switch (State)
+            {
+                case GameStates.TitleScreen:
+                    isGameStarted = false;
+                    CheckButtonClicks();
+                    Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+                    Credits.ReadInCreditsAlready = false; // i know this is an awful way to do it, in the future make credits reset when opened
+                    break;
+                case GameStates.BossSelect:
+                    isGameStarted = false;
+                    CheckButtonClicks();
+                    Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+                    break;
+                case GameStates.DifficultySelect:
+                    isGameStarted = false;
+                    CheckButtonClicks();
+                    Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+                    break;
+                case GameStates.Settings:
+                    isGameStarted = false;
+                    CheckButtonClicks();
+                    break;
+                case GameStates.InGame:                    
+                    break;
+                case GameStates.Credits:
+                    CheckButtonClicks();
+                    break;
+            }
+
+            if (State == GameStates.InGame) // This needs to be checked every frame independent of the switch statement so it is done the same frame that a difficulty is selected.
+            {
+                if (!isGameStarted)
+                {
+                    EntityManager.SpawnBoss();
+                    Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
+                    Main.activeProjectiles.Clear();
+                    isGameStarted = true;
+                }
+
+                CheckButtonClicks();
+
+                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+
+                EntityManager.RemoveEntities(); //remove all entities queued for deletion
+                EntityManager.RunAIs();
+            }
+        }
+
+        public void ManageLists()
         {
             foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
             {
@@ -36,123 +95,19 @@ namespace bullethellwhatever.MainFiles
             }
 
             Main.NPCsToAddNextFrame.Clear();
+        }
 
-            if (ButtonCooldown > 0)
+        public void CheckButtonClicks()
+        {
+            foreach (Button button in Main.activeButtons)
             {
-                ButtonCooldown--;
-            }
-
-            if (GameState.State == GameState.GameStates.TitleScreen) 
-            {
-                isGameStarted = false;
-
-                Credits.ReadInCreditsAlready = false; // i know this is an awful way to do it, in the future make credits reset when opened 
-                foreach (Button button in Main.activeButtons)
+                if (button.IsButtonClicked() && ButtonCooldown == 0)
                 {
-                    if (button.IsButtonClicked() && ButtonCooldown == 0)
-                    {
-                        ButtonCooldown = DefaultButtonCooldown;
-                        button.HandleClick();
-                    }
-                }
+                    ButtonCooldown = DefaultButtonCooldown;
 
-                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
-            }
-
-            if (GameState.State == GameState.GameStates.BossSelect)
-            {
-                isGameStarted = false;
-
-                foreach (Button button in Main.activeButtons)
-                {
-                    if (button.IsButtonClicked() && ButtonCooldown == 0)
-                    {
-                        ButtonCooldown = DefaultButtonCooldown;
-
-                        button.HandleClick();
-                    }
-                }
-
-                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
-            }
-
-            if (GameState.State == GameState.GameStates.DifficultySelect)
-            {
-                isGameStarted = false;
-
-                foreach (Button button in Main.activeButtons)
-                {
-                    if (button.IsButtonClicked() && ButtonCooldown == 0)
-                    {
-                        ButtonCooldown = DefaultButtonCooldown;
-
-                        button.HandleClick();
-                    }
-                }
-
-                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
-            }
-
-            if (GameState.State == GameState.GameStates.Settings)
-            {
-                isGameStarted = false;
-
-                foreach (Button button in Main.activeButtons)
-                {
-                    if (button.IsButtonClicked() && ButtonCooldown == 0)
-                    {
-                        ButtonCooldown = DefaultButtonCooldown;
-
-                        button.HandleClick();
-                    }
+                    button.HandleClick();
                 }
             }
-
-            if (!(GameState.State == GameState.GameStates.InGame))
-            {
-                Utilities.InitialiseGame();
-            }
-
-            if (GameState.State == GameState.GameStates.InGame)
-            {
-                if (!isGameStarted)
-                {
-                    EntityManager.SpawnBoss();
-                    Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
-                    Main.activeProjectiles.Clear();
-                    isGameStarted = true;
-
-                }
-
-                foreach (Button button in Main.activeButtons)
-                {
-                    if (button.IsButtonClicked() && ButtonCooldown == 0)
-                    {
-                        ButtonCooldown = DefaultButtonCooldown;
-
-                        button.HandleClick();
-                    }
-                }
-
-                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
-
-                EntityManager.RemoveEntities(); //remove all entities queued for deletion
-                EntityManager.RunAIs();
-            }
-
-            if (GameState.State == GameState.GameStates.Credits)
-            {
-                foreach (Button button in Main.activeButtons)
-                {
-                    if (button.IsButtonClicked() && ButtonCooldown == 0)
-                    {
-                        ButtonCooldown = DefaultButtonCooldown;
-
-                        button.HandleClick();
-                    }
-                }
-            }
-
         }
     }
 }

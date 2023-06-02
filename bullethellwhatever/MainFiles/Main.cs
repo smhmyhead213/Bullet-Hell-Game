@@ -134,6 +134,8 @@ namespace bullethellwhatever.MainFiles
             ScreenWidth = _graphics.PreferredBackBufferWidth;
             ScreenHeight = _graphics.PreferredBackBufferHeight;
 
+            Drawing.Initialise();
+
             base.Initialize();
         }
 
@@ -193,6 +195,7 @@ namespace bullethellwhatever.MainFiles
             UI.DrawButtons(_spriteBatch);
 
             _spriteBatch.End();
+
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

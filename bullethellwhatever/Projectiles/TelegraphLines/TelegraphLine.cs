@@ -8,7 +8,8 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 {
     public class TelegraphLine
     {
-        public float Rotation; // From the vertical.
+        public float rotationField;
+        public float Rotation { get { return rotationField; } set { } } // From the vertical.
         public float RotationalVelocity;
         public float RotationalAcceleration;
         public int Duration;
@@ -23,7 +24,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public bool StayWithOwner;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
-            Rotation = rotation;
+            rotationField = rotation + MathF.PI;
 
             RotationalVelocity = rotationalVelocity;
             RotationalAcceleration = rotationalAcceleration;
@@ -44,7 +45,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         {
             if (TimeAlive == 0)
             {
-                Rotation = Rotation + MathF.PI; // kill me
+                Rotation = Rotation ; // kill me
             }
 
             TimeAlive++;

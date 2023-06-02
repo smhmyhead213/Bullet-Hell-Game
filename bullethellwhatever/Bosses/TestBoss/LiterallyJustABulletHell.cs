@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                         Deathray rayToSpawn = new Deathray();
 
-                        rayToSpawn.CreateDeathray(rayOrigin, telegraphLine.Rotation, 1f, 90, "box", telegraphLine.Width, telegraphLine.Length, 0f, 0f, true, Color.White, "DeathrayShader", Owner);
+                        rayToSpawn.CreateDeathray(rayOrigin, MathF.PI * sideDeterminant + MathF.PI / 2, 1f, 90, "box", telegraphLine.Width, telegraphLine.Length, 0f, 0f, true, Color.White, "DeathrayShader", Owner);
 
                         Deathray verticalRayToSpawn = new Deathray();
 

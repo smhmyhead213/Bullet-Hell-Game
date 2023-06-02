@@ -91,7 +91,6 @@ namespace bullethellwhatever.BaseClasses
             return false;
         }
         public abstract void AI();
-
         public abstract void Draw(SpriteBatch spriteBatch);
     }
 }

@@ -85,7 +85,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 {
                     BasicProjectile proj = new BasicProjectile();
                     proj.Spawn(Owner.Position, 9f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), MathF.PI * 2 / projs * i),
-                        1f, "box", 0, Vector2.One, Owner, true, Color.Red, false, false);
+                        1f, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
                 }
 
             }
