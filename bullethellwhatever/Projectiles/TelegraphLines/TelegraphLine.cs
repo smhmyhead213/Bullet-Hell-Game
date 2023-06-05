@@ -8,8 +8,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 {
     public class TelegraphLine
     {
-        public float rotationField;
-        public float Rotation { get { return rotationField; } set { } } // From the vertical.
+        public float Rotation; // From the vertical.
         public float RotationalVelocity;
         public float RotationalAcceleration;
         public int Duration;
@@ -24,7 +23,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public bool StayWithOwner;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
-            rotationField = rotation + MathF.PI;
+            Rotation = rotation;
 
             RotationalVelocity = rotationalVelocity;
             RotationalAcceleration = rotationalAcceleration;
@@ -43,11 +42,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
         public void AI()
         {
-            if (TimeAlive == 0)
-            {
-                Rotation = Rotation ; // kill me
-            }
-
             TimeAlive++;
             
             if (StayWithOwner)
@@ -78,7 +72,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, Rotation, originOffset, size, SpriteEffects.None, 0);
+            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, Rotation + MathF.PI, originOffset, size, SpriteEffects.None, 0);
         }
     }
 }

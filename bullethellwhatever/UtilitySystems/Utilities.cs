@@ -6,7 +6,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 namespace bullethellwhatever
 {
-    public class Utilities
+    public static class Utilities
     {
         public static void InitialiseGame()
         {
@@ -41,7 +41,7 @@ namespace bullethellwhatever
             //_spriteBatch.End();
         }
 
-        public static float ToDegrees(float angleRadians)
+        public static float ToDegrees(this float angleRadians)
         {
             return angleRadians * (180 / MathF.PI);
         }

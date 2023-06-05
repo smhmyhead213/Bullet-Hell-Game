@@ -17,7 +17,7 @@ namespace bullethellwhatever.Bosses
     public class SecondBoss : Boss
     {
         public bool HasChosenChargeDirection;
-        public int AttackNumber; //position in pattern
+
         public float DeathrayAngularVelocity;
 
         public SecondBoss(Vector2 position, Vector2 velocity)
@@ -59,8 +59,6 @@ namespace bullethellwhatever.Bosses
 
 
             ExecuteEasyAttackPattern();
-
-            AITimer++;
         }
 
         public void ExecuteEasyAttackPattern()
@@ -107,12 +105,11 @@ namespace bullethellwhatever.Bosses
             if (AITimer == 0)
             {
                 Deathray deathray = new Deathray();
-                //Deathray deathray2 = new Deathray();
-                dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
-                //deathray.SpawnDeathray(Position, 0, 1f, 4000, "box", 50f, 2000f, 60, 0f, true, Color.Red, "DeathrayShader", this);
-                //deathray2.SpawnDeathray(Position, MathF.PI / 6, 1f, 400, Texture, 50f, 2000f, 0f, 0f, true, Color.Red, Main.deathrayShader2, this);
 
-                activeTelegraphs.Add(new TelegraphLine(0f, MathF.PI / 2708f, 0f, 20f, 500f, 100, Position, Color.Yellow, "box", this, true));
+                dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
+
+
+                TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
 
                 ExplodingProjectile exploding = new ExplodingProjectile(8, 60, 0, false, false, false);
 
@@ -141,7 +138,8 @@ namespace bullethellwhatever.Bosses
         {
             base.Draw(spriteBatch);
 
-            Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3), spriteBatch, Main.font, Color.White);
+            if (activeTelegraphs.Count > 0)
+                Utilities.drawTextInDrawMethod(activeTelegraphs[0].Rotation.ToDegrees().ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3), spriteBatch, Main.font, Color.White);
         }
     }
 }

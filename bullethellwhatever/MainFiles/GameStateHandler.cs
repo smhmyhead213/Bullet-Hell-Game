@@ -3,7 +3,7 @@
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Buttons;
 using bullethellwhatever.DrawCode;
-using SharpDX.XAudio2;
+
 using static bullethellwhatever.MainFiles.GameState;
 using Microsoft.Xna.Framework.Input;
 

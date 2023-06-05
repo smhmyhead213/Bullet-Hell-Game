@@ -89,6 +89,16 @@ namespace bullethellwhatever.Bosses
             Owner.Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * Owner.AITimer / duration);
         }
 
+
+        public void MoveToPoint(Vector2 point, int AITImer, int duration)
+        {
+            Vector2 vectorToPoint = point - Owner.Position;
+            float distanceToTravel = vectorToPoint.Length();
+            //Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * distanceToTravel / (timeToStartAt - AITimer);
+
+            // top 5 integration moments
+            Owner.Velocity = Utilities.SafeNormalise(vectorToPoint, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * Owner.AITimer / duration);
+        }
         public void SpinUpClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
         {
             rotation = Owner.Rotation + MathF.PI / 90 * Owner.AITimer / 80f; //spin up

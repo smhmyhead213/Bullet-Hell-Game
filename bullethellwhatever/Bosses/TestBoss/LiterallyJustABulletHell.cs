@@ -46,6 +46,8 @@ namespace bullethellwhatever.Bosses.TestBoss
         {
             Owner.ContactDamage = false;
 
+            Owner.Velocity = Vector2.Zero;
+
             if (AITimer > Owner.BarDuration * 2)
             {
                 if (AITimer % ProjectileFrequency == 0)

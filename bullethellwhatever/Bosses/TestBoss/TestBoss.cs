@@ -54,17 +54,19 @@ namespace bullethellwhatever.Bosses.TestBoss
             BarDuration = FramesPerMusicBeat * BeatsPerBar;
 
             BossAttacks = new BossAttack[]
-            { new Desperation(BarDuration * 30),                
+            { new Desperation(BarDuration * 30),                              
                 new BasicShotgunSpread(BarDuration * 18),
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),
                 new SpawnEnemies(BarDuration),
                 new LaserBarrages(BarDuration * 7),
                 new MoveTowardsAndShotgun(BarDuration * 7),
-                new ExplodingProjectiles(BarDuration * 10),
-                new LiterallyJustABulletHell(BarDuration * 30),
-                new MutantBulletHell(BarDuration * 12),
-                new HorizontalChargesWithProjectiles(BarDuration * 5),
+                new ExplodingProjectiles(BarDuration * 10),              
+                new MutantBulletHell(BarDuration * 12),                
+                new LiterallyJustABulletHell(BarDuration * 35),
+                new HorizontalChargesWithProjectiles(BarDuration * 13),
+                new Circle(BarDuration * 17),
+                new EnemySpam(BarDuration * 16),
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)
@@ -87,12 +89,14 @@ namespace bullethellwhatever.Bosses.TestBoss
             BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
 
             BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
 
+            Utilities.drawTextInDrawMethod(MathF.Floor(AITimer / BarDuration).ToString(), new Vector2(Main.ScreenWidth / 6, Main.ScreenHeight / 6), spriteBatch, Main.font, Colour);
         }
     }
 }

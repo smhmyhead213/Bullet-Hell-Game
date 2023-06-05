@@ -71,14 +71,6 @@ namespace bullethellwhatever.MainFiles
         
         protected override void LoadContent()
         {
-            
-            // TODO: use this.Content to load your game content here
-        }
-        
-        protected override void Initialize()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
 
             for (int i = 0; i < files.Length; i++)
@@ -128,6 +120,11 @@ namespace bullethellwhatever.MainFiles
             }
 
             font = Content.Load<SpriteFont>("font");
+        }
+        
+        protected override void Initialize()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GameState.State = GameState.GameStates.TitleScreen;
 

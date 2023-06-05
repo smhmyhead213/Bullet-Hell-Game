@@ -50,7 +50,21 @@ namespace bullethellwhatever.BaseClasses
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
-            Health = 15; //make all these values changeable
+            switch (GameState.Difficulty)
+            {
+                case GameState.Difficulties.Easy:
+                    Health = 15;
+                    break;
+                case GameState.Difficulties.Normal:
+                    Health = 12;
+                    break;
+                case GameState.Difficulties.Hard:
+                    Health = 10;
+                    break;
+                case GameState.Difficulties.Insane:
+                    Health = 8;
+                    break;
+            }
             MaxHP = Health;
             Size = Vector2.One;
             ShotCooldown = 20f;
@@ -288,7 +302,7 @@ namespace bullethellwhatever.BaseClasses
                 Random rnd = new Random();
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, 3, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
+                    0.15f, 7, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -342,7 +356,7 @@ namespace bullethellwhatever.BaseClasses
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(Main.ScreenWidth / 6, Main.ScreenHeight / 6), spriteBatch, Main.font, Colour);
+
 
             Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
         }

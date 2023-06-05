@@ -82,7 +82,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 if (AITimer == Owner.BarDuration * 11)
                 {
-                    TelegraphLine t = new TelegraphLine(angle, MathF.PI / 3360, -MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);
+                    TelegraphLine t = new TelegraphLine(angle, MathF.PI / 3360, MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);
                 }
 
                 if (AITimer == Owner.BarDuration * 12)

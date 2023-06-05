@@ -48,7 +48,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer % timeBetween == 0 && AITimer <= endTime && AITimer >= startTime)
             {
-                ExplodingDeathrayProjectile explodingProjectile = new ExplodingDeathrayProjectile(NumberOfProjectiles, 180, 0, true, true, false);
+                ExplodingDeathrayProjectile explodingProjectile = new ExplodingDeathrayProjectile(NumberOfProjectiles, Owner.BarDuration, 0, true, true, false);
 
                 Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, Utilities.ToRadians(AITimer - 250f));
 

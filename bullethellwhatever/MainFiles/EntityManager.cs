@@ -39,8 +39,6 @@ namespace bullethellwhatever.MainFiles
             {
                 Main.activeFriendlyProjectiles.Add(projectile);
             }
-
-            
         }
 
         public static void RunAIs()
@@ -106,7 +104,6 @@ namespace bullethellwhatever.MainFiles
                 case GameState.Bosses.SecondBoss:
                     Main.activeNPCs.Add(new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0)));
                     break;
-
             }
 
             Drawing.ScreenShakeTimer = 0;
