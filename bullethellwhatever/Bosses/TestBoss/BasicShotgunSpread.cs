@@ -51,9 +51,11 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             float projectileOscillationFrequency = 10f;
 
+            int partTwoStartTime = Owner.BarDuration * 4;
+
             if (Owner.CurrentBeat == 2 && Owner.JustStartedBeat && AITimer < Owner.BarDuration * 16)
             {
-                if (AITimer > Owner.BarDuration * 4)
+                if (AITimer > partTwoStartTime)
                 {
                     angleBetweenShots = angleBetweenShots * 2;
                 }
@@ -94,10 +96,17 @@ namespace bullethellwhatever.Bosses.TestBoss
                 }
             }
 
-            if (AITimer > 300)
+            if (AITimer == partTwoStartTime)
+            {
+                Owner.Position = new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 2);
+                Owner.Velocity = Vector2.Zero;
+            }
+
+            if (AITimer > partTwoStartTime - Owner.BarDuration)
             {
                 if (Owner.CurrentBeat == 1 && Owner.JustStartedBeat)
                 {
+                    FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Owner.Position);
                     TelegraphLine telegraph = new TelegraphLine(FirstAttackTelegraphLineRotation, 0f, 0f, 20f, 2000f, Owner.FramesPerMusicBeat * 2, Owner.Position, Owner.Colour, "box", Owner, true);
                 }
 
@@ -110,17 +119,12 @@ namespace bullethellwhatever.Bosses.TestBoss
                     }
 
                     //float predictionStrength = 500f;
-                    FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Owner.Position);
-
+                    
                 }
 
             }
 
-            if (AITimer == Owner.FramesPerMusicBeat * Owner.BeatsPerBar * 4)
-            {
-                Owner.Position = new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 2);
-                Owner.Velocity = Vector2.Zero;
-            }
+
 
             HandleBounces();
 

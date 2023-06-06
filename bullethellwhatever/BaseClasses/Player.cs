@@ -186,6 +186,7 @@ namespace bullethellwhatever.BaseClasses
             if (kstate.IsKeyDown(Keys.R))
             {
                 Utilities.InitialiseGame();
+                Main.musicSystem.StopMusic();
             }
 
             if (DashCooldown > 0)

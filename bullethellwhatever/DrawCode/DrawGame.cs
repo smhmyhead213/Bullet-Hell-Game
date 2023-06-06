@@ -38,7 +38,8 @@ namespace bullethellwhatever.DrawCode
 
             List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();
             List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
-
+            List<Entity> FriendlyProjectilesToDrawWithShader = new List<Entity>();
+            List<Entity> FriendlyProjectilesToDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithShader = new List<Entity>();
 
@@ -75,12 +76,30 @@ namespace bullethellwhatever.DrawCode
             {
                 if (projectile is IDrawsShader)
                 {
-                    ProjectilestoDrawWithShader.Add(projectile);
+                    FriendlyProjectilesToDrawWithShader.Add(projectile);
                 }
-                else ProjectilestoDrawWithoutShader.Add(projectile);
+                else FriendlyProjectilesToDrawWithoutShader.Add(projectile);
             }
 
-            // Draw all projectiles without shaders first.
+            // ------------------------------------------------------------------------------------------------------
+
+            foreach (Entity entity in FriendlyProjectilesToDrawWithoutShader)
+            {
+                entity.Draw(Main._spriteBatch);
+            }
+
+
+            Main._spriteBatch.End();
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+
+            foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
+            {
+                entity.Draw(Main._spriteBatch);
+            }
+
+
+            Main._spriteBatch.End();
+            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
@@ -89,8 +108,6 @@ namespace bullethellwhatever.DrawCode
 
             Main._spriteBatch.End();
             Main._spriteBatch.Begin(SpriteSortMode.Immediate);
-
-            //Draw all projectiles that do use a shader.
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -101,6 +118,7 @@ namespace bullethellwhatever.DrawCode
                     t.Draw(Main._spriteBatch);
                 }
             }
+
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
