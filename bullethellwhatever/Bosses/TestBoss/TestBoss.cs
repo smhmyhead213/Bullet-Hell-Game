@@ -61,7 +61,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 new SpawnEnemies(BarDuration),
                 new LaserBarrages(BarDuration * 7),
                 new MoveTowardsAndShotgun(BarDuration * 7),
-                new ExplodingProjectiles(BarDuration * 10),              
+                new ExplodingProjectiles(BarDuration * 10),             
                 new MutantBulletHell(BarDuration * 12),                
                 new LiterallyJustABulletHell(BarDuration * 35),
                 new HorizontalChargesWithProjectiles(BarDuration * 13),

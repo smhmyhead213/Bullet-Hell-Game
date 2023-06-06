@@ -78,8 +78,6 @@ namespace bullethellwhatever.Bosses.TestBoss
                 }
             }
 
-
-
             if (AITimer >= Owner.BarDuration * 11 && AITimer <= Owner.BarDuration * 12)
             {
                 float angle = Utilities.VectorToAngle(-Vector2.UnitY);
