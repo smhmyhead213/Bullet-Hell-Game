@@ -14,7 +14,9 @@ namespace bullethellwhatever.Bosses.TestBoss
         public float NumberOfProjectiles;
         public float ProjectileSpeed;
         public float FirstAttackTelegraphLineRotation;
-
+        public int LaserSpinDirection;
+        public float MegaRayTeleLineRotation;
+        public TelegraphLine MegaRayTeleLine;
         public BasicShotgunSpread(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -53,7 +55,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             int partTwoStartTime = Owner.BarDuration * 4;
 
-            if (Owner.CurrentBeat == 2 && Owner.JustStartedBeat && AITimer < Owner.BarDuration * 16)
+            if (Owner.CurrentBeat == 2 && Owner.JustStartedBeat && AITimer < EndTime - Owner.BarDuration * 3)
             {
                 if (AITimer > partTwoStartTime)
                 {
@@ -84,15 +86,19 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 if (AITimer == Owner.BarDuration * 11)
                 {
-                    TelegraphLine t = new TelegraphLine(angle, MathF.PI / 3360, MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);
+                    LaserSpinDirection = Main.player.Position.X > Owner.Position.X ? 1 : -1;
+
+                    MegaRayTeleLine = new TelegraphLine(angle, LaserSpinDirection * MathF.PI / 3360, LaserSpinDirection * MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);                 
                 }
+
+                MegaRayTeleLineRotation = MegaRayTeleLine.Rotation;
 
                 if (AITimer == Owner.BarDuration * 12)
                 {
                     Deathray ray = new Deathray();
 
-                    ray.SpawnDeathray(Owner.Position, angle, 1f, Owner.BarDuration * 3 - Owner.FramesPerMusicBeat, "box", 30f, 2000f,
-                        150f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
+                    ray.SpawnDeathray(Owner.Position, MegaRayTeleLineRotation, 1f, Owner.BarDuration * 3 - Owner.FramesPerMusicBeat, "box", 30f, 2000f,
+                        LaserSpinDirection * 150f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
                 }
             }
 
@@ -123,8 +129,6 @@ namespace bullethellwhatever.Bosses.TestBoss
                 }
 
             }
-
-
 
             HandleBounces();
 
