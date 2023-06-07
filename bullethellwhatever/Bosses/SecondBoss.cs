@@ -103,18 +103,14 @@ namespace bullethellwhatever.Bosses
         public void DialogueTest(ref int AITimer, ref int AttackNumber)
         {
             if (AITimer == 0)
-            {
-                Deathray deathray = new Deathray();
-
+            {              
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
-
 
                 TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
 
-                ExplodingProjectile exploding = new ExplodingProjectile(8, 60, 0, false, false, false);
+                ExponentialAcceleratingProjectile proj = new ExponentialAcceleratingProjectile(120, 4);
 
-                exploding.Spawn(new Vector2(Main.ScreenWidth / 2, 0), 5f * Vector2.UnitY, 1f, 1, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
-
+                proj.Spawn(Position + new Vector2(200, 0), Main.player.Position - proj.Position, 1f, 1, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
             }            
 
             if (AITimer == 120)

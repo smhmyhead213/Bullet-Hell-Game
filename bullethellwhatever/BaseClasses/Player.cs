@@ -59,7 +59,7 @@ namespace bullethellwhatever.BaseClasses
                     Health = 12;
                     break;
                 case GameState.Difficulties.Hard:
-                    Health = 1000;
+                    Health = 10;
                     break;
                 case GameState.Difficulties.Insane:
                     Health = 8;

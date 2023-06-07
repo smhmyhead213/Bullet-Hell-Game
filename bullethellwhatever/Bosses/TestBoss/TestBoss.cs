@@ -54,7 +54,8 @@ namespace bullethellwhatever.Bosses.TestBoss
             BarDuration = FramesPerMusicBeat * BeatsPerBar;
 
             BossAttacks = new BossAttack[]
-            { new Desperation(BarDuration * 30),                              
+            { new Desperation(BarDuration * 30),
+                new EnemySpam(BarDuration * 16),
                 new BasicShotgunSpread(BarDuration * 18),
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),

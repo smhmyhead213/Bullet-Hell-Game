@@ -60,15 +60,15 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer == EndTime - (Owner.BarDuration * 3))
             {
-                for (int i = 0; i < Main.activeNPCs.Count; i++) //this is done backwards so deleting one doesnt move the rest all forward
-                {                   
-                    for (int j = 0; j < NumberOfProjectiles; j++)
+                foreach (NPC npc in Main.activeNPCs) 
+                {
+                    if (npc is not Boss)
                     {
-                        BasicProjectile proj = new BasicProjectile();
+                        ExponentialAcceleratingProjectile proj = new ExponentialAcceleratingProjectile(120, 4);
 
-                        TelegraphLine t = new TelegraphLine(MathF.PI * 2 / NumberOfProjectiles * j, 0f, 0f, 10, 2000, 40, Main.activeNPCs[i].Position, Color.White, "box", Owner, false);
+                        TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(Main.player.Position - npc.Position), 0f, 0f, 10, 2000, 40, npc.Position, Color.White, "box", Owner, false);
 
-                        proj.Spawn(Main.activeNPCs[i].Position, 6f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), MathF.PI * 2 / NumberOfProjectiles * j),
+                        proj.Spawn(npc.Position, Main.player.Position - npc.Position,
                             1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
                     }
                 }
