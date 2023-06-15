@@ -327,7 +327,7 @@ namespace bullethellwhatever.BaseClasses
             if (kstate.IsKeyDown(Keys.K))
             {
                 for (int i = 0; i < Main.activeProjectiles.Count; i++)
-                    Utilities.drawTextInDrawMethod(Main.activeProjectiles[i].ToString() + " " + Main.activeProjectiles[i].DeleteNextFrame.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;
+                    Utilities.drawTextInDrawMethod(Main.activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;
             }
 
             if (DashAbility.IsExecuting)
@@ -356,8 +356,6 @@ namespace bullethellwhatever.BaseClasses
             Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
-
-
 
             Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
         }

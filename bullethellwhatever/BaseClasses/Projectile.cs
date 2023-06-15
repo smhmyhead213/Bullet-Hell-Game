@@ -28,7 +28,7 @@ namespace bullethellwhatever.BaseClasses
             PierceRemaining = Pierce;
             Velocity = velocity;
             Damage = damage;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
             Acceleration = acceleration;
             Colour = colour;
             DeleteNextFrame = false;
@@ -41,6 +41,10 @@ namespace bullethellwhatever.BaseClasses
             Hitbox.Width = Hitbox.Width * (int)size.X;
             Hitbox.Height = Hitbox.Height * (int)size.Y;
             Opacity = 1f;
+
+            float sizeScalar = ScreenWidth * 1f / IdealScreenWidth * 1f; //adjust for screen size horizontally
+
+            Size = new Vector2(Size.X / IdealScreenWidth * ScreenWidth, Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
 
             if (isHarmful)
                 enemyProjectilesToAddNextFrame.Add(this);
@@ -57,6 +61,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 TimeOutsidePlayArea++;
             }
+
             else TimeOutsidePlayArea = 0;
 
             if (Acceleration != 0)

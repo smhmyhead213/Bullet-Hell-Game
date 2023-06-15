@@ -96,7 +96,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                     Projectile p = new Projectile();
 
-                    p.Spawn(Owner.Position, 5f * Utilities.AngleToVector((i + 1) * MathF.PI / NumberOfProjectiles + (float)rng.NextDouble() * angleVariation - angleVariation * 2), 1f, 1, "box", 1, Vector2.One, Owner, true, Color.Red, false, false);
+                    p.Spawn(Owner.Position, 5f * Utilities.AngleToVector((i + 1) * MathF.PI / NumberOfProjectiles + (float)rng.NextDouble() * angleVariation - angleVariation * 2), 1f, 1, "box", 1, Vector2.One, Owner, true, Color.Red, true, false);
                 }
             }
 

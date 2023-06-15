@@ -37,13 +37,8 @@ namespace bullethellwhatever.BaseClasses
 
         public static void SetHitbox(Entity entity)
         {
-            float sizeScalar = ScreenWidth / IdealScreenWidth; //adjust for screen size horizontally
-
-            entity.Size = new Vector2(entity.Size.X / IdealScreenWidth * ScreenWidth, entity.Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
-
             entity.Hitbox = new((int)entity.Position.X - entity.Texture.Width / 2 * (int)entity.Size.X, (int)entity.Position.Y - entity.Texture.Height / 2 * (int)entity.Size.Y, entity.Texture.Width * (int)entity.Size.X,
                 entity.Texture.Height * (int)entity.Size.Y);
-
         }
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {

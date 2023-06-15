@@ -20,7 +20,7 @@ namespace bullethellwhatever.MainFiles
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
             activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
-            activeProjectiles.RemoveAll(projectile => (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile)) && projectile.TimeOutsidePlayArea > 60);
+            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60);
             activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.AITimer > 5 || projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
@@ -28,23 +28,23 @@ namespace bullethellwhatever.MainFiles
 
         public static void AddEntitiesNextFrame()
         {
-            foreach (NPC npc in Main.NPCsToAddNextFrame)
-                Main.activeNPCs.Add(npc);
+            foreach (NPC npc in NPCsToAddNextFrame)
+                activeNPCs.Add(npc);
 
-            foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in enemyProjectilesToAddNextFrame)
             {
-                Main.activeProjectiles.Add(projectile);
+                activeProjectiles.Add(projectile);
             }
 
-            foreach (Projectile projectile in Main.friendlyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in friendlyProjectilesToAddNextFrame)
             {
-                Main.activeFriendlyProjectiles.Add(projectile);
+                activeFriendlyProjectiles.Add(projectile);
             }
         }
 
         public static void RunAIs()
         {
-            foreach (NPC npc in Main.activeNPCs)
+            foreach (NPC npc in activeNPCs)
             {
                 npc.AI();
                 npc.CheckForHits();
@@ -63,7 +63,7 @@ namespace bullethellwhatever.MainFiles
                 }
             }
 
-            foreach (Projectile projectile in Main.activeProjectiles)
+            foreach (Projectile projectile in activeProjectiles)
             {
                 projectile.AI();
                 projectile.CheckForHits();
@@ -75,7 +75,7 @@ namespace bullethellwhatever.MainFiles
                 }
             }
 
-            foreach (Projectile projectile in Main.activeFriendlyProjectiles)
+            foreach (Projectile projectile in activeFriendlyProjectiles)
             {
                 projectile.AI();
                 projectile.CheckForHits();
