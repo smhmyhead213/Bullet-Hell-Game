@@ -64,9 +64,9 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                     if (possibleProjectiles[projIndexToSpawn] is not Deathray)
                     {
-                        int height = rng.Next(Main.ScreenHeight);
+                        int height = rng.Next(ScreenHeight);
 
-                        int side = sideDeterminant * Main.ScreenWidth;
+                        int side = sideDeterminant * ScreenWidth;
 
                         int direction = sideDeterminant == 1 ? -1 : 1; // -1 is right/top  of screen, 1 is left/bottom
 
@@ -88,28 +88,28 @@ namespace bullethellwhatever.Bosses.TestBoss
                                 break;
                         }
 
-                        int width = rng.Next(Main.ScreenWidth);
+                        int width = rng.Next(ScreenWidth);
 
-                        side = sideDeterminant * Main.ScreenWidth;
+                        side = sideDeterminant * ScreenWidth;
 
                         projectile.Spawn(new Vector2(width, side), 5f * new Vector2(0, direction), 1f, 1, "box", 0f, Vector2.One, Owner, true, colour, true, false);
                     }
                     else
                     {
-                        Vector2 rayOrigin = new Vector2(sideDeterminant * Main.ScreenWidth, rng.Next(Main.ScreenHeight));
-                        Vector2 verticalRayOrigin = new Vector2(rng.Next(Main.ScreenWidth), Main.ScreenHeight - (Main.ScreenHeight * sideDeterminant));
+                        Vector2 rayOrigin = new Vector2(sideDeterminant * ScreenWidth, rng.Next(ScreenHeight));
+                        Vector2 verticalRayOrigin = new Vector2(rng.Next(ScreenWidth), ScreenHeight - (ScreenHeight * sideDeterminant));
 
-                        TelegraphLine telegraphLine = new TelegraphLine(MathF.PI * sideDeterminant + MathF.PI / 2, 0f, 0f, 20f, Main.ScreenWidth, 90, rayOrigin, Color.White, "box", Owner, false);
+                        TelegraphLine telegraphLine = new TelegraphLine(PI * sideDeterminant + PI / 2, 0f, 0f, 20f, ScreenWidth, 90, rayOrigin, Color.White, "box", Owner, false);
 
-                        TelegraphLine verticalTelegraphLine = new TelegraphLine(MathF.PI * sideDeterminant, 0f, 0f, 20f, Main.ScreenHeight, 90, verticalRayOrigin, Color.White, "box", Owner, false);
+                        TelegraphLine verticalTelegraphLine = new TelegraphLine(PI * sideDeterminant, 0f, 0f, 20f, ScreenHeight, 90, verticalRayOrigin, Color.White, "box", Owner, false);
 
                         Deathray rayToSpawn = new Deathray();
 
-                        rayToSpawn.CreateDeathray(rayOrigin, MathF.PI * sideDeterminant + MathF.PI / 2, 1f, 90, "box", telegraphLine.Width, telegraphLine.Length, 0f, 0f, true, Color.White, "DeathrayShader", Owner);
+                        rayToSpawn.CreateDeathray(rayOrigin, PI * sideDeterminant + PI / 2, 1f, 90, "box", telegraphLine.Width, telegraphLine.Length, 0f, 0f, true, Color.White, "DeathrayShader", Owner);
 
                         Deathray verticalRayToSpawn = new Deathray();
 
-                        verticalRayToSpawn.CreateDeathray(verticalRayOrigin, MathF.PI * sideDeterminant, rayToSpawn.Damage, rayToSpawn.Duration, "box", rayToSpawn.Width, verticalTelegraphLine.Length,
+                        verticalRayToSpawn.CreateDeathray(verticalRayOrigin, PI * sideDeterminant, rayToSpawn.Damage, rayToSpawn.Duration, "box", rayToSpawn.Width, verticalTelegraphLine.Length,
                             0f, 0f, true, Color.White, "DeathrayShader", Owner);
 
                         pendingDeathrays.Add(rayToSpawn);

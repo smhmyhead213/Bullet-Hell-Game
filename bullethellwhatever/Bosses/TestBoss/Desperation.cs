@@ -2,6 +2,7 @@
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using System;
@@ -48,7 +49,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 Owner.IsDesperationOver = true;
             }
 
-            int despStartTime = 400;
+            int despStartTime = 300;
 
             if (AITimer == 0)
             {
@@ -56,30 +57,23 @@ namespace bullethellwhatever.Bosses.TestBoss
                 Owner.Rotation = 0;
                 Owner.dialogueSystem.Dialogue(Owner.Position, "It's not over yet!", 4, despStartTime);
                 Drawing.ScreenShake(4, EndTime - despStartTime);
-
-                for (int i = 0; i < BlenderBeams; i++)
-                {
-                    TelegraphLine telegraphLine = new TelegraphLine(MathHelper.TwoPi / BlenderBeams * i, 0, 0, 15, 1500f, despStartTime, Owner.Position, Color.White, "box", Owner, true);
-                }
             }
 
             if (AITimer < despStartTime)
             {
-                MoveToCentre(AITimer, despStartTime);
+                MoveToPoint(new Vector2(ScreenWidth / 10, ScreenHeight / 10), AITimer, despStartTime);
             }
 
-            if (AITimer == 400)
+            if (AITimer == despStartTime)
             {
-                DespBeamRotation = Owner.Position.X > Main.player.Position.X ? 1 : -1;
-                //Main.activeProjectiles.Clear();
-
-                for (int i = 0; i < 2; i++)
-                {
-                    Deathray ray = new Deathray();
-                    ray.SpawnDeathray(Owner.Position, MathHelper.TwoPi / 2 * i, 1f, 2600, "box", 40f, 1500f, DespBeamRotation * 40f, 0f, true, Color.Red, "DeathrayShader2", Owner);
-                }
-
                 Owner.dialogueSystem.ClearDialogue();
+            }
+
+            if (AITimer > despStartTime && AITimer % 30 == 0)
+            {
+                ExplodingProjectile projectile = new ExplodingProjectile(30, 180, 0, false, false, false);
+
+                projectile.Spawn(Owner.Position, 8f * Utilities.SafeNormalise(player.Position - Owner.Position), 1f, 1, "box", 1f, new Vector2(2,2), Owner, true, Color.Red, true, false);
             }
 
             if (AITimer == EndTime)

@@ -18,11 +18,13 @@ namespace bullethellwhatever.BaseClasses
         public bool RemoveOnHit;
 
         public int Pierce;
+        public int TimeOutsidePlayArea;
         public int PierceRemaining;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Position = position;
             Pierce = pierce;
+            TimeOutsidePlayArea = 0;
             PierceRemaining = Pierce;
             Velocity = velocity;
             Damage = damage;
@@ -50,6 +52,12 @@ namespace bullethellwhatever.BaseClasses
         public virtual void Update()
         {
             AITimer++;
+
+            if (touchingAnEdge(this))
+            {
+                TimeOutsidePlayArea++;
+            }
+            else TimeOutsidePlayArea = 0;
 
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small

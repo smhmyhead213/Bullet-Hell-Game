@@ -17,11 +17,11 @@ namespace bullethellwhatever.MainFiles
         public static List<TelegraphLine> telegraphsToRemove = new List<TelegraphLine>();
         public static void RemoveEntities()
         {
-            Main.activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
-            Main.activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
-            Main.activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
-            Main.activeProjectiles.RemoveAll(projectile => (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile)) && projectile.AITimer > 60);
-            Main.activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.AITimer > 5 || projectile.DeleteNextFrame);
+            activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
+            activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
+            activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
+            activeProjectiles.RemoveAll(projectile => (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile)) && projectile.TimeOutsidePlayArea > 60);
+            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.AITimer > 5 || projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
         }
