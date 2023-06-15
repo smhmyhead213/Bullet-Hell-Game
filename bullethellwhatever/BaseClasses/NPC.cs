@@ -46,6 +46,29 @@ namespace bullethellwhatever.BaseClasses
             IsHarmful = isHarmful;
             SetHitbox(this);
         }
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
+        {
+            Position = position;
+            Velocity = velocity;
+            Damage = damage;
+            Texture = texture;
+            Colour = colour;
+            Main.NPCsToAddNextFrame.Add(this);
+            Size = size;
+            Health = MaxHealth;
+            MaxHP = MaxHealth;
+            PierceToTake = pierceToTake;
+
+            ContactDamage = false;
+            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            Opacity = 1f;
+
+            dialogueSystem = new DialogueSystem(this);
+            dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
+
+            IsHarmful = isHarmful;
+            SetHitbox(this);
+        }
 
         public override void AI()
         {

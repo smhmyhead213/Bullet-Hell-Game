@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿global using static System.MathF;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -53,6 +55,9 @@ namespace bullethellwhatever.MainFiles
 
         public static int ScreenHeight;
         public static int ScreenWidth;
+
+        public static int IdealScreenHeight = 1080;
+        public static int IdealScreenWidth = 1920;
 
         public static List<Button> activeButtons = new List<Button>();
         public Main() : base()

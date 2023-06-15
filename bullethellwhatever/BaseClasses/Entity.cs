@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿global using static bullethellwhatever.MainFiles.Main;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
-using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
 using System.Security.Policy;
@@ -37,12 +37,17 @@ namespace bullethellwhatever.BaseClasses
 
         public static void SetHitbox(Entity entity)
         {
-            entity.Hitbox = new((int)entity.Position.X - entity.Texture.Width / 2 * (int)entity.Size.X, (int)entity.Position.Y - entity.Texture.Height / 2 * (int)entity.Size.Y, entity.Texture.Width * (int)entity.Size.X, entity.Texture.Height * (int)entity.Size.Y);
-        }
+            float sizeScalar = ScreenWidth / IdealScreenWidth; //adjust for screen size horizontally
 
+            entity.Size = new Vector2(entity.Size.X / IdealScreenWidth * ScreenWidth, entity.Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
+
+            entity.Hitbox = new((int)entity.Position.X - entity.Texture.Width / 2 * (int)entity.Size.X, (int)entity.Position.Y - entity.Texture.Height / 2 * (int)entity.Size.Y, entity.Texture.Width * (int)entity.Size.X,
+                entity.Texture.Height * (int)entity.Size.Y);
+
+        }
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
-            if (entity.Position.Y + entity.Hitbox.Height / 2 >= Main._graphics.PreferredBackBufferHeight)
+            if (entity.Position.Y + entity.Hitbox.Height / 2 >= _graphics.PreferredBackBufferHeight)
                 return true;
             else return false;
             //if at the bottom
@@ -57,7 +62,7 @@ namespace bullethellwhatever.BaseClasses
 
         public static bool touchingRight(Entity entity)
         {
-            if (entity.Position.X + entity.Hitbox.Width / 2 >= Main._graphics.PreferredBackBufferWidth)
+            if (entity.Position.X + entity.Hitbox.Width / 2 >= _graphics.PreferredBackBufferWidth)
                 return true;
             else return false;
         }
@@ -83,9 +88,9 @@ namespace bullethellwhatever.BaseClasses
 
         public bool isCollidingWithPlayer() //you need to refactor this whole thing if you wanna use rectangles
         {
-            float totalwidth = Hitbox.Width + Main.player.Hitbox.Width;
+            float totalwidth = Hitbox.Width + player.Hitbox.Width;
 
-            if (Math.Abs(Position.X - Main.player.Position.X) <= totalwidth && Math.Abs(Position.Y - Main.player.Position.Y) <= totalwidth)
+            if (Math.Abs(Position.X - player.Position.X) <= totalwidth && Math.Abs(Position.Y - player.Position.Y) <= totalwidth)
                 return true;
 
             return false;

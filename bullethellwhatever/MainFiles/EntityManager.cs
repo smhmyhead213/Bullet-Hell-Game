@@ -8,6 +8,7 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.Bosses.CrabBoss;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -104,13 +105,16 @@ namespace bullethellwhatever.MainFiles
                 case GameState.Bosses.SecondBoss:
                     Main.activeNPCs.Add(new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0)));
                     break;
+                case GameState.Bosses.CrabBoss:
+                    Main.activeNPCs.Add(new CrabBoss());
+                    break;
             }
 
             Drawing.ScreenShakeTimer = 0;
 
             Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
 
-            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, "box", new Vector2(5, 5), Main.activeNPCs[0].Health, 200, Color.White, false, true);
+            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.activeNPCs[0].Texture, Main.activeNPCs[0].Size, Main.activeNPCs[0].Health, 200, Color.White, false, true);
         }
 
     }

@@ -47,7 +47,11 @@ namespace bullethellwhatever.Bosses.TestBoss
             HasDesperationStarted = false;
             IsDesperationOver = false;
 
-            Main.musicSystem.SetMusic("TestBossMusic", true, 0.01f);
+            Texture = Assets["box"];
+
+            Size = new Vector2(5f, 5f);
+
+            musicSystem.SetMusic("TestBossMusic", true, 0.01f);
 
             FramesPerMusicBeat = 24;
             BeatsPerBar = 4;
@@ -55,7 +59,6 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             BossAttacks = new BossAttack[]
             { new Desperation(BarDuration * 30),
-                new EnemySpam(BarDuration * 16),
                 new BasicShotgunSpread(BarDuration * 18),
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),
@@ -66,7 +69,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 new MutantBulletHell(BarDuration * 12),                
                 new LiterallyJustABulletHell(BarDuration * 35),
                 new HorizontalChargesWithProjectiles(BarDuration * 13),
-                new Circle(BarDuration * 17),
+                new Stomp(BarDuration * 17),
                 new EnemySpam(BarDuration * 16),
             };
 
@@ -96,8 +99,6 @@ namespace bullethellwhatever.Bosses.TestBoss
         public override void Draw(SpriteBatch spriteBatch)
         {
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
-
-            Utilities.drawTextInDrawMethod(MathF.Floor(AITimer / BarDuration).ToString(), new Vector2(Main.ScreenWidth / 6, Main.ScreenHeight / 6), spriteBatch, Main.font, Colour);
         }
     }
 }

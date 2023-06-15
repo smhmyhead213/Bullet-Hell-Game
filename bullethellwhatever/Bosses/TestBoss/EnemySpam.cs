@@ -64,7 +64,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 {
                     if (npc is not Boss)
                     {
-                        ExponentialAcceleratingProjectile proj = new ExponentialAcceleratingProjectile(120, 4);
+                        ExponentialAcceleratingProjectile proj = new ExponentialAcceleratingProjectile(45, 4);
 
                         TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(Main.player.Position - npc.Position), 0f, 0f, 10, 2000, 40, npc.Position, Color.White, "box", Owner, false);
 

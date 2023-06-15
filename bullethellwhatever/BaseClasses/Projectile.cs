@@ -41,8 +41,8 @@ namespace bullethellwhatever.BaseClasses
             Opacity = 1f;
 
             if (isHarmful)
-                Main.enemyProjectilesToAddNextFrame.Add(this);
-            else Main.friendlyProjectilesToAddNextFrame.Add(this);
+                enemyProjectilesToAddNextFrame.Add(this);
+            else friendlyProjectilesToAddNextFrame.Add(this);
         }
 
         //and drawing
@@ -62,11 +62,11 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void CheckForHits()
         {
-            Hitbox = new((int)Position.X - Texture.Width / 2, (int)Position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
+            SetHitbox(this);
 
             if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
             {
-                foreach (NPC npc in Main.activeNPCs)
+                foreach (NPC npc in activeNPCs)
                 {
                     if (IsCollidingWithEntity(npc) && npc.IFrames == 0) //why am i checking this twice? remove
                     {
@@ -81,11 +81,11 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsHarmful)
             {
-                if (IsCollidingWithEntity(Main.player) && Main.player.IFrames == 0)
+                if (IsCollidingWithEntity(player) && player.IFrames == 0)
                 {
-                    Main.player.IFrames = 20f;
+                    player.IFrames = 20f;
 
-                    Main.player.Health = Main.player.Health - Damage;
+                    player.Health = player.Health - Damage;
 
                     Drawing.ScreenShake(3, 10);
 
@@ -93,7 +93,6 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
         }
-
         public void HandlePierce(int pierceToTake)
         {
             if (PierceRemaining > 0)

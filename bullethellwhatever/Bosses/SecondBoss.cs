@@ -11,6 +11,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Enemy;
 using bullethellwhatever.Enemies;
+using bullethellwhatever.Projectiles._3D;
 
 namespace bullethellwhatever.Bosses
 {
@@ -35,6 +36,10 @@ namespace bullethellwhatever.Bosses
             dialogueSystem = new DialogueSystem(this);
             DeathrayAngularVelocity = 180f;
             IsHarmful = true;
+
+            Size = new Vector2(5f, 5f);
+
+            Texture = Main.Assets["box"];
         }
 
 
@@ -108,17 +113,21 @@ namespace bullethellwhatever.Bosses
 
                 TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
 
-                ExponentialAcceleratingProjectile proj = new ExponentialAcceleratingProjectile(120, 4);
+                Cuboid cuboid = new Cuboid(500, 500, 500, this);
 
-                proj.Spawn(Position + new Vector2(200, 0), Main.player.Position - proj.Position, 1f, 1, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
+                cuboid.Spawn(Position);
+
+                //LoopingProjectile proj = new LoopingProjectile(0.5f, 300f, 0, MathF.PI / 3);
+
+                //proj.Spawn(Position, Utilities.AngleToVector(0), 1f, 1, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
             }            
 
-            if (AITimer == 120)
-            {
-                ChargingEnemy enemy = new ChargingEnemy(60 , 120);
+            //if (AITimer == 120)
+            //{
+            //    ChargingEnemy enemy = new ChargingEnemy(60 , 120);
 
-                enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
-            }
+            //    enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
+            //}
 
 
         }

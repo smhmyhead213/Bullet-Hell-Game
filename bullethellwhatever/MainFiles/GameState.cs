@@ -32,6 +32,7 @@ namespace bullethellwhatever.MainFiles
         {
             TestBoss,
             SecondBoss,
+            CrabBoss,
         }
 
         public static Bosses Boss;

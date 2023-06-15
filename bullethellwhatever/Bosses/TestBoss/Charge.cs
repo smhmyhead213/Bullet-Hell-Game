@@ -92,8 +92,8 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (!(AITimer % ChargeFrequency > 0 && AITimer % ChargeFrequency < ChargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0 && AITimer > 0)// check if aitimer is between 1 and 15 and if its even
             {
-                WeakHomingProjectile projectile = new WeakHomingProjectile(ChargeProjectileSpeed, 120);
-                projectile.Spawn(Owner.Position, 0.25f * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", ChargeProjectileAcceleration, Vector2.One, Owner, true, Color.Red, true, false);
+                Projectile projectile = new Projectile();
+                projectile.Spawn(Owner.Position, Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", ChargeProjectileAcceleration, Vector2.One, Owner, true, Color.Red, true, false);
 
                 //BasicProjectile projectile = new BasicProjectile();
                 //projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);

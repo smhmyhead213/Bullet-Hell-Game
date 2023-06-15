@@ -74,6 +74,8 @@ namespace bullethellwhatever
 
         public static Vector2 AngleToVector(float angle)
         {
+            angle = angle - MathF.PI / 2; //adjust so that angle is from vertical
+
             return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
         }
         public static float AngleBetween(Vector2 v1, Vector2 v2)

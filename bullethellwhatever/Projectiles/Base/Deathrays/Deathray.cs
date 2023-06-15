@@ -35,10 +35,14 @@ namespace bullethellwhatever.Projectiles.Base
         {
             Position = position;
             Rotation = initialRotation;
-            Width = width;
-            Length = length;
+
+            float sizeScalar = ScreenWidth / IdealScreenWidth;
+
+            Width = width * sizeScalar;
+            Length = length * sizeScalar;
+
             Duration = duration;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
             AngularVelocity = angularVelocity;
             Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
             Owner = owner;
@@ -48,7 +52,7 @@ namespace bullethellwhatever.Projectiles.Base
             Damage = damage;
 
             if (shader != null)
-                Shader = Main.Shaders[shader];
+                Shader = Shaders[shader];
             else Shader = null;
 
             RemoveOnHit = false;
@@ -61,9 +65,9 @@ namespace bullethellwhatever.Projectiles.Base
                 IsSpawned = true;
                 if (IsHarmful)
                 {
-                    Main.enemyProjectilesToAddNextFrame.Add(this);
+                    enemyProjectilesToAddNextFrame.Add(this);
                 }
-                else Main.friendlyProjectilesToAddNextFrame.Add(this);
+                else friendlyProjectilesToAddNextFrame.Add(this);
             }
         }
         public override void AI()
@@ -72,7 +76,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (Acceleration != 0f)
                 AngularVelocity = AngularVelocity + Acceleration;
 
-            Rotation = (Rotation + MathF.PI * AngularVelocity / 21600f) % (MathF.PI * 2); //The rotation is always 0 < r < 360.
+            Rotation = (Rotation + PI * AngularVelocity / 21600f) % (PI * 2); //The rotation is always 0 < r < 360.
             
             if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
@@ -163,7 +167,7 @@ namespace bullethellwhatever.Projectiles.Base
 
                 Vector2 originOffset = new Vector2(Texture.Width / 2, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-                spritebatch.Draw(Main.player.Texture, Position, null, Colour, MathF.PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                spritebatch.Draw(Main.player.Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
             }
         }
     }

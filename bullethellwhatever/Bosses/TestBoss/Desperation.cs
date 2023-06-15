@@ -84,7 +84,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer == EndTime)
             {
-                Main.musicSystem.StopMusic();
+                musicSystem.StopMusic();
                 Owner.IsDesperationOver = true; //die
             }
         }

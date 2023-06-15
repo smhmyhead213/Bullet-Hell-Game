@@ -64,11 +64,14 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawBossSelect(SpriteBatch _spriteBatch)
         {
-            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
+            BossSelectButton testBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
                 GameState.GameStates.DifficultySelect, GameState.Bosses.TestBoss, new Vector2(3, 3), true);
 
-            BossSelectButton secondBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 3 * 2, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
+            BossSelectButton secondBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 2, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
                 GameState.GameStates.DifficultySelect, GameState.Bosses.SecondBoss, new Vector2(3, 3), true);
+
+            BossSelectButton crabBossButton = new BossSelectButton(new Vector2(Main._graphics.PreferredBackBufferWidth / 4 * 3, Main._graphics.PreferredBackBufferHeight / 2), "BossButton",
+                GameState.GameStates.DifficultySelect, GameState.Bosses.CrabBoss, new Vector2(3, 3), true);
 
             Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back",
                 GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
