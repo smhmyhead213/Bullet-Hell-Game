@@ -16,7 +16,7 @@ namespace bullethellwhatever.Bosses.TestBoss
     public class Desperation : BossAttack
     {
         public int DespBeamRotation;
-        public int BlenderBeams;
+        public int ProjectilesPerBomb;
         public Desperation(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -27,16 +27,16 @@ namespace bullethellwhatever.Bosses.TestBoss
             switch (GameState.Difficulty)
             {
                 case GameState.Difficulties.Easy:
-                    BlenderBeams = 0;
+                    ProjectilesPerBomb = 0;
                     break;
                 case GameState.Difficulties.Normal:
-                    BlenderBeams = 0;
+                    ProjectilesPerBomb = 0;
                     break;
                 case GameState.Difficulties.Hard:
-                    BlenderBeams = 2;
+                    ProjectilesPerBomb = 24;
                     break;
                 case GameState.Difficulties.Insane:
-                    BlenderBeams = 3;
+                    ProjectilesPerBomb = 30;
                     break;
 
             }
@@ -72,7 +72,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer > despStartTime && AITimer % 30 == 0)
             {
-                ExplodingProjectile projectile = new ExplodingProjectile(30, 180, 0, false, false, false);
+                ExplodingProjectile projectile = new ExplodingProjectile(ProjectilesPerBomb, 180, 0, false, false, false);
 
                 projectile.Spawn(Owner.Position, 8f * Utilities.SafeNormalise(player.Position - Owner.Position), 1f, 1, "box", 1f, new Vector2(2,2), Owner, true, Color.Red, true, false);
             }

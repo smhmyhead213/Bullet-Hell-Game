@@ -42,9 +42,9 @@ namespace bullethellwhatever.BaseClasses
             Hitbox.Height = Hitbox.Height * (int)size.Y;
             Opacity = 1f;
 
-            float sizeScalar = ScreenWidth * 1f / IdealScreenWidth * 1f; //adjust for screen size horizontally
+            //float sizeScalar = ScreenWidth * 1f / IdealScreenWidth * 1f; //adjust for screen size horizontally
 
-            Size = new Vector2(Size.X / IdealScreenWidth * ScreenWidth, Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
+            //Size = new Vector2(Size.X / IdealScreenWidth * ScreenWidth, Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
 
             if (isHarmful)
                 enemyProjectilesToAddNextFrame.Add(this);

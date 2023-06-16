@@ -26,6 +26,9 @@ namespace bullethellwhatever.MainFiles
             private set;
         }
 
+        public float ZoomFactor = 1f;
+
+
         public static GraphicsDeviceManager _graphics;
         public static SpriteBatch _spriteBatch;
 
@@ -58,7 +61,19 @@ namespace bullethellwhatever.MainFiles
 
         public static int IdealScreenHeight = 1080;
         public static int IdealScreenWidth = 1920;
+        public Matrix GamePerspective
+        {
+            get
+            {
+                // This keeps the entire game at a static resolution.
 
+                // thanks dominic 
+                Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
+
+                Vector2 zoom = rawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight) * ZoomFactor;
+                return Matrix.CreateScale(zoom.X, zoom.Y, 1f);
+            }
+        }
         public static List<Button> activeButtons = new List<Button>();
         public Main() : base()
         {
@@ -170,7 +185,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Timer++;
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix:GamePerspective);
 
             switch (GameState.State)
             {
