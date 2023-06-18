@@ -278,16 +278,11 @@ namespace bullethellwhatever.BaseClasses
         #region Shooting
         public void Shoot()
         {
-            var mouseState = Mouse.GetState();
-
-            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
-            
-            
             if (ActiveWeapon == Weapons.Laser)
             {
                 ShotCooldown = 1f;
 
-                float initialRotation = Utilities.VectorToAngle(mousePosition - Position); // Add an offset so it works I have no idea why
+                float initialRotation = Utilities.VectorToAngle(MousePosition - Position); // Add an offset so it works I have no idea why
 
                 PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.16f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Yellow, "PlayerDeathrayShader", this);               
             }
@@ -298,11 +293,11 @@ namespace bullethellwhatever.BaseClasses
 
                 ShotCooldown = 3f;
 
-                PlayerProjectile playerProjectile = new PlayerProjectile();
+                Projectile playerProjectile = new Projectile();
 
                 Random rnd = new Random();
 
-                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(mousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
+                playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
                     0.15f, 7, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
@@ -313,7 +308,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
                 
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(mousePosition - Position), 0.28f, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), 0.28f, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
 
 
             }

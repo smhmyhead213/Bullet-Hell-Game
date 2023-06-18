@@ -33,7 +33,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             {
                 case GameState.Difficulties.Easy:
                     ChargeSpeed = 5f;
-                    ChargeProjectileAcceleration = 1f;
+                    ChargeProjectileAcceleration = 1.01f;
                     ChargeProjectileSpeed = 6f;
                     break;
                 case GameState.Difficulties.Normal:

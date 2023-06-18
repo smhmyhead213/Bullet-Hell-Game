@@ -82,7 +82,7 @@ namespace bullethellwhatever.DrawCode
 
             string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
-            Button backButton = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back",
+            Button backButton = new Button(new Vector2(ScreenWidth / 5, Main._graphics.PreferredBackBufferHeight / 5), "Back",
                 GameState.GameStates.BossSelect, null, new Vector2(3, 3));
             
 

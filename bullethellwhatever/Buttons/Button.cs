@@ -26,11 +26,11 @@ namespace bullethellwhatever.Buttons
         public Button(Vector2 position, string texture, GameState.GameStates? destination, GameState.Difficulties? difficultyChange, Vector2 scale)
         {
             Position = position;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
             Scale = scale;
             DifficultyChange = difficultyChange;
             Destination = destination;
-            Main.activeButtons.Add(this);
+            activeButtons.Add(this);
         }
 
         public void DrawButton(SpriteBatch spriteBatch)
@@ -59,9 +59,8 @@ namespace bullethellwhatever.Buttons
         public bool IsButtonClicked()
         {
             var mouseState = Mouse.GetState();
-            var mousePosition = new Point(mouseState.X, mouseState.Y);
 
-            return ButtonRectangle.Contains(mousePosition) && mouseState.LeftButton == ButtonState.Pressed;
+            return ButtonRectangle.Contains(MousePosition) && mouseState.LeftButton == ButtonState.Pressed;
         }
     }
 }

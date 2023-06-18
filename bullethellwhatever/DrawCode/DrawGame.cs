@@ -34,7 +34,8 @@ namespace bullethellwhatever.DrawCode
                 //Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
             }
 
-            Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(Main._graphics.PreferredBackBufferWidth / 4, Main._graphics.PreferredBackBufferHeight / 4), Main._spriteBatch, Main.font, Color.White);
+            // FPS counter.
+            Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(ScreenWidth / 4, ScreenHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
             List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();
             List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
@@ -43,10 +44,10 @@ namespace bullethellwhatever.DrawCode
             List<Entity> NPCstoDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithShader = new List<Entity>();
 
-            //Populate lists with entites to draw with and without shaders.
+            // Populate lists with entites to draw with and without shaders.
 
             // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues
-            // Everything must be looped through in the Immediate sprite mode as all telegraph lines use a shader.
+            // Everything must be looped through in the Immediate sprite mode as all telegraph lines use a shader. (what?)
 
             if (Main.player is IDrawsShader)
             {
@@ -90,7 +91,7 @@ namespace bullethellwhatever.DrawCode
 
 
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate, transformMatrix: Main.MainInstance.GamePerspective);
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
             {
@@ -99,7 +100,7 @@ namespace bullethellwhatever.DrawCode
 
 
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
+            Main._spriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: Main.MainInstance.GamePerspective);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
@@ -107,7 +108,7 @@ namespace bullethellwhatever.DrawCode
             }
 
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate, transformMatrix: Main.MainInstance.GamePerspective);
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -147,7 +148,7 @@ namespace bullethellwhatever.DrawCode
             }
             
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
+            Main._spriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: Main.MainInstance.GamePerspective);
 
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {

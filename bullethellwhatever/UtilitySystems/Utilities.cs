@@ -112,7 +112,7 @@ namespace bullethellwhatever
             array = newArray;
         }
 
-        public static Vector2 CentreOfScreen() => new Vector2(MainFiles.Main._graphics.PreferredBackBufferWidth / 2, MainFiles.Main._graphics.PreferredBackBufferHeight / 2);
+        public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
     }
 
 }

@@ -126,7 +126,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch s)
         {
-            Drawing.BetterDraw(Main.player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
+            Drawing.BetterDraw(player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
         }
 
     }
