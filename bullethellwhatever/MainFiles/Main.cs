@@ -84,7 +84,7 @@ namespace bullethellwhatever.MainFiles
         {
             get
             {
-                Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
+                Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width / 2, MainInstance.GraphicsDevice.Viewport.Height / 2);
 
                 Vector2 zoom = rawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight) * ZoomFactor;
                 return Matrix.CreateScale(zoom.X, zoom.Y, 1f);
@@ -161,7 +161,7 @@ namespace bullethellwhatever.MainFiles
         {
             MousePosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
-            Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
+            Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width / 2, MainInstance.GraphicsDevice.Viewport.Height / 2);
 
             MousePosition = MousePosition / (rawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight));
 

@@ -36,10 +36,8 @@ namespace bullethellwhatever.Projectiles.Base
             Position = position;
             Rotation = initialRotation;
 
-            float sizeScalar = ScreenWidth / IdealScreenWidth;
-
-            Width = width * sizeScalar;
-            Length = length * sizeScalar;
+            Width = width;
+            Length = length;
 
             Duration = duration;
             Texture = Assets[texture];
