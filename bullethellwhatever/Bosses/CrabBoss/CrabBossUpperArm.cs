@@ -13,6 +13,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
 
         }
+
+        public override void Update()
+        {
+            base.Update();
+           
+        }
         
     }
 }

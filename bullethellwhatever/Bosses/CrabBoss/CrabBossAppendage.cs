@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
-
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -24,18 +24,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossAppendage(Entity owner, string texture)
         {
             Owner = owner;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
+            //Rotation = Rotation + PI / 2;
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            End = Position + Texture.Height * new Vector2(Cos(Rotation), Sin(Rotation));
+            End = Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
 
+            if (this is CrabBossUpperClaw)
+            {
+                originOffset = new Vector2(Texture.Width, 0);
+
+                spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);
+                return;
+            }
+
             spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);
+
         }
     }
 }

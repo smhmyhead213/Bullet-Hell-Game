@@ -58,6 +58,8 @@ namespace bullethellwhatever.MainFiles
 
         public static Vector2 MousePosition;
 
+        public static Vector2 RawScreenArea;
+
         public static int ScreenHeight;
         public static int ScreenWidth;
 
@@ -80,16 +82,16 @@ namespace bullethellwhatever.MainFiles
             IsMouseVisible = true;
             //_graphics.IsFullScreen = true;
         }
-        public Matrix GamePerspective
-        {
-            get
-            {
-                Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
+        //public Matrix GamePerspective
+        //{
+        //    get
+        //    {
+        //        RawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
 
-                Vector2 zoom = rawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight) * ZoomFactor;
-                return Matrix.CreateScale(zoom.X, zoom.Y, 1f);
-            }
-        }
+        //        Vector2 zoom = RawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight) * ZoomFactor;
+        //        return Matrix.CreateScale(zoom.X, zoom.Y, 1f);
+        //    }
+        //}
 
         protected override void LoadContent()
         {
@@ -148,7 +150,7 @@ namespace bullethellwhatever.MainFiles
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GameState.State = GameState.GameStates.DifficultySelect;
+            GameState.State = GameState.GameStates.TitleScreen;
 
             Drawing.Initialise();
 
@@ -161,9 +163,7 @@ namespace bullethellwhatever.MainFiles
         {
             MousePosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
-            Vector2 rawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
-
-            MousePosition = MousePosition / (rawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight));
+            //MousePosition = MousePosition * (RawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight));
 
             if (MainInstance.IsActive)
             {
@@ -190,9 +190,9 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Timer++;
 
-            _spriteBatch.Begin(transformMatrix:GamePerspective);
+            _spriteBatch.Begin();
 
-            //_spriteBatch.DrawString(font, MousePosition.ToString(), new Vector2(ScreenWidth / 3, ScreenHeight / 3 + 10), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(font, MousePosition.ToString(), new Vector2(ScreenWidth / 3, ScreenHeight / 3 + 10), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
             switch (GameState.State)
             {

@@ -38,11 +38,26 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
 
         public void Update() 
-        { 
+        {
+
+            UpperArm.Position = Position;
+            UpperArm.Rotation = UpperArm.Rotation + PI / 18f;
             UpperArm.Update();
+
+            LowerArm.Position = UpperArm.End;
+            //LowerArm.Rotation = UpperArm.Rotation; //comment this out later just for test
+            //LowerArm.Position = new Vector2(ScreenWidth / 1.5f, ScreenHeight / 2);
+            LowerArm.Rotation = LowerArm.Rotation + PI / 20f;
             LowerArm.Update();
+
+            UpperClaw.Position = LowerArm.End;
+            UpperClaw.Rotation = UpperClaw.Rotation + PI / 16f;
             UpperClaw.Update();
+
+            LowerClaw.Position = LowerArm.End;
             LowerClaw.Update();
+
+
         }
 
         public void Draw(SpriteBatch spriteBatch)

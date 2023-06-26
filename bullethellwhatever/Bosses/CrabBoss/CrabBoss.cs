@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -27,6 +28,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Legs[i] = new CrabLeg(Position, this);
             }
+
+            TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
+            TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
         }
         public override void AI()
         {

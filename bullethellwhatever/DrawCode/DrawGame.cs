@@ -91,7 +91,7 @@ namespace bullethellwhatever.DrawCode
 
 
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate, transformMatrix: Main.MainInstance.GamePerspective);
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
             {
@@ -100,7 +100,7 @@ namespace bullethellwhatever.DrawCode
 
 
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: Main.MainInstance.GamePerspective);
+            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
@@ -108,7 +108,7 @@ namespace bullethellwhatever.DrawCode
             }
 
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate, transformMatrix: Main.MainInstance.GamePerspective);
+            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -148,7 +148,7 @@ namespace bullethellwhatever.DrawCode
             }
             
             Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: Main.MainInstance.GamePerspective);
+            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
 
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {
