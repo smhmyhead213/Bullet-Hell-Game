@@ -9,7 +9,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabBossLowerClaw : CrabBossAppendage
     {
-        public CrabBossLowerClaw(Entity owner, string texture) : base(owner, texture)
+        public CrabBossLowerClaw(Entity owner, CrabLeg leg, string texture) : base(owner, leg, texture)
         {
 
         }

@@ -21,37 +21,40 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossUpperClaw UpperClaw;
         public CrabBossLowerClaw LowerClaw;
 
+        public bool HorizontalFlip;
         public CrabLeg(Vector2 position, Entity owner)
         {
             Owner = owner;
 
-            UpperArm = new CrabBossUpperArm(Owner, "CrabUpperArm");
-            LowerArm = new CrabBossLowerArm(Owner, "CrabLowerArm");
-            UpperClaw = new CrabBossUpperClaw(Owner, "CrabUpperClaw");
-            LowerClaw = new CrabBossLowerClaw(Owner, "CrabLowerClaw");
+            UpperArm = new CrabBossUpperArm(Owner, this, "CrabUpperArm");
+            LowerArm = new CrabBossLowerArm(Owner, this, "CrabLowerArm");
+            UpperClaw = new CrabBossUpperClaw(Owner, this, "CrabUpperClaw");
+            LowerClaw = new CrabBossLowerClaw(Owner, this, "CrabLowerClaw");
+
+            HorizontalFlip = false;
 
             Position = position;
             UpperArm.Position = Position;
-            LowerArm.Position = UpperArm.End;
-            UpperClaw.Position = LowerArm.End;
-            LowerClaw.Position = LowerArm.End;
+            LowerArm.Position = UpperArm.CalculateEnd();
+            UpperClaw.Position = LowerArm.CalculateEnd();
+            LowerClaw.Position = LowerArm.CalculateEnd();
         }
 
         public void Update() 
         {
 
             UpperArm.Position = Position;
-            UpperArm.Rotation = UpperArm.Rotation + PI / 18f;
+            //UpperArm.Rotation = UpperArm.Rotation + PI / 90f;
             UpperArm.Update();
 
             LowerArm.Position = UpperArm.End;
             //LowerArm.Rotation = UpperArm.Rotation; //comment this out later just for test
             //LowerArm.Position = new Vector2(ScreenWidth / 1.5f, ScreenHeight / 2);
-            LowerArm.Rotation = LowerArm.Rotation + PI / 20f;
+            //LowerArm.Rotation = LowerArm.Rotation + PI / 100f;
             LowerArm.Update();
 
             UpperClaw.Position = LowerArm.End;
-            UpperClaw.Rotation = UpperClaw.Rotation + PI / 16f;
+            //UpperClaw.Rotation = UpperClaw.Rotation + PI / 80f;
             UpperClaw.Update();
 
             LowerClaw.Position = LowerArm.End;

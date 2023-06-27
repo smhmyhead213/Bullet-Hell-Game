@@ -18,20 +18,29 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float Rotation;
 
+        public CrabLeg Leg;
+
         public Texture2D Texture;
 
         public Entity Owner;
-        public CrabBossAppendage(Entity owner, string texture)
+        public CrabBossAppendage(Entity owner, CrabLeg leg, string texture)
         {
             Owner = owner;
+            Leg = leg;
             Texture = Assets[texture];
             //Rotation = Rotation + PI / 2;
         }
 
         public virtual void Update()
         {
-            End = Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height;
+            End = CalculateEnd();
         }
+
+        public virtual Vector2 CalculateEnd()
+        {
+            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
@@ -39,9 +48,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (this is CrabBossUpperClaw)
             {
                 originOffset = new Vector2(Texture.Width, 0);
-
-                spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);
-                return;
             }
 
             spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);

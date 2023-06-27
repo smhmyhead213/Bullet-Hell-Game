@@ -9,6 +9,7 @@ using bullethellwhatever.Projectiles.Base;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
+using System.Xml.Serialization;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -53,7 +54,7 @@ namespace bullethellwhatever.BaseClasses
             Damage = damage;
             Texture = texture;
             Colour = colour;
-            Main.NPCsToAddNextFrame.Add(this);
+            NPCsToAddNextFrame.Add(this);
             Size = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
@@ -73,6 +74,11 @@ namespace bullethellwhatever.BaseClasses
         public override void AI()
         {
 
+        }
+
+        public virtual void Die()
+        {
+            DeleteNextFrame = true;
         }
 
         public virtual void Update()

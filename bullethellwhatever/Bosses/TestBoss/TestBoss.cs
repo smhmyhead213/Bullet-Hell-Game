@@ -93,7 +93,6 @@ namespace bullethellwhatever.Bosses.TestBoss
             BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
 
             BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)
