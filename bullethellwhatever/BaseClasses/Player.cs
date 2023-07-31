@@ -41,12 +41,30 @@ namespace bullethellwhatever.BaseClasses
 
         public Weapons ActiveWeapon;
 
+        public override HitboxTypes GetHitboxType()
+        {
+            return HitboxTypes.RotatableRectangle;
+        }
+        public override void UpdateHitbox()
+        {
+            // the position used in collision code should not be the centre.
+
+            float hypotenuse = Texture.Height / 2f * Size.Y;
+
+            Vector2 positionForHitboxPurposes = new Vector2(Position.X - hypotenuse * Sin(Rotation), Position.Y + hypotenuse * Cos(Rotation));
+
+            Hitbox.StaticHitbox = new StaticRectangle();
+
+            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, positionForHitboxPurposes, Position);
+
+            Hitbox.RotatableHitbox.UpdateVertices();
+        }
         #region Spawning
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
             Position = position;
             Velocity = initialVelocity;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
@@ -66,7 +84,7 @@ namespace bullethellwhatever.BaseClasses
                     break;
             }
             MaxHP = Health;
-            Size = Vector2.One;
+            Size = DefaultHitbox;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Homing;
@@ -75,6 +93,9 @@ namespace bullethellwhatever.BaseClasses
             ShouldRemoveOnEdgeTouch = false;
             afterimagesPositions = new Vector2[DashDuration];
             Colour = Color.White;
+
+            Hitbox = new Hitbox(this);
+            SetHitbox();
 
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
         }
@@ -86,13 +107,12 @@ namespace bullethellwhatever.BaseClasses
         #region AI
         public void HandleKeyPresses()
         {
-            var kstate = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            bool upPressed = kstate.IsKeyDown(Keys.W);
-            bool downPressed = kstate.IsKeyDown(Keys.S);
-            bool rightPressed = kstate.IsKeyDown(Keys.D);
-            bool leftPressed = kstate.IsKeyDown(Keys.A);
+            bool upPressed = IsKeyPressed(Keys.W);
+            bool downPressed = IsKeyPressed(Keys.S);
+            bool rightPressed = IsKeyPressed(Keys.D);
+            bool leftPressed = IsKeyPressed(Keys.A);
 
             if (upPressed && !touchingTop(this))
             {
@@ -114,7 +134,7 @@ namespace bullethellwhatever.BaseClasses
                 Velocity.X = Velocity.X + 1f;
             }
 
-            if (kstate.IsKeyDown(Keys.LeftShift))
+            if (IsKeyPressed(Keys.LeftShift))
             {
                 MoveSpeed = DefaultMoveSpeed / 2;
                 Size = DefaultHitbox / 2;
@@ -148,7 +168,7 @@ namespace bullethellwhatever.BaseClasses
                     ScrollCooldown = 3f;
                 }
 
-                if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
+                if (IsKeyPressed(Keys.Q) && Main.activeNPCs.Count == 0)
                 {
                     Health = MaxHP;
                     EntityManager.SpawnBoss();
@@ -157,33 +177,33 @@ namespace bullethellwhatever.BaseClasses
 
             else
             {
-                if (kstate.IsKeyDown(Keys.D1))
+                if (IsKeyPressed(Keys.D1))
                 {
                     ActiveWeapon = Weapons.Laser;
                     ScrollCooldown = 3f;
                 }
 
-                if (kstate.IsKeyDown(Keys.D2))
+                if (IsKeyPressed(Keys.D2))
                 {
                     ActiveWeapon = Weapons.MachineGun;
                     ScrollCooldown = 3f;
                 }
 
-                if (kstate.IsKeyDown(Keys.D3))
+                if (IsKeyPressed(Keys.D3))
                 {
                     ActiveWeapon = Weapons.Homing;
                     ScrollCooldown = 3f;
                 }
             }
 
-            if (kstate.IsKeyDown(Keys.Q) && Main.activeNPCs.Count == 0)
+            if (IsKeyPressed(Keys.Q) && Main.activeNPCs.Count == 0)
             {
                 Health = MaxHP;               
                 EntityManager.SpawnBoss();
                 Main.activeButtons.Clear();
             }
 
-            if (kstate.IsKeyDown(Keys.R))
+            if (IsKeyPressed(Keys.R))
             {
                 Utilities.InitialiseGame();
                 Main.musicSystem.StopMusic();
@@ -209,7 +229,6 @@ namespace bullethellwhatever.BaseClasses
         {
 
             var mouseState = Mouse.GetState();
-            var kstate = Keyboard.GetState();
 
             if (ScrollCooldown > 0)
             {
@@ -220,8 +239,13 @@ namespace bullethellwhatever.BaseClasses
 
             HandleKeyPresses();
 
-            //I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU I HATE YOU
-            SetHitbox(this);
+            if (IsKeyPressed(Keys.J))
+            {
+                foreach (Projectile p in Main.activeFriendlyProjectiles)
+                {
+                    p.DeleteNextFrame = true;
+                }
+            }
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
@@ -246,7 +270,7 @@ namespace bullethellwhatever.BaseClasses
 
                 }
 
-                if ((mouseState.LeftButton == ButtonState.Pressed || kstate.IsKeyDown(Keys.Enter)) && ShotCooldownRemaining == 0)
+                if ((mouseState.LeftButton == ButtonState.Pressed || IsKeyPressed(Keys.Enter)) && ShotCooldownRemaining == 0)
                 {
                     ShotCooldownRemaining = ShotCooldown;
                     Shoot();
@@ -307,8 +331,10 @@ namespace bullethellwhatever.BaseClasses
                 ShotCooldown = 10f;
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
-                
-                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), 0.28f, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
+
+                float damage = IsKeyPressed(Keys.N) ? 28f : 0.28f; // debug
+
+                projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
 
 
             }
@@ -317,9 +343,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var kstate = Keyboard.GetState();
-
-            if (kstate.IsKeyDown(Keys.K))
+            if (IsKeyPressed(Keys.K))
             {
                 for (int i = 0; i < Main.activeProjectiles.Count; i++)
                     Utilities.drawTextInDrawMethod(Main.activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;

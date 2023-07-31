@@ -45,8 +45,10 @@ namespace bullethellwhatever.BaseClasses
             dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
 
             IsHarmful = isHarmful;
-            SetHitbox(this);
+            Hitbox = new Hitbox(this);
+            SetHitbox();
         }
+        //this one takes a texture directly
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Position = position;
@@ -54,7 +56,7 @@ namespace bullethellwhatever.BaseClasses
             Damage = damage;
             Texture = texture;
             Colour = colour;
-            NPCsToAddNextFrame.Add(this);
+
             Size = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
@@ -64,21 +66,15 @@ namespace bullethellwhatever.BaseClasses
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
 
-            dialogueSystem = new DialogueSystem(this);
-            dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
 
             IsHarmful = isHarmful;
-            SetHitbox(this);
+
+            PrepareNPC();
         }
 
         public override void AI()
         {
 
-        }
-
-        public virtual void Die()
-        {
-            DeleteNextFrame = true;
         }
 
         public virtual void Update()
@@ -94,29 +90,27 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual bool IsCollidingWithEntity(Entity entity)
         {
-            return Hitbox.Intersects(entity.Hitbox);
+            return Hitbox.CollidingWith(entity.Hitbox);
         }
 
         public virtual void CheckForHits() // all passive checks go here as well
         {
             if (Health < 0 && IsDesperationOver)
             {
-                DeleteNextFrame = true;
+                Die();
 
-                foreach (Projectile projectile in Main.activeProjectiles)
+                foreach (Projectile projectile in activeProjectiles)
                 {
                     if (projectile.Owner == this)
                     {
-                        projectile.DeleteNextFrame = true;
+                        projectile.Die(); //when an npc dies, kill all of its projectiles
                     }
                 }
             }
 
-            SetHitbox(this);
-
             if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
             {
-                foreach (NPC npc in Main.activeNPCs)
+                foreach (NPC npc in activeNPCs)
                 {
                     if (IsCollidingWithEntity(npc) && npc.IFrames == 0) 
                     {
@@ -130,11 +124,11 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsHarmful)
             {
-                if (IsCollidingWithEntity(Main.player) && Main.player.IFrames == 0)
+                if (IsCollidingWithEntity(player) && player.IFrames == 0)
                 {
-                    Main.player.IFrames = 20f;
+                    player.IFrames = 20f;
 
-                    Main.player.Health = Main.player.Health - Damage;
+                    player.Health = player.Health - Damage;
 
                     Drawing.ScreenShake(3, 10);
                 }
@@ -144,6 +138,20 @@ namespace bullethellwhatever.BaseClasses
         public override void Draw(SpriteBatch spriteBatch)
         {               
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+        }
+
+        public virtual void PrepareNPC()
+        {
+            Hitbox = new Hitbox(this);
+            SetHitbox();
+            NPCsToAddNextFrame.Add(this);
+            dialogueSystem = new DialogueSystem(this);
+            dialogueSystem.dialogueObject = new DialogueObject(Position, string.Empty, this, 1, 1);
+
+        }
+        public override HitboxTypes GetHitboxType()
+        {
+            return HitboxTypes.StaticRectangle;
         }
     }
 }

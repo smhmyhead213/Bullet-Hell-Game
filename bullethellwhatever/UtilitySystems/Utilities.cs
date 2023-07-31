@@ -80,9 +80,30 @@ namespace bullethellwhatever
         }
         public static float AngleBetween(Vector2 v1, Vector2 v2)
         {
-            return MathF.Acos(Vector2.Dot(SafeNormalise(v1, Vector2.Zero), SafeNormalise(v2, Vector2.Zero)));
+            return Acos(Vector2.Dot(SafeNormalise(v1, Vector2.Zero), SafeNormalise(v2, Vector2.Zero)));
         }
 
+        public static float AngleFromVerticalOfVector(Vector2 vector, Vector2 originOfVector)
+        {
+            float angle = AngleBetween(-Vector2.UnitY, vector);
+            
+            //if (originOfVector.X > vector.X)
+            //{
+            //    angle = PI * 2f - angle;
+            //}
+
+            return angle;
+        }
+
+        public static bool IsQuantityWithinARangeOfAValue(float quantity, float value, float tolerance)
+        {
+            if (quantity >= value - tolerance && quantity <= value + tolerance)
+            {
+                return true;
+            }
+
+            return false;
+        }
         public static Vector2 RotateVectorClockwise(Vector2 input, float angle) //angle counterclockwise
         {
             //for insight as to how this works, check https://discord.com/channels/770381661098606612/770382926545813515/1089248352073433168
@@ -99,7 +120,7 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
-        public static void moveVectorArrayElementsUpAndAddToStart(ref Vector2[] array, Vector2 vectorToAdd)
+        public static void moveVectorArrayElementsUpAndAddToStart(ref Vector2[] array, Vector2 vectorToAdd) //make generic
         {
             Vector2[] newArray = new Vector2[array.Length];
             newArray[0] = vectorToAdd;

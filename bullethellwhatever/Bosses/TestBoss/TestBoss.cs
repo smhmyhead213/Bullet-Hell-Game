@@ -27,7 +27,6 @@ namespace bullethellwhatever.Bosses.TestBoss
         public float DespBombTimer;
         public int DespBombCounter;
         public int DespBeamRotation;
-
         public TestBoss(Vector2 position, Vector2 velocity)
         {
             Position = position;
@@ -59,7 +58,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             BossAttacks = new BossAttack[]
             { new Desperation(BarDuration * 30),
-                new BasicShotgunSpread(BarDuration * 18),
+                new BasicShotgunSpread(BarDuration * 18),                
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),
                 new SpawnEnemies(BarDuration),

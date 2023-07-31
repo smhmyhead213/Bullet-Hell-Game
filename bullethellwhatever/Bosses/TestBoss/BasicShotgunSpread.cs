@@ -96,7 +96,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                     Deathray ray = new Deathray();
 
                     ray.SpawnDeathray(Owner.Position, MegaRayTeleLineRotation, 1f, Owner.BarDuration * 3 - Owner.FramesPerMusicBeat, "box", 30f, 2000f,
-                        LaserSpinDirection * 150f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
+                        LaserSpinDirection * PI / 150f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
                 }
             }
 

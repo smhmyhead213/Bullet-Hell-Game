@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
-using System.Security.Policy;
+
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -20,7 +20,7 @@ namespace bullethellwhatever.BaseClasses
         public int AITimer;
         public float Damage;
         public float Opacity;
-        public Rectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
+        public Hitbox Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
         public Vector2 Size; //relative to player being 1
         public float Health;
         public float MaxHP;
@@ -33,16 +33,12 @@ namespace bullethellwhatever.BaseClasses
         public Effect? Shader;
 
 
+
         public Vector2[] afterimagesPositions; //when using afterimages, this needs to be initialised in the Spawn method of whatever has them.
 
-        public static void SetHitbox(Entity entity)
-        {
-            entity.Hitbox = new((int)entity.Position.X - entity.Texture.Width / 2 * (int)entity.Size.X, (int)entity.Position.Y - entity.Texture.Height / 2 * (int)entity.Size.Y, entity.Texture.Width * (int)entity.Size.X,
-                entity.Texture.Height * (int)entity.Size.Y);
-        }
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
-            if (entity.Position.Y + entity.Hitbox.Height / 2 >= _graphics.PreferredBackBufferHeight)
+            if (entity.Position.Y + entity.Texture.Height * entity.Size.Y / 2 >= _graphics.PreferredBackBufferHeight)
                 return true;
             else return false;
             //if at the bottom
@@ -50,14 +46,14 @@ namespace bullethellwhatever.BaseClasses
 
         public static bool touchingTop(Entity entity)
         {
-            if (entity.Position.Y  - entity.Hitbox.Height / 2 <= 0)
+            if (entity.Position.Y  - entity.Texture.Height * entity.Size.Y / 2 <= 0)
                 return true;
             else return false;
         }
 
         public static bool touchingRight(Entity entity)
         {
-            if (entity.Position.X + entity.Hitbox.Width / 2 >= _graphics.PreferredBackBufferWidth)
+            if (entity.Position.X + entity.Texture.Width * entity.Size.X / 2 >= _graphics.PreferredBackBufferWidth)
                 return true;
             else return false;
         }
@@ -65,7 +61,7 @@ namespace bullethellwhatever.BaseClasses
         public static bool touchingLeft(Entity entity)
         {
 
-            if (entity.Position.X - entity.Hitbox.Width / 2 <= 0)
+            if (entity.Position.X - entity.Texture.Width * entity.Size.X / 2 <= 0)
                 return true;
             else return false;
         }
@@ -80,17 +76,32 @@ namespace bullethellwhatever.BaseClasses
 
             return false;
         }
-
-        public bool isCollidingWithPlayer() //you need to refactor this whole thing if you wanna use rectangles
-        {
-            float totalwidth = Hitbox.Width + player.Hitbox.Width;
-
-            if (Math.Abs(Position.X - player.Position.X) <= totalwidth && Math.Abs(Position.Y - player.Position.Y) <= totalwidth)
-                return true;
-
-            return false;
-        }
         public abstract void AI();
+
+        public virtual void Die()
+        {
+            //death behaviour
+            DeleteNextFrame = true;
+        }
         public abstract void Draw(SpriteBatch spriteBatch);
+        public virtual HitboxTypes GetHitboxType()
+        {
+            return HitboxTypes.StaticRectangle;
+        }
+        public void SetHitbox()
+        {
+            UpdateHitbox();
+        }
+        public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
+        {
+
+            Hitbox.StaticHitbox.Position = Position; // move this back to after rectangle setting if something breaks
+
+            Hitbox.StaticHitbox.Rectangle = new(Position.X - Texture.Width / 2 * Size.X, Position.Y - Texture.Height / 2 * Size.Y, Texture.Width * Size.X,
+                Texture.Height * Size.Y);
+        }
+
+
+
     }
 }

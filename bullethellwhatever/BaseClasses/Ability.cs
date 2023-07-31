@@ -16,13 +16,10 @@ namespace bullethellwhatever.BaseClasses
         public bool IsExecuting;
         public bool JustActivated;
         public Keys KeyBind;
-        public KeyboardState kstate;
         public bool IsKeyDown;
         public virtual void Execute()
         {
-            kstate = Keyboard.GetState();
-
-            IsKeyDown = kstate.IsKeyDown(KeyBind);
+            IsKeyDown = IsKeyPressed(KeyBind);
 
             if (!IsExecuting)
             {

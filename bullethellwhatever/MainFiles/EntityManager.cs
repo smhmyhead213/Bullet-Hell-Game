@@ -14,7 +14,7 @@ namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
-        public static List<TelegraphLine> telegraphsToRemove = new List<TelegraphLine>();
+        public static List<TelegraphLine> telegraphsToRemove = new List<TelegraphLine>(); // could maybe remove this? cant remember why its even here
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
@@ -47,6 +47,7 @@ namespace bullethellwhatever.MainFiles
             foreach (NPC npc in activeNPCs)
             {
                 npc.AI();
+                npc.UpdateHitbox();
                 npc.CheckForHits();
                 npc.Update();
 
@@ -66,6 +67,7 @@ namespace bullethellwhatever.MainFiles
             foreach (Projectile projectile in activeProjectiles)
             {
                 projectile.AI();
+                projectile.UpdateHitbox();
                 projectile.CheckForHits();
                 projectile.Update();
 
@@ -78,6 +80,7 @@ namespace bullethellwhatever.MainFiles
             foreach (Projectile projectile in activeFriendlyProjectiles)
             {
                 projectile.AI();
+                projectile.UpdateHitbox();
                 projectile.CheckForHits();
                 projectile.Update();
 
@@ -91,8 +94,9 @@ namespace bullethellwhatever.MainFiles
             {
                 telegraphsToRemove[i].Owner.activeTelegraphs.Remove(telegraphsToRemove[i]);
             }
-            
-            Main.player.AI();
+
+            player.UpdateHitbox();
+            player.AI();
         }
 
         public static void SpawnBoss()
@@ -100,13 +104,13 @@ namespace bullethellwhatever.MainFiles
             switch (GameState.Boss)
             {
                 case GameState.Bosses.TestBoss:
-                    Main.activeNPCs.Add(new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2, 0)));
+                    activeNPCs.Add(new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2, 0)));
                     break;
                 case GameState.Bosses.SecondBoss:
-                    Main.activeNPCs.Add(new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0)));
+                    activeNPCs.Add(new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0)));
                     break;
                 case GameState.Bosses.CrabBoss:
-                    Main.activeNPCs.Add(new CrabBoss());
+                    activeNPCs.Add(new CrabBoss());
                     break;
             }
 
@@ -114,7 +118,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
 
-            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.activeNPCs[0].Texture, Main.activeNPCs[0].Size, Main.activeNPCs[0].Health, 200, Color.White, false, true);
+            Main.activeNPCs[0].Spawn(Main.activeNPCs[0].Position, Main.activeNPCs[0].Velocity, 1, Main.activeNPCs[0].Texture, Main.activeNPCs[0].Size, Main.activeNPCs[0].Health, 200, activeNPCs[0].Colour, false, true);
         }
 
     }

@@ -21,6 +21,8 @@ namespace bullethellwhatever.Bosses
 
         public float DeathrayAngularVelocity;
 
+        public Deathray ray;
+        public Deathray ray2;
         public SecondBoss(Vector2 position, Vector2 velocity)
         {
             Position = position;
@@ -36,22 +38,51 @@ namespace bullethellwhatever.Bosses
             dialogueSystem = new DialogueSystem(this);
             DeathrayAngularVelocity = 180f;
             IsHarmful = true;
+            Rotation = PI / 6f;
+            Size = new Vector2(3f, 3f);
 
-            Size = new Vector2(5f, 5f);
+            Opacity = 0.1f;
 
-            Texture = Main.Assets["box"];
+            Colour = Color.White;
+
+            Texture = Assets["box"];
         }
 
+        public override HitboxTypes GetHitboxType()
+        {
+            return HitboxTypes.RotatableRectangle;
+        }
 
+        public override void UpdateHitbox()
+        {
+            // the position used in collision code should not be the centre.
 
+            float hypotenuse = Texture.Height / 2f * Size.Y;
+
+            Vector2 positionForHitboxPurposes = new Vector2(Position.X - hypotenuse * Sin(Rotation), Position.Y + hypotenuse * Cos(Rotation));
+
+            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, positionForHitboxPurposes, Position);
+
+            Hitbox.RotatableHitbox.UpdateVertices();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            for (int i = 0; i < Hitbox.RotatableHitbox.Vertices.Length; i++)
+            {
+                Drawing.BetterDraw(Texture, Hitbox.RotatableHitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
+                Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.RotatableHitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
+            }
+        }
         public override void AI()
         {
 
             if (Health < 0 && IsDesperationOver)
-                DeleteNextFrame = true;
+                Die();
 
 
-
+            Rotation = Rotation + PI / 90f;
             //Update the boss position based on its velocity.
             Position = Position + Velocity;
 
@@ -111,40 +142,32 @@ namespace bullethellwhatever.Bosses
             {              
                 dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
 
-                TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
+                //TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
+                
+                //Cuboid cuboid = new Cuboid(500, 500, 500, this);
 
-                Cuboid cuboid = new Cuboid(500, 500, 500, this);
+                //ray = new Deathray();
+                //ray2 = new Deathray();
 
-                cuboid.Spawn(Position);
+                //ray.SpawnDeathray(new Vector2(ScreenWidth / 4 + 50f, ScreenHeight / 2), PI / 2f, 0f, 9999, "box", 30, 3000, 0, 0, true, Colour, "DeathrayShader", this);
+                //ray2.SpawnDeathray(new Vector2(ScreenWidth / 4 * 3 + 50f, ScreenHeight / 2), 0f, 0f, 9999, "box", 30, 3000, PI / 240f, 0, true, Colour, "DeathrayShader", this);
+            }
 
-                //LoopingProjectile proj = new LoopingProjectile(0.5f, 300f, 0, MathF.PI / 3);
+            if (AITimer == 120)
+            {
+                //ChargingEnemy enemy = new ChargingEnemy(60, 120);
 
-                //proj.Spawn(Position, Utilities.AngleToVector(0), 1f, 1, "box", 0f, Vector2.One, this, true, Color.Red, true, false);
-            }            
-
-            //if (AITimer == 120)
-            //{
-            //    ChargingEnemy enemy = new ChargingEnemy(60 , 120);
-
-            //    enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
-            //}
+                //enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
+            }
 
 
         }
 
         public void EndAttack(ref float AITimer, ref int AttackNumber)
         {
-            AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
+            AITimer = 0; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
             Rotation = 0;
             AttackNumber++;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-
-            if (activeTelegraphs.Count > 0)
-                Utilities.drawTextInDrawMethod(activeTelegraphs[0].Rotation.ToDegrees().ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3), spriteBatch, Main.font, Color.White);
         }
     }
 }

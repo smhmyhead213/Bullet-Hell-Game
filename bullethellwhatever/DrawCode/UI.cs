@@ -25,9 +25,9 @@ namespace bullethellwhatever.DrawCode
 
             Vector2 topLeft = new(positionOfBar.X - BarWidth / 2 * Main.player.Texture.Width, positionOfBar.Y - BarHeight / 2 * Main.player.Texture.Height);
 
-            Rectangle HPBar = new((int)topLeft.X, (int)topLeft.Y, (int)(BarWidth * Main.player.Texture.Width), (int)(BarHeight * Main.player.Texture.Height));
+            RectangleButGood HPBar = new(topLeft.X, topLeft.Y, (BarWidth * Main.player.Texture.Width), (BarHeight * Main.player.Texture.Height));
 
-            float opacity = HPBar.Intersects(Main.player.Hitbox) ? 0.2f : 1f;
+            float opacity = HPBar.Intersects(player.Hitbox.StaticHitbox.Rectangle) ? 0.2f : 1f;
 
             //HP bar background.
             if (entityToDrawHPBarFor is not Player)

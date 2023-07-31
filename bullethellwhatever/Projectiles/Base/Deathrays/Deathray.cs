@@ -22,6 +22,7 @@ namespace bullethellwhatever.Projectiles.Base
         public bool IsActive;
         public bool IsSpawned;
         public int Duration;
+
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
@@ -38,6 +39,10 @@ namespace bullethellwhatever.Projectiles.Base
 
             Width = width;
             Length = length;
+
+            Hitbox = new Hitbox(this);
+
+            SetHitbox();
 
             Duration = duration;
             Texture = Assets[texture];
@@ -70,89 +75,30 @@ namespace bullethellwhatever.Projectiles.Base
         }
         public override void AI()
         {
-
             if (Acceleration != 0f)
                 AngularVelocity = AngularVelocity + Acceleration;
 
-            Rotation = (Rotation + PI * AngularVelocity / 21600f) % (PI * 2); //The rotation is always 0 < r < 360.
-            
+            Rotation = Rotation + AngularVelocity;
+            Rotation = Rotation % (PI * 2); //The rotation is always 0 < r < 360.
+                
+            while (Rotation < 0f)
+            {
+                Rotation = Rotation + PI * 2f; //you got a better idea?
+            }
+
             if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
-                DeleteNextFrame = true;
-            }
+                Die();
+            }           
         }
-
-        //I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION, I HATE DEATHRAY COLLISION
-        public override bool IsCollidingWithEntity(Entity entity) //dont forget to add a check to see if the player is within the beams length, to ensure that the beam doesnt have infinite range
-        {
-            //return IsAnXCoordinateInTheBeam(entity.Position.X, this) && IsAYCoordinateInTheBeam(entity.Position.X, entity.Position.Y, this);
-            return IsTheTargetInTheBeam(entity, this);
-        }
-
-        public static bool IsTheTargetInTheBeam(Entity entity, Deathray deathray) 
-        {
-            if (deathray.IsActive)
-            {
-                if (Utilities.DistanceBetweenVectors(new Vector2(entity.Position.X, entity.Position.Y), deathray.Position) < deathray.Length)
-                {
-                    Vector2 playerVector = new Vector2(entity.Position.X, entity.Position.Y);
-
-                    // Find the angle between the player and the vertical using the dot/scalar product.
-
-                    float dotProduct = Vector2.Dot(Vector2.UnitY, playerVector - deathray.Position);
-                    
-                    // Find the angle that the deathray and entity must share approximtely for a collision.
-                    
-                    float angle = MathF.PI - MathF.Acos(dotProduct / (playerVector - deathray.Position).Length());
-                    
-                    // Find the diagonal length of the entity to collide with.
-                    
-                    float diagonalOfTarget = MathF.Sqrt(MathF.Pow(entity.Hitbox.Width, 2) + MathF.Pow(entity.Hitbox.Height, 2));
-                    
-                    // Find the appropriate angle tolerance needed to perfectly encapsulate the entity.
-                    
-                    float angleTolerance = MathF.Atan(diagonalOfTarget / 2 / Utilities.DistanceBetweenVectors(deathray.Position, entity.Position));
-
-                    // For the collision checks, small degrees of error are used to account for Angle and Rotation never being exactly equal due to floating point jank.
-
-                    if (deathray.Rotation >= 0) // Check if the beam is moving clockwise. In this case, Rotation is positive.
-                    {
-                        if (playerVector.X >= deathray.Position.X) // If the player is on the right, do no adjustments as Rotation and Angle here are both angles clockwise from the vertical.
-                        {
-                            return deathray.Rotation > angle - angleTolerance && deathray.Rotation < angle + angleTolerance;
-                        }
-
-                        else // Otherwise, adjust Angle to be an angle clockwise from the vertical due to the dot products nature of giving an angle 0 < theta < 180.
-                        {
-                            return deathray.Rotation > MathF.PI * 2 - angle - angleTolerance && deathray.Rotation < MathF.PI * 2 - angle + angleTolerance;
-                        }
-                    }
-
-                    else // The beam is moving counter-clockwise. Rotation is negative.
-                    {
-                        if (playerVector.X >= deathray.Position.X) // If the player is on the right, colliding values of Angle and Rotation differ by a full 360 degrees. 
-                        {
-                            return deathray.Rotation > angle - MathF.PI * 2 - angleTolerance && deathray.Rotation < angle - MathF.PI * 2 + angleTolerance;
-                        }
-
-                        else // Otherwise, corresponding values of Angle and Rotation differ by sign.
-                        {
-                            return MathF.Abs(deathray.Rotation) > angle - angleTolerance && MathF.Abs(deathray.Rotation) < angle + angleTolerance;
-                        }
-                    }
-                }
-
-                else return false;
-            }
-
-            return false;
-        }
-
         public void DrawWithShader(SpriteBatch spriteBatch)
         {
 
         }
-
+        public override void UpdateHitbox()
+        {
+            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Width, Length, Position, Position);
+        }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
@@ -167,6 +113,11 @@ namespace bullethellwhatever.Projectiles.Base
 
                 spritebatch.Draw(Main.player.Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
             }
+        }
+
+        public override HitboxTypes GetHitboxType()
+        {
+            return HitboxTypes.RotatableRectangle;
         }
     }
 }

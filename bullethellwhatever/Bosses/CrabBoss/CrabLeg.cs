@@ -22,6 +22,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossLowerClaw LowerClaw;
 
         public bool HorizontalFlip;
+
+        public float Health;
         public CrabLeg(Vector2 position, Entity owner)
         {
             Owner = owner;
@@ -39,28 +41,24 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Position = LowerArm.CalculateEnd();
             LowerClaw.Position = LowerArm.CalculateEnd();
         }
-
         public void Update() 
         {
-
             UpperArm.Position = Position;
             //UpperArm.Rotation = UpperArm.Rotation + PI / 90f;
-            UpperArm.Update();
+            UpperArm.UpdateLimb();
 
             LowerArm.Position = UpperArm.End;
             //LowerArm.Rotation = UpperArm.Rotation; //comment this out later just for test
             //LowerArm.Position = new Vector2(ScreenWidth / 1.5f, ScreenHeight / 2);
             //LowerArm.Rotation = LowerArm.Rotation + PI / 100f;
-            LowerArm.Update();
+            LowerArm.UpdateLimb();
 
             UpperClaw.Position = LowerArm.End;
             //UpperClaw.Rotation = UpperClaw.Rotation + PI / 80f;
-            UpperClaw.Update();
+            UpperClaw.UpdateLimb();
 
             LowerClaw.Position = LowerArm.End;
-            LowerClaw.Update();
-
-
+            LowerClaw.UpdateLimb();
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -1,4 +1,5 @@
 ﻿global using static System.MathF;
+global using static bullethellwhatever.UtilitySystems.InputSystem;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -55,8 +56,6 @@ namespace bullethellwhatever.MainFiles
         public static SoundEffectInstance musicInstance;
 
         public static Player player = new Player();
-
-        public static Vector2 MousePosition;
 
         public static Vector2 RawScreenArea;
 
@@ -161,9 +160,10 @@ namespace bullethellwhatever.MainFiles
 
         protected override void Update(GameTime gameTime)
         {
-            MousePosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
             //MousePosition = MousePosition * (RawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight));
+
+            UpdateInputSystem();
 
             if (MainInstance.IsActive)
             {

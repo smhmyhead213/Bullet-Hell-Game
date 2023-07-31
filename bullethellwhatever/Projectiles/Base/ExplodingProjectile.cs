@@ -41,13 +41,17 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (touchingAnEdge(this))
             {
-                Explode();
-                DeleteNextFrame = true;
+                Die();
             }
 
             Position = Position + Velocity;
         }
 
+        public override void Die()
+        {
+            Explode();
+            base.Die();            
+        }
         public virtual void Explode()
         {
             for (int i = 0; i < NumberOfProjectiles; i++)
@@ -64,8 +68,6 @@ namespace bullethellwhatever.Projectiles.Base
                 else projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / NumberOfProjectiles * i) + Offset),
                         1f, 1, "box", accel, Vector2.One, this, true, Color.Red, false, false);
             }
-
-            DeleteNextFrame = true;
         }
     }
 }

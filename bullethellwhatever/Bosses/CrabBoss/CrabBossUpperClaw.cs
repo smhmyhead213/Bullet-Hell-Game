@@ -11,7 +11,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabBossUpperClaw(Entity owner, CrabLeg leg, string texture) : base(owner, leg, texture)
         {
-
+            MaxHP = 50f;
+            Health = 50f;
         }
     }
 }

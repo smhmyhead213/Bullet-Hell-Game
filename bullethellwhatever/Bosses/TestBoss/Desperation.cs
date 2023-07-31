@@ -58,6 +58,11 @@ namespace bullethellwhatever.Bosses.TestBoss
                 Owner.Rotation = 0;
                 Owner.dialogueSystem.Dialogue(Owner.Position, "It's not over yet!", 4, despStartTime);
                 Drawing.ScreenShake(4, EndTime - despStartTime);
+
+                foreach (NPC npc in activeNPCs)
+                {
+                    npc.Die();
+                }
             }
 
             if (AITimer < despStartTime)

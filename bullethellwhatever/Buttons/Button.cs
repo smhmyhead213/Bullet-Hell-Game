@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.BaseClasses;
 
 namespace bullethellwhatever.Buttons
 {
@@ -21,7 +22,7 @@ namespace bullethellwhatever.Buttons
         public GameState.GameStates? Destination;
 
         public bool DeleteNextFrame;
-        public Rectangle ButtonRectangle => new((int)Position.X - (Texture.Width / 2 * (int)Scale.X), (int)Position.Y - (Texture.Height / 2 * (int)Scale.Y), Texture.Width * (int)Scale.X, Texture.Height * (int)Scale.Y);
+        public RectangleButGood ButtonRectangle => new(Position.X - (Texture.Width / 2 * Scale.X), Position.Y - (Texture.Height / 2 * Scale.Y), Texture.Width * Scale.X, Texture.Height * Scale.Y);
 
         public Button(Vector2 position, string texture, GameState.GameStates? destination, GameState.Difficulties? difficultyChange, Vector2 scale)
         {

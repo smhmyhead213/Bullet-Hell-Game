@@ -31,7 +31,8 @@ namespace bullethellwhatever.Bosses
         {
             if (Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime && AttackNumber != 0)
             {
-                Owner.AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
+                Owner.AITimer = 0; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
+
                 Owner.Rotation = 0;
                 if (Owner.AttackNumber != Owner.BossAttacks.Length - 1)
                     Owner.AttackNumber++;
@@ -48,7 +49,7 @@ namespace bullethellwhatever.Bosses
 
             if (Owner.IsDesperationOver)
             {
-                Owner.DeleteNextFrame = true;
+                Owner.Die();
             }
         }
         public void HandleBounces()

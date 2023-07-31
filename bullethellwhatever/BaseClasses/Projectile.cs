@@ -6,7 +6,7 @@ using bullethellwhatever.DrawCode;
 using System.Runtime.CompilerServices;
 using System;
 using bullethellwhatever.Projectiles.Base;
-
+using bullethellwhatever.Projectiles.Player;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -37,22 +37,27 @@ namespace bullethellwhatever.BaseClasses
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
-            Hitbox = new((int)position.X - Texture.Width / 2, (int)position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
-            Hitbox.Width = Hitbox.Width * (int)size.X;
-            Hitbox.Height = Hitbox.Height * (int)size.Y;
+
             Opacity = 1f;
 
             //float sizeScalar = ScreenWidth * 1f / IdealScreenWidth * 1f; //adjust for screen size horizontally
 
             //Size = new Vector2(Size.X / IdealScreenWidth * ScreenWidth, Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
 
-            if (isHarmful)
-                enemyProjectilesToAddNextFrame.Add(this);
-            else friendlyProjectilesToAddNextFrame.Add(this);
+            PrepareProjectile();
         }
 
         //and drawing
 
+        public virtual void PrepareProjectile()
+        {
+            Hitbox = new Hitbox(this);
+            SetHitbox();
+
+            if (IsHarmful)
+                enemyProjectilesToAddNextFrame.Add(this);
+            else friendlyProjectilesToAddNextFrame.Add(this);
+        }
         public virtual void Update()
         {
             AITimer++;
@@ -75,17 +80,20 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void CheckForHits()
         {
-            SetHitbox(this);
-
             if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
             {
                 foreach (NPC npc in activeNPCs)
                 {
-                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0) //why am i checking this twice? remove
+                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0)
                     {
                         npc.IFrames = npc.MaxIFrames;
 
                         npc.Health = npc.Health - Damage;
+
+                        if (this is PlayerHomingProjectile)
+                        {
+                            Colour = Color.Yellow;
+                        }
 
                         HandlePierce(npc.PierceToTake);
                     }
@@ -114,12 +122,12 @@ namespace bullethellwhatever.BaseClasses
             }
 
             if (RemoveOnHit && PierceRemaining <= 0)
-                DeleteNextFrame = true;
+                Die();
         }
 
         public virtual bool IsCollidingWithEntity(Entity entity)
         {
-            if (entity.Hitbox.Intersects(Hitbox))
+            if (entity.Hitbox.CollidingWith(Hitbox))
                 return true;
             else return false;
         }
@@ -129,5 +137,9 @@ namespace bullethellwhatever.BaseClasses
             Drawing.BetterDraw(player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
         }
 
+        public override HitboxTypes GetHitboxType()
+        {
+            return HitboxTypes.StaticRectangle;
+        }
     }
 }

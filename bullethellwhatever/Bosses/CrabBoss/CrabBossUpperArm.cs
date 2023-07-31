@@ -11,7 +11,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabBossUpperArm(Entity owner, CrabLeg leg, string texture) : base(owner, leg, texture) 
         {
-
+            MaxHP = 100f;
+            Health = 100f;
         }
 
         public override void Update()

@@ -6,6 +6,7 @@ spriters:
 
 GemmAH
 anonymoose
+LGL
 
 helpful people:
 
@@ -33,3 +34,5 @@ Shipmans AGLA
 Jav
 The Pyro
 bean.ie
+Blast
+catt

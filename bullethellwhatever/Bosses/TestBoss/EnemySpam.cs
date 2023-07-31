@@ -60,7 +60,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer == EndTime - (Owner.BarDuration * 3))
             {
-                foreach (NPC npc in Main.activeNPCs) 
+                foreach (NPC npc in activeNPCs) 
                 {
                     if (npc is not Boss)
                     {
@@ -73,9 +73,9 @@ namespace bullethellwhatever.Bosses.TestBoss
                     }
                 }
 
-                foreach (NPC npc in Main.activeNPCs)
+                foreach (NPC npc in activeNPCs)
                 {
-                    npc.DeleteNextFrame = true;
+                    npc.Die();
                 }
             }
         }
