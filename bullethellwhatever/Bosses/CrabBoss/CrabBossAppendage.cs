@@ -45,14 +45,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Rotation = Rotation + angle;
         }
 
-        public override HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.RotatableRectangle;
-        }
-        public override void UpdateHitbox()
-        {
-            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Texture.Width, Texture.Height, Position, Position); // needs fixed
-        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);

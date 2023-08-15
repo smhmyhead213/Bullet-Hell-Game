@@ -40,10 +40,10 @@ namespace bullethellwhatever.Projectiles.Base
             Width = width;
             Length = length;
 
-            Hitbox = new Hitbox(this);
+            Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
 
             SetHitbox();
-
+            
             Duration = duration;
             Texture = Assets[texture];
             AngularVelocity = angularVelocity;
@@ -97,7 +97,11 @@ namespace bullethellwhatever.Projectiles.Base
         }
         public override void UpdateHitbox()
         {
-            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Width, Length, Position, Position);
+            Vector2 centre = Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation);
+            
+            Hitbox.UpdateRectangle(Rotation, Width, Length, centre);
+
+            Hitbox.UpdateVertices();
         }
         public override void Draw(SpriteBatch spritebatch)
         {
@@ -113,11 +117,6 @@ namespace bullethellwhatever.Projectiles.Base
 
                 spritebatch.Draw(Main.player.Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
             }
-        }
-
-        public override HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.RotatableRectangle;
         }
     }
 }

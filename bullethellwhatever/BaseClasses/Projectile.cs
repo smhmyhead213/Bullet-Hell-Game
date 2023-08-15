@@ -51,9 +51,8 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void PrepareProjectile()
         {
-            Hitbox = new Hitbox(this);
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
             SetHitbox();
-
             if (IsHarmful)
                 enemyProjectilesToAddNextFrame.Add(this);
             else friendlyProjectilesToAddNextFrame.Add(this);
@@ -127,7 +126,7 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual bool IsCollidingWithEntity(Entity entity)
         {
-            if (entity.Hitbox.CollidingWith(Hitbox))
+            if (entity.Hitbox.Intersects(Hitbox))
                 return true;
             else return false;
         }
@@ -135,11 +134,6 @@ namespace bullethellwhatever.BaseClasses
         public override void Draw(SpriteBatch s)
         {
             Drawing.BetterDraw(player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
-        }
-
-        public override HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.StaticRectangle;
         }
     }
 }

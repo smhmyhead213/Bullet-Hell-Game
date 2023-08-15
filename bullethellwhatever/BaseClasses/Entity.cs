@@ -20,7 +20,7 @@ namespace bullethellwhatever.BaseClasses
         public int AITimer;
         public float Damage;
         public float Opacity;
-        public Hitbox Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
+        public RotatedRectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
         public Vector2 Size; //relative to player being 1
         public float Health;
         public float MaxHP;
@@ -84,21 +84,15 @@ namespace bullethellwhatever.BaseClasses
             DeleteNextFrame = true;
         }
         public abstract void Draw(SpriteBatch spriteBatch);
-        public virtual HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.StaticRectangle;
-        }
         public void SetHitbox()
         {
             UpdateHitbox();
         }
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
+            Hitbox.UpdateRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position);
 
-            Hitbox.StaticHitbox.Position = Position; // move this back to after rectangle setting if something breaks
-
-            Hitbox.StaticHitbox.Rectangle = new(Position.X - Texture.Width / 2 * Size.X, Position.Y - Texture.Height / 2 * Size.Y, Texture.Width * Size.X,
-                Texture.Height * Size.Y);
+            Hitbox.UpdateVertices();
         }
 
 

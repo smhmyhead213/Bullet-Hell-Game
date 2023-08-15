@@ -31,7 +31,7 @@ namespace bullethellwhatever.BaseClasses
             Damage = damage;
             Texture = Main.Assets[texture];
             Colour = colour;
-            Main.NPCsToAddNextFrame.Add(this);
+            NPCsToAddNextFrame.Add(this);
             Size = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
@@ -45,7 +45,7 @@ namespace bullethellwhatever.BaseClasses
             dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
 
             IsHarmful = isHarmful;
-            Hitbox = new Hitbox(this);
+
             SetHitbox();
         }
         //this one takes a texture directly
@@ -90,7 +90,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual bool IsCollidingWithEntity(Entity entity)
         {
-            return Hitbox.CollidingWith(entity.Hitbox);
+            return Hitbox.Intersects(entity.Hitbox);
         }
 
         public virtual void CheckForHits() // all passive checks go here as well
@@ -142,16 +142,11 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void PrepareNPC()
         {
-            Hitbox = new Hitbox(this);
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
             SetHitbox();
             NPCsToAddNextFrame.Add(this);
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(Position, string.Empty, this, 1, 1);
-
-        }
-        public override HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.StaticRectangle;
         }
     }
 }

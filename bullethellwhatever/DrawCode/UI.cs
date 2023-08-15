@@ -27,8 +27,9 @@ namespace bullethellwhatever.DrawCode
 
             RectangleButGood HPBar = new(topLeft.X, topLeft.Y, (BarWidth * Main.player.Texture.Width), (BarHeight * Main.player.Texture.Height));
 
-            float opacity = HPBar.Intersects(player.Hitbox.StaticHitbox.Rectangle) ? 0.2f : 1f;
-
+            //float opacity = HPBar.Intersects(player.Hitbox.StaticHitbox.Rectangle) ? 0.2f : 1f;
+            float opacity = 1f;
+            //note: reimplement transparent hp bar when player goes over
             //HP bar background.
             if (entityToDrawHPBarFor is not Player)
             {

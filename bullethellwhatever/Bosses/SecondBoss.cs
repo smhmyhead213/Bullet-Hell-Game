@@ -47,32 +47,14 @@ namespace bullethellwhatever.Bosses
 
             Texture = Assets["box"];
         }
-
-        public override HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.RotatableRectangle;
-        }
-
-        public override void UpdateHitbox()
-        {
-            // the position used in collision code should not be the centre.
-
-            float hypotenuse = Texture.Height / 2f * Size.Y;
-
-            Vector2 positionForHitboxPurposes = new Vector2(Position.X - hypotenuse * Sin(Rotation), Position.Y + hypotenuse * Cos(Rotation));
-
-            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, positionForHitboxPurposes, Position);
-
-            Hitbox.RotatableHitbox.UpdateVertices();
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            for (int i = 0; i < Hitbox.RotatableHitbox.Vertices.Length; i++)
+
+            for (int i = 0; i < Hitbox.Vertices.Length; i++)
             {
-                Drawing.BetterDraw(Texture, Hitbox.RotatableHitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
-                Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.RotatableHitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
+                Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
+                Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
             }
         }
         public override void AI()
@@ -81,6 +63,11 @@ namespace bullethellwhatever.Bosses
             if (Health < 0 && IsDesperationOver)
                 Die();
 
+            if (AITimer == 0)
+            {
+                Deathray ray = new Deathray();
+                ray.SpawnDeathray(Position, PI / 2f, 0f, 1000, "box", 20f, ScreenWidth / 2f, 0, 0, true, Colour, "DeathrayShader", this);
+            }
 
             Rotation = Rotation + PI / 90f;
             //Update the boss position based on its velocity.

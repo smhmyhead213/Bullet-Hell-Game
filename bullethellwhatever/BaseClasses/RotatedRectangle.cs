@@ -17,20 +17,21 @@ namespace bullethellwhatever.BaseClasses
         public float Rotation;
         public float Width; //x
         public float Length; //y
-        public Vector2 AxisOfRotation;
+        //public Vector2 AxisOfRotation;
         public Vector2 Centre;
         public Vector2[] Vertices;
-        public RotatedRectangle(float rotation, float width, float length, Vector2 position, Vector2 centre)
+        public Entity Owner;
+        public RotatedRectangle(float rotation, float width, float length, Vector2 centre, Entity owner)
         {
-            UpdateRectangle(rotation, width, length, position, centre);
+            UpdateRectangle(rotation, width, length, centre);
             Vertices = new Vector2[4];
+            Owner = owner;
         }
-        public void UpdateRectangle(float rotation, float width, float length, Vector2 axisOfRotation, Vector2 centre)
+        public void UpdateRectangle(float rotation, float width, float length, Vector2 centre)
         {
             Rotation = rotation;
             Width = width;
             Length = length;
-            AxisOfRotation = axisOfRotation;
             Centre = centre;
         }
 
@@ -63,9 +64,7 @@ namespace bullethellwhatever.BaseClasses
             //    }
             //}
 
-            //return false;
-
-            
+            //return false;           
             
             foreach (Vector2 point in other.Vertices)
             {
@@ -75,9 +74,13 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
+            if (IsVec2WithinMyRectangle(other.Centre)) // for the weird case where one object is inside another
+            {
+                return true; 
+            }
+
             return false;
         }
-
 
         public bool IsVec2WithinMyRectangle(Vector2 v2)
         {
@@ -94,25 +97,25 @@ namespace bullethellwhatever.BaseClasses
 
             return (Vector2.Dot(AB, AM) > 0) && (ABselfdot > Vector2.Dot(AB, AM)) && (Vector2.Dot(AD, AM) > 0) && (ADselfdot > Vector2.Dot(AD, AM));
         }
-        public Vector2 PointOfIntersection(RotatedRectangle other)
-        {
-            // rearrangement of simultaneous equation ax + b = cx + d 
+        //public Vector2 PointOfIntersection(RotatedRectangle other)
+        //{
+        //    // rearrangement of simultaneous equation ax + b = cx + d 
 
-            float xOfIntercept = -1f * (CalculateC() - other.CalculateC()) / (CalculateGradient() - other.CalculateGradient());
+        //    float xOfIntercept = -1f * (CalculateC() - other.CalculateC()) / (CalculateGradient() - other.CalculateGradient());
 
-            float yOfIntercept = CalculateGradient() * xOfIntercept + CalculateC();
+        //    float yOfIntercept = CalculateGradient() * xOfIntercept + CalculateC();
 
-            return new Vector2(xOfIntercept, yOfIntercept);
-        }
-        public float CalculateGradient()
-        {
-            return -Tan(PI / 2 - Rotation);
-        }
+        //    return new Vector2(xOfIntercept, yOfIntercept);
+        //}
+        //public float CalculateGradient()
+        //{
+        //    return -Tan(PI / 2 - Rotation);
+        //}
 
-        public float CalculateC()
-        {
-            return AxisOfRotation.Y - CalculateGradient() * AxisOfRotation.X;
-        }
+        //public float CalculateC()
+        //{
+        //    return AxisOfRotation.Y - CalculateGradient() * AxisOfRotation.X;
+        //}
 
         //public bool IsEntityCollindingWithRectangle(Entity entity)
         //{

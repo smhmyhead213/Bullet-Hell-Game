@@ -41,24 +41,6 @@ namespace bullethellwhatever.BaseClasses
 
         public Weapons ActiveWeapon;
 
-        public override HitboxTypes GetHitboxType()
-        {
-            return HitboxTypes.RotatableRectangle;
-        }
-        public override void UpdateHitbox()
-        {
-            // the position used in collision code should not be the centre.
-
-            float hypotenuse = Texture.Height / 2f * Size.Y;
-
-            Vector2 positionForHitboxPurposes = new Vector2(Position.X - hypotenuse * Sin(Rotation), Position.Y + hypotenuse * Cos(Rotation));
-
-            Hitbox.StaticHitbox = new StaticRectangle();
-
-            Hitbox.RotatableHitbox.UpdateRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, positionForHitboxPurposes, Position);
-
-            Hitbox.RotatableHitbox.UpdateVertices();
-        }
         #region Spawning
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
@@ -94,7 +76,7 @@ namespace bullethellwhatever.BaseClasses
             afterimagesPositions = new Vector2[DashDuration];
             Colour = Color.White;
 
-            Hitbox = new Hitbox(this);
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
             SetHitbox();
 
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);

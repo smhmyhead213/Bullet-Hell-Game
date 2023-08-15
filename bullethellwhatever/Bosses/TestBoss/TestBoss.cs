@@ -46,6 +46,8 @@ namespace bullethellwhatever.Bosses.TestBoss
             HasDesperationStarted = false;
             IsDesperationOver = false;
 
+            Colour = Color.White;
+
             Texture = Assets["box"];
 
             Size = new Vector2(5f, 5f);
