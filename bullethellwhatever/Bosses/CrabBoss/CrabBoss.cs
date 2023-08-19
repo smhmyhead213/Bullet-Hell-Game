@@ -28,6 +28,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             MaxHP = 2500;
             Health = MaxHP;
             AttackNumber = 1;
+            Colour = Color.White;
 
             Legs = new CrabLeg[2];
 
@@ -36,7 +37,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
                 Legs[i] = new CrabLeg(Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), this);
-
+                
                 if (i == 0)
                 {
                     Legs[i].HorizontalFlip = true;

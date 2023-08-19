@@ -103,6 +103,14 @@ namespace bullethellwhatever.Projectiles.Base
 
             Hitbox.UpdateVertices();
         }
+
+        public override void CheckForHits()
+        {
+            if (IsActive) //only bother to check for coll
+            {
+                base.CheckForHits();
+            }          
+        }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)

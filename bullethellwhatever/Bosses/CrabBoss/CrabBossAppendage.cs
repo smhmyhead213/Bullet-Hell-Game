@@ -19,6 +19,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabLeg Leg;
 
         public Entity Owner;
+
+        private float RotationToAdd;
         public CrabBossAppendage(Entity owner, CrabLeg leg, string texture)
         {
             Owner = owner;
@@ -26,12 +28,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Texture = Assets[texture];
             IsHarmful = true;
 
+            PierceToTake = 20;
+
             PrepareNPC();
             //Rotation = Rotation + PI / 2;
         }
 
         public virtual void UpdateLimb()
         {
+            //Rotation = Rotation + PI / 60f;
+            //if (this is CrabBossUpperArm)
+            Rotation = Owner.Rotation;
+            
             End = CalculateEnd();
         }
 
@@ -42,7 +50,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public void Rotate(float angle)
         {
-            Rotation = Rotation + angle;
+            RotationToAdd = RotationToAdd + angle;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

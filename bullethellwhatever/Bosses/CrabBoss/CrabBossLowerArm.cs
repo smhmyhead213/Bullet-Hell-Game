@@ -15,6 +15,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             MaxHP = 75f;
             Health = 75f;
+            Rotation = PI / 2f;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

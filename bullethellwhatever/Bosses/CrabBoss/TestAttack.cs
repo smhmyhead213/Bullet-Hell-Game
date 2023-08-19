@@ -15,7 +15,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            //((CrabBoss)Owner).Position.X = ScreenWidth / 2 + 450f * Sin(AITimer / 50f);
+            ((CrabBoss)Owner).Rotation = ((CrabBoss)Owner).Rotation + PI / 60f;
         }
     }
 }

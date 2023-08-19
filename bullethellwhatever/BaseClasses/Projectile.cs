@@ -89,11 +89,10 @@ namespace bullethellwhatever.BaseClasses
 
                         npc.Health = npc.Health - Damage;
 
-                        if (this is PlayerHomingProjectile)
-                        {
-                            Colour = Color.Yellow;
-                        }
-
+                        //if (this is PlayerHomingProjectile)
+                        //{
+                        Colour = Color.Yellow;
+                        //}
                         HandlePierce(npc.PierceToTake);
                     }
                 }
@@ -134,6 +133,8 @@ namespace bullethellwhatever.BaseClasses
         public override void Draw(SpriteBatch s)
         {
             Drawing.BetterDraw(player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
+
+            Utilities.drawTextInDrawMethod(PierceRemaining.ToString(), Position + new Vector2(0f, 20f), s, font, Color.White);
         }
     }
 }

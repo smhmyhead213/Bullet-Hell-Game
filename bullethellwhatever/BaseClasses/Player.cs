@@ -19,6 +19,8 @@ namespace bullethellwhatever.BaseClasses
         public int DashCooldown;
         public int DashDuration => 10;
 
+        public int TimeAlive;
+
         public Dash DashAbility;
         
         public int DashTimer;
@@ -80,6 +82,8 @@ namespace bullethellwhatever.BaseClasses
             SetHitbox();
 
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
+
+            TimeAlive = 0;
         }
         #endregion
 
@@ -209,6 +213,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
+            TimeAlive++;
 
             var mouseState = Mouse.GetState();
 
@@ -252,7 +257,7 @@ namespace bullethellwhatever.BaseClasses
 
                 }
 
-                if ((mouseState.LeftButton == ButtonState.Pressed || IsKeyPressed(Keys.Enter)) && ShotCooldownRemaining == 0)
+                if ((mouseState.LeftButton == ButtonState.Pressed || IsKeyPressed(Keys.Enter)) && ShotCooldownRemaining == 0 && TimeAlive > 10)
                 {
                     ShotCooldownRemaining = ShotCooldown;
                     Shoot();
@@ -304,7 +309,7 @@ namespace bullethellwhatever.BaseClasses
                 Random rnd = new Random();
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, 7, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
+                    0.15f, 1, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)

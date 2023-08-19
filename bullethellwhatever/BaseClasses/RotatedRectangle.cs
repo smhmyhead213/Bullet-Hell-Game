@@ -35,6 +35,10 @@ namespace bullethellwhatever.BaseClasses
             Centre = centre;
         }
 
+        public float DiagonalLength()
+        {
+            return Sqrt(Length * Length + Width * Width);
+        }
         public void UpdateVertices()
         {
             // 0 and 3 are opposite each other, 1 and 2 likewise 
@@ -46,10 +50,10 @@ namespace bullethellwhatever.BaseClasses
 
         public bool Intersects(RotatedRectangle other)
         {
-            //if (Utilities.DistanceBetweenVectors(AxisOfRotation, other.AxisOfRotation) > Length + other.Length)
-            //{
-            //    return false;
-            //}
+            if (Utilities.DistanceBetweenVectors(Centre, other.Centre) > (DiagonalLength() + other.DiagonalLength()) / 2f)
+            {
+                return false;
+            }
 
             //Vector2 pointOfIntersection = PointOfIntersection(other);
 
@@ -65,7 +69,7 @@ namespace bullethellwhatever.BaseClasses
             //}
 
             //return false;           
-            
+
             foreach (Vector2 point in other.Vertices)
             {
                 if (IsVec2WithinMyRectangle(point))
@@ -74,12 +78,23 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-            if (IsVec2WithinMyRectangle(other.Centre)) // for the weird case where one object is inside another
+            foreach (Vector2 point in Vertices)
             {
-                return true; 
+                if (other.IsVec2WithinMyRectangle(point))
+                {
+                    return true;
+                }
             }
+            // if the vertices check fails, check if the point of intersection is within BOTH rectangles. rigorous mental gymnastics which are probably wrong say that doing both checks cover each others errors, idk man, check your notebook.
 
-            return false;
+
+            Vector2 intersectionPoint = PointOfIntersection(other);
+
+            if (IsVec2WithinMyRectangle(intersectionPoint))
+            {
+                return other.IsVec2WithinMyRectangle(intersectionPoint);
+            }
+            else return false;
         }
 
         public bool IsVec2WithinMyRectangle(Vector2 v2)
@@ -96,6 +111,26 @@ namespace bullethellwhatever.BaseClasses
             float ADselfdot = Vector2.Dot(AD, AD);
 
             return (Vector2.Dot(AB, AM) > 0) && (ABselfdot > Vector2.Dot(AB, AM)) && (Vector2.Dot(AD, AM) > 0) && (ADselfdot > Vector2.Dot(AD, AM));
+        }
+
+        public Vector2 PointOfIntersection(RotatedRectangle other)
+        {
+            // rearrangement of simultaneous equation ax + b = cx + d 
+
+            float xOfIntercept = -1f * (CalculateC() - other.CalculateC()) / (CalculateGradient() - other.CalculateGradient());
+
+            float yOfIntercept = CalculateGradient() * xOfIntercept + CalculateC();
+
+            return new Vector2(xOfIntercept, yOfIntercept);
+        }
+        public float CalculateGradient()
+        {
+            return -Tan(PI / 2 - Rotation);
+        }
+
+        public float CalculateC()
+        {
+            return Centre.Y - CalculateGradient() * Centre.X;
         }
         //public Vector2 PointOfIntersection(RotatedRectangle other)
         //{
