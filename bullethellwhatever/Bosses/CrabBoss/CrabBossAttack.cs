@@ -12,6 +12,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossAttack(int endTime) : base (endTime)
         {
             EndTime = endTime;
+            
+        }
+
+        public override void InitialiseAttackValues()
+        {
+            CrabOwner = (CrabBoss)Owner;
         }
     }
 }

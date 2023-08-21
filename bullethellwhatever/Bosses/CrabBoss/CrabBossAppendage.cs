@@ -20,6 +20,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Entity Owner;
 
+        public float RotationConstant;
+
         private float RotationToAdd;
         public CrabBossAppendage(Entity owner, CrabLeg leg, string texture)
         {
@@ -38,7 +40,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             //Rotation = Rotation + PI / 60f;
             //if (this is CrabBossUpperArm)
-            Rotation = Owner.Rotation;
+            Rotation = CalculateFinalRotation(); 
             
             End = CalculateEnd();
         }
@@ -53,6 +55,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationToAdd = RotationToAdd + angle;
         }
 
+        public float CalculateFinalRotation()
+        {
+            return Owner.Rotation + RotationConstant + RotationToAdd;
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);

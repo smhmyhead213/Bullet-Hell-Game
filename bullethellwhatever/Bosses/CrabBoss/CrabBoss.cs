@@ -37,11 +37,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
                 Legs[i] = new CrabLeg(Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), this);
-                
+
                 if (i == 0)
                 {
                     Legs[i].HorizontalFlip = true;
                 }
+
+                Legs[i].UpperArm.RotationConstant = -expandedi * PI / 12;
+                Legs[i].LowerArm.RotationConstant =  expandedi * PI / 12;
+                
             }
 
             BossAttacks = new CrabBossAttack[]

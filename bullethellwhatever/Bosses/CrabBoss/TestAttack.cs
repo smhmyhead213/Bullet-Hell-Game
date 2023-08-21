@@ -12,10 +12,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             EndTime = endTime;
         }
-
+        
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            ((CrabBoss)Owner).Rotation = ((CrabBoss)Owner).Rotation + PI / 60f;
+            CrabOwner.Rotation = CrabOwner.Rotation + PI / 60f;
+            CrabOwner.Legs[0].UpperArm.Rotate(PI / 60);
         }
     }
 }
