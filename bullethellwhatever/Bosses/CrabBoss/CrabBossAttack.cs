@@ -19,5 +19,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             CrabOwner = (CrabBoss)Owner;
         }
+
+        public CrabLeg Leg(int index)
+        {
+            return CrabOwner.Legs[index];
+        }
     }
 }

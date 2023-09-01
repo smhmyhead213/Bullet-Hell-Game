@@ -16,6 +16,12 @@ namespace bullethellwhatever
             Main.player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 
+        public static float InverseLerp(float lower, float upper, float delta)
+        {
+            float output = upper - lower;
+            output = delta / output;
+            return MathHelper.Clamp(output, 0f, 1f);
+        }
         public static Vector2 Normalise(Vector2 vectorToNormalise)
         {
             float distance = MathF.Sqrt(vectorToNormalise.X * vectorToNormalise.X + vectorToNormalise.Y * vectorToNormalise.Y);

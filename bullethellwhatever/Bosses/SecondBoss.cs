@@ -66,6 +66,10 @@ namespace bullethellwhatever.Bosses
             if (AITimer == 0)
             {
                 Deathray ray = new Deathray();
+                TelegraphLine t = new TelegraphLine(0, 0, 0, 100, 2000, 1000, Position, Colour, "box", this, true);
+
+                t.ChangeShader("OutlineTelegraphShader");
+
                 ray.SpawnDeathray(Position, PI / 2f, 0f, 1000, "box", 20f, ScreenWidth / 2f, 0, 0, true, Colour, "DeathrayShader", this);
             }
 

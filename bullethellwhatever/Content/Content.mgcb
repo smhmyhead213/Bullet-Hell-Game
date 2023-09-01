@@ -221,6 +221,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/DeathrayShader2.fx
 
+#begin Shaders/OutlineTelegraphShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/OutlineTelegraphShader.fx
+
 #begin Shaders/PlayerDeathrayShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

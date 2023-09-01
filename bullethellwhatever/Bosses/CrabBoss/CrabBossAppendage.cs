@@ -45,6 +45,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             End = CalculateEnd();
         }
 
+        public virtual float RotationFromV() // rotation from vertical
+        {
+            return RotationConstant + PI + Rotation;
+        }
         public virtual Vector2 CalculateEnd()
         {
             return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height;

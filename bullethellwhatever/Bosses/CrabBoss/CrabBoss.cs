@@ -63,6 +63,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
             //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
         }
+
+        public void ResetArmRotations()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
+
+                Legs[i].UpperArm.RotationConstant = -expandedi * PI / 12;
+                Legs[i].LowerArm.RotationConstant = expandedi * PI / 12;
+            }
+        }
         public override void AI()
         {
             //Rotation = Rotation + PI / 90f;
@@ -109,7 +120,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            Utilities.drawTextInDrawMethod(Legs[0].UpperClaw.Health.ToString(), new Vector2(ScreenWidth / 20 * 19, ScreenHeight / 20 * 19), spriteBatch, font, Color.White);
+            Utilities.drawTextInDrawMethod(Legs[0].LowerArm.CalculateFinalRotation().ToDegrees().ToString(), new Vector2(ScreenWidth / 20 * 19, ScreenHeight / 20 * 19), spriteBatch, font, Color.White);
         }
     }
 }

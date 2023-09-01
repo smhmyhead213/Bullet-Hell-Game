@@ -21,6 +21,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public int TimeAlive;
         public bool DeleteNextFrame;
         public bool StayWithOwner;
+        public string LineShader;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
             Rotation = rotation;
@@ -37,6 +38,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             TimeAlive = 0;
             StayWithOwner = stayWithOwner;
 
+            LineShader = "TelegraphLineShader";
             Owner.activeTelegraphs.Add(this);
         }
 
@@ -60,13 +62,18 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             }
 
         }
+
+        public void ChangeShader(string shaderName)
+        {
+            LineShader = shaderName;
+        }
         public void Draw(SpriteBatch spritebatch)
         {
-            Main.Shaders["TelegraphLineShader"].Parameters["uTime"]?.SetValue(TimeAlive);
-            Main.Shaders["TelegraphLineShader"].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
-            Main.Shaders["TelegraphLineShader"].Parameters["duration"]?.SetValue(Duration);
+            Main.Shaders[LineShader].Parameters["uTime"]?.SetValue(TimeAlive);
+            Main.Shaders[LineShader].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
+            Main.Shaders[LineShader].Parameters["duration"]?.SetValue(Duration);
 
-            Main.Shaders["TelegraphLineShader"].CurrentTechnique.Passes[0].Apply();
+            Main.Shaders[LineShader].CurrentTechnique.Passes[0].Apply();
 
             Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
