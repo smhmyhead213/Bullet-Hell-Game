@@ -16,7 +16,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             EndTime = endTime;
         }
-        
+
+        public override void InitialiseAttackValues()
+        {
+            base.InitialiseAttackValues();
+
+            CrabOwner.Velocity = Vector2.Zero;
+        }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             float cosine = Cos(AITimer / 20f);

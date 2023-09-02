@@ -16,6 +16,10 @@ namespace bullethellwhatever
             Main.player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 
+        public static float RotationTowards(Vector2 from, Vector2 to)
+        {
+            return VectorToAngle(to - from);
+        }
         public static float InverseLerp(float lower, float upper, float delta)
         {
             float output = upper - lower;

@@ -22,7 +22,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float RotationConstant;
 
-        private float RotationToAdd;
+        public float RotationToAdd;
         public CrabBossAppendage(Entity owner, CrabLeg leg, string texture)
         {
             Owner = owner;

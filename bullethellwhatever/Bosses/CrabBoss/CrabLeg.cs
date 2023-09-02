@@ -41,6 +41,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Position = LowerArm.CalculateEnd();
             LowerClaw.Position = LowerArm.CalculateEnd();
         }
+
+        public void ResetRotations()
+        {
+            UpperArm.RotationToAdd = 0f;
+            LowerArm.RotationToAdd = 0f;
+            UpperClaw.RotationToAdd = 0f;
+            LowerClaw.RotationToAdd = 0f;
+        }
         public void Update() 
         {
             UpperArm.Position = Position;

@@ -27,7 +27,7 @@ namespace bullethellwhatever.Bosses
         {
 
         }
-        public void TryEndAttack(ref int AITimer, ref int AttackNumber)
+        public virtual void TryEndAttack(ref int AITimer, ref int AttackNumber)
         {
             if (Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime && AttackNumber != 0)
             {

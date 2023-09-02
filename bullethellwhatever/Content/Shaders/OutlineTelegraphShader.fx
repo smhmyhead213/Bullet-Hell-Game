@@ -41,22 +41,13 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float xDistFromCentre = abs(0.5 - input.TextureCoordinates.x);
-    float value = pow(2.718, 14. * xDistFromCentre - 7.) + 0.1;
+    float value = exp(14. * xDistFromCentre - 7.) + 0.1;
     //float3 col = float3(value, value, value);
     
     float opacity = 1;
+ 
     
-    //if (uTime < duration / 10)
-    //{
-    //    opacity = opacity * lerp(0, 1, uTime / (duration / 10));
-    //}
-    
-    //if (uTime > duration / 10 * 9)
-    //{
-    //    opacity = opacity * lerp(0, 1, (duration - uTime) / (duration / 10));
-    //}
-    
-    return (value, value, value, 1);
+    return float4(value, value, value, 1);
     
 }
 

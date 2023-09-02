@@ -30,6 +30,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             AttackNumber = 1;
             Colour = Color.White;
 
+            BarDuration = 60; //to be changed
+
             Legs = new CrabLeg[2];
 
             for (int i = 0; i < 2; i++)
@@ -49,9 +51,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             BossAttacks = new CrabBossAttack[]
-            { 
+            {
                 new TestAttack(BarDuration * 30),
-                new TestAttack(BarDuration * 30),
+                new Minefield(BarDuration * 782346),
+                new TestAttack(BarDuration * 15),
+                new CrabCharge(BarDuration * 15),
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)
@@ -70,9 +74,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
-                Legs[i].UpperArm.RotationConstant = -expandedi * PI / 12;
-                Legs[i].LowerArm.RotationConstant = expandedi * PI / 12;
+                Legs[i].ResetRotations();
             }
+        }
+
+        public void FacePlayer()
+        {
+            Rotation = Utilities.VectorToAngle(Position - player.Position);
         }
         public override void AI()
         {
