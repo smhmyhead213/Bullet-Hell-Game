@@ -21,6 +21,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public int AdjustTimeAfterCharge;
         public int ProjectileBurstCooldown;
         public int ProjectlesPerRing;
+        public int TimeSpentCharging;
 
         public CrabCharge(int endTime) : base(endTime)
         {
@@ -37,6 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             TelegraphTime = 50;
             AdjustTimeAfterCharge = 60;
             ProjectlesPerRing = 20;
+            TimeSpentCharging = 0;
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
@@ -72,9 +74,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 CrabOwner.Velocity = 20f * Utilities.SafeNormalise(player.Position - CrabOwner.Position);
             }
 
-            if (IsCharging && Entity.touchingAnEdge(CrabOwner))
+            if (IsCharging)
+            {
+                TimeSpentCharging++;
+            }
+
+            if (IsCharging && Entity.touchingAnEdge(CrabOwner) && TimeSpentCharging > 30) // fixes instantly stop charging if its started while out of bounds
             {
                 IsCharging = false;
+                TimeSpentCharging = 0;
                 HandleBounces();
                 ChargeWindupTimer = -AdjustTimeAfterCharge;
 
@@ -87,7 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     float angle = 2f * PI / ProjectlesPerRing;
 
                     fast.Spawn(CrabOwner.Position, 3f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false); //start slow and speed up fast
-                    med.Spawn(CrabOwner.Position, 7f * Utilities.AngleToVector(i * angle * 1.5f), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                    med.Spawn(CrabOwner.Position, 7f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
                     slow.Spawn(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.005f, Vector2.One, Owner, true, Color.Red, true, false);
                 }
             }

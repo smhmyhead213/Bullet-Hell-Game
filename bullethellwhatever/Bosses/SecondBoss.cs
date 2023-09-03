@@ -70,7 +70,7 @@ namespace bullethellwhatever.Bosses
 
                 t.ChangeShader("OutlineTelegraphShader");
 
-                ray.SpawnDeathray(Position, PI / 2f, 0f, 1000, "box", 20f, ScreenWidth / 2f, 0, 0, true, Colour, "DeathrayShader", this);
+                ray.SpawnDeathray(Position, PI / 2f, 0f, 300, "box", 20f, ScreenWidth / 2f, 0, 0, true, Colour, "DeathrayShader", this);
             }
 
             Rotation = Rotation + PI / 90f;

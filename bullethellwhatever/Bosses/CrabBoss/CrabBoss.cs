@@ -54,8 +54,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 new TestAttack(BarDuration * 30),
                 new Minefield(BarDuration * 782346),
-                new TestAttack(BarDuration * 15),
-                new CrabCharge(BarDuration * 15),
+                //new TestAttack(BarDuration * 15),
+                //new CrabCharge(BarDuration * 15),
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)

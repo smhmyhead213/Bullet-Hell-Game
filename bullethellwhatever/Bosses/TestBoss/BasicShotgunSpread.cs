@@ -49,7 +49,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 FirstAttackTelegraphLineRotation = -1f;
             }
 
-            float angleBetweenShots = MathF.PI / NumberOfProjectiles;
+            float angleBetweenShots = PI / NumberOfProjectiles;
 
             float projectileOscillationFrequency = 10f;
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace bullethellwhatever.Bosses
 {
@@ -24,6 +25,11 @@ namespace bullethellwhatever.Bosses
 
         }
         public virtual void Execute(ref int AITimer, ref int AttackNumber)
+        {
+
+        }
+
+        public virtual void ExtraDraw(SpriteBatch s)
         {
 
         }

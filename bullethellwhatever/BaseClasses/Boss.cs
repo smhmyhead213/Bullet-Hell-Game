@@ -22,5 +22,13 @@ namespace bullethellwhatever.BaseClasses
         public bool JustStartedBeat;
 
         public BossAttack[] BossAttacks;
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            if (BossAttacks is not null)
+                BossAttacks[AttackNumber].ExtraDraw(spriteBatch);
+        }
     }
 }

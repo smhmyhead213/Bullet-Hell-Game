@@ -10,10 +10,10 @@ namespace bullethellwhatever
     {
         public static void InitialiseGame()
         {
-            Main.activeNPCs.Clear();
-            Main.activeProjectiles.Clear();
-            Main.activeFriendlyProjectiles.Clear();
-            Main.player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
+            activeNPCs.Clear();
+            activeProjectiles.Clear();
+            activeFriendlyProjectiles.Clear();
+            player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 
         public static float RotationTowards(Vector2 from, Vector2 to)

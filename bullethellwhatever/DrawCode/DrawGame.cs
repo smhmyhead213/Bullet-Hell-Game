@@ -19,11 +19,11 @@ namespace bullethellwhatever.DrawCode
 
             DialogueSystem.DrawDialogues(Main._spriteBatch);
 
-            if (Main.activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
+            if (activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
             {
                 Drawing.screenShakeObject.Magnitude = Vector2.Zero;
 
-                Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
+                Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(_graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
 
                 //Add in the title screen button. This uses TitleScreenButton as its attributes fit what I need.
                 Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), "StartButton",
@@ -90,8 +90,8 @@ namespace bullethellwhatever.DrawCode
             }
 
 
-            Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+            _spriteBatch.End();
+            _spriteBatch.Begin(SpriteSortMode.Immediate);
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
             {
@@ -99,8 +99,8 @@ namespace bullethellwhatever.DrawCode
             }
 
 
-            Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
+            _spriteBatch.End();
+            _spriteBatch.Begin(SpriteSortMode.Deferred);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {

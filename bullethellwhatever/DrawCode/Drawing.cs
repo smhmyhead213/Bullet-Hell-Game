@@ -39,10 +39,10 @@ namespace bullethellwhatever.DrawCode
             {
                 Vector2 positionWithScreenShake = new(position.X + screenShakeObject.Magnitude.X, position.Y + screenShakeObject.Magnitude.Y);
 
-                Main._spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
+                _spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
             }
 
-            else Main._spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
+            else _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
         }
 
         public static void DrawTelegraphs(Entity entity)

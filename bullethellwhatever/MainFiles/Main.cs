@@ -65,6 +65,8 @@ namespace bullethellwhatever.MainFiles
         public static int IdealScreenHeight = 1080;
         public static int IdealScreenWidth = 1920;
 
+        public static int GameTime;
+
         public static List<Button> activeButtons = new List<Button>();
         public Main() : base()
         {
@@ -153,6 +155,8 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Initialise();
 
+            GameTime = 0;
+
             base.Initialize();
         }
 
@@ -162,6 +166,8 @@ namespace bullethellwhatever.MainFiles
         {
 
             //MousePosition = MousePosition * (RawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight));
+
+            GameTime++;
 
             UpdateInputSystem();
 

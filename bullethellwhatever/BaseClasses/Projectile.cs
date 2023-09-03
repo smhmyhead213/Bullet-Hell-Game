@@ -60,7 +60,7 @@ namespace bullethellwhatever.BaseClasses
         public virtual void Update()
         {
             AITimer++;
-
+            
             if (touchingAnEdge(this))
             {
                 TimeOutsidePlayArea++;

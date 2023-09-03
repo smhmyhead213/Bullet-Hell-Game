@@ -9,7 +9,7 @@ using bullethellwhatever.Projectiles.Base;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
-using System.Xml.Serialization;
+
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -140,11 +140,38 @@ namespace bullethellwhatever.BaseClasses
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
         }
 
+        public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
+        {
+            Position = position;
+            Velocity = velocity;
+            Damage = damage;
+            Texture = texture;
+            Colour = colour;
+
+            Size = size;
+            Health = MaxHealth;
+            MaxHP = MaxHealth;
+            PierceToTake = pierceToTake;
+
+            ContactDamage = false;
+            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            Opacity = 1f;
+
+
+            IsHarmful = isHarmful;
+        }
         public virtual void PrepareNPC()
+        {
+            PrepareNPCButDontAddToListYet();
+
+            NPCsToAddNextFrame.Add(this);
+
+        }
+
+        public virtual void PrepareNPCButDontAddToListYet()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
             SetHitbox();
-            NPCsToAddNextFrame.Add(this);
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(Position, string.Empty, this, 1, 1);
         }
