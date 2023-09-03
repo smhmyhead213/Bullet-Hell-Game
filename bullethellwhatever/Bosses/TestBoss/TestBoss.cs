@@ -54,13 +54,14 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             musicSystem.SetMusic("TestBossMusic", true, 0.01f);
 
-            FramesPerMusicBeat = 24;
+            FramesPerMusicBeat = 24; //dividing my 2 prevents me having to fix the great double > single update bug of the 3rd of spetember 2023
             BeatsPerBar = 4;
             BarDuration = FramesPerMusicBeat * BeatsPerBar;
 
             BossAttacks = new BossAttack[]
             { new Desperation(BarDuration * 30),
-                new BasicShotgunSpread(BarDuration * 18),                
+                //new BasicShotgunSpread(BarDuration * 18),
+                new EnemySpam(BarDuration * 16),
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),
                 new SpawnEnemies(BarDuration),
@@ -83,10 +84,14 @@ namespace bullethellwhatever.Bosses.TestBoss
         public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             base.Spawn(position, initialVelocity, damage, texture, size, MaxHealth, pierceToTake, colour, shouldRemoveOnEdgeTouch, isHarmful);
+
+            
         }
 
         public override void AI()
         {
+            SetExtraUpdates(2);
+
             CurrentBeat = (int)(((float)AITimer / BarDuration - MathF.Floor(AITimer / BarDuration)) * 4) + 1;
 
             JustStartedBeat = AITimer % FramesPerMusicBeat == 0 ? true : false;

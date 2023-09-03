@@ -1,6 +1,7 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.Enemy;
+using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -32,11 +33,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             TimeToStartForcingPlayerLeft = 50; //spend frames moving to top right, and start at this time
             TimeToStartPreparingForcingPlayerRight = 300; //start moving through minefield to the right at this time
             TimeToStartForcingPlayerRight = 350;
-            TimeToMoveRightFor = 600;
+            TimeToMoveRightFor = 1200;
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int time = AITimer % (TimeToStartForcingPlayerRight + TimeToMoveRightFor + TimeToStartPreparingForcingPlayerRight);
+            int time = AITimer % (TimeToMoveRightFor + TimeToStartPreparingForcingPlayerRight);
             Time = time;
             int timeSpentMovingLeft = TimeToStartPreparingForcingPlayerRight - TimeToStartForcingPlayerLeft;
 
@@ -45,9 +46,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 CrabOwner.ResetArmRotations();
             }
 
-            Vector2 position = new Vector2(ScreenWidth / 8 * 7, ScreenHeight / 8);
             if (time < TimeToStartForcingPlayerLeft)
             {
+                Vector2 position = new Vector2(ScreenWidth / 8 * 7, ScreenHeight / 8);
                 MoveToPoint(position, AITimer, TimeToStartForcingPlayerLeft);
             }
 
@@ -89,9 +90,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                             Random rng = new Random();
                             Projectile proj = new Projectile();
                             int height = rng.Next((int)CrabOwner.Position.Y, ScreenHeight);
-                            int widthOffset = rng.Next(-5, 5);
+                            int widthOffset = rng.Next(-15, 15);
 
-                            //proj.Spawn(new Vector2(Leg(1).LowerClaw.Position.X + widthOffset, height), Vector2.Zero, 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                            proj.Spawn(new Vector2(Leg(1).LowerClaw.Position.X + widthOffset, height), Vector2.Zero, 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
                         }
                     }
                 }
@@ -100,7 +101,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             else if (time == TimeToStartPreparingForcingPlayerRight) // spend 60 opening arm
             {
                 CrabOwner.Velocity.X = 0; // NOOOOOOOOO DONT LEAVE MEEEEEEEE
+                TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, ScreenHeight, TimeToStartForcingPlayerRight - TimeToStartPreparingForcingPlayerRight, Leg(0).LowerClaw.Position, Color.White, "box", Leg(0).LowerClaw, true);
             }
+
             else if (time >= TimeToStartPreparingForcingPlayerRight && time < TimeToStartForcingPlayerRight)
             {
                 float totalAngleToRotateBy; //undo the previous rotation
@@ -125,19 +128,37 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 ray.SpawnDeathray(Leg(0).LowerClaw.Position, PI, 1f, TimeToMoveRightFor, "box", 20, ScreenHeight, 0, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
                 ray.SetStayWithOwner(true);
-                CrabOwner.Velocity.X = ((ScreenWidth / 12f * 11) - (ScreenWidth / 8f)) / (TimeToMoveRightFor);
+                CrabOwner.Velocity.X = ((ScreenWidth / 50f * 49) - (ScreenWidth / 8f)) / (TimeToMoveRightFor);
+            }
+
+            else if (time > TimeToStartForcingPlayerRight && time < TimeToStartForcingPlayerRight + TimeToMoveRightFor)
+            {
+                if (AITimer % 10 == 0)
+                {
+                    Deathray ray = new Deathray();
+
+                    ray.SpawnDeathray(new Vector2(Leg(0).LowerClaw.Position.X, 0), PI, 1f, TimeToMoveRightFor, "box", 40, ScreenHeight, 0, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
+                }
+            }
+
+            else if (time == TimeToStartForcingPlayerRight + TimeToMoveRightFor - 10)
+            {
+                foreach (Projectile p in activeProjectiles)
+                {
+                    p.Die();
+                }    
             }
         }
 
         public override void ExtraDraw(SpriteBatch s)
         {
-            if (activeProjectiles.Count > 0)
-            {
-                Utilities.drawTextInDrawMethod(activeProjectiles[0].AITimer.ToString(), Utilities.CentreOfScreen(), _spriteBatch, font, Color.White);
-                Utilities.drawTextInDrawMethod(((Deathray)activeProjectiles[0]).Duration.ToString(), Utilities.CentreOfScreen() + new Vector2(0, 20), _spriteBatch, font, Color.White);
-                Utilities.drawTextInDrawMethod((Time - TimeToStartForcingPlayerLeft - 60).ToString(), Utilities.CentreOfScreen() + new Vector2(0, 40), _spriteBatch, font, Color.White);
+            //if (activeProjectiles.Count > 0)
+            //{
+            //    Utilities.drawTextInDrawMethod(activeProjectiles[0].AITimer.ToString(), Utilities.CentreOfScreen(), _spriteBatch, font, Color.White);
+            //    Utilities.drawTextInDrawMethod(((Deathray)activeProjectiles[0]).Duration.ToString(), Utilities.CentreOfScreen() + new Vector2(0, 20), _spriteBatch, font, Color.White);
+            //    Utilities.drawTextInDrawMethod((Time - TimeToStartForcingPlayerLeft - 60).ToString(), Utilities.CentreOfScreen() + new Vector2(0, 40), _spriteBatch, font, Color.White);
 
-            }
+            //}
         }
     }
 }

@@ -25,11 +25,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            float cosine = Cos(AITimer / 20f);
+
+            float cosine = Cos(AITimer / 10f);  
+            CrabOwner.Velocity = Vector2.Zero;
             //CrabOwner.Rotation = CrabOwner.Rotation + PI / 60f;
-            CrabOwner.Legs[0].UpperArm.Rotate(0.075f * cosine);
-            CrabOwner.Legs[0].LowerArm.Rotate(0.125f * cosine);
-            CrabOwner.Legs[0].UpperClaw.Rotate(0.125f * cosine);
+            CrabOwner.Legs[0].UpperArm.Rotate(0.075f * 2f * cosine);
+            CrabOwner.Legs[0].LowerArm.Rotate(0.125f * 2f * cosine);
+            CrabOwner.Legs[0].UpperClaw.Rotate(0.125f * 2f * cosine);
 
             //CrabOwner.Legs[0].LowerClaw.RotationConstant = -PI / 3; // keep claw open
 
@@ -82,7 +84,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).LowerClaw.Rotate(angleToCloseByThisFrame);//rotate based on formula sitting in desmos
             }
             
-            if (timeSinceClapReset > otherHandClapFrequency - 20)
+            if (timeSinceClapReset > otherHandClapFrequency - 10)
             {
                 WeakHomingProjectile proj = new WeakHomingProjectile(12f, 60);
 
@@ -94,11 +96,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             CrabOwner.Position = Vector2.Lerp(CrabOwner.Position, PositionToMoveTo, 1f / (positionChangeTime - timeSinceLastPositionChoose));
 
-            // rotate to face the player
+            //rotate to face the player
 
             CrabOwner.Rotation = Utilities.VectorToAngle(CrabOwner.Position - player.Position);
 
-            if (AITimer % 2 == 0 & cosine > 0.5)
+            if (cosine > 0.5)
             {
                 Projectile proj = new Projectile();
 
@@ -107,6 +109,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 proj.Spawn(CrabOwner.Legs[0].LowerClaw.Position, 8f * direction, 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
                 //proj.Spawn(CrabOwner.Position, 5f * Utilities.AngleToVector(PI / 2f), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
             }
+
+            HandleBounces(); //to prevent something funny happening
+
         }
     }
 }

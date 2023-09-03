@@ -48,7 +48,7 @@ namespace bullethellwhatever.Enemies
 
                 if (!HasChosenChargeDirection)
                 {
-                    ChargeSpeed = 0.4f;
+                    ChargeSpeed = 0.2f;
                     Velocity = ChargeSpeed * Utilities.SafeNormalise(Main.player.Position - Position, Vector2.Zero);
 
                     HasChosenChargeDirection = true;

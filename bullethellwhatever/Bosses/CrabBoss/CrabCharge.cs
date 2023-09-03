@@ -71,7 +71,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 IsCharging = true;
                 ChargeWindupTimer++;
-                CrabOwner.Velocity = 20f * Utilities.SafeNormalise(player.Position - CrabOwner.Position);
+                CrabOwner.Velocity = 40f * Utilities.SafeNormalise(player.Position - CrabOwner.Position);
             }
 
             if (IsCharging)

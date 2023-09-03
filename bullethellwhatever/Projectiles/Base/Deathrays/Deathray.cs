@@ -121,6 +121,11 @@ namespace bullethellwhatever.Projectiles.Base
                 base.CheckForHits();
             }          
         }
+
+        public override void Die()
+        {
+            base.Die();
+        }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)

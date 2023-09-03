@@ -46,10 +46,13 @@ namespace bullethellwhatever.MainFiles
         {
             foreach (NPC npc in activeNPCs)
             {
-                npc.AI();
-                npc.UpdateHitbox();
-                npc.CheckForHits();
-                npc.Update();
+                for (int i = 0; i < npc.ExtraUpdates; i++)
+                {
+                    npc.AI();
+                    npc.UpdateHitbox();
+                    npc.CheckForHits();
+                    npc.Update();
+                }
 
                 if (npc.dialogueSystem.dialogueObject is not null)
                     npc.dialogueSystem.dialogueObject.DoDialogue();

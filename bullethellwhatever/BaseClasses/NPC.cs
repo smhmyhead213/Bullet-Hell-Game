@@ -22,10 +22,14 @@ namespace bullethellwhatever.BaseClasses
         public bool ContactDamage;
 
         public int PierceToTake;
+
+        public int ExtraUpdates;
         public float HPRatio => Health / MaxHP;
         public DialogueSystem dialogueSystem;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
+            ExtraUpdates = 1; //default
+
             Position = position;
             Velocity = velocity;
             Damage = damage;
@@ -46,11 +50,13 @@ namespace bullethellwhatever.BaseClasses
 
             IsHarmful = isHarmful;
 
-            SetHitbox();
+            PrepareNPC();
         }
         //this one takes a texture directly
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
+            ExtraUpdates = 1;
+
             Position = position;
             Velocity = velocity;
             Damage = damage;
@@ -140,8 +146,14 @@ namespace bullethellwhatever.BaseClasses
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
         }
 
+        public virtual void SetExtraUpdates(int updates)
+        {
+            ExtraUpdates = updates;
+        }
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
+            ExtraUpdates = 1;
+
             Position = position;
             Velocity = velocity;
             Damage = damage;
