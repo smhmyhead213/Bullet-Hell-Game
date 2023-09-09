@@ -28,6 +28,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Owner = owner;
             Leg = leg;
             Texture = Assets[texture];
+            Size = Vector2.One;
             IsHarmful = true;
 
             PierceToTake = 20;

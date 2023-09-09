@@ -42,6 +42,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerClaw.Position = LowerArm.CalculateEnd();
         }
 
+        public float Length()
+        {
+            return UpperArm.Texture.Height * UpperArm.Size.Y + LowerArm.Texture.Height * LowerArm.Size.Y + UpperClaw.Texture.Height * UpperClaw.Size.Y + LowerClaw.Texture.Height * LowerClaw.Size.Y;
+        }
         public void ResetRotations()
         {
             UpperArm.RotationToAdd = 0f;

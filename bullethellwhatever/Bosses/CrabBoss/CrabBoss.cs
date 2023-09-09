@@ -11,15 +11,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Policy;
+using bullethellwhatever.Projectiles;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabBoss : Boss
     {
         public CrabLeg[] Legs;
+        public Vector2[] BoosterPositions;
         public float idivisior;
         public float c;
         public float ydivisor;
+        public bool BoostersActive;
         public CrabBoss()
         {
             Texture = Assets["CrabBody"];
@@ -30,9 +34,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             AttackNumber = 1;
             Colour = Color.White;
 
+            BoostersActive = false;
+
             BarDuration = 60; //to be changed
 
             Legs = new CrabLeg[2];
+            BoosterPositions = new Vector2[2];
 
             for (int i = 0; i < 2; i++)
             {
@@ -53,9 +60,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BossAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30),
-                new Minefield(BarDuration * 782346),
-                //new TestAttack(BarDuration * 15),
-                //new CrabCharge(BarDuration * 15),
+                new ExpandingOrb(120),
+                new TestAttack(BarDuration * 15),
+                new CrabCharge(BarDuration * 15),
+                new Minefield(1550)
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)
@@ -78,6 +86,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
+        public void SetBoosters(bool on)
+        {
+            BoostersActive = on;
+        }
         public void FacePlayer()
         {
             Rotation = Utilities.VectorToAngle(Position - player.Position);
@@ -98,6 +110,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Legs[i].Update();
                     Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation);
+                    BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 1.1f), Rotation);
                 }
             }
 
@@ -118,6 +131,37 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (BoostersActive)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate);
+
+                for (int i = 0; i < BoosterPositions.Length; i++)
+                {
+                    float width = MathHelper.Clamp(Abs(Velocity.Y) / 1f, 0f, 2f);
+
+                    Vector2 size = new Vector2(width, Velocity.Length());
+
+                    Vector2 drawPos = BoosterPositions[i];
+
+                    //drawPos.X = BoosterPositions[i].X + size.X;
+
+                    Vector2 originOffset = new Vector2(0f, 0f);
+
+                    Shader = Shaders["CrabRocketBoosterShader"];
+                    Shader.CurrentTechnique.Passes[0].Apply();
+
+                    //spriteBatch.Draw(Assets["box"], drawPos, null, Colour, Rotation + PI, originOffset, size, SpriteEffects.None, 1);
+                    Drawing.BetterDraw(Assets["box"], drawPos, null, Colour, Rotation + PI, size, SpriteEffects.None, 1);
+                }
+
+                spriteBatch.End();
+
+                if (this is IDrawsShader) //if we were already drawing stuff that had shaders
+                    spriteBatch.Begin(SpriteSortMode.Immediate);
+                else spriteBatch.Begin(SpriteSortMode.Deferred);
+            }
+
             base.Draw(spriteBatch);
 
             foreach (CrabLeg leg in Legs)

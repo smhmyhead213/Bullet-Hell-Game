@@ -7,8 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -18,7 +17,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public int TimeToMoveRightFor;
         public int TimeToStartPreparingForcingPlayerRight;
         public int TimeToStartForcingPlayerRight;
-
+        private int StoredTime; //debug remove later
         public int Time;
         public Minefield(int endTime) : base(endTime)
         {
@@ -37,7 +36,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int time = AITimer % (TimeToMoveRightFor + TimeToStartPreparingForcingPlayerRight);
+            int time = AITimer % (TimeToMoveRightFor + TimeToStartForcingPlayerRight);
+
             Time = time;
             int timeSpentMovingLeft = TimeToStartPreparingForcingPlayerRight - TimeToStartForcingPlayerLeft;
 
@@ -49,7 +49,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (time < TimeToStartForcingPlayerLeft)
             {
                 Vector2 position = new Vector2(ScreenWidth / 8 * 7, ScreenHeight / 8);
-                MoveToPoint(position, AITimer, TimeToStartForcingPlayerLeft);
+                MoveToPoint(position, time, TimeToStartForcingPlayerLeft);
             }
 
             if (time == TimeToStartForcingPlayerLeft)
@@ -141,7 +141,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            else if (time == TimeToStartForcingPlayerRight + TimeToMoveRightFor - 10)
+            if (time == TimeToStartForcingPlayerRight + TimeToMoveRightFor - 1)
             {
                 foreach (Projectile p in activeProjectiles)
                 {

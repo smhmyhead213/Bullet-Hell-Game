@@ -61,6 +61,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 if (ChargeWindupTimer > TimeToWindUpCharge - TelegraphTime) //tele line
                 {
+                    CrabOwner.SetBoosters(false);
                     TelegraphLine t = new TelegraphLine(Utilities.RotationTowards(CrabOwner.Position, player.Position), 0, 0, CrabOwner.Texture.Width * CrabOwner.Size.X, 2000, 1, CrabOwner.Position, Color.White, "box", CrabOwner, true);
                     t.ChangeShader("OutlineTelegraphShader");
                     CrabOwner.FacePlayer();
@@ -71,6 +72,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 IsCharging = true;
                 ChargeWindupTimer++;
+                CrabOwner.SetBoosters(true);
                 CrabOwner.Velocity = 40f * Utilities.SafeNormalise(player.Position - CrabOwner.Position);
             }
 

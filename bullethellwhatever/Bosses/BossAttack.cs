@@ -97,14 +97,15 @@ namespace bullethellwhatever.Bosses
         }
 
 
-        public void MoveToPoint(Vector2 point, int AITImer, int duration)
+        public void MoveToPoint(Vector2 point, int movementTimer, int duration)
         {
             Vector2 vectorToPoint = point - Owner.Position;
             float distanceToTravel = vectorToPoint.Length();
             //Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * distanceToTravel / (timeToStartAt - AITimer);
 
+
             // top 5 integration moments
-            Owner.Velocity = Utilities.SafeNormalise(vectorToPoint, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * Owner.AITimer / duration);
+            Owner.Velocity = Utilities.SafeNormalise(vectorToPoint, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * movementTimer / duration);
         }
         public void SpinUpClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
         {

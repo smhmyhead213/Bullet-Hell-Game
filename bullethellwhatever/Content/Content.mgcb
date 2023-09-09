@@ -209,6 +209,18 @@
 /processorParam:TextureFormat=Color
 /build:SettingsButton.png
 
+#begin Shaders/BigMassiveOrbShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/BigMassiveOrbShader.fx
+
+#begin Shaders/CrabRocketBoosterShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/CrabRocketBoosterShader.fx
+
 #begin Shaders/DeathrayShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

@@ -33,9 +33,9 @@ namespace bullethellwhatever.BaseClasses
             Position = position;
             Velocity = velocity;
             Damage = damage;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
             Colour = colour;
-            NPCsToAddNextFrame.Add(this);
+
             Size = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
