@@ -14,6 +14,7 @@ using System.Security.Policy;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.DrawCode;
 
+
 namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabBoss : Boss
@@ -60,7 +61,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BossAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30),
-                new ExpandingOrb(120),
+                new ExpandingOrb(1200),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 15),
                 new Minefield(1550)
@@ -110,7 +111,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Legs[i].Update();
                     Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation);
-                    BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 1.1f), Rotation);
+                    BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
                 }
             }
 
@@ -136,23 +137,26 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate);
 
+                Shader = Shaders["CrabRocketBoosterShader"];
+                Shader.CurrentTechnique.Passes[0].Apply();
+
                 for (int i = 0; i < BoosterPositions.Length; i++)
                 {
                     float width = MathHelper.Clamp(Abs(Velocity.Y) / 1f, 0f, 2f);
+                    float height = Velocity.Length();
+                    Texture2D texture = Assets["box"];
 
-                    Vector2 size = new Vector2(width, Velocity.Length());
+                    Vector2 size = new Vector2(width, height);
 
                     Vector2 drawPos = BoosterPositions[i];
+                    drawPos = drawPos - Utilities.RotateVectorClockwise(new Vector2(0f, texture.Height * (0.5f * height - 0.5f)), Rotation);
 
                     //drawPos.X = BoosterPositions[i].X + size.X;
 
                     Vector2 originOffset = new Vector2(0f, 0f);
-
-                    Shader = Shaders["CrabRocketBoosterShader"];
-                    Shader.CurrentTechnique.Passes[0].Apply();
-
+                 
                     //spriteBatch.Draw(Assets["box"], drawPos, null, Colour, Rotation + PI, originOffset, size, SpriteEffects.None, 1);
-                    Drawing.BetterDraw(Assets["box"], drawPos, null, Colour, Rotation + PI, size, SpriteEffects.None, 1);
+                    Drawing.BetterDraw(texture, drawPos, null, Colour, Rotation + PI, size, SpriteEffects.None, 1);
                 }
 
                 spriteBatch.End();
@@ -160,6 +164,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (this is IDrawsShader) //if we were already drawing stuff that had shaders
                     spriteBatch.Begin(SpriteSortMode.Immediate);
                 else spriteBatch.Begin(SpriteSortMode.Deferred);
+
+                //for (int i = 0; i < BoosterPositions.Length;i++) //remove later
+                //{
+                //    Vector2 drawPos = BoosterPositions[i];
+                //    drawPos = drawPos - Utilities.RotateVectorClockwise(new Vector2(0f, Assets["box"].Height * (0.5f * Velocity.Length() - 0.5f)), Rotation);
+                //    Drawing.BetterDraw(Assets["box"], drawPos, null, Color.White, Rotation + PI, Vector2.One, SpriteEffects.None, 1);
+                //}
             }
 
             base.Draw(spriteBatch);

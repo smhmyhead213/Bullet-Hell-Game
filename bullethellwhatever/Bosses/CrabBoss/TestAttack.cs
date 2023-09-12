@@ -50,7 +50,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer % positionChangeTime == 0) // every 3 seconds, pick a new location to move to
             {
                 Random rng = new Random();
-
+                
                 int xpos = rng.Next(ScreenWidth / 8, ScreenWidth / 8 * 7);
                 int ypos = rng.Next(ScreenHeight / 8, ScreenHeight / 8 * 7);
 

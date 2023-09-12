@@ -44,6 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (time == 0)
             {
                 CrabOwner.ResetArmRotations();
+                CrabOwner.SetBoosters(false);
             }
 
             if (time < TimeToStartForcingPlayerLeft)

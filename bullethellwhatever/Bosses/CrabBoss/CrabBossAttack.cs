@@ -29,11 +29,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Owner.AttackNumber != Owner.BossAttacks.Length - 1)
                 {
                     Owner.AttackNumber++;
+                    Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
                     CrabOwner.ResetArmRotations();
                 }
                 else
                 {
                     Owner.AttackNumber = 1;
+                    Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
                     CrabOwner.ResetArmRotations();
                 }
             }

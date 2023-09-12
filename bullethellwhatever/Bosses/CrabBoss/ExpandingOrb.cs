@@ -38,13 +38,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             int time = AITimer % (OrbExpansionTime);
 
-            CrabOwner.SetBoosters(false);
+            CrabOwner.SetBoosters(true);
 
             BigMassiveOrb orb = new BigMassiveOrb(0.03f, 120);
 
             Owner.Rotation = Owner.Rotation + (AITimer / 60000f);
 
-            Owner.Velocity = Sin(AITimer / 40f) * -Vector2.UnitY * 2.5f;
+            Owner.Velocity = 3f * Sin(AITimer / 40f) * -Vector2.UnitY * 2.5f;
 
         //    if (time < CentreMovingTime)
         //    {

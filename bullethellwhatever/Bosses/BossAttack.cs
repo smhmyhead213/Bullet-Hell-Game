@@ -41,9 +41,15 @@ namespace bullethellwhatever.Bosses
 
                 Owner.Rotation = 0;
                 if (Owner.AttackNumber != Owner.BossAttacks.Length - 1)
+                {
                     Owner.AttackNumber++;
+                    Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
+                }
                 else
+                {
                     Owner.AttackNumber = 1;
+                    Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
+                }
             }
 
             if (Owner.Health <= 0 && !Owner.IsDesperationOver && !HasResetAITimerForDesperation)
