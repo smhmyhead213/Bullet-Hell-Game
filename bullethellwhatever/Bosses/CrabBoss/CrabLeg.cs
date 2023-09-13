@@ -61,24 +61,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Hitbox.DrawHitbox();
             LowerClaw.Hitbox.DrawHitbox();
         }
-        public void Update() 
+        public void Update()
         {
             UpperArm.Position = Position;
             //UpperArm.Rotation = UpperArm.Rotation + PI / 90f;
-            UpperArm.UpdateLimb();
-
-            LowerArm.Position = UpperArm.End;
+            LowerArm.Position = UpperArm.CalculateEnd();
             //LowerArm.Rotation = UpperArm.Rotation; //comment this out later just for test
             //LowerArm.Position = new Vector2(ScreenWidth / 1.5f, ScreenHeight / 2);
             //LowerArm.Rotation = LowerArm.Rotation + PI / 100f;
-            LowerArm.UpdateLimb();
-
-            UpperClaw.Position = LowerArm.End;
+            UpperClaw.Position = LowerArm.CalculateEnd();
             //UpperClaw.Rotation = UpperClaw.Rotation + PI / 80f;
-            UpperClaw.UpdateLimb();
+            LowerClaw.Position = LowerArm.CalculateEnd();
 
-            LowerClaw.Position = LowerArm.End;
-            LowerClaw.UpdateLimb();
         }
 
         public void Draw(SpriteBatch spriteBatch)

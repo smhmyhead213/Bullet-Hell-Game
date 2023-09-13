@@ -118,7 +118,7 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void CheckForHits()
         {
-            if (IsActive) //only bother to check for coll
+            if (IsActive) //only bother to check for collision if active
             {
                 base.CheckForHits();
             }          

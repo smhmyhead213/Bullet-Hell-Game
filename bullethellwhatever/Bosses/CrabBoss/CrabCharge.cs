@@ -69,6 +69,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             int chargeAccelTime = 25;
+            float angleToOpenArmsBy = PI / 2f;
 
             if (ChargeWindupTimer >= TimeToWindUpCharge && ChargeWindupTimer < TimeToWindUpCharge + chargeAccelTime)
             {
@@ -81,6 +82,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 CrabOwner.SetBoosters(true);
 
                 Accelerate(40f * DirectionToChargeAt, chargeAccelTime);
+
+                
+                Leg(0).UpperArm.Rotate(angleToOpenArmsBy / chargeAccelTime);
+                Leg(0).LowerArm.Rotate(angleToOpenArmsBy / chargeAccelTime);
+                Leg(1).UpperArm.Rotate(-angleToOpenArmsBy / chargeAccelTime);
+                Leg(1).LowerArm.Rotate(-angleToOpenArmsBy / chargeAccelTime);
+
             }
 
             if (IsCharging)
@@ -107,6 +115,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     med.Spawn(CrabOwner.Position, 7f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
                     slow.Spawn(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.005f, Vector2.One, Owner, true, Color.Red, true, false);
                 }
+            }
+
+            if (ChargeWindupTimer < -(AdjustTimeAfterCharge / 2f)) // if we are recovering from a charge
+            {
+                Leg(0).UpperArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
+                Leg(0).LowerArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
+                Leg(1).UpperArm.Rotate(angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
+                Leg(1).LowerArm.Rotate(angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
             }
         }
     }

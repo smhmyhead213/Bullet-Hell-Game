@@ -31,19 +31,27 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Size = Vector2.One;
             IsHarmful = true;
 
+            Updates = 1;
+
             PierceToTake = 20;
 
             PrepareNPC();
             //Rotation = Rotation + PI / 2;
         }
 
-        public virtual void UpdateLimb()
+        public override void Update()
         {
             //Rotation = Rotation + PI / 60f;
             //if (this is CrabBossUpperArm)
             Rotation = CalculateFinalRotation();
-            UpdateHitbox();
-            End = CalculateEnd();
+
+            //End = CalculateEnd();
+
+            if (Health <= 0)
+            {
+                TargetableByHoming = false;
+            }
+            else TargetableByHoming = true;
         }
 
         public virtual float RotationFromV() // rotation from vertical

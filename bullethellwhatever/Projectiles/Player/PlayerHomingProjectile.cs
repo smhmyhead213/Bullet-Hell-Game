@@ -39,11 +39,14 @@ namespace bullethellwhatever.Projectiles.Player
             {
                 foreach (NPC npc in activeNPCs)
                 {
-                    float distance = Utilities.DistanceBetweenEntities(this, npc);
-                    if (distance < minDistance)
+                    if (npc.TargetableByHoming)
                     {
-                        minDistance = distance;
-                        closestNPC = npc;
+                        float distance = Utilities.DistanceBetweenEntities(this, npc);
+                        if (distance < minDistance)
+                        {
+                            minDistance = distance;
+                            closestNPC = npc;
+                        }
                     }
                 }
                 //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target

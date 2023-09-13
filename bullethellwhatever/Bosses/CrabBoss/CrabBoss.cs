@@ -109,12 +109,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 if (Legs[i] is not null)
                 {
-                    Legs[i].Update();
                     Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation);
                     BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
+                    Legs[i].Update();
                 }
             }
-
 
             if (Health <= 0)
             {

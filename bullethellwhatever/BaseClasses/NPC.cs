@@ -20,6 +20,7 @@ namespace bullethellwhatever.BaseClasses
         public int MaxIFrames;
 
         public bool ContactDamage;
+        public bool TargetableByHoming;
 
         public int PierceToTake;        
         public float HPRatio => Health / MaxHP;
@@ -27,6 +28,8 @@ namespace bullethellwhatever.BaseClasses
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1; //default
+
+            TargetableByHoming = true;
 
             Position = position;
             Velocity = velocity;
@@ -54,6 +57,8 @@ namespace bullethellwhatever.BaseClasses
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1;
+
+            TargetableByHoming = true;
 
             Position = position;
             Velocity = velocity;
@@ -87,6 +92,12 @@ namespace bullethellwhatever.BaseClasses
             {
                 IFrames--;
             }
+
+            if (Health <= 0)
+            {
+                TargetableByHoming = false;
+            }
+            else TargetableByHoming = true;
 
             Position = Position + Velocity;
 
