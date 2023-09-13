@@ -31,10 +31,16 @@ namespace bullethellwhatever.BaseClasses
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
         public Effect? Shader;
+        public int Updates;
 
 
 
         public Vector2[] afterimagesPositions; //when using afterimages, this needs to be initialised in the Spawn method of whatever has them.
+
+        public virtual void SetUpdates(int updates)
+        {
+            Updates = updates;
+        }
 
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {

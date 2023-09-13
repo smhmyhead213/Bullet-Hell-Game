@@ -16,16 +16,20 @@ namespace bullethellwhatever.Projectiles.Player
         public float HomingFactor; //how strong the homing is
         public bool ChosenDirection;
         public int Direction;
-        public int HomingTime => 30;
+        public int HomingTime;
 
         public override void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             base.Spawn(position, velocity, damage, pierce, texture, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
-            afterimagesPositions = new Vector2[22]; 
+            afterimagesPositions = new Vector2[22 * Updates]; 
         }
         public override void AI()
         {
+            SetUpdates(2);
+
+            HomingTime = 30 * Updates;
+
             NPC closestNPC = new NPC(); //the target
             float minDistance = float.MaxValue;
 
@@ -33,7 +37,7 @@ namespace bullethellwhatever.Projectiles.Player
 
             if (AITimer > HomingTime)
             {
-                foreach (NPC npc in Main.activeNPCs)
+                foreach (NPC npc in activeNPCs)
                 {
                     float distance = Utilities.DistanceBetweenEntities(this, npc);
                     if (distance < minDistance)
@@ -43,7 +47,7 @@ namespace bullethellwhatever.Projectiles.Player
                     }
                 }
                 //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
-                Velocity = 0.4f * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
+                Velocity = 0.4f / Updates * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
             }
 
             Position = Position + Velocity;

@@ -22,7 +22,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public int ProjectileBurstCooldown;
         public int ProjectlesPerRing;
         public int TimeSpentCharging;
-
+        public Vector2 DirectionToChargeAt;
         public CrabCharge(int endTime) : base(endTime)
         {
             EndTime = endTime;            
@@ -68,12 +68,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (ChargeWindupTimer == TimeToWindUpCharge)
+            int chargeAccelTime = 25;
+
+            if (ChargeWindupTimer >= TimeToWindUpCharge && ChargeWindupTimer < TimeToWindUpCharge + chargeAccelTime)
             {
+                if (ChargeWindupTimer == TimeToWindUpCharge)
+                {
+                    DirectionToChargeAt = Utilities.SafeNormalise(player.Position - CrabOwner.Position);
+                }
                 IsCharging = true;
                 ChargeWindupTimer++;
                 CrabOwner.SetBoosters(true);
-                CrabOwner.Velocity = 40f * Utilities.SafeNormalise(player.Position - CrabOwner.Position);
+
+                Accelerate(40f * DirectionToChargeAt, chargeAccelTime);
             }
 
             if (IsCharging)

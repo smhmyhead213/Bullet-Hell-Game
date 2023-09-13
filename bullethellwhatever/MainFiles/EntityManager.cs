@@ -46,7 +46,7 @@ namespace bullethellwhatever.MainFiles
         {
             foreach (NPC npc in activeNPCs)
             {
-                for (int i = 0; i < npc.ExtraUpdates; i++)
+                for (int i = 0; i < npc.Updates; i++)
                 {
                     npc.AI();
                     npc.UpdateHitbox();
@@ -69,10 +69,13 @@ namespace bullethellwhatever.MainFiles
 
             foreach (Projectile projectile in activeProjectiles)
             {
-                projectile.AI();
-                projectile.UpdateHitbox();
-                projectile.CheckForHits();
-                projectile.Update();
+                for (int i = 0; i < projectile.Updates; i++)
+                {
+                    projectile.AI();
+                    projectile.UpdateHitbox();
+                    projectile.CheckForHits();
+                    projectile.Update();
+                }
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
                 {
@@ -82,10 +85,13 @@ namespace bullethellwhatever.MainFiles
 
             foreach (Projectile projectile in activeFriendlyProjectiles)
             {
-                projectile.AI();
-                projectile.UpdateHitbox();
-                projectile.CheckForHits();
-                projectile.Update();
+                for (int i = 0; i < projectile.Updates; i++)
+                {
+                    projectile.AI();
+                    projectile.UpdateHitbox();
+                    projectile.CheckForHits();
+                    projectile.Update();
+                }
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
                 {

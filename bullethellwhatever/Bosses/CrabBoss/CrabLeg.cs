@@ -53,6 +53,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.RotationToAdd = 0f;
             LowerClaw.RotationToAdd = 0f;
         }
+
+        public void DrawHitboxes()
+        {
+            UpperArm.Hitbox.DrawHitbox();
+            LowerArm.Hitbox.DrawHitbox();
+            UpperClaw.Hitbox.DrawHitbox();
+            LowerClaw.Hitbox.DrawHitbox();
+        }
         public void Update() 
         {
             UpperArm.Position = Position;

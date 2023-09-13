@@ -41,8 +41,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             //Rotation = Rotation + PI / 60f;
             //if (this is CrabBossUpperArm)
-            Rotation = CalculateFinalRotation(); 
-            
+            Rotation = CalculateFinalRotation();
+            UpdateHitbox();
             End = CalculateEnd();
         }
 

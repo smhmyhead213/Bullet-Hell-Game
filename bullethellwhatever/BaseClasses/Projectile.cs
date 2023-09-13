@@ -37,6 +37,7 @@ namespace bullethellwhatever.BaseClasses
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
+            Updates = 1;
 
             Opacity = 1f;
 

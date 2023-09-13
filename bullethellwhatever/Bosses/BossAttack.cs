@@ -102,7 +102,10 @@ namespace bullethellwhatever.Bosses
             Owner.Velocity = Utilities.SafeNormalise(vectorToCentre, Vector2.Zero) * (2f * MathF.PI * distanceToTravel / duration) * MathF.Sin(MathF.PI * Owner.AITimer / duration);
         }
 
-
+        public void Accelerate(Vector2 finalVel, int duration)
+        {
+            Owner.Velocity = Owner.Velocity + finalVel / duration;
+        }
         public void MoveToPoint(Vector2 point, int movementTimer, int duration)
         {
             Vector2 vectorToPoint = point - Owner.Position;

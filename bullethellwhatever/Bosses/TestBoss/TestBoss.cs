@@ -89,7 +89,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
         public override void AI()
         {
-            SetExtraUpdates(2);
+            SetUpdates(2);
 
             CurrentBeat = (int)(((float)AITimer / BarDuration - MathF.Floor(AITimer / BarDuration)) * 4) + 1;
 

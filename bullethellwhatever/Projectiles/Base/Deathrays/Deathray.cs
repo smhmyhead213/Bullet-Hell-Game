@@ -34,6 +34,8 @@ namespace bullethellwhatever.Projectiles.Base
         public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
+            Updates = 1;
+
             Position = position;
             Rotation = initialRotation;
 

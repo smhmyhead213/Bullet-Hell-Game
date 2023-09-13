@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework.Graphics;
+using bullethellwhatever.Projectiles.TelegraphLines;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -97,6 +99,14 @@ namespace bullethellwhatever.BaseClasses
             else return false;
         }
 
+        public void DrawHitbox()
+        {
+            TelegraphLine zerotone = new TelegraphLine(Utilities.VectorToAngle(Vertices[1] - Vertices[0]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[0], Vertices[1]), 2, Vertices[0], Color.White, "box", Owner, false);
+            TelegraphLine onetothree = new TelegraphLine(Utilities.VectorToAngle(Vertices[3] - Vertices[1]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[3], Vertices[1]), 2, Vertices[1], Color.White, "box", Owner, false);
+            TelegraphLine threetotwo = new TelegraphLine(Utilities.VectorToAngle(Vertices[2] - Vertices[3]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[3]), 2, Vertices[3], Color.White, "box", Owner, false);
+            TelegraphLine twotozero = new TelegraphLine(Utilities.VectorToAngle(Vertices[0] - Vertices[2]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[0]), 2, Vertices[2], Color.White, "box", Owner, false);
+
+        }
         public bool IsVec2WithinMyRectangle(Vector2 v2)
         {
             // https://math.stackexchange.com/questions/190111/how-to-check-if-a-point-is-inside-a-rectangle#:~:text=To%20be%20inside%20the%20rectangle,%7C%3D%7CAB%7C. source
