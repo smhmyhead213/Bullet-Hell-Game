@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles.Base;
 
 namespace bullethellwhatever.Projectiles.TelegraphLines
 {
@@ -22,9 +23,13 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public bool DeleteNextFrame;
         public bool StayWithOwner;
         public string LineShader;
+        public bool SpawnRayAfterFinish;
+        public Deathray ToSpawn;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
             Rotation = rotation;
+
+            SpawnRayAfterFinish = false;
 
             RotationalVelocity = rotationalVelocity;
             RotationalAcceleration = rotationalAcceleration;
@@ -59,10 +64,20 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             if (TimeAlive > Duration)
             {
                 DeleteNextFrame = true;
+                if (SpawnRayAfterFinish)
+                {
+                    ToSpawn.SpawnDeathray(ToSpawn.Position, ToSpawn.Rotation, ToSpawn.Damage, ToSpawn.Duration, ToSpawn.Texture, ToSpawn.Width, ToSpawn.Length, ToSpawn.AngularVelocity, ToSpawn.Acceleration, ToSpawn.IsHarmful, ToSpawn.Colour, ToSpawn.Shader, ToSpawn.Owner);
+                }
             }
 
         }
 
+        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
+        {
+            SpawnRayAfterFinish = true;
+            ToSpawn = new Deathray();
+            ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+        }
         public void ChangeShader(string shaderName)
         {
             LineShader = shaderName;

@@ -61,10 +61,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BossAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30),
-                new ExpandingOrb(120),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18),
-                new Minefield(1550)
+                new Minefield(1550),
+                new ExpandingOrb(1700),
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)
@@ -81,7 +81,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             for (int i = 0; i < 2; i++)
             {
-                int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
+                //int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
                 Legs[i].ResetRotations();
             }

@@ -45,6 +45,22 @@ namespace bullethellwhatever.DrawCode
             else _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
         }
 
+        public static void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
+        {
+            //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
+
+            //Draw the item at the position, moved by the amount the screen is shaking.
+
+            if (screenShakeObject.Timer > 0)
+            {
+                Vector2 positionWithScreenShake = new(position.X + screenShakeObject.Magnitude.X, position.Y + screenShakeObject.Magnitude.Y);
+
+                _spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
+            }
+
+            else _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
+        }
+
         public static void DrawTelegraphs(Entity entity)
         {
             foreach (TelegraphLine telegraphLine in entity.activeTelegraphs)

@@ -22,6 +22,7 @@ namespace bullethellwhatever.BaseClasses
         public int PierceRemaining;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
+            DrawAfterimages = false;
             Position = position;
             Pierce = pierce;
             TimeOutsidePlayArea = 0;
@@ -49,7 +50,33 @@ namespace bullethellwhatever.BaseClasses
         }
 
         //and drawing
+        public void HandleBounces()
+        {
+            if (touchingLeft(this))
+            {
+                if (Velocity.X < 0)
+                    Velocity.X = Velocity.X * -1;
+            }
 
+            if (touchingRight(this))
+            {
+                if (Velocity.X > 0)
+                    Velocity.X = Velocity.X * -1;
+            }
+
+            if (touchingTop(this))
+            {
+                if (Velocity.Y < 0)
+                    Velocity.Y = Velocity.Y * -1f;
+
+            }
+
+            if (touchingBottom(this))
+            {
+                if (Velocity.Y > 0)
+                    Velocity.Y = Velocity.Y * -1f;
+            }
+        }
         public virtual void PrepareProjectile()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
@@ -61,7 +88,12 @@ namespace bullethellwhatever.BaseClasses
         public virtual void Update()
         {
             AITimer++;
-            
+
+            if (afterimagesPositions is not null)
+            {
+                Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+            }
+
             if (touchingAnEdge(this))
             {
                 TimeOutsidePlayArea++;
@@ -125,13 +157,6 @@ namespace bullethellwhatever.BaseClasses
             if (entity.Hitbox.Intersects(Hitbox))
                 return true;
             else return false;
-        }
-
-        public override void Draw(SpriteBatch s)
-        {
-            Drawing.BetterDraw(player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
-
-            //Utilities.drawTextInDrawMethod(PierceRemaining.ToString(), Position + new Vector2(0f, 20f), s, font, Color.White);
         }
     }
 }

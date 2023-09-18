@@ -47,7 +47,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float3 col = float3(value, value, value);
 
     // Output to screen
-    return float4(col, 1.0);
+    return float4(col, 0.0);
 }
 
 Technique Technique1

@@ -22,7 +22,9 @@ namespace bullethellwhatever.Projectiles.Player
         {
             base.Spawn(position, velocity, damage, pierce, texture, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
-            afterimagesPositions = new Vector2[22 * Updates]; 
+            afterimagesPositions = new Vector2[22 * Updates];
+
+            DrawAfterimages = true;
         }
         public override void AI()
         {
@@ -31,9 +33,7 @@ namespace bullethellwhatever.Projectiles.Player
             HomingTime = 30 * Updates;
 
             NPC closestNPC = new NPC(); //the target
-            float minDistance = float.MaxValue;
-
-            Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+            float minDistance = float.MaxValue;         
 
             if (AITimer > HomingTime)
             {
@@ -54,31 +54,6 @@ namespace bullethellwhatever.Projectiles.Player
             }
 
             Position = Position + Velocity;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Drawing.BetterDraw(Main.player.Texture, Position, null, Colour * Opacity, Rotation, Size, SpriteEffects.None, 0f);
-
-            for (int i = 0; i < afterimagesPositions.Length; i++)
-            {
-                float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-
-                if (afterimagesPositions[i] != Vector2.Zero)
-                {
-                    Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, Size * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
-
-                    // Draw another afterimage between this one and the last one, for a less choppy trail.
-
-                    Vector2 positionOfAdditionalAfterImage = i == 0 ? Vector2.Lerp(Position, afterimagesPositions[i], 0.5f) : Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f);
-
-                    colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-
-                    Drawing.BetterDraw(Main.player.Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier,
-                        Rotation, Size * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
-
-                }
-            }
         }
 
     }

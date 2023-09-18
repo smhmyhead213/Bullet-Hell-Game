@@ -29,6 +29,8 @@ namespace bullethellwhatever.BaseClasses
         {
             Updates = 1; //default
 
+            DrawAfterimages = false;
+
             TargetableByHoming = true;
 
             Position = position;
@@ -59,6 +61,8 @@ namespace bullethellwhatever.BaseClasses
             Updates = 1;
 
             TargetableByHoming = true;
+
+            DrawAfterimages = false;
 
             Position = position;
             Velocity = velocity;
@@ -91,6 +95,11 @@ namespace bullethellwhatever.BaseClasses
             if (IFrames > 0)
             {
                 IFrames--;
+            }
+
+            if (afterimagesPositions is not null)
+            {
+                Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
             }
 
             if (Health <= 0)
@@ -150,14 +159,11 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {               
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
-        }
-
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1;
+
+            DrawAfterimages = false;
 
             Position = position;
             Velocity = velocity;

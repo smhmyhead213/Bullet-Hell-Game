@@ -117,12 +117,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (ChargeWindupTimer < -(AdjustTimeAfterCharge / 2f)) // if we are recovering from a charge
+            float oneOverFractionOfRecoveryTimeToCloseArms = 2f;
+            if (ChargeWindupTimer < -(AdjustTimeAfterCharge / oneOverFractionOfRecoveryTimeToCloseArms)) // if we are recovering from a charge
             {
-                Leg(0).UpperArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
-                Leg(0).LowerArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
-                Leg(1).UpperArm.Rotate(angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
-                Leg(1).LowerArm.Rotate(angleToOpenArmsBy / AdjustTimeAfterCharge * 2f);
+                Leg(0).UpperArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * oneOverFractionOfRecoveryTimeToCloseArms);
+                Leg(0).LowerArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * oneOverFractionOfRecoveryTimeToCloseArms);
+                Leg(1).UpperArm.Rotate(angleToOpenArmsBy / AdjustTimeAfterCharge * oneOverFractionOfRecoveryTimeToCloseArms);
+                Leg(1).LowerArm.Rotate(angleToOpenArmsBy / AdjustTimeAfterCharge * oneOverFractionOfRecoveryTimeToCloseArms);
             }
         }
     }

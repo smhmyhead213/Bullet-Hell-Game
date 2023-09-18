@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -81,7 +82,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);
+            Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);
         }
     }
 }

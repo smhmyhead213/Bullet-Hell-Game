@@ -31,6 +31,22 @@ namespace bullethellwhatever.Projectiles.Base
             AddDeathrayToActiveProjectiles();
         }
 
+        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
+            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
+        {
+            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+
+            AddDeathrayToActiveProjectiles();
+        }
+
+        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width,
+    float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
+        {
+            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+
+            AddDeathrayToActiveProjectiles();
+        }
+
         public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
@@ -60,6 +76,74 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (shader != null)
                 Shader = Shaders[shader];
+            else Shader = null;
+
+            RemoveOnHit = false;
+        }
+
+        public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
+            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect? shader, Entity owner)
+        {
+            Updates = 1;
+
+            Position = position;
+            Rotation = initialRotation;
+
+            StayWithOwner = false;
+
+            Width = width;
+            Length = length;
+
+            Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
+
+            SetHitbox();
+
+            Duration = duration;
+            Texture = Assets[texture];
+            AngularVelocity = angularVelocity;
+            Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
+            Owner = owner;
+            Colour = colour;
+            IsActive = true;
+            IsHarmful = isHarmful;
+            Damage = damage;
+
+            if (shader != null)
+                Shader = shader;
+            else Shader = null;
+
+            RemoveOnHit = false;
+        }
+
+        public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width,
+            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect? shader, Entity owner)
+        {
+            Updates = 1;
+
+            Position = position;
+            Rotation = initialRotation;
+
+            StayWithOwner = false;
+
+            Width = width;
+            Length = length;
+
+            Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
+
+            SetHitbox();
+
+            Duration = duration;
+            Texture = texture;
+            AngularVelocity = angularVelocity;
+            Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
+            Owner = owner;
+            Colour = colour;
+            IsActive = true;
+            IsHarmful = isHarmful;
+            Damage = damage;
+
+            if (shader != null)
+                Shader = shader;
             else Shader = null;
 
             RemoveOnHit = false;

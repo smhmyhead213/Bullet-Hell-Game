@@ -357,7 +357,9 @@ namespace bullethellwhatever.BaseClasses
 
                     }
                 }
+                DrawAfterimages = true;
             }
+            else DrawAfterimages = false;
 
             Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 

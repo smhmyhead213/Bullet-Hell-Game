@@ -1,6 +1,8 @@
 ﻿global using static bullethellwhatever.MainFiles.Main;
 
 using Microsoft.Xna.Framework;
+using bullethellwhatever.DrawCode;
+using bullethellwhatever.MainFiles;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using bullethellwhatever.Projectiles.TelegraphLines;
@@ -14,6 +16,7 @@ namespace bullethellwhatever.BaseClasses
         public Vector2 Position;
         public Vector2 Velocity;
         public Texture2D Texture;
+        public bool DrawAfterimages;
         public bool isBoss;
         public bool isPlayer;
         public bool IsHarmful;
@@ -89,7 +92,33 @@ namespace bullethellwhatever.BaseClasses
             //death behaviour
             DeleteNextFrame = true;
         }
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+
+            if (DrawAfterimages)
+            {
+                for (int i = 0; i < afterimagesPositions.Length; i++)
+                {
+                    float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+
+                    if (afterimagesPositions[i] != Vector2.Zero)
+                    {
+                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, Size * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+
+                        // Draw another afterimage between this one and the last one, for a less choppy trail.
+
+                        Vector2 positionOfAdditionalAfterImage = i == 0 ? Vector2.Lerp(Position, afterimagesPositions[i], 0.5f) : Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f);
+
+                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+
+                        Drawing.BetterDraw(Main.player.Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier,
+                            Rotation, Size * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+
+                    }
+                }
+            }
+        }
         public void SetHitbox()
         {
             UpdateHitbox();
