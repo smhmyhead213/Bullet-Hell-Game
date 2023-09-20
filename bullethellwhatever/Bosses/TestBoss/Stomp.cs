@@ -76,7 +76,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             {
                 Owner.ContactDamage = true;
 
-                DistanceToBottom = Main.ScreenHeight - Owner.Position.Y - (Owner.Texture.Height * Owner.Size.Y);
+                DistanceToBottom = Main.ScreenHeight - Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y);
 
                 int timeSinceDrop = time - halfStomp;
 

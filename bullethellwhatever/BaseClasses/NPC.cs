@@ -168,6 +168,8 @@ namespace bullethellwhatever.BaseClasses
         {
             Updates = 1;
 
+            Depth = 0;
+
             DrawAfterimages = false;
 
             Position = position;
@@ -198,7 +200,7 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void PrepareNPCButDontAddToListYet()
         {
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             SetHitbox();
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(Position, string.Empty, this, 1, 1);

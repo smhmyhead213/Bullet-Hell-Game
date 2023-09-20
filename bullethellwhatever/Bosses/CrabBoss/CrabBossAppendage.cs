@@ -61,7 +61,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual Vector2 CalculateEnd()
         {
-            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height;
+            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * DepthFactor();
         }
 
         public void Rotate(float angle)
@@ -82,7 +82,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, Vector2.One, SpriteEffects.None, 1f);
+            Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
+
+            //Hitbox.DrawHitbox();
         }
     }
 }

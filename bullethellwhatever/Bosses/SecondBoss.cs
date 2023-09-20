@@ -59,6 +59,7 @@ namespace bullethellwhatever.Bosses
         }
         public override void AI()
         {
+            SetDepth(0.5f);
 
             if (Health < 0 && IsDesperationOver)
                 Die();

@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Security.Policy;
+
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.DrawCode;
 
@@ -61,6 +60,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BossAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30),
+                new BackgroundPunches(10000),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18),
                 new Minefield(1550),
@@ -87,6 +87,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
+        public void SetArmDepth(int armIndex, float depth) // 0 or 1 for left and right arms
+        {
+            Legs[armIndex].UpperArm.Depth = depth;
+            Legs[armIndex].LowerArm.Depth = depth;
+            Legs[armIndex].UpperClaw.Depth = depth;
+            Legs[armIndex].LowerClaw.Depth = depth;
+        }
         public void SetBoosters(bool on)
         {
             BoostersActive = on;
@@ -109,7 +116,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 if (Legs[i] is not null)
                 {
-                    Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation);
+                    float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Depth);
+
+                    Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f * factorToMoveArms, Texture.Height / 2.54f * factorToMoveArms), Rotation);
                     BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
                     Legs[i].Update();
                 }

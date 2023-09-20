@@ -82,7 +82,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void PrepareProjectile()
         {
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             SetHitbox();
             if (IsHarmful)
                 enemyProjectilesToAddNextFrame.Add(this);

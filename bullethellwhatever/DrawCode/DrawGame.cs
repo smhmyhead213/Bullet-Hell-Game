@@ -159,9 +159,9 @@ namespace bullethellwhatever.DrawCode
             {
                 if (npc is not Boss)
                 {
-                    UI.DrawHealthBar(Main._spriteBatch, npc, npc.Position + new Vector2(0, 10f), 2f, 0.5f);
+                    UI.DrawHealthBar(Main._spriteBatch, npc, npc.Position + new Vector2(0, 10f * npc.DepthFactor()), 2f * npc.DepthFactor(), 0.5f * npc.DepthFactor());
                 }
-                else UI.DrawHealthBar(Main._spriteBatch, npc, new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 20 * 19), 120f, 3f);
+                else UI.DrawHealthBar(Main._spriteBatch, npc, new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 20 * 19), 120f, 3f); // boss bar
             }
 
             //Draw the player's health bar.

@@ -37,7 +37,7 @@ namespace bullethellwhatever.Projectiles.Base
             float sineOscillation = MathF.Sin(LoopPeriod * AITimer / 10f - LoopOffset);
             Position = SpawnPosition + new Vector2(MathF.Sin(RotationOfOrbit) * LoopAmplitude * sineOscillation, MathF.Cos(RotationOfOrbit) * LoopAmplitude * sineOscillation);
             float minSize = 0.4f;
-            Size = OriginalSize * (0.5f * MathF.Cos(LoopPeriod * AITimer / 10f - LoopOffset) + 0.5f + minSize);
+            Size = OriginalSize * (0.5f * MathF.Cos(LoopPeriod * AITimer / 10f - LoopOffset) + 0.5f + minSize); //this whole file can be rewritten due to the depth changes
         }
     }
 }

@@ -79,7 +79,7 @@ namespace bullethellwhatever.BaseClasses
             afterimagesPositions = new Vector2[DashDuration];
             Colour = Color.White;
 
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position, this);
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             SetHitbox();
 
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
@@ -344,7 +344,7 @@ namespace bullethellwhatever.BaseClasses
                     if (afterimagesPositions[i] != Vector2.Zero)
                     {
                         float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, Size * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                         // Draw another afterimage between this one and the last one, for a less choppy trail.
 
@@ -353,7 +353,7 @@ namespace bullethellwhatever.BaseClasses
                             colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
                             Drawing.BetterDraw(Main.player.Texture, Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f), null, Colour * colourMultiplier,
-                                Rotation, Size * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                                Rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
                         }
 
                     }
@@ -366,7 +366,7 @@ namespace bullethellwhatever.BaseClasses
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.Size, SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.GetSize(), SpriteEffects.None, 0f);
         }
     }
 }

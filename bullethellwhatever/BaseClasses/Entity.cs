@@ -47,13 +47,22 @@ namespace bullethellwhatever.BaseClasses
             Updates = updates;
         }
 
+        public virtual void SetDepth(float depth)
+        {
+            Depth = MathHelper.Clamp(depth, 0f, 1f);
+        }
+
+        public virtual float DepthFactor()
+        {
+            return MathHelper.Lerp(1, 0.1f, Depth);
+        }
         public virtual Vector2 GetSize() // get a size that corresponds to the current depth
         {
-            return Vector2.LerpPrecise(Size / 10f, Size, Depth);
+            return Vector2.LerpPrecise(Size, Size / 10f, Depth);
         }
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
-            if (entity.Position.Y + entity.Texture.Height * entity.Size.Y / 2 >= _graphics.PreferredBackBufferHeight)
+            if (entity.Position.Y + entity.Texture.Height * entity.GetSize().Y / 2 >= _graphics.PreferredBackBufferHeight)
                 return true;
             else return false;
             //if at the bottom
@@ -61,14 +70,14 @@ namespace bullethellwhatever.BaseClasses
 
         public static bool touchingTop(Entity entity)
         {
-            if (entity.Position.Y  - entity.Texture.Height * entity.Size.Y / 2 <= 0)
+            if (entity.Position.Y  - entity.Texture.Height * entity.GetSize().Y / 2 <= 0)
                 return true;
             else return false;
         }
 
         public static bool touchingRight(Entity entity)
         {
-            if (entity.Position.X + entity.Texture.Width * entity.Size.X / 2 >= _graphics.PreferredBackBufferWidth)
+            if (entity.Position.X + entity.Texture.Width * entity.GetSize().X / 2 >= _graphics.PreferredBackBufferWidth)
                 return true;
             else return false;
         }
@@ -76,7 +85,7 @@ namespace bullethellwhatever.BaseClasses
         public static bool touchingLeft(Entity entity)
         {
 
-            if (entity.Position.X - entity.Texture.Width * entity.Size.X / 2 <= 0)
+            if (entity.Position.X - entity.Texture.Width * entity.GetSize().X / 2 <= 0)
                 return true;
             else return false;
         }
@@ -100,7 +109,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, Size, SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.None, 0f);
 
             if (DrawAfterimages)
             {
@@ -110,7 +119,7 @@ namespace bullethellwhatever.BaseClasses
 
                     if (afterimagesPositions[i] != Vector2.Zero)
                     {
-                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, Size * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                         // Draw another afterimage between this one and the last one, for a less choppy trail.
 
@@ -119,7 +128,7 @@ namespace bullethellwhatever.BaseClasses
                         colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
                         Drawing.BetterDraw(Main.player.Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier,
-                            Rotation, Size * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                            Rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                     }
                 }
@@ -131,7 +140,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
-            Hitbox.UpdateRectangle(Rotation, Texture.Width * Size.X, Texture.Height * Size.Y, Position);
+            Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position);
 
             Hitbox.UpdateVertices();
         }

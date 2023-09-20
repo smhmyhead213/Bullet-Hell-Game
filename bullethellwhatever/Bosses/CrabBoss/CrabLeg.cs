@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float Length()
         {
-            return UpperArm.Texture.Height * UpperArm.Size.Y + LowerArm.Texture.Height * LowerArm.Size.Y + UpperClaw.Texture.Height * UpperClaw.Size.Y + LowerClaw.Texture.Height * LowerClaw.Size.Y;
+            return UpperArm.Texture.Height * UpperArm.GetSize().Y + LowerArm.Texture.Height * LowerArm.GetSize().Y + UpperClaw.Texture.Height * UpperClaw.GetSize().Y + LowerClaw.Texture.Height * LowerClaw.GetSize().Y;
         }
         public void ResetRotations()
         {
