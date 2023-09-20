@@ -23,13 +23,17 @@ namespace bullethellwhatever.DrawCode
 
             float emptySpaceOnLeft = BarWidth * (1 - healthRatio) / 2;
 
-            Vector2 topLeft = new(positionOfBar.X - BarWidth / 2 * Main.player.Texture.Width, positionOfBar.Y - BarHeight / 2 * Main.player.Texture.Height);
+            Texture2D texture = Assets["box"];
 
-            RectangleButGood HPBar = new(topLeft.X, topLeft.Y, (BarWidth * Main.player.Texture.Width), (BarHeight * Main.player.Texture.Height));
+            Vector2 topLeft = new(positionOfBar.X - BarWidth / 2 * texture.Width, positionOfBar.Y - BarHeight / 2 * texture.Height);
 
-            //float opacity = HPBar.Intersects(player.Hitbox.StaticHitbox.Rectangle) ? 0.2f : 1f;
-            float opacity = 1f;
-            //note: reimplement transparent hp bar when player goes over
+            //RectangleButGood HPBar = new(topLeft.X, topLeft.Y, (BarWidth * Main.player.Texture.Width), (BarHeight * Main.player.Texture.Height));
+
+            RotatedRectangle HPBar = new RotatedRectangle(0, BarWidth * texture.Width, BarHeight * texture.Height, positionOfBar, entityToDrawHPBarFor);
+            HPBar.UpdateVertices();
+
+            float opacity = HPBar.Intersects(player.Hitbox) ? 0.2f : 1f;
+
             //HP bar background.
             if (entityToDrawHPBarFor is not Player)
             {

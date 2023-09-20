@@ -16,6 +16,7 @@ namespace bullethellwhatever.BaseClasses
         public Vector2 Position;
         public Vector2 Velocity;
         public Texture2D Texture;
+        public float Depth;
         public bool DrawAfterimages;
         public bool isBoss;
         public bool isPlayer;
@@ -35,6 +36,7 @@ namespace bullethellwhatever.BaseClasses
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
         public Effect? Shader;
         public int Updates;
+        
 
 
 
@@ -45,6 +47,10 @@ namespace bullethellwhatever.BaseClasses
             Updates = updates;
         }
 
+        public virtual Vector2 GetSize() // get a size that corresponds to the current depth
+        {
+            return Vector2.LerpPrecise(Size / 10f, Size, Depth);
+        }
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
             if (entity.Position.Y + entity.Texture.Height * entity.Size.Y / 2 >= _graphics.PreferredBackBufferHeight)

@@ -58,32 +58,34 @@ namespace bullethellwhatever.Bosses.TestBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             int halfStomp = StompFrequency / 2;
+            int time = AITimer % StompFrequency;
 
-            if (AITimer == 0)
+
+            if (time == 0)
             {
                 CompletedStomps = 0; //reset
             }
 
-            if (AITimer % StompFrequency <= halfStomp)
+            if (time % StompFrequency <= halfStomp)
             {
-                MoveToPoint(Main.player.Position + new Vector2(0, -600), AITimer, halfStomp);
+                MoveToPoint(Main.player.Position + new Vector2(0, -600), time, halfStomp);
                 Owner.ContactDamage = false;
             }
 
-            if (AITimer % StompFrequency > halfStomp)
+            if (time % StompFrequency > halfStomp)
             {
                 Owner.ContactDamage = true;
 
                 DistanceToBottom = Main.ScreenHeight - Owner.Position.Y - (Owner.Texture.Height * Owner.Size.Y);
 
-                int timeSinceDrop = (AITimer % StompFrequency) - halfStomp;
+                int timeSinceDrop = time - halfStomp;
 
                 float accel = 2f * DistanceToBottom / MathF.Pow(halfStomp - timeSinceDrop, 2);
 
                 Owner.Velocity = new Vector2(0f, accel * timeSinceDrop);
             }
 
-            if (AITimer % StompFrequency == StompFrequency - 1) //fix
+            if (time % StompFrequency == StompFrequency - 1) //fix
             {
                 CompletedStomps++;
                 Drawing.ScreenShake(5, 20);

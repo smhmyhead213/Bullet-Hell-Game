@@ -52,6 +52,7 @@ namespace bullethellwhatever.BaseClasses
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
+            Depth = 0;
             switch (GameState.Difficulty)
             {
                 case GameState.Difficulties.Easy:

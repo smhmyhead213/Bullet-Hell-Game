@@ -29,6 +29,8 @@ namespace bullethellwhatever.BaseClasses
         {
             Updates = 1; //default
 
+            Depth = 0;
+
             DrawAfterimages = false;
 
             TargetableByHoming = true;
@@ -60,6 +62,8 @@ namespace bullethellwhatever.BaseClasses
         {
             Updates = 1;
 
+            Depth = 0;
+
             TargetableByHoming = true;
 
             DrawAfterimages = false;
@@ -79,6 +83,7 @@ namespace bullethellwhatever.BaseClasses
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
 
+            Depth = 0;
 
             IsHarmful = isHarmful;
 

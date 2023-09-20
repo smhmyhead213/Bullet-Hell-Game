@@ -20,8 +20,11 @@ namespace bullethellwhatever.BaseClasses
         public int Pierce;
         public int TimeOutsidePlayArea;
         public int PierceRemaining;
+        
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
+            Depth = 0;
+
             DrawAfterimages = false;
             Position = position;
             Pierce = pierce;
