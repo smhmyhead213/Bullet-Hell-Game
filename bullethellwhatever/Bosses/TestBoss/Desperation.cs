@@ -53,7 +53,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer == 0)
             {
-                Owner.ContactDamage = false;
+                Owner.DealDamage = false;
                 Owner.Velocity = Vector2.Zero; //amke it sit in the middle
                 Owner.Rotation = 0;
                 Owner.dialogueSystem.Dialogue(Owner.Position, "It's not over yet!", 4, despStartTime);

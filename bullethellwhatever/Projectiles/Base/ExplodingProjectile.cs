@@ -36,7 +36,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (AITimer == ExplosionDelay)
             {
-                Explode();
+                Die();
             }
 
             if (touchingAnEdge(this))

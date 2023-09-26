@@ -24,6 +24,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float c;
         public float ydivisor;
         public bool BoostersActive;
+        public bool LockArmPositions;
         public CrabBoss()
         {
             Texture = Assets["CrabBody"];
@@ -35,6 +36,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Colour = Color.White;
 
             BoostersActive = false;
+            LockArmPositions = true;
 
             BarDuration = 60; //to be changed
 
@@ -59,11 +61,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BossAttacks = new CrabBossAttack[]
             {
-                new TestAttack(BarDuration * 30),
-                new BackgroundPunches(10000),
+                new TestAttack(BarDuration * 30),                
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18),
                 new Minefield(1550),
+                new BackgroundPunches(390 * 7),
                 new ExpandingOrb(1700),
             };
 
@@ -117,8 +119,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Legs[i] is not null)
                 {
                     float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Depth);
-
-                    Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f * factorToMoveArms, Texture.Height / 2.54f * factorToMoveArms), Rotation);
+                    if (LockArmPositions)
+                    {
+                        Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f * factorToMoveArms, Texture.Height / 2.54f * factorToMoveArms), Rotation);
+                    }
                     BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
                     Legs[i].Update();
                 }

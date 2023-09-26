@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            Owner.ContactDamage = false;
+            Owner.DealDamage = false;
 
             Owner.Velocity = Vector2.Zero;
 

@@ -69,12 +69,12 @@ namespace bullethellwhatever.Bosses.TestBoss
             if (time % StompFrequency <= halfStomp)
             {
                 MoveToPoint(Main.player.Position + new Vector2(0, -600), time, halfStomp);
-                Owner.ContactDamage = false;
+                Owner.DealDamage = false;
             }
 
             if (time % StompFrequency > halfStomp)
             {
-                Owner.ContactDamage = true;
+                Owner.DealDamage = true;
 
                 DistanceToBottom = Main.ScreenHeight - Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y);
 

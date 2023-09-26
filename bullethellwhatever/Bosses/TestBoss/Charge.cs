@@ -59,7 +59,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer == 0)
             {
-                Owner.ContactDamage = true; //turn on contact damage
+                Owner.DealDamage = true; //turn on contact damage
             }
 
             if (!HasChosenChargeDirection)

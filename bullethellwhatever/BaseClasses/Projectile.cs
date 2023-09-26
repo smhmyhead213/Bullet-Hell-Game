@@ -20,7 +20,8 @@ namespace bullethellwhatever.BaseClasses
         public int Pierce;
         public int TimeOutsidePlayArea;
         public int PierceRemaining;
-        
+
+        public Func<float, float>? DepthFunction;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Depth = 0;
@@ -106,6 +107,11 @@ namespace bullethellwhatever.BaseClasses
 
             if (Acceleration != 0)
                 Velocity = Velocity * Acceleration; //acceleration values must be very very small
+
+            if (DepthFunction is not null)
+            {
+                SetDepth(DepthFunction(AITimer));
+            }
         }
 
         public override void AI()

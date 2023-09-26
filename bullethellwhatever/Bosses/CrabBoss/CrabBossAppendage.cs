@@ -31,6 +31,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Texture = Assets[texture];
             Size = Vector2.One;
             IsHarmful = true;
+            Damage = 1f;
 
             Updates = 1;
 
@@ -61,7 +62,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual Vector2 CalculateEnd()
         {
-            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * DepthFactor();
+            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * Size.Y * DepthFactor();
         }
 
         public void Rotate(float angle)
@@ -84,7 +85,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
 
-            //Hitbox.DrawHitbox();
+            Hitbox.DrawHitbox();
         }
     }
 }

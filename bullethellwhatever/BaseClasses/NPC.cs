@@ -19,7 +19,7 @@ namespace bullethellwhatever.BaseClasses
         public float IFrames;
         public int MaxIFrames;
 
-        public bool ContactDamage;
+        
         public bool TargetableByHoming;
 
         public int PierceToTake;        
@@ -46,7 +46,7 @@ namespace bullethellwhatever.BaseClasses
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
 
-            ContactDamage = false;
+            DealDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
 
@@ -79,7 +79,7 @@ namespace bullethellwhatever.BaseClasses
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
 
-            ContactDamage = false;
+            DealDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
 
@@ -183,7 +183,7 @@ namespace bullethellwhatever.BaseClasses
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
 
-            ContactDamage = false;
+            DealDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
 

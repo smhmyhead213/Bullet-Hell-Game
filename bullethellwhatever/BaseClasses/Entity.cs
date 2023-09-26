@@ -20,6 +20,7 @@ namespace bullethellwhatever.BaseClasses
         public bool DrawAfterimages;
         public bool isBoss;
         public bool isPlayer;
+        public bool DealDamage;
         public bool IsHarmful;
         public int AITimer;
         public float Damage;

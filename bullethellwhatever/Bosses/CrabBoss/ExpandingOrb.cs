@@ -67,7 +67,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Orb = new BigMassiveOrb(0.06f, TimeToThrowOrb - TimeToStartOpeningHands + TimeToWaitAfterThrow + OrbBounceAroundTime);
                 CrabOwner.ResetArmRotations();
-                Owner.ContactDamage = false;
+                Owner.DealDamage = false;
                 MoveToPoint(Utilities.CentreOfScreen(), time, CentreMovingTime);
             }
 
@@ -76,7 +76,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Velocity = Vector2.Zero;
             }
 
-            else Owner.ContactDamage = true;
+            else Owner.DealDamage = true;
 
             float distanceBetweenHands = Utilities.DistanceBetweenVectors(Leg(0).Position, Leg(1).Position);
 
@@ -151,10 +151,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Orb.Velocity = 17f * Utilities.SafeNormalise(player.Position - Owner.Position);
             }
 
-            if (time >= TimeToThrowOrb + ThrowAnimationDuration && time < TimeToThrowOrb + ThrowAnimationDuration + TimeToWaitAfterThrow)
-            {
+            //if (time >= TimeToThrowOrb + ThrowAnimationDuration && time < TimeToThrowOrb + ThrowAnimationDuration + TimeToWaitAfterThrow)
+            //{
 
-            }
+            //}
         }
 
         public override void ExtraDraw(SpriteBatch s)
