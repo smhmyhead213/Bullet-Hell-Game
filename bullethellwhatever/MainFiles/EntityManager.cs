@@ -14,7 +14,7 @@ namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
-        public static List<TelegraphLine> telegraphsToRemove = new List<TelegraphLine>(); // could maybe remove this? cant remember why its even here
+        
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
@@ -44,6 +44,8 @@ namespace bullethellwhatever.MainFiles
 
         public static void RunAIs()
         {
+            List<TelegraphLine> toRemove = new List<TelegraphLine>();
+
             foreach (NPC npc in activeNPCs)
             {
                 for (int i = 0; i < npc.Updates; i++)
@@ -62,10 +64,17 @@ namespace bullethellwhatever.MainFiles
                     telegraphLine.AI();
                     if (telegraphLine.DeleteNextFrame)
                     {
-                        telegraphsToRemove.Add(telegraphLine);
+                        toRemove.Add(telegraphLine);
                     }
                 }
+
+                foreach (TelegraphLine t in toRemove)
+                {
+                    npc.activeTelegraphs.Remove(t);
+                }
             }
+
+            toRemove.Clear(); // we can just reuse this list
 
             foreach (Projectile projectile in activeProjectiles)
             {
@@ -80,8 +89,19 @@ namespace bullethellwhatever.MainFiles
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
                 {
                     telegraphLine.AI();
+                    if (telegraphLine.DeleteNextFrame)
+                    {
+                        toRemove.Add(telegraphLine);
+                    }
+                }
+
+                foreach (TelegraphLine t in toRemove)
+                {
+                    projectile.activeTelegraphs.Remove(t);
                 }
             }
+
+            toRemove.Clear();
 
             foreach (Projectile projectile in activeFriendlyProjectiles)
             {
@@ -96,13 +116,17 @@ namespace bullethellwhatever.MainFiles
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
                 {
                     telegraphLine.AI();
+                    if (telegraphLine.DeleteNextFrame)
+                    {
+                        toRemove.Add(telegraphLine);
+                    }
                 }
-            }
 
-            for (int i = 0; i < telegraphsToRemove.Count; i++)
-            {
-                telegraphsToRemove[i].Owner.activeTelegraphs.Remove(telegraphsToRemove[i]);
-            }
+                foreach (TelegraphLine t in toRemove)
+                {
+                    projectile.activeTelegraphs.Remove(t);
+                }
+            }          
 
             player.UpdateHitbox();
             player.AI();

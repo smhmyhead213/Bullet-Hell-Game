@@ -70,6 +70,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationToAdd = RotationToAdd + angle;
         }
 
+        public override void UpdateHitbox()
+        {
+            Vector2 centre = Vector2.Lerp(Position, CalculateEnd(), 0.5f); // centre is halfway along arm
+
+            Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, centre);
+
+            Hitbox.UpdateVertices();
+        }
         public float CalculateFinalRotation()
         {
             return Owner.Rotation + RotationConstant + RotationToAdd;
@@ -85,7 +93,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
 
-            Hitbox.DrawHitbox();
+            //Hitbox.DrawHitbox();
         }
     }
 }

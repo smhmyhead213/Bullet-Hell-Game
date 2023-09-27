@@ -74,13 +74,5 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerClaw.Position = LowerArm.CalculateEnd();
 
         }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            UpperArm.Draw(spriteBatch);
-            LowerArm.Draw(spriteBatch);
-            UpperClaw.Draw(spriteBatch);
-            LowerClaw.Draw(spriteBatch);
-        }
     }
 }
