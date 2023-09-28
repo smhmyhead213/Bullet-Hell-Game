@@ -61,7 +61,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             Rotation = Rotation % (MathF.PI * 2);
 
-            if (TimeAlive >= Duration)
+            if (TimeAlive > Duration)
             {
                 DeleteNextFrame = true;
                 if (SpawnRayAfterFinish)

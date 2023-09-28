@@ -31,6 +31,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public bool Targeting;
         public float UpperArmRotationAngle;
         public float LowerArmRotationAngle;
+        public float ArmPullBackAngle;
         public BackgroundPunches(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -53,6 +54,23 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Targeting = false;
             TargetTransparency = 0.5f;
 
+        }
+
+        public void PullArmBack(int time)
+        {
+            int expandedi = ArmIndex * 2 - 1;
+            
+            float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
+
+            float distanceToMoveX = ((Owner.Texture.Width * Owner.DepthFactor() / 2f) - Owner.Texture.Width * Owner.DepthFactor() / 1.4f) * factorToMoveArms * expandedi;
+            float distanceToMoveY = Owner.Texture.Height * Owner.DepthFactor() / 2.54f * factorToMoveArms;
+
+            CrabOwner.LockArmPositions = false;
+
+            Leg(ArmIndex).Position = Leg(ArmIndex).Position - new Vector2(distanceToMoveX, distanceToMoveY) / time;
+
+            Leg(ArmIndex).UpperArm.Rotate(ArmPullBackAngle / time);
+            Leg(ArmIndex).LowerArm.Rotate(ArmPullBackAngle / time);
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
@@ -96,6 +114,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     ArmIndex = (int)Abs(ArmIndex - 1); //swap arms
                 }
 
+                int expandedi = ArmIndex * 2 - 1;
+
+                ArmPullBackAngle = PI / 1.3f * -expandedi;
+
                 if (time > MoveToPositionTime && time < MoveToPositionTime + PunchWindUpTime)
                 {
                     Targeting = true;
@@ -103,26 +125,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     TargetPosition = player.Position;
                     TargetTransparency = 0.5f;
 
-                    int expandedi = ArmIndex * 2 - 1;
-
-                    float upperArmAngleToPullBack = PI / 1.3f * -expandedi;
-
-                    float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
-
-                    float distanceToMoveX = ((Owner.Texture.Width * Owner.DepthFactor() / 2f) - Owner.Texture.Width * Owner.DepthFactor() / 1.4f) * factorToMoveArms * expandedi;
-                    float distanceToMoveY = Owner.Texture.Height * Owner.DepthFactor() / 2.54f * factorToMoveArms;
-
-                    CrabOwner.LockArmPositions = false;
-
-                    Leg(ArmIndex).Position = Leg(ArmIndex).Position - new Vector2(distanceToMoveX, distanceToMoveY) / PunchWindUpTime;
-
-                    Leg(ArmIndex).UpperArm.Rotate(upperArmAngleToPullBack / PunchWindUpTime);
-                    Leg(ArmIndex).LowerArm.Rotate(upperArmAngleToPullBack / PunchWindUpTime);
+                    PullArmBack(PunchWindUpTime + TimeAfterTargetChosen);
                 }
 
                 if (time < PunchTime - TimeAfterTargetChosen && time > MoveToPositionTime + PunchWindUpTime)
                 {
                     TargetPosition = player.Position;
+
+                    PullArmBack(PunchWindUpTime + TimeAfterTargetChosen);
                 }
 
                 if (time > PunchTime - TimeAfterTargetChosen && time < PunchTime)
@@ -137,19 +147,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Targeting = false;
 
                     CrabLeg leg = Leg(ArmIndex);
-
-                    int expandedi = ArmIndex * 2 - 1;
-
-
-
+                   
                     UpperArmRotationAngle = Utilities.VectorToAngle(TargetPosition - leg.UpperArm.Position) - leg.UpperArm.RotationFromV();
                     LowerArmRotationAngle = Utilities.VectorToAngle(TargetPosition - leg.LowerArm.Position) - leg.LowerArm.RotationFromV();
                 }
 
                 if (time > PunchTime && time < PunchTime + PunchDuration)
                 {
-                    int expandedi = ArmIndex * 2 - 1;
-
                     CrabLeg leg = Leg(ArmIndex);
 
                     float bendAngle = PI / 6f;
@@ -196,16 +200,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     }
                 }
 
-                if (time <= PunchTime + 2 * PunchDuration + FistRestTime && time > PunchTime + PunchDuration + FistRestTime)
+                if (time <= PunchTime + 2 * PunchDuration + FistRestTime && time > PunchTime + PunchDuration + FistRestTime) // punch pullback
                 {
-                    int expandedi = ArmIndex * 2 - 1;
-
                     CrabLeg leg = Leg(ArmIndex);
 
                     float bendAngle = PI / 6f;
 
-                    Leg(ArmIndex).UpperArm.Rotate(-(UpperArmRotationAngle - expandedi * bendAngle) / PunchDuration);
-                    Leg(ArmIndex).LowerArm.Rotate(-(LowerArmRotationAngle + expandedi * bendAngle) / PunchDuration);
+                    // everything here happens in the same amount of time as the punch does
+
+                    Leg(ArmIndex).UpperArm.Rotate(-(UpperArmRotationAngle - expandedi * bendAngle + ArmPullBackAngle) / PunchDuration);
+                    Leg(ArmIndex).LowerArm.Rotate(-(LowerArmRotationAngle + expandedi * bendAngle + ArmPullBackAngle) / PunchDuration);
 
                     float punchDistance = Utilities.DistanceBetweenVectors(leg.Position, TargetPosition) / Owner.DepthFactor();
                     float halfPunchDist = punchDistance / 2f;
@@ -217,18 +221,27 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(ArmIndex).LowerArm.Size = Vector2.LerpPrecise(maxLowerArmSize, Vector2.One, (time - PunchTime - PunchDuration - FistRestTime) / (float)PunchDuration);
                     Leg(ArmIndex).UpperClaw.Size = Vector2.LerpPrecise(maxLowerArmSize, Vector2.One, (time - PunchTime - PunchDuration - FistRestTime) / (float)PunchDuration);
                     Leg(ArmIndex).LowerClaw.Size = Vector2.LerpPrecise(maxLowerArmSize, Vector2.One, (time - PunchTime - PunchDuration - FistRestTime) / (float)PunchDuration);
+
+                    //also undo the arm position adjustments
+
+                    float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
+
+                    float distanceToMoveX = ((Owner.Texture.Width * Owner.DepthFactor() / 2f) - Owner.Texture.Width * Owner.DepthFactor() / 1.4f) * factorToMoveArms * expandedi;
+                    float distanceToMoveY = Owner.Texture.Height * Owner.DepthFactor() / 2.54f * factorToMoveArms;
+
+                    CrabOwner.LockArmPositions = false;
+
+                    // + instead of - t go backwards
+
+                    Leg(ArmIndex).Position = Leg(ArmIndex).Position + new Vector2(distanceToMoveX, distanceToMoveY) / PunchDuration;
                 }
             }
             else if (AITimer > EndTime - 30)
-            {
-                
+            {                
                 float depth = (totalAttackDuration - time) / 30f * (finalDepth);
                 CrabOwner.Depth = depth;
                 CrabOwner.SetArmDepth(0, depth);
                 CrabOwner.SetArmDepth(1, depth);
-
-
-                CrabOwner.LockArmPositions = true;
             }
 
         }

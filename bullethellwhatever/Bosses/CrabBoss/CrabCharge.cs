@@ -62,7 +62,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (ChargeWindupTimer > TimeToWindUpCharge - TelegraphTime) //tele line
                 {
                     CrabOwner.SetBoosters(false);
-                    TelegraphLine t = new TelegraphLine(Utilities.RotationTowards(CrabOwner.Position, player.Position), 0, 0, CrabOwner.Texture.Width * CrabOwner.GetSize().X, 2000, 2, CrabOwner.Position, Color.White, "box", CrabOwner, true);
+                    TelegraphLine t = new TelegraphLine(Utilities.RotationTowards(CrabOwner.Position, player.Position), 0, 0, CrabOwner.Texture.Width * CrabOwner.GetSize().X, 2000, 1, CrabOwner.Position, Color.White, "box", CrabOwner, true);
                     t.ChangeShader("OutlineTelegraphShader");
                     CrabOwner.FacePlayer();
                 }
