@@ -7,7 +7,6 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
-using SharpDX.Direct2D1;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -155,7 +154,7 @@ namespace bullethellwhatever.DrawCode
                 entity.Draw(Main._spriteBatch);
             }
 
-            foreach (NPC npc in Main.activeNPCs)
+            foreach (NPC npc in activeNPCs)
             {
                 if (npc is not Boss)
                 {
@@ -163,29 +162,46 @@ namespace bullethellwhatever.DrawCode
                 }
                 else UI.DrawHealthBar(Main._spriteBatch, npc, new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 20 * 19), 120f, 3f); // boss bar
             }
-
-            //Draw the player's health bar.
-            UI.DrawHealthBar(Main._spriteBatch, Main.player, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), 30f, 3f);
+            
+            DrawHUD(Main._spriteBatch);
 
             //Select a control indicator based on the currently selected control scheme.
-            string ControlInstruction = GameState.WeaponSwitchControl ? " , use the scroll wheel to switch weapons." : " , use the number keys 1, 2 and 3 to switch weapons";
+            //string ControlInstruction = GameState.WeaponSwitchControl ? " , use the scroll wheel to switch weapons." : " , use the number keys 1, 2 and 3 to switch weapons";
 
-            //Write different text depending on which weapon is active
-            switch (Main.player.ActiveWeapon)
-            {
-                case Player.Weapons.Laser:
-                    Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.Yellow);
-                    break;
-                case Player.Weapons.MachineGun:
-                    Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.SkyBlue);
-                    break;
-                case Player.Weapons.Homing:
-                    Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.LimeGreen);
-                    break;
-            }
+            ////Write different text depending on which weapon is active.
+            //switch (Main.player.ActiveWeapon)
+            //{
+            //    case Player.Weapons.Laser:
+            //        Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.Yellow);
+            //        break;
+            //    case Player.Weapons.MachineGun:
+            //        Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.SkyBlue);
+            //        break;
+            //    case Player.Weapons.Homing:
+            //        Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.LimeGreen);
+            //        break;
+            //}
 
             //Begin using the shader.
         }
 
+        public static void DrawHUD(SpriteBatch s)
+        {
+            s.End();
+            s.Begin(SpriteSortMode.Immediate);
+
+            Shaders["PlayerHealthBarShader"].Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
+
+            Shaders["PlayerHealthBarShader"].CurrentTechnique.Passes[0].Apply();
+
+            //UI.DrawHealthBar(_spriteBatch, player, new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), 12.6f, 0.7f);
+
+            Drawing.BetterDraw(Assets["box"], new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), null, Color.White, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
+
+            s.End();
+            s.Begin(SpriteSortMode.Deferred);
+
+            Drawing.BetterDraw(Assets["HUDBody"], new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
+        }
     }
 }

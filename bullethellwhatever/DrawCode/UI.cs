@@ -25,10 +25,6 @@ namespace bullethellwhatever.DrawCode
 
             Texture2D texture = Assets["box"];
 
-            Vector2 topLeft = new(positionOfBar.X - BarWidth / 2 * texture.Width, positionOfBar.Y - BarHeight / 2 * texture.Height);
-
-            //RectangleButGood HPBar = new(topLeft.X, topLeft.Y, (BarWidth * Main.player.Texture.Width), (BarHeight * Main.player.Texture.Height));
-
             RotatedRectangle HPBar = new RotatedRectangle(0, BarWidth * texture.Width, BarHeight * texture.Height, positionOfBar, entityToDrawHPBarFor);
             HPBar.UpdateVertices();
 
@@ -44,9 +40,9 @@ namespace bullethellwhatever.DrawCode
 
             else
             {
-                _spriteBatch.Draw(Main.player.Texture, positionOfBar, null, Color.Red * opacity, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth, BarHeight), SpriteEffects.None, 0f);
+                Drawing.BetterDraw(Main.player.Texture, positionOfBar, null, Color.Red * opacity, 0f, new Vector2(BarWidth, BarHeight), SpriteEffects.None, 0f);
 
-                _spriteBatch.Draw(Main.player.Texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * Main.player.Texture.Width, positionOfBar.Y), null, Color.LimeGreen * opacity, 0f, new Vector2(Main.player.Texture.Width / 2, Main.player.Texture.Height / 2), new Vector2(BarWidth * healthRatio, BarHeight), SpriteEffects.None, 0f);
+                Drawing.BetterDraw(Main.player.Texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * Main.player.Texture.Width, positionOfBar.Y), null, Color.LimeGreen * opacity, 0f, new Vector2(BarWidth * healthRatio, BarHeight), SpriteEffects.None, 0f);
 
             }
         }

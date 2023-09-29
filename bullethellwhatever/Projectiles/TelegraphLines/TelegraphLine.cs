@@ -84,11 +84,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         }
         public void Draw(SpriteBatch spritebatch)
         {
-            Main.Shaders[LineShader].Parameters["uTime"]?.SetValue(TimeAlive);
-            Main.Shaders[LineShader].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
-            Main.Shaders[LineShader].Parameters["duration"]?.SetValue(Duration);
+            Shaders[LineShader].Parameters["uTime"]?.SetValue(TimeAlive);
+            Shaders[LineShader].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
+            Shaders[LineShader].Parameters["duration"]?.SetValue(Duration);
 
-            Main.Shaders[LineShader].CurrentTechnique.Passes[0].Apply();
+            Shaders[LineShader].CurrentTechnique.Passes[0].Apply();
 
             Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 

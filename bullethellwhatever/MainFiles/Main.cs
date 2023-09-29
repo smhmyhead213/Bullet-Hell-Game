@@ -15,6 +15,7 @@ using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework.Audio;
 using bullethellwhatever.UtilitySystems.SoundSystems;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Content;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -97,10 +98,12 @@ namespace bullethellwhatever.MainFiles
         protected override void LoadContent()
         {
             string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
-
+            
             for (int i = 0; i < files.Length; i++)
             {
                 string toSaveAs = files[i];
+
+                string filePath = string.Empty;
 
                 while (toSaveAs.Contains("\\")) //remove all slashes
                 {
@@ -108,6 +111,7 @@ namespace bullethellwhatever.MainFiles
 
                     int startIndex = indexOfSlash + 1; //+ 1 accounts for double slash, there's two slashes in the IndexOf cos the first one is to character escape the second
 
+                    filePath = toSaveAs.Substring(0, startIndex);
                     toSaveAs = toSaveAs.Substring(startIndex, toSaveAs.Length - startIndex); //only take everything after the double slash
                 }
 
@@ -139,7 +143,14 @@ namespace bullethellwhatever.MainFiles
                     else if (toSaveAs != "font")
                     {
                         if (!(Assets.ContainsKey(toSaveAs)))
-                            Assets.Add(toSaveAs, Content.Load<Texture2D>(toSaveAs));
+                            try
+                            {
+                                Assets.Add(toSaveAs, Content.Load<Texture2D>(toSaveAs));
+                            }
+                            catch // if we fail to load in the texture, try again with a file path this time
+                            {
+                                Assets.Add(toSaveAs, Content.Load<Texture2D>(filePath + toSaveAs));
+                            }
                     }
                 }
             }

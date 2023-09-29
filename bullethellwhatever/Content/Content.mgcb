@@ -269,6 +269,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/PlayerDeathrayShader.fx
 
+#begin Shaders/PlayerHealthBarShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/PlayerHealthBarShader.fx
+
 #begin Shaders/TelegraphLineShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

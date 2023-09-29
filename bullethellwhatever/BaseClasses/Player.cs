@@ -53,22 +53,24 @@ namespace bullethellwhatever.BaseClasses
             isBoss = false;
             IFrames = 0;
             Depth = 0;
+
             switch (GameState.Difficulty)
             {
                 case GameState.Difficulties.Easy:
-                    Health = 15;
+                    MaxHP = 15;
                     break;
                 case GameState.Difficulties.Normal:
-                    Health = 12;
+                    MaxHP = 12;
                     break;
                 case GameState.Difficulties.Hard:
-                    Health = 10;
+                    MaxHP = 10;
                     break;
                 case GameState.Difficulties.Insane:
-                    Health = 8;
+                    MaxHP = 8;
                     break;
             }
-            MaxHP = Health;
+
+            Health = MaxHP; // put this back to normal
             Size = DefaultHitbox;
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
