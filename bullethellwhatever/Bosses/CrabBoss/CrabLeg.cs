@@ -16,6 +16,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Entity Owner;
 
+        //public bool LockPosition;
+
         public CrabBossUpperArm UpperArm;
         public CrabBossLowerArm LowerArm;
         public CrabBossUpperClaw UpperClaw;
@@ -24,14 +26,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public bool HorizontalFlip;
 
         public float Health;
-        public CrabLeg(Vector2 position, Entity owner)
+        public CrabLeg(Vector2 position, Entity owner, int legIndex)
         {
             Owner = owner;
 
-            UpperArm = new CrabBossUpperArm(Owner, this, "CrabUpperArm");
-            LowerArm = new CrabBossLowerArm(Owner, this, "CrabLowerArm");
-            UpperClaw = new CrabBossUpperClaw(Owner, this, "CrabUpperClaw");
-            LowerClaw = new CrabBossLowerClaw(Owner, this, "CrabLowerClaw");
+            UpperArm = new CrabBossUpperArm(Owner, this, "CrabUpperArm", legIndex);
+            LowerArm = new CrabBossLowerArm(Owner, this, "CrabLowerArm", legIndex);
+            UpperClaw = new CrabBossUpperClaw(Owner, this, "CrabUpperClaw", legIndex);
+            LowerClaw = new CrabBossLowerClaw(Owner, this, "CrabLowerClaw", legIndex);
 
             HorizontalFlip = false;
 
@@ -69,9 +71,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
             //LowerArm.Rotation = UpperArm.Rotation; //comment this out later just for test
             //LowerArm.Position = new Vector2(ScreenWidth / 1.5f, ScreenHeight / 2);
             //LowerArm.Rotation = LowerArm.Rotation + PI / 100f;
+
             UpperClaw.Position = LowerArm.CalculateEnd();
-            //UpperClaw.Rotation = UpperClaw.Rotation + PI / 80f;
+
+            if (UpperClaw.LegIndex == 0) // left arm claw face inwards
+            {
+                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.GetSize().X, 0), Owner.Rotation);
+            }
+
+            //if (UpperClaw.LegIndex == 1) // left arm claw face inwards
+            //{
+            //    UpperClaw.Position = UpperClaw.Position - Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.GetSize().X, 0), Owner.Rotation);
+            //}
+
             LowerClaw.Position = LowerArm.CalculateEnd();
+
+            if (LowerClaw.LegIndex == 0) // left arm claw face inwards
+            {
+                //LowerClaw.Position = LowerClaw.Position + Utilities.RotateVectorClockwise(new Vector2(LowerClaw.Texture.Width * LowerClaw.GetSize().X, 0), Owner.Rotation);
+            }
 
         }
     }

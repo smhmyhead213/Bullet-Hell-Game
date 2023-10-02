@@ -67,7 +67,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             CrabOwner.LockArmPositions = false;
 
-            Leg(ArmIndex).Position = Leg(ArmIndex).Position - new Vector2(distanceToMoveX, distanceToMoveY) / time;
+            Leg(ArmIndex).Position = Leg(ArmIndex).Position - Utilities.RotateVectorClockwise(new Vector2(distanceToMoveX, distanceToMoveY), Owner.Rotation) / time;
 
             Leg(ArmIndex).UpperArm.Rotate(ArmPullBackAngle / time);
             Leg(ArmIndex).LowerArm.Rotate(ArmPullBackAngle / time);
@@ -79,20 +79,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             CrabOwner.SetBoosters(false);
 
-            //float sine = Sin(AITimer / 40f) + 1f;
-            //sine = sine / 2f;
-            //CrabOwner.SetDepth(sine);
-
-            //CrabOwner.SetArmDepth(0, sine);
-            //CrabOwner.SetArmDepth(1, sine);
-
             float finalDepth = 0.5f;
 
             if (AITimer < EndTime - totalAttackDuration) // we want to fade back in near the end
             {
                 if (time < MoveToPositionTime)
-                {
-                    
+                {                   
                     MoveToPoint(new Vector2(ScreenWidth / 2f, ScreenHeight / 10f), time, MoveToPositionTime);
 
                     if (!Utilities.IsQuantityWithinARangeOfAValue(Owner.Depth, finalDepth, 0.02f)) //if looping the attack, dont bother doing the depth stuff again
@@ -128,7 +120,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     PullArmBack(PunchWindUpTime + TimeAfterTargetChosen);
                 }
 
-                if (time < PunchTime - TimeAfterTargetChosen && time > MoveToPositionTime + PunchWindUpTime)
+                if (time < PunchTime - TimeAfterTargetChosen && time > MoveToPositionTime + PunchWindUpTime) // this if is redundant, merge with previous if performance becomes an issue but one extra if isnt gonna ruin everything so i cant be bothered
                 {
                     TargetPosition = player.Position;
 
@@ -208,8 +200,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     // everything here happens in the same amount of time as the punch does
 
-                    Leg(ArmIndex).UpperArm.Rotate(-(UpperArmRotationAngle - expandedi * bendAngle + ArmPullBackAngle) / PunchDuration);
-                    Leg(ArmIndex).LowerArm.Rotate(-(LowerArmRotationAngle + expandedi * bendAngle + ArmPullBackAngle) / PunchDuration);
+                    Leg(ArmIndex).UpperArm.Rotate(-(UpperArmRotationAngle - (expandedi * bendAngle) + ArmPullBackAngle) / PunchDuration);
+                    Leg(ArmIndex).LowerArm.Rotate(-(LowerArmRotationAngle + (expandedi * bendAngle) + ArmPullBackAngle) / PunchDuration);
 
                     float punchDistance = Utilities.DistanceBetweenVectors(leg.Position, TargetPosition) / Owner.DepthFactor();
                     float halfPunchDist = punchDistance / 2f;
@@ -242,6 +234,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 CrabOwner.Depth = depth;
                 CrabOwner.SetArmDepth(0, depth);
                 CrabOwner.SetArmDepth(1, depth);
+
+                CrabOwner.LockArmPositions = true;
             }
 
         }

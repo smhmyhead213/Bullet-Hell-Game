@@ -21,10 +21,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Entity Owner;
 
+        public int LegIndex;
+
         public float RotationConstant;
 
         public float RotationToAdd;
-        public CrabBossAppendage(Entity owner, CrabLeg leg, string texture)
+        public CrabBossAppendage(Entity owner, CrabLeg leg, string texture, int legIndex)
         {
             Owner = owner;
             Leg = leg;
@@ -38,6 +40,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PierceToTake = 20;
 
             PrepareNPC();
+            LegIndex = legIndex;
             //Rotation = Rotation + PI / 2;
         }
 

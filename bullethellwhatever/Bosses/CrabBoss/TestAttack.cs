@@ -26,9 +26,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
 
-            float cosine = Cos(AITimer / 10f);  
+            float cosine = Cos(AITimer / 10f);
             CrabOwner.Velocity = Vector2.Zero;
-            //CrabOwner.Rotation = CrabOwner.Rotation + PI / 60f;
+
+            //CrabOwner.Rotation = CrabOwner.Rotation + PI / 60f; //keep this commented out
+
             CrabOwner.Legs[0].UpperArm.Rotate(0.075f * 2f * cosine);
             CrabOwner.Legs[0].LowerArm.Rotate(0.125f * 2f * cosine);
             CrabOwner.Legs[0].UpperClaw.Rotate(0.125f * 2f * cosine);
@@ -50,7 +52,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer % positionChangeTime == 0) // every 3 seconds, pick a new location to move to
             {
                 Random rng = new Random();
-                
+
                 int xpos = rng.Next(ScreenWidth / 8, ScreenWidth / 8 * 7);
                 int ypos = rng.Next(ScreenHeight / 8, ScreenHeight / 8 * 7);
 
@@ -83,7 +85,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).UpperClaw.Rotate(-angleToCloseByThisFrame);
                 Leg(1).LowerClaw.Rotate(angleToCloseByThisFrame);//rotate based on formula sitting in desmos
             }
-            
+
             if (timeSinceClapReset > otherHandClapFrequency - 10)
             {
                 WeakHomingProjectile proj = new WeakHomingProjectile(12f, 60);

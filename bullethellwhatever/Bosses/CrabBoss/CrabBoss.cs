@@ -47,7 +47,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
-                Legs[i] = new CrabLeg(Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), this);
+                Legs[i] = new CrabLeg(Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), this, i);
 
                 if (i == 0)
                 {
@@ -55,8 +55,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
 
                 Legs[i].UpperArm.RotationConstant = -expandedi * PI / 12;
-                Legs[i].LowerArm.RotationConstant =  expandedi * PI / 12;
-                
+                Legs[i].LowerArm.RotationConstant = expandedi * PI / 12;
+                //Legs[0].UpperClaw.RotationConstant = expandedi * PI;
+                //Legs[0].LowerClaw.RotationConstant = expandedi * PI; // fix later
+
             }
 
             BossAttacks = new CrabBossAttack[]
@@ -189,14 +191,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             //Hitbox.DrawHitbox();
 
-            //foreach (CrabLeg leg in Legs)
-            //{
-            //    if (leg is not null)
-            //    {
-            //        //leg.Draw(spriteBatch);
-            //        //leg.DrawHitboxes();
-            //    }
-            //}
+            foreach (CrabLeg leg in Legs)
+            {
+                if (leg is not null)
+                {
+                    //leg.DrawHitboxes();
+                }
+            }
 
             Utilities.drawTextInDrawMethod(Legs[0].LowerArm.CalculateFinalRotation().ToDegrees().ToString(), new Vector2(ScreenWidth / 20 * 19, ScreenHeight / 20 * 19), spriteBatch, font, Color.White);
         }

@@ -11,7 +11,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabBossLowerArm : CrabBossAppendage
     {
-        public CrabBossLowerArm(Entity owner, CrabLeg leg, string texture) : base(owner, leg, texture)
+        public CrabBossLowerArm(Entity owner, CrabLeg leg, string texture, int legIndex) : base(owner, leg, texture, legIndex)
         {
             MaxHP = 75f;
             Health = 75f;
