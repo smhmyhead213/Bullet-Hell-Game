@@ -19,17 +19,19 @@ namespace bullethellwhatever.BaseClasses
         public float IFrames;
         public int MaxIFrames;
 
-        
+        public bool IsInvincible;
+
         public bool TargetableByHoming;
 
-        public int PierceToTake;        
-        public float HPRatio => Health / MaxHP;
+        public int PierceToTake;
         public DialogueSystem dialogueSystem;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1; //default
 
             Depth = 0;
+
+            IsInvincible = false;
 
             DrawAfterimages = false;
 
@@ -63,6 +65,8 @@ namespace bullethellwhatever.BaseClasses
             Updates = 1;
 
             Depth = 0;
+
+            IsInvincible = false;
 
             TargetableByHoming = true;
 
@@ -122,6 +126,10 @@ namespace bullethellwhatever.BaseClasses
             return Hitbox.Intersects(entity.Hitbox);
         }
 
+        public float HPRatio()
+        {
+            return Health / MaxHP;
+        }
         public virtual void CheckForHits() // all passive checks go here as well
         {
             if (Health < 0 && IsDesperationOver)
@@ -139,7 +147,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
             {
-                foreach (NPC npc in activeNPCs)
+                foreach (NPC npc in activeNPCs) // if not harmful (player allegiance), search for entities to attack
                 {
                     if (IsCollidingWithEntity(npc) && npc.IFrames == 0) 
                     {

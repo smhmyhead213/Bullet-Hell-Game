@@ -195,7 +195,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (leg is not null)
                 {
-                    leg.DrawHitboxes();
+                    //leg.DrawHitboxes();
                 }
             }
 

@@ -55,8 +55,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (Health <= 0)
             {
                 TargetableByHoming = false;
+                IsInvincible = true;
             }
-            else TargetableByHoming = true;
+            else
+            {
+                TargetableByHoming = true;
+                IsInvincible = false;
+            }
         }
 
         public virtual float RotationFromV() // rotation from vertical

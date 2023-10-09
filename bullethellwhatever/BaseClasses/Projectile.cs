@@ -84,7 +84,9 @@ namespace bullethellwhatever.BaseClasses
         public virtual void PrepareProjectile()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
+
             SetHitbox();
+
             if (IsHarmful)
                 enemyProjectilesToAddNextFrame.Add(this);
             else friendlyProjectilesToAddNextFrame.Add(this);
@@ -125,7 +127,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 foreach (NPC npc in activeNPCs)
                 {
-                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0)
+                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0 && !npc.IsInvincible)
                     {
                         npc.IFrames = npc.MaxIFrames;
 
