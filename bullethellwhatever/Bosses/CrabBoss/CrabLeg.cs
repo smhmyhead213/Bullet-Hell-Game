@@ -74,10 +74,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             UpperClaw.Position = LowerArm.CalculateEnd();
 
-            if (UpperClaw.LegIndex == 0) // left arm claw face inwards
-            {
-                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.GetSize().X, 0), Owner.Rotation);
-            }
+            //if (UpperClaw.LegIndex == 0) // left arm claw face inwards
+            //{
+            //    UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.GetSize().X, 0), Owner.Rotation);
+            //}
 
             //if (UpperClaw.LegIndex == 1) // left arm claw face inwards
             //{
@@ -86,11 +86,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             LowerClaw.Position = LowerArm.CalculateEnd();
 
-            if (LowerClaw.LegIndex == 0) // left arm claw face inwards
+            //if (LowerClaw.LegIndex == 0) // left arm claw face inwards
+            //{
+            //    //LowerClaw.Position = LowerClaw.Position + Utilities.RotateVectorClockwise(new Vector2(LowerClaw.Texture.Width * LowerClaw.GetSize().X, 0), Owner.Rotation);
+            //}
+
+            if (UpperClaw.LegIndex == 0)
             {
-                //LowerClaw.Position = LowerClaw.Position + Utilities.RotateVectorClockwise(new Vector2(LowerClaw.Texture.Width * LowerClaw.GetSize().X, 0), Owner.Rotation);
+                UpperClaw.Position = LowerArm.CalculateEnd();
+                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
             }
 
+            else UpperClaw.Position = LowerArm.CalculateEnd();
         }
     }
 }

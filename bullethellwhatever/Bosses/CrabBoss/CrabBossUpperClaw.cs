@@ -16,7 +16,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             MaxHP = 50f;
             Health = 50f;
-            Rotation = PI / 4;
+            //Rotation = PI / 4;
         }
 
         //public override Vector2 CalculateEnd()
@@ -30,7 +30,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Vector2 centre = Vector2.Lerp(Position, CalculateEnd(), 0.5f); // centre is halfway along arm
 
-            centre.X = centre.X - Texture.Width / 2f * GetSize().X; // yeah totally sure yeah i was there yeah thats crazy man so true for real?
+            centre = centre - Utilities.RotateVectorClockwise(new Vector2(Texture.Width / 2f * GetSize().X, 0f), Rotation); // yeah totally sure yeah i was there yeah thats crazy man so true for real?
 
             Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, centre);
 

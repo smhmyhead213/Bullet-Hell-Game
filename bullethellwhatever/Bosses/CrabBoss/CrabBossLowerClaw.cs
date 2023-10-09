@@ -25,20 +25,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         //    else return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * Size.Y * DepthFactor();
         //}
 
-        //public override void Draw(SpriteBatch spriteBatch)
-        //{
-        //    if (LegIndex == 0)
-        //    {
-        //        Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (LegIndex == 0)
+            {
+                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
 
-        //        if (this is CrabBossUpperClaw)
-        //        {
-        //            originOffset = new Vector2(Texture.Width, 0);
-        //        }
-
-        //        Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.FlipHorizontally, 1f);
-        //    }
-        //    else base.Draw(spriteBatch);
-        //}
+                Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.FlipHorizontally, 1f);
+            }
+            else base.Draw(spriteBatch);
+        }
     }
 }

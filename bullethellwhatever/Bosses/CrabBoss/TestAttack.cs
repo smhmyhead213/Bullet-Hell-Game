@@ -26,10 +26,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
 
-            float cosine = Cos(AITimer / 10f);
-            CrabOwner.Velocity = Vector2.Zero;
+            //Leg(0).LowerClaw.Rotate(PI / 60f);
+            //Leg(0).UpperClaw.Rotate(PI / 60f);
 
             //CrabOwner.Rotation = CrabOwner.Rotation + PI / 60f; //keep this commented out
+
+            //----------
+
+            float cosine = Cos(AITimer / 10f);
+            CrabOwner.Velocity = Vector2.Zero;
 
             CrabOwner.Legs[0].UpperArm.Rotate(0.075f * 2f * cosine);
             CrabOwner.Legs[0].LowerArm.Rotate(0.125f * 2f * cosine);

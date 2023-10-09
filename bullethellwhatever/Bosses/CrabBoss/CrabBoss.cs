@@ -195,10 +195,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (leg is not null)
                 {
-                    //leg.DrawHitboxes();
+                    leg.DrawHitboxes();
                 }
             }
 
+            Drawing.BetterDraw(Assets["box"], Legs[0].LowerArm.CalculateEnd(), null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
             Utilities.drawTextInDrawMethod(Legs[0].LowerArm.CalculateFinalRotation().ToDegrees().ToString(), new Vector2(ScreenWidth / 20 * 19, ScreenHeight / 20 * 19), spriteBatch, font, Color.White);
         }
     }
