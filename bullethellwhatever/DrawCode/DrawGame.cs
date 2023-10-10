@@ -156,11 +156,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (NPC npc in activeNPCs)
             {
-                if (npc is not Boss)
-                {
-                    UI.DrawHealthBar(Main._spriteBatch, npc, npc.Position + new Vector2(0, 10f * npc.DepthFactor()), 2f * npc.DepthFactor(), 0.5f * npc.DepthFactor());
-                }
-                else UI.DrawHealthBar(Main._spriteBatch, npc, new Vector2(Main.ScreenWidth / 2, Main.ScreenHeight / 20 * 19), 120f, 3f); // boss bar
+                npc.DrawHPBar(Main._spriteBatch);
             }
             
             DrawHUD(Main._spriteBatch);

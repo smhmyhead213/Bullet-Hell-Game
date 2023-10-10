@@ -172,6 +172,18 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
+        public void DrawHPBar(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            if (this is not Boss)
+            {
+                UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 2f * DepthFactor(), 0.5f * DepthFactor());
+            }
+
+            else UI.DrawHealthBar(spriteBatch, this, new Vector2(ScreenWidth / 2, ScreenHeight / 20 * 19), 120f, 3f); // boss bar
+        }
+
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1;
