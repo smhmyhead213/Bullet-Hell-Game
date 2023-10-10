@@ -66,35 +66,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void Update()
         {
             UpperArm.Position = Position;
-            //UpperArm.Rotation = UpperArm.Rotation + PI / 90f;
+
             LowerArm.Position = UpperArm.CalculateEnd();
-            //LowerArm.Rotation = UpperArm.Rotation; //comment this out later just for test
-            //LowerArm.Position = new Vector2(ScreenWidth / 1.5f, ScreenHeight / 2);
-            //LowerArm.Rotation = LowerArm.Rotation + PI / 100f;
-
-            UpperClaw.Position = LowerArm.CalculateEnd();
-
-            //if (UpperClaw.LegIndex == 0) // left arm claw face inwards
-            //{
-            //    UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.GetSize().X, 0), Owner.Rotation);
-            //}
-
-            //if (UpperClaw.LegIndex == 1) // left arm claw face inwards
-            //{
-            //    UpperClaw.Position = UpperClaw.Position - Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.GetSize().X, 0), Owner.Rotation);
-            //}
 
             LowerClaw.Position = LowerArm.CalculateEnd();
-
-            //if (LowerClaw.LegIndex == 0) // left arm claw face inwards
-            //{
-            //    //LowerClaw.Position = LowerClaw.Position + Utilities.RotateVectorClockwise(new Vector2(LowerClaw.Texture.Width * LowerClaw.GetSize().X, 0), Owner.Rotation);
-            //}
 
             if (UpperClaw.LegIndex == 0)
             {
                 UpperClaw.Position = LowerArm.CalculateEnd();
-                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
+                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1.7f * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
             }
 
             else UpperClaw.Position = LowerArm.CalculateEnd();

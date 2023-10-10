@@ -64,6 +64,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BossAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30),
+                new BackgroundPunches(390 * 7),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18),
                 new Minefield(1550),
@@ -195,7 +196,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (leg is not null)
                 {
-                    //leg.DrawHitboxes();
+                    leg.DrawHitboxes();
                 }
             }
 
