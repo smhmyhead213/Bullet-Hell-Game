@@ -21,6 +21,12 @@ namespace bullethellwhatever.BaseClasses
         public int TimeOutsidePlayArea;
         public int PierceRemaining;
 
+        // for projectile fade out
+
+        public bool Dying;
+        public int DyingTimer;
+        public float StartingOpacity;
+
         public Func<float, float>? DepthFunction;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
@@ -45,6 +51,10 @@ namespace bullethellwhatever.BaseClasses
             Updates = 1;
 
             Opacity = 1f;
+
+            Dying = false;
+
+            DyingTimer = 0;
 
             //float sizeScalar = ScreenWidth * 1f / IdealScreenWidth * 1f; //adjust for screen size horizontally
 
@@ -114,6 +124,20 @@ namespace bullethellwhatever.BaseClasses
             {
                 SetDepth(DepthFunction(AITimer));
             }
+
+            if (Dying)
+            {
+                float fadeOutTime = 10f;
+
+                Opacity = MathHelper.Lerp(1f, 0f, DyingTimer / fadeOutTime);
+
+                DyingTimer++;
+
+                if (DyingTimer == fadeOutTime)
+                {
+                    base.Die();
+                }
+            }
         }
 
         public override void AI()
@@ -121,13 +145,23 @@ namespace bullethellwhatever.BaseClasses
             Position = Position + Velocity;
         }
 
+        public override void Die()
+        {
+            if (!(Owner is Player)) // avoid visual vomit by not doing this if player owned
+            {
+                Dying = true;
+                StartingOpacity = Opacity;
+            }
+
+            else DeleteNextFrame = true;
+        }
         public virtual void CheckForHits()
         {
             if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
             {
                 foreach (NPC npc in activeNPCs)
                 {
-                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0 && !npc.IsInvincible)
+                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
                     {
                         npc.IFrames = npc.MaxIFrames;
 
@@ -140,7 +174,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsHarmful)
             {
-                if (IsCollidingWithEntity(player) && player.IFrames == 0)
+                if (IsCollidingWithEntity(player) && player.IFrames == 0 && !Dying)
                 {
                     player.IFrames = 20f;
 
@@ -159,7 +193,7 @@ namespace bullethellwhatever.BaseClasses
                 PierceRemaining = PierceRemaining - pierceToTake;
             }
 
-            if (RemoveOnHit && PierceRemaining <= 0)
+            if (RemoveOnHit && PierceRemaining <= 0 && !Dying) // dont reset death fade out if already dying
                 Die();
         }
 

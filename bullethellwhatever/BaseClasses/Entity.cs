@@ -110,7 +110,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
 
             if (DrawAfterimages)
             {

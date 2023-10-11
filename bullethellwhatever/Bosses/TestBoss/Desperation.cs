@@ -63,6 +63,11 @@ namespace bullethellwhatever.Bosses.TestBoss
                 {
                     npc.Die();
                 }
+
+                foreach (Projectile projectile in activeProjectiles)
+                {
+                    projectile.Die();
+                }
             }
 
             if (AITimer < despStartTime)

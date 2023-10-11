@@ -33,7 +33,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 200;
+            Health = 2;
             AITimer = 0;
             MaxIFrames = 5;
             HasChosenChargeDirection = false;

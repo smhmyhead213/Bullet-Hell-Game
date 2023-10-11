@@ -50,7 +50,7 @@ namespace bullethellwhatever.Projectiles.Base
         public override void Die()
         {
             Explode();
-            base.Die();            
+            DeleteNextFrame = true; // dont bother fading out    
         }
         public virtual void Explode()
         {

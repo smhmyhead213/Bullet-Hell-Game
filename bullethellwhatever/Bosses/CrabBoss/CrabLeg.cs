@@ -16,6 +16,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Entity Owner;
 
+        public bool Dead;
+
         //public bool LockPosition;
 
         public CrabBossUpperArm UpperArm;
@@ -24,8 +26,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossLowerClaw LowerClaw;
 
         public bool HorizontalFlip;
-
-        public float Health;
         public CrabLeg(Vector2 position, Entity owner, int legIndex)
         {
             Owner = owner;
@@ -42,6 +42,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerArm.Position = UpperArm.CalculateEnd();
             UpperClaw.Position = LowerArm.CalculateEnd();
             LowerClaw.Position = LowerArm.CalculateEnd();
+
+            Dead = false;
         }
 
         public float Length()
@@ -74,10 +76,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (UpperClaw.LegIndex == 0)
             {
                 UpperClaw.Position = LowerArm.CalculateEnd();
-                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1.7f * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
+                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
             }
-
             else UpperClaw.Position = LowerArm.CalculateEnd();
+
+            if (UpperArm.Health <= 0 && LowerArm.Health <= 0 && UpperClaw.Health <= 0 && LowerClaw.Health <= 0)
+            {
+                Dead = true;
+            }
         }
     }
 }

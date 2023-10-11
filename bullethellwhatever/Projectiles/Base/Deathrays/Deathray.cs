@@ -210,7 +210,7 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void Die()
         {
-            base.Die();
+            DeleteNextFrame = true;
         }
         public override void Draw(SpriteBatch spritebatch)
         {

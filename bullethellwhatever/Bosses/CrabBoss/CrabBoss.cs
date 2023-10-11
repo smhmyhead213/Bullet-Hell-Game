@@ -20,9 +20,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabLeg[] Legs;
         public Vector2[] BoosterPositions;
-        public float idivisior;
-        public float c;
-        public float ydivisor;
         public bool BoostersActive;
         public bool LockArmPositions;
         public CrabBoss()
@@ -114,6 +111,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
 
+            if (Legs[0].Dead && Legs[1].Dead)
+            {
+                LockArmPositions = false;
+            }
+
             for (int i = 0; i < 2; i++)
             {
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
@@ -195,7 +197,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (leg is not null)
                 {
-                    leg.DrawHitboxes();
+                    //leg.DrawHitboxes();
                 }
             }
 
