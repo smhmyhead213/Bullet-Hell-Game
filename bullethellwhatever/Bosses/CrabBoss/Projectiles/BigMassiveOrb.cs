@@ -5,8 +5,6 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D11;
-using System.Security.Cryptography.X509Certificates;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
 {
@@ -84,9 +82,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
             KeepExpanding = expand;
         }
 
-        public override void Die() //do something with this later
+        public override void Die()
         {
-            base.Die();
+            DeleteNextFrame = true; // exempt from fading out as this has its own fade out specifically
         }
         public override void Draw(SpriteBatch s)
         {

@@ -17,6 +17,7 @@ namespace bullethellwhatever.Projectiles.Player
         public bool ChosenDirection;
         public int Direction;
         public int HomingTime;
+        public int TimeWithNoTarget;
 
         public override void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
@@ -25,6 +26,8 @@ namespace bullethellwhatever.Projectiles.Player
             afterimagesPositions = new Vector2[22 * Updates];
 
             DrawAfterimages = true;
+
+            TimeWithNoTarget = 0;
         }
         public override void AI()
         {
@@ -37,20 +40,49 @@ namespace bullethellwhatever.Projectiles.Player
 
             if (AITimer > HomingTime)
             {
-                foreach (NPC npc in activeNPCs)
+                if (activeNPCs.Count > 0)
                 {
-                    if (npc.TargetableByHoming)
+                    Opacity = 1f; // come back to full opacity if a target is found while fading out
+
+                    foreach (NPC npc in activeNPCs)
                     {
-                        float distance = Utilities.DistanceBetweenEntities(this, npc);
-                        if (distance < minDistance)
+                        if (npc.TargetableByHoming)
                         {
-                            minDistance = distance;
-                            closestNPC = npc;
+                            float distance = Utilities.DistanceBetweenEntities(this, npc);
+                            if (distance < minDistance)
+                            {
+                                minDistance = distance;
+                                closestNPC = npc;
+                            }
                         }
                     }
+
+                    Velocity = 0.4f / Updates * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
+                }
+
+                else
+                {
+                    TimeWithNoTarget++;
+                    Velocity = Velocity * 0.98f; // slow down if no target
                 }
                 //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
-                Velocity = 0.4f / Updates * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
+               
+            }
+
+            int beginFading = 50;
+
+            if (TimeWithNoTarget >= beginFading) //after a second of not finding a target
+            {
+                // if almost expired, start fading out
+
+                int fadeOutTime = 60;
+
+                Opacity = MathHelper.Lerp(1f, 0f, ((float)TimeWithNoTarget - beginFading) / fadeOutTime);
+
+                if (TimeWithNoTarget > fadeOutTime + beginFading)
+                {
+                    DeleteNextFrame = true;
+                }
             }
 
             Position = Position + Velocity;

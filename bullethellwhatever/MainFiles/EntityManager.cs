@@ -14,14 +14,15 @@ namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
-        
+       
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
             activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
             activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60);
-            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.AITimer > 5 || projectile.DeleteNextFrame);
+            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60 && projectile.AITimer > 5);
+            activeFriendlyProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
         }

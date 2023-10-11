@@ -120,15 +120,16 @@ namespace bullethellwhatever.BaseClasses
 
                     if (afterimagesPositions[i] != Vector2.Zero)
                     {
-                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                         // Draw another afterimage between this one and the last one, for a less choppy trail.
+                        // The first afterimage is between the entity and the first saved position (i = 0).
 
                         Vector2 positionOfAdditionalAfterImage = i == 0 ? Vector2.Lerp(Position, afterimagesPositions[i], 0.5f) : Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f);
 
                         colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
-                        Drawing.BetterDraw(Main.player.Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier,
+                        Drawing.BetterDraw(Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier * Opacity,
                             Rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                     }
