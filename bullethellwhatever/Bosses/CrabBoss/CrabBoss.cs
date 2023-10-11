@@ -22,6 +22,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public Vector2[] BoosterPositions;
         public bool BoostersActive;
         public bool LockArmPositions;
+
+        public int Phase; //flag for if arms are detached yet
+
+        public bool StartedPhaseTwoTransition;
         public CrabBoss()
         {
             Texture = Assets["CrabBody"];
@@ -31,6 +35,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Health = MaxHP;
             AttackNumber = 1;
             Colour = Color.White;
+
+            Phase = 1;
+
+            StartedPhaseTwoTransition = false;
 
             BoostersActive = false;
             LockArmPositions = true;
@@ -107,13 +115,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             //Rotation = Rotation + PI / 90f;
 
-            BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
-
             BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
 
-            if (Legs[0].Dead && Legs[1].Dead)
+            BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
+
+            if (Legs[0].Dead && Legs[1].Dead && !StartedPhaseTwoTransition)
             {
-                LockArmPositions = false;
+                CrabBossAttack[] attacks = new CrabBossAttack[]
+                {
+                    new PhaseTwoTransition(1000), // flush attack pattern and replace
+                };
+
+                ReplaceAttackPattern(attacks);
+                
+                StartedPhaseTwoTransition = true;
             }
 
             for (int i = 0; i < 2; i++)

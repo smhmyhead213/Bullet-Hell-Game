@@ -21,5 +21,19 @@ namespace bullethellwhatever.BaseClasses
             if (BossAttacks is not null)
                 BossAttacks[AttackNumber].ExtraDraw(spriteBatch);
         }
+
+        public void ReplaceAttackPattern(BossAttack[] attacks)
+        {
+            BossAttacks = attacks;
+
+            for (int i = 0; i < BossAttacks.Length; i++)
+            {
+                BossAttacks[i].Owner = this;
+                BossAttacks[i].InitialiseAttackValues();
+            }
+
+            AITimer = 0;
+            AttackNumber = 0; // prevent index errors
+        }
     }
 }

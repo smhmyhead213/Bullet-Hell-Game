@@ -34,7 +34,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             //----------
 
             float cosine = Cos(AITimer / 10f);
-            CrabOwner.Velocity = Vector2.Zero;
 
             CrabOwner.Legs[0].UpperArm.Rotate(0.075f * 2f * cosine);
             CrabOwner.Legs[0].LowerArm.Rotate(0.125f * 2f * cosine);
@@ -62,6 +61,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int ypos = rng.Next(ScreenHeight / 8, ScreenHeight / 8 * 7);
 
                 PositionToMoveTo = new Vector2(xpos, ypos);
+
+                Owner.Velocity = (PositionToMoveTo - Owner.Position) / positionChangeTime;
             }
 
             int timeSinceClapReset = AITimer % otherHandClapFrequency;
@@ -97,11 +98,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 proj.Spawn(Leg(1).LowerClaw.Position, 8f * (player.Position - Leg(1).LowerClaw.Position), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
             }
+
             // move towards that position
 
             int timeSinceLastPositionChoose = AITimer % positionChangeTime;
-
-            CrabOwner.Position = Vector2.Lerp(CrabOwner.Position, PositionToMoveTo, 1f / (positionChangeTime - timeSinceLastPositionChoose));
 
             //rotate to face the player
 
@@ -119,6 +119,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             HandleBounces(); //to prevent something funny happening
 
+            if (AITimer == EndTime - 1)
+            {
+                Owner.Velocity = Vector2.Zero;
+            }
         }
     }
 }

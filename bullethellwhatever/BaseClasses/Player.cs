@@ -322,7 +322,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
 
-                float damage = IsKeyPressed(Keys.N) ? 28f : 0.28f; // debug
+                float damage = 28f; // debug
 
                 projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
 
