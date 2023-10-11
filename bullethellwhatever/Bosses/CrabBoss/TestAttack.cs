@@ -119,7 +119,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             HandleBounces(); //to prevent something funny happening
 
-            if (AITimer == EndTime - 1)
+            if (AITimer == EndTime)
             {
                 Owner.Velocity = Vector2.Zero;
             }

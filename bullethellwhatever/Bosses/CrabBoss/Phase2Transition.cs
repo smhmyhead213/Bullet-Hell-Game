@@ -16,6 +16,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public int SlowDownTime;
         public int MoveToCentreEndTime;
         public float RotationToUndo;
+        public float[] ArmRotationsToUndo;
         public PhaseTwoTransition(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -32,12 +33,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             int time = AITimer % 1000;
 
-            if (time == 0)
+            if (time == 1) // i dont know why it has to be 1 not 0 it really annoys me but its late at night and i dont want to see what the problem is
             {
                 foreach (Projectile p in activeProjectiles)
                 {
                     p.Die(); //clear all projectiles
                 }
+
+                CrabOwner.ResetArmRotations();
             }
 
             if (time < SlowDownTime)
