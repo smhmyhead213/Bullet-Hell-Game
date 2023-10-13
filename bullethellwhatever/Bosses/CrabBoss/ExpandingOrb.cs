@@ -146,15 +146,23 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).LowerArm.Rotate(angleToRotate / 2f / ThrowAnimationDuration);
             }
 
-            if (time == TimeToThrowOrb + (ThrowAnimationDuration / 2))
+            if (time == TimeToThrowOrb + (ThrowAnimationDuration / 2)) // let go halfway through the animation
             {
                 Orb.Velocity = 17f * Utilities.SafeNormalise(player.Position - Owner.Position);
+                Owner.Velocity = -Orb.Velocity * 0.7f; // recoil, and as funny as not dampening it is i cant have him yeet himself out the area
             }
 
-            //if (time >= TimeToThrowOrb + ThrowAnimationDuration && time < TimeToThrowOrb + ThrowAnimationDuration + TimeToWaitAfterThrow)
-            //{
+            int timeToDecelerate = 40;
 
-            //}
+            if (time >= TimeToThrowOrb + (ThrowAnimationDuration / 2) && time < TimeToThrowOrb + ThrowAnimationDuration + TimeToWaitAfterThrow - timeToDecelerate) // spend a second decelerating
+            {
+                Owner.Velocity = Owner.Velocity * 0.98f;
+            }
+
+            if (time == TimeToThrowOrb + ThrowAnimationDuration + TimeToWaitAfterThrow - timeToDecelerate)
+            {
+                Owner.Velocity = Vector2.Zero;
+            }
         }
 
         public override void ExtraDraw(SpriteBatch s)

@@ -32,6 +32,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float UpperArmRotationAngle;
         public float LowerArmRotationAngle;
         public float ArmPullBackAngle;
+        private float debugdepth;
         public BackgroundPunches(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -53,7 +54,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             FistRestTime = 100;
             Targeting = false;
             TargetTransparency = 0.5f;
-
+            //debugdepth = 0;
         }
 
         public void PullArmBack(int time)
@@ -74,6 +75,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
+            debugdepth = Owner.Depth > debugdepth ? Owner.Depth : debugdepth;
+
             int totalAttackDuration = PunchTime + 2 * PunchDuration + FistRestTime + 60;
             int time = AITimer % (totalAttackDuration);
 
@@ -90,7 +93,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     if (!Utilities.IsQuantityWithinARangeOfAValue(Owner.Depth, finalDepth, 0.02f)) //if looping the attack, dont bother doing the depth stuff again
                     {
                         float depth = time * (finalDepth / MoveToPositionTime);
-                        CrabOwner.Depth = depth;
+                        CrabOwner.SetDepth(depth);
                         CrabOwner.SetArmDepth(0, depth);
                         CrabOwner.SetArmDepth(1, depth);
                     }
@@ -228,10 +231,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(ArmIndex).Position = Leg(ArmIndex).Position + new Vector2(distanceToMoveX, distanceToMoveY) / PunchDuration;
                 }
             }
-            else if (AITimer > EndTime - 30)
+            else if (AITimer > EndTime - 30 && time != 0) // time being calculated before this means that for one tick, time will be 0 due to modulo division and AITimer will be at maximum, leading to an absurdly high depth value which messes things up
             {                
                 float depth = (totalAttackDuration - time) / 30f * (finalDepth);
-                CrabOwner.Depth = depth;
+                CrabOwner.SetDepth(depth);
                 CrabOwner.SetArmDepth(0, depth);
                 CrabOwner.SetArmDepth(1, depth);
 
@@ -247,6 +250,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Drawing.BetterDraw(Assets["TargetReticle"], TargetPosition, null, Color.White * TargetTransparency, TargetRotation, Vector2.One * TargetSize, SpriteEffects.None, 1);
             }
+
+            Utilities.drawTextInDrawMethod(debugdepth.ToString(), Utilities.CentreOfScreen(), s, font, Color.White);
         }
     }
 }

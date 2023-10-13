@@ -59,9 +59,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 ChargeWindupTimer++;
 
+                if (ChargeWindupTimer == TimeToWindUpCharge - TelegraphTime) // on the first frame of telegraphing the charge
+                {
+                    Owner.Velocity = Owner.Velocity * -1f; // reverse residual movement to wind up charge
+                }
+
                 if (ChargeWindupTimer > TimeToWindUpCharge - TelegraphTime) //tele line
                 {
                     CrabOwner.SetBoosters(false);
+
+                    Owner.Velocity = Owner.Velocity * 0.99f; // dont spend the whole wind up moving back uniformly, slow down to show that its getting ready
 
                     TelegraphLine t = new TelegraphLine(Utilities.RotationTowards(CrabOwner.Position, player.Position), 0, 0, CrabOwner.Texture.Width * CrabOwner.GetSize().X, 2000, 1, CrabOwner.Position, Color.White, "box", CrabOwner, true);
                     t.ChangeShader("OutlineTelegraphShader");
