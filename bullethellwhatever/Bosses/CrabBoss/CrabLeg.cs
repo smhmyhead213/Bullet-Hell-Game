@@ -13,6 +13,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
    public class CrabLeg
     {
         public Vector2 Position;
+        public Vector2 Velocity;
 
         public Entity Owner;
 
@@ -67,6 +68,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public void Update()
         {
+            Position = Position + Velocity;
+
             UpperArm.Position = Position;
 
             LowerArm.Position = UpperArm.CalculateEnd();

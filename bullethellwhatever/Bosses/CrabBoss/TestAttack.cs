@@ -74,7 +74,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 float angleToOpenByThisFrame = clawOpenFunction(timeSinceClapReset + 1) - clawOpenFunction(timeSinceClapReset); // the amount needed to open this frame, f(1) - f(0)
 
                 Leg(1).UpperClaw.Rotate(angleToOpenByThisFrame);
-                Leg(1).LowerClaw.Rotate(-angleToOpenByThisFrame);//rotate based on formula sitting in desmos
+                Leg(1).LowerClaw.Rotate(-angleToOpenByThisFrame);
             }
             else
             {

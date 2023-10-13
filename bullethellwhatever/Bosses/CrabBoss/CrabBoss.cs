@@ -69,10 +69,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BossAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30),
-                //new TestAttack(BarDuration * 15),
-                //new CrabCharge(BarDuration * 18),
-                //new Minefield(1550),
-                //new BackgroundPunches(390 * 7),
+                new TestAttack(BarDuration * 15),
+                new CrabCharge(BarDuration * 18),
+                new Minefield(1550),
+                new BackgroundPunches(390 * 7),
                 new ExpandingOrb(1700),
             };
 
@@ -215,8 +215,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     //leg.DrawHitboxes();
                 }
             }
-
-            Utilities.drawTextInDrawMethod(Legs[0].LowerArm.CalculateFinalRotation().ToDegrees().ToString(), new Vector2(ScreenWidth / 20 * 19, ScreenHeight / 20 * 19), spriteBatch, font, Color.White);
         }
     }
 }
