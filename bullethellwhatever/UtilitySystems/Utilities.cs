@@ -130,6 +130,14 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
+        public static float RandomFloat(float min, float max)
+        {
+            Random rng = new Random();
+
+            double generated = rng.NextDouble() * (max - min) + min;
+
+            return (float)generated;
+        }
         public static void moveVectorArrayElementsUpAndAddToStart(ref Vector2[] array, Vector2 vectorToAdd) //make generic
         {
             Vector2[] newArray = new Vector2[array.Length];

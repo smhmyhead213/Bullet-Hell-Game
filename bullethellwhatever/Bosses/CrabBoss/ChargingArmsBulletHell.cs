@@ -87,11 +87,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Vector2 vectorToTarget = TargetPosition - Leg(i).LowerClaw.Position;
 
-                    Leg(i).Velocity = vectorToTarget / clapTime * 0.75f; // travel the distance needed for the fist to touch the target
+                    float directionanglefromV = Utilities.VectorToAngle(vectorToTarget);
+
+                    Leg(i).Velocity = (vectorToTarget / clapTime * 0.75f) + Utilities.RotateVectorClockwise(new Vector2(0 , -15f), directionanglefromV); // travel the distance needed for the fist to touch the target, plus a minimum velocity
 
                     ArmVelocities[i] = Leg(i).Velocity;
 
-                    Leg(i).PointLegInDirection(Utilities.VectorToAngle(vectorToTarget));
+                    Leg(i).PointLegInDirection(directionanglefromV);
                 }
             }
 
@@ -102,6 +104,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 for (int i = 0; i < 2; i++)
                 {
                     Leg(i).Velocity = Leg(i).Velocity - (Leg(i).Velocity / (handDecelTime - DecelerationTimer));
+
+                    if (Entity.touchingAnEdge(Leg(i).UpperArm) && Entity.touchingAnEdge(Leg(i).LowerClaw)) // if an arm leaves the area
+                    {
+                        Leg(i).Velocity = Leg(i).Velocity * 0.8f; // dont go too far out
+                    }
                 }
 
                 DecelerationTimer++;
@@ -144,6 +151,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
 
                 else Owner.Rotation = Owner.Rotation + angularVelocity;
+
+                int projectilesPerRing = 25;
+
+                if (bodyTime % 12 == 0)
+                {
+                    for (int i = 0; i < projectilesPerRing; i++)
+                    {
+                        Projectile p = new Projectile();
+
+                        float angle = 2f * PI / projectilesPerRing + Utilities.RandomFloat(-PI / 30, PI / 30);
+
+                        p.Spawn(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false); //start slow and speed up fast
+                    }
+                }
             }
         }
         

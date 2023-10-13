@@ -198,6 +198,19 @@ namespace bullethellwhatever.DrawCode
             s.Begin(SpriteSortMode.Deferred);
 
             Drawing.BetterDraw(Assets["HUDBody"], new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
+
+            Vector2 iconRotationAxis = new Vector2(ScreenWidth / 15.174f, ScreenHeight / 10f);
+
+            Vector2 drawDistanceFromCentre = new Vector2(0, -40f);
+
+            Drawing.BetterDraw(Assets["box"], iconRotationAxis, null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
+
+            float numberOfWeapons = 3;
+
+            Drawing.BetterDraw(Assets["HomingWeaponIcon"], Utilities.RotateVectorClockwise(iconRotationAxis + drawDistanceFromCentre, 0 * Tau / numberOfWeapons) , null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["LaserWeaponIcon"], Utilities.RotateVectorClockwise(iconRotationAxis + drawDistanceFromCentre, 1 * Tau / numberOfWeapons), null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["MachineWeaponIcon"], Utilities.RotateVectorClockwise(iconRotationAxis + drawDistanceFromCentre, 2 * Tau / numberOfWeapons), null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
+
         }
     }
 }

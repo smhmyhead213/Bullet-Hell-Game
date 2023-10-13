@@ -29,7 +29,8 @@ namespace bullethellwhatever.BaseClasses
         public float IFrames;
         public float ShotCooldown;
         public float ShotCooldownRemaining;
-        public float ScrollCooldown;
+        public float WeaponSwitchCooldownTimer;
+        public float WeaponSwitchCooldown;
         public float MoveSpeed;
         public Deathray PlayerDeathray = new Deathray();
 
@@ -76,7 +77,11 @@ namespace bullethellwhatever.BaseClasses
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Homing;
             MoveSpeed = 5.5f;
-            ScrollCooldown = 0f;
+
+            WeaponSwitchCooldown = 5f;
+
+            WeaponSwitchCooldownTimer = 0f;
+
             ShouldRemoveOnEdgeTouch = false;
             afterimagesPositions = new Vector2[DashDuration];
             Colour = Color.White;
@@ -139,22 +144,22 @@ namespace bullethellwhatever.BaseClasses
 
             if (GameState.WeaponSwitchControl) //if scroll wheel controls
             {
-                if (mouseState.ScrollWheelValue / 120 % 3 == 0 && ScrollCooldown == 0)  //are you happy now Gemma??????????????????????
+                if (mouseState.ScrollWheelValue / 120 % 3 == 0 && WeaponSwitchCooldownTimer == 0)  //are you happy now Gemma??????????????????????
                 {
                     ActiveWeapon = Weapons.Laser;
-                    ScrollCooldown = 3f;
+                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
                 }
 
-                if (mouseState.ScrollWheelValue / 120 % 3 == 1 && ScrollCooldown == 0)
+                if (mouseState.ScrollWheelValue / 120 % 3 == 1 && WeaponSwitchCooldownTimer == 0)
                 {
                     ActiveWeapon = Weapons.MachineGun;
-                    ScrollCooldown = 3f;
+                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
                 }
 
-                if (mouseState.ScrollWheelValue / 120 % 3 == 2 && ScrollCooldown == 0)
+                if (mouseState.ScrollWheelValue / 120 % 3 == 2 && WeaponSwitchCooldownTimer == 0)
                 {
                     ActiveWeapon = Weapons.Homing;
-                    ScrollCooldown = 3f;
+                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
                 }
 
                 if (IsKeyPressed(Keys.Q) && Main.activeNPCs.Count == 0)
@@ -169,19 +174,19 @@ namespace bullethellwhatever.BaseClasses
                 if (IsKeyPressed(Keys.D1))
                 {
                     ActiveWeapon = Weapons.Laser;
-                    ScrollCooldown = 3f;
+                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
                 }
 
                 if (IsKeyPressed(Keys.D2))
                 {
                     ActiveWeapon = Weapons.MachineGun;
-                    ScrollCooldown = 3f;
+                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
                 }
 
                 if (IsKeyPressed(Keys.D3))
                 {
                     ActiveWeapon = Weapons.Homing;
-                    ScrollCooldown = 3f;
+                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
                 }
             }
 
@@ -220,9 +225,9 @@ namespace bullethellwhatever.BaseClasses
 
             var mouseState = Mouse.GetState();
 
-            if (ScrollCooldown > 0)
+            if (WeaponSwitchCooldownTimer > 0)
             {
-                ScrollCooldown--;
+                WeaponSwitchCooldownTimer--;
             }
 
             Velocity = Vector2.Zero; //this will change if anything is pressed
