@@ -20,12 +20,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabLeg[] Legs;
         public Vector2[] BoosterPositions;
+        public Vector2[] ArmPositionsOnBody;
         public bool BoostersActive;
         public bool LockArmPositions;
 
         public int Phase; //flag for if arms are detached yet
 
         public bool StartedPhaseTwoTransition;
+
+        public CrabBossAttack[] PhaseTwoAttacks;
         public CrabBoss()
         {
             Texture = Assets["CrabBody"];
@@ -46,13 +49,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BarDuration = 60; //to be changed
 
             Legs = new CrabLeg[2];
+            ArmPositionsOnBody = new Vector2[2];
             BoosterPositions = new Vector2[2];
 
             for (int i = 0; i < 2; i++)
             {
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
-                Legs[i] = new CrabLeg(Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), this, i);
+                Vector2 pos = Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f);
+
+                Legs[i] = new CrabLeg(pos, this, i);
+
+                ArmPositionsOnBody[i] = pos;
 
                 if (i == 0)
                 {
@@ -74,6 +82,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 new Minefield(1550),
                 new BackgroundPunches(390 * 7),
                 new ExpandingOrb(1700),
+            };
+
+            PhaseTwoAttacks = new CrabBossAttack[]
+            {
+                new ChargingArmBulletHell(20000),
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)

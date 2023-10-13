@@ -114,6 +114,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (time >= timeToBeginClapPrep && time < timeToBeginClapPrep + waitBeforeClap) // wait before arms move
             {
                 TargetRotation = TargetRotation + (PI / 6f);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 vectorToTarget = TargetPosition - Leg(i).LowerClaw.Position;
+
+                    Leg(i).PointLegInDirection(Utilities.VectorToAngle(vectorToTarget));
+                }
             }
 
             if (time == timeToBeginClapPrep + waitBeforeClap) // time at which arms launch
@@ -123,17 +130,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 for (int i = 0; i < 2; i++)
                 {
                     Vector2 vectorToTarget = TargetPosition - Leg(i).LowerClaw.Position;
-                    Leg(i).Velocity = (vectorToTarget) / clapTime; // travel the distance needed for the fist to touch the target
-                    Leg(i).UpperArm.Rotate(Utilities.VectorToAngle(vectorToTarget) - angleToRotate); // upper arms are already rotated
-                    Leg(i).LowerArm.Rotate(Utilities.VectorToAngle(vectorToTarget));
-                }
-            }
 
-            if (time == timeToBeginClapPrep + waitBeforeClap + clapTime) // when the arms hit the target
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    Leg(i).Velocity = Leg(i).Velocity * 0.5f;
+                    Leg(i).Velocity = (vectorToTarget) / clapTime * 1.3f; // travel the distance needed for the fist to touch the target, plus a little more
+
+                    Leg(i).PointLegInDirection(Utilities.VectorToAngle(vectorToTarget));
                 }
             }
 
@@ -143,6 +143,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Leg(i).Velocity = Leg(i).Velocity * 0.98f;
                 }
+            }
+
+            if (time == timeToBeginClapPrep + waitBeforeClap + clapTime + 30)
+            {
+                Leg(0).Velocity = Vector2.Zero;
+                Leg(1).Velocity = Vector2.Zero;
+
+                CrabOwner.ReplaceAttackPattern(CrabOwner.PhaseTwoAttacks); // start phase 2
             }
 
             HandleBounces();

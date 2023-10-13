@@ -32,7 +32,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float UpperArmRotationAngle;
         public float LowerArmRotationAngle;
         public float ArmPullBackAngle;
-        private float debugdepth;
         public BackgroundPunches(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -75,8 +74,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            debugdepth = Owner.Depth > debugdepth ? Owner.Depth : debugdepth;
-
             int totalAttackDuration = PunchTime + 2 * PunchDuration + FistRestTime + 60;
             int time = AITimer % (totalAttackDuration);
 
@@ -250,8 +247,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Drawing.BetterDraw(Assets["TargetReticle"], TargetPosition, null, Color.White * TargetTransparency, TargetRotation, Vector2.One * TargetSize, SpriteEffects.None, 1);
             }
-
-            Utilities.drawTextInDrawMethod(debugdepth.ToString(), Utilities.CentreOfScreen(), s, font, Color.White);
         }
     }
 }

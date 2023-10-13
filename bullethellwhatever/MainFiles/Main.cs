@@ -1,5 +1,6 @@
 ﻿global using static System.MathF;
 global using static bullethellwhatever.UtilitySystems.InputSystem;
+global using static bullethellwhatever.MainFiles.GameInfoMethods;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
