@@ -7,11 +7,14 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
+using System;
 
 namespace bullethellwhatever.DrawCode
 {
     public static class DrawGame
     {
+        public static float WeaponIconsRotationToAdd;
+        public static float PermanentIconRotation;
         public static void DrawTheGame(GameTime gameTime)
         {
             Drawing.HandleScreenShake();
@@ -198,18 +201,39 @@ namespace bullethellwhatever.DrawCode
             s.Begin(SpriteSortMode.Deferred);
 
             Drawing.BetterDraw(Assets["HUDBody"], new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
+            
+            //---------------------- handle rotating weapon icons --------------------------
 
             Vector2 iconRotationAxis = new Vector2(ScreenWidth / 15.174f, ScreenHeight / 10f);
 
-            Vector2 drawDistanceFromCentre = new Vector2(0, -40f);
+            Vector2 drawDistanceFromCentre = new Vector2(0, -30f);
 
-            Drawing.BetterDraw(Assets["box"], iconRotationAxis, null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
+            //Drawing.BetterDraw(Assets["box"], iconRotationAxis, null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
 
             float numberOfWeapons = 3;
 
-            Drawing.BetterDraw(Assets["HomingWeaponIcon"], Utilities.RotateVectorClockwise(iconRotationAxis + drawDistanceFromCentre, 0 * Tau / numberOfWeapons) , null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
-            Drawing.BetterDraw(Assets["LaserWeaponIcon"], Utilities.RotateVectorClockwise(iconRotationAxis + drawDistanceFromCentre, 1 * Tau / numberOfWeapons), null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
-            Drawing.BetterDraw(Assets["MachineWeaponIcon"], Utilities.RotateVectorClockwise(iconRotationAxis + drawDistanceFromCentre, 2 * Tau / numberOfWeapons), null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
+            Vector2 iconSize = Vector2.One * 0.6f;
+
+            WeaponIconsRotationToAdd = (((int)player.ActiveWeapon - (int)player.PreviousWeapon) * Tau / numberOfWeapons / player.WeaponSwitchCooldown) * player.WeaponSwitchCooldownTimer;
+
+            PermanentIconRotation = PermanentIconRotation + WeaponIconsRotationToAdd;
+
+            while (PermanentIconRotation > Tau)
+            {
+                PermanentIconRotation = PermanentIconRotation - Tau; // keep within one full turn so we dont go crazy
+            }
+
+            while (PermanentIconRotation < -Tau)
+            {
+                PermanentIconRotation = PermanentIconRotation + Tau; // keep within one full turn so we dont go crazy
+            }
+
+
+            Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["MachineWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
+            
+            
 
         }
     }

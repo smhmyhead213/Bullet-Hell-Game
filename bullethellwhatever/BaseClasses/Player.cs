@@ -29,20 +29,20 @@ namespace bullethellwhatever.BaseClasses
         public float IFrames;
         public float ShotCooldown;
         public float ShotCooldownRemaining;
-        public float WeaponSwitchCooldownTimer;
-        public float WeaponSwitchCooldown;
+        public int WeaponSwitchCooldownTimer;
+        public int WeaponSwitchCooldown;
         public float MoveSpeed;
         public Deathray PlayerDeathray = new Deathray();
 
         public enum Weapons
         {
-            Laser,
-            MachineGun,
             Homing,
-
+            MachineGun,
+            Laser,           
         }
 
         public Weapons ActiveWeapon;
+        public Weapons PreviousWeapon;
 
         #region Spawning
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
@@ -78,9 +78,9 @@ namespace bullethellwhatever.BaseClasses
             ActiveWeapon = Weapons.Homing;
             MoveSpeed = 5.5f;
 
-            WeaponSwitchCooldown = 5f;
+            WeaponSwitchCooldown = 15;
 
-            WeaponSwitchCooldownTimer = 0f;
+            WeaponSwitchCooldownTimer = 0;
 
             ShouldRemoveOnEdgeTouch = false;
             afterimagesPositions = new Vector2[DashDuration];
@@ -99,6 +99,12 @@ namespace bullethellwhatever.BaseClasses
 
         #endregion
         #region AI
+        public void SwitchWeapon(Weapons weapon)
+        {
+            PreviousWeapon = ActiveWeapon;
+            ActiveWeapon = weapon;
+            WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+        }
         public void HandleKeyPresses()
         {
             var mouseState = Mouse.GetState();
@@ -146,20 +152,17 @@ namespace bullethellwhatever.BaseClasses
             {
                 if (mouseState.ScrollWheelValue / 120 % 3 == 0 && WeaponSwitchCooldownTimer == 0)  //are you happy now Gemma??????????????????????
                 {
-                    ActiveWeapon = Weapons.Laser;
-                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                    SwitchWeapon(Weapons.Homing);
                 }
 
                 if (mouseState.ScrollWheelValue / 120 % 3 == 1 && WeaponSwitchCooldownTimer == 0)
                 {
-                    ActiveWeapon = Weapons.MachineGun;
-                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                    SwitchWeapon(Weapons.Laser);
                 }
 
                 if (mouseState.ScrollWheelValue / 120 % 3 == 2 && WeaponSwitchCooldownTimer == 0)
                 {
-                    ActiveWeapon = Weapons.Homing;
-                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                    SwitchWeapon(Weapons.MachineGun);
                 }
 
                 if (IsKeyPressed(Keys.Q) && Main.activeNPCs.Count == 0)
@@ -171,30 +174,27 @@ namespace bullethellwhatever.BaseClasses
 
             else
             {
-                if (IsKeyPressed(Keys.D1))
+                if (IsKeyPressed(Keys.D1) && WeaponSwitchCooldownTimer == 0)
                 {
-                    ActiveWeapon = Weapons.Laser;
-                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                    SwitchWeapon(Weapons.Homing);
                 }
 
-                if (IsKeyPressed(Keys.D2))
+                if (IsKeyPressed(Keys.D2) && WeaponSwitchCooldownTimer == 0)
                 {
-                    ActiveWeapon = Weapons.MachineGun;
-                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                    SwitchWeapon(Weapons.Laser);
                 }
 
-                if (IsKeyPressed(Keys.D3))
+                if (IsKeyPressed(Keys.D3) && WeaponSwitchCooldownTimer == 0)
                 {
-                    ActiveWeapon = Weapons.Homing;
-                    WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                    SwitchWeapon(Weapons.MachineGun);
                 }
             }
 
-            if (IsKeyPressed(Keys.Q) && Main.activeNPCs.Count == 0)
+            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0)
             {
-                Health = MaxHP;               
+                Health = MaxHP;
                 EntityManager.SpawnBoss();
-                Main.activeButtons.Clear();
+                activeButtons.Clear();
             }
 
             if (IsKeyPressed(Keys.R))
@@ -372,6 +372,8 @@ namespace bullethellwhatever.BaseClasses
             Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
+
+            Utilities.drawTextInDrawMethod(PreviousWeapon.ToString(), new Vector2(Main.ScreenWidth / 1.3f, Main.ScreenHeight / 3 + 10), spriteBatch, Main.font, Colour); ;
 
             Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.GetSize(), SpriteEffects.None, 0f);
         }
