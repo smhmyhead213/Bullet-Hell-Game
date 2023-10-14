@@ -373,8 +373,6 @@ namespace bullethellwhatever.BaseClasses
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Utilities.drawTextInDrawMethod(PreviousWeapon.ToString(), new Vector2(Main.ScreenWidth / 1.3f, Main.ScreenHeight / 3 + 10), spriteBatch, Main.font, Colour); ;
-
             Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.GetSize(), SpriteEffects.None, 0f);
         }
     }

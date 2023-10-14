@@ -15,8 +15,6 @@ namespace bullethellwhatever
             activeNPCs.Clear();
             activeProjectiles.Clear();
             activeFriendlyProjectiles.Clear();
-            DrawGame.WeaponIconsRotationToAdd = 0f;
-            DrawGame.PermanentIconRotation = 0f;
             player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 

@@ -36,9 +36,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int waitAfterArmsStop = 75;
+            int waitAfterArmsStop = 45;
             int timeToBeginClapPrep = waitAfterArmsStop;
-            int waitBeforeClap = 40;
+            int waitBeforeClap = 20;
             int clapTime = 24; // time move hands together
             int handDecelTime = 45;
 
@@ -61,9 +61,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     int otherArm = (int)Abs(i - 1);
 
-                    if (Utilities.DistanceBetweenVectors(Leg(0).Position, Leg(1).Position) < 300)
+                    if (Utilities.DistanceBetweenVectors(Leg(0).Position, Leg(1).Position) < 500)
                     {
-                        Leg(i).Velocity = -(Leg(otherArm).Position - Leg(i).Position) * 0.02f; // move arms away from each other so they dont overlap
+                        Leg(i).Velocity = -(Leg(otherArm).Position - Leg(i).Position) * 0.05f; // move arms away from each other so they dont overlap
                     }
 
                     else Leg(i).Velocity = Leg(i).Velocity * 0.97f;

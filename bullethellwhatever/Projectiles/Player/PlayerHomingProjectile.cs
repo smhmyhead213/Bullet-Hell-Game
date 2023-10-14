@@ -40,6 +40,8 @@ namespace bullethellwhatever.Projectiles.Player
 
             if (AITimer > HomingTime)
             {
+                bool validTarget = false;
+
                 if (activeNPCs.Count > 0)
                 {
                     Opacity = 1f; // come back to full opacity if a target is found while fading out
@@ -54,10 +56,13 @@ namespace bullethellwhatever.Projectiles.Player
                                 minDistance = distance;
                                 closestNPC = npc;
                             }
+
+                            validTarget = true;
                         }
                     }
 
-                    Velocity = 0.4f / Updates * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
+                    if (validTarget)
+                        Velocity = 0.4f / Updates * Vector2.Normalize(closestNPC.Position - Position) * (AITimer - HomingTime);
                 }
 
                 else
@@ -65,6 +70,13 @@ namespace bullethellwhatever.Projectiles.Player
                     TimeWithNoTarget++;
                     Velocity = Velocity * 0.98f; // slow down if no target
                 }
+
+                if (!validTarget)
+                {
+                    TimeWithNoTarget++;
+                    Velocity = Velocity * 0.98f; // slow down if no target
+                }
+
                 //Vector2 vectorToTarget = closestNPC.Position - Main.player.Position; //get a vector to the target
                
             }

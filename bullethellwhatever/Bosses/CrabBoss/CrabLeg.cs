@@ -66,6 +66,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Rotate(-UpperClaw.Rotation + angle + PI);
             LowerClaw.Rotate(-LowerClaw.Rotation + angle + PI);
         }
+
+        public void RotateLeg(float angle)
+        {
+            UpperArm.Rotate(angle);
+            LowerArm.Rotate(angle);
+            UpperClaw.Rotate(angle);
+            LowerClaw.Rotate(angle);
+        }
         public void DrawHitboxes()
         {
             UpperArm.Hitbox.DrawHitbox();

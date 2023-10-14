@@ -28,6 +28,7 @@ namespace bullethellwhatever.BaseClasses
         public float StartingOpacity;
 
         public Func<float, float>? DepthFunction;
+        public Func<float, Vector2> VelocityFunction;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Depth = 0;
@@ -117,8 +118,17 @@ namespace bullethellwhatever.BaseClasses
 
             else TimeOutsidePlayArea = 0;
 
-            if (Acceleration != 0)
-                Velocity = Velocity * Acceleration; //acceleration values must be very very small
+            if (VelocityFunction is null)
+            {
+                if (Acceleration != 0)
+                {
+                    Velocity = Velocity * Acceleration;
+                }
+            }
+            else
+            {
+                Velocity = VelocityFunction(AITimer);
+            }
 
             if (DepthFunction is not null)
             {

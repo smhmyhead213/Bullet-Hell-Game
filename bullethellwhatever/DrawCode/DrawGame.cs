@@ -228,7 +228,6 @@ namespace bullethellwhatever.DrawCode
                 PermanentIconRotation = PermanentIconRotation + Tau; // keep within one full turn so we dont go crazy
             }
 
-
             Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
             Drawing.BetterDraw(Assets["MachineWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
             Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
