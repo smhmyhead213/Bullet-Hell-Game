@@ -36,9 +36,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int SlamIntoCielingTime = 60;
 
             if (armTime < waitBeforeMoving) // woah there slow down buddy
-            {   
+            {
                 for (int i = 0; i < 2; i++)
                 {
+                    Leg(i).PointLegInDirection(Utilities.VectorToAngle((Owner.Position - new Vector2(0, 300)) - Leg(i).Position));
+
                     Leg(i).Velocity = ((Owner.Position - new Vector2(0, 300)) - Leg(i).Position) / waitBeforeMoving;
                 }            
             }

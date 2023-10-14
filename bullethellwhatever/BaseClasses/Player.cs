@@ -317,7 +317,7 @@ namespace bullethellwhatever.BaseClasses
                 Random rnd = new Random();
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, 1, "box", 0, Vector2.One, this, false, Color.LightBlue, true, true);
+                    0.15f, 1, "MachineGunProjectile", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
