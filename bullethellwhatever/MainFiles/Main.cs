@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.IO;
 
 using bullethellwhatever.Buttons;
@@ -17,6 +18,7 @@ using Microsoft.Xna.Framework.Audio;
 using bullethellwhatever.UtilitySystems.SoundSystems;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
+using System;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -99,62 +101,39 @@ namespace bullethellwhatever.MainFiles
         protected override void LoadContent()
         {
             string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
-            
-            for (int i = 0; i < files.Length; i++)
+
+            int numberOfSections = 8; // how many sections to split list into
+
+            int filesPerTask = files.Length / numberOfSections;
+
+            Task[] tasks = new Task[numberOfSections + 1]; // extra section for remainder
+
+            for (int i = 0; i < tasks.Length - 1; i++)
             {
-                string toSaveAs = files[i];
+                int index = i;
 
-                string filePath = string.Empty;
-
-                while (toSaveAs.Contains("\\")) //remove all slashes
+                Action loadInSection = () =>
                 {
-                    int indexOfSlash = toSaveAs.IndexOf("\\");
-
-                    int startIndex = indexOfSlash + 1; //+ 1 accounts for double slash, there's two slashes in the IndexOf cos the first one is to character escape the second
-
-                    filePath = toSaveAs.Substring(0, startIndex);
-                    toSaveAs = toSaveAs.Substring(startIndex, toSaveAs.Length - startIndex); //only take everything after the double slash
-                }
-
-                int indexOfDot = toSaveAs.IndexOf(".");
-
-                string fileExtension = toSaveAs.Substring(indexOfDot, toSaveAs.Length - indexOfDot); // remove file extension
-
-                toSaveAs = toSaveAs.Substring(0, indexOfDot);
-
-                if (fileExtension == ".xnb") //only do this for .xnbs, when this was written credits.txt would crash it as a .txt doesnt work
-                {
-                    toSaveAs = toSaveAs.Substring(0, indexOfDot); //remove file extension
-
-                    if (toSaveAs.Contains("Shader")) // This system only works if you use a naming convention that matches this
+                    for (int j = files.Length * index; j < files.Length * (index + 1); j++)
                     {
-                        if (!(Shaders.ContainsKey(toSaveAs)))
-                            Shaders.Add(toSaveAs, Content.Load<Effect>("Shaders/" + toSaveAs));
+                        AssetLoader.LoadIn(files[j]);
                     }
-                    else if (toSaveAs.Contains("Music"))
-                    {
-                        if (!(Music.ContainsKey(toSaveAs)))
-                            Music.Add(toSaveAs, Content.Load<SoundEffect>("Music/" + toSaveAs));
-                    }
-                    else if (toSaveAs.Contains("Sound"))
-                    {
-                        if (!(Sounds.ContainsKey(toSaveAs)))
-                            Sounds.Add(toSaveAs, Content.Load<SoundEffect>(toSaveAs));
-                    }
-                    else if (toSaveAs != "font")
-                    {
-                        if (!(Assets.ContainsKey(toSaveAs)))
-                            try
-                            {
-                                Assets.Add(toSaveAs, Content.Load<Texture2D>(toSaveAs));
-                            }
-                            catch // if we fail to load in the texture, try again with a file path this time
-                            {
-                                Assets.Add(toSaveAs, Content.Load<Texture2D>(filePath + toSaveAs));
-                            }
-                    }
-                }
+                };
+
+                tasks[i] = new Task(loadInSection);
             }
+
+            Action dealWithRemainder = () =>
+            {
+                for (int i = (files.Length / numberOfSections) * numberOfSections; i < files.Length; i++)// the i initialisation takes advantage of integer division to get the first index of remainder
+                {
+                    AssetLoader.LoadIn(files[i]);
+                }
+            };
+
+            tasks[tasks.Length - 1] = new Task(dealWithRemainder);
+
+            Task.WaitAll(tasks, 3000);
 
             font = Content.Load<SpriteFont>("font");
         }
