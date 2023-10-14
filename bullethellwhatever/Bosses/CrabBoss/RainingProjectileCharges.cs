@@ -32,8 +32,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int armTime = AITimer;
             int bodyTime = AITimer;
 
-            int waitBeforeMoving = 30;
+            int waitBeforeMoving = 60;
             int SlamIntoCielingTime = 60;
+
+            if (armTime < waitBeforeMoving) // woah there slow down buddy
+            {   
+                for (int i = 0; i < 2; i++)
+                {
+                    Leg(i).Velocity = ((Owner.Position - new Vector2(0, 300)) - Leg(i).Position) / waitBeforeMoving;
+                }            
+            }
 
             // --- arm code --- 
             if (armTime == waitBeforeMoving)
@@ -56,7 +64,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    if (Entity.touchingAnEdge(Leg(i).LowerClaw))
+                    if (Entity.touchingTop(Leg(i).LowerClaw) || Entity.touchingLeft(Leg(i).LowerClaw) || Entity.touchingRight(Leg(i).LowerClaw)) // dont get stuck to bottom
+
                     {
                         Leg(i).Velocity = Vector2.Zero;
 

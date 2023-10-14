@@ -33,7 +33,9 @@ namespace bullethellwhatever.BaseClasses
             }
 
             AITimer = 0;
-            AttackNumber = 0; // prevent index errors
+            if (attacks.Length == 1)
+                AttackNumber = 0; // remember 0 is desp / death anim
+            else AttackNumber = 1;
         }
     }
 }
