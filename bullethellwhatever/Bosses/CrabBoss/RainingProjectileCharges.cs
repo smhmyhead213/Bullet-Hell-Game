@@ -103,7 +103,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (Owner.AITimer == EndTime - timeBeforeEndToExtractArms)
                 {
-                    Drawing.ScreenShake(8, 30);
+                    //Drawing.ScreenShake(8, 30);
 
                     for (int i = 0; i < 2; i++)
                     {
