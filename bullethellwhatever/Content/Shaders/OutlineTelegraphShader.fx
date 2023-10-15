@@ -47,7 +47,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float opacity = 1;
  
     
-    return float4(value, value, value, 1);
+    return float4(value, value, value, 0);
     
 }
 

@@ -119,9 +119,19 @@ namespace bullethellwhatever.BaseClasses
                 Velocity.Y = Velocity.Y - 1f;
             }
 
+            if (upPressed && touchingTop(this))
+            {
+                Position.Y = Texture.Height / 2f * GetSize().Y;
+            }
+
             if (downPressed && !touchingBottom(this))
             {
                 Velocity.Y = Velocity.Y + 1f;
+            }
+
+            if (downPressed && touchingBottom(this))
+            {
+                Position.Y = ScreenHeight - (Texture.Height / 2f * GetSize().Y);
             }
 
             if (leftPressed && !touchingLeft(this))
@@ -129,9 +139,19 @@ namespace bullethellwhatever.BaseClasses
                 Velocity.X = Velocity.X - 1f;
             }
 
+            if (leftPressed && touchingLeft(this))
+            {
+                Position.X = Texture.Width / 2f * GetSize().X;
+            }
+
             if (rightPressed && !touchingRight(this))
             {
                 Velocity.X = Velocity.X + 1f;
+            }
+
+            if (rightPressed && touchingRight(this))
+            {
+                Position.X = ScreenWidth - (Texture.Width / 2f * GetSize().X);
             }
 
             if (IsKeyPressed(Keys.LeftShift))

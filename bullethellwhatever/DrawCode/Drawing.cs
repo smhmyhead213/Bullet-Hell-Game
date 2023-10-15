@@ -70,7 +70,7 @@ namespace bullethellwhatever.DrawCode
         }
         public static void ScreenShake(int magnitude, int duration)
         {
-            if (magnitude > screenShakeObject.Magnitude.X) //always apply strongest screen shake
+            if (magnitude >= screenShakeObject.Magnitude.X) //always apply strongest screen shake
                 screenShakeObject = new ScreenShakeObject(magnitude, duration);
         }
 

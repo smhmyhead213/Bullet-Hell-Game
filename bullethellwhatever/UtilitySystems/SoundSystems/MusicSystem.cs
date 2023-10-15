@@ -18,7 +18,7 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         {
             if (song != ActiveSongName)
             {
-                ActiveSong = Main.Music[song].CreateInstance();
+                ActiveSong = Music[song].CreateInstance();
                 ActiveSongName = song;
                 ActiveSong.IsLooped = loop;
                 ActiveSong.Volume = volume;
@@ -28,7 +28,7 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         }
         public void PlayMusic()
         {
-            if (!(ActiveSong.State == SoundState.Playing) )
+            if (!(ActiveSong.State == SoundState.Playing))
             {
                 ActiveSong.Play();
             }

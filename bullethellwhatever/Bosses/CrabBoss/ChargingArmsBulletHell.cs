@@ -45,13 +45,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int armTime = Owner.AITimer % (timeToBeginClapPrep + waitBeforeClap + clapTime + handDecelTime);
             int bodyTime = Owner.AITimer;
 
-            // ------------- code for arms -----------------
-            if (armTime == timeToBeginClapPrep)
-            {
-                Targeting = true;
-                TargetPosition = player.Position;
-                DecelerationTimer = 0;
-            }
+            //-------------code for arms-----------------
+                if (armTime == timeToBeginClapPrep)
+                {
+                    Targeting = true;
+                    TargetPosition = player.Position;
+                    DecelerationTimer = 0;
+                }
 
             if (armTime >= timeToBeginClapPrep && armTime < timeToBeginClapPrep + waitBeforeClap) // wait before arms move
             {
@@ -67,7 +67,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     }
 
                     else Leg(i).Velocity = Leg(i).Velocity * 0.97f;
-                    
+
                     Vector2 vectorToTarget = TargetPosition - Leg(i).LowerClaw.Position;
 
                     Leg(i).PointLegInDirection(Utilities.VectorToAngle(vectorToTarget));
@@ -78,6 +78,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 }
             }
+
+
 
             if (armTime == timeToBeginClapPrep + waitBeforeClap) // time at which arms launch
             {
@@ -129,6 +131,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (bodyTime < moveToCentreTime)
             {
+                Owner.DealDamage = false; //dont frag player
+                Owner.Opacity = 0.5f;
+
                 MoveToPoint(Utilities.CentreOfScreen(), bodyTime, moveToCentreTime);
             }
 
@@ -137,9 +142,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (bodyTime > moveToCentreTime && bodyTime < moveToCentreTime + spinUpTime)
             {
                 Owner.Rotation = Owner.Rotation - (PI / 1080 * (spinUpTime - (bodyTime - moveToCentreTime)));
+                Owner.Opacity = 1f;
+                Owner.DealDamage = false;
             }
 
-            if (bodyTime > moveToCentreTime + spinUpTime)
+            if (bodyTime > moveToCentreTime + spinUpTime && AITimer < EndTime - 90)
             {
                 float maxAngularVelocity = PI / 15;
 
