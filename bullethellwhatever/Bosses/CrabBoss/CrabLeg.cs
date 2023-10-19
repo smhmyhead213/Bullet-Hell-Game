@@ -15,9 +15,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public Vector2 Position;
         public Vector2 Velocity;
 
-        public Entity Owner;
+        public CrabBoss Owner;
 
         public bool Dead;
+
+        public int LegIndex;
 
         //public bool LockPosition;
 
@@ -27,7 +29,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossLowerClaw LowerClaw;
 
         public bool HorizontalFlip;
-        public CrabLeg(Vector2 position, Entity owner, int legIndex)
+        public CrabLeg(Vector2 position, CrabBoss owner, int legIndex)
         {
             Owner = owner;
 
@@ -37,6 +39,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerClaw = new CrabBossLowerClaw(Owner, this, "CrabLowerClaw", legIndex);
 
             HorizontalFlip = false;
+
+            LegIndex = legIndex;
 
             Position = position;
             UpperArm.Position = Position;
@@ -83,6 +87,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public void Update()
         {
+            if (Owner.LockArmPositions)
+            {
+                int expandedi = LegIndex * 2 - 1; // i = 0, this = -1, i = 1, this = 1
+                float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
+
+                Position = Owner.Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Owner.Texture.Width / 1.4f * factorToMoveArms, Owner.Texture.Height / 2.54f * factorToMoveArms), Owner.Rotation);
+            }
+            
             Position = Position + Velocity;
 
             UpperArm.Position = Position;

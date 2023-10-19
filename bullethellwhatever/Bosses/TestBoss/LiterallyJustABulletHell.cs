@@ -70,7 +70,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                         int direction = sideDeterminant == 1 ? -1 : 1; // -1 is right/top  of screen, 1 is left/bottom
 
-                        Color colour = possibleProjectiles[projIndexToSpawn] is OscillatingSpeedProjectile ? Color.White : Color.Red;
+                        Color colour = possibleProjectiles[projIndexToSpawn] is OscillatingSpeedProjectile ? Color.Orange : Color.Red;
 
                         possibleProjectiles[projIndexToSpawn].Spawn(new Vector2(side, height), 5f * new Vector2(direction, 0), 1f, 1, "box", 0f, Vector2.One, Owner, true, colour, true, false);
 

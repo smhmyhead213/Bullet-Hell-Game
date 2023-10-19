@@ -19,6 +19,7 @@ using bullethellwhatever.UtilitySystems.SoundSystems;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
 using System;
+using FMOD.Studio;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -39,7 +40,7 @@ namespace bullethellwhatever.MainFiles
 
         public static Dictionary<string, Texture2D> Assets = new Dictionary<string, Texture2D>();
         public static Dictionary<string, Effect> Shaders = new Dictionary<string, Effect>();
-        public static Dictionary<string, SoundEffect> Music = new Dictionary<string, SoundEffect>();
+        public static Dictionary<string, Bank> Music = new Dictionary<string, Bank>();
         public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
 
         public static SpriteFont font;
@@ -58,6 +59,8 @@ namespace bullethellwhatever.MainFiles
         public static MusicSystem musicSystem = new MusicSystem();
 
         public static SoundEffectInstance musicInstance;
+
+        public static FMOD.Studio.System FMODSystem;
 
         public static Player player = new Player();
 
@@ -100,6 +103,26 @@ namespace bullethellwhatever.MainFiles
 
         protected override void LoadContent()
         {
+            // -- set up fmod --
+
+            FMOD.Studio.System.create(out var fmodStudioSystem);
+            FMODSystem = fmodStudioSystem;
+            fmodStudioSystem.getCoreSystem(out var fmodSystem);
+            fmodSystem.setDSPBufferSize(256, 4);
+            fmodStudioSystem.initialize(
+              128,
+              INITFLAGS.NORMAL,
+              FMOD.INITFLAGS.NORMAL,
+              (IntPtr)0
+            );
+            fmodStudioSystem.loadBankFile(
+            // adjust this path to wherever you want to keep your .bank files
+            "Music/Master.bank",
+            LOAD_BANK_FLAGS.NORMAL,
+            out Bank bank
+            );
+
+            // -- load in assets --
             string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
 
             for (int i = 0; i < files.Length; i++)
@@ -135,8 +158,10 @@ namespace bullethellwhatever.MainFiles
                     }
                     else if (toSaveAs.Contains("Music"))
                     {
-                        if (!(Music.ContainsKey(toSaveAs)))
-                            Music.Add(toSaveAs, Content.Load<SoundEffect>("Music/" + toSaveAs));
+                        if (!Music.ContainsKey(toSaveAs))
+                        {
+                            Music.Add(toSaveAs, bank);
+                        }
                     }
                     else if (toSaveAs.Contains("Sound"))
                     {
@@ -162,7 +187,7 @@ namespace bullethellwhatever.MainFiles
         }
         
         protected override void Initialize()
-        {
+        {            
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GameState.State = GameState.GameStates.TitleScreen;
@@ -174,12 +199,11 @@ namespace bullethellwhatever.MainFiles
             base.Initialize();
         }
 
-        
+
 
         protected override void Update(GameTime gameTime)
         {
-
-            //MousePosition = MousePosition * (RawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight));
+            FMODSystem.update(); 
 
             GameTime++;
 
@@ -190,7 +214,7 @@ namespace bullethellwhatever.MainFiles
                 gameStateHandler.HandleGame();
 
                 if (musicSystem.ActiveSong is not null)
-                    musicSystem.ActiveSong.Play();
+                    musicSystem.PlayMusic();
 
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                     Exit();
@@ -198,7 +222,7 @@ namespace bullethellwhatever.MainFiles
             else
             {
                 if (musicSystem.ActiveSong is not null)
-                    musicSystem.ActiveSong.Pause();
+                    MediaPlayer.Pause();
             }
 
             base.Update(gameTime);

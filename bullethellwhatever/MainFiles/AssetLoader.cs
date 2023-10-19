@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using FMOD.Studio;
+
 namespace bullethellwhatever.MainFiles
 {
     public static class AssetLoader
@@ -40,7 +43,7 @@ namespace bullethellwhatever.MainFiles
                 else if (toSaveAs.Contains("Music"))
                 {
                     if (!(Music.ContainsKey(toSaveAs)))
-                        Music.Add(toSaveAs, MainInstance.Content.Load<SoundEffect>("Music/" + toSaveAs));
+                        Music.Add(toSaveAs, MainInstance.Content.Load<Bank>("Music/" + toSaveAs));
                 }
                 else if (toSaveAs.Contains("Sound"))
                 {
@@ -92,13 +95,13 @@ namespace bullethellwhatever.MainFiles
             }
         }
 
-        public static SoundEffect LoadMusic(string filename)
+        public static Bank LoadMusic(string filename)
         {
             if (Music.ContainsKey(filename))
                 return Music[filename];
             else
             {
-                Music.Add(filename, MainInstance.Content.Load<SoundEffect>(filename));
+                Music.Add(filename, MainInstance.Content.Load<Bank>(filename));
                 return Music[filename];
             }
         }

@@ -227,11 +227,17 @@
 /processorParam:TextureFormat=Color
 /build:MachineGunProjectile.png
 
-#begin Music/TestBossMusic.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
+#begin Music/Master.bank
+/copy:Music/Master.bank
+
+#begin Music/Master.strings.bank
+/copy:Music/Master.strings.bank
+
+#begin Music/TestBossMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
 /processorParam:Quality=Best
-/build:Music/TestBossMusic.wav
+/build:Music/TestBossMusic.mp3
 
 #begin NormalButton.png
 /importer:TextureImporter

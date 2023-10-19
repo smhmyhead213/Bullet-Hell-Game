@@ -79,7 +79,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 new TestAttack(BarDuration * 30),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18),
-                new Minefield(1550),
+                new SideImpacts(1000),
                 new BackgroundPunches(390 * 7),
                 new ExpandingOrb(1700),
             };
@@ -146,26 +146,27 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 StartedPhaseTwoTransition = true;
             }
 
-            for (int i = 0; i < 2; i++)
-            {
-                int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
-
-                if (Legs[i] is not null)
-                {
-                    float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Depth);
-                    if (LockArmPositions)
-                    {
-                        Legs[i].Position = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f * factorToMoveArms, Texture.Height / 2.54f * factorToMoveArms), Rotation);
-                    }
-                    BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
-                    Legs[i].Update();
-                }
-            }
-
             if (Health <= 0)
             {
                 IsDesperationOver = true;
                 Die();
+            }
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            for (int i = 0; i < 2; i++)
+            {
+                Legs[i].Update();
+
+                int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
+
+                if (Legs[i] is not null)
+                {
+                    BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
+                }
             }
         }
         public override void Die()

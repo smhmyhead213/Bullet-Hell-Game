@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using bullethellwhatever.MainFiles;
+using System.Threading.Tasks;
+using FMOD.Studio;
 
 namespace bullethellwhatever.UtilitySystems.SoundSystems
 {
     public class MusicSystem
     {
-        public SoundEffectInstance? ActiveSong;
+        public Bank? ActiveSong;
         public string ActiveSongName;
         public bool IsSongPlaying;
         public int SongTimer;
@@ -18,19 +21,28 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         {
             if (song != ActiveSongName)
             {
-                ActiveSong = Music[song].CreateInstance();
+                ActiveSong = Music[song];
                 ActiveSongName = song;
-                ActiveSong.IsLooped = loop;
-                ActiveSong.Volume = volume;
 
-                PlayMusic();
+                MediaPlayer.Volume = volume;
+                MediaPlayer.IsRepeating = loop;
+
+                IsSongPlaying = false;
             }
         }
         public void PlayMusic()
         {
-            if (!(ActiveSong.State == SoundState.Playing))
+            if (!IsSongPlaying)
             {
-                ActiveSong.Play();
+                //MediaPlayer.Play(ActiveSong);
+                FMODSystem.getVCA("vca:/ MyVCA", out VCA vca);
+                vca.setVolume(0.5f);
+                var path = "event:/TestBossMusic";
+                FMODSystem.getEvent(path, out EventDescription evDesc);
+                evDesc.createInstance(out EventInstance evInst);
+                evInst.start();
+                evInst.release();
+                IsSongPlaying = true;
             }
         }
 
@@ -38,7 +50,7 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         {
             if (ActiveSong is not null) //crash prevention
             {
-                ActiveSong.Stop();
+                MediaPlayer.Stop();
                 ActiveSongName = string.Empty;
                 ActiveSong = null;
             }
