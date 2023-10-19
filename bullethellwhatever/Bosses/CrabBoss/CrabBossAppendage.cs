@@ -66,7 +66,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public virtual float RotationFromV() // rotation from vertical
         {
-            return RotationConstant + PI + Rotation;
+            float output = RotationConstant + PI + Rotation;
+            
+            while (output > Tau)
+            {
+                output = output - Tau;
+            }
+
+            return output;
         }
         public virtual Vector2 CalculateEnd()
         {

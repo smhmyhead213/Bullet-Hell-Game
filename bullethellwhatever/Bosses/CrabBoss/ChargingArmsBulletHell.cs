@@ -36,7 +36,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int waitAfterArmsStop = 45;
+            int waitAfterArmsStop = 25;
             int timeToBeginClapPrep = waitAfterArmsStop;
             int waitBeforeClap = 20;
             int clapTime = 24; // time move hands together
@@ -46,12 +46,23 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int bodyTime = Owner.AITimer;
 
             //-------------code for arms-----------------
-                if (armTime == timeToBeginClapPrep)
+
+            if (armTime < timeToBeginClapPrep)
+            {
+                for (int i = 0; i < 2; i++)
                 {
-                    Targeting = true;
-                    TargetPosition = player.Position;
-                    DecelerationTimer = 0;
+                    float angleToRotate = Utilities.VectorToAngle(player.Position - Leg(i).Position) - Leg(i).UpperArm.RotationFromV();
+
+                    Leg(i).RotateLeg(PI / timeToBeginClapPrep); // since each arm will face away from player after charging, just turn a full 180 to face again
                 }
+            }
+
+            if (armTime == timeToBeginClapPrep)
+            {
+                Targeting = true;
+                TargetPosition = player.Position;
+                DecelerationTimer = 0;
+            }
 
             if (armTime >= timeToBeginClapPrep && armTime < timeToBeginClapPrep + waitBeforeClap) // wait before arms move
             {

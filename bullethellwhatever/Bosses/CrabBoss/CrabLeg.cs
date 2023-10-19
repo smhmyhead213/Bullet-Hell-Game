@@ -78,6 +78,22 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Rotate(angle);
             LowerClaw.Rotate(angle);
         }
+
+        public void SetAllSizes(Vector2 size)
+        {
+            UpperArm.Size = size;
+            LowerArm.Size = size;
+            UpperClaw.Size = size;
+            LowerClaw.Size = size;
+        }
+
+        public void SetAllDepths(float depth)
+        {
+            UpperArm.SetDepth(depth);
+            LowerArm.SetDepth(depth);
+            UpperClaw.SetDepth(depth);
+            LowerClaw.SetDepth(depth);
+        }
         public void DrawHitboxes()
         {
             UpperArm.Hitbox.DrawHitbox();
