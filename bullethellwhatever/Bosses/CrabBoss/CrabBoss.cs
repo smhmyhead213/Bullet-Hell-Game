@@ -171,11 +171,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Die()
         {
-            IsDesperationOver = true; //remove
             base.Die();
 
             Array.Clear(Legs);
-
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

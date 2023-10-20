@@ -19,7 +19,7 @@ namespace bullethellwhatever.DrawCode
         {
             Drawing.HandleScreenShake();
 
-            DialogueSystem.DrawDialogues(Main._spriteBatch);
+            DialogueSystem.DrawDialogues(_spriteBatch);
 
             if (activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
             {
@@ -27,13 +27,9 @@ namespace bullethellwhatever.DrawCode
 
                 Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(_graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
 
-                //Add in the title screen button. This uses TitleScreenButton as its attributes fit what I need.
+                //Add in the title screen button.
                 Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), "StartButton",
                 GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
-
-                //Draw the button.
-                Drawing.BetterDraw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, backToTitle.Scale, SpriteEffects.None, 0f);
-                //Main._spriteBatch.Draw(backToTitle.Texture, backToTitle.Position, null, Color.White, 0f, new Vector2(backToTitle.Texture.Width / 2, backToTitle.Texture.Height / 2), backToTitle.Scale, SpriteEffects.None, 0f);
             }
 
             // FPS counter.
@@ -51,13 +47,13 @@ namespace bullethellwhatever.DrawCode
             // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues
             // Everything must be looped through in the Immediate sprite mode as all telegraph lines use a shader. (what?)
 
-            if (Main.player is IDrawsShader)
+            if (player is IDrawsShader)
             {
-                NPCstoDrawWithShader.Add(Main.player);
+                NPCstoDrawWithShader.Add(player);
             }
-            else NPCstoDrawWithoutShader.Add(Main.player);
+            else NPCstoDrawWithoutShader.Add(player);
 
-            foreach (Projectile projectile in Main.activeProjectiles)
+            foreach (Projectile projectile in activeProjectiles)
             {
                 if (projectile is IDrawsShader)
                 {

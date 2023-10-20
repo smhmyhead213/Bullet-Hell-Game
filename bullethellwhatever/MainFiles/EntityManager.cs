@@ -47,6 +47,9 @@ namespace bullethellwhatever.MainFiles
         {
             List<TelegraphLine> toRemove = new List<TelegraphLine>();
 
+            player.AI();
+            player.UpdateHitbox();
+            
             foreach (NPC npc in activeNPCs)
             {
                 for (int i = 0; i < npc.Updates; i++)
@@ -127,10 +130,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     projectile.activeTelegraphs.Remove(t);
                 }
-            }          
-
-            player.UpdateHitbox();
-            player.AI();
+            }
         }
 
         public static void SpawnBoss()

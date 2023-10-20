@@ -71,6 +71,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerClaw.Rotate(-LowerClaw.Rotation + angle + PI);
         }
 
+        public void ContactDamage(bool on)
+        {
+            UpperArm.DealDamage = on;
+            LowerArm.DealDamage = on;
+            UpperClaw.DealDamage = on;
+            LowerClaw.DealDamage = on;
+        }
         public void RotateLeg(float angle)
         {
             UpperArm.Rotate(angle);

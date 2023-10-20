@@ -33,18 +33,18 @@ namespace bullethellwhatever.MainFiles
                 case GameStates.TitleScreen:
                     isGameStarted = false;
                     CheckButtonClicks();
-                    Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+                    activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
                     Credits.ReadInCreditsAlready = false; // i know this is an awful way to do it, in the future make credits reset when opened
                     break;
                 case GameStates.BossSelect:
                     isGameStarted = false;
                     CheckButtonClicks();
-                    Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+                    activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
                     break;
                 case GameStates.DifficultySelect:
                     isGameStarted = false;
                     CheckButtonClicks();
-                    Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
+                    activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
                     break;
                 case GameStates.Settings:
                     isGameStarted = false;
@@ -62,8 +62,8 @@ namespace bullethellwhatever.MainFiles
                 if (!isGameStarted)
                 {
                     EntityManager.SpawnBoss();
-                    Main.player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
-                    Main.activeProjectiles.Clear();
+                    player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
+                    activeProjectiles.Clear();
                     isGameStarted = true;
                 }
 
@@ -82,31 +82,31 @@ namespace bullethellwhatever.MainFiles
 
         public void ManageLists()
         {
-            foreach (Projectile projectile in Main.enemyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in enemyProjectilesToAddNextFrame)
             {
-                Main.activeProjectiles.Add(projectile);
+                activeProjectiles.Add(projectile);
             }
 
             Main.enemyProjectilesToAddNextFrame.Clear();
 
-            foreach (Projectile projectile in Main.friendlyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in friendlyProjectilesToAddNextFrame)
             {
-                Main.activeFriendlyProjectiles.Add(projectile);
+                activeFriendlyProjectiles.Add(projectile);
             }
 
-            Main.friendlyProjectilesToAddNextFrame.Clear();
+            friendlyProjectilesToAddNextFrame.Clear();
 
-            foreach (NPC npc in Main.NPCsToAddNextFrame)
+            foreach (NPC npc in NPCsToAddNextFrame)
             {
-                Main.activeNPCs.Add(npc);
+                activeNPCs.Add(npc);
             }
 
-            Main.NPCsToAddNextFrame.Clear();
+            NPCsToAddNextFrame.Clear();
         }
 
         public void CheckButtonClicks()
         {
-            foreach (Button button in Main.activeButtons)
+            foreach (Button button in activeButtons)
             {
                 if (button.IsButtonClicked() && ButtonCooldown == 0 && !WasMouseDownLastFrame)
                 {

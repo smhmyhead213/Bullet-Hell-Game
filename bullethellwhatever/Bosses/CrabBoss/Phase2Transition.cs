@@ -38,7 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             base.InitialiseAttackValues();
 
             SlowDownTime = 45;
-            MoveToCentreEndTime = 180;
+            MoveToCentreEndTime = 90;
             Targeting = false;
             TargetRotation = 0;
             InitialSize = Vector2.Zero;
@@ -67,6 +67,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 InitialDepth = Owner.Depth;
 
+                Leg(0).ContactDamage(false);
+                Leg(1).ContactDamage(false);
+
                 LeftLegSizes[0] = Leg(0).UpperArm.Size; // help me
                 LeftLegSizes[1] = Leg(0).LowerArm.Size;
                 LeftLegSizes[2] = Leg(0).UpperClaw.Size;
@@ -83,7 +86,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 RightLegDepth = Leg(1).UpperArm.Depth;
             }
 
-            if (time < SlowDownTime)
+            if (time < SlowDownTime + 1)
             {
                 float interpolant = time / (float)SlowDownTime;
 
@@ -108,7 +111,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).LowerClaw.Size = Vector2.Lerp(RightLegSizes[3], Vector2.One, interpolant);
             }
 
-            int timeToWaitBeforeArmDetach = 40;
+            int timeToWaitBeforeArmDetach = 90;
 
             if (time == SlowDownTime)
             {
@@ -138,6 +141,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Velocity = -Vector2.UnitY * 3f; // recoil
 
                 CrabOwner.LockArmPositions = false; // detach
+
+                Leg(0).ContactDamage(true);
+                Leg(1).ContactDamage(true);
 
                 Leg(0).Velocity = Utilities.RotateVectorClockwise(Vector2.UnitY * 15f, angleToRotate);
                 Leg(1).Velocity = Utilities.RotateVectorCounterClockwise(Vector2.UnitY * 15f, angleToRotate);

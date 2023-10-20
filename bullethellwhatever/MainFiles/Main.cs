@@ -123,6 +123,7 @@ namespace bullethellwhatever.MainFiles
             );
 
             // -- load in assets --
+
             string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
 
             for (int i = 0; i < files.Length; i++)
@@ -198,8 +199,6 @@ namespace bullethellwhatever.MainFiles
 
             base.Initialize();
         }
-
-
 
         protected override void Update(GameTime gameTime)
         {

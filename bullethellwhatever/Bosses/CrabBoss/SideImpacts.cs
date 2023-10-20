@@ -3,10 +3,8 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.Enemy;
 using bullethellwhatever.Projectiles.TelegraphLines;
-using FMOD;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +37,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int heightToBeAt = ScreenHeight / 6;
+            int heightToBeAt = ScreenHeight / 30;
 
             if (Timer < 0 && !MovedToCentre)
             {
@@ -130,9 +128,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 //Drawing.ScreenShake(2, 8);
 
-                int numberOfProjectiles = 35;
-                int distanceBetweenEach = (ScreenHeight - heightToBeAt) / numberOfProjectiles;
+                int distanceBetweenEach = 28;
 
+                int numberOfProjectiles = (ScreenHeight - heightToBeAt) / distanceBetweenEach;
+                
                 int teleDuration = 75;
 
                 float randomOffset = Utilities.RandomFloat(-10f, 10f);

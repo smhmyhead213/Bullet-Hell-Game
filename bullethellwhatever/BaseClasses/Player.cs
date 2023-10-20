@@ -10,6 +10,7 @@ using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Abilities;
 using SharpDX.MediaFoundation;
+using SharpDX.WIC;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -32,6 +33,9 @@ namespace bullethellwhatever.BaseClasses
         public int WeaponSwitchCooldownTimer;
         public int WeaponSwitchCooldown;
         public float MoveSpeed;
+
+        public int GameRestartCooldown;
+
         public Deathray PlayerDeathray = new Deathray();
 
         public enum Weapons
@@ -90,6 +94,8 @@ namespace bullethellwhatever.BaseClasses
             SetHitbox();
 
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
+
+            GameRestartCooldown = 0; // cant believe i actually need to add this
 
             TimeAlive = 0;
         }
@@ -210,17 +216,23 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0)
+            if (GameRestartCooldown > 0)
+            {
+                GameRestartCooldown--;
+            }
+
+            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !IsKeyPressed(Keys.R))
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
                 activeButtons.Clear();
             }
 
-            if (IsKeyPressed(Keys.R))
+            if (IsKeyPressed(Keys.R) && GameRestartCooldown == 0)
             {
                 Utilities.InitialiseGame();
-                Main.musicSystem.StopMusic();
+                musicSystem.StopMusic();
+                GameRestartCooldown = 3;
             }
 
             if (DashCooldown > 0)
