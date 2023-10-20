@@ -59,14 +59,15 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             if (RotationalAcceleration != 0)
                 RotationalVelocity = RotationalVelocity + RotationalAcceleration; //accel linearly
 
-            Rotation = Rotation % (MathF.PI * 2);
+            Rotation = Rotation % (PI * 2);
 
             if (TimeAlive > Duration)
             {
                 DeleteNextFrame = true;
                 if (SpawnRayAfterFinish)
                 {
-                    ToSpawn.SpawnDeathray(ToSpawn.Position, ToSpawn.Rotation, ToSpawn.Damage, ToSpawn.Duration, ToSpawn.Texture, ToSpawn.Width, ToSpawn.Length, ToSpawn.AngularVelocity, ToSpawn.Acceleration, ToSpawn.IsHarmful, ToSpawn.Colour, ToSpawn.Shader, ToSpawn.Owner);
+                    ToSpawn.SpawnDeathray(Origin, ToSpawn.Rotation, ToSpawn.Damage, ToSpawn.Duration, ToSpawn.Texture, ToSpawn.Width, ToSpawn.Length, ToSpawn.AngularVelocity, ToSpawn.Acceleration, ToSpawn.IsHarmful, ToSpawn.Colour, ToSpawn.Shader, ToSpawn.Owner);
+                    ToSpawn.SetStayWithOwner(ToSpawn.StayWithOwner);
                 }
             }
 
@@ -77,6 +78,14 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             SpawnRayAfterFinish = true;
             ToSpawn = new Deathray();
             ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+        }
+
+        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner)
+        {
+            SpawnRayAfterFinish = true;
+            ToSpawn = new Deathray();
+            ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+            ToSpawn.SetStayWithOwner(stayWithOwner);
         }
         public void ChangeShader(string shaderName)
         {

@@ -221,7 +221,7 @@ namespace bullethellwhatever.BaseClasses
                 GameRestartCooldown--;
             }
 
-            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !IsKeyPressed(Keys.R))
+            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !IsKeyPressed(Keys.R)) // haha suck it
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();

@@ -100,6 +100,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             else return RotationConstant + RotationToAdd; // if arms are detached, dont make arms rotate with body
         }
+
+        public void PointInDirection(float angle)
+        {
+            Rotate(-Rotation + angle + PI);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);

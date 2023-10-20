@@ -126,6 +126,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             float oneOverFractionOfRecoveryTimeToCloseArms = 2f;
+
             if (ChargeWindupTimer < -(AdjustTimeAfterCharge / oneOverFractionOfRecoveryTimeToCloseArms)) // if we are recovering from a charge
             {
                 Leg(0).UpperArm.Rotate(-angleToOpenArmsBy / AdjustTimeAfterCharge * oneOverFractionOfRecoveryTimeToCloseArms);

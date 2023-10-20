@@ -41,12 +41,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (Timer < 0 && !MovedToCentre)
             {
+                CrabOwner.SetBoosters(false);
                 MoveToPoint(new Vector2(ScreenWidth / 2, heightToBeAt), Timer + 50, 50);
                 Owner.DealDamage = false;
             }
 
             if (Timer == 0)
-            {
+            {                
                 Owner.DealDamage = true;
                 MovedToCentre = true;
             }

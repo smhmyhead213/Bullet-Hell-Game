@@ -24,7 +24,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public bool BoostersActive;
         public bool LockArmPositions;
 
-        public int Phase; //flag for if arms are detached yet
+        public int Phase; // flag for if arms are detached yet
 
         public bool StartedPhaseTwoTransition;
 
@@ -89,6 +89,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 new TestAttack(BarDuration * 30), // put desp / death anim here
                 new ChargingArmBulletHell(900),
                 new RainingProjectileCharges(900),
+                new MovingBlender(1000),
             };
 
             for (int i = 0; i < BossAttacks.Length; i++)
@@ -187,7 +188,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 for (int i = 0; i < BoosterPositions.Length; i++)
                 {
-                    float width = MathHelper.Clamp(Abs(Velocity.Y) / 1f, 0f, 2f);
+                    float width = MathHelper.Clamp(Abs(Velocity.Y) / 1f, 0f, 2.5f);
                     float height = Velocity.Length();
                     Texture2D texture = Assets["box"];
 

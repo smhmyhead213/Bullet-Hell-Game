@@ -55,8 +55,6 @@ namespace bullethellwhatever.Projectiles.Base
             Position = position;
             Rotation = initialRotation;
 
-            StayWithOwner = false;
-
             Width = width;
             Length = length;
 
@@ -89,8 +87,6 @@ namespace bullethellwhatever.Projectiles.Base
             Position = position;
             Rotation = initialRotation;
 
-            StayWithOwner = false;
-
             Width = width;
             Length = length;
 
@@ -122,8 +118,6 @@ namespace bullethellwhatever.Projectiles.Base
 
             Position = position;
             Rotation = initialRotation;
-
-            StayWithOwner = false;
 
             Width = width;
             Length = length;
@@ -182,6 +176,7 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 Position = Owner.Position;
             }
+
             if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
                 Die();
