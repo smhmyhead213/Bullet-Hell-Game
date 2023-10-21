@@ -18,6 +18,14 @@ namespace bullethellwhatever
             player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 
+        public static Vector2 ClampWithinScreen(Vector2 vector)
+        {
+            vector.X = MathHelper.Clamp(vector.X, 0, ScreenWidth);
+
+            vector.Y = MathHelper.Clamp(vector.Y, 0, ScreenHeight); // keep target winthin bounds
+
+            return vector;
+        }
         public static float RotationTowards(Vector2 from, Vector2 to)
         {
             return VectorToAngle(to - from);

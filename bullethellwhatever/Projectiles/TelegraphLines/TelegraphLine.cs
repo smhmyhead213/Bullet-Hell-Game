@@ -79,6 +79,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             ToSpawn = new Deathray();
             ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
         }
+        public void SpawnDeathrayOnDeath(Deathray deathray)
+        {
+            SpawnRayAfterFinish = true;
+            ToSpawn = deathray;
+        }
 
         public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner)
         {

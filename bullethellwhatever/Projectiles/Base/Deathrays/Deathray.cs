@@ -47,7 +47,7 @@ namespace bullethellwhatever.Projectiles.Base
             AddDeathrayToActiveProjectiles();
         }
 
-        public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
+        public virtual Deathray CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
             Updates = 1;
@@ -77,9 +77,11 @@ namespace bullethellwhatever.Projectiles.Base
             else Shader = null;
 
             RemoveOnHit = false;
+
+            return this;
         }
 
-        public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
+        public virtual Deathray CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect? shader, Entity owner)
         {
             Updates = 1;
@@ -109,6 +111,8 @@ namespace bullethellwhatever.Projectiles.Base
             else Shader = null;
 
             RemoveOnHit = false;
+
+            return this;
         }
 
         public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width,
