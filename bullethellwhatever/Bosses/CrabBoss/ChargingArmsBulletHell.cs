@@ -90,8 +90,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-
-
             if (armTime == timeToBeginClapPrep + waitBeforeClap) // time at which arms launch
             {
                 Targeting = false;

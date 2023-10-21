@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FMOD;
 
+
 namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class MovingBlender : CrabBossAttack
@@ -94,7 +95,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             int leftArmTimer = AITimer;
 
-            Vector2 targetPos = player.Position + new Vector2(0, -300);
+            float heightAbovePlayer = 500f;
+
+            Vector2 targetPos = player.Position + new Vector2(0, -heightAbovePlayer);
 
             if (leftArmTimer <= moveInwardsTime)
             {
@@ -113,7 +116,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(0).Velocity = Leg(0).Velocity / (vLength / maxVLength); // ensure the wobble isnt too much
                 }
 
-                Leg(0).Position.Y = player.Position.Y - 300f; // always stay above player
+                Leg(0).Position.Y = player.Position.Y - heightAbovePlayer; // always stay above player
 
                 int timeForOneOpen = 100;
                 float lowerClawOpenAngle =  PI / 2;
@@ -169,6 +172,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Targeting = true;
 
+                Leg(1).Velocity = Vector2.Zero;
+
                 TargetPosition = player.Position; // target past player
 
                 TargetPosition.X = MathHelper.Clamp(TargetPosition.X, 0, ScreenWidth);
@@ -179,7 +184,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Leg(1).PointLegInDirection(toReticle);
 
-                TelegraphLine t = new TelegraphLine(toReticle, 0, 0, Leg(1).UpperArm.Texture.Width, 3000, teleTime - 1, Leg(1).Position, Color.White, "box", Leg(1).UpperArm, true);
+                float teleLength = Utilities.DistanceBetweenVectors(Leg(1).Position, TargetPosition); // telegraph line goes to target
+
+                TelegraphLine t = new TelegraphLine(toReticle, 0, 0, Leg(1).UpperArm.Texture.Width, teleLength, teleTime - 1, Leg(1).Position, Color.White, "box", Leg(1).UpperArm, true);
 
                 t.ChangeShader("OutlineTelegraphShader");
             }
