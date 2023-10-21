@@ -64,6 +64,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             if (TimeAlive > Duration)
             {
                 DeleteNextFrame = true;
+
                 if (SpawnRayAfterFinish)
                 {
                     ToSpawn.SpawnDeathray(Origin, ToSpawn.Rotation, ToSpawn.Damage, ToSpawn.Duration, ToSpawn.Texture, ToSpawn.Width, ToSpawn.Length, ToSpawn.AngularVelocity, ToSpawn.Acceleration, ToSpawn.IsHarmful, ToSpawn.Colour, ToSpawn.Shader, ToSpawn.Owner);
@@ -108,7 +109,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(Main.player.Texture, Origin, null, Colour, Rotation + MathF.PI, originOffset, size, SpriteEffects.None, 0);
+            spritebatch.Draw(player.Texture, Origin, null, Colour, Rotation + MathF.PI, originOffset, size, SpriteEffects.None, 0);
         }
     }
 }

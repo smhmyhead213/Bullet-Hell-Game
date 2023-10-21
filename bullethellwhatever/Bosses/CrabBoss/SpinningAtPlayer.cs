@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FMOD;
 using System.Runtime.CompilerServices;
 
 namespace bullethellwhatever.Bosses.CrabBoss
@@ -21,9 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         private int PushContactTime;
         private float CrabSpinSpeed;
         private bool PushOccured;
-        private Vector2[] ArmDestinations;
-        private float[] InitialRotations; // for second part of attack
-        private bool DrawTargets;
+        private float[] LaserFireAngles;
         public SpinningAtPlayer(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -38,9 +35,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PushContactTime = 0;
             CrabSpinSpeed = 0;
             PushOccured = false;
-            ArmDestinations = new Vector2[2];
-            InitialRotations = new float[2];
-            DrawTargets = false;
+            LaserFireAngles = new float[2];
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
@@ -89,7 +84,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (time == leftArmMoveTime + 1 + delayBeforeLeftArmShove) // pull back
             {
                 Leg(0).Velocity = 5f * Vector2.UnitX;
-            } 
+            }
 
             if (time == leftArmMoveTime + 1 + delayBeforeLeftArmShove + leftArmShoveTime + shortDelayBeforePush) // push in
             {
@@ -103,7 +98,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 CrabSpinSpeed = CrabSpinSpeed - (PushContactTime * PI / 300);
             }
 
-            if (time > leftArmMoveTime + 1 + delayBeforeLeftArmShove + leftArmShoveTime + shortDelayBeforePush)
+            int timeAfterPushToMoveIntoPlace = 40;
+
+            if (time > leftArmMoveTime + 1 + delayBeforeLeftArmShove + leftArmShoveTime + shortDelayBeforePush && time < rightArmPushTime + timeAfterPushToMoveIntoPlace) // please just slow down man
             {
                 Leg(0).Velocity = Leg(0).Velocity * 0.95f;
             }
@@ -133,7 +130,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).Velocity = -25f * Utilities.SafeNormalise(Leg(1).Position - Owner.Position + halfOfBossHeight);
             }
 
-            if (time > rightArmPushTime && Leg(1).LowerClaw.Hitbox.Intersects(Owner.Hitbox) && !PushOccured)
+            if (time > rightArmPushTime && Leg(1).LowerClaw.Hitbox.Intersects(Owner.Hitbox) && !PushOccured && time < rightArmPushTime + timeAfterPushToMoveIntoPlace)
             {
                 Owner.Velocity = Leg(1).Velocity; // push boss HARD
                 Leg(1).Velocity = Leg(1).Velocity * -0.1f; // recoil slightly
@@ -141,17 +138,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             // ---- both arms code ----
+       
+            int movementTime = 40;
+            int timeAfterPushToBeginFiring = timeAfterPushToMoveIntoPlace + movementTime;
+            float distanceFromPlayer = 450f;
 
-            int timeAfterPushToBeginFiring = 40;
+            if (time == rightArmPushTime + timeAfterPushToMoveIntoPlace)
+            {
+                
+            }
 
+            if (time > rightArmPushTime + timeAfterPushToMoveIntoPlace && time < timeAfterPushToBeginFiring + rightArmPushTime)
+            {
+
+            }
+            
             if (time > timeAfterPushToBeginFiring + rightArmPushTime)
-            {               
-                int moveWaitTime = 30;
-                int travelTime = 30;
-                int waitBeforeRayTelegraph = 20;
-                int waitAfterRay = 60;
+            {
+                int rayTeleTime = 90;
+                int rayTeleDuration = 50;
+                int rayDuration = 60;
 
-                int cycleTotalTime = moveWaitTime + travelTime + waitBeforeRayTelegraph + waitAfterRay;
+                int cycleTotalTime = rayTeleTime + rayTeleDuration + rayDuration;
 
                 int localTime = time - (timeAfterPushToBeginFiring + rightArmPushTime); // cycles start on 0
 
@@ -159,57 +167,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     int timeThroughCycle = localTime % cycleTotalTime;
 
-                    if (timeThroughCycle == 0)
-                    {
-                        Leg(i).Velocity = Vector2.Zero;
+                    int horizDistance = 200;
 
-                        ArmDestinations[i] = new Vector2(Utilities.RandomFloat(0, ScreenWidth), Utilities.RandomFloat(0, ScreenHeight)); // pick a random spot
-
-                        InitialRotations[i] = Leg(i).UpperArm.RotationFromV();
-
-                        TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(ArmDestinations[i] - Leg(i).Position), 0, 0, Leg(i).UpperArm.Texture.Width, (Leg(i).Position - ArmDestinations[i]).Length(), moveWaitTime, Leg(i).Position, Color.White, "box", Leg(i).UpperArm, true);
-
-                        DrawTargets = true;
-
-                        t.ChangeShader("OutlineTelegraphShader");
-                    }
-
-                    if (timeThroughCycle > 0 && timeThroughCycle < moveWaitTime)
-                    {
-                        Leg(i).PointLegInDirection(MathHelper.Lerp(InitialRotations[i], Utilities.VectorToAngle(ArmDestinations[i] - Leg(i).Position), (float)timeThroughCycle / moveWaitTime));
-                    }
-
-                    if (timeThroughCycle == moveWaitTime)
-                    {
-                        DrawTargets = false;
-
-                        Leg(i).Velocity = (ArmDestinations[i] - Leg(i).Position) / travelTime;
-                    }
-
-                    if (timeThroughCycle > moveWaitTime + travelTime && timeThroughCycle < moveWaitTime + travelTime + waitBeforeRayTelegraph)
-                    {
-                        Leg(i).Velocity = Leg(i).Velocity * 0.97f;
-                    }
-
-                    if (timeThroughCycle == moveWaitTime + travelTime + waitBeforeRayTelegraph)
-                    {
-                        Leg(i).Velocity = Vector2.Zero;
-
-                        float angleToPlayer = Utilities.VectorToAngle(player.Position - Leg(i).Position);
-
-                        Leg(i).PointLegInDirection(angleToPlayer);
-
-                        TelegraphLine t = new TelegraphLine(angleToPlayer, 0, 0, Leg(i).UpperArm.Texture.Width * 2.5f, 4000, 30, Leg(i).Position, Color.White, "box", Leg(i).UpperArm, false);
-
-                        Deathray toSpawn = new Deathray().CreateDeathray(Leg(i).Position, angleToPlayer, 1f, 20, "box", t.Width, t.Length, 0, 0, true, Color.Red, "DeathrayShader2", t.Owner);
-
-                        t.SpawnDeathrayOnDeath(toSpawn);
-                    }
-
-                    Leg(i).Position = Utilities.ClampWithinScreen(Leg(i).Position);
+                    Vector2 targetPos = player.Position + new Vector2(horizDistance - (i * 2f * horizDistance), -500);                    
                 }
             }
-            // ---- body code ----
+            //----body code----
 
             if (time > leftArmMoveTime + 1 + delayBeforeLeftArmShove + leftArmShoveTime + shortDelayBeforePush)
             {
@@ -217,23 +180,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Rotation = Owner.Rotation + CrabSpinSpeed;
             }
 
-            //if (time < spinUpTime)
-            //{
-            //    Owner.Rotation = Owner.Rotation + (PI / 720);
-            //}
+            if (time > timeAfterPushToBeginFiring + rightArmPushTime && time % 50 == 0)
+            {
+                ExplodingProjectile p = new ExplodingProjectile(15, 120, 0, true, false, true);
+
+                p.Spawn(Owner.Position, Utilities.SafeNormalise(Owner.Velocity), 1f, 1, "box", 0, Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
+            }
 
             HandleBounces();
         }
 
         public override void ExtraDraw(SpriteBatch s)
         {
-            if (DrawTargets)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    Drawing.BetterDraw(Assets["TargetReticle"], ArmDestinations[i], null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
-                }
-            }
+
         }
     }
 }

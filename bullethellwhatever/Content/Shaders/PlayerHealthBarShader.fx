@@ -49,7 +49,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float3 col = float3(1.0, 0, 0); // right hand colour
     
-    if (uv.x < hpRatio + ((uv.y - 0.5) / 14.) || hpRatio == 1) // adjust divisor to make the slant steeper
+    if (uv.x < hpRatio + ((uv.y - 0.5) / 15.) || hpRatio == 1) // adjust divisor to make the slant steeper
     {
         col = float3(0, 1.0, 0);
     }

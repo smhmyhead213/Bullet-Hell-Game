@@ -44,14 +44,17 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float opacity = pow(1 - distanceFromCentre, 7);
     
-    if (uTime < duration / 10)
+    if (duration >= 10) // prevent this from dying i suppose
     {
-        opacity = opacity * lerp(0, 1, uTime / (duration / 10));
-    }
+        if (uTime < duration / 10)
+        {
+            opacity = opacity * lerp(0, 1, uTime / (duration / 10));
+        }
     
-    if (uTime > duration / 10 * 9)
-    {
-        opacity = opacity * lerp(0, 1, (duration - uTime) / (duration / 10));
+        if (uTime > duration / 10 * 9)
+        {
+            opacity = opacity * lerp(0, 1, (duration - uTime) / (duration / 10));
+        }
     }
     
     return (1, 1, 0, 1) * opacity * 0.35;
