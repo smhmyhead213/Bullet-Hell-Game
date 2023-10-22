@@ -54,6 +54,14 @@ namespace bullethellwhatever
             }
         }
 
+        public static Vector2 VectorToPlayerFrom(Vector2 v)
+        {
+            return player.Position - v;
+        }
+        public static float AngleToPlayerFrom(Vector2 v)
+        {
+            return VectorToAngle(VectorToPlayerFrom(v));
+        }
         public static void drawTextInDrawMethod(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour)
         {
             //_spriteBatch.Begin();

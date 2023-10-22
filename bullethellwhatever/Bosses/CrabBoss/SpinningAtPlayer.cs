@@ -125,7 +125,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time > rightArmPushTime - rightArmPullBackTime && time < rightArmPushTime)
             {
-                Leg(1).PointLegInDirection(Utilities.VectorToAngle(Leg(1).Position - Owner.Position));
+                Leg(1).PointLegInDirection(Utilities.VectorToAngle(Owner.Position - Leg(1).Position));
             }
 
             float bossSpeed = 25f;
@@ -162,21 +162,42 @@ namespace bullethellwhatever.Bosses.CrabBoss
             
             if (time > timeAfterPushToBeginFiring + rightArmPushTime)
             {
-                int rayTeleTime = 90;
-                int rayTeleDuration = 50;
-                int rayDuration = 60;
+                int shotTeleTime = 30;
+                int teleDuration = 30;
+                int waitAfterShot = 60;
 
-                int cycleTotalTime = rayTeleTime + rayTeleDuration + rayDuration;
+                int cycleTotalTime = shotTeleTime + waitAfterShot;
 
                 int localTime = time - (timeAfterPushToBeginFiring + rightArmPushTime); // cycles start on 0
 
+                localTime = localTime % cycleTotalTime;
+
                 for (int i = 0; i < 2; i++)
                 {
+                    // yeah i wrote this code and yeah i was conscious of what i was doing
+
+                    Leg(i).Velocity = -Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Utilities.VectorToPlayerFrom(Leg(i).Position)), PI / 2f);
+
+                    if (localTime < shotTeleTime || localTime > shotTeleTime + teleDuration) // if not selected target
+                    {
+                        Leg(i).PointLegInDirection(Utilities.AngleToPlayerFrom(Leg(i).Position));
+                    }
+
                     int timeThroughCycle = localTime % cycleTotalTime;
 
-                    int horizDistance = 200;
+                    if (localTime == shotTeleTime)
+                    {
+                        TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Leg(i).Position), 0, 0, 20, 4000, teleDuration + 1, Leg(i).LowerClaw.Position, Color.White, "box", Leg(i).UpperArm, false);
+                    }
 
-                    Vector2 targetPos = player.Position + new Vector2(horizDistance - (i * 2f * horizDistance), -500);        
+                    if (localTime == shotTeleTime + teleDuration)
+                    {
+                        Projectile p = new Projectile();
+
+                        // that velocity method has got to be cheating come on now
+
+                        p.Spawn(Leg(i).LowerClaw.Position, 20f * Utilities.AngleToVector(Leg(i).UpperArm.activeTelegraphs[0].Rotation), 1f, 1, "box", 0, Vector2.One, Leg(i).UpperArm, true, Color.Red, true, false);
+                    }
                 }
             }
             //----body code----

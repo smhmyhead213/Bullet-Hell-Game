@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PhaseTwoAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30), // put desp / death anim here
-                new SpinningAtPlayer(900),
+                new SpinningAtPlayer(1500),
                 new ChargingArmBulletHell(900),
                 new RainingProjectileCharges(900),
                 new MovingBlender(1000),
