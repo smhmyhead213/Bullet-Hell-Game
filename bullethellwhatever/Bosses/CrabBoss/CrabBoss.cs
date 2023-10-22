@@ -12,7 +12,7 @@ using System.Text;
 
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.DrawCode;
-
+using System.Windows.Forms;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -146,6 +146,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ReplaceAttackPattern(attacks);
                 
                 StartedPhaseTwoTransition = true;
+            }
+
+            if (StartedPhaseTwoTransition)
+            {
+                SetDR(0f);
+                TargetableByHoming = true;
+            }
+            else
+            {
+                SetDR(1f);
+                TargetableByHoming = false;
             }
 
             if (Health <= 0)

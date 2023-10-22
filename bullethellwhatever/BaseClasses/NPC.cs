@@ -24,12 +24,17 @@ namespace bullethellwhatever.BaseClasses
         public bool TargetableByHoming;
 
         public int PierceToTake;
+
+        public float DamageReduction;
+
         public DialogueSystem dialogueSystem;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1; //default
 
             Depth = 0;
+
+            DamageReduction = 0;
 
             IsInvincible = false;
 
@@ -65,6 +70,8 @@ namespace bullethellwhatever.BaseClasses
             Updates = 1;
 
             Depth = 0;
+
+            DamageReduction = 0;
 
             IsInvincible = false;
 
@@ -170,6 +177,11 @@ namespace bullethellwhatever.BaseClasses
                     Drawing.ScreenShake(3, 10);
                 }
             }
+        }
+
+        public void SetDR(float dr)
+        {
+            DamageReduction = MathHelper.Clamp(dr, 0f, 1f);
         }
 
         public void DrawHPBar(SpriteBatch spriteBatch)

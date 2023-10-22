@@ -123,11 +123,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).Velocity = 5f * Utilities.SafeNormalise(Leg(1).Position - Owner.Position);
             }
 
+            if (time > rightArmPushTime - rightArmPullBackTime && time < rightArmPushTime)
+            {
+                Leg(1).PointLegInDirection(Utilities.VectorToAngle(Leg(1).Position - Owner.Position));
+            }
+
+            float bossSpeed = 25f;
+
             if (time == rightArmPushTime)
             {
                 Vector2 halfOfBossHeight = Utilities.RotateVectorClockwise(new Vector2(0, -Owner.Texture.Height / 2f * Owner.GetSize().Y), Owner.Rotation); // ensure we hit the back of the boss instead of its centre
 
-                Leg(1).Velocity = -25f * Utilities.SafeNormalise(Leg(1).Position - Owner.Position + halfOfBossHeight);
+                Leg(1).Velocity = -bossSpeed * Utilities.SafeNormalise(Leg(1).Position - Owner.Position + halfOfBossHeight);
             }
 
             if (time > rightArmPushTime && Leg(1).LowerClaw.Hitbox.Intersects(Owner.Hitbox) && !PushOccured && time < rightArmPushTime + timeAfterPushToMoveIntoPlace)
@@ -169,7 +176,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     int horizDistance = 200;
 
-                    Vector2 targetPos = player.Position + new Vector2(horizDistance - (i * 2f * horizDistance), -500);                    
+                    Vector2 targetPos = player.Position + new Vector2(horizDistance - (i * 2f * horizDistance), -500);        
                 }
             }
             //----body code----
@@ -180,11 +187,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Rotation = Owner.Rotation + CrabSpinSpeed;
             }
 
-            if (time > timeAfterPushToBeginFiring + rightArmPushTime && time % 50 == 0)
+            if (time > timeAfterPushToBeginFiring + rightArmPushTime)
             {
-                ExplodingProjectile p = new ExplodingProjectile(15, 120, 0, true, false, true);
+                if (time % 50 == 0)
+                {
+                    int fragments = 8;
 
-                p.Spawn(Owner.Position, Utilities.SafeNormalise(Owner.Velocity), 1f, 1, "box", 0, Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
+                    ExplodingProjectile p = new ExplodingProjectile(fragments, 120, 0, true, false, true);
+
+                    p.Spawn(Owner.Position, Utilities.SafeNormalise(Owner.Velocity), 1f, 1, "box", 0, Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
+                }
+
+                Owner.Velocity = Vector2.Lerp(Owner.Velocity, bossSpeed * Utilities.SafeNormalise(player.Position - Owner.Position), 0.01f);
             }
 
             HandleBounces();

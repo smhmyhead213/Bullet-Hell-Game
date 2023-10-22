@@ -175,7 +175,7 @@ namespace bullethellwhatever.BaseClasses
                     {
                         npc.IFrames = npc.MaxIFrames;
 
-                        npc.Health = npc.Health - Damage;
+                        npc.Health = npc.Health - ((1 - npc.DamageReduction) * Damage);
 
                         HandlePierce(npc.PierceToTake);
                     }
