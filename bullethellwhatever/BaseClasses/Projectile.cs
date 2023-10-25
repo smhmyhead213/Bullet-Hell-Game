@@ -33,7 +33,11 @@ namespace bullethellwhatever.BaseClasses
         {
             Depth = 0;
 
-            DrawAfterimages = false;
+            if (!DrawAfterimages) // dont set to false by default if already set to true
+            {
+                DrawAfterimages = false;
+            }
+
             Position = position;
             Pierce = pierce;
             TimeOutsidePlayArea = 0;
@@ -105,11 +109,6 @@ namespace bullethellwhatever.BaseClasses
         public virtual void Update()
         {
             AITimer++;
-
-            if (afterimagesPositions is not null)
-            {
-                Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
-            }
 
             if (touchingAnEdge(this))
             {

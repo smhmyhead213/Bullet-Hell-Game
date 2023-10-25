@@ -23,16 +23,14 @@ namespace bullethellwhatever.Projectiles.Player
         {
             base.Spawn(position, velocity, damage, pierce, texture, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
-            afterimagesPositions = new Vector2[22 * Updates];
+            SetUpdates(2);
 
-            DrawAfterimages = true;
+            SetDrawAfterimages(22);
 
             TimeWithNoTarget = 0;
         }
         public override void AI()
         {
-            SetUpdates(2);
-
             HomingTime = 30 * Updates;
 
             NPC closestNPC = new NPC(); //the target
@@ -96,6 +94,8 @@ namespace bullethellwhatever.Projectiles.Player
                     DeleteNextFrame = true;
                 }
             }
+
+            Rotation = Utilities.VectorToAngle(Velocity);
 
             Position = Position + Velocity;
         }

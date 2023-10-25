@@ -103,8 +103,6 @@ namespace bullethellwhatever.DrawCode
                 }
             }
             Utilities.drawTextInDrawMethod(ControlChangedTo, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 7), Main._spriteBatch, Main.font, Color.White);
-
-
         }
 
 

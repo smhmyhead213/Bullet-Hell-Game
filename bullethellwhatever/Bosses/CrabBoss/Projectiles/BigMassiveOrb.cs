@@ -95,7 +95,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
             Shader.CurrentTechnique.Passes[0].Apply();
 
             base.Draw(s);
-
         }
     }
 }

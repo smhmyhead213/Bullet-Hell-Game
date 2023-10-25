@@ -23,6 +23,7 @@ namespace bullethellwhatever.Projectiles.Base
         public bool IsSpawned;
         public int Duration;
         public bool StayWithOwner;
+        public Texture2D Map;
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
@@ -147,6 +148,10 @@ namespace bullethellwhatever.Projectiles.Base
             RemoveOnHit = false;
         }
 
+        public virtual void SetNoiseMap(string fileName)
+        {
+            Map = Assets[fileName];
+        }
         public virtual void SetStayWithOwner(bool stay)
         {
             StayWithOwner = stay;
@@ -217,13 +222,19 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 Shader.Parameters["uTime"]?.SetValue(AITimer);
                 Shader.Parameters["duration"]?.SetValue(Duration);
+
+                if (Map is not null)
+                {
+                    Shader.Parameters["noiseMap"]?.SetValue(Map);
+                }
+
                 Shader.CurrentTechnique.Passes[0].Apply();
 
-                Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
+                Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); // Scale the beam up to the required width and length.
 
-                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
+                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f); 
 
-                spritebatch.Draw(Main.player.Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                spritebatch.Draw(Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
             }
         }
     }

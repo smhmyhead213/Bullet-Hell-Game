@@ -108,19 +108,29 @@ namespace bullethellwhatever.BaseClasses
             //death behaviour
             DeleteNextFrame = true;
         }
+
+        public virtual void SetDrawAfterimages(int length)
+        {
+            DrawAfterimages = true;
+
+            afterimagesPositions = new Vector2[length];
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
 
             if (DrawAfterimages)
             {
+                Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+
                 for (int i = 0; i < afterimagesPositions.Length; i++)
                 {
                     float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
                     if (afterimagesPositions[i] != Vector2.Zero)
                     {
-                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                         // Draw another afterimage between this one and the last one, for a less choppy trail.
                         // The first afterimage is between the entity and the first saved position (i = 0).

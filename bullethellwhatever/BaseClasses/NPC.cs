@@ -58,7 +58,7 @@ namespace bullethellwhatever.BaseClasses
             Opacity = 1f;
 
             dialogueSystem = new DialogueSystem(this);
-            dialogueSystem.dialogueObject = new DialogueObject(position, string.Empty, this, 1, 1);
+            dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);
 
             IsHarmful = isHarmful;
 
@@ -111,11 +111,6 @@ namespace bullethellwhatever.BaseClasses
             if (IFrames > 0)
             {
                 IFrames--;
-            }
-
-            if (afterimagesPositions is not null)
-            {
-                Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
             }
 
             if (Health <= 0)
@@ -235,7 +230,7 @@ namespace bullethellwhatever.BaseClasses
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             SetHitbox();
             dialogueSystem = new DialogueSystem(this);
-            dialogueSystem.dialogueObject = new DialogueObject(Position, string.Empty, this, 1, 1);
+            dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);
         }
     }
 }

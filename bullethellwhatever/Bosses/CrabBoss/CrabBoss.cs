@@ -87,7 +87,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PhaseTwoAttacks = new CrabBossAttack[]
             {
                 new TestAttack(BarDuration * 30), // put desp / death anim here
-                new SpinningAtPlayer(1500),
+                new CrabDeathray(1200),
+                new SpinningAtPlayer(1200),
                 new ChargingArmBulletHell(900),
                 new RainingProjectileCharges(900),
                 new MovingBlender(1000),
@@ -217,11 +218,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Drawing.BetterDraw(texture, drawPos, null, Colour, Rotation + PI, size, SpriteEffects.None, 1);
                 }
 
-                spriteBatch.End();
-
                 if (this is IDrawsShader) //if we were already drawing stuff that had shaders
-                    spriteBatch.Begin(SpriteSortMode.Immediate);
-                else spriteBatch.Begin(SpriteSortMode.Deferred);
+                    DrawGame.RestartSpriteBatchForShaders(spriteBatch);
+                else DrawGame.RestartSpriteBatchForNotShaders(spriteBatch);
 
                 //for (int i = 0; i < BoosterPositions.Length;i++) //remove later
                 //{

@@ -56,7 +56,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 Owner.DealDamage = false;
                 Owner.Velocity = Vector2.Zero; //amke it sit in the middle
                 Owner.Rotation = 0;
-                Owner.dialogueSystem.Dialogue(Owner.Position, "It's not over yet!", 4, despStartTime);
+                Owner.dialogueSystem.Dialogue("It's not over yet!", 4, despStartTime);
                 Drawing.ScreenShake(4, EndTime - despStartTime);
 
                 Owner.TargetableByHoming = false;

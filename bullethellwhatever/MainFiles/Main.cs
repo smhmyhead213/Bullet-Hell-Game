@@ -252,7 +252,7 @@ namespace bullethellwhatever.MainFiles
                     UI.DrawSettings(_spriteBatch);
                     break;
                 case GameState.GameStates.InGame:
-                    DrawGame.DrawTheGame(gameTime);
+                    DrawGame.DrawTheGame(gameTime, _spriteBatch);
                     break;
                 case GameState.GameStates.Credits:
                     Credits.CreditSequence(_spriteBatch);
@@ -267,6 +267,11 @@ namespace bullethellwhatever.MainFiles
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public static void ChangeGraphicsDeviceTexture(int index, string texture)
+        {
+            _graphics.GraphicsDevice.Textures[index] = Assets[texture];
         }
     }
 }

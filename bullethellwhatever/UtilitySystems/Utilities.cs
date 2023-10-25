@@ -161,12 +161,13 @@ namespace bullethellwhatever
             Vector2[] newArray = new Vector2[array.Length];
             newArray[0] = vectorToAdd;
 
-            for (int i = 1; i < array.Length; i++)
+            for (int i = array.Length - 1; i > 0; i--)
             {
                 newArray[i] = array[i - 1];
             }
 
             array = newArray;
+
         }
 
         public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);

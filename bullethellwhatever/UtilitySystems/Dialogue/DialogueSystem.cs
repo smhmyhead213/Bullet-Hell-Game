@@ -38,9 +38,9 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             }
         }
 
-        public void Dialogue(Vector2 position, string dialogueToWrite, int framesBetweenLetters, int duration)
+        public void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration)
         {
-            dialogueObject = new DialogueObject(position, dialogueToWrite, Owner, framesBetweenLetters, duration);
+            dialogueObject = new DialogueObject(dialogueToWrite, Owner, framesBetweenLetters, duration);
         }
 
         public void ClearDialogue()

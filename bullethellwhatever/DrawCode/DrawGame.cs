@@ -15,11 +15,11 @@ namespace bullethellwhatever.DrawCode
     {
         public static float WeaponIconsRotationToAdd;
         public static float PermanentIconRotation;
-        public static void DrawTheGame(GameTime gameTime)
+        public static void DrawTheGame(GameTime gameTime, SpriteBatch s)
         {
             Drawing.HandleScreenShake();
 
-            DialogueSystem.DrawDialogues(_spriteBatch);
+            DialogueSystem.DrawDialogues(s);
 
             if (activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
             {
@@ -44,8 +44,7 @@ namespace bullethellwhatever.DrawCode
 
             // Populate lists with entites to draw with and without shaders.
 
-            // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues
-            // Everything must be looped through in the Immediate sprite mode as all telegraph lines use a shader. (what?)
+            // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues.
 
             if (player is IDrawsShader)
             {
@@ -84,29 +83,25 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithoutShader)
             {
-                entity.Draw(Main._spriteBatch);
+                entity.Draw(s);
             }
 
 
-            _spriteBatch.End();
-            _spriteBatch.Begin(SpriteSortMode.Immediate);
+            RestartSpriteBatchForShaders(s);
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
             {
-                entity.Draw(Main._spriteBatch);
+                entity.Draw(s);
             }
 
-
-            _spriteBatch.End();
-            _spriteBatch.Begin(SpriteSortMode.Deferred);
+            RestartSpriteBatchForNotShaders(s);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
                     entity.Draw(Main._spriteBatch);
             }
 
-            Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Immediate);
+            RestartSpriteBatchForShaders(s);
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -144,9 +139,8 @@ namespace bullethellwhatever.DrawCode
                     t.Draw(Main._spriteBatch);
                 }
             }
-            
-            Main._spriteBatch.End();
-            Main._spriteBatch.Begin(SpriteSortMode.Deferred);
+
+            RestartSpriteBatchForNotShaders(s);
 
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {
@@ -182,8 +176,7 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawHUD(SpriteBatch s)
         {
-            s.End();
-            s.Begin(SpriteSortMode.Immediate);
+            RestartSpriteBatchForShaders(s);
 
             Shaders["PlayerHealthBarShader"].Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
 
@@ -193,8 +186,7 @@ namespace bullethellwhatever.DrawCode
 
             Drawing.BetterDraw(Assets["box"], new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), null, Color.White, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
-            s.End();
-            s.Begin(SpriteSortMode.Deferred);
+            RestartSpriteBatchForNotShaders(s);
 
             Drawing.BetterDraw(Assets["HUDBody"], new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
             
@@ -227,9 +219,18 @@ namespace bullethellwhatever.DrawCode
             Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
             Drawing.BetterDraw(Assets["MachineWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
             Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
-            
-            
+        }
 
+        public static void RestartSpriteBatchForShaders(SpriteBatch s)
+        {
+            s.End();
+            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap);
+        }
+
+        public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
+        {
+            s.End();
+            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: null);
         }
     }
 }

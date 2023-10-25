@@ -55,6 +55,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Owner.Velocity = Vector2.Zero;
 
+                for (int i = 0; i < 2; i++)
+                {
+                    Leg(i).ContactDamage(false);
+                }
+
                 LeftArmInitialRotation = Leg(0).UpperArm.RotationFromV();
                 RightArmInitialRotation = Leg(1).UpperArm.RotationFromV();
 
@@ -152,13 +157,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time == rightArmPushTime + timeAfterPushToMoveIntoPlace)
             {
-                
+                for (int i = 0; i < 2; i++)
+                {
+                    Leg(i).ContactDamage(true);
+                }
             }
 
-            if (time > rightArmPushTime + timeAfterPushToMoveIntoPlace && time < timeAfterPushToBeginFiring + rightArmPushTime)
-            {
+            //if (time > rightArmPushTime + timeAfterPushToMoveIntoPlace && time < timeAfterPushToBeginFiring + rightArmPushTime)
+            //{
 
-            }
+            //}
             
             if (time > timeAfterPushToBeginFiring + rightArmPushTime)
             {
@@ -187,7 +195,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     if (localTime == shotTeleTime)
                     {
-                        TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Leg(i).Position), 0, 0, 20, 4000, teleDuration + 1, Leg(i).LowerClaw.Position, Color.White, "box", Leg(i).UpperArm, false);
+                        TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Leg(i).Position), 0, 0, 20, 4000, teleDuration + 1, Leg(i).LowerClaw.Position, Color.White, "box", Leg(i).UpperArm, true);
                     }
 
                     if (localTime == shotTeleTime + teleDuration)

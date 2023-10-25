@@ -56,6 +56,10 @@ namespace bullethellwhatever.Bosses
                 Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
                 Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
             }
+
+            PrimitiveDrawer prims = new PrimitiveDrawer();
+
+            prims.Draw();
         }
         public override void AI()
         {
@@ -67,11 +71,16 @@ namespace bullethellwhatever.Bosses
             if (AITimer == 0)
             {
                 Deathray ray = new Deathray();
+
+                ray.SetNoiseMap("CrabScrollingBeamNoise");
+
                 TelegraphLine t = new TelegraphLine(0, 0, 0, 100, 2000, 1000, Position, Colour, "box", this, true);
 
                 t.ChangeShader("OutlineTelegraphShader");
 
-                ray.SpawnDeathray(Position, PI / 2f, 0f, 300, "box", 20f, ScreenWidth / 2f, 0, 0, true, Colour, "DeathrayShader", this);
+                ray.SpawnDeathray(Position, PI / 2f, 0f, 3000, "box", 150f, ScreenWidth, PI / 600, 0, true, Colour, "CrabScrollingBeamShader", this);
+
+                ChangeGraphicsDeviceTexture(1, "CrabScrollingBeamNoise");
             }
 
             Rotation = Rotation + PI / 90f;
@@ -84,8 +93,6 @@ namespace bullethellwhatever.Bosses
                 IFrames--;
             }
 
-
-
             ExecuteEasyAttackPattern();
         }
 
@@ -95,8 +102,6 @@ namespace bullethellwhatever.Bosses
             {
                 IsDesperationOver = true;
             }
-
-
 
             switch (AttackNumber)
             {
@@ -132,7 +137,7 @@ namespace bullethellwhatever.Bosses
         {
             if (AITimer == 0)
             {              
-                dialogueSystem.Dialogue(Position, "This boss is in progress, ignore it.", 4, 400);
+                dialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400);
 
                 //TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
                 
@@ -151,8 +156,6 @@ namespace bullethellwhatever.Bosses
 
                 //enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
             }
-
-
         }
 
         public void EndAttack(ref float AITimer, ref int AttackNumber)

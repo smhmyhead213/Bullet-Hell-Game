@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer == 0) //this could be optimised by giving every entity a rotation from vertical field
             {
-                Owner.dialogueSystem.Dialogue(Owner.Position, "Test dialogue", 4, 800);
+                Owner.dialogueSystem.Dialogue("Test dialogue", 4, 800);
             }
 
             if (AITimer == 510)

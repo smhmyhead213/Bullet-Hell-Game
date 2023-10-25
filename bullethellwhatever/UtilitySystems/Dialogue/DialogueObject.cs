@@ -22,9 +22,8 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
         public bool DeleteNextFrame;
         public int CharactersWritten;
 
-        public DialogueObject(Vector2 position, string text, Entity owner, int framesBetweenLetters, int duration)
+        public DialogueObject(string text, Entity owner, int framesBetweenLetters, int duration)
         {
-            Position = position;
             Text = string.Empty;
             TextToWrite = text;
             DeleteNextFrame = false;
@@ -38,7 +37,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
         public void DoDialogue()
         {
-            Position = new Vector2(Owner.Position.X, Owner.Position.Y - 50f);
+            Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y) - 50f);
 
             //fix this drawing every possible string every frame
             if (DialogueTimer / FramesBetweenLetters == CharactersWritten)
@@ -49,8 +48,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
                     Text = TextToWrite.Substring(0, CharactersWritten);
                 }
 
-                CharactersWritten++;
-              
+                CharactersWritten++;             
             }
 
             DialogueTimer++;
