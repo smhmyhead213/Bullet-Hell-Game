@@ -49,7 +49,10 @@ namespace bullethellwhatever.MainFiles
 
             player.AI();
             player.UpdateHitbox();
-            
+
+            if (player.dialogueSystem.dialogueObject is not null)
+                player.dialogueSystem.dialogueObject.DoDialogue();
+
             foreach (NPC npc in activeNPCs)
             {
                 for (int i = 0; i < npc.Updates; i++)

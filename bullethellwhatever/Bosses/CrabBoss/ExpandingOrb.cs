@@ -47,7 +47,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             TimeToThrowOrb = 700;
             TimeToWaitBeforeOrbThrow = 120;
             ThrowAnimationDuration = 5;
-            ProjectilesPerRing = 40;
+            ProjectilesPerRing = Utilities.ValueFromDifficulty(20, 30, 40, 50);
             TimeToWaitAfterThrow = 400;
             OrbBounceAroundTime = 600;
         }
@@ -66,6 +66,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (time < CentreMovingTime)
             {
                 Orb = new BigMassiveOrb(0.06f, TimeToThrowOrb - TimeToStartOpeningHands + TimeToWaitAfterThrow + OrbBounceAroundTime);
+
+                Orb.SetDrawAfterimages(22);
+
                 CrabOwner.ResetArmRotations();
                 Owner.DealDamage = false;
                 MoveToPoint(Utilities.CentreOfScreen(), time, CentreMovingTime);
@@ -130,7 +133,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                         float offset = Owner.Rotation;
 
-                        projectile.Spawn(Orb.Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(-Vector2.UnitY, Vector2.Zero), (PI * 2 / ProjectilesPerRing * i) + offset),
+                        float projSpeed = Utilities.ValueFromDifficulty(3f, 3f, 3.5f, 4f);
+
+                        projectile.Spawn(Orb.Position, projSpeed * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(-Vector2.UnitY, Vector2.Zero), (PI * 2 / ProjectilesPerRing * i) + offset),
                             1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, false, false);
                     }
 
@@ -148,7 +153,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time == TimeToThrowOrb + (ThrowAnimationDuration / 2)) // let go halfway through the animation
             {
-                Orb.Velocity = 17f * Utilities.SafeNormalise(player.Position - Owner.Position);
+                float throwVelocity = Utilities.ValueFromDifficulty(13f, 15f, 17f, 19f);
+
+                Orb.Velocity = throwVelocity * Utilities.SafeNormalise(player.Position - Owner.Position);
                 Owner.Velocity = -Orb.Velocity * 0.7f; // recoil, and as funny as not dampening it is i cant have him yeet himself out the area
             }
 

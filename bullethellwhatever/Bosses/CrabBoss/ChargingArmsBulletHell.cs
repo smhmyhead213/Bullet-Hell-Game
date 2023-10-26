@@ -36,9 +36,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int waitAfterArmsStop = 25;
+            int waitAfterArmsStop = Utilities.ValueFromDifficulty(40, 30, 25, 20);
+
             int timeToBeginClapPrep = waitAfterArmsStop;
-            int waitBeforeClap = 20;
+
+            int waitBeforeClap = Utilities.ValueFromDifficulty(35, 30, 25, 20);
+
             int clapTime = 24; // time move hands together
             int handDecelTime = 45;
 
@@ -168,9 +171,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 else Owner.Rotation = Owner.Rotation + angularVelocity;
 
-                int projectilesPerRing = 25;
+                int projectilesPerRing = Utilities.ValueFromDifficulty(12, 20, 23, 25);
 
-                if (bodyTime % 12 == 0)
+                int timeBetweenRings = Utilities.ValueFromDifficulty(20, 17, 12, 10);
+
+                if (bodyTime % timeBetweenRings == 0 && AITimer < EndTime - 60)
                 {
                     for (int i = 0; i < projectilesPerRing; i++)
                     {

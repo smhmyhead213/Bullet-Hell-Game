@@ -20,7 +20,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         private int PushContactTime;
         private float CrabSpinSpeed;
         private bool PushOccured;
-        private float[] LaserFireAngles;
         public SpinningAtPlayer(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -35,7 +34,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PushContactTime = 0;
             CrabSpinSpeed = 0;
             PushOccured = false;
-            LaserFireAngles = new float[2];
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
@@ -133,7 +131,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).PointLegInDirection(Utilities.VectorToAngle(Owner.Position - Leg(1).Position));
             }
 
-            float bossSpeed = 25f;
+            float bossSpeed = Utilities.ValueFromDifficulty(15f, 20f, 22f, 25f);
 
             if (time == rightArmPushTime)
             {
@@ -153,7 +151,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
        
             int movementTime = 40;
             int timeAfterPushToBeginFiring = timeAfterPushToMoveIntoPlace + movementTime;
-            float distanceFromPlayer = 450f;
 
             if (time == rightArmPushTime + timeAfterPushToMoveIntoPlace)
             {
@@ -161,6 +158,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Leg(i).ContactDamage(true);
                 }
+
+                Owner.DealDamage = true;
             }
 
             //if (time > rightArmPushTime + timeAfterPushToMoveIntoPlace && time < timeAfterPushToBeginFiring + rightArmPushTime)
@@ -220,7 +219,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (time % 50 == 0)
                 {
-                    int fragments = 8;
+                    int fragments = Utilities.ValueFromDifficulty(4, 6, 8, 10);
 
                     ExplodingProjectile p = new ExplodingProjectile(fragments, 120, 0, true, false, true);
 
@@ -230,7 +229,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Velocity = Vector2.Lerp(Owner.Velocity, bossSpeed * Utilities.SafeNormalise(player.Position - Owner.Position), 0.01f);
             }
 
-            HandleBounces();
+            //HandleBounces();
         }
 
         public override void ExtraDraw(SpriteBatch s)

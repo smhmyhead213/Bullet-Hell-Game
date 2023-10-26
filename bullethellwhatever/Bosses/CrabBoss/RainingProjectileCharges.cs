@@ -37,8 +37,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int waitBeforeMoving = 60;
             int SlamIntoCielingTime = 60;
 
-            int crabChargeWaitTimeBefore = 60;
-            int crabChargeWaitTimeAfter = 60;
+            int crabChargeWaitTimeBefore = Utilities.ValueFromDifficulty(70, 60, 60, 45);
+            int crabChargeWaitTimeAfter = Utilities.ValueFromDifficulty(70, 60, 60, 45);
 
             int bodyTime = AITimer % (crabChargeWaitTimeAfter + crabChargeWaitTimeBefore);
 
@@ -54,6 +54,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(i).PointLegInDirection(Utilities.VectorToAngle((Owner.Position - new Vector2(0, -300)) - Leg(i).Position)); // move to a spot near the boss ish
 
                     Leg(i).Velocity = ((Owner.Position - new Vector2(0, 300)) - Leg(i).Position) / waitBeforeMoving;
+
+                    Leg(i).ContactDamage(false);
                 }
             }
 
@@ -128,9 +130,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (armTime > waitBeforeMoving + SlamIntoCielingTime)
             {
+                Leg(0).ContactDamage(true);
+                Leg(1).ContactDamage(true);
+
                 Func<int, int> fireProjRows = x =>
                 {
-                    for (int j = -5; j < 6; j++)
+                    int numberOfProjsInBlast = Utilities.ValueFromDifficulty(6, 8, 10, 12);
+
+                    int loweri = -numberOfProjsInBlast / 2;
+                    int upperi = numberOfProjsInBlast / 2 + 1;
+
+                    for (int j = loweri; j < upperi; j++)
                     {
                         Projectile projectile = new Projectile();
 
@@ -138,7 +148,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                         projectile.VelocityFunction = x => new Vector2(scaledj, x * 0.1f);
 
-                        float yRange = 40f;
+                        float yRange = Utilities.ValueFromDifficulty(20f, 30f, 40f, 70f);
 
                         float initialYVelocity = Utilities.RandomFloat(-yRange, yRange);
 
@@ -181,7 +191,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (bodyTime == crabChargeWaitTimeBefore)
             {
-                Owner.Velocity = 40f * Utilities.SafeNormalise(ToTarget);
+                float chargeSpeed = Utilities.ValueFromDifficulty(20f, 30f, 40f, 45f);
+
+                Owner.Velocity = chargeSpeed * Utilities.SafeNormalise(ToTarget);
             }
 
             if (bodyTime > crabChargeWaitTimeBefore && bodyTime % 10 == 0) // perpendicular projectiles

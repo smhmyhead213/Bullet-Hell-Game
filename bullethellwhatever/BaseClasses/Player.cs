@@ -11,6 +11,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.Abilities;
 using SharpDX.MediaFoundation;
 using SharpDX.WIC;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -38,6 +39,7 @@ namespace bullethellwhatever.BaseClasses
 
         public Deathray PlayerDeathray = new Deathray();
 
+        public DialogueSystem dialogueSystem;
         public enum Weapons
         {
             Homing,
@@ -59,21 +61,9 @@ namespace bullethellwhatever.BaseClasses
             IFrames = 0;
             Depth = 0;
 
-            switch (GameState.Difficulty)
-            {
-                case GameState.Difficulties.Easy:
-                    MaxHP = 15;
-                    break;
-                case GameState.Difficulties.Normal:
-                    MaxHP = 12;
-                    break;
-                case GameState.Difficulties.Hard:
-                    MaxHP = 10;
-                    break;
-                case GameState.Difficulties.Insane:
-                    MaxHP = 8;
-                    break;
-            }
+            dialogueSystem = new DialogueSystem(this);
+
+            MaxHP = 15;
 
             Health = MaxHP; // put this back to normal
             Size = DefaultHitbox;
@@ -87,7 +77,9 @@ namespace bullethellwhatever.BaseClasses
             WeaponSwitchCooldownTimer = 0;
 
             ShouldRemoveOnEdgeTouch = false;
-            afterimagesPositions = new Vector2[DashDuration];
+
+            SetDrawAfterimages(DashDuration);
+
             Colour = Color.White;
 
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
@@ -276,7 +268,8 @@ namespace bullethellwhatever.BaseClasses
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
-            Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+            Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+            Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesRotations, Rotation);
 
             if (ActiveWeapon != Weapons.Laser)
             {
@@ -351,7 +344,7 @@ namespace bullethellwhatever.BaseClasses
                 playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))));
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.15f, 1, "MachineGunProjectile", 0, Vector2.One, this, false, Color.LightBlue, true, true);
+                    0.35f, 1, "MachineGunProjectile", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -361,7 +354,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
 
-                float damage = 28f; // debug
+                float damage = 0.28f;
 
                 projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
 
@@ -380,6 +373,8 @@ namespace bullethellwhatever.BaseClasses
 
             if (DashAbility.IsExecuting)
             {
+                int extraImages = 3;
+
                 for (int i = 0; i < afterimagesPositions.Length; i++)
                 {
                     if (afterimagesPositions[i] != Vector2.Zero)
@@ -391,10 +386,15 @@ namespace bullethellwhatever.BaseClasses
 
                         if (i > 0)
                         {
-                            colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                            for (int j = 0; j < extraImages; j++)
+                            {
+                                float interpolant = (j + 1) * (1f / (extraImages + 1));
 
-                            Drawing.BetterDraw(Main.player.Texture, Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f), null, Colour * colourMultiplier,
-                                Rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                                colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+
+                                Drawing.BetterDraw(Main.player.Texture, Vector2.Lerp(afterimagesPositions[i], afterimagesPositions[i - 1], interpolant), null, Colour * colourMultiplier,
+                                    afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i + interpolant) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                            }
                         }
 
                     }

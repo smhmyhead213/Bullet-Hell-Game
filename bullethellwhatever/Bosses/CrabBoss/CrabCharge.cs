@@ -37,7 +37,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             TimeToWindUpCharge = 100;
             TelegraphTime = 50;
             AdjustTimeAfterCharge = 60;
-            ProjectlesPerRing = 20;
+            ProjectlesPerRing = Utilities.ValueFromDifficulty(12, 16, 20, 28);
             TimeSpentCharging = 0;
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
@@ -85,13 +85,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     DirectionToChargeAt = Utilities.SafeNormalise(player.Position - CrabOwner.Position);
                 }
+
                 IsCharging = true;
                 ChargeWindupTimer++;
                 CrabOwner.SetBoosters(true);
 
-                Accelerate(40f * DirectionToChargeAt, chargeAccelTime);
+                float chargeSpeed = Utilities.ValueFromDifficulty(25f, 34f, 40f, 55f);
 
-                
+                Accelerate(chargeSpeed * DirectionToChargeAt, chargeAccelTime);
+             
                 Leg(0).UpperArm.Rotate(angleToOpenArmsBy / chargeAccelTime);
                 Leg(0).LowerArm.Rotate(angleToOpenArmsBy / chargeAccelTime);
                 Leg(1).UpperArm.Rotate(-angleToOpenArmsBy / chargeAccelTime);

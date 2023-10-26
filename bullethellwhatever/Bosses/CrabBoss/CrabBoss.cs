@@ -23,6 +23,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public Vector2[] ArmPositionsOnBody;
         public bool BoostersActive;
         public bool LockArmPositions;
+        public bool PlayerSaidOpeningDialogue;
 
         public int Phase; // flag for if arms are detached yet
 
@@ -34,7 +35,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Texture = Assets["CrabBody"];
             Size = Vector2.One * 1.5f;
             Position = Utilities.CentreOfScreen();
-            MaxHP = 2500;
+            MaxHP = 550f;
             Health = MaxHP;
             AttackNumber = 1;
             Colour = Color.White;
@@ -45,6 +46,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BoostersActive = false;
             LockArmPositions = true;
+            PlayerSaidOpeningDialogue = false;
 
             BarDuration = 60; //to be changed
 
@@ -131,6 +133,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void AI()
         {
+            if (!PlayerSaidOpeningDialogue)
+            {
+                PlayerSaidOpeningDialogue = true;
+                player.dialogueSystem.Dialogue("That body seems to be impervious to damage... Maybe I should try to take out the arms first?", 2, 300);
+            }
             //Rotation = Rotation + PI / 90f;
 
             BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
@@ -186,8 +193,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Die()
         {
             base.Die();
-
-            Array.Clear(Legs);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

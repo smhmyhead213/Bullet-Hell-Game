@@ -106,7 +106,7 @@ namespace bullethellwhatever.BaseClasses
 
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             if (IFrames > 0)
             {
@@ -122,6 +122,8 @@ namespace bullethellwhatever.BaseClasses
             Position = Position + Velocity;
 
             AITimer++;
+
+            base.Update();
         }
         public virtual bool IsCollidingWithEntity(Entity entity)
         {

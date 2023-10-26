@@ -37,12 +37,18 @@ namespace bullethellwhatever.BaseClasses
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
         public Effect? Shader;
         public int Updates;
-        
 
+        public float[] afterimagesRotations;
+        public Vector2[] afterimagesPositions;
 
-
-        public Vector2[] afterimagesPositions; //when using afterimages, this needs to be initialised in the Spawn method of whatever has them.
-
+        public virtual void Update()
+        {
+            if (DrawAfterimages)
+            {
+                Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+                Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesRotations, Rotation);
+            }
+        }
         public virtual void SetUpdates(int updates)
         {
             Updates = updates;
@@ -114,6 +120,7 @@ namespace bullethellwhatever.BaseClasses
             DrawAfterimages = true;
 
             afterimagesPositions = new Vector2[length];
+            afterimagesRotations = new float[length];
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -122,16 +129,15 @@ namespace bullethellwhatever.BaseClasses
 
             if (DrawAfterimages)
             {
-                Utilities.moveVectorArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
-
                 for (int i = 0; i < afterimagesPositions.Length; i++)
                 {
                     float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
                     if (afterimagesPositions[i] != Vector2.Zero)
                     {
-                        Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
+                        int[] array = new int[] { 1, 2, 3, 4 };
                         // Draw another afterimage between this one and the last one, for a less choppy trail.
                         // The first afterimage is between the entity and the first saved position (i = 0).
 
@@ -139,8 +145,10 @@ namespace bullethellwhatever.BaseClasses
 
                         colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
+                        float rotation = i != afterimagesRotations.Length - 1 ? MathHelper.Lerp(afterimagesRotations[i], afterimagesRotations[i + 1], 0.5f) : afterimagesRotations[i];
+
                         Drawing.BetterDraw(Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier * Opacity,
-                            Rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                            rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                     }
                 }

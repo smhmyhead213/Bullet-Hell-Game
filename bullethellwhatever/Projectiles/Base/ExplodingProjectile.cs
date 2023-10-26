@@ -39,7 +39,7 @@ namespace bullethellwhatever.Projectiles.Base
                 Die();
             }
 
-            if (touchingAnEdge(this))
+            if (touchingAnEdge(this) && AITimer > 20)
             {
                 Die();
             }

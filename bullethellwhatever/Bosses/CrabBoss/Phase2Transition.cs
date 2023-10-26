@@ -70,6 +70,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(0).ContactDamage(false);
                 Leg(1).ContactDamage(false);
 
+                Owner.DealDamage = false;
+
                 LeftLegSizes[0] = Leg(0).UpperArm.Size; // help me
                 LeftLegSizes[1] = Leg(0).LowerArm.Size;
                 LeftLegSizes[2] = Leg(0).UpperClaw.Size;
@@ -80,8 +82,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 RightLegSizes[2] = Leg(1).UpperClaw.Size;
                 RightLegSizes[3] = Leg(1).LowerClaw.Size;
 
+                CrabOwner.SetBoosters(false);
 
                 CrabOwner.ResetArmRotations();
+
                 LeftLegDepth = Leg(0).UpperArm.Depth; // change this if for whatever reason you decide different appendages have different depths
                 RightLegDepth = Leg(1).UpperArm.Depth;
             }

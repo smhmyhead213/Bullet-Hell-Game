@@ -264,6 +264,7 @@ namespace bullethellwhatever.MainFiles
             _spriteBatch.End();
 
             // 6 and a half months later and this default comment is still there
+
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

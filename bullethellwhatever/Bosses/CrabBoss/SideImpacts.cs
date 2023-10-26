@@ -100,7 +100,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Leg(legIndexToUse).RotateLeg(-anglePerFrame * Direction);
 
-                if (Timer % 3 == 0)
+                int timeBetweenCarpetBombs = Utilities.ValueFromDifficulty(6, 5, 3, 2);
+
+                if (Timer % timeBetweenCarpetBombs == 0)
                 {
                     int teleDuration = 75;
 
@@ -109,8 +111,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     float angleFromV = Leg(otherLeg).LowerArm.RotationFromV();
 
-                    TelegraphLine t = new TelegraphLine(PI, 0, 0, 10, ScreenHeight, teleDuration, Owner.Position, Color.White, "box", Owner, false);
-                    TelegraphLine otherArmProjLine = new TelegraphLine(angleFromV, 0, 0, 10, ScreenHeight, teleDuration, Owner.Position, Color.White, "box", Owner, false);
+                    TelegraphLine t = new TelegraphLine(PI, 0, 0, 10, ScreenHeight * 2f, teleDuration, Owner.Position, Color.White, "box", Owner, false);
+                    TelegraphLine otherArmProjLine = new TelegraphLine(angleFromV, 0, 0, 10, ScreenHeight * 2f, teleDuration, Owner.Position, Color.White, "box", Owner, false);
 
                     p.VelocityFunction = x => new Vector2(0f, 0.6f * x);
                     otherArmSweep.VelocityFunction = x => Utilities.RotateVectorClockwise(new Vector2(0f, 0.6f * x), angleFromV - PI);
@@ -139,7 +141,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 //Drawing.ScreenShake(2, 8);
 
-                int distanceBetweenEach = 28;
+                int distanceBetweenEach = Utilities.ValueFromDifficulty(60, 50, 40, 35);
 
                 int numberOfProjectiles = (ScreenHeight - heightToBeAt) / distanceBetweenEach;
                 
@@ -160,9 +162,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     Vector2 spawnPos = new Vector2(xPos, heightToBeAt + ((i + 1) * distanceBetweenEach) + randomOffset);
 
-                    p.Spawn(spawnPos, Vector2.Zero, 1f, 1, "box", 0f, Vector2.One * 0.5f, Owner, true, Color.Red, true, false);
+                    p.Spawn(spawnPos, Vector2.Zero, 1f, 1, "box", 0f, Vector2.One, Owner, true, Color.Red, true, false);
 
-                    TelegraphLine t = new TelegraphLine(Direction * PI / 2, 0, 0, 10, ScreenWidth * 1.1f, teleDuration, spawnPos, Color.White, "box", Owner, false);
+                    TelegraphLine t = new TelegraphLine(Direction * PI / 2, 0, 0, 20, ScreenWidth * 1.1f, teleDuration, spawnPos, Color.White, "box", Owner, false);
                 }
 
                 // aimed proj

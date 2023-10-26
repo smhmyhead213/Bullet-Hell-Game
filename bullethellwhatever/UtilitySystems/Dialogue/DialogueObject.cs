@@ -40,7 +40,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y) - 50f);
 
             //fix this drawing every possible string every frame
-            if (DialogueTimer / FramesBetweenLetters == CharactersWritten)
+            if (DialogueTimer / FramesBetweenLetters == CharactersWritten && TextToWrite != "")
             {
                 if (CharactersWritten <= TextToWrite.Length)
                 {

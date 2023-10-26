@@ -106,7 +106,7 @@ namespace bullethellwhatever.BaseClasses
                 enemyProjectilesToAddNextFrame.Add(this);
             else friendlyProjectilesToAddNextFrame.Add(this);
         }
-        public virtual void Update()
+        public override void Update()
         {
             AITimer++;
 
@@ -147,6 +147,8 @@ namespace bullethellwhatever.BaseClasses
                     base.Die();
                 }
             }
+
+            base.Update();
         }
 
         public override void AI()

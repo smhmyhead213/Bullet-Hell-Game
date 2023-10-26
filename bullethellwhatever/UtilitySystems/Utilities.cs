@@ -156,10 +156,10 @@ namespace bullethellwhatever
 
             return (float)generated;
         }
-        public static void moveVectorArrayElementsUpAndAddToStart(ref Vector2[] array, Vector2 vectorToAdd) //make generic
+        public static T[] moveArrayElementsUpAndAddToStart<T>(ref T[] array, T toAdd) //make generic
         {
-            Vector2[] newArray = new Vector2[array.Length];
-            newArray[0] = vectorToAdd;
+            T[] newArray = new T[array.Length];
+            newArray[0] = toAdd;
 
             for (int i = array.Length - 1; i > 0; i--)
             {
@@ -168,8 +168,21 @@ namespace bullethellwhatever
 
             array = newArray;
 
+            return array;
         }
 
+        public static T ValueFromDifficulty<T>(T easy, T normal, T hard, T insane)
+        {
+            switch (GetDifficulty())
+            {
+                case GameState.Difficulties.Easy: return easy;
+                case GameState.Difficulties.Normal: return normal;
+                case GameState.Difficulties.Hard: return hard;
+                case GameState.Difficulties.Insane: return insane;
+
+                default: return easy;
+            }
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
     }
 

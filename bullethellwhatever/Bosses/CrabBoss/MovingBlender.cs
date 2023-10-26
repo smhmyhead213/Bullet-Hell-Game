@@ -40,7 +40,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             // move close to the player
 
-            int blenderBeams = 3;
+            int blenderBeams = Utilities.ValueFromDifficulty(2, 3, 3, 4);
+
             int teleDuration = 90;
             int blenderDuration = EndTime - 200;
 
@@ -56,7 +57,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     TelegraphLine t = new TelegraphLine(i * Tau / blenderBeams, 0, 0, 50, 3000, teleDuration, Owner.Position, Color.White, "box", Owner, true);
 
-                    t.SpawnDeathrayOnDeath(1f, blenderDuration, PI / 300, 0, true, Color.Red, "DeathrayShader2", Owner, true);
+                    t.SpawnDeathrayOnDeath(1f, blenderDuration, PI / 600, 0, true, Color.Red, "DeathrayShader2", Owner, true);
                     //t.ToSpawn.SetStayWithOwner(true);
                 }
 
@@ -118,8 +119,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Leg(0).Position.Y = player.Position.Y - heightAbovePlayer; // always stay above player
 
-                int timeForOneOpen = 100;
-                float lowerClawOpenAngle =  PI / 2;
+                int timeForOneOpen = Utilities.ValueFromDifficulty(120, 110, 100, 80);
+
+                float lowerClawOpenAngle = PI / 2;
 
                 float directionToPlayer = Utilities.VectorToAngle(player.Position - Leg(0).Position);
 
@@ -138,7 +140,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 if (timeThroughThisOpening == timeForOneOpen / 2)
                 {
-                    int fragments = 10;
+                    int fragments = Utilities.ValueFromDifficulty(6, 8, 10, 14);
 
                     ExplodingProjectile p = new ExplodingProjectile(fragments, 180, 0, false, false, true);
 
@@ -156,8 +158,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Leg(0).Position.Y = 0;
             }
-
-            // right arm will move to a random spot around the player
 
             int teleTime = 60;
             int chargeTime = 10;
@@ -205,11 +205,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Leg(1).Velocity = (TargetPosition - Leg(1).Position) / chargeTime; // go such that we get to target
 
-                for (int i = -2; i < 3; i++) // shotgun blast
+                int numberOfProjsInBlast = Utilities.ValueFromDifficulty(3, 5, 5, 7);
+
+                int loweri = -numberOfProjsInBlast / 2;
+                int upperi = numberOfProjsInBlast / 2 + 1;
+
+                for (int i = loweri; i < upperi; i++) // shotgun blast
                 {
                     Projectile p = new Projectile();
 
-                    float angleBetweenEachProjectile = PI / 6;
+                    float angleBetweenEachProjectile = Utilities.ValueFromDifficulty(PI / 6, PI / 6, PI / 6, PI / 8);
 
                     Vector2 toReticle = TargetPosition - Leg(1).Position;
 
@@ -253,7 +258,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Leg(1).Velocity = recoilSpeed * Utilities.SafeNormalise(-toPlayer); // recoil
 
-                    for (int i = -2; i < 3; i++) // shotgun blast
+                    int numberOfProjsInBlast = Utilities.ValueFromDifficulty(3, 5, 5, 7);
+
+                    int loweri = -numberOfProjsInBlast / 2;
+                    int upperi = numberOfProjsInBlast / 2 + 1;
+
+                    for (int i = loweri; i < upperi; i++) // shotgun blast
                     {
                         Projectile p = new Projectile();
 

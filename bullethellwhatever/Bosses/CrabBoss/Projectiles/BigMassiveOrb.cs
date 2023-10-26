@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
 
                 float offset = 0;
 
-                int projectilesPerRing = 30;
+                int projectilesPerRing = Utilities.ValueFromDifficulty(15, 25, 32, 40);
 
                 for (int i = 0; i < projectilesPerRing; i++)
                 {

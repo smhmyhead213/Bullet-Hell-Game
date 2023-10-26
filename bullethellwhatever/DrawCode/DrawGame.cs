@@ -178,17 +178,25 @@ namespace bullethellwhatever.DrawCode
         {
             RestartSpriteBatchForShaders(s);
 
+            Vector2 hudPos = new Vector2(ScreenWidth / 10f, ScreenHeight / 10f);
+
+            Texture2D hud = Assets["HUDBody"];
+
+            RotatedRectangle hudBox = new RotatedRectangle(0, hud.Width, hud.Height, hudPos, player);
+
+            float opacity = player.Hitbox.Intersects(hudBox) ? 0.2f : 1f;
+
             Shaders["PlayerHealthBarShader"].Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
 
             Shaders["PlayerHealthBarShader"].CurrentTechnique.Passes[0].Apply();
 
             //UI.DrawHealthBar(_spriteBatch, player, new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), 12.6f, 0.7f);
 
-            Drawing.BetterDraw(Assets["box"], new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), null, Color.White, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
+            Drawing.BetterDraw(Assets["box"], new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
             RestartSpriteBatchForNotShaders(s);
 
-            Drawing.BetterDraw(Assets["HUDBody"], new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
+            Drawing.BetterDraw(hud, new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
             
             //---------------------- handle rotating weapon icons --------------------------
 
@@ -216,9 +224,9 @@ namespace bullethellwhatever.DrawCode
                 PermanentIconRotation = PermanentIconRotation + Tau; // keep within one full turn so we dont go crazy
             }
 
-            Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(Assets["MachineWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["MachineWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
         }
 
         public static void RestartSpriteBatchForShaders(SpriteBatch s)

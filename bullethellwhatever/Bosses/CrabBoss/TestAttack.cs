@@ -47,7 +47,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             //CrabOwner.Rotation = PI / 2f;
 
-            int positionChangeTime = 180;
+            int positionChangeTime = Utilities.ValueFromDifficulty(200, 180, 120, 90);
             int otherHandClapFrequency = 75;
             int otherHandClapOpenTime = 50;
             int otherHandClapCloseTime = otherHandClapFrequency - otherHandClapOpenTime;
@@ -107,7 +107,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             CrabOwner.Rotation = Utilities.VectorToAngle(CrabOwner.Position - player.Position);
 
-            if (cosine > 0.5)
+            int timeBetweenShots = Utilities.ValueFromDifficulty(2, 2, 1, 1);
+
+            if (cosine > 0.5 && AITimer % timeBetweenShots == 0)
             {
                 Projectile proj = new Projectile();
 

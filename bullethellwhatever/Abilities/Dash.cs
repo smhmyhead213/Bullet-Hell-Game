@@ -23,7 +23,7 @@ namespace bullethellwhatever.Abilities
 
             if (IsExecuting)
             {
-                Owner.MoveSpeed = Owner.MoveSpeed * 3f;
+                Owner.MoveSpeed = Owner.MoveSpeed * 4f;
             }
 
             if (JustActivated)

@@ -13,8 +13,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabBossLowerArm(Entity owner, CrabLeg leg, string texture, int legIndex) : base(owner, leg, texture, legIndex)
         {
-            MaxHP = 75f;
-            Health = 75f;
+            MaxHP = 50f;
+            Health = MaxHP;
             Rotation = PI / 2f;
         }
 

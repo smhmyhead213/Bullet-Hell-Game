@@ -169,11 +169,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Drawing.ScreenShake(10, 6);
 
-                    int bombs = 6;
+                    int bombs = Utilities.ValueFromDifficulty(2, 4, 6, 6);
 
                     for (int i = 0; i < bombs; i++)
                     {
-                        ExplodingProjectile proj = new ExplodingProjectile(20, 180, 0, false, false, false);
+                        int fragments = Utilities.ValueFromDifficulty(12, 16, 20, 24);
+
+                        ExplodingProjectile proj = new ExplodingProjectile(fragments, 180, 0, false, false, false);
                         proj.DealDamage = false;
                         proj.DepthFunction = x => -x / 16200f * (x - 180f); //parabolic motion as if being thrown upwards
                         proj.Spawn(TargetPosition, 5f * Utilities.AngleToVector(i * Tau / bombs), 1f, 1, "box", 0, Vector2.One * 3f, Owner, true, Color.Red, true, false);
@@ -182,7 +184,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 if (time > PunchTime + PunchDuration && time < PunchTime + PunchDuration + FistRestTime && time % 2 == 0) // projectile shooting stuff
                 {
-                    int spiralArms = 3;
+                    int spiralArms = Utilities.ValueFromDifficulty(2, 3, 3, 4);
 
                     for (int i = 0; i < spiralArms; i++)
                     {

@@ -46,8 +46,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     for (int i = 0; i < 2; i++)
                     {
-                        Leg(i).ContactDamage(false);
-
                         Vector2 legPos = moveTo + Utilities.RotateVectorClockwise(250f * Utilities.SafeNormalise(Owner.Position - Utilities.CentreOfScreen()), -PI / 8 + (i * PI / 4) + PI / 2);
 
                         Leg(i).Velocity = (legPos - Leg(i).Position) / moveToPositionTime;
@@ -56,6 +54,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
 
                 CrabOwner.FacePlayer();
+
+                Owner.DealDamage = false;
+                Leg(0).ContactDamage(false);
+                Leg(1).ContactDamage(false);
             }
 
             float ownerRotateSpeed = 0;
@@ -64,9 +66,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             float radiusOfRotation = Utilities.DistanceBetweenVectors(Owner.Position, Vector2.Zero);
 
-            if (time == moveToPositionTime)
+            if (time == moveToPositionTime + 1)
             {
                 float rotation = Utilities.VectorToAngle(Utilities.CentreOfScreen() - Owner.Position);
+
+                Owner.DealDamage = true;
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -87,6 +91,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Ray = new Deathray().CreateDeathray(Owner.Position, rotation, 1f, beamDuration, "box", t.Width, t.Length, 0, 0, true, Color.Red, "CrabScrollingBeamShader", Owner);
 
+                Drawing.ScreenShake(7, 10);
+
                 Ray.SetNoiseMap("CrabScrollingBeamNoise");
                 Ray.SetStayWithOwner(true);
 
@@ -95,7 +101,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time > moveToPositionTime)
             {
-                int localTime = time - moveToPositionTime;
+                int localTime = time - moveToPositionTime - 1;
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -103,7 +109,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     Leg(i).Velocity = Vector2.Zero;
 
-                    if (time % 2 == 0)
+                    int timeBetweenProjs = Utilities.ValueFromDifficulty(6, 5, 4, 2);
+
+                    if (time % timeBetweenProjs == 0)
                     {
                         Projectile p = new Projectile();
 
@@ -141,13 +149,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Ray.Rotation = Owner.Rotation - PI;
 
-                int localTime = time - (moveToPositionTime + teleTime) - 1;
+                int localTime = time - (moveToPositionTime + 1 + teleTime) - 1;
 
                 int timeBetweenShots = 90;
 
                 int teleDuration = 30;
 
-                int distanceBetweenShots = 50;
+                int distanceBetweenShots = Utilities.ValueFromDifficulty(110, 90, 70, 50);
 
                 float beamLength = Utilities.DistanceBetweenVectors(Owner.Position, Vector2.Zero);
 

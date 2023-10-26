@@ -36,6 +36,13 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
                     Utilities.drawTextInDrawMethod(npc.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
                 }
             }
+
+            if (player.dialogueSystem.dialogueObject is not null)
+            {
+                Vector2 drawPosition = new Vector2(player.dialogueSystem.dialogueObject.Position.X - 3.5f * player.dialogueSystem.dialogueObject.Text.Length, player.dialogueSystem.dialogueObject.Position.Y);
+
+                Utilities.drawTextInDrawMethod(player.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
+            }
         }
 
         public void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration)
