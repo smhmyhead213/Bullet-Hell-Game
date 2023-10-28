@@ -24,6 +24,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public bool BoostersActive;
         public bool LockArmPositions;
         public bool PlayerSaidOpeningDialogue;
+        public bool StartedDeathAnim;
 
         public int Phase; // flag for if arms are detached yet
 
@@ -53,6 +54,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Legs = new CrabLeg[2];
             ArmPositionsOnBody = new Vector2[2];
             BoosterPositions = new Vector2[2];
+
+            StartedDeathAnim = false;
 
             for (int i = 0; i < 2; i++)
             {
@@ -136,7 +139,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (!PlayerSaidOpeningDialogue)
             {
                 PlayerSaidOpeningDialogue = true;
-                player.dialogueSystem.Dialogue("That body seems to be impervious to damage... Maybe I should try to take out the arms first?", 2, 300);
+                //player.dialogueSystem.Dialogue("That body seems to be impervious to damage... Maybe I should try to take out the arms first?", 2, 300);
             }
             //Rotation = Rotation + PI / 90f;
 
@@ -167,10 +170,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 TargetableByHoming = false;
             }
 
-            if (Health <= 0)
+            if (Health <= 0 && StartedDeathAnim == false)
             {
-                IsDesperationOver = true;
-                Die();
+                ReplaceAttackPattern(new BossAttack[] { new CrabDeathAnimation(1000) });
+                StartedDeathAnim = true;
             }
         }
 

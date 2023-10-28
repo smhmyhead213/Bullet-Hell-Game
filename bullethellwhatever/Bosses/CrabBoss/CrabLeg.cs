@@ -29,6 +29,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBossLowerClaw LowerClaw;
 
         public bool HorizontalFlip;
+
+        public bool DeathAnimation;
+
         public CrabLeg(Vector2 position, CrabBoss owner, int legIndex)
         {
             Owner = owner;
@@ -41,6 +44,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             HorizontalFlip = false;
 
             LegIndex = legIndex;
+
+            DeathAnimation = false;
 
             Position = position;
             UpperArm.Position = Position;
@@ -129,22 +134,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
             
             Position = Position + Velocity;
 
-            UpperArm.Position = Position;
-
-            LowerArm.Position = UpperArm.CalculateEnd();
-
-            LowerClaw.Position = LowerArm.CalculateEnd();
-
-            if (UpperClaw.LegIndex == 0)
+            if (!DeathAnimation)
             {
-                UpperClaw.Position = LowerArm.CalculateEnd();
-                UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
-            }
-            else UpperClaw.Position = LowerArm.CalculateEnd();
+                UpperArm.Position = Position;
 
-            if (UpperArm.Health <= 0 && LowerArm.Health <= 0 && UpperClaw.Health <= 0 && LowerClaw.Health <= 0)
-            {
-                Dead = true;
+                LowerArm.Position = UpperArm.CalculateEnd();
+
+                LowerClaw.Position = LowerArm.CalculateEnd();
+
+                if (UpperClaw.LegIndex == 0)
+                {
+                    UpperClaw.Position = LowerArm.CalculateEnd();
+                    UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
+                }
+                else UpperClaw.Position = LowerArm.CalculateEnd();
+
+                if (UpperArm.Health <= 0 && LowerArm.Health <= 0 && UpperClaw.Health <= 0 && LowerClaw.Health <= 0)
+                {
+                    Dead = true;
+                }
             }
         }
     }

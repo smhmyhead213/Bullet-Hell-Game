@@ -26,6 +26,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float RotationConstant;
 
         public float RotationToAdd;
+
+        public float RotationalVelocity;
+
+        public float Gravity;
         public CrabBossAppendage(Entity owner, CrabLeg leg, string texture, int legIndex)
         {
             Owner = owner;
@@ -42,12 +46,21 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PrepareNPC();
             LegIndex = legIndex;
             //Rotation = Rotation + PI / 2;
+
+            Velocity = Vector2.Zero;
+            RotationalVelocity = 0;
+
+            Gravity = 0.7f; // for death anim
         }
 
         public override void Update()
         {
             //Rotation = Rotation + PI / 60f;
             //if (this is CrabBossUpperArm)
+
+            Position = Position + Velocity;
+            Rotation = Rotation + RotationalVelocity;
+
             Rotation = CalculateFinalRotation();
 
             //End = CalculateEnd();
@@ -106,6 +119,37 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Rotate(-Rotation + angle + PI);
         }
 
+        public void HandleBounces()
+        {
+            for (int i = 0; i < Hitbox.Vertices.Length; i++)
+            {
+                float vertexX = Hitbox.Vertices[i].X;
+                float vertexY = Hitbox.Vertices[i].Y;
+
+                if (vertexX < 0 && Velocity.X < 0)
+                {
+                    Velocity.X = Velocity.X * -1f;
+                }
+
+                if (vertexX > ScreenWidth && Velocity.X > 0)
+                {
+                    Velocity.X = Velocity.X * -1f;
+                }
+
+                if (vertexY < 0 && Velocity.Y < 0)
+                {
+                    Velocity.Y = Velocity.Y * -1f;
+                }
+
+                if (vertexY > ScreenHeight && Velocity.Y > 0)
+                {
+                    Velocity.Y = Velocity.Y * -1f;
+
+                    Velocity.Y = Velocity.Y / 10f;
+                    Gravity = Gravity / 10f;
+                }
+            }
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);

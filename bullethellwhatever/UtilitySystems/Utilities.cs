@@ -183,6 +183,11 @@ namespace bullethellwhatever
                 default: return easy;
             }
         }
+
+        public static bool IsVectorWithinScreen(Vector2 v)
+        {
+            return v.X >= 0 && v.X <= ScreenWidth && v.Y >= 0 && v.Y <= ScreenHeight;
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
     }
 

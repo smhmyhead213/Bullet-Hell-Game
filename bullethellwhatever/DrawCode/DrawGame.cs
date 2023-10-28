@@ -183,6 +183,7 @@ namespace bullethellwhatever.DrawCode
             Texture2D hud = Assets["HUDBody"];
 
             RotatedRectangle hudBox = new RotatedRectangle(0, hud.Width, hud.Height, hudPos, player);
+            hudBox.UpdateVertices();
 
             float opacity = player.Hitbox.Intersects(hudBox) ? 0.2f : 1f;
 

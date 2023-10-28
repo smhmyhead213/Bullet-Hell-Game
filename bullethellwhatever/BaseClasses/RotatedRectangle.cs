@@ -28,6 +28,7 @@ namespace bullethellwhatever.BaseClasses
             UpdateRectangle(rotation, width, length, centre);
             Vertices = new Vector2[4];
             Owner = owner;
+            UpdateVertices();
         }
         public void UpdateRectangle(float rotation, float width, float length, Vector2 centre)
         {
