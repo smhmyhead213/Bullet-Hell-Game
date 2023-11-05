@@ -115,7 +115,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(i).UpperClaw.Die();
                     Leg(i).LowerClaw.Die();
                 }
-
             }
         }
 

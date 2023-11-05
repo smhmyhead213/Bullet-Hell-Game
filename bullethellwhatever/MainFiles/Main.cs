@@ -88,7 +88,7 @@ namespace bullethellwhatever.MainFiles
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
         }
         //public Matrix GamePerspective
         //{

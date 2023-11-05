@@ -233,12 +233,6 @@
 #begin Music/Master.strings.bank
 /copy:Music/Master.strings.bank
 
-#begin Music/TestBossMusic.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Music/TestBossMusic.mp3
-
 #begin NormalButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
