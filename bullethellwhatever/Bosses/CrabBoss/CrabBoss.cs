@@ -30,6 +30,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public bool StartedPhaseTwoTransition;
 
+        public float SpinVelOnDeath = PI / 40;
+
         public CrabBossAttack[] PhaseTwoAttacks;
         public CrabBoss()
         {

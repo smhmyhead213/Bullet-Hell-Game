@@ -106,7 +106,16 @@ namespace bullethellwhatever.BaseClasses
             TelegraphLine onetothree = new TelegraphLine(Utilities.VectorToAngle(Vertices[3] - Vertices[1]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[3], Vertices[1]), 2, Vertices[1], Color.White, "box", Owner, false);
             TelegraphLine threetotwo = new TelegraphLine(Utilities.VectorToAngle(Vertices[2] - Vertices[3]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[3]), 2, Vertices[3], Color.White, "box", Owner, false);
             TelegraphLine twotozero = new TelegraphLine(Utilities.VectorToAngle(Vertices[0] - Vertices[2]), 0, 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[0]), 2, Vertices[2], Color.White, "box", Owner, false);
+        }
 
+        public void DrawVertices(SpriteBatch s, Color colour)
+        {
+            for (int i = 0; i < Vertices.Length; i++)
+            {
+                Texture2D texture = Assets["box"];
+
+                s.Draw(texture, Vertices[i], null, colour, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
+            }
         }
         public bool IsVec2WithinMyRectangle(Vector2 v2)
         {

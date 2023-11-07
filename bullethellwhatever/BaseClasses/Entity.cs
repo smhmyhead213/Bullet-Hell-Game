@@ -26,7 +26,11 @@ namespace bullethellwhatever.BaseClasses
         public float Damage;
         public float Opacity;
         public RotatedRectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
-        public Vector2 Size; //relative to player being 1
+
+        public Vector2 Size;
+
+        public float RotationalVelocity;
+
         public float Health;
         public float MaxHP;
         public bool DeleteNextFrame;
@@ -54,6 +58,10 @@ namespace bullethellwhatever.BaseClasses
             Updates = updates;
         }
 
+        public virtual void SetSizeNoScaling(Vector2 size)
+        {
+            Size = size;
+        }
         public virtual void SetDepth(float depth)
         {
             Depth = MathHelper.Clamp(depth, 0f, 1f);

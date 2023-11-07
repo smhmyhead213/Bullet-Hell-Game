@@ -9,7 +9,7 @@ using bullethellwhatever.Projectiles.Base;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
-
+using System.Reflection.Metadata.Ecma335;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -49,6 +49,7 @@ namespace bullethellwhatever.BaseClasses
             Colour = colour;
 
             Size = size;
+
             Health = MaxHealth;
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
@@ -124,6 +125,8 @@ namespace bullethellwhatever.BaseClasses
             AITimer++;
 
             base.Update();
+
+            Rotation = Rotation + RotationalVelocity;
         }
         public virtual bool IsCollidingWithEntity(Entity entity)
         {

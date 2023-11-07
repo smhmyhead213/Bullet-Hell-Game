@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
 using System;
 using FMOD.Studio;
+using SharpDX.WIC;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -69,8 +70,8 @@ namespace bullethellwhatever.MainFiles
         public static int ScreenHeight;
         public static int ScreenWidth;
 
-        public static int IdealScreenHeight = 1080;
-        public static int IdealScreenWidth = 1920;
+        public static float IdealScreenHeight = 1080;
+        public static float IdealScreenWidth = 1920;
 
         public static int GameTime;
 
@@ -87,8 +88,11 @@ namespace bullethellwhatever.MainFiles
             ScreenHeight = _graphics.PreferredBackBufferHeight;
 
             Content.RootDirectory = "Content";
+
             IsMouseVisible = true;
-            //_graphics.IsFullScreen = true;
+
+            _graphics.HardwareModeSwitch = false;
+            _graphics.IsFullScreen = true;
         }
         //public Matrix GamePerspective
         //{

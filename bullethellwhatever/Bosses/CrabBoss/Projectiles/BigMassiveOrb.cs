@@ -66,6 +66,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
                 Size = Size - (new Vector2(SizeAtDeath, SizeAtDeath) / FadeOutTime);
             }
 
+
             if (AITimer == Lifetime)
             {
                 Die();

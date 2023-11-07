@@ -27,8 +27,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float RotationToAdd;
 
-        public float RotationalVelocity;
-
         public float Gravity;
         public CrabBossAppendage(Entity owner, CrabLeg leg, string texture, int legIndex)
         {
@@ -59,9 +57,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             //if (this is CrabBossUpperArm)
 
             Position = Position + Velocity;
-            Rotation = Rotation + RotationalVelocity;
 
-            Rotation = CalculateFinalRotation();
+            if (!((CrabBoss)Owner).StartedDeathAnim)
+            {
+                Rotation = CalculateFinalRotation();
+            }
+
+            Rotation = Rotation + RotationalVelocity;
 
             //End = CalculateEnd();
 
@@ -129,6 +131,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (vertexX < 0 && Velocity.X < 0)
                 {
                     Velocity.X = Velocity.X * -1f;
+                    RotationalVelocity = -Sign(Velocity.X) * PI / 12;
                 }
 
                 if (vertexX > ScreenWidth && Velocity.X > 0)
@@ -149,6 +152,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Gravity = Gravity / 10f;
                 }
             }
+
+            RotationalVelocity = RotationalVelocity * 0.95f;
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -161,7 +166,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
 
-            //Hitbox.DrawHitbox();
+            //Hitbox.DrawVertices(spriteBatch, Color.Red);
         }
     }
 }

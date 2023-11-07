@@ -39,12 +39,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(i).Velocity = (player.Position - Leg(i).Position) / fallApartTime;
 
                     Leg(i).PointLegInDirection(Utilities.VectorToAngle(player.Position - Leg(i).Position));
-
-                    Owner.DealDamage = false;
-
-                    Owner.activeTelegraphs.Clear();
-
                 }
+
+                Owner.DealDamage = false;
+
+                Owner.activeTelegraphs.Clear();
 
                 for (int i = 0; i < activeProjectiles.Count; i++)
                 {
@@ -59,9 +58,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 for (int i = 0; i < 2; i++)
                 {
                     Leg(i).Velocity = Leg(i).Velocity * 0.99f;
+                    Leg(i).PointLegInDirection(Utilities.VectorToAngle(player.Position - Leg(i).Position));
                 }
 
                 Owner.Velocity = Owner.Velocity * 0.98f;
+
+                CrabOwner.FacePlayer();
             }
             if (time == fallApartTime)
             {
@@ -74,6 +76,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(i).LowerClaw.Velocity = Leg(i).Velocity * 1.2f;
                 }
 
+                Owner.RotationalVelocity = Sign(Owner.Velocity.X) * CrabOwner.SpinVelOnDeath;
             }
 
             if (time > fallApartTime)
@@ -96,11 +99,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(i).LowerClaw.Velocity = Leg(i).LowerClaw.Velocity + new Vector2(0, Leg(i).LowerClaw.Gravity);
                     Leg(i).LowerClaw.HandleBounces();
                     Leg(i).LowerClaw.Velocity.X = Leg(i).LowerClaw.Velocity.X * 0.99f;
-
-                    Owner.Velocity = Owner.Velocity + new Vector2(0, 0.7f);
-                    Owner.Velocity = Owner.Velocity * 0.99f;
-                    HandleBounces();
                 }
+
+                Owner.Velocity = Owner.Velocity + new Vector2(0, 0.7f);
+                Owner.Velocity = Owner.Velocity * 0.99f;
+                Owner.RotationalVelocity = Owner.RotationalVelocity * 0.99f;
+                HandleBounces();
             }
 
             if (time == EndTime - 1)

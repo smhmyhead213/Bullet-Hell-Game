@@ -70,6 +70,7 @@ namespace bullethellwhatever.BaseClasses
             ShotCooldown = 20f;
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Homing;
+
             MoveSpeed = 5.5f;
 
             WeaponSwitchCooldown = 15;
