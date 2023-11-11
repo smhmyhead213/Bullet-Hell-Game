@@ -63,7 +63,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
-                Vector2 pos = Position + new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f);
+                Vector2 pos = CalculateArmPostions(expandedi);
 
                 Legs[i] = new CrabLeg(pos, this, i);
 
@@ -109,6 +109,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
             //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
+        }
+
+        public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
+        {
+            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation) * ScaleFactor() * DepthFactor();
+        }
+        public Vector2 CalculateArmPostions(int expandedi)
+        {
+            return Position + CalculateArmPostionsRelativeToCentre(expandedi);
         }
 
         public void ResetArmRotations()

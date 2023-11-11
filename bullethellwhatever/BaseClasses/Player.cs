@@ -358,8 +358,6 @@ namespace bullethellwhatever.BaseClasses
                 float damage = 0.28f * 100f;
 
                 projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
-
-
             }
         }
         #endregion
@@ -404,11 +402,11 @@ namespace bullethellwhatever.BaseClasses
             }
             else DrawAfterimages = false;
 
-            Main.player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
+            player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Drawing.BetterDraw(Main.player.Texture, Main.player.Position, null, Color.White * Main.player.Opacity, Main.player.Rotation, Main.player.GetSize(), SpriteEffects.None, 0f);
+            Drawing.BetterDraw(player.Texture, player.Position, null, Color.White * player.Opacity, player.Rotation, player.GetSize(), SpriteEffects.None, 0f);
         }
     }
 }

@@ -153,7 +153,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void AI()
         {
-            Position = Position + Velocity;
+            Position = Position + Velocity * ScaleFactor();
         }
 
         public override void Die()

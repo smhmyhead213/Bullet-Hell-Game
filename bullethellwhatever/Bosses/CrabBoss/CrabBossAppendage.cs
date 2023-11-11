@@ -92,7 +92,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual Vector2 CalculateEnd()
         {
-            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * Size.Y * DepthFactor();
+            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * GetSize().Y;
         }
 
         public void Rotate(float angle)

@@ -68,7 +68,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (time % StompFrequency <= halfStomp)
             {
-                MoveToPoint(Main.player.Position + new Vector2(0, -600), time, halfStomp);
+                MoveToPoint(player.Position + new Vector2(0, -600), time, halfStomp);
                 Owner.DealDamage = false;
             }
 
@@ -76,7 +76,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             {
                 Owner.DealDamage = true;
 
-                DistanceToBottom = Main.ScreenHeight - Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y);
+                DistanceToBottom = ScreenHeight - Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y);
 
                 int timeSinceDrop = time - halfStomp;
 

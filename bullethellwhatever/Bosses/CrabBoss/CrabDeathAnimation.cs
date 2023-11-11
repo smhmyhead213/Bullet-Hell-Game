@@ -124,7 +124,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void ExtraDraw(SpriteBatch s)
         {
-
+            if (Owner.AITimer > 500)
+            {
+                Utilities.drawTextInDrawMethod("You win! Press R to restart the fight.", Utilities.CentreOfScreen(), s, font, Color.White);
+            }
         }
     }
 }

@@ -70,8 +70,8 @@ namespace bullethellwhatever.MainFiles
         public static int ScreenHeight;
         public static int ScreenWidth;
 
-        public static float IdealScreenHeight = 1080;
-        public static float IdealScreenWidth = 1920;
+        public static float IdealScreenHeight = 1080f;
+        public static float IdealScreenWidth = 1920f;
 
         public static int GameTime;
 

@@ -120,7 +120,7 @@ namespace bullethellwhatever.BaseClasses
             }
             else TargetableByHoming = true;
 
-            Position = Position + Velocity;
+            Position = Position + (Velocity * ScaleFactor());
 
             AITimer++;
 

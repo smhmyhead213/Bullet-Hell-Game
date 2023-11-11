@@ -129,7 +129,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = LegIndex * 2 - 1; // i = 0, this = -1, i = 1, this = 1
                 float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
 
-                Position = Owner.Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Owner.Texture.Width / 1.4f * factorToMoveArms, Owner.Texture.Height / 2.54f * factorToMoveArms), Owner.Rotation);
+                //Position = Owner.Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Owner.Texture.Width / 1.4f * factorToMoveArms, Owner.Texture.Height / 2.54f * factorToMoveArms), Owner.Rotation);
+                Position = Owner.CalculateArmPostions(expandedi);
             }
             
             Position = Position + Velocity;

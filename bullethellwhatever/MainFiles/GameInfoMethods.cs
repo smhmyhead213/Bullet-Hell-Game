@@ -8,6 +8,7 @@ namespace bullethellwhatever.MainFiles
 {
     public static class GameInfoMethods
     {
+        public static float ScaleFactor() => ScreenWidth / IdealScreenWidth;
         public static GameState.Difficulties? GetDifficulty()
         {
             return GameState.Difficulty;

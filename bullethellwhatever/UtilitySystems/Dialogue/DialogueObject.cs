@@ -32,12 +32,12 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             Owner = owner;
 
             DialogueTimer = 0;
-
         }
 
         public void DoDialogue()
         {
-            Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y) - 50f);
+            float heightAboveEntity = 50f * ScaleFactor();
+            Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y) - heightAboveEntity);
 
             //fix this drawing every possible string every frame
             if (DialogueTimer / FramesBetweenLetters == CharactersWritten && TextToWrite != "")

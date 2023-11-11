@@ -105,8 +105,6 @@ namespace bullethellwhatever.Bosses.TestBoss
             base.Draw(spriteBatch);
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.None, 0f);
-
-            Utilities.drawTextInDrawMethod(activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4 * 3, ScreenHeight / 4), spriteBatch, font, Colour);
         }
     }
 }

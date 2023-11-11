@@ -156,8 +156,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     float punchDistance = Utilities.DistanceBetweenVectors(leg.Position, TargetPosition) / Owner.DepthFactor();
                     float halfPunchDist = punchDistance / 2f;
 
-                    Vector2 maxUpperArmSize = Vector2.One * (halfPunchDist / leg.UpperArm.Texture.Height);
-                    Vector2 maxLowerArmSize = Vector2.One * (halfPunchDist / leg.LowerArm.Texture.Height);
+                    // i have reached a level of programming godhood where i can say "yeah this will probably work" and it actually works (neglecting the fact i have no idea why)
+
+                    Vector2 maxUpperArmSize = Vector2.One * (halfPunchDist / leg.UpperArm.Texture.Height) / ScaleFactor();
+                    Vector2 maxLowerArmSize = Vector2.One * (halfPunchDist / leg.LowerArm.Texture.Height) / ScaleFactor();
 
                     Leg(ArmIndex).UpperArm.Size = Vector2.LerpPrecise(Vector2.One, maxUpperArmSize, (time - PunchTime) / (float)PunchDuration); // GAHHH I HATE INTEGER DIVISION
                     Leg(ArmIndex).LowerArm.Size = Vector2.LerpPrecise(Vector2.One, maxLowerArmSize, (time - PunchTime) / (float)PunchDuration);
@@ -200,7 +202,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     float bendAngle = PI / 6f;
 
-                    // everything here happens in the same amount of time as the punch does
+                    // everything here happens in the same amount of time as the punch does, so we can reuse PunchDuration
 
                     Leg(ArmIndex).UpperArm.Rotate(-(UpperArmRotationAngle - (expandedi * bendAngle) + ArmPullBackAngle) / PunchDuration);
                     Leg(ArmIndex).LowerArm.Rotate(-(LowerArmRotationAngle + (expandedi * bendAngle) + ArmPullBackAngle) / PunchDuration);
@@ -220,8 +222,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
 
-                    float distanceToMoveX = ((Owner.Texture.Width * Owner.DepthFactor() / 2f) - Owner.Texture.Width * Owner.DepthFactor() / 1.4f) * factorToMoveArms * expandedi;
-                    float distanceToMoveY = Owner.Texture.Height * Owner.DepthFactor() / 2.54f * factorToMoveArms;
+                    //float distanceToMoveX = ((Owner.Texture.Width * Owner.DepthFactor() / 2f) - Owner.Texture.Width * Owner.DepthFactor() / 1.4f) * factorToMoveArms * expandedi;
+                    //float distanceToMoveY = Owner.Texture.Height * Owner.DepthFactor() / 2.54f * factorToMoveArms;
+
+                    float distanceToMoveX = -CrabOwner.CalculateArmPostionsRelativeToCentre(expandedi).X * factorToMoveArms / 2f;
+                    float distanceToMoveY = CrabOwner.CalculateArmPostionsRelativeToCentre(expandedi).Y * factorToMoveArms;
 
                     CrabOwner.LockArmPositions = false;
 
@@ -241,8 +246,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
         }
-            
-
         public override void ExtraDraw(SpriteBatch s)
         {
             if (Targeting)

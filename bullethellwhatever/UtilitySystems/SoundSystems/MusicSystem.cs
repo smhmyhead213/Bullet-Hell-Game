@@ -21,13 +21,13 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         {
             if (song != ActiveSongName)
             {
-                ActiveSong = Music[song];
-                ActiveSongName = song;
+                //ActiveSong = Music[song];
+                //ActiveSongName = song;
 
-                MediaPlayer.Volume = volume;
-                MediaPlayer.IsRepeating = loop;
+                //MediaPlayer.Volume = volume;
+                //MediaPlayer.IsRepeating = loop;
 
-                IsSongPlaying = false;
+                //IsSongPlaying = false;
             }
         }
         public void PlayMusic()
