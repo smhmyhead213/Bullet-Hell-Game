@@ -115,7 +115,6 @@ namespace bullethellwhatever.BaseClasses
 
         public static bool touchingLeft(Entity entity)
         {
-
             if (entity.Position.X - entity.Texture.Width * entity.GetSize().X / 2 <= 0)
                 return true;
             else return false;
@@ -161,7 +160,6 @@ namespace bullethellwhatever.BaseClasses
                     {
                         Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
-                        int[] array = new int[] { 1, 2, 3, 4 };
                         // Draw another afterimage between this one and the last one, for a less choppy trail.
                         // The first afterimage is between the entity and the first saved position (i = 0).
 

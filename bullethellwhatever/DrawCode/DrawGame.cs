@@ -34,13 +34,15 @@ namespace bullethellwhatever.DrawCode
             // FPS counter.
             Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(ScreenWidth / 4, ScreenHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
-            List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();
+            List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();          
             List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
             List<Entity> FriendlyProjectilesToDrawWithShader = new List<Entity>();
             List<Entity> FriendlyProjectilesToDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithShader = new List<Entity>();
 
+            List<Particle> ParticlesToDrawWithoutShader = new List<Particle>();
+            List<Particle> ParticlesToDrawWithShader = new List<Particle>();
             // Populate lists with entites to draw with and without shaders.
 
             // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues.
@@ -76,6 +78,16 @@ namespace bullethellwhatever.DrawCode
                     FriendlyProjectilesToDrawWithShader.Add(projectile);
                 }
                 else FriendlyProjectilesToDrawWithoutShader.Add(projectile);
+            }
+
+            foreach (Particle p in activeParticles)
+            {
+                if (p is IDrawsShader)
+                {
+                    ParticlesToDrawWithShader.Add(p);
+                }
+                else ParticlesToDrawWithoutShader.Add(p);
+
             }
 
             // ------------------------------------------------------------------------------------------------------
@@ -131,6 +143,11 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
+            foreach (Particle p in ParticlesToDrawWithShader)
+            {
+                p.Draw(Main._spriteBatch);
+            }
+
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {
                 foreach (TelegraphLine t in entity.activeTelegraphs)
@@ -144,6 +161,11 @@ namespace bullethellwhatever.DrawCode
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {
                 entity.Draw(Main._spriteBatch);
+            }
+
+            foreach (Particle p in ParticlesToDrawWithoutShader)
+            {
+                p.Draw(Main._spriteBatch);
             }
 
             foreach (NPC npc in activeNPCs)
@@ -184,7 +206,7 @@ namespace bullethellwhatever.DrawCode
             RotatedRectangle hudBox = new RotatedRectangle(0, hud.Width, hud.Height, hudPos, player);
             hudBox.UpdateVertices();
 
-            float opacity = player.Hitbox.Intersects(hudBox) ? 0.2f : 1f;
+            float opacity = player.Hitbox.Intersects(hudBox).Collided ? 0.2f : 1f;
 
             Shaders["PlayerHealthBarShader"].Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
 
@@ -192,15 +214,15 @@ namespace bullethellwhatever.DrawCode
 
             //UI.DrawHealthBar(_spriteBatch, player, new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), 12.6f, 0.7f);
 
-            Drawing.BetterDraw(Assets["box"], new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
+            Drawing.BetterDraw(Assets["box"], new Vector2(IdealScreenWidth / 7.6f, IdealScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
             RestartSpriteBatchForNotShaders(s);
 
-            Drawing.BetterDraw(hud, new Vector2(ScreenWidth / 10f, ScreenHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
+            Drawing.BetterDraw(hud, new Vector2(IdealScreenWidth / 10f, IdealScreenHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
             
             //---------------------- handle rotating weapon icons --------------------------
 
-            Vector2 iconRotationAxis = new Vector2(ScreenWidth / 15.174f, ScreenHeight / 10f);
+            Vector2 iconRotationAxis = new Vector2(IdealScreenWidth / 15.174f, IdealScreenHeight / 10f);
 
             Vector2 drawDistanceFromCentre = new Vector2(0, -30f);
 

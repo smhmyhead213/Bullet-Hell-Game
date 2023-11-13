@@ -70,17 +70,17 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer == 0)
             {
-                Deathray ray = new Deathray();
+                //Deathray ray = new Deathray();
 
-                ray.SetNoiseMap("CrabScrollingBeamNoise");
+                //ray.SetNoiseMap("CrabScrollingBeamNoise");
 
-                TelegraphLine t = new TelegraphLine(0, 0, 0, 100, 2000, 1000, Position, Colour, "box", this, true);
+                //TelegraphLine t = new TelegraphLine(0, 0, 0, 100, 2000, 1000, Position, Colour, "box", this, true);
 
-                t.ChangeShader("OutlineTelegraphShader");
+                //t.ChangeShader("OutlineTelegraphShader");
 
-                ray.SpawnDeathray(Position, PI / 2f, 0f, 3000, "box", 150f, ScreenWidth, PI / 600, 0, true, Colour, "CrabScrollingBeamShader", this);
+                //ray.SpawnDeathray(Position, PI / 2f, 0f, 3000, "box", 150f, ScreenWidth, PI / 600, 0, true, Colour, "CrabScrollingBeamShader", this);
 
-                ChangeGraphicsDeviceTexture(1, "CrabScrollingBeamNoise");
+                //ChangeGraphicsDeviceTexture(1, "CrabScrollingBeamNoise");
             }
 
             Rotation = Rotation + PI / 90f;

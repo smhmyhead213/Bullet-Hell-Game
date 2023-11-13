@@ -29,6 +29,26 @@ namespace bullethellwhatever.Projectiles.Player
 
             TimeWithNoTarget = 0;
         }
+
+        public override void OnHitEffect(Vector2 position)
+        {
+            if (Owner == player)
+            {
+                int numberOfParticles = Utilities.RandomInt(1, 2);
+
+                for (int i = 0; i < numberOfParticles; i++)
+                {
+                    float rotation = Utilities.RandomFloat(0, Tau);
+
+                    Particle p = new Particle();
+
+                    Vector2 velocity = 10f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
+                    int lifetime = 20;
+
+                    p.Spawn("box", position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, Colour, 1f, 20);
+                }
+            }
+        }
         public override void AI()
         {
             HomingTime = 30 * Updates;

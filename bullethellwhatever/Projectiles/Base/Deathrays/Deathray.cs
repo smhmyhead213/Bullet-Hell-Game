@@ -9,8 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
-
-
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Projectiles.Base
 {
@@ -212,6 +211,24 @@ namespace bullethellwhatever.Projectiles.Base
             }          
         }
 
+        public override void OnHitEffect(Vector2 position)
+        {
+            if (Owner == player)
+            {
+                int numberOfParticles = 1;
+
+                for (int i = 0; i < numberOfParticles; i++)
+                {
+                    float rotation = Utilities.RandomFloat(0, Tau);
+
+                    Particle p = new Particle();
+
+                    int lifeTime = Utilities.RandomInt(10, 25);
+
+                    p.Spawn("box", position, 7f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation), new Vector2(0, 0.6f), Vector2.One * 0.45f, rotation, Colour, 1f, 30);
+                }
+            }
+        }
         public override void Die()
         {
             DeleteNextFrame = true;

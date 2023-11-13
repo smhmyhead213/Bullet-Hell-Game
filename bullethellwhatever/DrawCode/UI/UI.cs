@@ -204,7 +204,7 @@ namespace bullethellwhatever.DrawCode.UI
             RotatedRectangle HPBar = new RotatedRectangle(0, BarWidth * texture.Width, BarHeight * texture.Height, positionOfBar, entityToDrawHPBarFor);
             HPBar.UpdateVertices();
 
-            float opacity = HPBar.Intersects(player.Hitbox) ? 0.2f : 1f;
+            float opacity = HPBar.Intersects(player.Hitbox).Collided ? 0.2f : 1f;
 
             //HP bar background.
             if (entityToDrawHPBarFor is not Player)

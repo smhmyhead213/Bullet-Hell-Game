@@ -18,6 +18,7 @@ namespace bullethellwhatever.DrawCode.UI
         public List<UIElement> UIElements;
 
         public bool Important; // whether or not stuff in game can happen while this menu is up
+        
         public int DefaultButtonCooldown => 25;
         public int ButtonCooldown;
 

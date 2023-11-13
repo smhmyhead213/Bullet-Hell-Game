@@ -51,33 +51,18 @@ namespace bullethellwhatever.BaseClasses
             Vertices[3] = Centre + Utilities.RotateVectorClockwise(new Vector2(Width / 2f, Length / 2f), Rotation);
         }
 
-        public bool Intersects(RotatedRectangle other)
+        public Collision Intersects(RotatedRectangle other)
         {
             if (Utilities.DistanceBetweenVectors(Centre, other.Centre) > (DiagonalLength() + other.DiagonalLength()) / 2f)
             {
-                return false;
-            }
-
-            //Vector2 pointOfIntersection = PointOfIntersection(other);
-
-            //float toleranceAngle = Atan(Width / 2f * Utilities.DistanceBetweenVectors(pointOfIntersection, AxisOfRotation));
-            //float otherToleranceAngle = Atan(other.Width / 2f * Utilities.DistanceBetweenVectors(pointOfIntersection, other.AxisOfRotation));
-
-            //if (Utilities.IsQuantityWithinARangeOfAValue(Utilities.VectorToAngle(pointOfIntersection - AxisOfRotation), Rotation, toleranceAngle)) //ensure that the PoI actually aligns with the rectangle and isnt in ohio
-            //{
-            //    if (Utilities.IsQuantityWithinARangeOfAValue(Utilities.VectorToAngle(pointOfIntersection - other.AxisOfRotation), other.Rotation, otherToleranceAngle) || Utilities.IsQuantityWithinARangeOfAValue(Utilities.VectorToAngle(pointOfIntersection - other.AxisOfRotation) - MathF.PI * 2f, other.Rotation, otherToleranceAngle))
-            //    {
-            //        return true;
-            //    }
-            //}
-
-            //return false;           
+                return new Collision(Vector2.Zero, false);
+            }       
 
             foreach (Vector2 point in other.Vertices)
             {
                 if (IsVec2WithinMyRectangle(point))
                 {
-                    return true;
+                    return new Collision(point, true);
                 }
             }
 
@@ -85,7 +70,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 if (other.IsVec2WithinMyRectangle(point))
                 {
-                    return true;
+                    return new Collision(point, true);
                 }
             }
             // if the vertices check fails, check if the point of intersection is within BOTH rectangles. rigorous mental gymnastics which are probably wrong say that doing both checks cover each others errors, idk man, check your notebook.
@@ -95,9 +80,9 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsVec2WithinMyRectangle(intersectionPoint))
             {
-                return other.IsVec2WithinMyRectangle(intersectionPoint);
+                return new Collision(Vector2.Zero, other.IsVec2WithinMyRectangle(intersectionPoint));
             }
-            else return false;
+            else return new Collision(Vector2.Zero, false);
         }
 
         public void DrawHitbox()
@@ -151,6 +136,18 @@ namespace bullethellwhatever.BaseClasses
         public float CalculateC()
         {
             return Centre.Y - CalculateGradient() * Centre.X;
+        }
+    }
+
+    public class Collision
+    {
+        public Vector2 CollisionPoint;
+        public bool Collided;
+
+        public Collision(Vector2 point, bool collided) // vector2.zero is a flag for no collision as it is cosmically unlikely that a collision will happen there
+        {
+            CollisionPoint = point;
+            Collided = collided;
         }
     }
 }

@@ -94,7 +94,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(0).Velocity = -25f * Vector2.UnitX;
             }
 
-            if (Leg(0).LowerClaw.Hitbox.Intersects(Owner.Hitbox) && time > leftArmMoveTime + 1 + delayBeforeLeftArmShove + leftArmShoveTime + shortDelayBeforePush) // spin up while being pushed
+            if (Leg(0).LowerClaw.Hitbox.Intersects(Owner.Hitbox).Collided && time > leftArmMoveTime + 1 + delayBeforeLeftArmShove + leftArmShoveTime + shortDelayBeforePush) // spin up while being pushed
             {
                 PushContactTime++;
 
@@ -140,7 +140,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Leg(1).Velocity = -bossSpeed * Utilities.SafeNormalise(Leg(1).Position - Owner.Position + halfOfBossHeight);
             }
 
-            if (time > rightArmPushTime && Leg(1).LowerClaw.Hitbox.Intersects(Owner.Hitbox) && !PushOccured && time < rightArmPushTime + timeAfterPushToMoveIntoPlace)
+            if (time > rightArmPushTime && Leg(1).LowerClaw.Hitbox.Intersects(Owner.Hitbox).Collided && !PushOccured && time < rightArmPushTime + timeAfterPushToMoveIntoPlace)
             {
                 Owner.Velocity = Leg(1).Velocity; // push boss HARD
                 Leg(1).Velocity = Leg(1).Velocity * -0.1f; // recoil slightly

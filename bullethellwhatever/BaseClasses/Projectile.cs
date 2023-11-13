@@ -172,11 +172,15 @@ namespace bullethellwhatever.BaseClasses
             {
                 foreach (NPC npc in activeNPCs)
                 {
-                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
+                    Collision collision = CollisionWithEntity(npc);
+
+                    if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
                     {
                         npc.IFrames = npc.MaxIFrames;
 
                         npc.Health = npc.Health - ((1 - npc.DamageReduction) * Damage);
+                       
+                        OnHitEffect(collision.CollisionPoint);
 
                         HandlePierce(npc.PierceToTake);
                     }
@@ -185,7 +189,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsHarmful)
             {
-                if (IsCollidingWithEntity(player) && player.IFrames == 0 && !Dying)
+                if (CollisionWithEntity(player).Collided && player.IFrames == 0 && !Dying)
                 {
                     player.IFrames = 20f;
 
@@ -196,6 +200,11 @@ namespace bullethellwhatever.BaseClasses
                     HandlePierce(1);
                 }
             }
+        }
+
+        public virtual void OnHitEffect(Vector2 position)
+        {
+
         }
         public void HandlePierce(int pierceToTake)
         {
@@ -208,11 +217,13 @@ namespace bullethellwhatever.BaseClasses
                 Die();
         }
 
-        public virtual bool IsCollidingWithEntity(Entity entity)
+        public virtual Collision CollisionWithEntity(Entity entity)
         {
-            if (entity.Hitbox.Intersects(Hitbox))
-                return true;
-            else return false;
+            Collision collision = entity.Hitbox.Intersects(Hitbox);
+
+            if (collision.Collided)
+                return collision;
+            else return new Collision(Vector2.Zero, false);
         }
     }
 }

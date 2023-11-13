@@ -27,6 +27,9 @@ namespace bullethellwhatever.MainFiles
         {
             MenusToRemove = new List<Menu>();
 
+            EntityManager.ParticlesToAdd = new List<Particle>();
+            EntityManager.ParticlesToRemove = new List<Particle>();
+
             ManageLists();
 
             foreach (Menu menu in activeMenus)
@@ -68,6 +71,16 @@ namespace bullethellwhatever.MainFiles
 
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
+            }
+
+            foreach (Particle p in EntityManager.ParticlesToAdd)
+            {
+                activeParticles.Add(p);
+            }
+
+            foreach (Particle p in EntityManager.ParticlesToRemove)
+            {
+                activeParticles.Remove(p);
             }
 
             foreach (Menu menu in MenusToAdd)

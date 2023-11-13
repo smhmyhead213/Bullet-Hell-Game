@@ -55,6 +55,8 @@ namespace bullethellwhatever.MainFiles
         public static List<Projectile> activeFriendlyProjectiles = new List<Projectile>();
         public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
+        public static List<Particle> activeParticles = new List<Particle>();
+
         public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
 
         public static MusicSystem musicSystem = new MusicSystem();

@@ -14,7 +14,8 @@ namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
-       
+        public static List<Particle> ParticlesToRemove;
+        public static List<Particle> ParticlesToAdd;
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
@@ -134,6 +135,12 @@ namespace bullethellwhatever.MainFiles
                     projectile.activeTelegraphs.Remove(t);
                 }
             }
+
+            foreach (Particle p in activeParticles)
+            {
+                p.AI();
+                p.Update();
+            }
         }
 
         public static void SpawnBoss()
@@ -141,7 +148,7 @@ namespace bullethellwhatever.MainFiles
             Boss toSpawn = new Boss();
 
             switch (GameState.Boss)
-            {              
+            {
                 case GameState.Bosses.TestBoss:
                     toSpawn = new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2, 0), Assets["box"]);
                     break;

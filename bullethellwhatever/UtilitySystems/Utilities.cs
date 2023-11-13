@@ -157,6 +157,13 @@ namespace bullethellwhatever
 
             return (float)generated;
         }
+
+        public static int RandomInt(int min, int max)
+        {
+            Random rng = new Random();
+
+            return rng.Next(max - min) + min;
+        }
         public static T[] moveArrayElementsUpAndAddToStart<T>(ref T[] array, T toAdd) //make generic
         {
             T[] newArray = new T[array.Length];

@@ -129,7 +129,7 @@ namespace bullethellwhatever.BaseClasses
 
             Rotation = Rotation + RotationalVelocity;
         }
-        public virtual bool IsCollidingWithEntity(Entity entity)
+        public virtual Collision CollisionWithEntity(Entity entity)
         {
             return Hitbox.Intersects(entity.Hitbox);
         }
@@ -157,7 +157,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 foreach (NPC npc in activeNPCs) // if not harmful (player allegiance), search for entities to attack
                 {
-                    if (IsCollidingWithEntity(npc) && npc.IFrames == 0) 
+                    if (CollisionWithEntity(npc).Collided && npc.IFrames == 0) 
                     {
                         npc.IFrames = 5f;
 
@@ -169,7 +169,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsHarmful)
             {
-                if (IsCollidingWithEntity(player) && player.IFrames == 0)
+                if (CollisionWithEntity(player).Collided && player.IFrames == 0)
                 {
                     player.IFrames = 20f;
 
