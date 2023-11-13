@@ -29,15 +29,6 @@ namespace bullethellwhatever.DrawCode
                 Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(_graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
 
                 //Add in the title screen button.
-
-                if (activeMenus.Count == 0)
-                {
-                    Vector2 position = new Vector2(ScreenWidth / 4 * 3, ScreenHeight / 4);
-
-                    Button backToTitle = new Button(position, Assets["Back"], Vector2.One * 3f);
-
-                    backToTitle.StandaloneUIElement();
-                }
             }
 
             // FPS counter.

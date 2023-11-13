@@ -16,6 +16,8 @@ namespace bullethellwhatever.DrawCode.UI
         public Texture2D Texture; // background texture
         public Color BackgroundColour;
         public List<UIElement> UIElements;
+
+        public bool Important; // whether or not stuff in game can happen while this menu is up
         public int DefaultButtonCooldown => 25;
         public int ButtonCooldown;
 
@@ -27,6 +29,7 @@ namespace bullethellwhatever.DrawCode.UI
             UIElements = new List<UIElement>();
             ButtonCooldown = 0;
             BackgroundColour = Color.White; // dont colour if none is specified
+            Important = false;
         }
 
         public Menu(Vector2 position, float width, float height, Texture2D texture)
@@ -37,6 +40,12 @@ namespace bullethellwhatever.DrawCode.UI
             UIElements = new List<UIElement>();
             ButtonCooldown = 0;
             BackgroundColour = Color.Black; // dont colour if none is specified
+            Important = false;
+        }
+
+        public void SetImportant(bool important)
+        {
+            Important = important;
         }
 
         public void SetBackgroundColour(Color colour)

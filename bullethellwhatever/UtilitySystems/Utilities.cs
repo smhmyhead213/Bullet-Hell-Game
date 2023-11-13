@@ -5,6 +5,7 @@ using System;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever
 {
@@ -184,6 +185,18 @@ namespace bullethellwhatever
             }
         }
 
+        public static bool ImportantMenusPresent()
+        {
+            foreach (Menu menu in activeMenus)
+            { 
+                if (menu.Important)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         public static bool IsVectorWithinScreen(Vector2 v)
         {
             return v.X >= 0 && v.X <= ScreenWidth && v.Y >= 0 && v.Y <= ScreenHeight;

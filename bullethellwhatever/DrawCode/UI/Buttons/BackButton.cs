@@ -29,16 +29,5 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
 
             base.HandleClick();
         }
-        public override void Draw(SpriteBatch s)
-        {
-            base.Draw(s);
-
-            //debug output, dont worry about this
-
-            Utilities.drawTextInDrawMethod(IsLeftClickDown().ToString(), Utilities.CentreOfScreen() + new Vector2(0, 300), s, font, Color.White);
-            Utilities.drawTextInDrawMethod(ClickBox.Contains(MousePosition).ToString(), Utilities.CentreOfScreen() + new Vector2(-200, 300), s, font, Color.White);
-            Utilities.drawTextInDrawMethod(WasMouseDownLastFrame.ToString(), Utilities.CentreOfScreen() + new Vector2(-400, 300), s, font, Color.White);
-            Utilities.drawTextInDrawMethod(Owner.ButtonCooldown.ToString(), Utilities.CentreOfScreen() + new Vector2(-600, 300), s, font, Color.White);
-        }
     }
 }

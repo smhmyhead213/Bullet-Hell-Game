@@ -63,7 +63,7 @@ namespace bullethellwhatever.MainFiles
 
         public static FMOD.Studio.System FMODSystem;
 
-        public static Player player = new Player();
+        public static Player player;
 
         public static Vector2 RawScreenArea;
 

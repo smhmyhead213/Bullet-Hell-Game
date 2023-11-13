@@ -66,12 +66,7 @@ namespace bullethellwhatever.DrawCode.UI
                 ClickEvent();
             }
         }
-        public bool IsClicked()
-        {
-            return ClickBox.Contains(MousePosition) && IsLeftClickDown();
-        }
-
-        public void StandaloneUIElement()
+        public virtual void StandaloneUIElement()
         {
             Menu holder = new Menu(Position, new Vector2(Texture.Width * Size.X, Texture.Height * Size.Y), Assets["box"]);
             Owner = holder;
@@ -80,7 +75,10 @@ namespace bullethellwhatever.DrawCode.UI
             holder.AddUIElement(this);
             holder.Display();
         }
-
+        public bool IsClicked()
+        {
+            return ClickBox.Contains(MousePosition) && IsLeftClickDown();
+        }
         public void SetPositionInMenu(Vector2 pos)
         {
             PositionInMenu = pos;

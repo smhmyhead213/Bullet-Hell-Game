@@ -34,16 +34,6 @@ namespace bullethellwhatever.MainFiles
                 menu.Update();
             }
 
-            foreach (Menu menu in MenusToAdd)
-            {
-                activeMenus.Add(menu);
-            }
-
-            foreach (Menu menu in MenusToRemove)
-            {
-                activeMenus.Remove(menu);
-            }
-
             switch (State)
             {
                 case GameStates.TitleScreen:
@@ -70,6 +60,7 @@ namespace bullethellwhatever.MainFiles
                 if (!isGameStarted)
                 {
                     EntityManager.SpawnBoss();
+                    player = new Player("box");
                     player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
                     activeProjectiles.Clear();
                     isGameStarted = true;
@@ -78,6 +69,17 @@ namespace bullethellwhatever.MainFiles
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
             }
+
+            foreach (Menu menu in MenusToAdd)
+            {
+                activeMenus.Add(menu);
+            }
+
+            foreach (Menu menu in MenusToRemove)
+            {
+                activeMenus.Remove(menu);
+            }
+
 
             MenusToAdd = new List<Menu>();
         }

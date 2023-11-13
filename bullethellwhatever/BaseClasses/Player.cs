@@ -13,6 +13,7 @@ using bullethellwhatever.Abilities;
 using SharpDX.MediaFoundation;
 using SharpDX.WIC;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -52,17 +53,21 @@ namespace bullethellwhatever.BaseClasses
         public Weapons PreviousWeapon;
 
         #region Spawning
+        public Player(string texture)
+        {
+            dialogueSystem = new DialogueSystem(this);
+            DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
+            Texture = Assets[texture];
+        }
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
             Position = position;
             Velocity = initialVelocity;
-            Texture = Assets[texture];
+
             isPlayer = true;
             isBoss = false;
             IFrames = 0;
             Depth = 0;
-
-            dialogueSystem = new DialogueSystem(this);
 
             MaxHP = 15;
 
@@ -86,8 +91,6 @@ namespace bullethellwhatever.BaseClasses
 
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             SetHitbox();
-
-            DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
 
             Restarted = false;
 
@@ -210,11 +213,16 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !IsKeyPressed(Keys.R)) // haha suck it
+            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !Utilities.ImportantMenusPresent() && !IsKeyPressed(Keys.R)) // haha suck it
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
-                Restarted = true;
+                Restarted = false;
+
+                foreach (Menu m in activeMenus) // none of the active menus are important so they can go bye bye
+                {
+                    m.Hide();
+                }
             }
 
             if (IsKeyPressed(Keys.R) && Restarted == false)
