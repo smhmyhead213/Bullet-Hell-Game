@@ -1,59 +1,67 @@
 ﻿using Microsoft.Xna.Framework;
 
 using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Buttons;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.UI;
 
 using static bullethellwhatever.MainFiles.GameState;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace bullethellwhatever.MainFiles
 {
     public class GameStateHandler
     {
         public bool isGameStarted;
-        public int ButtonCooldown;
-
-        public bool WasMouseDownLastFrame;
-        public int DefaultButtonCooldown => 25;
         public string activeBoss; //use a swicth statement to spawn a boss in
+        public List<Menu> MenusToAdd;
+        public List<Menu> MenusToRemove;
 
-
+        public GameStateHandler()
+        {
+            MenusToAdd = new List<Menu>();
+            MenusToRemove = new List<Menu>();
+        }
         public void HandleGame()
         {
+            MenusToRemove = new List<Menu>();
+
             ManageLists();
 
-            if (ButtonCooldown > 0)
+            foreach (Menu menu in activeMenus)
             {
-                ButtonCooldown--;
+                menu.Update();
+            }
+
+            foreach (Menu menu in MenusToAdd)
+            {
+                activeMenus.Add(menu);
+            }
+
+            foreach (Menu menu in MenusToRemove)
+            {
+                activeMenus.Remove(menu);
             }
 
             switch (State)
             {
                 case GameStates.TitleScreen:
                     isGameStarted = false;
-                    CheckButtonClicks();
-                    activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
                     Credits.ReadInCreditsAlready = false; // i know this is an awful way to do it, in the future make credits reset when opened
                     break;
                 case GameStates.BossSelect:
                     isGameStarted = false;
-                    CheckButtonClicks();
-                    activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
                     break;
                 case GameStates.DifficultySelect:
                     isGameStarted = false;
-                    CheckButtonClicks();
-                    activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
                     break;
                 case GameStates.Settings:
                     isGameStarted = false;
-                    CheckButtonClicks();
                     break;
                 case GameStates.InGame:                    
                     break;
                 case GameStates.Credits:
-                    CheckButtonClicks();
                     break;
             }
 
@@ -67,17 +75,11 @@ namespace bullethellwhatever.MainFiles
                     isGameStarted = true;
                 }
 
-                CheckButtonClicks();
-
-                Main.activeButtons.RemoveAll(Button => Button.DeleteNextFrame);
-
                 EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
             }
 
-            var mouseState = Mouse.GetState();
-
-            WasMouseDownLastFrame = mouseState.LeftButton == ButtonState.Pressed;
+            MenusToAdd = new List<Menu>();
         }
 
         public void ManageLists()
@@ -102,19 +104,6 @@ namespace bullethellwhatever.MainFiles
             }
 
             NPCsToAddNextFrame.Clear();
-        }
-
-        public void CheckButtonClicks()
-        {
-            foreach (Button button in activeButtons)
-            {
-                if (button.IsButtonClicked() && ButtonCooldown == 0 && !WasMouseDownLastFrame)
-                {
-                    ButtonCooldown = DefaultButtonCooldown;
-
-                    button.HandleClick();
-                }
-            }
         }
     }
 }

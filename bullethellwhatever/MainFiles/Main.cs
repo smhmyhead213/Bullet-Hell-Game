@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
 
-using bullethellwhatever.Buttons;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.UtilitySystems.Dialogue;
@@ -21,6 +20,7 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using FMOD.Studio;
 using SharpDX.WIC;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -46,7 +46,7 @@ namespace bullethellwhatever.MainFiles
 
         public static SpriteFont font;
 
-        public static GameStateHandler gameStateHandler = new GameStateHandler();
+        public static GameStateHandler gameStateHandler;
         public static GameState gameState = new GameState();
 
         public static List<NPC> activeNPCs = new List<NPC>();
@@ -75,7 +75,7 @@ namespace bullethellwhatever.MainFiles
 
         public static int GameTime;
 
-        public static List<Button> activeButtons = new List<Button>();
+        public static List<Menu> activeMenus = new List<Menu>();
         public Main() : base()
         {
             MainInstance = this;
@@ -93,6 +93,7 @@ namespace bullethellwhatever.MainFiles
 
             _graphics.HardwareModeSwitch = false;
             _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
         }
         //public Matrix GamePerspective
         //{
@@ -189,13 +190,17 @@ namespace bullethellwhatever.MainFiles
             }
 
             font = Content.Load<SpriteFont>("font");
+
+            UI.CreateTitleScreenMenu();
         }
-        
+
         protected override void Initialize()
-        {            
+        {          
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GameState.State = GameState.GameStates.TitleScreen;
+
+            gameStateHandler = new GameStateHandler();
 
             Drawing.Initialise();
 
@@ -247,13 +252,13 @@ namespace bullethellwhatever.MainFiles
                     UI.DrawTitleScreen(_spriteBatch);
                     break;
                 case GameState.GameStates.BossSelect:
-                    UI.DrawBossSelect(_spriteBatch);
+                    //UI.DrawBossSelect(_spriteBatch);
                     break;
                 case GameState.GameStates.DifficultySelect:
-                    UI.DrawDifficultySelect(_spriteBatch);
+                    //UI.DrawDifficultySelect(_spriteBatch);
                     break;
                 case GameState.GameStates.Settings:
-                    UI.DrawSettings(_spriteBatch);
+                    //UI.DrawSettings(_spriteBatch);
                     break;
                 case GameState.GameStates.InGame:
                     DrawGame.DrawTheGame(gameTime, _spriteBatch);
@@ -263,7 +268,7 @@ namespace bullethellwhatever.MainFiles
                     break;
             }
 
-            UI.DrawButtons(_spriteBatch);
+            UI.DrawMenus(_spriteBatch);
 
             _spriteBatch.End();
 

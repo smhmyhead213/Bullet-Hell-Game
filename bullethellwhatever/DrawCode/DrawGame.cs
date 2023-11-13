@@ -1,5 +1,4 @@
 ﻿using bullethellwhatever.MainFiles;
-using bullethellwhatever.Buttons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.BaseClasses;
@@ -8,6 +7,8 @@ using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System;
+using bullethellwhatever.DrawCode.UI.Buttons;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -28,8 +29,15 @@ namespace bullethellwhatever.DrawCode
                 Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(_graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
 
                 //Add in the title screen button.
-                Button backToTitle = new Button(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 4 * 3), "StartButton",
-                GameState.GameStates.TitleScreen, null, new Vector2(3, 3));
+
+                if (activeMenus.Count == 0)
+                {
+                    Vector2 position = new Vector2(ScreenWidth / 4 * 3, ScreenHeight / 4);
+
+                    Button backToTitle = new Button(position, Assets["Back"], Vector2.One * 3f);
+
+                    backToTitle.StandaloneUIElement();
+                }
             }
 
             // FPS counter.

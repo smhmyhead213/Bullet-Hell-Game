@@ -8,6 +8,7 @@ using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.UI.Buttons;
 using bullethellwhatever.Abilities;
 using SharpDX.MediaFoundation;
 using SharpDX.WIC;
@@ -35,7 +36,7 @@ namespace bullethellwhatever.BaseClasses
         public int WeaponSwitchCooldown;
         public float MoveSpeed;
 
-        public int GameRestartCooldown;
+        public bool Restarted;
 
         public Deathray PlayerDeathray = new Deathray();
 
@@ -88,7 +89,7 @@ namespace bullethellwhatever.BaseClasses
 
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
 
-            GameRestartCooldown = 0; // cant believe i actually need to add this
+            Restarted = false;
 
             TimeAlive = 0;
         }
@@ -209,23 +210,28 @@ namespace bullethellwhatever.BaseClasses
                 }
             }
 
-            if (GameRestartCooldown > 0)
-            {
-                GameRestartCooldown--;
-            }
-
             if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !IsKeyPressed(Keys.R)) // haha suck it
             {
                 Health = MaxHP;
                 EntityManager.SpawnBoss();
-                activeButtons.Clear();
+                Restarted = true;
             }
 
-            if (IsKeyPressed(Keys.R) && GameRestartCooldown == 0)
+            if (IsKeyPressed(Keys.R) && Restarted == false)
             {
                 Utilities.InitialiseGame();
+                Restarted = true;
+
+                BackButton start = new BackButton(new Vector2(ScreenWidth / 4, ScreenHeight / 4), "StartButton", Vector2.One * 3);
+
+                start.SetClickEvent(new Action(() =>
+                {
+                    GameState.SetGameState(GameState.GameStates.TitleScreen);
+                }));
+
+                start.StandaloneUIElement();
+
                 musicSystem.StopMusic();
-                GameRestartCooldown = 3;
             }
 
             if (DashCooldown > 0)

@@ -19,15 +19,10 @@ namespace bullethellwhatever.Bosses.TestBoss
     {
         public bool HasChosenChargeDirection;
         public float SpiralStartTime;
-        
-        public float ShotgunFrequency;
-        public float DespBombFrequencyInitially;
-        public float DespBombFrequency;
+
         public bool HasDesperationStarted;
-        public float DespBombTimer;
-        public int DespBombCounter;
-        public int DespBeamRotation;
-        public TestBoss(Vector2 position, Vector2 velocity)
+
+        public TestBoss(Vector2 position, Vector2 velocity, Texture2D texture)
         {
             Position = position;
             Velocity = velocity;
@@ -38,17 +33,12 @@ namespace bullethellwhatever.Bosses.TestBoss
             MaxIFrames = 5;
             HasChosenChargeDirection = false;
             AttackNumber = 1;
-            ShotgunFrequency = 15f;
-            DespBombFrequencyInitially = 40f;
-            DespBombFrequency = DespBombFrequencyInitially;
-            DespBombTimer = 0f;
-            DespBombCounter = 0;
             HasDesperationStarted = false;
             IsDesperationOver = false;
 
             Colour = Color.White;
 
-            Texture = Assets["box"];
+            Texture = texture;
 
             Size = new Vector2(5f, 5f);
 
@@ -105,6 +95,8 @@ namespace bullethellwhatever.Bosses.TestBoss
             base.Draw(spriteBatch);
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.None, 0f);
+
+            Utilities.drawTextInDrawMethod(activeProjectiles.Count.ToString(), Utilities.CentreOfScreen() * 1.5f, spriteBatch, font, Color.White);
         }
     }
 }

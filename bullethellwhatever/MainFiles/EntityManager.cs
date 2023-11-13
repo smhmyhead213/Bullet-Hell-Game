@@ -143,7 +143,7 @@ namespace bullethellwhatever.MainFiles
             switch (GameState.Boss)
             {              
                 case GameState.Bosses.TestBoss:
-                    toSpawn = new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2, 0));
+                    toSpawn = new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2, 0), Assets["box"]);
                     break;
                 case GameState.Bosses.SecondBoss:
                     toSpawn = new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0));

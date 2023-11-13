@@ -75,6 +75,22 @@ namespace bullethellwhatever.BaseClasses
         {
             return Vector2.LerpPrecise(Size, Size / 10f, Depth) * ScaleFactor();
         }
+
+        public void SetVelocity(Vector2 vel)
+        {
+            Velocity = vel;
+        }
+
+        public void SetVelocityX(float x)
+        {
+            Velocity.X = x;
+        }
+
+        public void SetVelocityY(float y)
+        {
+            Velocity.Y = y;
+        }
+
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
             if (entity.Position.Y + entity.Texture.Height * entity.GetSize().Y / 2 >= _graphics.PreferredBackBufferHeight)
