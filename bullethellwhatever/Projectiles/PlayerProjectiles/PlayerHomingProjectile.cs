@@ -34,7 +34,7 @@ namespace bullethellwhatever.Projectiles.Player
         {
             if (Owner == player)
             {
-                int numberOfParticles = Utilities.RandomInt(1, 2);
+                int numberOfParticles = Utilities.RandomInt(1, 4);
 
                 for (int i = 0; i < numberOfParticles; i++)
                 {
@@ -48,6 +48,8 @@ namespace bullethellwhatever.Projectiles.Player
                     p.Spawn("box", position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, Colour, 1f, 20);
                 }
             }
+
+            base.OnHitEffect(position);
         }
         public override void AI()
         {
@@ -112,6 +114,8 @@ namespace bullethellwhatever.Projectiles.Player
                 if (TimeWithNoTarget > fadeOutTime + beginFading)
                 {
                     DeleteNextFrame = true;
+
+                    OnHitEffect(Position);
                 }
             }
 

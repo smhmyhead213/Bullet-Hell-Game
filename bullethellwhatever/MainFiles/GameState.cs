@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.DrawCode.UI;
+﻿using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,9 @@ namespace bullethellwhatever.MainFiles
                 case GameStates.Settings: UI.CreateSettingsMenu(); break;
                 case GameStates.DifficultySelect : UI.CreateDifficultySelectMenu(); break;
                 case GameStates.Credits: UI.CreateCreditsMenu(); break;
-                case GameStates.InGame: break; // dont bother doing anything
+                case GameStates.InGame:
+                    DrawGame.ResetHUD();
+                    break; // dont bother doing anything
                 default: throw new Exception("if you hit this exception you really messed up");
             }
         }

@@ -190,6 +190,23 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                             p.Rotation = rotation - PI / 2 + (j * PI);
 
+                            p.SetEdgeTouchEffect(new Action(() =>
+                            {
+                                int numberOfParticles = Utilities.RandomInt(1, 4);
+
+                                for (int i = 0; i < numberOfParticles; i++)
+                                {
+                                    float rotation = Utilities.RandomFloat(0, Tau);
+
+                                    Particle particle = new Particle();
+
+                                    Vector2 velocity = 10f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
+                                    int lifetime = 20;
+
+                                    particle.Spawn("box", p.Position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, p.Colour, 1f, 20);
+                                }
+                            }));
+
                             p.Spawn(Owner.Position + ProjOffset + (i * betweenEach), projSpeed * Utilities.AngleToVector(rotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.035f, Vector2.One * 0.6f, Owner, true, Color.Red, true, false);
                         }
                     }

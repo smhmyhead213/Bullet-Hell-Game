@@ -25,8 +25,6 @@ namespace bullethellwhatever.MainFiles
         }
         public void HandleGame()
         {
-            MenusToRemove = new List<Menu>();
-
             EntityManager.ParticlesToAdd = new List<Particle>();
             EntityManager.ParticlesToRemove = new List<Particle>();
 
@@ -69,8 +67,11 @@ namespace bullethellwhatever.MainFiles
                     isGameStarted = true;
                 }
 
-                EntityManager.RemoveEntities(); //remove all entities queued for deletion
-                EntityManager.RunAIs();
+                if (!Utilities.ImportantMenusPresent())
+                {
+                    EntityManager.RemoveEntities(); //remove all entities queued for deletion
+                    EntityManager.RunAIs();
+                }
             }
 
             foreach (Particle p in EntityManager.ParticlesToAdd)
@@ -93,7 +94,7 @@ namespace bullethellwhatever.MainFiles
                 activeMenus.Remove(menu);
             }
 
-
+            MenusToRemove = new List<Menu>();
             MenusToAdd = new List<Menu>();
         }
 

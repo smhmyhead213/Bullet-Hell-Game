@@ -251,6 +251,12 @@ namespace bullethellwhatever.DrawCode
             Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
         }
 
+        public static void ResetHUD()
+        {
+            PermanentIconRotation = 0;
+            WeaponIconsRotationToAdd = 0;
+        }
+
         public static void RestartSpriteBatchForShaders(SpriteBatch s)
         {
             s.End();

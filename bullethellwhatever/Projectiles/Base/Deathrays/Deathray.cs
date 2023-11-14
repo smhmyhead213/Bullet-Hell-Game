@@ -188,7 +188,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
                 Die();
-            }           
+            }          
         }
         public void DrawWithShader(SpriteBatch spriteBatch)
         {
@@ -213,7 +213,7 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void OnHitEffect(Vector2 position)
         {
-            if (Owner == player)
+            if (Owner == player && AITimer % 3 == 0)
             {
                 int numberOfParticles = 1;
 
@@ -228,6 +228,8 @@ namespace bullethellwhatever.Projectiles.Base
                     p.Spawn("box", position, 7f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation), new Vector2(0, 0.6f), Vector2.One * 0.45f, rotation, Colour, 1f, 30);
                 }
             }
+
+            base.OnHitEffect(position);
         }
         public override void Die()
         {

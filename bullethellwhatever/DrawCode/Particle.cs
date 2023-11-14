@@ -49,7 +49,7 @@ namespace bullethellwhatever.DrawCode
 
             if (AITimer > Lifetime - fadeOutTime)
             {
-                Opacity = MathHelper.Lerp(InitialOpacity, 0, (float)(Lifetime - AITimer) / fadeOutTime);
+                Opacity = MathHelper.Lerp(0, InitialOpacity, (float)(Lifetime - AITimer) / fadeOutTime);
             }
 
             if (AITimer == Lifetime)

@@ -206,6 +206,8 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Initialise();
 
+            MenuManager.Initialise();
+
             GameTime = 0;
 
             base.Initialize();
@@ -219,15 +221,14 @@ namespace bullethellwhatever.MainFiles
 
             UpdateInputSystem();
 
+            MenuManager.ManageMenus();
+
             if (MainInstance.IsActive)
             {
                 gameStateHandler.HandleGame();
 
                 if (musicSystem.ActiveSong is not null)
                     musicSystem.PlayMusic();
-
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    Exit();
             }
             else
             {

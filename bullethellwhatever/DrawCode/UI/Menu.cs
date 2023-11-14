@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using bullethellwhatever.BaseClasses;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,37 +17,66 @@ namespace bullethellwhatever.DrawCode.UI
         public Texture2D Texture; // background texture
         public Color BackgroundColour;
         public List<UIElement> UIElements;
+        public RectangleButGood ClickBox;
 
         public bool Important; // whether or not stuff in game can happen while this menu is up
-        
+
+        public bool Draggable;
         public int DefaultButtonCooldown => 25;
         public int ButtonCooldown;
+
+        public int TimeSinceLastDrag;
 
         public Menu(Vector2 position, Vector2 size, Texture2D texture)
         {
             Position = position;
             Size = size;
             Texture = texture;
-            UIElements = new List<UIElement>();
-            ButtonCooldown = 0;
-            BackgroundColour = Color.White; // dont colour if none is specified
-            Important = false;
+
+            PrepareMenu();
         }
 
+        public Menu(Vector2 position, Vector2 size, string texture)
+        {
+            Position = position;
+            Size = size;
+            Texture = Assets[texture];
+
+            PrepareMenu();
+        }
         public Menu(Vector2 position, float width, float height, Texture2D texture)
         {
             Position = position;
             Size = new Vector2(width, height);
             Texture = texture;
-            UIElements = new List<UIElement>();
-            ButtonCooldown = 0;
-            BackgroundColour = Color.Black; // dont colour if none is specified
-            Important = false;
+
+            PrepareMenu();
         }
 
+        public void PrepareMenu()
+        {
+            UIElements = new List<UIElement>();
+            ButtonCooldown = 0;
+
+            if (Texture == Assets["box"])
+                BackgroundColour = Color.Black; // dont colour if none is specified
+            else BackgroundColour = Color.White;
+
+            Important = false;
+            Draggable = false;
+
+            TimeSinceLastDrag = 0;
+
+            UpdateClickBox();
+        }
         public void SetImportant(bool important)
         {
             Important = important;
+        }
+
+        public void SetDraggable(bool draggable)
+        {
+            Draggable = draggable;
         }
 
         public void SetBackgroundColour(Color colour)
@@ -71,6 +101,24 @@ namespace bullethellwhatever.DrawCode.UI
                 ButtonCooldown--;
             }
 
+            if (Draggable)
+            {
+                TimeSinceLastDrag++;
+
+                if ((ClickBox.Contains(MousePosition) || TimeSinceLastDrag < 10) && IsLeftClickDown())
+                {
+                    TimeSinceLastDrag = 0;
+
+                    // calculate the mouses relative position within the menu
+
+                    Vector2 mouseRelativePosition = MousePosition - TopLeft();
+
+                    Position = TopLeft() + mouseRelativePosition;
+                }
+            }
+
+            UpdateClickBox();
+
             foreach (UIElement uIElement in UIElements)
             {
                 if (uIElement.IsClicked() && ButtonCooldown == 0 && !WasMouseDownLastFrame)
@@ -84,6 +132,18 @@ namespace bullethellwhatever.DrawCode.UI
             }
         }
 
+        public void UpdateClickBox()
+        {
+            ClickBox = new RectangleButGood(TopLeft().X, TopLeft().Y, Width(), Height());
+        }
+
+        public void AddUIElements(UIElement[] uIElements)
+        {
+            foreach (UIElement uIElement in uIElements)
+            {
+                AddUIElement(uIElement);
+            }
+        }
         public void AddUIElement(UIElement uiElement)
         {
             uiElement.Owner = this;

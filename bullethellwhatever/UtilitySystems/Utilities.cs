@@ -162,7 +162,7 @@ namespace bullethellwhatever
         {
             Random rng = new Random();
 
-            return rng.Next(max - min) + min;
+            return rng.Next(max - min + 1) + min;
         }
         public static T[] moveArrayElementsUpAndAddToStart<T>(ref T[] array, T toAdd) //make generic
         {
