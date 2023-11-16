@@ -192,7 +192,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                             p.SetEdgeTouchEffect(new Action(() =>
                             {
-                                int numberOfParticles = Utilities.RandomInt(1, 4);
+                                int numberOfParticles = Utilities.RandomInt(4, 8);
 
                                 for (int i = 0; i < numberOfParticles; i++)
                                 {

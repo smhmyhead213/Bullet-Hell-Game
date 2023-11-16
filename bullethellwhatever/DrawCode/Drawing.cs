@@ -28,6 +28,23 @@ namespace bullethellwhatever.DrawCode
         {
             screenShakeObject = new ScreenShakeObject(0, 0);
         }
+
+        public static void RestartSpriteBatchForUI(SpriteBatch s)
+        {
+            s.End();
+            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
+        }
+        public static void RestartSpriteBatchForShaders(SpriteBatch s)
+        {
+            s.End();
+            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap);
+        }
+
+        public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
+        {
+            s.End();
+            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
+        }
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
         {
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.

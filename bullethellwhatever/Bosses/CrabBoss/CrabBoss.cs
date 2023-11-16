@@ -238,8 +238,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
 
                 if (this is IDrawsShader) //if we were already drawing stuff that had shaders
-                    DrawGame.RestartSpriteBatchForShaders(spriteBatch);
-                else DrawGame.RestartSpriteBatchForNotShaders(spriteBatch);
+                    Drawing.RestartSpriteBatchForShaders(spriteBatch);
+                else Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
 
                 //for (int i = 0; i < BoosterPositions.Length;i++) //remove later
                 //{

@@ -120,6 +120,11 @@ namespace bullethellwhatever.BaseClasses
 
             else TimeOutsidePlayArea = 0;
 
+            if (TimeOutsidePlayArea == 1) // just hit edge
+            {
+                EdgeTouchEffect();
+            }
+
             if (VelocityFunction is null)
             {
                 if (Acceleration != 0)

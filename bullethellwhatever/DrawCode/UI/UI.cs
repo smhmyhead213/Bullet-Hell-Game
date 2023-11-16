@@ -68,6 +68,7 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
                 new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
+                new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
                 new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu)
             };
 
@@ -160,6 +161,7 @@ namespace bullethellwhatever.DrawCode.UI
                 Action startButtonAction = new Action(() =>
                 {
                     WeaponSwitchControl = i == 0 ? false : true;
+                    SetGameState(GameStates.Settings);
                     Drawing.ConfirmControlSettingsChange(_spriteBatch);
                     settingsMenu.Hide();
                 });
@@ -182,16 +184,24 @@ namespace bullethellwhatever.DrawCode.UI
         {
             BackButton backButton = new BackButton(new Vector2(ScreenWidth / 5f, ScreenHeight / 5f), "Back", new Vector2(3, 3));
 
+            backButton.SetClickEvent(new Action(() =>
+            {
+                SetGameState(GameStates.TitleScreen);
+            }));
+
             backButton.StandaloneUIElement();
         }
 
         public static void DrawMenus(SpriteBatch spriteBatch)
         {
+            Drawing.RestartSpriteBatchForUI(spriteBatch);
+
             foreach (Menu menu in activeMenus)
             {
                 menu.Draw(spriteBatch);
             }
 
+            // no need to restart again after this because menus are the last thing drawn
         }
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
         {

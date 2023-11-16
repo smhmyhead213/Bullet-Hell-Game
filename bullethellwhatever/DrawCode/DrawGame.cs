@@ -98,21 +98,21 @@ namespace bullethellwhatever.DrawCode
             }
 
 
-            RestartSpriteBatchForShaders(s);
+            Drawing.RestartSpriteBatchForShaders(s);
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
             {
                 entity.Draw(s);
             }
 
-            RestartSpriteBatchForNotShaders(s);
+            Drawing.RestartSpriteBatchForNotShaders(s);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
                     entity.Draw(Main._spriteBatch);
             }
 
-            RestartSpriteBatchForShaders(s);
+            Drawing.RestartSpriteBatchForShaders(s);
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -156,7 +156,7 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
-            RestartSpriteBatchForNotShaders(s);
+            Drawing.RestartSpriteBatchForNotShaders(s);
 
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {
@@ -197,7 +197,7 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawHUD(SpriteBatch s)
         {
-            RestartSpriteBatchForShaders(s);
+            Drawing.RestartSpriteBatchForShaders(s);
 
             Vector2 hudPos = new Vector2(ScreenWidth / 10f, ScreenHeight / 10f);
 
@@ -216,7 +216,7 @@ namespace bullethellwhatever.DrawCode
 
             Drawing.BetterDraw(Assets["box"], new Vector2(IdealScreenWidth / 7.6f, IdealScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
-            RestartSpriteBatchForNotShaders(s);
+            Drawing.RestartSpriteBatchForNotShaders(s);
 
             Drawing.BetterDraw(hud, new Vector2(IdealScreenWidth / 10f, IdealScreenHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
             
@@ -255,18 +255,6 @@ namespace bullethellwhatever.DrawCode
         {
             PermanentIconRotation = 0;
             WeaponIconsRotationToAdd = 0;
-        }
-
-        public static void RestartSpriteBatchForShaders(SpriteBatch s)
-        {
-            s.End();
-            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap);
-        }
-
-        public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
-        {
-            s.End();
-            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: null);
         }
     }
 }

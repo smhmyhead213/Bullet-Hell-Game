@@ -9,6 +9,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Bosses.CrabBoss;
+using bullethellwhatever.Bosses.EyeBoss;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -157,6 +158,9 @@ namespace bullethellwhatever.MainFiles
                     break;
                 case GameState.Bosses.CrabBoss:
                     toSpawn = new CrabBoss();
+                    break;
+                case GameState.Bosses.EyeBoss:
+                    toSpawn = new EyeBoss();
                     break;
             }
 
