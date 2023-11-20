@@ -39,8 +39,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Size = Vector2.One * 1.5f;
             Position = Utilities.CentreOfScreen();
             MaxHP = 550f;
-            Health = MaxHP;
-            AttackNumber = 1;
+
+
             Colour = Color.White;
 
             Phase = 1;
@@ -101,12 +101,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 new MovingBlender(1000),
             };
 
-            for (int i = 0; i < BossAttacks.Length; i++)
-            {
-                BossAttacks[i].Owner = this;
-                BossAttacks[i].InitialiseAttackValues();
-            }
-
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
             //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
         }
@@ -154,9 +148,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
             //Rotation = Rotation + PI / 90f;
 
-            BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
-
-            BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
+            base.AI();
 
             if (Legs[0].Dead && Legs[1].Dead && !StartedPhaseTwoTransition)
             {
@@ -249,9 +241,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 //}
             }
 
+            if (player.PlayerDeathray.Hitbox is not null)
+                Utilities.drawTextInDrawMethod(Hitbox.PointOfIntersection(player.PlayerDeathray.Hitbox).ToString(), new Vector2(1500, 200), _spriteBatch, font, Color.White);
+
             base.Draw(spriteBatch);
 
-            //Hitbox.DrawHitbox();
+            Hitbox.DrawHitbox();
 
             foreach (CrabLeg leg in Legs)
             {

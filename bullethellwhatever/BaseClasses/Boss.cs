@@ -14,6 +14,15 @@ namespace bullethellwhatever.BaseClasses
 
         public BossAttack[] BossAttacks;
 
+        public virtual void InitialiseBoss()
+        {
+            AttackNumber = 1;
+
+            Health = MaxHP;
+
+            ReplaceAttackPattern(BossAttacks);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
@@ -22,6 +31,19 @@ namespace bullethellwhatever.BaseClasses
                 BossAttacks[AttackNumber].ExtraDraw(spriteBatch);
         }
 
+        public override void AI()
+        {
+            base.AI();
+
+            ExecuteCurrentAttack();
+        }
+
+        public virtual void ExecuteCurrentAttack()
+        {
+            BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
+
+            BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
+        }
         public void ReplaceAttackPattern(BossAttack[] attacks)
         {
             BossAttacks = attacks;

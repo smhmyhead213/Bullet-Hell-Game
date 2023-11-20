@@ -15,9 +15,11 @@ namespace bullethellwhatever.Bosses
         public int EndTime;
         public Boss Owner;
         public bool HasResetAITimerForDesperation;
+        public bool EndNow;
         public BossAttack(int endTime)
         {
             EndTime = endTime;
+            EndNow = false;
         }
 
         public virtual void InitialiseAttackValues()
@@ -34,22 +36,36 @@ namespace bullethellwhatever.Bosses
 
         }
 
+        public virtual void End()
+        {
+            EndNow = true;
+        }
+
+        public virtual void ExtraAttackEnd()
+        {
+
+        }
+
         public virtual void TryEndAttack(ref int AITimer, ref int AttackNumber)
         {
-            if (Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime && AttackNumber != 0)
+            if ((Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime || EndNow) && AttackNumber != 0)
             {
                 Owner.AITimer = 0; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
+
+                EndNow = false;
 
                 Owner.Rotation = 0;
                 if (Owner.AttackNumber != Owner.BossAttacks.Length - 1)
                 {
                     Owner.AttackNumber++;
                     Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
+                    ExtraAttackEnd();
                 }
                 else
                 {
                     Owner.AttackNumber = 1;
                     Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
+                    ExtraAttackEnd();
                 }
             }
 

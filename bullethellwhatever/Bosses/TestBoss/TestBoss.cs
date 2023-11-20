@@ -28,7 +28,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
-            Health = 200;
+            MaxHP = 200;
             AITimer = 0;
             MaxIFrames = 5;
             HasChosenChargeDirection = false;
@@ -64,11 +64,6 @@ namespace bullethellwhatever.Bosses.TestBoss
                 new EnemySpam(BarDuration * 16),
             };
 
-            for (int i = 0; i < BossAttacks.Length; i++)
-            {
-                BossAttacks[i].Owner = this;
-                BossAttacks[i].InitialiseAttackValues();
-            }
         }
         public override void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
@@ -85,9 +80,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             JustStartedBeat = AITimer % FramesPerMusicBeat == 0 ? true : false;
 
-            BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
-
-            BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
+            base.AI();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

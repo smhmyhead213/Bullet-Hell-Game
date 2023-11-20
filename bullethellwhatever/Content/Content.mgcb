@@ -49,6 +49,18 @@
 /processorParam:TextureFormat=Color
 /build:box.png
 
+#begin Circle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Circle.png
+
 #begin CrabBody.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -123,6 +135,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:EasyButton.png
+
+#begin ExitButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ExitButton.png
 
 #begin font.spritefont
 /importer:FontDescriptionImporter

@@ -187,7 +187,7 @@ namespace bullethellwhatever.BaseClasses
 
         public void DrawHPBar(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            //base.Draw(spriteBatch);
 
             if (this is not Boss)
             {

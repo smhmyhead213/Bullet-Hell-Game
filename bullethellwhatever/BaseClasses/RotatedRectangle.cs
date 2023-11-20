@@ -80,8 +80,16 @@ namespace bullethellwhatever.BaseClasses
 
             if (IsVec2WithinMyRectangle(intersectionPoint))
             {
-                return new Collision(Vector2.Zero, other.IsVec2WithinMyRectangle(intersectionPoint));
+                return new Collision(intersectionPoint, other.IsVec2WithinMyRectangle(intersectionPoint)); // this second check is so that we can ensure that the PoI is within both
             }
+
+            intersectionPoint = other.PointOfIntersection(this); // double check
+
+            if (other.IsVec2WithinMyRectangle(intersectionPoint))
+            {
+                return new Collision(intersectionPoint, IsVec2WithinMyRectangle(intersectionPoint));
+            }
+
             else return new Collision(Vector2.Zero, false);
         }
 
@@ -135,7 +143,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float CalculateC()
         {
-            return Centre.Y - CalculateGradient() * Centre.X;
+            return -(Centre.Y + CalculateGradient() * Centre.X);
         }
     }
 

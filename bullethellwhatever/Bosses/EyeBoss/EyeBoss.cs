@@ -12,44 +12,54 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class EyeBoss : Boss
     {
         public List<ChainLink> ChainLinks = new List<ChainLink>();
+        public Pupil Pupil;
         public EyeBoss() 
         {
             ChainLinks = new List<ChainLink>();
 
             Position = Utilities.CentreOfScreen();
             Velocity = Vector2.Zero;
-            Texture = Assets["box"];
+            Texture = Assets["Circle"];
             Size = Vector2.One * 2f;
 
             MaxHP = 500;
-            Health = MaxHP;
 
             Colour = Color.White;
 
-            int numberOfLinks = 20;
+            Pupil = new Pupil("Circle", 0, 0, Size / 4);
+
+            int numberOfLinks = 15;
 
             float firstChainInitialAngle = PI / 3;
             float finalChainInitialAngle = PI / 4;
+            float totalChainLength = ScreenHeight / 2;
+            float linkLength = totalChainLength / numberOfLinks;
 
-            ChainLink c = new ChainLink("box", new Vector2(ScreenWidth / 2, 0), firstChainInitialAngle, 25, this);
+            ChainLink c = new ChainLink("box", new Vector2(ScreenWidth / 2, 0), firstChainInitialAngle, linkLength, this);
 
-            c.SetDampingFactor(0.99f);
+            float dampFactor = 0.98f;
+
+            c.SetDampingFactor(dampFactor);
 
             ChainLinks.Add(c);
+
             float changeBetweenEach = (firstChainInitialAngle - finalChainInitialAngle) / numberOfLinks;
 
             for (int i = 1; i < numberOfLinks; i++)
             {
-                c = new ChainLink("box", ChainLinks[i - 1].End, firstChainInitialAngle - (i * changeBetweenEach) , 25, this);
-                c.SetDampingFactor(0.99f);
+                c = new ChainLink("box", ChainLinks[i - 1].End, firstChainInitialAngle - (i * changeBetweenEach) , linkLength, this);
+                c.SetDampingFactor(dampFactor);
                 ChainLinks.Add(c);
             }
-            
+
+            BossAttacks = new EyeBossAttack[]
+            {
+                new ProjectileFan(1000),
+                new ProjectileFan(1000),
+            };
         }
         public override void Update()
         {
-            base.Update();
-
             ChainLinks[0].Update();
 
             for (int i = 1; i < ChainLinks.Count; i++)
@@ -59,6 +69,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
             }
 
             Position = ChainLinks.Last().End;
+
+            Pupil.Update(Position);
+
+            Pupil.CalculatePosition();
+
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -69,6 +85,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
             {
                 link.Draw(spriteBatch);
             }
+
+            Pupil.Draw();
         }
     }
 }

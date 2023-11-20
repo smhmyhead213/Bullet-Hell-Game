@@ -164,6 +164,8 @@ namespace bullethellwhatever.MainFiles
                     break;
             }
 
+            toSpawn.InitialiseBoss();
+
             Drawing.ScreenShakeTimer = 0;
 
             Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);

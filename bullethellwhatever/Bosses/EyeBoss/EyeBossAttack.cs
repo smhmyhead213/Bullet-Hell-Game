@@ -1,29 +1,26 @@
 ﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Bosses.EyeBoss;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever.Bosses.CrabBoss
+namespace bullethellwhatever.Bosses.EyeBoss
 {
-    public class CrabBossAttack : BossAttack
+    public class EyeBossAttack : BossAttack
     {
-        public CrabBoss CrabOwner;
-        public CrabBossAttack(int endTime) : base (endTime)
+        public EyeBoss EyeOwner;
+        public Pupil Pupil;
+        public EyeBossAttack(int endTime) : base(endTime)
         {
             EndTime = endTime;
-            
         }
 
         public override void InitialiseAttackValues()
         {
-            CrabOwner = (CrabBoss)Owner;
-        }
-
-        public override void ExtraAttackEnd()
-        {
-            CrabOwner.ResetArmRotations();
+            EyeOwner = (EyeBoss)Owner;
+            Pupil = EyeOwner.Pupil;
         }
 
         public override void HandleBounces()
@@ -33,8 +30,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Owner.Velocity.X < 0)
                 {
                     Owner.Velocity.X = Owner.Velocity.X * -1;
-                    if (CrabOwner.StartedDeathAnim)
-                        Owner.RotationalVelocity = CrabOwner.SpinVelOnDeath;
                 }
             }
 
@@ -43,8 +38,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Owner.Velocity.X > 0)
                 {
                     Owner.Velocity.X = Owner.Velocity.X * -1;
-                    if (CrabOwner.StartedDeathAnim)
-                        Owner.RotationalVelocity = CrabOwner.SpinVelOnDeath;
                 }
 
             }
@@ -61,10 +54,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Owner.Velocity.Y > 0)
                     Owner.Velocity.Y = Owner.Velocity.Y * -1f;
             }
-        }
-        public CrabLeg Leg(int index)
-        {
-            return CrabOwner.Legs[index];
         }
     }
 }
