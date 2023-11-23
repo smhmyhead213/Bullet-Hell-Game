@@ -128,13 +128,15 @@ namespace bullethellwhatever.BaseClasses
 
         public Vector2 PointOfIntersection(RotatedRectangle other)
         {
-            // rearrangement of simultaneous equation ax + b = cx + d 
+            // rearrangement of simultaneous equation ax + b = cx + d, in future adapt x int calculation to take into account c.
+
+            // due to the coordinate system, an upwards slope is a negative gradient and a positive c value indicates moving the line downwards.
 
             float xOfIntercept = -1f * (CalculateC() - other.CalculateC()) / (CalculateGradient() - other.CalculateGradient());
 
             float yOfIntercept = CalculateGradient() * xOfIntercept + CalculateC();
 
-            return new Vector2(xOfIntercept, yOfIntercept);
+            return new Vector2(xOfIntercept, yOfIntercept) * -1f;
         }
         public float CalculateGradient()
         {
@@ -143,7 +145,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float CalculateC()
         {
-            return -(Centre.Y + CalculateGradient() * Centre.X);
+            return CalculateGradient() * Centre.X - Centre.Y;
         }
     }
 

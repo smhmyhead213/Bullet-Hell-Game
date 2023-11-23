@@ -235,8 +235,11 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
+            //Utilities.drawTextInDrawMethod(
+            //    "Controls: WASD to move, Left Click or Enter to shoot, Space to dash, Shift for precision.", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White);
+
             Utilities.drawTextInDrawMethod(
-                "Controls: WASD to move, Left Click or Enter to shoot, Space to dash, Shift for precision.", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White);
+                $"IntPtr size: {IntPtr.Size}", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White);
         }
     }
 }

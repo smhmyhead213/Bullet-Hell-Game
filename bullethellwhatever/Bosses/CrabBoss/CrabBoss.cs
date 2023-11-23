@@ -38,8 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Texture = Assets["CrabBody"];
             Size = Vector2.One * 1.5f;
             Position = Utilities.CentreOfScreen();
-            MaxHP = 550f;
-
+            MaxHP = 400f;
 
             Colour = Color.White;
 
@@ -241,12 +240,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 //}
             }
 
-            if (player.PlayerDeathray.Hitbox is not null)
-                Utilities.drawTextInDrawMethod(Hitbox.PointOfIntersection(player.PlayerDeathray.Hitbox).ToString(), new Vector2(1500, 200), _spriteBatch, font, Color.White);
+            //if (player.PlayerDeathray.Hitbox is not null)
+            //    Utilities.drawTextInDrawMethod(Hitbox.PointOfIntersection(player.PlayerDeathray.Hitbox).ToString(), new Vector2(1500, 200), _spriteBatch, font, Color.White);
 
             base.Draw(spriteBatch);
 
-            Hitbox.DrawHitbox();
+            //Hitbox.DrawHitbox();
 
             foreach (CrabLeg leg in Legs)
             {

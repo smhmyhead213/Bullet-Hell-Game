@@ -78,7 +78,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 IsInvincible = false;
             }
         }
+        
+        public virtual void SetMaxHP(float maxHP, bool setHP)
+        {
+            MaxHP = maxHP;
 
+            if (setHP)
+            {
+                Health = MaxHP;
+            }
+        }
         public virtual float RotationFromV() // rotation from vertical
         {
             float output = RotationConstant + PI + Rotation;

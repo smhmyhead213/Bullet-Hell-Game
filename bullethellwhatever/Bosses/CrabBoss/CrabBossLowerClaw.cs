@@ -14,8 +14,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabBossLowerClaw(Entity owner, CrabLeg leg, string texture, int legIndex) : base(owner, leg, texture, legIndex)
         {
-            MaxHP = 35f;
-            Health = MaxHP;
+            //MaxHP = 35f;
+            //Health = MaxHP;
         }
 
         //public override Vector2 CalculateEnd()

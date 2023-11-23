@@ -46,18 +46,21 @@ namespace bullethellwhatever.BaseClasses
         }
         public void ReplaceAttackPattern(BossAttack[] attacks)
         {
-            BossAttacks = attacks;
-
-            for (int i = 0; i < BossAttacks.Length; i++)
+            if (BossAttacks is not null)
             {
-                BossAttacks[i].Owner = this;
-                BossAttacks[i].InitialiseAttackValues();
-            }
+                BossAttacks = attacks;
 
-            AITimer = 0;
-            if (attacks.Length == 1)
-                AttackNumber = 0; // remember 0 is desp / death anim
-            else AttackNumber = 1;
+                for (int i = 0; i < BossAttacks.Length; i++)
+                {
+                    BossAttacks[i].Owner = this;
+                    BossAttacks[i].InitialiseAttackValues();
+                }
+
+                AITimer = 0;
+                if (attacks.Length == 1)
+                    AttackNumber = 0; // remember 0 is desp / death anim
+                else AttackNumber = 1;
+            }
         }
     }
 }

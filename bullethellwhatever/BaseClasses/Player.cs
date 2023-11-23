@@ -359,7 +359,7 @@ namespace bullethellwhatever.BaseClasses
                 playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))));
 
                 playerProjectile.Spawn(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.35f, 1, "MachineGunProjectile", 0, Vector2.One, this, false, Color.LightBlue, true, true);
+                    0.4f, 1, "MachineGunProjectile", 0, Vector2.One, this, false, Color.LightBlue, true, true);
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -369,7 +369,7 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();
 
-                float damage = 0.28f * 300f;
+                float damage = 0.28f;
 
                 projectile.Spawn(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", 0, Vector2.One, this, false, Color.LimeGreen, true, true);
             }

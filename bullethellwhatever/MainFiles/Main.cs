@@ -112,6 +112,7 @@ namespace bullethellwhatever.MainFiles
         {
             // -- set up fmod --
 
+            FMOD.Memory.GetStats(out _, out _);
             FMOD.Studio.System.create(out var fmodStudioSystem);
             FMODSystem = fmodStudioSystem;
             fmodStudioSystem.getCoreSystem(out var fmodSystem);

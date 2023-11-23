@@ -37,9 +37,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Owner = owner;
 
             UpperArm = new CrabBossUpperArm(Owner, this, "CrabUpperArm", legIndex);
+            UpperArm.SetMaxHP(50f, true);
             LowerArm = new CrabBossLowerArm(Owner, this, "CrabLowerArm", legIndex);
+            LowerArm.SetMaxHP(35f, true);
             UpperClaw = new CrabBossUpperClaw(Owner, this, "CrabUpperClaw", legIndex);
+            UpperClaw.SetMaxHP(20f, true);
             LowerClaw = new CrabBossLowerClaw(Owner, this, "CrabLowerClaw", legIndex);
+            LowerClaw.SetMaxHP(20f, true);
 
             HorizontalFlip = false;
 
