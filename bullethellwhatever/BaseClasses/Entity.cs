@@ -42,6 +42,8 @@ namespace bullethellwhatever.BaseClasses
         public Effect? Shader;
         public int Updates;
 
+        public Action OnDeath;
+
         public float[] afterimagesRotations;
         public Vector2[] afterimagesPositions;
 
@@ -91,6 +93,21 @@ namespace bullethellwhatever.BaseClasses
             Velocity.Y = y;
         }
 
+        public static void DustExplosion(int numberOfParticles, Vector2 position, Color colour)
+        {
+            for (int i = 0; i < numberOfParticles; i++)
+            {
+                float rotation = Utilities.RandomFloat(0, Tau);
+
+                Particle p = new Particle();
+
+                Vector2 velocity = 10f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
+                int lifetime = 20;
+
+                p.Spawn("box", position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, colour, 1f, 20);
+            }
+        }
+
         public static bool touchingBottom(Entity entity) //hieght is height of texture
         {
             if (entity.Position.Y + entity.Texture.Height * entity.GetSize().Y / 2 >= _graphics.PreferredBackBufferHeight)
@@ -132,9 +149,19 @@ namespace bullethellwhatever.BaseClasses
         }
         public abstract void AI();
 
+        public virtual void SetOnDeath(Action action)
+        {
+            OnDeath = action;
+        }
         public virtual void Die()
         {
             //death behaviour
+
+            if (OnDeath is not null)
+            {
+                OnDeath();
+            }
+
             DeleteNextFrame = true;
         }
 

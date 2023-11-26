@@ -15,6 +15,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
         public bool KeepExpanding;
         public int FadeOutTime;
         public float SizeAtDeath;
+        public bool Bounce;
         public BigMassiveOrb(float expansionRate, int lifetime)
         {
             ExpansionRate = expansionRate;
@@ -27,31 +28,44 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
         {
             base.Spawn(position, velocity, damage, pierce, texture, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
-            afterimagesPositions = new Vector2[22 * Updates];
+            Bounce = true;
+        }
 
-            DrawAfterimages = true;
+        public override void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        {
+            base.Spawn(position, velocity, damage, pierce, texture, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+
+            Bounce = true;
         }
 
         public override void AI()
         {
             base.AI();
 
-            HandleBounces();
-
             if (touchingAnEdge(this))
             {
-                Drawing.ScreenShake(10, 6);
+                HandleBounces();
 
-                float offset = 0;
-
-                int projectilesPerRing = Utilities.ValueFromDifficulty(15, 25, 32, 40);
-
-                for (int i = 0; i < projectilesPerRing; i++)
+                if (Bounce)
                 {
-                    ExplodingProjectileFragment projectile = new ExplodingProjectileFragment();
+                    Drawing.ScreenShake(10, 6);
 
-                    projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(-Vector2.UnitY, (PI * 2 / projectilesPerRing * i) + offset),
-                    1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, false, false);
+                    float offset = 0;
+
+                    int projectilesPerRing = Utilities.ValueFromDifficulty(15, 25, 32, 40);
+
+                    for (int i = 0; i < projectilesPerRing; i++)
+                    {
+                        ExplodingProjectileFragment projectile = new ExplodingProjectileFragment();
+
+                        projectile.Spawn(Position, 3f * Utilities.RotateVectorClockwise(-Vector2.UnitY, (PI * 2 / projectilesPerRing * i) + offset),
+                        1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, false, false);
+                    }
+                }
+
+                else if (AITimer > 10)
+                {
+                    Die();
                 }
             }
 
@@ -86,6 +100,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
         public override void Die()
         {
             DeleteNextFrame = true; // exempt from fading out as this has its own fade out specifically
+
+            if (OnDeath is not null)
+            {
+                OnDeath();
+            }
         }
         public override void Draw(SpriteBatch s)
         {

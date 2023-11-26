@@ -60,7 +60,7 @@ namespace bullethellwhatever.MainFiles
                 case GameStates.InGame:
                     DrawGame.ResetHUD();
                     break; // dont bother doing anything
-                default: throw new Exception("if you hit this exception you really messed up");
+                default: throw new Exception("if you hit this exception you really messed up"); // no game state is active somehow
             }
         }
 

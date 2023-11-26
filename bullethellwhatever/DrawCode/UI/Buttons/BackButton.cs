@@ -11,16 +11,15 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
 {
     public class BackButton : Button
     {
-        public BackButton(Vector2 position, string texture, Vector2 size) : base(position, Assets[texture], size)
+        public BackButton(string texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(Assets[texture], size, owner, position)
         {
             Texture = Assets[texture];
             Size = size;
         }
-        public BackButton(Texture2D texture, Vector2 size, Menu owner) : base(texture, size, owner)
+        public BackButton(Texture2D texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(texture, size, owner, position)
         {
             Texture = texture;
             Size = size;
-            Owner = owner;
         }
         public override void HandleClick()
         {

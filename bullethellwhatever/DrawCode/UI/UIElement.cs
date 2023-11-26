@@ -19,29 +19,17 @@ namespace bullethellwhatever.DrawCode.UI
         public Menu Owner;
         public RectangleButGood ClickBox;
         public Action ClickEvent;
-        public UIElement(Vector2 position, string texture, Vector2 size, Menu owner)
+        public UIElement(string texture, Vector2 size, Menu owner = null, Vector2 position = default)
         {
             PositionInMenu = position;
             Texture = Assets[texture];
             Size = size;
             Owner = owner;
         }
-        public UIElement(Vector2 position, Texture2D texture, Vector2 size)
+        public UIElement(Texture2D texture, Vector2 size, Menu owner = null, Vector2 position = default)
         {
             PositionInMenu = position;
             Texture = texture;
-            Size = size;
-        }
-        public UIElement(Texture2D texture, Vector2 size, Menu owner)
-        {
-            Texture = texture;
-            Size = size;
-            Owner = owner;
-        }
-
-        public UIElement(string texture, Vector2 size, Menu owner)
-        {
-            Texture = Assets[texture];
             Size = size;
             Owner = owner;
         }

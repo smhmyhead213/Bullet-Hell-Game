@@ -16,6 +16,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public float DistanceFromEyeCentre;
         public float RotationWithinEye;
         public Vector2 Size;
+        public Vector2 InitialSize;
+
         public Vector2 EyeCentre;
         public Pupil(string texture, float distanceFromEyeCentre, float rotationWithinEye, Vector2 size)
         {
@@ -23,6 +25,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             DistanceFromEyeCentre = distanceFromEyeCentre;
             RotationWithinEye = rotationWithinEye;
             Size = size;
+            InitialSize = Size;
         }
 
         public void Update(Vector2 eyeCentre)

@@ -24,7 +24,12 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public bool StayWithOwner;
         public string LineShader;
         public bool SpawnRayAfterFinish;
+        public float InitialWidth;
+
         public Deathray ToSpawn;
+        public Action OnDeath;
+
+        public bool ThickenIn;
         public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
             Rotation = rotation;
@@ -34,17 +39,25 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             RotationalVelocity = rotationalVelocity;
             RotationalAcceleration = rotationalAcceleration;
             Width = width;
+            InitialWidth = Width;
             Length = length;
             Duration = duration;
             Origin = origin;
             Colour = colour;
-            Texture = Main.Assets[texture];
+            Texture = Assets[texture];
             Owner = owner;
             TimeAlive = 0;
             StayWithOwner = stayWithOwner;
 
+            ThickenIn = false;
+
             LineShader = "TelegraphLineShader";
             Owner.activeTelegraphs.Add(this);
+        }
+
+        public void ShouldThickenIn(bool thicken)
+        {
+            ThickenIn = thicken;
         }
 
         public void AI()
@@ -65,6 +78,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             {
                 DeleteNextFrame = true;
 
+                if (OnDeath is not null)
+                {
+                    OnDeath();
+                }
+
                 if (SpawnRayAfterFinish)
                 {
                     ToSpawn.SpawnDeathray(Origin, ToSpawn.Rotation, ToSpawn.Damage, ToSpawn.Duration, ToSpawn.Texture, ToSpawn.Width, ToSpawn.Length, ToSpawn.AngularVelocity, ToSpawn.Acceleration, ToSpawn.IsHarmful, ToSpawn.Colour, ToSpawn.Shader, ToSpawn.Owner);
@@ -72,6 +90,18 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
                 }
             }
 
+            float maxThicknessTime = 3 * Duration / 4;
+
+            if (ThickenIn && TimeAlive < maxThicknessTime)
+            {
+                // ln(x) normally reaches 1 at x = e.
+                // we want it reaching 1 at x = duration / 8
+                // ln(x/2) reaches y = 1 at x = 2e.
+                // so ln(x/a) reaches y = 1 at x = a * e.
+                // so ln(x/a) reaches y = 1 at x = duration / 8 when a = (duration / 8) / e
+
+                Width = InitialWidth * Log(TimeAlive / (maxThicknessTime / E));
+            }
         }
 
         public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
@@ -92,6 +122,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             ToSpawn = new Deathray();
             ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
             ToSpawn.SetStayWithOwner(stayWithOwner);
+        }
+
+        public void SetOnDeath(Action action)
+        {
+            OnDeath = action;
         }
         public void ChangeShader(string shaderName)
         {

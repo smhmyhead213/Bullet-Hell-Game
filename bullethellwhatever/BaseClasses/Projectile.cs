@@ -34,43 +34,17 @@ namespace bullethellwhatever.BaseClasses
         public Action OnEdgeTouch;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
-            Depth = 0;
-
-            if (!DrawAfterimages) // dont set to false by default if already set to true
-            {
-                DrawAfterimages = false;
-            }
-
-            Position = position;
-            Pierce = pierce;
-            TimeOutsidePlayArea = 0;
-            PierceRemaining = Pierce;
-            Velocity = velocity;
-            Damage = damage;
             Texture = Assets[texture];
-            Acceleration = acceleration;
-            Colour = colour;
-            DeleteNextFrame = false;
-            Size = size;
-            Owner = owner;
-            IsHarmful = isHarmful;
-            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
-            RemoveOnHit = removeOnHit;
-            Updates = 1;
 
-            Opacity = 1f;
-
-            Dying = false;
-
-            DyingTimer = 0;
-
-            //float sizeScalar = ScreenWidth * 1f / IdealScreenWidth * 1f; //adjust for screen size horizontally
-
-            //Size = new Vector2(Size.X / IdealScreenWidth * ScreenWidth, Size.Y / IdealScreenHeight * ScreenHeight) * sizeScalar;
-
-            PrepareProjectile();
+            PrepareProjectile(position, velocity, damage, pierce, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
         }
 
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        {
+            Texture = texture;
+
+            PrepareProjectile(position, velocity, damage, pierce, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+        }
         //and drawing
         public void HandleBounces()
         {
@@ -99,9 +73,39 @@ namespace bullethellwhatever.BaseClasses
                     Velocity.Y = Velocity.Y * -1f;
             }
         }
-        public virtual void PrepareProjectile()
+        public virtual void PrepareProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
+            Depth = 0;
+
+            if (!DrawAfterimages) // dont set to false by default if already set to true
+            {
+                DrawAfterimages = false;
+            }
+
+            Position = position;
+            Pierce = pierce;
+            TimeOutsidePlayArea = 0;
+            PierceRemaining = Pierce;
+            Velocity = velocity;
+            Damage = damage;
+            Acceleration = acceleration;
+            Colour = colour;
+            DeleteNextFrame = false;
+            Size = size;
+            Owner = owner;
+            IsHarmful = isHarmful;
+            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            RemoveOnHit = removeOnHit;
+            Updates = 1;
+
+            Opacity = 1f;
+
+            Dying = false;
+
+            DyingTimer = 0;
+
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
+
 
             SetHitbox();
 

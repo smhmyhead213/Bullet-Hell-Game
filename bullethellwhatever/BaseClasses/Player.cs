@@ -230,7 +230,7 @@ namespace bullethellwhatever.BaseClasses
                 Utilities.InitialiseGame();
                 Restarted = true;
 
-                BackButton start = new BackButton(new Vector2(ScreenWidth / 4, ScreenHeight / 4), "StartButton", Vector2.One * 3);
+                BackButton start = new BackButton("StartButton", Vector2.One * 3, null, new Vector2(ScreenWidth / 4, ScreenHeight / 4));
 
                 start.SetClickEvent(new Action(() =>
                 {

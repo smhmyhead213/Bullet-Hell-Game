@@ -40,8 +40,10 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    float distanceFromCentre = abs(input.TextureCoordinates.x - 0.5);
-    
+    float distanceFromCentre;
+
+    distanceFromCentre = abs(input.TextureCoordinates.x - 0.5);
+   
     float opacity = pow(1 - distanceFromCentre, 7);
     
     if (duration >= 10) // prevent this from dying i suppose

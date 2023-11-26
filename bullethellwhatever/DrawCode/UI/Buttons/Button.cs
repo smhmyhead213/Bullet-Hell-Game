@@ -15,23 +15,19 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
 {
     public class Button : UIElement
     {
-        public Button(Texture2D texture, Vector2 size, Menu owner) : base(texture, size, owner)
-        {
-            Texture = texture;
-            Size = size;
-            Owner = owner;
-        }
-        public Button(string texture, Vector2 size, Menu owner) : base(texture, size, owner)
-        {
-            Texture = Assets[texture];
-            Size = size;
-            Owner = owner;
-        }
-        public Button(Vector2 position, Texture2D texture, Vector2 size) : base(position, texture, size)
+        public Button(Texture2D texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(texture, size, owner, position)
         {
             Texture = texture;
             Size = size;
             Position = position;
+            Owner = owner;
+        }
+        public Button(string texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(texture, size, owner, position)
+        {
+            Texture = Assets[texture];
+            Size = size;
+            Position = position;
+            Owner = owner;
         }
     }
 }

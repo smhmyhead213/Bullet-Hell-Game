@@ -105,7 +105,10 @@ namespace bullethellwhatever.BaseClasses
 
         public override void AI()
         {
-
+            if (ExtraAI is not null)
+            {
+                ExtraAI();
+            }
         }
 
         public override void Update()

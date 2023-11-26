@@ -182,7 +182,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateCreditsMenu()
         {
-            BackButton backButton = new BackButton(new Vector2(ScreenWidth / 5f, ScreenHeight / 5f), "Back", new Vector2(3, 3));
+            BackButton backButton = new BackButton("Back", new Vector2(3, 3), null, new Vector2(ScreenWidth / 5f, ScreenHeight / 5f));
 
             backButton.SetClickEvent(new Action(() =>
             {

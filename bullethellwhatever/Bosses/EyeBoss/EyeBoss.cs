@@ -55,6 +55,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             BossAttacks = new EyeBossAttack[]
             {
                 new ProjectileFan(1000),
+                new Meteors(1200),
                 new ProjectileFan(1000),
             };
         }

@@ -11,16 +11,10 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
 {
     public class ExitButton : Button
     {
-        public ExitButton(Vector2 position, string texture, Vector2 size) : base(position, Assets[texture], size)
+        public ExitButton(string texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(Assets[texture], size, owner, position)
         {
             Texture = Assets[texture];
             Size = size;
-        }
-        public ExitButton(string texture, Vector2 size, Menu owner) : base(texture, size, owner)
-        {
-            Texture = Assets[texture];
-            Size = size;
-            Owner = owner;
         }
         public override void HandleClick()
         {
