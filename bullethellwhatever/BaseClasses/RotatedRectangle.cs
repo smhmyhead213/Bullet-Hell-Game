@@ -130,13 +130,13 @@ namespace bullethellwhatever.BaseClasses
         {
             // rearrangement of simultaneous equation ax + b = cx + d, in future adapt x int calculation to take into account c.
 
-            // due to the coordinate system, an upwards slope is a negative gradient and a positive c value indicates moving the line downwards.
-
-            float xOfIntercept = -1f * (CalculateC() - other.CalculateC()) / (CalculateGradient() - other.CalculateGradient());
+            float xOfIntercept = other.CalculateC() - CalculateC() / (CalculateGradient() - other.CalculateGradient());
 
             float yOfIntercept = CalculateGradient() * xOfIntercept + CalculateC();
 
-            return new Vector2(xOfIntercept, yOfIntercept) * -1f;
+            Vector2 poi = new Vector2(xOfIntercept, yOfIntercept);
+
+            return poi;
         }
         public float CalculateGradient()
         {
@@ -145,7 +145,9 @@ namespace bullethellwhatever.BaseClasses
 
         public float CalculateC()
         {
-            return CalculateGradient() * Centre.X - Centre.Y;
+            //return CalculateGradient() * Centre.X - Centre.Y;
+
+            return Centre.Y - (Centre.X * CalculateGradient());
         }
     }
 

@@ -23,6 +23,7 @@ namespace bullethellwhatever.Projectiles.Base
         public int Duration;
         public bool StayWithOwner;
         public Texture2D Map;
+
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
         {
@@ -188,7 +189,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
                 Die();
-            }          
+            }
         }
         public void DrawWithShader(SpriteBatch spriteBatch)
         {
@@ -211,6 +212,47 @@ namespace bullethellwhatever.Projectiles.Base
             }          
         }
 
+        public Collision BeamEdgeTouch()
+        {
+            Vector2 bucket = EdgeTouchPointGivenX(ScreenWidth);
+
+            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching right?
+            {
+                return new Collision(EdgeTouchPointGivenX(ScreenWidth), true);
+            }
+
+            bucket = EdgeTouchPointGivenX(0);
+
+            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // toucing left?
+            {
+                return new Collision(EdgeTouchPointGivenX(0), true);
+            }
+
+            bucket = EdgeTouchPointGivenY(0);
+
+            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching top?
+            {
+                return new Collision(EdgeTouchPointGivenY(0), true);
+            }
+
+            bucket = EdgeTouchPointGivenY(ScreenHeight);
+
+            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching bottom?
+            {
+                return new Collision(EdgeTouchPointGivenY(ScreenHeight), true);
+            }
+
+            else return new Collision(Vector2.Zero, false);
+        }
+
+        public Vector2 EdgeTouchPointGivenX(float x)
+        {
+            return new Vector2(x, Hitbox.CalculateGradient() * x + Hitbox.CalculateC());
+        }
+        public Vector2 EdgeTouchPointGivenY(float y)
+        {
+            return new Vector2((y - Hitbox.CalculateC()) / Hitbox.CalculateGradient(), y);
+        }
         public override void OnHitEffect(Vector2 position)
         {
             if (Owner == player && AITimer % 3 == 0)
@@ -237,6 +279,11 @@ namespace bullethellwhatever.Projectiles.Base
         }
         public override void Draw(SpriteBatch spritebatch)
         {
+            if (BeamEdgeTouch().Collided)
+            {
+                //Drawing.BetterDraw(Assets["box"], BeamEdgeTouch().CollisionPoint, null, Color.AliceBlue, 0, Vector2.One * 5f, SpriteEffects.None, 1);
+            }
+
             if (IsActive)
             {
                 Shader.Parameters["uTime"]?.SetValue(AITimer);

@@ -68,9 +68,31 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         Drawing.ScreenShake(12, 12);
                     }));
 
+                    int timeBetweenProjs = 5;
+                    int projectileTimeOffset = Utilities.RandomInt(0, timeBetweenProjs - 1);
+
+                    orb.SetExtraAI(new Action(() =>
+                    {
+                        if (orb.AITimer % timeBetweenProjs == projectileTimeOffset)
+                        {
+                            for (int j = 0; j < 2; j++)
+                            {
+                                Projectile p = new Projectile();
+
+                                float projSpeed = 2.5f;
+
+                                p.SetDrawAfterimages(50);
+
+                                p.Rotation = additionalRotation - PI / 2 + (j * PI);
+
+                                p.Spawn(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.035f, Vector2.One * 0.6f, Owner, true, Color.White, true, false);
+                            }
+                        }
+                    }));
+
                     orb.SetDrawAfterimages(11);
 
-                    orb.Spawn(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 80f, t.Rotation), 1f, 1, texture, 1.01f, thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
+                    orb.Spawn(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, texture, 1.01f, thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
 
                     orb.Bounce = false;
                 }));
