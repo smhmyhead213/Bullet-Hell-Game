@@ -7,6 +7,7 @@ matrix worldViewProjection;
 float deathrayPulsationRate;
 float uTime;
 int direction; // 1 or -1
+float3 colour;
 
 struct VertexShaderInput
 {
@@ -59,10 +60,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
         //float red =  7. * pow(4., uv.x);
         //float white = 1. - pow(5. * sin(uv.x) + 15., abs(uv.x - 0.5));
         
-    float red = 2.5 - distanceFromCentre;
+    float colourAmount = 2.5 - distanceFromCentre;
     float white = 0.15 * sineOscillation + 0.8 - distanceFromCentre * 2.;
-    
-    return float4(red, white, white, 1) * opacity;
+
+    return float4(lerp(white, colourAmount, colour.r), lerp(white, colourAmount, colour.g), lerp(white, colourAmount, colour.b), 1) * opacity;
 
     
 }

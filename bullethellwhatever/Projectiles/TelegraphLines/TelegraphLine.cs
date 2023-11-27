@@ -138,6 +138,8 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Shaders[LineShader].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
             Shaders[LineShader].Parameters["duration"]?.SetValue(Duration);
 
+            Shaders[LineShader].Parameters["colour"]?.SetValue(Colour.ToVector3());
+
             Shaders[LineShader].CurrentTechnique.Passes[0].Apply();
 
             Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.

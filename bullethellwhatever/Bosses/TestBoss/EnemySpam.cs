@@ -14,7 +14,6 @@ namespace bullethellwhatever.Bosses.TestBoss
 {
     public class EnemySpam : BossAttack
     {
-        public int NumberOfEnemies;
         public int NumberOfProjectiles;
         public EnemySpam(int endTime) : base(endTime)
         {
@@ -41,9 +40,10 @@ namespace bullethellwhatever.Bosses.TestBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
+            int numberOfEnemies = EndTime / (Owner.BarDuration / 4); ;
+
             if (AITimer == 0)
             {
-                NumberOfEnemies = EndTime / (Owner.BarDuration / 4);
                 Owner.Velocity = Vector2.Zero;
                 Owner.Position = Utilities.CentreOfScreen();
             }
@@ -54,7 +54,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 Vector2 toPlayer = Utilities.SafeNormalise(Main.player.Position - Owner.Position, Vector2.Zero);
 
-                enemy.Spawn(Owner.Position, 5f * Utilities.RotateVectorClockwise(toPlayer, MathHelper.TwoPi / NumberOfEnemies * AITimer / (Owner.BarDuration / NumberOfEnemies)), 1f, "box", Vector2.One * 0.8f, 1f, 1, Color.LightGray,
+                enemy.Spawn(Owner.Position, 5f * Utilities.RotateVectorClockwise(toPlayer, MathHelper.TwoPi / numberOfEnemies * AITimer / (Owner.BarDuration / numberOfEnemies)), 1f, "box", Vector2.One * 0.8f, 1f, 1, Color.LightGray,
                     false, true);
             }
 

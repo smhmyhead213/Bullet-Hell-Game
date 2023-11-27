@@ -5,6 +5,7 @@ matrix worldViewProjection;
 float uTime;
 float AngularVelocity;
 int duration;
+float3 colour;
 
 struct VertexShaderInput
 {
@@ -45,9 +46,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     //float3 col = float3(value, value, value);
     
     float opacity = 1;
- 
     
-    return float4(value, value, value, 0);
+    return float4(colour.r * value, colour.g * value, colour.b * value, 0);
     
 }
 

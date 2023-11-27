@@ -43,6 +43,7 @@ namespace bullethellwhatever.BaseClasses
         public int Updates;
 
         public Action OnDeath;
+        public Action ExtraAI;
 
         public float[] afterimagesRotations;
         public Vector2[] afterimagesPositions;
@@ -152,6 +153,10 @@ namespace bullethellwhatever.BaseClasses
         public virtual void SetOnDeath(Action action)
         {
             OnDeath = action;
+        }
+        public virtual void SetExtraAI(Action action)
+        {
+            ExtraAI = action;
         }
         public virtual void Die()
         {

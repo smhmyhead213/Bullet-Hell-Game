@@ -26,7 +26,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int timeBetweenMeteors = 30;
+            int timeBetweenMeteors = 30; // set this to 10 for insane mode, trust me
             int time = AITimer % timeBetweenMeteors;
             int thickness = 300;
 

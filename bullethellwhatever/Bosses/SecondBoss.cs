@@ -139,8 +139,11 @@ namespace bullethellwhatever.Bosses
             {              
                 dialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400);
 
-                //TelegraphLine t = new(0f, MathF.PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
+                TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
                 
+                TelegraphLine t2 = new(PI, PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
+                t.ChangeShader("OutlineTelegraphShader");
+
                 //Cuboid cuboid = new Cuboid(500, 500, 500, this);
 
                 //ray = new Deathray();

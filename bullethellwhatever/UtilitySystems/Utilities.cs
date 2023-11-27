@@ -204,6 +204,11 @@ namespace bullethellwhatever
 
             return false;
         }
+
+        public static Vector3 ColorToVec3(Color color)
+        {
+            return new Vector3(color.R, color.G, color.B);
+        }
         public static bool IsVectorWithinScreen(Vector2 v)
         {
             return v.X >= 0 && v.X <= ScreenWidth && v.Y >= 0 && v.Y <= ScreenHeight;

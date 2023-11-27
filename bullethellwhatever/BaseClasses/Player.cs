@@ -169,8 +169,6 @@ namespace bullethellwhatever.BaseClasses
                 Size = DefaultHitbox;
             }
 
-
-
             if (GameState.WeaponSwitchControl) //if scroll wheel controls
             {
                 if (mouseState.ScrollWheelValue / 120 % 3 == 0 && WeaponSwitchCooldownTimer == 0)  //are you happy now Gemma??????????????????????
@@ -289,7 +287,7 @@ namespace bullethellwhatever.BaseClasses
             if (ActiveWeapon != Weapons.Laser)
             {
                 PlayerDeathray.IsSpawned = false;
-                Main.activeFriendlyProjectiles.Remove(PlayerDeathray); //i need to fix this crap one day
+                activeFriendlyProjectiles.Remove(PlayerDeathray); //i need to fix this crap one day
             }
 
             if (Health > 0)
@@ -379,8 +377,8 @@ namespace bullethellwhatever.BaseClasses
         {
             if (IsKeyPressed(Keys.K))
             {
-                for (int i = 0; i < Main.activeProjectiles.Count; i++)
-                    Utilities.drawTextInDrawMethod(Main.activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;
+                for (int i = 0; i < activeProjectiles.Count; i++)
+                    Utilities.drawTextInDrawMethod(activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;
             }
 
             if (DashAbility.IsExecuting)
@@ -415,11 +413,11 @@ namespace bullethellwhatever.BaseClasses
             }
             else DrawAfterimages = false;
 
-            player.Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
+            Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Drawing.BetterDraw(player.Texture, player.Position, null, Color.White * player.Opacity, player.Rotation, player.GetSize(), SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Texture, Position, null, Color.White * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
         }
     }
 }

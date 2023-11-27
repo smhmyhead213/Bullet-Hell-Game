@@ -165,6 +165,11 @@ namespace bullethellwhatever.BaseClasses
 
         public override void AI()
         {
+            if (ExtraAI is not null)
+            {
+                ExtraAI();
+            }
+
             Position = Position + Velocity * ScaleFactor();
         }
 

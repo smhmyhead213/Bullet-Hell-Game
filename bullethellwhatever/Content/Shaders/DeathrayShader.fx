@@ -8,6 +8,7 @@ matrix worldViewProjection;
 float uTime;
 int duration;
 int direction; // 1 or -1
+float3 colour;
 //float timeToStartFadingOut = duration / 10f * 9f;
 
 struct VertexShaderInput
@@ -58,7 +59,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     // Adjust red and white values to achieve the desired effect.
     
-    float red = 1.4 - distanceFromCentre;
+    float colourAmount = 1.4 - distanceFromCentre;
     float white = 0.75 - distanceFromCentre * 2;
     
     if (uTime < duration / 10)
@@ -71,7 +72,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
         opacity = opacity * lerp(0, 1, (duration - uTime) / (duration / 10));
     }
     
-    return float4(red, white, white, 1) * opacity;
+    return float4(lerp(white, colourAmount, colour.r), lerp(white, colourAmount, colour.g), lerp(white, colourAmount, colour.b), 1) * opacity;
     
 }
 

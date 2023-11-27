@@ -242,6 +242,8 @@ namespace bullethellwhatever.Projectiles.Base
                 Shader.Parameters["uTime"]?.SetValue(AITimer);
                 Shader.Parameters["duration"]?.SetValue(Duration);
 
+                Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
+
                 if (Map is not null)
                 {
                     Shader.Parameters["noiseMap"]?.SetValue(Map);
