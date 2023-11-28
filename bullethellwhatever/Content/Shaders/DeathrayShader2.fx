@@ -46,7 +46,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float2 uv = input.TextureCoordinates;
     
-    deathrayPulsationRate = (-7 * uTime / 2600) + 10;
+    deathrayPulsationRate = 3.0;
     float sineOscillation = sin(uTime / deathrayPulsationRate - 12 * uv.y);
     float distanceFromCentre = abs(uv.x - 0.5);
     

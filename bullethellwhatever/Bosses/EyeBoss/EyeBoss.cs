@@ -27,6 +27,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Colour = Color.White;
 
             Pupil = new Pupil("Circle", 0, 0, Size / 4);
+            Pupil.Spawn(Position, Vector2.Zero, 0f, Pupil.Texture, Pupil.Size, 0, 0, Color.Black, false, false);
+            Pupil.SetParticipating(false);
 
             int numberOfLinks = 15;
 
@@ -55,7 +57,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
             BossAttacks = new EyeBossAttack[]
             {
                 new ProjectileFan(1000),
-                new Meteors(1200),
+                new Meteors(300),
+                new EyeRay(3200),
                 new ProjectileFan(1000),
             };
         }

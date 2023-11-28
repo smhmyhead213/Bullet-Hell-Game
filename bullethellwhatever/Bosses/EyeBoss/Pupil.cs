@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.DrawCode;
+﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,16 +10,17 @@ using System.Threading.Tasks;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
-    public class Pupil
+    public class Pupil : NPC
     {
-        public Texture2D Texture;
-        public Vector2 Position;
         public float DistanceFromEyeCentre;
         public float RotationWithinEye;
-        public Vector2 Size;
         public Vector2 InitialSize;
-
         public Vector2 EyeCentre;
+
+        //public Texture2D Texture;
+        //public Vector2 Size;
+        //public Vector2 Position;
+
         public Pupil(string texture, float distanceFromEyeCentre, float rotationWithinEye, Vector2 size)
         {
             Texture = Assets[texture];
@@ -41,6 +43,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
             {
                 RotationWithinEye = RotationWithinEye + Tau;
             }
+        }
+        public void Rotate(float angle)
+        {
+            RotationWithinEye = RotationWithinEye + angle;
         }
         public void LookAtPlayer(float distanceFromCentre)
         {

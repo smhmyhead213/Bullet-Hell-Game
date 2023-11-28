@@ -240,16 +240,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 //}
             }
 
-            if (player.PlayerDeathray.Hitbox is not null)
-            {
-                Utilities.drawTextInDrawMethod(Hitbox.PointOfIntersection(player.PlayerDeathray.Hitbox).ToString(), new Vector2(1500, 200), _spriteBatch, font, Color.White);
-
-                Drawing.BetterDraw(Assets["box"], Hitbox.PointOfIntersection(player.PlayerDeathray.Hitbox), null, Color.AliceBlue, 0, Vector2.One * 5f, SpriteEffects.None, 1);
-            }
-
             base.Draw(spriteBatch);
 
-            Hitbox.DrawHitbox();
+            //Hitbox.DrawHitbox();
 
             foreach (CrabLeg leg in Legs)
             {

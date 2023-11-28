@@ -17,6 +17,8 @@ namespace bullethellwhatever.Projectiles.Base
     {    
         public float Length;
         public float Width;
+        public float InitialWidth;
+        public bool ThinOut;
         public float AngularVelocity;
         public bool IsActive;
         public bool IsSpawned;
@@ -79,6 +81,9 @@ namespace bullethellwhatever.Projectiles.Base
 
             RemoveOnHit = false;
 
+            InitialWidth = Width;
+            ThinOut = false;
+
             return this;
         }
 
@@ -113,6 +118,9 @@ namespace bullethellwhatever.Projectiles.Base
 
             RemoveOnHit = false;
 
+            InitialWidth = Width;
+            ThinOut = false;
+
             return this;
         }
 
@@ -146,6 +154,9 @@ namespace bullethellwhatever.Projectiles.Base
             else Shader = null;
 
             RemoveOnHit = false;
+
+            InitialWidth = Width;
+            ThinOut = false;
         }
 
         public virtual void SetNoiseMap(string fileName)
@@ -170,6 +181,11 @@ namespace bullethellwhatever.Projectiles.Base
         }
         public override void AI()
         {
+            if (ExtraAI is not null)
+            {
+                ExtraAI();
+            }
+
             if (Acceleration != 0f)
                 AngularVelocity = AngularVelocity + Acceleration;
 
@@ -186,9 +202,21 @@ namespace bullethellwhatever.Projectiles.Base
                 Position = Owner.Position;
             }
 
+            int fadeOutTime = 20;
+
+            if (ThinOut && AITimer > Duration - fadeOutTime)
+            {
+                Width = MathHelper.Lerp(0, Width, (float)(Duration - AITimer) / fadeOutTime);
+            }
+
             if (AITimer > Duration && Owner is not BaseClasses.Player)
             {
                 Die();
+            }
+
+            if (BeamEdgeTouch().Collided && OnEdgeTouch is not null) // if we are touching an edge
+            {
+                OnEdgeTouch();
             }
         }
         public void DrawWithShader(SpriteBatch spriteBatch)
@@ -276,6 +304,10 @@ namespace bullethellwhatever.Projectiles.Base
         public override void Die()
         {
             DeleteNextFrame = true;
+        }
+        public virtual void SetThinOut(bool thinOut)
+        {
+            ThinOut = thinOut;
         }
         public override void Draw(SpriteBatch spritebatch)
         {

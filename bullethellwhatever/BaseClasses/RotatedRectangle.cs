@@ -128,9 +128,11 @@ namespace bullethellwhatever.BaseClasses
 
         public Vector2 PointOfIntersection(RotatedRectangle other)
         {
-            // rearrangement of simultaneous equation ax + b = cx + d, in future adapt x int calculation to take into account c.
+            // rearrangement of simultaneous equation ax + b = cx + d
 
-            float xOfIntercept = other.CalculateC() - CalculateC() / (CalculateGradient() - other.CalculateGradient());
+            // if theres an issue, make sure you have brackets in the right places if you change this again
+
+            float xOfIntercept = (other.CalculateC() - CalculateC()) / (CalculateGradient() - other.CalculateGradient());
 
             float yOfIntercept = CalculateGradient() * xOfIntercept + CalculateC();
 

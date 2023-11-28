@@ -85,8 +85,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
                 if (SpawnRayAfterFinish)
                 {
-                    ToSpawn.SpawnDeathray(Origin, ToSpawn.Rotation, ToSpawn.Damage, ToSpawn.Duration, ToSpawn.Texture, ToSpawn.Width, ToSpawn.Length, ToSpawn.AngularVelocity, ToSpawn.Acceleration, ToSpawn.IsHarmful, ToSpawn.Colour, ToSpawn.Shader, ToSpawn.Owner);
-                    ToSpawn.SetStayWithOwner(ToSpawn.StayWithOwner);
+                    ToSpawn.AddDeathrayToActiveProjectiles();
                 }
             }
 
@@ -123,7 +122,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
             ToSpawn.SetStayWithOwner(stayWithOwner);
         }
-
         public void SetOnDeath(Action action)
         {
             OnDeath = action;

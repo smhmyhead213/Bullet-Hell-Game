@@ -205,6 +205,10 @@ namespace bullethellwhatever
             return false;
         }
 
+        public static float ScreenDiagonalLength()
+        {
+            return Sqrt(ScreenWidth * ScreenWidth + ScreenHeight * ScreenHeight);
+        }
         public static Vector3 ColorToVec3(Color color)
         {
             return new Vector3(color.R, color.G, color.B);

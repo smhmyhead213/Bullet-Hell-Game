@@ -32,7 +32,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
             AITimer = 0;
             Owner = owner;
         }
-
         public void Update()
         {
             float gravitationalAcceleration = 0.3f;
@@ -53,7 +52,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             AITimer++;
         }
-
         public void SetDampingFactor(float dampingFactor)
         {
             DampingFactor = dampingFactor;
@@ -64,6 +62,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             return Position + Length * Utilities.RotateVectorClockwise(-Vector2.UnitY, Rotation);
         }
+
+        public void Rotate(float angle)
+        {
+            Rotation = Rotation + angle;
+        }
+
         public void Draw(SpriteBatch s)
         {
             s.Draw(Texture, Position, null, Color.White, Rotation - PI / 2, new Vector2(0, Texture.Height / 2f), new Vector2(Length / Texture.Width, 1f), SpriteEffects.None, 1);

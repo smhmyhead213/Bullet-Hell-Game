@@ -24,6 +24,8 @@ namespace bullethellwhatever.BaseClasses
 
         public bool TargetableByHoming;
 
+        public bool Participating; // whether to do anything with collision
+
         public int PierceToTake;
 
         public float DamageReduction;
@@ -143,42 +145,45 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void CheckForHits() // all passive checks go here as well
         {
-            if (Health < 0 && IsDesperationOver)
+            if (Participating)
             {
-                Die();
-
-                foreach (Projectile projectile in activeProjectiles)
+                if (Health < 0 && IsDesperationOver)
                 {
-                    if (projectile.Owner == this)
+                    Die();
+
+                    foreach (Projectile projectile in activeProjectiles)
                     {
-                        projectile.Die(); //when an npc dies, kill all of its projectiles
+                        if (projectile.Owner == this)
+                        {
+                            projectile.Die(); //when an npc dies, kill all of its projectiles
+                        }
                     }
                 }
-            }
 
-            if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
-            {
-                foreach (NPC npc in activeNPCs) // if not harmful (player allegiance), search for entities to attack
+                if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
                 {
-                    if (CollisionWithEntity(npc).Collided && npc.IFrames == 0) 
+                    foreach (NPC npc in activeNPCs) // if not harmful (player allegiance), search for entities to attack
                     {
-                        npc.IFrames = 5f;
+                        if (CollisionWithEntity(npc).Collided && npc.IFrames == 0)
+                        {
+                            npc.IFrames = 5f;
 
-                        npc.Health = npc.Health - Damage;
+                            npc.Health = npc.Health - Damage;
 
+                        }
                     }
                 }
-            }
 
-            if (IsHarmful)
-            {
-                if (CollisionWithEntity(player).Collided && player.IFrames == 0)
+                if (IsHarmful)
                 {
-                    player.IFrames = 20f;
+                    if (CollisionWithEntity(player).Collided && player.IFrames == 0)
+                    {
+                        player.IFrames = 20f;
 
-                    player.Health = player.Health - Damage;
+                        player.Health = player.Health - Damage;
 
-                    Drawing.ScreenShake(3, 10);
+                        Drawing.ScreenShake(3, 10);
+                    }
                 }
             }
         }
@@ -190,14 +195,17 @@ namespace bullethellwhatever.BaseClasses
 
         public void DrawHPBar(SpriteBatch spriteBatch)
         {
-            //base.Draw(spriteBatch);
-
-            if (this is not Boss)
+            if (Participating)
             {
-                UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 2f * DepthFactor(), 0.5f * DepthFactor());
-            }
+                //base.Draw(spriteBatch);
 
-            else UI.DrawHealthBar(spriteBatch, this, new Vector2(ScreenWidth / 2, ScreenHeight / 20 * 19), 120f, 3f); // boss bar
+                if (this is not Boss)
+                {
+                    UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 2f * DepthFactor(), 0.5f * DepthFactor());
+                }
+
+                else UI.DrawHealthBar(spriteBatch, this, new Vector2(ScreenWidth / 2, ScreenHeight / 20 * 19), 120f, 3f); // boss bar
+            }
         }
 
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
@@ -234,9 +242,15 @@ namespace bullethellwhatever.BaseClasses
 
         }
 
+        public virtual void SetParticipating(bool participating)
+        {
+            Participating = participating;
+        }
+
         public virtual void PrepareNPCButDontAddToListYet()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
+            Participating = true;
             SetHitbox();
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);

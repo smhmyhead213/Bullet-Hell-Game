@@ -13,7 +13,9 @@ namespace bullethellwhatever.DrawCode
     {
         public int Lifetime;
         public Vector2 Acceleration;
+        public Vector2 InitialSize;
         public float InitialOpacity;
+        public bool Shrink;
         public void Spawn(string texture, Vector2 position, Vector2 velocity, Vector2 acceleration, Vector2 size, float rotation, Color colour, float opacity, int lifetime)
         {
             Texture = Assets[texture];
@@ -26,10 +28,14 @@ namespace bullethellwhatever.DrawCode
 
             Size = size;
 
+            InitialSize = Size;
+
             Rotation = rotation;
             Colour = colour;
             Opacity = MathHelper.Clamp(opacity, 0f, 1f);
             InitialOpacity = Opacity;
+
+            Shrink = false;
 
             EntityManager.ParticlesToAdd.Add(this);
         }
@@ -39,6 +45,11 @@ namespace bullethellwhatever.DrawCode
             base.Update();
 
             AITimer++;
+        }
+
+        public void SetShrink(bool shrink)
+        {
+            Shrink = shrink;
         }
         public override void AI()
         {
@@ -52,9 +63,19 @@ namespace bullethellwhatever.DrawCode
                 Opacity = MathHelper.Lerp(0, InitialOpacity, (float)(Lifetime - AITimer) / fadeOutTime);
             }
 
+            if (Shrink)
+            {
+                Size = Vector2.Lerp(InitialSize, Vector2.Zero, (float)AITimer / Lifetime);
+            }
+
             if (AITimer == Lifetime)
             {
                 Die();
+            }
+
+            if (ExtraAI is not null)
+            {
+                ExtraAI();
             }
         }
 
