@@ -85,6 +85,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 p.Rotation = additionalRotation - PI / 2 + (j * PI);
 
+                                p.SetExtraAI(new Action(() =>
+                                {
+                                    p.HomeAtTarget(player.Position, 0.003f);
+                                }));
+
                                 p.Spawn(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.035f, Vector2.One * 0.6f, Owner, true, Color.White, true, false);
                             }
                         }

@@ -91,12 +91,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Ray = new Deathray().CreateDeathray(Owner.Position, rotation, 1f, beamDuration, "box", t.Width, t.Length, 0, 0, true, Color.Red, "CrabScrollingBeamShader", Owner);
 
-                Drawing.ScreenShake(7, 10);
-
                 Ray.SetNoiseMap("CrabScrollingBeamNoise");
                 Ray.SetStayWithOwner(true);
 
                 t.SpawnDeathrayOnDeath(Ray);
+            }
+
+            if (time == moveToPositionTime + 1 + teleTime)
+            {
+                Drawing.ScreenShake(7, 10);
             }
 
             if (time > moveToPositionTime)

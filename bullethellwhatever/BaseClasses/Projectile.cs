@@ -236,7 +236,13 @@ namespace bullethellwhatever.BaseClasses
                 OnEdgeTouch();
             }
         }
+        public virtual void HomeAtTarget(Vector2 targetPos, float homingStrength)
+        {
+            float currentVelocityMagnitude = Velocity.Length();
+            float angleToTarget = Utilities.VectorToAngle(targetPos - Position);
 
+            Velocity = Vector2.Lerp(Velocity, currentVelocityMagnitude * Utilities.AngleToVector(angleToTarget), 0.003f);
+        }
         public void HandlePierce(int pierceToTake)
         {
             if (PierceRemaining > 0)

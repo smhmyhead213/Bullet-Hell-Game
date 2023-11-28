@@ -58,7 +58,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             {
                 new ProjectileFan(1000),
                 new Meteors(300),
-                new EyeRay(3200),
+                new EyeRay(1600),
                 new ProjectileFan(1000),
             };
         }

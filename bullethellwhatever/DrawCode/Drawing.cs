@@ -29,6 +29,13 @@ namespace bullethellwhatever.DrawCode
             screenShakeObject = new ScreenShakeObject(0, 0);
         }
 
+        public static void UpdateDrawer()
+        {
+            if (screenShakeObject is not null && !Utilities.ImportantMenusPresent() && MainInstance.IsActive)
+            {
+                screenShakeObject.TickDownDuration();
+            }
+        }
         public static void RestartSpriteBatchForUI(SpriteBatch s)
         {
             s.End();
@@ -92,10 +99,8 @@ namespace bullethellwhatever.DrawCode
 
         public static void HandleScreenShake() //under the hood screen shaking
         {
-            if (screenShakeObject is not null)
+            if (screenShakeObject is not null && !Utilities.ImportantMenusPresent() && MainInstance.IsActive) 
             {
-                screenShakeObject.TickDownDuration();
-
                 Random rng = new Random();
 
                 screenShakeObject.Magnitude = new(rng.Next((int)screenShakeObject.MaxMagnitude.X), rng.Next((int)screenShakeObject.MaxMagnitude.Y));

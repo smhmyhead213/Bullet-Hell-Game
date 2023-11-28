@@ -53,10 +53,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 float pupilRotation = FanStartAngle + localTime * anglePerFrame; // add an angle based on the passed time
 
                 Pupil.GoTo(distanceFromEyeCentre, pupilRotation);
-
+                
                 Projectile p = new Projectile();
 
-                p.Spawn(Pupil.Position, 10f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
+                p.SetDrawAfterimages(11);
+                p.Spawn(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false);
             }
 
             if (time > shootTime + shootDuration && time < shootTime + shootDuration + shootSlowDownTime)

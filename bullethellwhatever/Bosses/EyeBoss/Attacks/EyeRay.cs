@@ -30,14 +30,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
             int startTime = 60;
             int teleDuration = 60;
             int rayFireTime = teleDuration + startTime;
-            int rayDuration = 3000;
+            int rayDuration = 1400;
             float teleRotationalVelocity = PI / 360;
             float teleRotationalAccel = -teleRotationalVelocity / rayFireTime;
             float beamRotationalVelocity = PI / 200;
 
             if (time == startTime)
             {
-                TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Pupil.Position), teleRotationalVelocity, teleRotationalAccel, 100, Utilities.ScreenDiagonalLength() / 1.5f, teleDuration,
+                // start a little before the player so the player cant just skip past
+
+                TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Pupil.Position) - (Sign(beamRotationalVelocity) * PI) , teleRotationalVelocity, teleRotationalAccel, 100, Utilities.ScreenDiagonalLength() / 1.5f, teleDuration,
                     Pupil.Position, Color.White, "box", Owner, true);
 
                 Pupil.GoTo(30, t.Rotation);
@@ -77,7 +79,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }
             }
 
-            if (time > rayFireTime) // beam is firing
+            if (time == rayFireTime)
+            {
+                Drawing.ScreenShake(5, rayDuration);
+            }
+
+            if (time > rayFireTime && time < rayFireTime + rayDuration) // beam is firing
             {
                 Pupil.Rotate(beamRotationalVelocity);
 

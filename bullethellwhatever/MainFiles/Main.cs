@@ -237,6 +237,8 @@ namespace bullethellwhatever.MainFiles
                     MediaPlayer.Pause();
             }
 
+            Drawing.UpdateDrawer();
+
             base.Update(gameTime);
         }
 
