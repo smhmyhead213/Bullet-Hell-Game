@@ -12,6 +12,7 @@ using System.Text;
 
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.UI;
 using System.Windows.Forms;
 
 namespace bullethellwhatever.Bosses.CrabBoss
@@ -231,10 +232,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (this is IDrawsShader) //if we were already drawing stuff that had shaders
                     Drawing.RestartSpriteBatchForShaders(spriteBatch);
                 else Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
-                
-                if (!StartedPhaseTwoTransition)
-                {
+            }
 
+            if (!StartedPhaseTwoTransition)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    UI.DrawHealthBar(_spriteBatch, Legs[i].CalculateHP() / Legs[i].CalculateMaxHP(), new Vector2(ScreenWidth / 4 + (i * (ScreenWidth / 2)), ScreenHeight / 6 * 5), ScreenWidth / 10, 50);
                 }
             }
 

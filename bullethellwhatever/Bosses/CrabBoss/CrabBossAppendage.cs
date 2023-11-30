@@ -73,7 +73,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 TargetableByHoming = false;
                 IsInvincible = true;
-                Colour = Color.LightGray;
+                Colour = Color.Gray;
             }
             else
             {
@@ -176,7 +176,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
+            Drawing.Draw(Texture, Position, null, Colour, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
 
             //Hitbox.DrawVertices(spriteBatch, Color.Red);
         }
