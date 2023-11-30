@@ -164,12 +164,11 @@ namespace bullethellwhatever.BaseClasses
                 {
                     foreach (NPC npc in activeNPCs) // if not harmful (player allegiance), search for entities to attack
                     {
-                        if (CollisionWithEntity(npc).Collided && npc.IFrames == 0)
+                        Collision c = CollisionWithEntity(npc);
+
+                        if (c.Collided && npc.IFrames == 0)
                         {
-                            npc.IFrames = 5f;
-
-                            npc.Health = npc.Health - Damage;
-
+                            DealDamageTo(npc, c);
                         }
                     }
                 }
@@ -178,11 +177,7 @@ namespace bullethellwhatever.BaseClasses
                 {
                     if (CollisionWithEntity(player).Collided && player.IFrames == 0)
                     {
-                        player.IFrames = 20f;
-
-                        player.Health = player.Health - Damage;
-
-                        Drawing.ScreenShake(3, 10);
+                        DamagePlayer();
                     }
                 }
             }
@@ -192,7 +187,17 @@ namespace bullethellwhatever.BaseClasses
         {
             DamageReduction = MathHelper.Clamp(dr, 0f, 1f);
         }
+        
+        public void TakeDamage(Collision collision, Projectile projectile)
+        {
+            IFrames = MaxIFrames;
 
+            Health = Health - ((1 - DamageReduction) * projectile.Damage);
+
+            projectile.OnHitEffect(collision.CollisionPoint);
+
+            projectile.HandlePierce(PierceToTake);
+        }
         public void DrawHPBar(SpriteBatch spriteBatch)
         {
             if (Participating)

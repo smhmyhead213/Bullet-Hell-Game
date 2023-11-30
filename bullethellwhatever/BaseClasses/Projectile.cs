@@ -193,13 +193,7 @@ namespace bullethellwhatever.BaseClasses
 
                     if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
                     {
-                        npc.IFrames = npc.MaxIFrames;
-
-                        npc.Health = npc.Health - ((1 - npc.DamageReduction) * Damage);
-                       
-                        OnHitEffect(collision.CollisionPoint);
-
-                        HandlePierce(npc.PierceToTake);
+                        DealDamageTo(npc, collision);
                     }
                 }
             }
@@ -208,21 +202,31 @@ namespace bullethellwhatever.BaseClasses
             {
                 if (CollisionWithEntity(player).Collided && player.IFrames == 0 && !Dying)
                 {
-                    player.IFrames = 20f;
-
-                    player.Health = player.Health - Damage;
-
-                    Drawing.ScreenShake(3, 10);
-
-                    HandlePierce(1);
+                    DamagePlayer();
                 }
             }
+        }
+
+        public override void DealDamageTo(NPC npc, Collision collision)
+        {
+            npc.TakeDamage(collision, this);
         }
 
         public virtual void OnHitEffect(Vector2 position)
         {
             if (OnHit is not null)
                 OnHit();
+        }
+
+        public override void DamagePlayer()
+        {
+            player.IFrames = 20f;
+
+            player.Health = player.Health - Damage;
+
+            Drawing.ScreenShake(3, 10);
+
+            HandlePierce(1);
         }
 
         public void SetEdgeTouchEffect(Action action)

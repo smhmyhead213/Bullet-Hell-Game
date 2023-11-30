@@ -104,9 +104,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     int numberOfRays = 30;
 
+                    float offsetLimit = PI / 12;
+                    float randomOffset = Utilities.RandomFloat(-offsetLimit, offsetLimit);
+
                     for (int i = 0; i < numberOfRays; i++)
                     {
-                        TelegraphLine t = new TelegraphLine(i * Tau / numberOfRays, 0, 0, 40, Utilities.ScreenDiagonalLength(), telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
+                        TelegraphLine t = new TelegraphLine(i * Tau / numberOfRays + offsetLimit, 0, 0, 40, Utilities.ScreenDiagonalLength(), telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
 
                         Deathray ray = new Deathray().CreateDeathray(t.Origin, t.Rotation, 1f, rayRingDuration, "box", t.Width, t.Length, 0, 0, true, Color.Gold, "DeathrayShader2", t.Owner);
 

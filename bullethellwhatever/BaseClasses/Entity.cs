@@ -94,6 +94,21 @@ namespace bullethellwhatever.BaseClasses
             Velocity.Y = y;
         }
 
+        public virtual void DealDamageTo(NPC npc, Collision collision)
+        {
+            npc.IFrames = npc.MaxIFrames;
+
+            npc.Health = npc.Health - Damage;
+        }
+
+        public virtual void DamagePlayer()
+        {
+            player.IFrames = 20f;
+
+            player.Health = player.Health - Damage;
+
+            Drawing.ScreenShake(3, 10);
+        }
         public static void DustExplosion(int numberOfParticles, Vector2 position, Color colour)
         {
             for (int i = 0; i < numberOfParticles; i++)
