@@ -109,7 +109,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     for (int i = 0; i < numberOfRays; i++)
                     {
-                        TelegraphLine t = new TelegraphLine(i * Tau / numberOfRays + offsetLimit, 0, 0, 40, Utilities.ScreenDiagonalLength(), telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
+                        TelegraphLine t = new TelegraphLine(i * Tau / numberOfRays + randomOffset, 0, 0, 40, Utilities.ScreenDiagonalLength(), telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
 
                         Deathray ray = new Deathray().CreateDeathray(t.Origin, t.Rotation, 1f, rayRingDuration, "box", t.Width, t.Length, 0, 0, true, Color.Gold, "DeathrayShader2", t.Owner);
 

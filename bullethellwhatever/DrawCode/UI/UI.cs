@@ -7,6 +7,7 @@ using System;
 using static bullethellwhatever.MainFiles.GameState;
 using bullethellwhatever.DrawCode.UI.Buttons;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.VisualBasic.Logging;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -203,36 +204,33 @@ namespace bullethellwhatever.DrawCode.UI
 
             // no need to restart again after this because menus are the last thing drawn
         }
-        public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight) //bar width and height are SCALE FACTORS DO NOT FORGET
+        public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
         {
             float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;
 
-            float emptySpaceOnLeft = BarWidth * (1 - healthRatio) / 2;
+            DrawHealthBar(_spriteBatch, healthRatio, positionOfBar, BarWidth, BarHeight);
+        }
+        public static void DrawHealthBar(SpriteBatch _spriteBatch, float progress, Vector2 positionOfBar, float BarWidth, float BarHeight)
+        {
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+
+            float emptySpaceOnLeft = (1 - progress) / 2; // fraction of bar width
 
             Texture2D texture = Assets["box"];
 
-            RotatedRectangle HPBar = new RotatedRectangle(0, BarWidth * texture.Width, BarHeight * texture.Height, positionOfBar, entityToDrawHPBarFor);
+            RotatedRectangle HPBar = new(0, BarWidth, BarHeight, positionOfBar, player);
             HPBar.UpdateVertices();
 
             float opacity = HPBar.Intersects(player.Hitbox).Collided ? 0.2f : 1f;
 
+            Vector2 size = new Vector2((float)BarWidth / texture.Width, (float)BarHeight / texture.Height);
+
             //HP bar background.
-            if (entityToDrawHPBarFor is not Player)
-            {
-                _spriteBatch.Draw(player.Texture, positionOfBar, null, Color.LimeGreen * opacity, 0f, new Vector2(player.Texture.Width / 2, player.Texture.Height / 2), new Vector2(BarWidth, BarHeight), SpriteEffects.None, 0f);
 
-                _spriteBatch.Draw(player.Texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * player.Texture.Width, positionOfBar.Y), null, Color.Red * opacity, 0f, new Vector2(player.Texture.Width / 2, player.Texture.Height / 2), new Vector2(BarWidth * healthRatio, BarHeight), SpriteEffects.None, 0f);
-            }
+            _spriteBatch.Draw(texture, positionOfBar, null, Color.LimeGreen * opacity, 0f, new Vector2(texture.Width / 2, texture.Height / 2), size, SpriteEffects.None, 0f);
 
-            else
-            {
-                Drawing.BetterDraw(player.Texture, positionOfBar, null, Color.Red * opacity, 0f, new Vector2(BarWidth, BarHeight), SpriteEffects.None, 0f);
-
-                Drawing.BetterDraw(player.Texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * player.Texture.Width, positionOfBar.Y), null, Color.LimeGreen * opacity, 0f, new Vector2(BarWidth * healthRatio, BarHeight), SpriteEffects.None, 0f);
-
-            }
+            _spriteBatch.Draw(texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * BarWidth, positionOfBar.Y), null, Color.Red * opacity, 0f, new Vector2(texture.Width / 2, texture.Height / 2), new Vector2(size.X * progress, size.Y), SpriteEffects.None, 0f);
         }
-
         public static void DrawTitleScreen(SpriteBatch _spriteBatch)
         {
             //Utilities.drawTextInDrawMethod(

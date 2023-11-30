@@ -29,6 +29,7 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
             isBoss = true;
             isPlayer = false;
+            MaxHP = 200;
             Health = 200;
             AITimer = 0;
             IFrames = 5f;

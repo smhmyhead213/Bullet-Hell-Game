@@ -198,7 +198,7 @@ namespace bullethellwhatever.BaseClasses
 
             projectile.HandlePierce(PierceToTake);
         }
-        public void DrawHPBar(SpriteBatch spriteBatch)
+        public virtual void DrawHPBar(SpriteBatch spriteBatch)
         {
             if (Participating)
             {
@@ -206,10 +206,10 @@ namespace bullethellwhatever.BaseClasses
 
                 if (this is not Boss)
                 {
-                    UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 2f * DepthFactor(), 0.5f * DepthFactor());
+                    UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
                 }
 
-                else UI.DrawHealthBar(spriteBatch, this, new Vector2(ScreenWidth / 2, ScreenHeight / 20 * 19), 120f, 3f); // boss bar
+                else UI.DrawHealthBar(spriteBatch, this, new Vector2(ScreenWidth / 2, ScreenHeight / 20 * 19), 900f, 30f); // boss bar
             }
         }
 
@@ -246,12 +246,10 @@ namespace bullethellwhatever.BaseClasses
             NPCsToAddNextFrame.Add(this);
 
         }
-
         public virtual void SetParticipating(bool participating)
         {
             Participating = participating;
         }
-
         public virtual void PrepareNPCButDontAddToListYet()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);

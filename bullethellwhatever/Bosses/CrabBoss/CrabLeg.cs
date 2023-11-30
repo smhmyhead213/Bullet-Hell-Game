@@ -10,7 +10,7 @@ using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
-   public class CrabLeg
+    public class CrabLeg
     {
         public Vector2 Position;
         public Vector2 Velocity;
@@ -125,6 +125,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerArm.Hitbox.DrawHitbox();
             UpperClaw.Hitbox.DrawHitbox();
             LowerClaw.Hitbox.DrawHitbox();
+        }
+
+        public float CalculateMaxHP()
+        {
+            return UpperArm.MaxHP + LowerArm.MaxHP + UpperClaw.MaxHP + LowerClaw.MaxHP;
+        }
+
+        public float CalculateHP()
+        {
+            return UpperArm.Health + LowerArm.Health + UpperClaw.Health + LowerClaw.Health;
         }
         public void Update()
         {

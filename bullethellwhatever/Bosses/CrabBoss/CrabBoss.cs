@@ -231,13 +231,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (this is IDrawsShader) //if we were already drawing stuff that had shaders
                     Drawing.RestartSpriteBatchForShaders(spriteBatch);
                 else Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
+                
+                if (!StartedPhaseTwoTransition)
+                {
 
-                //for (int i = 0; i < BoosterPositions.Length;i++) //remove later
-                //{
-                //    Vector2 drawPos = BoosterPositions[i];
-                //    drawPos = drawPos - Utilities.RotateVectorClockwise(new Vector2(0f, Assets["box"].Height * (0.5f * Velocity.Length() - 0.5f)), Rotation);
-                //    Drawing.BetterDraw(Assets["box"], drawPos, null, Color.White, Rotation + PI, Vector2.One, SpriteEffects.None, 1);
-                //}
+                }
             }
 
             base.Draw(spriteBatch);

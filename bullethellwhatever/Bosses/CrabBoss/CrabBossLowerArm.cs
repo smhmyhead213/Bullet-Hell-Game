@@ -20,8 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-                      
+            base.Draw(spriteBatch);                
         }
     }
 }

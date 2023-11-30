@@ -49,6 +49,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationalVelocity = 0;
 
             Gravity = 0.7f; // for death anim
+
+            Colour = Color.White;
         }
 
         public override void Update()
@@ -71,6 +73,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 TargetableByHoming = false;
                 IsInvincible = true;
+                Colour = Color.LightGray;
             }
             else
             {
@@ -176,6 +179,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Drawing.Draw(Texture, Position, null, Color.White, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
 
             //Hitbox.DrawVertices(spriteBatch, Color.Red);
+        }
+        public override void DrawHPBar(SpriteBatch spriteBatch)
+        {
+            // do nothing.
         }
     }
 }
