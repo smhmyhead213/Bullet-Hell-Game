@@ -91,7 +91,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Ray = new Deathray().CreateDeathray(Owner.Position, rotation, 1f, beamDuration, "box", t.Width, t.Length, 0, 0, true, Color.Red, "CrabScrollingBeamShader", Owner);
 
-                Ray.SetNoiseMap("CrabScrollingBeamNoise");
+                Ray.SetNoiseMap("CrabScrollingBeamNoise", -0.03f);
                 Ray.SetStayWithOwner(true);
 
                 t.SpawnDeathrayOnDeath(Ray);
@@ -189,7 +189,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                             float projSpeed = 2.5f;
 
-                            p.SetDrawAfterimages(15);
+                            p.SetDrawAfterimages(15, 3);
 
                             p.Rotation = rotation - PI / 2 + (j * PI);
 

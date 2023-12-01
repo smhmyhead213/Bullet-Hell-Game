@@ -10,8 +10,7 @@ using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.UI.Buttons;
 using bullethellwhatever.Abilities;
-using SharpDX.MediaFoundation;
-using SharpDX.WIC;
+using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.DrawCode.UI;
 
@@ -85,7 +84,7 @@ namespace bullethellwhatever.BaseClasses
 
             ShouldRemoveOnEdgeTouch = false;
 
-            SetDrawAfterimages(DashDuration);
+            SetDrawAfterimages(DashDuration, 3);
 
             Colour = Color.White;
 
@@ -409,6 +408,7 @@ namespace bullethellwhatever.BaseClasses
 
                     }
                 }
+
                 DrawAfterimages = true;
             }
             else DrawAfterimages = false;

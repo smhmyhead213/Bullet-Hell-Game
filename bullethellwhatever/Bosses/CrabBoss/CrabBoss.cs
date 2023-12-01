@@ -207,8 +207,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate);
 
-                Shader = Shaders["CrabRocketBoosterShader"];
-                Shader.CurrentTechnique.Passes[0].Apply();
+                Effect boosterShader = Shaders["CrabRocketBoosterShader"];
+                boosterShader.CurrentTechnique.Passes[0].Apply();
 
                 for (int i = 0; i < BoosterPositions.Length; i++)
                 {
@@ -229,7 +229,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Drawing.BetterDraw(texture, drawPos, null, Colour, Rotation + PI, size, SpriteEffects.None, 1);
                 }
 
-                if (this is IDrawsShader) //if we were already drawing stuff that had shaders
+                if (Shader is not null) //if we were already drawing stuff that had shaders
                     Drawing.RestartSpriteBatchForShaders(spriteBatch);
                 else Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
             }
@@ -238,7 +238,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    UI.DrawHealthBar(_spriteBatch, Legs[i].CalculateHP() / Legs[i].CalculateMaxHP(), new Vector2(ScreenWidth / 4 + (i * (ScreenWidth / 2)), ScreenHeight / 6 * 5), ScreenWidth / 10, 50);
+                    UI.DrawHealthBar(_spriteBatch, Legs[i].CalculateHP() / Legs[i].CalculateMaxHP(), new Vector2(ScreenWidth / 8 + (i * (ScreenWidth / 8 * 6)), ScreenHeight / 20 * 19), ScreenWidth / 10, 25);
                 }
             }
 

@@ -1,19 +1,23 @@
 ﻿sampler mainTexture : register(s0);
 //sampler2D noise : register(s1);
 texture noiseMap;
+texture randomNoiseMap;
 
 sampler2D noiseSampler = sampler_state
 {
     Texture = <noiseMap>;
 };
 
+sampler2D randomNoiseSampler = sampler_state
+{
+    Texture = <randomNoiseMap>;
+};
+
 matrix worldViewProjection;
 
-float deathrayPulsationRate;
-float uTime;
 float scrollSpeed;
+float uTime;
 int direction; // 1 or -1
-float3 colour;
 
 struct VertexShaderInput
 {
@@ -50,33 +54,35 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
+    //mainTexture needs to be used to occupy register 0
+    
     float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
     
     float2 uv = input.TextureCoordinates + dummy;
     
-    deathrayPulsationRate = 3.0;
-    float sineOscillation = sin(uTime / deathrayPulsationRate - 12 * uv.y);
-    float distanceFromCentre = abs(uv.x - 0.5);
-    
-        // Calculate the opacity of the point using an exponential function to make the opacity decrease drastically.
-        // A sine is used to vary the exponent to produce a pulsing effect.
-    
-    float opacity = pow(1 - distanceFromCentre, sineOscillation + 7);
-    
-        // Adjust red and white values to achieve the desired effect.
-    
-        //float red =  7. * pow(4., uv.x);
-        //float white = 1. - pow(5. * sin(uv.x) + 15., abs(uv.x - 0.5));
-        
-    float colourAmount = 2.5 - distanceFromCentre;
-    float white = 0.15 * sineOscillation + 0.8 - distanceFromCentre * 2.;
+    float2 centre = float2(0.5, 0.5); // define the centre of the shader
 
-    float2 noiseCoord = uv + float2(0, uTime * scrollSpeed);
+    float2 noiseCoord = uv + float2(uTime * scrollSpeed, 0); // decide where to sample from the noisemap
     
-    float4 final = float4(lerp(white, colourAmount, colour.r), lerp(white, colourAmount, colour.g), lerp(white, colourAmount, colour.b), 1) + tex2D(noiseSampler, noiseCoord);
-    return final * opacity;
+    float distanceFromCentre = sqrt(pow(uv.x - centre.x, 2.) + pow(uv.y - centre.y, 2.)); // calculate how far we are from the centre
 
+    float maxVariance = 0.2; // maximum variance in colour
     
+    float colourVariance = tex2D(randomNoiseSampler, uv).r * (maxVariance * 2.) - maxVariance; // calculate the variance in colour
+    
+    float3 colour = float3(1, 0.65 + colourVariance, 0); // calculate the final colour
+    
+    float maxFadeDistanceVariance = 0.1; // maximum fade distance variance
+    
+    // multiply the random noise sample coord by time so the fireball "waves". a decimal is included to prevent integer wrapping when it goes to the same part of the texture after havinging looped back when the sample coord goes over 1
+    
+    distanceFromCentre = distanceFromCentre + tex2D(randomNoiseSampler, uv * (uTime * 0.35342)).r * (maxFadeDistanceVariance * 2.) - maxFadeDistanceVariance; // calculate the new distance from centre using the new fade distance variation
+    
+    float opacity = 1. - 2. * distanceFromCentre; // calculate opacity based on distance
+    
+    float4 noise = tex2D(noiseSampler, noiseCoord); // sample noise
+
+    return (float4(colour, 1.) + noise) * opacity;   
 }
 
 Technique Technique1

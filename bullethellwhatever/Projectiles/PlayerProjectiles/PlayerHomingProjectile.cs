@@ -25,7 +25,7 @@ namespace bullethellwhatever.Projectiles.Player
 
             SetUpdates(2);
 
-            SetDrawAfterimages(22);
+            SetDrawAfterimages(22, 3);
 
             TimeWithNoTarget = 0;
         }

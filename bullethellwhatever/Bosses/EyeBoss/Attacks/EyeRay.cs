@@ -52,6 +52,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 Ray.SetStayWithOwner(true);
 
+                Ray.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
+
                 Ray.SetEdgeTouchEffect(new Action(() =>
                 {
                     Particle p = new Particle();

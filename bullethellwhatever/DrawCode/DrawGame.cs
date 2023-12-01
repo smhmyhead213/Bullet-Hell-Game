@@ -9,6 +9,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using System;
 using bullethellwhatever.DrawCode.UI.Buttons;
 using bullethellwhatever.DrawCode.UI;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -47,7 +48,7 @@ namespace bullethellwhatever.DrawCode
 
             // This whole thing can yes be done in one spriteBatch restart, but doing everything in this order fixes layering issues.
 
-            if (player is IDrawsShader)
+            if (player.Shader is not null)
             {
                 NPCstoDrawWithShader.Add(player);
             }
@@ -55,7 +56,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Projectile projectile in activeProjectiles)
             {
-                if (projectile is IDrawsShader)
+                if (projectile.Shader is not null)
                 {
                     ProjectilestoDrawWithShader.Add(projectile);
                 }
@@ -64,7 +65,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (NPC npc in Main.activeNPCs)
             {
-                if (npc is IDrawsShader)
+                if (npc.Shader is not null)
                 {
                     NPCstoDrawWithShader.Add(npc);
                 }
@@ -73,7 +74,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Projectile projectile in Main.activeFriendlyProjectiles)
             {
-                if (projectile is IDrawsShader)
+                if (projectile.Shader is not null)
                 {
                     FriendlyProjectilesToDrawWithShader.Add(projectile);
                 }
@@ -82,7 +83,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Particle p in activeParticles)
             {
-                if (p is IDrawsShader)
+                if (p.Shader is not null)
                 {
                     ParticlesToDrawWithShader.Add(p);
                 }

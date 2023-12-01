@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 using bullethellwhatever.MainFiles;
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
 using System.Reflection.Metadata.Ecma335;
 using bullethellwhatever.DrawCode.UI;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.BaseClasses
 {

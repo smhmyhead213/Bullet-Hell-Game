@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.Player;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -243,9 +244,9 @@ namespace bullethellwhatever.BaseClasses
         public virtual void HomeAtTarget(Vector2 targetPos, float homingStrength)
         {
             float currentVelocityMagnitude = Velocity.Length();
-            float angleToTarget = Utilities.VectorToAngle(targetPos - Position);
+            Vector2 toTarget = Utilities.SafeNormalise(targetPos - Position);
 
-            Velocity = Vector2.Lerp(Velocity, currentVelocityMagnitude * Utilities.AngleToVector(angleToTarget), 0.003f);
+            Velocity = currentVelocityMagnitude * Utilities.SafeNormalise(Vector2.Lerp(Utilities.SafeNormalise(Velocity), toTarget, homingStrength));
         }
         public void HandlePierce(int pierceToTake)
         {

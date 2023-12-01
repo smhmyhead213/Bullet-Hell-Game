@@ -2,7 +2,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.MainFiles;
-using bullethellwhatever.BaseClasses;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +11,7 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.Projectiles.TelegraphLines;
 
-namespace bullethellwhatever.BaseClasses
+namespace bullethellwhatever.BaseClasses.Hitboxes
 {
     public class RotatedRectangle
     {
@@ -37,7 +36,6 @@ namespace bullethellwhatever.BaseClasses
             Length = length;
             Centre = centre;
         }
-
         public float DiagonalLength()
         {
             return Sqrt(Length * Length + Width * Width);
@@ -56,7 +54,7 @@ namespace bullethellwhatever.BaseClasses
             if (Utilities.DistanceBetweenVectors(Centre, other.Centre) > (DiagonalLength() + other.DiagonalLength()) / 2f)
             {
                 return new Collision(Vector2.Zero, false);
-            }       
+            }
 
             foreach (Vector2 point in other.Vertices)
             {
@@ -123,7 +121,7 @@ namespace bullethellwhatever.BaseClasses
             float ABselfdot = Vector2.Dot(AB, AB);
             float ADselfdot = Vector2.Dot(AD, AD);
 
-            return (Vector2.Dot(AB, AM) > 0) && (ABselfdot > Vector2.Dot(AB, AM)) && (Vector2.Dot(AD, AM) > 0) && (ADselfdot > Vector2.Dot(AD, AM));
+            return Vector2.Dot(AB, AM) > 0 && ABselfdot > Vector2.Dot(AB, AM) && Vector2.Dot(AD, AM) > 0 && ADselfdot > Vector2.Dot(AD, AM);
         }
 
         public Vector2 PointOfIntersection(RotatedRectangle other)
@@ -149,7 +147,7 @@ namespace bullethellwhatever.BaseClasses
         {
             //return CalculateGradient() * Centre.X - Centre.Y;
 
-            return Centre.Y - (Centre.X * CalculateGradient());
+            return Centre.Y - Centre.X * CalculateGradient();
         }
     }
 

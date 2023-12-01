@@ -359,6 +359,24 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/DeathrayShader2.fx
 
+#begin Shaders/FireballShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/FireballShader.fx
+
+#begin Shaders/FireNoise1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Shaders/FireNoise1.png
+
 #begin Shaders/OutlineTelegraphShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -376,6 +394,18 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/PlayerHealthBarShader.fx
+
+#begin Shaders/RandomNoise.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Shaders/RandomNoise.png
 
 #begin Shaders/TelegraphLineShader.fx
 /importer:EffectImporter

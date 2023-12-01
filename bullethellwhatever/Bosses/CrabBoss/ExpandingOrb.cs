@@ -67,7 +67,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Orb = new BigMassiveOrb(0.06f, TimeToThrowOrb - TimeToStartOpeningHands + TimeToWaitAfterThrow + OrbBounceAroundTime);
 
-                Orb.SetDrawAfterimages(22);
+                Orb.SetDrawAfterimages(22, 3);
 
                 CrabOwner.ResetArmRotations();
                 Owner.DealDamage = false;

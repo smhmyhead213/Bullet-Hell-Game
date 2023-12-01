@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Projectiles
 {
-    public class BigMassiveOrb : Projectile, IDrawsShader
+    public class BigMassiveOrb : Projectile
     {
         public float ExpansionRate;
         public int Lifetime;

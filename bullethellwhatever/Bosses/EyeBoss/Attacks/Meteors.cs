@@ -81,7 +81,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 float projSpeed = 2.5f;
 
-                                p.SetDrawAfterimages(50);
+                                p.SetDrawAfterimages(50, 3);
 
                                 p.Rotation = additionalRotation - PI / 2 + (j * PI);
 
@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         }
                     }));
 
-                    orb.SetDrawAfterimages(11);
+                    orb.SetDrawAfterimages(11, 3);
 
                     orb.Spawn(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, texture, 1.01f, thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
 

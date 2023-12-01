@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
-
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -16,6 +16,11 @@ namespace bullethellwhatever.BaseClasses
         public Vector2 Position;
         public Vector2 Velocity;
         public Texture2D Texture;
+        public NoiseMap Map;
+        public Action ExtraDraw;
+
+        public Action ApplyExtraShaderParameters;
+
         public float Depth;
         public bool DrawAfterimages;
         public bool isBoss;
@@ -47,6 +52,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float[] afterimagesRotations;
         public Vector2[] afterimagesPositions;
+        public int ExtraAfterImages;
 
         public virtual void Update()
         {
@@ -69,7 +75,10 @@ namespace bullethellwhatever.BaseClasses
         {
             Depth = MathHelper.Clamp(depth, 0f, 1f);
         }
-
+        public virtual void SetNoiseMap(string fileName, float scrollSpeed)
+        {
+            Map = new NoiseMap(Assets[fileName], scrollSpeed);
+        }
         public virtual float DepthFactor()
         {
             return MathHelper.Lerp(1, 0.1f, Depth);
@@ -173,6 +182,41 @@ namespace bullethellwhatever.BaseClasses
         {
             ExtraAI = action;
         }
+
+        public virtual void SetExtraDraw(Action action)
+        {
+            ExtraDraw = action;
+        }
+        public virtual void ApplyShaderParameters()
+        {
+            Shader.Parameters["uTime"]?.SetValue(AITimer);
+
+            if (Map is not null)
+            {
+                Shader.Parameters["noiseMap"]?.SetValue(Map.Texture);
+                Shader.Parameters["scrollSpeed"]?.SetValue(Map.ScrollSpeed);
+            }
+
+            if (ApplyExtraShaderParameters is not null)
+            {
+                ApplyExtraShaderParameters();
+            }
+        }
+        public virtual void SetApplyShaderParameters(Action action)
+        {
+            ApplyExtraShaderParameters = action;
+        }
+
+        public virtual void ApplyRandomNoise()
+        {
+            Shader.Parameters["randomNoiseMap"]?.SetValue(Assets["RandomNoise"]);
+        }
+
+        public virtual void SetShader(string filename)
+        {
+            Shader = Shaders[filename];
+        }
+
         public virtual void Die()
         {
             //death behaviour
@@ -185,9 +229,11 @@ namespace bullethellwhatever.BaseClasses
             DeleteNextFrame = true;
         }
 
-        public virtual void SetDrawAfterimages(int length)
+        public virtual void SetDrawAfterimages(int length, int extraImages)
         {
             DrawAfterimages = true;
+
+            ExtraAfterImages = extraImages;
 
             afterimagesPositions = new Vector2[length];
             afterimagesRotations = new float[length];
@@ -195,6 +241,18 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            if (ExtraDraw is not null)
+            {
+                ExtraDraw();
+            }
+
+            if (Shader is not null)
+            {
+                ApplyShaderParameters();
+
+                Shader.CurrentTechnique.Passes[0].Apply();
+            }
+
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
 
             if (DrawAfterimages)
@@ -207,24 +265,25 @@ namespace bullethellwhatever.BaseClasses
         {
             for (int i = 0; i < afterimagesPositions.Length; i++)
             {
-                float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-
                 if (afterimagesPositions[i] != Vector2.Zero)
                 {
-                    Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier * Opacity, afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                    float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                    Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                     // Draw another afterimage between this one and the last one, for a less choppy trail.
-                    // The first afterimage is between the entity and the first saved position (i = 0).
 
-                    Vector2 positionOfAdditionalAfterImage = i == 0 ? Vector2.Lerp(Position, afterimagesPositions[i], 0.5f) : Vector2.Lerp(afterimagesPositions[i - 1], afterimagesPositions[i], 0.5f);
+                    if (i > 0)
+                    {
+                        for (int j = 0; j < ExtraAfterImages; j++)
+                        {
+                            float interpolant = (j + 1) * (1f / (ExtraAfterImages + 1));
 
-                    colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + 0.5f) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                            colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
-                    float rotation = i != afterimagesRotations.Length - 1 ? MathHelper.Lerp(afterimagesRotations[i], afterimagesRotations[i + 1], 0.5f) : afterimagesRotations[i];
-
-                    Drawing.BetterDraw(Texture, positionOfAdditionalAfterImage, null, Colour * colourMultiplier * Opacity,
-                        rotation, GetSize() * (afterimagesPositions.Length - 1 - i + 0.5f) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
-
+                            Drawing.BetterDraw(Texture, Vector2.Lerp(afterimagesPositions[i], afterimagesPositions[i - 1], interpolant), null, Colour * colourMultiplier,
+                                afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i + interpolant) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        }
+                    }
                 }
             }
         }
@@ -238,8 +297,5 @@ namespace bullethellwhatever.BaseClasses
 
             Hitbox.UpdateVertices();
         }
-
-
-
     }
 }

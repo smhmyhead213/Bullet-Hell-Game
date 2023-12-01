@@ -10,10 +10,11 @@ using Microsoft.Xna.Framework.Input;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Projectiles.Base
 {
-    public class Deathray : Projectile, IDrawsShader
+    public class Deathray : Projectile
     {    
         public float Length;
         public float Width;
@@ -24,7 +25,6 @@ namespace bullethellwhatever.Projectiles.Base
         public bool IsSpawned;
         public int Duration;
         public bool StayWithOwner;
-        public Texture2D Map;
 
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
@@ -159,10 +159,11 @@ namespace bullethellwhatever.Projectiles.Base
             ThinOut = false;
         }
 
-        public virtual void SetNoiseMap(string fileName)
-        {
-            Map = Assets[fileName];
-        }
+        //public virtual void SetNoiseMap(string fileName, float scrollSpeed)
+        //{
+        //    Map = Assets[fileName];
+        //    ScrollSpeed = scrollSpeed;
+        //}
         public virtual void SetStayWithOwner(bool stay)
         {
             StayWithOwner = stay;
@@ -309,6 +310,20 @@ namespace bullethellwhatever.Projectiles.Base
         {
             ThinOut = thinOut;
         }
+        public override void ApplyShaderParameters()
+        {
+            base.ApplyShaderParameters();
+           
+            Shader.Parameters["duration"]?.SetValue(Duration);
+
+            Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
+
+            if (Map is not null)
+            {
+                Shader.Parameters["noiseMap"]?.SetValue(Map.Texture);
+                Shader.Parameters["scrollSpeed"]?.SetValue(Map.ScrollSpeed);
+            }            
+        }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (BeamEdgeTouch().Collided)
@@ -318,15 +333,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (IsActive)
             {
-                Shader.Parameters["uTime"]?.SetValue(AITimer);
-                Shader.Parameters["duration"]?.SetValue(Duration);
-
-                Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
-
-                if (Map is not null)
-                {
-                    Shader.Parameters["noiseMap"]?.SetValue(Map);
-                }
+                ApplyShaderParameters();
 
                 Shader.CurrentTechnique.Passes[0].Apply();
 

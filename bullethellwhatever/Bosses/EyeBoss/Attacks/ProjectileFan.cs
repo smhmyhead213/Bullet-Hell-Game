@@ -56,7 +56,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 
                 Projectile p = new Projectile();
 
-                p.SetDrawAfterimages(11);
+                p.SetDrawAfterimages(11, 3);
+
+                p.Rotation = pupilRotation;
+
+                // change this to be phase 3 only
+                p.SetExtraAI(new Action(() =>
+                {
+                    p.HomeAtTarget(player.Position, 0f);
+                }));
+
                 p.Spawn(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false);
             }
 
