@@ -176,13 +176,21 @@ namespace bullethellwhatever.BaseClasses
 
         public override void Die()
         {
-            if (!(Owner is Player)) // avoid visual vomit by not doing this if player owned
+            if (Owner is not Player) // avoid visual vomit by not doing this if player owned
             {
                 Dying = true;
                 StartingOpacity = Opacity;
             }
 
-            else DeleteNextFrame = true;
+            else
+            {
+                DeleteNextFrame = true;
+
+                if (OnDeath is not null)
+                {
+                    OnDeath();
+                }
+            }
         }
         public virtual void CheckForHits()
         {

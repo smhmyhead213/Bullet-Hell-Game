@@ -244,6 +244,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             base.Draw(spriteBatch);
 
+            //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);
             //Hitbox.DrawHitbox();
 
             foreach (CrabLeg leg in Legs)

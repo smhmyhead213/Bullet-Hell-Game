@@ -15,7 +15,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class EnergyBlasts : EyeBossAttack
     {
-        public Deathray Ray;
         public EnergyBlasts(int endTime) : base(endTime)
         {
             EndTime = endTime;
@@ -27,18 +26,24 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             int time = AITimer;
-            int startTime = 200;
-            int chargeUpTime = 120;
 
-            if (time > startTime && time < chargeUpTime + startTime)
+            int cycleTime = 250;
+            int burstTime = 120;
+            float spawnDistance = 300f;
+            float speed = 10f;
+            int particeDuration = (int)spawnDistance / (int)speed;
+            int localTime = time % cycleTime;
+
+            Pupil.LookAtPlayer(20);
+
+            if (localTime < burstTime - particeDuration)
             {
                 Particle p = new Particle();
                 float rotationAroundPupil = Utilities.RandomFloat(0, Tau);
-                float spawnDistance = 300f;
-                float speed = 10f;
+
                 Vector2 spawnPos = Pupil.Position + spawnDistance * Utilities.AngleToVector(rotationAroundPupil);
 
-                p.Spawn("box", spawnPos, speed * Utilities.SafeNormalise(Pupil.Position - spawnPos), new Vector2(0f, 0f), Vector2.One * 0.5f, rotationAroundPupil, Color.White, 1f, (int)spawnDistance / (int)speed);
+                p.Spawn("box", spawnPos, speed * Utilities.SafeNormalise(Pupil.Position - spawnPos), new Vector2(0f, 0f), Vector2.One * 0.5f, rotationAroundPupil, Color.Orange, 1f, particeDuration);
 
                 p.SetExtraAI(new Action(() =>
                 {
@@ -47,29 +52,81 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     p.Velocity = Utilities.SafeNormalise(Pupil.Position - p.Position) * velocityLength; // seek towards pupil
 
                 }));
+
+                Pupil.Size = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)localTime / (burstTime - particeDuration));
             }
 
-            if (time > chargeUpTime + startTime && time % 60 == 0)
+            int dischargeEnergyTime = 4;
+            int dischargeStartTime = burstTime;
+
+            if (localTime > dischargeStartTime && localTime <= dischargeStartTime + dischargeEnergyTime)
             {
-                Projectile p = new Projectile();
+                Pupil.Size = Vector2.Lerp(Pupil.InitialSize * 2f, Pupil.InitialSize, (float)(localTime - dischargeStartTime) / dischargeEnergyTime);
+            }
 
-                p.SetShader("FireballShader");
-                p.SetNoiseMap("FireNoise1", 0.06f);
-                p.ApplyRandomNoise();
+            if (localTime == burstTime)
+            {
+                int fireballs = 8;
 
-                p.Rotation = Utilities.AngleToPlayerFrom(Pupil.Position) + PI / 2;
-
-                p.SetExtraAI(new Action(() =>
+                for (int i = 0; i < fireballs; i++)
                 {
-                    if (p.AITimer > 30)
+                    Projectile p = new Projectile();
+
+                    p.SetShader("FireballShader");
+                    p.SetNoiseMap("FireNoise1", 0.06f);
+                    p.ApplyRandomNoise();
+
+                    float rotation = i * Tau / fireballs;
+
+                    p.Rotation = rotation + PI / 2;
+
+                    p.SetExtraAI(new Action(() =>
                     {
-                        p.HomeAtTarget(player.Position, 0.05f);
-                    }
-                }));
+                        if (p.AITimer > 15)
+                        {
+                            p.Velocity = p.Velocity * 0.99f;
+                        }
 
-                //p.SetDrawAfterimages(15, 1);
+                        if (p.AITimer == 180)
+                        {
+                            p.Die();
+                        }
+                    }));
 
-                p.Spawn(Pupil.Position, 20f * Utilities.SafeNormalise(player.Position - Pupil.Position), 1f, 1, "box", 1f, Vector2.One * 10f, Pupil, true, Color.White, true, false);
+                    p.SetOnDeath(new Action(() =>
+                    {
+                        int projs = 10;
+                        float randomOffset = Utilities.RandomFloat(0, Tau);
+
+                        for (int i = 0; i < projs; i++)
+                        {
+                            Projectile proj = new Projectile();
+
+                            float rotation = i * Tau / projs + randomOffset;
+
+                            proj.Rotation = rotation;
+
+                            proj.Spawn(p.Position, 2f * Utilities.AngleToVector(rotation), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false);
+
+                            proj.SetExtraAI(new Action(() =>
+                            {
+                                proj.Velocity = Utilities.RotateVectorClockwise(proj.Velocity, PI / 180);
+                                proj.Rotation = Utilities.VectorToAngle(proj.Velocity);
+                                //TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(proj.Velocity), 0, 0, proj.Texture.Width * proj.GetSize().X, 2500, 1, proj.Position, Color.Red, "box", proj, true);
+                            }));
+
+                            proj.SetDrawAfterimages(11, 4);
+                        }
+
+                    }));
+
+                    p.SetEdgeTouchEffect(new Action(() =>
+                    {
+                        p.Die();
+                    }));
+
+                    p.Spawn(Pupil.Position, 10f * Utilities.AngleToVector(rotation), 1f, 1, "box", 1f, Vector2.One * 10f, Pupil, true, Color.White, true, false);
+                }
             }
         }
 

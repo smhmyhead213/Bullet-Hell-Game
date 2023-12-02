@@ -21,6 +21,23 @@ namespace bullethellwhatever.MainFiles
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
             activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
+
+            //foreach (Projectile projectile in activeProjectiles)
+            //{
+            //    if (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 10)
+            //    {
+            //        projectile.Die(); // do the die behaviour if getting removed
+            //    }
+            //}
+
+            //foreach (Projectile projectile in activeFriendlyProjectiles)
+            //{
+            //    if (projectile.DeleteNextFrame || (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60 && projectile.AITimer > 5))
+            //    {
+            //        projectile.Die(); // do the die behaviour if getting removed
+            //    }
+            //}
+
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
             activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60);
             activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60 && projectile.AITimer > 5);

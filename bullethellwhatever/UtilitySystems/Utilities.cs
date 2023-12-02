@@ -137,7 +137,7 @@ namespace bullethellwhatever
         {
             //for insight as to how this works, check https://discord.com/channels/770381661098606612/770382926545813515/1089248352073433168
 
-            return  new Vector2(input.X * MathF.Cos(angle) - input.Y * MathF.Sin(angle),
+            return new Vector2(input.X * MathF.Cos(angle) - input.Y * MathF.Sin(angle),
                             input.X * MathF.Sin(angle) + input.Y * MathF.Cos(angle)); //perform rotation
         }
 

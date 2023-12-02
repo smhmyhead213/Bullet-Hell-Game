@@ -272,18 +272,20 @@ namespace bullethellwhatever.BaseClasses
 
                     // Draw another afterimage between this one and the last one, for a less choppy trail.
 
-                    if (i > 0)
+                    Vector2 previousImage = i == 0 ? Position : afterimagesPositions[i - 1];
+
+                    for (int j = 0; j < ExtraAfterImages; j++)
                     {
-                        for (int j = 0; j < ExtraAfterImages; j++)
-                        {
-                            float interpolant = (j + 1) * (1f / (ExtraAfterImages + 1));
+                        float interpolant = (j + 1) * (1f / (ExtraAfterImages + 1));
 
-                            colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
 
-                            Drawing.BetterDraw(Texture, Vector2.Lerp(afterimagesPositions[i], afterimagesPositions[i - 1], interpolant), null, Colour * colourMultiplier,
-                                afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i + interpolant) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
-                        }
+                        // could improve by doing rotation lerping as well
+
+                        Drawing.BetterDraw(Texture, Vector2.Lerp(afterimagesPositions[i], previousImage, interpolant), null, Colour * colourMultiplier,
+                            afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i + interpolant) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
                     }
+
                 }
             }
         }
