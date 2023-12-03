@@ -59,8 +59,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 new ProjectileFan(1000),
                 new Meteors(300),
                 new EyeRay(1600),
+                new EnergyBlasts(750),
+                new HelixShots(1230),
                 new ProjectileFan(1000),
-                new EnergyBlasts(800),
             };
         }
         public override void Update()

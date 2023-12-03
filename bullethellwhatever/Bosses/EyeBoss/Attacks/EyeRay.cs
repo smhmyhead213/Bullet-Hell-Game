@@ -58,7 +58,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     Particle p = new Particle();
 
-                    float sizeFactor = (Ray.Width / Ray.InitialWidth); // get smaller as the ray thins out
+                    float sizeFactor = Ray.Width / Ray.InitialWidth; // get smaller as the ray thins out
 
                     p.Spawn("Circle", Ray.BeamEdgeTouch().CollisionPoint, Vector2.Zero, Vector2.Zero, Vector2.One * sizeFactor, 0, Ray.Colour, 1, 20);
                     p.SetShrink(true);

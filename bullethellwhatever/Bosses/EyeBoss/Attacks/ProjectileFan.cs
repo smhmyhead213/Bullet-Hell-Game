@@ -38,6 +38,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time < shootTime)
             {
+                Pupil.Size = Pupil.InitialSize;
+
                 Pupil.LookAtPlayer(distanceFromEyeCentre);
             }
 

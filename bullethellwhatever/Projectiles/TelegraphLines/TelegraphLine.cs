@@ -27,6 +27,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public float InitialWidth;
 
         public Deathray ToSpawn;
+        public Action ExtraAI;
         public Action OnDeath;
 
         public bool ThickenIn;
@@ -58,6 +59,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public void ShouldThickenIn(bool thicken)
         {
             ThickenIn = thicken;
+        }
+
+        public void SetExtraAI(Action action)
+        {
+            ExtraAI = action;
         }
 
         public void AI()
@@ -100,6 +106,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
                 // so ln(x/a) reaches y = 1 at x = duration / 8 when a = (duration / 8) / e
 
                 Width = InitialWidth * Log(TimeAlive / (maxThicknessTime / E));
+            }
+
+            if (ExtraAI is not null)
+            {
+                ExtraAI();
             }
         }
 

@@ -73,7 +73,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     Projectile p = new Projectile();
 
                     p.SetShader("FireballShader");
-                    p.SetNoiseMap("FireNoise1", 0.06f);
+                    p.SetNoiseMap("FireNoise2", 0.06f);
                     p.ApplyRandomNoise();
 
                     float rotation = i * Tau / fireballs;

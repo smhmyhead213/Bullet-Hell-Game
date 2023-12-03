@@ -52,6 +52,20 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
     return output;
 }
 
+float AngleFromVertical(float2 vec)
+{
+    float2 centre = float2(0.5, 0.5);
+
+    float2 vertical = float2(0, -1); // upwards vertical vector
+    
+    float2 centreToUV = normalize(vec - centre);
+    
+    float dotProduct = dot(vertical, centreToUV);
+    
+    float angleBetween = acos(dotProduct / 2.); // sum of magnitudes is 2 
+
+    return angleBetween;
+}
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     //mainTexture needs to be used to occupy register 0
@@ -70,19 +84,31 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float colourVariance = tex2D(randomNoiseSampler, uv).r * (maxVariance * 2.) - maxVariance; // calculate the variance in colour
     
-    float3 colour = float3(1, 0.65 + colourVariance, 0); // calculate the final colour
+    float3 colour = float3(1, 0.55 + colourVariance, 0); // calculate the final colour
     
-    float maxFadeDistanceVariance = 0.1; // maximum fade distance variance
+    //float maxFadeDistanceVariance = 0.1; // maximum fade distance variance
     
-    // multiply the random noise sample coord by time so the fireball "waves". a decimal is included to prevent integer wrapping when it goes to the same part of the texture after havinging looped back when the sample coord goes over 1
+    //// multiply the random noise sample coord by time so the fireball "waves". a decimal is included to prevent integer wrapping when it goes to the same part of the texture after havinging looped back when the sample coord goes over 1
     
-    distanceFromCentre = distanceFromCentre + tex2D(randomNoiseSampler, uv * (uTime * 0.35342)).r * (maxFadeDistanceVariance * 2.) - maxFadeDistanceVariance; // calculate the new distance from centre using the new fade distance variation
+    //distanceFromCentre = distanceFromCentre + tex2D(randomNoiseSampler, uv * (uTime * 0.35342)).r * (maxFadeDistanceVariance * 2.) - maxFadeDistanceVariance; // calculate the new distance from centre using the new fade distance variation
     
-    float opacity = 1. - 2. * distanceFromCentre; // calculate opacity based on distance
+    //float opacity = 1. - 2. * distanceFromCentre; // calculate opacity based on distance
     
-    float4 noise = tex2D(noiseSampler, noiseCoord); // sample noise
+    //float4 noise = tex2D(noiseSampler, noiseCoord); // sample noise
 
-    return (float4(colour, 1.) + noise) * opacity;   
+    //return (float4(colour, 1.) + noise) * opacity;
+    
+    float angleBetween = AngleFromVertical(uv);
+    
+    // max value of angleBetween is pi
+
+    float distanceMultiplier = 2. + 0.3 * sin((uTime / 30.0) + 2.0 * angleBetween);
+    
+    float opacity = 1. - (1.1 * distanceMultiplier) * distanceFromCentre; // calculate opacity based on distance
+    
+    float4 noise = tex2D(randomNoiseSampler, noiseCoord); // sample noise
+
+    return (float4(colour, 1.) + noise) * opacity;
 }
 
 Technique Technique1

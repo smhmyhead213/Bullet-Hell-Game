@@ -1,0 +1,145 @@
+﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.DrawCode;
+using bullethellwhatever.Bosses.CrabBoss.Projectiles;
+using bullethellwhatever.Projectiles.Enemy;
+using bullethellwhatever.Projectiles.TelegraphLines;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using System.Threading;
+using bullethellwhatever.UtilitySystems;
+
+namespace bullethellwhatever.Bosses.EyeBoss
+{
+    public class HelixShots : EyeBossAttack
+    {
+        public float ShootAngle;
+        public HelixShots(int endTime) : base(endTime)
+        {
+            EndTime = endTime;
+        }
+        public override void InitialiseAttackValues()
+        {
+            base.InitialiseAttackValues();
+            ShootAngle = 0;
+        }
+        public override void Execute(ref int AITimer, ref int AttackNumber)
+        {
+            int waitTime = 45;
+            int telegraphTime = 60;
+            int shootTime = 10;
+            int totalAttackTime = waitTime + telegraphTime + shootTime;
+            int time = AITimer % totalAttackTime;
+
+            if (time < waitTime && time > shootTime && AITimer > totalAttackTime) // dont shoot homing projs the first time round
+            {
+                float halfTime = waitTime / 2f;
+                float totalSweepAngle = PI;
+                float angularVelocity = totalSweepAngle / waitTime;
+
+                float rotation = Utilities.AngleToPlayerFrom(Pupil.Position) - PI - (time - halfTime) * angularVelocity;
+
+                Pupil.RotationWithinEye = rotation;
+
+                if (time % 2 == 0)
+                {
+                    Projectile p = new Projectile();
+
+                    p.SetExtraAI(new Action(() =>
+                    {
+                        if (p.AITimer > 15 && p.AITimer < 20)
+                        {
+                            p.Acceleration = 1.06f;
+                            p.HomeAtTarget(player.Position, 0.7f);
+                        }
+                    }));
+
+                    p.SetDrawAfterimages(11, 7);
+
+                    p.Spawn(Pupil.Position, 140f * Utilities.AngleToVector(rotation), 1f, 1, "box", 0.8f, Vector2.One * 0.8f, Pupil, true, Color.Red, true, false);
+                }
+            }
+
+            if (time == waitTime)
+            {
+                Pupil.LookAtPlayer(20);
+
+                TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Pupil.Position), 0, 0, 25, Utilities.ScreenDiagonalLength() * 1.5f, telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
+
+                t.ThickenIn = true;
+
+                t.SetExtraAI(new Action(() =>
+                {
+                    if (t.TimeAlive < telegraphTime - 10)
+                    {
+                        t.Rotation = Utilities.AngleToPlayerFrom(t.Owner.Position);
+                        ShootAngle = t.Rotation;
+                    }
+                }));
+
+                Deathray ray = new Deathray();
+
+                t.SetOnDeath(new Action(() =>
+                {
+                    ray.SetStayWithOwner(true);
+                    ray.SpawnDeathray(t.Origin, t.Rotation, 1f, shootTime, "box", t.Width, t.Length, 0, 0, true, Color.White, "DeathrayShader2", Pupil);
+                }));
+            }
+
+            if (time > waitTime && time < waitTime + telegraphTime)
+            {
+                Pupil.LookAtPlayer(20);
+
+                AttackUtilities.SuckInParticles(Pupil.Position, Color.White, 10f, 250, 1);
+
+                float interpolant = (time - waitTime) / (float)telegraphTime;
+
+                Pupil.Size.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, interpolant); // lengthen pupil slightly
+                Pupil.Size.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.5f, interpolant); // narrow pupil
+            }
+
+            if (time > waitTime + telegraphTime && time <= waitTime + telegraphTime + shootTime)
+            {
+                Pupil.LookAtPlayer(20);
+
+                float interpolant = (time - waitTime) / (float)telegraphTime;
+
+                Pupil.Size.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, 1f - interpolant); // thinnen pupil back
+                Pupil.Size.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.5f, 1f - interpolant); // open pupil
+
+                for (int i = 0; i < 2; i++)
+                {
+                    Projectile p = new Projectile();
+
+                    float horizontalSpeed = 15f;
+                    float verticalSpeedAmplitude = 30f;
+                    float localShootAngle = ShootAngle;
+
+                    int direction = i == 0 ? 1 : -1;
+
+                    p.SetExtraAI(new Action(() =>
+                    {
+                        Vector2 horizontalVelocity = Utilities.RotateVectorClockwise(new Vector2(horizontalSpeed, 0f), localShootAngle - PI / 2);
+                        Vector2 verticalVelocity = direction * Utilities.RotateVectorClockwise(new Vector2(0, verticalSpeedAmplitude * Cos(p.AITimer / 10f)), localShootAngle - PI / 2);
+
+                        p.Velocity = horizontalVelocity + verticalVelocity;
+                        p.Rotation = Utilities.VectorToAngle(p.Velocity);
+                    }));
+
+                    p.SetDrawAfterimages(11, 2);
+
+                    p.Spawn(Pupil.Position, Vector2.Zero, 1f, 1, "box", 0f, Vector2.One, Pupil, true, Color.Red, true, false);
+                }
+            }
+        }
+
+        public override void ExtraDraw(SpriteBatch s)
+        {
+
+        }
+    }
+}
