@@ -55,5 +55,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     Owner.Velocity.Y = Owner.Velocity.Y * -1f;
             }
         }
+
+        //public override void ExtraAttackEnd()
+        //{
+        //    if (Owner.AttackNumber == Owner.BossAttacks.Length - 1)
+        //    {
+        //        Owner.RandomlyArrangeAttacks();
+        //    }
+        //}
     }
 }

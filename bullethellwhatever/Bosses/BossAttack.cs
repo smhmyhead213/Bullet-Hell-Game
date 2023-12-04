@@ -48,13 +48,14 @@ namespace bullethellwhatever.Bosses
 
         public virtual void TryEndAttack(ref int AITimer, ref int AttackNumber)
         {
-            if ((Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime || EndNow) && AttackNumber != 0)
+            if ((Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime || EndNow))
             {
                 Owner.AITimer = 0; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
 
                 EndNow = false;
 
                 Owner.Rotation = 0;
+
                 if (Owner.AttackNumber != Owner.BossAttacks.Length - 1)
                 {
                     Owner.AttackNumber++;
@@ -63,7 +64,7 @@ namespace bullethellwhatever.Bosses
                 }
                 else
                 {
-                    Owner.AttackNumber = 1;
+                    Owner.AttackNumber = 0;
                     Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
                     ExtraAttackEnd();
                 }
@@ -72,7 +73,7 @@ namespace bullethellwhatever.Bosses
             if (Owner.Health <= 0 && !Owner.IsDesperationOver && !HasResetAITimerForDesperation)
             {
                 HasResetAITimerForDesperation = true;
-                Owner.AttackNumber = 0;
+                //Owner.AttackNumber = 0;
                 Owner.AITimer = -1;
             }
 
@@ -140,6 +141,5 @@ namespace bullethellwhatever.Bosses
         {
             rotation = Owner.Rotation - MathF.PI / 90 * Owner.AITimer / 80f; //spin up
         }
-
     }
 }

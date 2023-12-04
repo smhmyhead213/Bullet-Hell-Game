@@ -72,8 +72,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     Projectile p = new Projectile();
 
+                    float mapScrollSpeed = 0.06f;
+                    float projectileSpeed = 10f;
+
                     p.SetShader("FireballShader");
-                    p.SetNoiseMap("FireNoise2", 0.06f);
+                    p.SetNoiseMap("FireNoise2", mapScrollSpeed);
                     p.ApplyRandomNoise();
 
                     float rotation = i * Tau / fireballs;
@@ -91,6 +94,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         {
                             p.Die();
                         }
+
+                        p.Map.ScrollSpeed = p.Velocity.Length() / projectileSpeed * mapScrollSpeed;
                     }));
 
                     p.SetOnDeath(new Action(() =>
@@ -125,7 +130,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Die();
                     }));
 
-                    p.Spawn(Pupil.Position, 10f * Utilities.AngleToVector(rotation), 1f, 1, "box", 1f, Vector2.One * 10f, Pupil, true, Color.White, true, false);
+                    p.Spawn(Pupil.Position, projectileSpeed * Utilities.AngleToVector(rotation), 1f, 1, "box", 1f, Vector2.One * 10f, Pupil, true, Color.White, true, false);
                 }
             }
         }

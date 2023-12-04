@@ -84,7 +84,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float colourVariance = tex2D(randomNoiseSampler, uv).r * (maxVariance * 2.) - maxVariance; // calculate the variance in colour
     
-    float3 colour = float3(1, 0.55 + colourVariance, 0); // calculate the final colour
+    float3 colour = float3(1, 0.37 + colourVariance, 0.12 + colourVariance); // calculate the final colour
     
     //float maxFadeDistanceVariance = 0.1; // maximum fade distance variance
     

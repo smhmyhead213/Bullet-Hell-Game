@@ -6,6 +6,8 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace bullethellwhatever
 {
@@ -192,6 +194,23 @@ namespace bullethellwhatever
             }
         }
 
+        public static T[] RandomlyRearrangeArray<T>(T[] array)
+        {
+            int length = array.Length;
+            List<T> list = array.ToList();
+            T[] output = new T[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                int randomIndex = RandomInt(0, list.Count - 1);
+
+                T item = list[randomIndex];
+                output[i] = item;
+                list.Remove(item);
+            }
+
+            return output;
+        }
         public static bool ImportantMenusPresent()
         {
             foreach (Menu menu in activeMenus)

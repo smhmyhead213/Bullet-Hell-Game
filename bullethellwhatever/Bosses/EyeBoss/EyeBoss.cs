@@ -56,13 +56,14 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             BossAttacks = new EyeBossAttack[]
             {
-                new ProjectileFan(1000),
                 new Meteors(300),
                 new EyeRay(1600),
                 new EnergyBlasts(750),
-                new HelixShots(1230),
+                new HelixShots(1250),
                 new ProjectileFan(1000),
             };
+
+            RandomlyArrangeAttacks();
         }
         public override void Update()
         {

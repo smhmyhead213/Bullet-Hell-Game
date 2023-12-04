@@ -83,7 +83,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BossAttacks = new CrabBossAttack[]
             {
-                new TestAttack(BarDuration * 30),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18 - 60),
                 new SideImpacts(1000),
@@ -93,7 +92,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             PhaseTwoAttacks = new CrabBossAttack[]
             {
-                new TestAttack(BarDuration * 30), // put desp / death anim here
                 new CrabDeathray(1200),
                 new SpinningAtPlayer(1200),
                 new ChargingArmBulletHell(900),
@@ -148,6 +146,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
             //Rotation = Rotation + PI / 90f;
 
+            if (Health <= 0 && StartedDeathAnim == false)
+            {
+                ReplaceAttackPattern(new BossAttack[] { new CrabDeathAnimation(1000) });
+                StartedDeathAnim = true;
+            }
+
             base.AI();
 
             if (Legs[0].Dead && Legs[1].Dead && !StartedPhaseTwoTransition)
@@ -171,12 +175,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 SetDR(1f);
                 TargetableByHoming = false;
-            }
-
-            if (Health <= 0 && StartedDeathAnim == false)
-            {
-                ReplaceAttackPattern(new BossAttack[] { new CrabDeathAnimation(1000) });
-                StartedDeathAnim = true;
             }
         }
 

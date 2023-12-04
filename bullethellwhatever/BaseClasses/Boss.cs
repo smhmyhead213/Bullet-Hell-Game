@@ -16,7 +16,7 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void InitialiseBoss()
         {
-            AttackNumber = 1;
+            AttackNumber = 0;
 
             Health = MaxHP;
 
@@ -27,7 +27,7 @@ namespace bullethellwhatever.BaseClasses
         {
             base.Draw(spriteBatch);
 
-            if (BossAttacks is not null)
+            if (BossAttacks is not null && AttackNumber < BossAttacks.Length)
                 BossAttacks[AttackNumber].ExtraDraw(spriteBatch);
         }
 
@@ -37,7 +37,21 @@ namespace bullethellwhatever.BaseClasses
 
             ExecuteCurrentAttack();
         }
+        public void RandomlyArrangeAttacks()
+        {
+            BossAttack[] newOrder = Utilities.RandomlyRearrangeArray(BossAttacks);
 
+            // never do the same attack twice
+
+            if (newOrder[0] == BossAttacks[BossAttacks.Length - 1]) // if the first new attack is the same as the last old one
+            {
+                BossAttack bucket = newOrder[1]; // swap the new first and new second attacks
+                newOrder[1] = newOrder[0];
+                newOrder[0] = bucket;
+            }
+
+            BossAttacks = newOrder;
+        }
         public virtual void ExecuteCurrentAttack()
         {
             BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
@@ -57,9 +71,10 @@ namespace bullethellwhatever.BaseClasses
                 }
 
                 AITimer = 0;
-                if (attacks.Length == 1)
-                    AttackNumber = 0; // remember 0 is desp / death anim
-                else AttackNumber = 1;
+                AttackNumber = 0;
+                //if (attacks.Length == 1)
+                //    AttackNumber = 0; // remember 0 is desp / death anim
+                //else AttackNumber = 1;
             }
         }
     }

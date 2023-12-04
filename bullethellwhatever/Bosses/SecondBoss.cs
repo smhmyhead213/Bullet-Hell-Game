@@ -21,6 +21,8 @@ namespace bullethellwhatever.Bosses
 
         public float DeathrayAngularVelocity;
 
+        public PrimitiveDrawer prims;
+
         public Deathray ray;
         public Deathray ray2;
         public SecondBoss(Vector2 position, Vector2 velocity)
@@ -47,23 +49,24 @@ namespace bullethellwhatever.Bosses
             Colour = Color.White;
 
             Texture = Assets["box"];
+
+            prims = new PrimitiveDrawer();
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
 
-            for (int i = 0; i < Hitbox.Vertices.Length; i++)
-            {
-                Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
-                Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
-            }
-
-            PrimitiveDrawer prims = new PrimitiveDrawer();
-
+            //for (int i = 0; i < Hitbox.Vertices.Length; i++)
+            //{
+            //    Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
+            //    Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
+            //}
             prims.Draw();
         }
         public override void AI()
         {
+            prims.SetMatrices();
+
             SetDepth(0.5f);
 
             if (Health < 0 && IsDesperationOver)
@@ -132,7 +135,6 @@ namespace bullethellwhatever.Bosses
                 }
             }
         }
-
         
         public void DialogueTest(ref int AITimer, ref int AttackNumber)
         {
@@ -140,10 +142,10 @@ namespace bullethellwhatever.Bosses
             {              
                 dialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400);
 
-                TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
+                //TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
                 
-                TelegraphLine t2 = new(PI, PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
-                t.ChangeShader("OutlineTelegraphShader");
+                //TelegraphLine t2 = new(PI, PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
+                //t.ChangeShader("OutlineTelegraphShader");
 
                 //Cuboid cuboid = new Cuboid(500, 500, 500, this);
 

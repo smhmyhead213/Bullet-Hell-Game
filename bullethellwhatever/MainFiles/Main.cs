@@ -37,6 +37,7 @@ namespace bullethellwhatever.MainFiles
 
 
         public static GraphicsDeviceManager _graphics;
+        public static VertexBuffer MainVertexBuffer;
         public static SpriteBatch _spriteBatch;
 
         public static Dictionary<string, Texture2D> Assets = new Dictionary<string, Texture2D>();
