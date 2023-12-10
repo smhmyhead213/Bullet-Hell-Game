@@ -56,6 +56,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             p.Acceleration = 1.06f;
                             p.HomeAtTarget(player.Position, 0.7f);
                         }
+
+                        p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
                     p.SetDrawAfterimages(11, 7);
@@ -91,11 +93,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }));
             }
 
-            if (time > waitTime && time < waitTime + telegraphTime)
+            float particleSpeed = 10f;
+            float spawnDistance = 250f;
+
+            float particleLifeTime = spawnDistance / particleSpeed;
+
+            if (time > waitTime && time < waitTime + telegraphTime - particleLifeTime)
             {
                 Pupil.LookAtPlayer(20);
 
-                AttackUtilities.SuckInParticles(Pupil.Position, Color.White, 10f, 250, 1);
+                AttackUtilities.SuckInParticles(Pupil.Position, Color.White, particleSpeed, spawnDistance, 1);
 
                 float interpolant = (time - waitTime) / (float)telegraphTime;
 
@@ -131,13 +138,18 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
-                    p.SetDrawAfterimages(11, 2);
+                    p.SetDrawAfterimages(11, 4);
 
                     p.Spawn(Pupil.Position, Vector2.Zero, 1f, 1, "box", 0f, Vector2.One, Pupil, true, Color.Red, true, false);
                 }
             }
         }
+        public override void ExtraAttackEnd()
+        {
+            base.ExtraAttackEnd();
 
+            Pupil.ResetSize();
+        }
         public override void ExtraDraw(SpriteBatch s)
         {
 

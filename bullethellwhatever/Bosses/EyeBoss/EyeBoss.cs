@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -56,6 +57,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             BossAttacks = new EyeBossAttack[]
             {
+                new LaserSwingProjectileBurst(5000),
+                new ProjectileRows(500),
                 new Meteors(300),
                 new EyeRay(1600),
                 new EnergyBlasts(750),
@@ -63,7 +66,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 new ProjectileFan(1000),
             };
 
-            RandomlyArrangeAttacks();
+            //RandomlyArrangeAttacks();
         }
         public override void Update()
         {
@@ -86,6 +89,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);
+
             base.Draw(spriteBatch);
 
             foreach (ChainLink link in ChainLinks)

@@ -39,8 +39,8 @@ namespace bullethellwhatever.MainFiles
             //}
 
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
-            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60);
-            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60 && projectile.AITimer > 5);
+            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval);
+            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval && projectile.AITimer > 5);
             activeFriendlyProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);

@@ -82,6 +82,7 @@ namespace bullethellwhatever.Bosses
                 Owner.Die();
             }
         }
+
         public virtual void HandleBounces()
         {
             if (Entity.touchingLeft(Owner))

@@ -33,6 +33,8 @@ namespace bullethellwhatever.BaseClasses
 
         public Action OnHit;
         public Action OnEdgeTouch;
+
+        public int MercyTimeBeforeRemoval;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Texture = Assets[texture];
@@ -97,7 +99,11 @@ namespace bullethellwhatever.BaseClasses
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
-            Updates = 1;
+
+            if (Updates == 0) // if we havent already set updates
+            {
+                Updates = 1;
+            }
 
             Opacity = 1f;
 
@@ -107,6 +113,10 @@ namespace bullethellwhatever.BaseClasses
 
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
 
+            if (MercyTimeBeforeRemoval == 0)
+            {
+                MercyTimeBeforeRemoval = 60;
+            }
 
             SetHitbox();
 

@@ -29,7 +29,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Size = size;
             InitialSize = Size;
         }
-
         public void Update(Vector2 eyeCentre)
         {
             EyeCentre = eyeCentre;
@@ -54,6 +53,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
             RotationWithinEye = Utilities.AngleToPlayerFrom(EyeCentre);
         }
 
+        public void ResetSize()
+        {
+            Size = InitialSize;
+        }
         public void GoTo(float distanceFromEyeCentre, float rotation)
         {
             DistanceFromEyeCentre = distanceFromEyeCentre;

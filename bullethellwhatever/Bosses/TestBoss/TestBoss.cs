@@ -49,7 +49,7 @@ namespace bullethellwhatever.Bosses.TestBoss
             BarDuration = FramesPerMusicBeat * BeatsPerBar;
 
             BossAttacks = new BossAttack[]
-            { new Desperation(BarDuration * 30),
+            { 
                 new BasicShotgunSpread(BarDuration * 18),
                 new Charge(BarDuration * 16),
                 new Spiral(BarDuration * 12),
@@ -81,6 +81,12 @@ namespace bullethellwhatever.Bosses.TestBoss
             JustStartedBeat = AITimer % FramesPerMusicBeat == 0 ? true : false;
 
             base.AI();
+
+            if (Health <= 0 && !HasDesperationStarted)
+            {
+                HasDesperationStarted = true;
+                ReplaceAttackPattern(new BossAttack[] { new Desperation(BarDuration * 30) });
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

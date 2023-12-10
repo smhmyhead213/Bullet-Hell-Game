@@ -56,12 +56,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
             }
         }
 
-        //public override void ExtraAttackEnd()
-        //{
-        //    if (Owner.AttackNumber == Owner.BossAttacks.Length - 1)
-        //    {
-        //        Owner.RandomlyArrangeAttacks();
-        //    }
-        //}
+        public override void ExtraAttackEnd()
+        {
+            if (Owner.AttackNumber == Owner.BossAttacks.Length - 1)
+            {
+                Owner.RandomlyArrangeAttacks();
+            }
+        }
     }
 }
