@@ -37,6 +37,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time == startTime)
             {
+                EyeOwner.SetChainDampingFactor(EyeOwner.InitialChainDampingFactor);
+
                 // start a little before the player so the player cant just skip past
 
                 TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Pupil.Position) - (Sign(beamRotationalVelocity) * PI) , teleRotationalVelocity, teleRotationalAccel, 100, Utilities.ScreenDiagonalLength() / 1.5f, teleDuration,

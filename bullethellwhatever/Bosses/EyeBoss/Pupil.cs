@@ -57,6 +57,15 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             Size = InitialSize;
         }
+
+        public void Dilate(Vector2 sizeToDilateTo, float progress)
+        {
+            Size = Vector2.Lerp(InitialSize, sizeToDilateTo, progress);
+        }
+        public void Dilate(Vector2 initialSize, Vector2 sizeToDilateTo, float progress)
+        {
+            Size = Vector2.Lerp(initialSize, sizeToDilateTo, progress);
+        }
         public void GoTo(float distanceFromEyeCentre, float rotation)
         {
             DistanceFromEyeCentre = distanceFromEyeCentre;

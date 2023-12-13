@@ -14,6 +14,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
     {
         public List<ChainLink> ChainLinks = new List<ChainLink>();
         public Pupil Pupil;
+        public float InitialChainDampingFactor;
         public EyeBoss() 
         {
             ChainLinks = new List<ChainLink>();
@@ -40,9 +41,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             ChainLink c = new ChainLink("box", new Vector2(ScreenWidth / 2, 0), firstChainInitialAngle, linkLength, this);
 
-            float dampFactor = 0.98f;
+            InitialChainDampingFactor = 0.98f;
 
-            c.SetDampingFactor(dampFactor);
+            c.SetDampingFactor(InitialChainDampingFactor);
 
             ChainLinks.Add(c);
 
@@ -51,22 +52,22 @@ namespace bullethellwhatever.Bosses.EyeBoss
             for (int i = 1; i < numberOfLinks; i++)
             {
                 c = new ChainLink("box", ChainLinks[i - 1].End, firstChainInitialAngle - (i * changeBetweenEach) , linkLength, this);
-                c.SetDampingFactor(dampFactor);
+                c.SetDampingFactor(InitialChainDampingFactor);
                 ChainLinks.Add(c);
             }
 
             BossAttacks = new EyeBossAttack[]
             {
-                new LaserSwingProjectileBurst(5000),
-                new ProjectileRows(500),
+                new LaserSwingProjectileBurst(850),
+                new ProjectileRows(300),
                 new Meteors(300),
                 new EyeRay(1600),
                 new EnergyBlasts(750),
-                new HelixShots(1250),
-                new ProjectileFan(1000),
+                new HelixShots(1270),
+                new ProjectileFan(600),
             };
 
-            //RandomlyArrangeAttacks();
+            RandomlyArrangeAttacks();
         }
         public override void Update()
         {
@@ -87,6 +88,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
             base.Update();
         }
 
+        public void SetChainDampingFactor(float factor)
+        {
+            foreach (ChainLink link in ChainLinks)
+            {
+                link.SetDampingFactor(factor);
+            }
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);

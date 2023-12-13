@@ -25,9 +25,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            int animationTime = 30;
+            int animationTime = 20;
             int projectileBufferTime = 5; // time before eye looks back to player
-            int waitTimeAfter = 15;
+            int waitTimeAfter = 10;
             int cycleTime = animationTime + waitTimeAfter;
             int time = AITimer % cycleTime;
 
@@ -56,7 +56,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         Vector2 velocity = (destination - Pupil.Position) / timeToReachDestination;
 
-                        int projectileExtraUpdates = 3;
+                        int projectileExtraUpdates = 2;
 
                         p.SetDrawAfterimages(11 * projectileExtraUpdates, 7);
 
@@ -74,11 +74,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 //t.ThickenIn = true;
 
-                                Vector2 newVelocity = 1f * Utilities.SafeNormalise(toPlayer);
+                                Vector2 newVelocity = 1.5f * Utilities.SafeNormalise(toPlayer);
 
                                 p.Velocity = newVelocity;
                                 p.Rotation = Utilities.VectorToAngle(newVelocity);
-                                p.Acceleration = 1.01f;
+                                p.Acceleration = 1.013f;
                             }
                         }));
 

@@ -36,5 +36,19 @@ namespace bullethellwhatever.UtilitySystems
                 }));
             }
         }
+        public static void ParticleExplosion(int numberOfParticles, int particleLifeTime, float particleVelocity, Vector2 particleSize, Vector2 position, Color colour)
+        {
+            for (int i = 0; i < numberOfParticles; i++)
+            {
+                float rotation = Utilities.RandomFloat(0, Tau);
+
+                Particle p = new Particle();
+
+                Vector2 velocity = particleVelocity * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
+                int lifetime = particleLifeTime;
+
+                p.Spawn("box", position, velocity, -velocity / 2f / lifetime, particleSize, rotation, colour, 1f, 20);
+            }
+        }
     }
 }

@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -30,9 +32,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             int rayTelegraphTime = 60;
-            int swingTime = 30;
-            int eyeFocusTime = swingTime + 15;
-            int cycleTime = (rayTelegraphTime + eyeFocusTime);
+            int rayDuration = 10;
+            int swingTime = 90;
+            int eyeFocusTime = 15;
+            int cycleTime = (rayTelegraphTime + swingTime + eyeFocusTime);
             int time = AITimer % cycleTime;
 
             ChainLink firstLink = EyeOwner.ChainLinks[0];
@@ -40,17 +43,25 @@ namespace bullethellwhatever.Bosses.EyeBoss
             float rayAdditionalAngle = SwingPassesComplete * PI; // if an odd number of passes have been completed, a half turn will be added to the ray angle.
             float beamDirection = firstLink.Rotation + PI / 2 + rayAdditionalAngle;
 
+            float dampingFactorDuringRayCharge = 0.9f;
+
             if (time < rayTelegraphTime)
             {
                 Pupil.LookAtPlayer(30f);
 
-                if (time == 0)
+                // slow down swinging while charging the beam
+
+                EyeOwner.SetChainDampingFactor(dampingFactorDuringRayCharge);
+
+                if (time == 1)
                 {
                     TelegraphLine t = new TelegraphLine(beamDirection, 0, 0, 50, Utilities.ScreenDiagonalLength(), rayTelegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
 
+                    t.ThickenIn = true;
+
                     t.SetExtraAI(new Action(() =>
                     {
-                        t.Rotation = beamDirection;
+                        t.Rotation = EyeOwner.ChainLinks[0].Rotation + PI / 2 + rayAdditionalAngle;
                     }));
 
                     t.SetOnDeath(new Action(() =>
@@ -61,7 +72,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         ray.SetStayWithOwner(true);
                         ray.SetThinOut(true);
-                        ray.SpawnDeathray(t.Origin, t.Rotation, 1f, 10, "box", t.Width, t.Length, 0, 0, true, Color.White, "DeathrayShader2", Pupil);
+                        ray.SpawnDeathray(t.Origin, t.Rotation, 1f, rayDuration, "box", t.Width, t.Length, 0, 0, true, Color.White, "DeathrayShader2", Pupil);
 
                         int projectiles = 50;
                         int distanceBetweenProjectiles = 150;
@@ -76,7 +87,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 Projectile p = new Projectile();
 
-                                float projSpeed = 5f;
+                                float projSpeed = 0.9f;
 
                                 p.SetDrawAfterimages(50, 3);
 
@@ -87,7 +98,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
                                 }));
 
-                                p.Spawn(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.01f, Vector2.One * 0.6f, Owner, true, Color.White, true, false);
+                                p.Spawn(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.05f, Vector2.One * 0.6f, Owner, true, Color.White, true, false);
                             }
                         }
                     }));
@@ -96,6 +107,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time < rayTelegraphTime)
             {
+                //float lookAngle = Utilities.VectorToAngle(Pupil.Position - Owner.Position);
                 Pupil.GoTo(30, beamDirection);
             }
 
@@ -114,12 +126,81 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }
             }
 
-            if (time > rayTelegraphTime && time <= swingTime + rayTelegraphTime)
+            //if (time > rayTelegraphTime && time <= swingTime + rayTelegraphTime)
+            //{
+            //    float localTime = time - rayTelegraphTime;
+
+            //    foreach (ChainLink c in EyeOwner.ChainLinks)
+            //    {
+            //        c.Rotate(40f * AngleToSwing / swingTime / localTime);
+            //    }
+            //}
+
+            float projectileBurstChargeTime = 50;
+
+            if (time >= rayTelegraphTime && time < rayTelegraphTime + projectileBurstChargeTime)
             {
-                foreach (ChainLink c in EyeOwner.ChainLinks)
+                if (time == rayTelegraphTime) // on ray fire
                 {
-                    c.Rotate(-AngleToSwing / swingTime);
+                    EyeOwner.SetChainDampingFactor(EyeOwner.InitialChainDampingFactor);
+
+                    foreach (ChainLink c in EyeOwner.ChainLinks)
+                    {
+                        c.ApplyTorque(AngleToSwing / 10f);
+                    }
                 }
+
+                int localTime = time - rayTelegraphTime;
+
+                float progress = localTime / projectileBurstChargeTime;
+
+                // make progress ease
+
+                float easedProgress = 1 - Pow(1 - progress, 4); // easeOutExpo from easings.net
+
+                Vector2 initialSize = Pupil.InitialSize;
+
+                Pupil.Dilate(initialSize / 4f, easedProgress);
+            }
+
+            if (time == rayTelegraphTime + projectileBurstChargeTime)
+            {
+                int numberOfProjectiles = 50;
+
+                for (int i = 0; i < numberOfProjectiles; i++)
+                {
+                    float xVelAmplitude = 20f;
+                    float xVelocity = Utilities.RandomFloat(-xVelAmplitude, xVelAmplitude);
+
+                    float yVelAmplitude = 20f;
+                    float yVelocity = Utilities.RandomFloat(-yVelAmplitude, 0);
+
+                    Projectile p = new Projectile();
+
+                    p.SetExtraAI(new Action(() =>
+                    {
+                        p.Velocity.Y = p.Velocity.Y + 0.3f; // gravity
+                    }));
+
+                    p.SetDrawAfterimages(28, 3);
+
+                    p.SetEdgeTouchEffect(new Action(() =>
+                    {
+                        AttackUtilities.ParticleExplosion(15, 20, 10f, Vector2.One * 0.45f, p.Position, p.Colour);
+                    }));
+
+                    p.Spawn(Pupil.Position, new Vector2(xVelocity, yVelocity), 1f, 1, "box", 1f, Vector2.One * 0.85f, Pupil, true, Color.Red, true, false);
+                }
+            }
+
+            int pupilExpandTime = 25;
+            int expandStartTime = rayTelegraphTime + (int)projectileBurstChargeTime;
+
+            if (time > expandStartTime && time <= expandStartTime + pupilExpandTime)
+            {
+                int localTime = time - expandStartTime;
+
+                Pupil.Dilate(Pupil.InitialSize, localTime / (float)pupilExpandTime);
             }
         }
 
@@ -131,7 +212,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public override void ExtraDraw(SpriteBatch s)
         {
-
+            //Utilities.drawTextInDrawMethod(aitimer.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), s, font, Color.White);
         }
     }
 }

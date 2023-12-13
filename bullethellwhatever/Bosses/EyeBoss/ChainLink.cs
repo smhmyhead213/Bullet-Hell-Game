@@ -18,6 +18,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public float RotationalAccleration;
         public float Length;
         public float DampingFactor;
+        public float Torque;
         public EyeBoss Owner;
         public Texture2D Texture;
 
@@ -40,7 +41,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
             // the objects acceleration is gsin(theta)
             // dividing both sides by r (the pendulums length) gives an angular accleration.
 
-            RotationalAccleration = gravitationalAcceleration * Sin(Rotation) / Length;
+            RotationalAccleration = gravitationalAcceleration * Sin(Rotation) / Length + Torque;
+
+            Torque = 0; // apply the torque once only, do for multiple frames
 
             RotationalVelocity = RotationalVelocity + RotationalAccleration;
 
@@ -68,6 +71,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Rotation = Rotation + angle;
         }
 
+        public void ApplyTorque(float torque)
+        {
+            Torque = torque;
+        }
         public void Draw(SpriteBatch s)
         {
             s.Draw(Texture, Position, null, Color.White, Rotation - PI / 2, new Vector2(0, Texture.Height / 2f), new Vector2(Length / Texture.Width, 1f), SpriteEffects.None, 1);

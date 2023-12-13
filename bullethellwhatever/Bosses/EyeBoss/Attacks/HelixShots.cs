@@ -107,7 +107,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 float interpolant = (time - waitTime) / (float)telegraphTime;
 
                 Pupil.Size.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, interpolant); // lengthen pupil slightly
-                Pupil.Size.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.5f, interpolant); // narrow pupil
+                Pupil.Size.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.1f, interpolant); // narrow pupil
             }
 
             if (time > waitTime + telegraphTime && time <= waitTime + telegraphTime + shootTime)
