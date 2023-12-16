@@ -63,8 +63,6 @@ namespace bullethellwhatever.BaseClasses
             Position = position;
             Velocity = initialVelocity;
 
-            isPlayer = true;
-            isBoss = false;
             IFrames = 0;
             Depth = 0;
 

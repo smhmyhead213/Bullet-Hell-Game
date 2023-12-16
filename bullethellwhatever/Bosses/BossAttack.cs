@@ -73,8 +73,6 @@ namespace bullethellwhatever.Bosses
             if (Owner.Health <= 0 && !Owner.IsDesperationOver && !HasResetAITimerForDesperation)
             {
                 HasResetAITimerForDesperation = true;
-                //Owner.AttackNumber = 0;
-                Owner.AITimer = -1;
             }
 
             if (Owner.IsDesperationOver)

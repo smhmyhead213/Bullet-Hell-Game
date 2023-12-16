@@ -54,10 +54,14 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void ExecuteCurrentAttack()
         {
-            BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
+            if (BossAttacks.Length > 0)
+            {
+                BossAttacks[AttackNumber].Execute(ref AITimer, ref AttackNumber);
 
-            BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
+                BossAttacks[AttackNumber].TryEndAttack(ref AITimer, ref AttackNumber);
+            }
         }
+
         public void ReplaceAttackPattern(BossAttack[] attacks)
         {
             if (BossAttacks is not null)

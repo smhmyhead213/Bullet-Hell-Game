@@ -58,7 +58,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public override void ExtraAttackEnd()
         {
-            if (Owner.AttackNumber == Owner.BossAttacks.Length - 1)
+            if (Owner.AttackNumber == Owner.BossAttacks.Length - 1 && EyeOwner.Phase != 2)
             {
                 Owner.RandomlyArrangeAttacks();
             }

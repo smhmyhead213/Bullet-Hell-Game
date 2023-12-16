@@ -11,7 +11,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.BaseClasses
 {
-    public abstract class Entity //wait til he finds out he has to rework the hitbox system to work with different square sizes! get a load of this guy!
+    public abstract class Entity
     {
         public Vector2 Position;
         public Vector2 Velocity;
@@ -23,14 +23,13 @@ namespace bullethellwhatever.BaseClasses
 
         public float Depth;
         public bool DrawAfterimages;
-        public bool isBoss;
-        public bool isPlayer;
+
         public bool DealDamage;
         public bool IsHarmful;
         public int AITimer;
         public float Damage;
         public float Opacity;
-        public RotatedRectangle Hitbox; //this hitbox system works only with squares, if you want to expand make Size a Vector2
+        public RotatedRectangle Hitbox;
 
         public Vector2 Size;
 
@@ -118,7 +117,7 @@ namespace bullethellwhatever.BaseClasses
 
             Drawing.ScreenShake(3, 10);
         }
-        public static bool touchingBottom(Entity entity) //hieght is height of texture
+        public static bool touchingBottom(Entity entity)
         {
             if (entity.Position.Y + entity.Texture.Height * entity.GetSize().Y / 2 >= _graphics.PreferredBackBufferHeight)
                 return true;

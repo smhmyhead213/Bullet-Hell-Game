@@ -29,8 +29,7 @@ namespace bullethellwhatever.Bosses
         {
             Position = position;
             Velocity = velocity;
-            isBoss = true;
-            isPlayer = false;
+
             MaxHP = 200;
             Health = 200;
             AITimer = 0;

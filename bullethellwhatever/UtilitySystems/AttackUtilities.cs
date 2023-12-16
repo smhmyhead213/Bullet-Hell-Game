@@ -50,5 +50,13 @@ namespace bullethellwhatever.UtilitySystems
                 p.Spawn("box", position, velocity, -velocity / 2f / lifetime, particleSize, rotation, colour, 1f, 20);
             }
         }
+
+        public static void ClearProjectiles()
+        {
+            foreach (Projectile p in activeProjectiles)
+            {
+                p.Die();
+            }
+        }
     }
 }

@@ -7,24 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class EyeBoss : Boss
     {
         public List<ChainLink> ChainLinks = new List<ChainLink>();
+        public BossAttack[] OriginalAttacks;
         public Pupil Pupil;
+        public int Phase;
         public float InitialChainDampingFactor;
-        public EyeBoss() 
-        {
-            ChainLinks = new List<ChainLink>();
-
-            Position = Utilities.CentreOfScreen();
+        public Vector2 ChainStartPosition;
+        public EyeBoss()
+        {        
+            //Position = Utilities.CentreOfScreen();
             Velocity = Vector2.Zero;
             Texture = Assets["Circle"];
             Size = Vector2.One * 2f;
 
-            MaxHP = 500;
+            ChainStartPosition = new Vector2(ScreenWidth / 2, 0);
+
+            Phase = 1;
+            MaxHP = 5;
 
             Colour = Color.White;
 
@@ -32,29 +37,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Pupil.Spawn(Position, Vector2.Zero, 0f, Pupil.Texture, Pupil.Size, 0, 0, Color.Black, false, false);
             Pupil.SetParticipating(false);
 
-            int numberOfLinks = 15;
-
-            float firstChainInitialAngle = PI / 3;
-            float finalChainInitialAngle = PI / 4;
-            float totalChainLength = ScreenHeight / 2;
-            float linkLength = totalChainLength / numberOfLinks;
-
-            ChainLink c = new ChainLink("box", new Vector2(ScreenWidth / 2, 0), firstChainInitialAngle, linkLength, this);
-
-            InitialChainDampingFactor = 0.98f;
-
-            c.SetDampingFactor(InitialChainDampingFactor);
-
-            ChainLinks.Add(c);
-
-            float changeBetweenEach = (firstChainInitialAngle - finalChainInitialAngle) / numberOfLinks;
-
-            for (int i = 1; i < numberOfLinks; i++)
-            {
-                c = new ChainLink("box", ChainLinks[i - 1].End, firstChainInitialAngle - (i * changeBetweenEach) , linkLength, this);
-                c.SetDampingFactor(InitialChainDampingFactor);
-                ChainLinks.Add(c);
-            }
+            CreateChain(ScreenHeight / 2f);
 
             BossAttacks = new EyeBossAttack[]
             {
@@ -67,7 +50,38 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 new ProjectileFan(600),
             };
 
+            OriginalAttacks = BossAttacks;
+
             RandomlyArrangeAttacks();
+        }
+
+        public virtual void CreateChain(float chainLength)
+        {
+            ChainLinks = new List<ChainLink>();
+
+            float firstChainInitialAngle = PI / 3;
+            float finalChainInitialAngle = PI / 4;
+
+            int numberOfLinks = 15;
+
+            float linkLength = chainLength / numberOfLinks;
+
+            ChainLink c = new ChainLink("box", ChainStartPosition, firstChainInitialAngle, linkLength, this);
+
+            InitialChainDampingFactor = 0.98f;
+
+            c.SetDampingFactor(InitialChainDampingFactor);
+
+            ChainLinks.Add(c);
+
+            float changeBetweenEach = (firstChainInitialAngle - finalChainInitialAngle) / numberOfLinks;
+
+            for (int i = 1; i < numberOfLinks; i++)
+            {
+                c = new ChainLink("box", ChainLinks[i - 1].End, firstChainInitialAngle - (i * changeBetweenEach), linkLength, this);
+                c.SetDampingFactor(InitialChainDampingFactor);
+                ChainLinks.Add(c);
+            }
         }
         public override void Update()
         {
@@ -88,6 +102,49 @@ namespace bullethellwhatever.Bosses.EyeBoss
             base.Update();
         }
 
+        public override void AI()
+        {
+            base.AI();
+
+            HandlePhaseChanges();
+        }
+
+        public virtual void HandlePhaseChanges()
+        {
+            if (Health <= 0)
+            {
+                if (Phase == 1)
+                {
+                    BossAttack[] phaseTwoAttacks = new BossAttack[]
+                    {
+                    new PhaseTwoBulletHell(900),
+                    };
+
+                    Phase = 2;
+
+                    EyeBossPhaseTwoMinion[] minions = new EyeBossPhaseTwoMinion[4];
+
+                    minions[0] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4, new Vector2(ScreenWidth / 3, 0));
+                    minions[1] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4 * 3, new Vector2(ScreenWidth / 5, 0));
+                    minions[2] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4, new Vector2(ScreenWidth - ScreenWidth / 3, 0));
+                    minions[3] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4 * 3, new Vector2(ScreenWidth - ScreenWidth / 5, 0));
+
+                    foreach (EyeBossPhaseTwoMinion minion in minions)
+                    {
+                        minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Size / 2f, minion.MaxHP, 1, Colour, false, true);
+                        minion.ReplaceAttackPattern(phaseTwoAttacks);
+                    }
+
+                    AttackUtilities.ClearProjectiles();
+
+                    ReplaceAttackPattern(phaseTwoAttacks);
+                }
+            }
+        }
+        public override void Die()
+        {
+            base.Die();
+        }
         public void SetChainDampingFactor(float factor)
         {
             foreach (ChainLink link in ChainLinks)

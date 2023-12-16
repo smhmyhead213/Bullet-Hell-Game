@@ -26,8 +26,7 @@ namespace bullethellwhatever.Bosses.TestBoss
         {
             Position = position;
             Velocity = velocity;
-            isBoss = true;
-            isPlayer = false;
+
             MaxHP = 200;
             AITimer = 0;
             MaxIFrames = 5;
@@ -44,7 +43,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             musicSystem.SetMusic("TestBossMusic", true, 0.01f);
 
-            FramesPerMusicBeat = 24; //dividing my 2 prevents me having to fix the great double > single update bug of the 3rd of spetember 2023
+            FramesPerMusicBeat = 24; //dividing by 2 prevents me having to fix the great double > single update bug of the 3rd of spetember 2023
             BeatsPerBar = 4;
             BarDuration = FramesPerMusicBeat * BeatsPerBar;
 
