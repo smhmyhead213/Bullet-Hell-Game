@@ -32,6 +32,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
       
             if (activeNPCs.Count == 2) // boss and pupil are alive
             {
+                Owner.TargetableByHoming = true;
+                Owner.IsInvincible = false;
+
                 AttackUtilities.ClearProjectiles();
                 EyeOwner.Phase++;
                 EyeOwner.ReplaceAttackPattern(EyeOwner.OriginalAttacks);

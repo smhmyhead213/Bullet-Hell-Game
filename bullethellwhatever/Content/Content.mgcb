@@ -323,6 +323,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/BigMassiveOrbShader.fx
 
+#begin Shaders/CircleOutlineShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/CircleOutlineShader.fx
+
 #begin Shaders/CrabRocketBoosterShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

@@ -24,6 +24,7 @@ namespace bullethellwhatever.DrawCode
         public static bool IsScreenShaking;
         public static int Timer;
 
+        public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
             screenShakeObject = new ScreenShakeObject(0, 0);
@@ -52,6 +53,7 @@ namespace bullethellwhatever.DrawCode
             s.End();
             s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
         }
+
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
         {
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.

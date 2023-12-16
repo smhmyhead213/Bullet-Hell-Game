@@ -107,5 +107,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
             }
         }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+
+        }
     }
 }
