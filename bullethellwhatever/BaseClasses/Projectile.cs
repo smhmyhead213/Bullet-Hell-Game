@@ -113,6 +113,8 @@ namespace bullethellwhatever.BaseClasses
 
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
 
+            Participating = true;
+
             if (MercyTimeBeforeRemoval == 0)
             {
                 MercyTimeBeforeRemoval = 60;
@@ -204,24 +206,27 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void CheckForHits()
         {
-            if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
+            if (Participating)
             {
-                foreach (NPC npc in activeNPCs)
+                if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
                 {
-                    Collision collision = CollisionWithEntity(npc);
-
-                    if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
+                    foreach (NPC npc in activeNPCs)
                     {
-                        DealDamageTo(npc, collision);
+                        Collision collision = CollisionWithEntity(npc);
+
+                        if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
+                        {
+                            DealDamageTo(npc, collision);
+                        }
                     }
                 }
-            }
 
-            if (IsHarmful)
-            {
-                if (CollisionWithEntity(player).Collided && player.IFrames == 0 && !Dying)
+                if (IsHarmful)
                 {
-                    DamagePlayer();
+                    if (CollisionWithEntity(player).Collided && player.IFrames == 0 && !Dying)
+                    {
+                        DamagePlayer();
+                    }
                 }
             }
         }

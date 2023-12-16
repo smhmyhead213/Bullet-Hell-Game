@@ -43,7 +43,7 @@ namespace bullethellwhatever.BaseClasses
 
             // never do the same attack twice
 
-            if (newOrder[0] == BossAttacks[BossAttacks.Length - 1]) // if the first new attack is the same as the last old one
+            if (BossAttacks.Length > 1 && newOrder[0] == BossAttacks[BossAttacks.Length - 1]) // if the first new attack is the same as the last old one
             {
                 BossAttack bucket = newOrder[1]; // swap the new first and new second attacks
                 newOrder[1] = newOrder[0];

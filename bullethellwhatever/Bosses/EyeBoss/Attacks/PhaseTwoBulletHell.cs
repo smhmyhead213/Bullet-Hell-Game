@@ -12,6 +12,7 @@ using System.Linq;
 using System.Xml;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems;
+using System.Runtime.CompilerServices;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -28,8 +29,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             int time = AITimer;
+      
+            if (activeNPCs.Count == 2) // boss and pupil are alive
+            {
+                AttackUtilities.ClearProjectiles();
+                EyeOwner.Phase++;
+                EyeOwner.ReplaceAttackPattern(EyeOwner.OriginalAttacks);
+                EyeOwner.RandomlyArrangeAttacks();
+            }
 
-            if (time % 20 == 0)
+            else if (AITimer > 200 && time % 20 == 0)
             {
                 int projectilesPerRing;
 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -28,6 +29,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             RotationWithinEye = rotationWithinEye;
             Size = size;
             InitialSize = Size;
+            TargetableByHoming = false;
         }
         public void Update(Vector2 eyeCentre)
         {

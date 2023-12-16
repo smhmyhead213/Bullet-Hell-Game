@@ -68,7 +68,7 @@ namespace bullethellwhatever.Projectiles.Player
 
                     foreach (NPC npc in activeNPCs)
                     {
-                        if (npc.TargetableByHoming)
+                        if (npc.TargetableByHoming && npc.Participating)
                         {
                             float distance = Utilities.DistanceBetweenEntities(this, npc);
                             if (distance < minDistance)

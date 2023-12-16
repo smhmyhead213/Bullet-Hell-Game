@@ -97,6 +97,10 @@ namespace bullethellwhatever.DrawCode
                 screenShakeObject = new ScreenShakeObject(magnitude, duration);
         }
 
+        public static void StopScreenShake()
+        {
+            screenShakeObject = new ScreenShakeObject(0, 0);
+        }
         public static void HandleScreenShake() //under the hood screen shaking
         {
             if (screenShakeObject is not null && !Utilities.ImportantMenusPresent() && MainInstance.IsActive) 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -17,6 +18,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public BossAttack[] OriginalAttacks;
         public Pupil Pupil;
         public int Phase;
+
+        public int PhaseTwoMinionCount = 4;
+
         public float InitialChainDampingFactor;
         public Vector2 ChainStartPosition;
         public EyeBoss()
@@ -36,6 +40,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Pupil = new Pupil("Circle", 0, 0, Size / 4);
             Pupil.Spawn(Position, Vector2.Zero, 0f, Pupil.Texture, Pupil.Size, 0, 0, Color.Black, false, false);
             Pupil.SetParticipating(false);
+            Pupil.TargetableByHoming = false;
 
             CreateChain(ScreenHeight / 2f);
 
@@ -115,12 +120,19 @@ namespace bullethellwhatever.Bosses.EyeBoss
             {
                 if (Phase == 1)
                 {
+                    Drawing.StopScreenShake();
+
                     BossAttack[] phaseTwoAttacks = new BossAttack[]
                     {
-                    new PhaseTwoBulletHell(900),
+                        new PhaseTwoBulletHell(900000),
                     };
 
                     Phase = 2;
+
+                    //SetParticipating(false);
+
+                    TargetableByHoming = false;
+                    IsInvincible = true;
 
                     EyeBossPhaseTwoMinion[] minions = new EyeBossPhaseTwoMinion[4];
 
@@ -132,7 +144,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     foreach (EyeBossPhaseTwoMinion minion in minions)
                     {
                         minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Size / 2f, minion.MaxHP, 1, Colour, false, true);
-                        minion.ReplaceAttackPattern(phaseTwoAttacks);
                     }
 
                     AttackUtilities.ClearProjectiles();
@@ -144,6 +155,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public override void Die()
         {
             base.Die();
+
+            Pupil.Die();
         }
         public void SetChainDampingFactor(float factor)
         {

@@ -68,7 +68,7 @@ namespace bullethellwhatever
         public static void drawTextInDrawMethod(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour)
         {
             //_spriteBatch.Begin();
-            _spriteBatch.DrawString(font, stringg, position, colour);
+            _spriteBatch.DrawString(font, stringg, position, colour); // fix later
             //_spriteBatch.End();
         }
 
@@ -160,6 +160,10 @@ namespace bullethellwhatever
             return (float)generated;
         }
 
+        public static float RandomAngle()
+        {
+            return RandomFloat(0, Tau);
+        }
         public static int RandomInt(int min, int max)
         {
             Random rng = new Random();

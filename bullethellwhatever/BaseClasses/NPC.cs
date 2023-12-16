@@ -24,8 +24,6 @@ namespace bullethellwhatever.BaseClasses
 
         public bool TargetableByHoming;
 
-        public bool Participating; // whether to do anything with collision
-
         public int PierceToTake;
 
         public float DamageReduction;
@@ -120,11 +118,11 @@ namespace bullethellwhatever.BaseClasses
                 IFrames--;
             }
 
-            if (Health <= 0)
-            {
-                TargetableByHoming = false;
-            }
-            else TargetableByHoming = true;
+            //if (Health <= 0)
+            //{
+            //    TargetableByHoming = false;
+            //}
+            //else TargetableByHoming = true;
 
             Position = Position + (Velocity * ScaleFactor());
 
@@ -142,6 +140,16 @@ namespace bullethellwhatever.BaseClasses
         public float HPRatio()
         {
             return Health / MaxHP;
+        }
+
+        public virtual void Heal(float amount)
+        {
+            Health = Health + amount;
+
+            if (Health > MaxHP)
+            {
+                Health = MaxHP;
+            }
         }
         public virtual void CheckForHits() // all passive checks go here as well
         {
@@ -227,6 +235,8 @@ namespace bullethellwhatever.BaseClasses
             Texture = texture;
             Colour = colour;
 
+            TargetableByHoming = true;
+
             Size = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
@@ -246,10 +256,7 @@ namespace bullethellwhatever.BaseClasses
             NPCsToAddNextFrame.Add(this);
 
         }
-        public virtual void SetParticipating(bool participating)
-        {
-            Participating = participating;
-        }
+        
         public virtual void PrepareNPCButDontAddToListYet()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);

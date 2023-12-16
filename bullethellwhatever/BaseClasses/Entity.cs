@@ -35,6 +35,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float RotationalVelocity;
 
+        public bool Participating; // whether to do anything with collision
         public float Health;
         public float MaxHP;
         public bool DeleteNextFrame;
@@ -101,7 +102,10 @@ namespace bullethellwhatever.BaseClasses
         {
             Velocity.Y = y;
         }
-
+        public virtual void SetParticipating(bool participating)
+        {
+            Participating = participating;
+        }
         public virtual void DealDamageTo(NPC npc, Collision collision)
         {
             npc.IFrames = npc.MaxIFrames;
@@ -210,6 +214,7 @@ namespace bullethellwhatever.BaseClasses
                 OnDeath();
             }
 
+            IsDesperationOver = true;
             DeleteNextFrame = true;
         }
 
@@ -223,6 +228,10 @@ namespace bullethellwhatever.BaseClasses
             afterimagesRotations = new float[length];
         }
 
+        public virtual bool IsCollidingWith(Entity other)
+        {
+            return Hitbox.Intersects(other.Hitbox).Collided;
+        }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (ExtraDraw is not null)

@@ -74,11 +74,6 @@ namespace bullethellwhatever.Bosses
             {
                 HasResetAITimerForDesperation = true;
             }
-
-            if (Owner.IsDesperationOver)
-            {
-                Owner.Die();
-            }
         }
 
         public virtual void HandleBounces()
