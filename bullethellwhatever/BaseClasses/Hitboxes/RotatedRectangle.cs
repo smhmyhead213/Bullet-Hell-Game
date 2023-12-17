@@ -71,6 +71,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                     return new Collision(point, true);
                 }
             }
+
             // if the vertices check fails, check if the point of intersection is within BOTH rectangles. rigorous mental gymnastics which are probably wrong say that doing both checks cover each others errors, idk man, check your notebook.
 
 

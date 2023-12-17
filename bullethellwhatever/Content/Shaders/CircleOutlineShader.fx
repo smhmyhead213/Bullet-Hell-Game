@@ -50,8 +50,6 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float2 centre = float2(0.5, 0.5); // define the centre of the shader
     
-    float3 colour = float3(1.);
-    
     float distanceFromCentre = sqrt(pow(uv.x - centre.x, 2.) + pow(uv.y - centre.y, 2.)); // calculate how far we are from the centre
     
     float maxDistanceFromCentre = length(centre);
@@ -63,13 +61,13 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     if (distanceFromCentre != 0.)
     {
         // decreasing the subtract number makes outline thicker
-        colourAmount = pow(2., 10. * distanceFromCentre - 8.);
+        colourAmount = pow(2., 10. * distanceFromCentre - 9.);
     }
     
-    float3 col = colourAmount * colour;
+    float3 col = colourAmount * colour * tex2D(mainTexture, uv).r;
 
     // Output to screen
-    return float4(col, 1.0);
+    return float4(col, 0);
 }
 
 Technique Technique1

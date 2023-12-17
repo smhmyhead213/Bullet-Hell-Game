@@ -9,12 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using FMOD;
+using bullethellwhatever.DrawCode;
+using bullethellwhatever.Projectiles.Base;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class EyeBossPhaseTwoMinion : EyeBoss
     {
         public EyeBoss Owner;
+        public float VulnerabilityRadius;
         public EyeBossPhaseTwoMinion(EyeBoss owner, int linksInChain, Vector2 chainStartPos)
         {
             Owner = owner;
@@ -47,8 +50,31 @@ namespace bullethellwhatever.Bosses.EyeBoss
             {               
                 IsDesperationOver = true;
             }
+
+            float baseVulnerabilityRadius = 270f;
+
+            VulnerabilityRadius = baseVulnerabilityRadius + 10f * Sin(AITimer / 10f);
+
+            if (!IsPlayerWithinVulnerabilityRadius()) // if the player is outside the ring
+            {
+                IsInvincible = true;
+
+                foreach (Projectile p in activeFriendlyProjectiles)
+                {
+                    if (Utilities.DistanceBetweenVectors(p.Position, Position) < VulnerabilityRadius && p is not Deathray) // if the projectile is within the ring
+                    {
+                        p.Die();
+                        p.OnHitEffect(p.Position);
+                    }
+                }
+            }
+            else IsInvincible = false;
         }
 
+        public bool IsPlayerWithinVulnerabilityRadius()
+        {
+            return Utilities.DistanceBetweenVectors(player.Position, Position) < VulnerabilityRadius;
+        }
         public override void HandlePhaseChanges()
         {
             // do nothing
@@ -112,7 +138,28 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             base.Draw(spriteBatch);
 
+            bool npcHasShader = Shader is not null;
 
+            if (!npcHasShader)
+            {
+                Drawing.RestartSpriteBatchForShaders(spriteBatch);
+            }
+
+            Effect circleShader = Shaders["CircleOutlineShader"];
+
+            circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
+            circleShader.Parameters["uTime"]?.SetValue(AITimer);
+
+            circleShader.CurrentTechnique.Passes[0].Apply();
+
+            Texture2D circle = Assets["Circle"];
+
+            Drawing.BetterDraw(circle, Pupil.Position, null, Color.White, 0, Vector2.One * VulnerabilityRadius / circle.Width * 2f, SpriteEffects.None, 1);
+
+            if (!npcHasShader)
+            {
+                Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
+            }
         }
     }
 }

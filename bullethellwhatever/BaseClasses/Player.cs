@@ -332,6 +332,11 @@ namespace bullethellwhatever.BaseClasses
 
         }
         #region Shooting
+
+        public void TurnPlayerDeathrayOff()
+        {
+            PlayerDeathray.IsActive = false;
+        }
         public void Shoot()
         {
             if (ActiveWeapon == Weapons.Laser)
@@ -340,12 +345,12 @@ namespace bullethellwhatever.BaseClasses
 
                 float initialRotation = Utilities.VectorToAngle(MousePosition - Position); // Add an offset so it works I have no idea why
 
-                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.03f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Red, "PlayerDeathrayShader", this);               
+                PlayerDeathray.SpawnDeathray(Position, initialRotation, 0.03f, 2, "box", 50f, 2000f, 0f, 0f, false, Color.Red, "PlayerDeathrayShader", this);   
             }
 
             else if (ActiveWeapon == Weapons.MachineGun)
             {
-                PlayerDeathray.IsActive = false;
+                TurnPlayerDeathrayOff();
 
                 ShotCooldown = 3f;
 
@@ -361,7 +366,8 @@ namespace bullethellwhatever.BaseClasses
 
             else if (ActiveWeapon == Weapons.Homing)
             {
-                PlayerDeathray.IsActive = false;
+                TurnPlayerDeathrayOff();
+
                 ShotCooldown = 10f;
                 float initialVelocity = 7f;
                 PlayerHomingProjectile projectile = new PlayerHomingProjectile();

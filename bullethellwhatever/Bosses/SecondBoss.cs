@@ -31,6 +31,9 @@ namespace bullethellwhatever.Bosses
             Velocity = velocity;
 
             MaxHP = 200;
+
+            BlockDeathrays = true;
+
             Health = 200;
             AITimer = 0;
             IFrames = 5f;

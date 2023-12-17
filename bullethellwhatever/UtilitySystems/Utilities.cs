@@ -160,6 +160,10 @@ namespace bullethellwhatever
             return (float)generated;
         }
 
+        public static bool RandomChance(int oneIn)
+        {
+            return RandomInt(1, oneIn) == 1;
+        }
         public static float RandomAngle()
         {
             return RandomFloat(0, Tau);

@@ -17,6 +17,7 @@ namespace bullethellwhatever.Projectiles.Base
     public class Deathray : Projectile
     {    
         public float Length;
+        public float InitialLength;
         public float Width;
         public float InitialWidth;
         public bool ThinOut;
@@ -60,6 +61,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             Width = width;
             Length = length;
+            InitialLength = Length;
 
             Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
 
@@ -83,6 +85,8 @@ namespace bullethellwhatever.Projectiles.Base
 
             InitialWidth = Width;
             ThinOut = false;
+
+            Participating = true;
 
             return this;
         }
@@ -121,6 +125,8 @@ namespace bullethellwhatever.Projectiles.Base
             InitialWidth = Width;
             ThinOut = false;
 
+            Participating = true;
+
             return this;
         }
 
@@ -156,6 +162,9 @@ namespace bullethellwhatever.Projectiles.Base
             RemoveOnHit = false;
 
             InitialWidth = Width;
+
+            Participating = true;
+
             ThinOut = false;
         }
 
@@ -173,6 +182,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (!IsSpawned)
             {
                 IsSpawned = true;
+
                 if (IsHarmful)
                 {
                     enemyProjectilesToAddNextFrame.Add(this);
@@ -182,6 +192,8 @@ namespace bullethellwhatever.Projectiles.Base
         }
         public override void AI()
         {
+            Length = InitialLength;
+
             if (ExtraAI is not null)
             {
                 ExtraAI();
@@ -220,6 +232,7 @@ namespace bullethellwhatever.Projectiles.Base
                 OnEdgeTouch();
             }
         }
+
         public void DrawWithShader(SpriteBatch spriteBatch)
         {
 
@@ -239,6 +252,24 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 base.CheckForHits();
             }          
+        }
+
+        public virtual void SetLength(float length)
+        {
+            if (length >= 0)
+            {
+                Length = length;
+            }
+        }
+
+        public virtual void OnHitObstacle(Vector2 obstaclePosition)
+        {
+            SetLength(Utilities.DistanceBetweenVectors(obstaclePosition, Position));
+
+            if (OnEdgeTouch is not null)
+            {
+                OnEdgeTouch();
+            }
         }
 
         public Collision BeamEdgeTouch()
@@ -281,6 +312,18 @@ namespace bullethellwhatever.Projectiles.Base
         public Vector2 EdgeTouchPointGivenY(float y)
         {
             return new Vector2((y - Hitbox.CalculateC()) / Hitbox.CalculateGradient(), y);
+        }
+
+        public override void OnHitToNPC(NPC hitNPC)
+        {
+            base.OnHitToNPC(hitNPC);
+
+            float distanceTo = Utilities.DistanceBetweenVectors(Position, hitNPC.Position);
+
+            if (hitNPC.BlockDeathrays && Length > distanceTo) // idk why i even made this im barely going to use it
+            {
+                Length = distanceTo;
+            }
         }
         public override void OnHitEffect(Vector2 position)
         {

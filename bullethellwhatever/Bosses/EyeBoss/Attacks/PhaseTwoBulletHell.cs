@@ -44,20 +44,37 @@ namespace bullethellwhatever.Bosses.EyeBoss
             else if (AITimer > 200 && time % 20 == 0)
             {
                 int projectilesPerRing;
+                bool attack = true;
 
                 if (Owner is EyeBossPhaseTwoMinion)
                 {
                     projectilesPerRing = 10;
+                    if (((EyeBossPhaseTwoMinion)Owner).IsPlayerWithinVulnerabilityRadius())
+                    {
+                        attack = false;
+                    }
                 }
                 else projectilesPerRing = 20;
 
-                float randomOffset = Utilities.RandomFloat(0, Tau);
-
-                for (int i = 0; i < projectilesPerRing; i++)
+                if (attack)
                 {
-                    Projectile p = new Projectile();
+                    float randomOffset = Utilities.RandomFloat(0, Tau);
 
-                    p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                    for (int i = 0; i < projectilesPerRing; i++)
+                    {
+                        if (!Utilities.RandomChance(20))
+                        {
+                            Projectile p = new Projectile();
+
+                            p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                        }
+                        else
+                        {
+                            PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
+
+                            p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                        }
+                    }
                 }
             }
         }

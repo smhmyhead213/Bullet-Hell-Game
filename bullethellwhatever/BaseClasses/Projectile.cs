@@ -217,6 +217,7 @@ namespace bullethellwhatever.BaseClasses
                         if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
                         {
                             DealDamageTo(npc, collision);
+                            OnHitToNPC(npc);
                         }
                     }
                 }
@@ -229,6 +230,11 @@ namespace bullethellwhatever.BaseClasses
                     }
                 }
             }
+        }
+
+        public virtual void OnHitToNPC(NPC hitNPC)
+        {
+
         }
 
         public override void DealDamageTo(NPC npc, Collision collision)

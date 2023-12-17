@@ -24,6 +24,8 @@ namespace bullethellwhatever.BaseClasses
 
         public bool TargetableByHoming;
 
+        public bool BlockDeathrays;
+
         public int PierceToTake;
 
         public float DamageReduction;
@@ -221,6 +223,11 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
+        public virtual void SetBlockDeathrays(bool block)
+        {
+            BlockDeathrays = block;
+        }
+
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1;
@@ -254,7 +261,6 @@ namespace bullethellwhatever.BaseClasses
             PrepareNPCButDontAddToListYet();
 
             NPCsToAddNextFrame.Add(this);
-
         }
         
         public virtual void PrepareNPCButDontAddToListYet()
