@@ -200,6 +200,11 @@ namespace bullethellwhatever.BaseClasses
             Shader.Parameters["randomNoiseMap"]?.SetValue(Assets["RandomNoise"]);
         }
 
+        public virtual void ApplyRandomNoise(Effect shader)
+        {
+            shader.Parameters["randomNoiseMap"]?.SetValue(Assets["RandomNoise"]);
+        }
+
         public virtual void SetShader(string filename)
         {
             Shader = Shaders[filename];

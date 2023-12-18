@@ -11,9 +11,8 @@ namespace bullethellwhatever.Projectiles.Base
     public class PlayerHealingProjectile : Projectile
     {
         public float HealAmount;
-
         public PlayerHealingProjectile(float healAmount) : base()
-        {
+        { 
             HealAmount = healAmount;
         }
 

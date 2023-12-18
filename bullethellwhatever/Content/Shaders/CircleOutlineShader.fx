@@ -1,4 +1,10 @@
 ﻿sampler mainTexture : register(s0);
+texture randomNoiseMap;
+
+sampler2D randomNoiseSampler = sampler_state
+{
+    Texture = <randomNoiseMap>;
+};
 
 texture noiseMap;
 sampler noiseMapSampler : register(s1);
@@ -9,6 +15,7 @@ float uTime;
 int duration;
 int direction; // 1 or -1
 float3 colour;
+float radius;
 //float timeToStartFadingOut = duration / 10f * 9f;
 
 struct VertexShaderInput
@@ -46,26 +53,32 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    float2 uv = input.TextureCoordinates;
+    float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
+    
+    float2 uv = input.TextureCoordinates + dummy;
 
     float2 centre = float2(0.5, 0.5); // define the centre of the shader
     
     float distanceFromCentre = sqrt(pow(uv.x - centre.x, 2.) + pow(uv.y - centre.y, 2.)); // calculate how far we are from the centre
-    
-    float maxDistanceFromCentre = length(centre);
-    
-    distanceFromCentre = distanceFromCentre / maxDistanceFromCentre;
     
     float colourAmount;
     
     if (distanceFromCentre != 0.)
     {
         // decreasing the subtract number makes outline thicker
-        colourAmount = pow(2., 10. * distanceFromCentre - 9.);
+        // offset distance slightly for white outline
+        colourAmount = pow(2., 80. * distanceFromCentre - 40.);
+        colourAmount = colourAmount - colourAmount * 0.5 * tex2D(randomNoiseSampler, uv).r; // subtract a small amount for randomness
     }
     
-    float3 col = colourAmount * colour * tex2D(mainTexture, uv).r;
+    float3 col;
 
+    if (distanceFromCentre > radius)
+    {
+        col = float3(0, 0, 0);
+    }
+    else
+        col = colourAmount * colour;
     // Output to screen
     return float4(col, 0);
 }

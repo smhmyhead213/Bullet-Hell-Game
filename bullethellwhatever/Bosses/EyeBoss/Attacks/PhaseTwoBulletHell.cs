@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             else if (AITimer > 200 && time % 20 == 0)
             {
                 int projectilesPerRing;
-                bool attack = true;
+                bool attack = true; // true, shoot bullet rings, false, lasers
 
                 if (Owner is EyeBossPhaseTwoMinion)
                 {
@@ -73,6 +73,25 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
 
                             p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                        }
+                    }
+                }
+                else
+                {
+                    if (time % 240 == 0)
+                    {
+                        int lasers = 5;
+
+                        for (int i = 0; i < lasers; i++)
+                        {
+                            TelegraphLine t = new TelegraphLine(Tau / lasers * i, 0, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
+
+                            t.SetOnDeath(new Action(() =>
+                            {
+                                Deathray ray = new Deathray();
+
+                                ray.SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, 0, true, Color.Gold, "DeathrayShader", Pupil);
+                            }));
                         }
                     }
                 }

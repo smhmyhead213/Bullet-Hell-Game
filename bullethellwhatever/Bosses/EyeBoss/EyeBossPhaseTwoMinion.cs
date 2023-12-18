@@ -149,12 +149,14 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
             circleShader.Parameters["uTime"]?.SetValue(AITimer);
+            circleShader.Parameters["radius"]?.SetValue(0.5f);
+            ApplyRandomNoise(circleShader);
 
             circleShader.CurrentTechnique.Passes[0].Apply();
 
-            Texture2D circle = Assets["Circle"];
+            Texture2D texture = Assets["box"];
 
-            Drawing.BetterDraw(circle, Pupil.Position, null, Color.White, 0, Vector2.One * VulnerabilityRadius / circle.Width * 2f, SpriteEffects.None, 1);
+            Drawing.BetterDraw(texture, Pupil.Position, null, Color.White, 0, Vector2.One * VulnerabilityRadius / texture.Width * 2f, SpriteEffects.None, 1);
 
             if (!npcHasShader)
             {
