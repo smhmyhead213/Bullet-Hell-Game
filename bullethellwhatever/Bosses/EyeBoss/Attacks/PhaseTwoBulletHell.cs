@@ -81,10 +81,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     if (time % 240 == 0)
                     {
                         int lasers = 5;
+                        float initialRotation = Utilities.RandomAngle();
 
                         for (int i = 0; i < lasers; i++)
                         {
-                            TelegraphLine t = new TelegraphLine(Tau / lasers * i, 0, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
+                            TelegraphLine t = new TelegraphLine(Tau / lasers * i + initialRotation, 0, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
 
                             t.SetOnDeath(new Action(() =>
                             {

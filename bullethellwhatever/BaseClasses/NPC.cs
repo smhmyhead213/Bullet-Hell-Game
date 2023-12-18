@@ -198,7 +198,7 @@ namespace bullethellwhatever.BaseClasses
             DamageReduction = MathHelper.Clamp(dr, 0f, 1f);
         }
         
-        public void TakeDamage(Collision collision, Projectile projectile)
+        public virtual void TakeDamage(Collision collision, Projectile projectile)
         {
             IFrames = MaxIFrames;
 

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using FMOD;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -134,6 +135,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
             }
         }
 
+        public override void TakeDamage(Collision collision, Projectile projectile)
+        {
+            base.TakeDamage(collision, projectile);
+
+            foreach (ChainLink c in ChainLinks)
+            {
+                float projectileVelocityHorizontalComponent = Cos(Utilities.VectorToAngle(projectile.Velocity));
+                c.ApplyTorque(projectileVelocityHorizontalComponent / 10f);
+            }
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
