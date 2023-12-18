@@ -20,6 +20,11 @@ namespace bullethellwhatever.Projectiles.Base
         {
             player.Health = player.Health + HealAmount;
 
+            if (player.Health > player.MaxHP)
+            {
+                player.Health = player.MaxHP;
+            }
+
             Die();
         }
     }

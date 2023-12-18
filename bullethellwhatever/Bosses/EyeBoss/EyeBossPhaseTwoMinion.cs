@@ -18,7 +18,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class EyeBossPhaseTwoMinion : EyeBoss
     {
         public EyeBoss Owner;
+        public float BaseVulnerabilityRadius;
         public float VulnerabilityRadius;
+        public bool OscillateRadius;
         public EyeBossPhaseTwoMinion(EyeBoss owner, int linksInChain, Vector2 chainStartPos)
         {
             Owner = owner;
@@ -35,10 +37,14 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             BossAttack[] attacks = new BossAttack[]
             {
-                new PhaseTwoBulletHell(900),
+                new PhaseTwoBulletHell(90000),
             };
 
             ReplaceAttackPattern(attacks);
+
+            BaseVulnerabilityRadius = 0;
+            VulnerabilityRadius = BaseVulnerabilityRadius;
+            OscillateRadius = false;
 
             CreateChain(linksInChain);
         }
@@ -52,9 +58,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 IsDesperationOver = true;
             }
 
-            float baseVulnerabilityRadius = 270f;
-
-            VulnerabilityRadius = baseVulnerabilityRadius + 10f * Sin(AITimer / 10f);
+            if (OscillateRadius)
+            {
+                VulnerabilityRadius = BaseVulnerabilityRadius + 10f * Sin(AITimer / 10f);
+            }
+            else VulnerabilityRadius = BaseVulnerabilityRadius;
 
             if (!IsPlayerWithinVulnerabilityRadius()) // if the player is outside the ring
             {
@@ -141,8 +149,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             foreach (ChainLink c in ChainLinks)
             {
-                float projectileVelocityHorizontalComponent = Cos(Utilities.VectorToAngle(projectile.Velocity));
-                c.ApplyTorque(projectileVelocityHorizontalComponent / 10f);
+                float projectileVelocityHorizontalComponent = -Sin(Utilities.VectorToAngle(projectile.Velocity));
+                c.ApplyTorque(projectileVelocityHorizontalComponent / 200f);
             }
         }
         public override void Draw(SpriteBatch spriteBatch)

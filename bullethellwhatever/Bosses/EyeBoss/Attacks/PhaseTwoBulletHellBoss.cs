@@ -16,9 +16,9 @@ using System.Runtime.CompilerServices;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
-    public class PhaseTwoBulletHell : EyeBossAttack
+    public class PhaseTwoBulletHellBoss : EyeBossAttack
     {
-        public PhaseTwoBulletHell(int endTime) : base(endTime)
+        public PhaseTwoBulletHellBoss(int endTime) : base(endTime)
         {
             EndTime = endTime;
         }
@@ -29,9 +29,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             int time = AITimer;
-            int attackStartTime = 200;
+            int startTime = 100;
+            int minionDeployTime = 240;
 
-            if (activeNPCs.Count == 2) // boss and pupil are alive
+            if (activeNPCs.Count == 2 && AITimer > minionDeployTime) // only boss and pupil are alive
             {
                 Owner.TargetableByHoming = true;
                 Owner.IsInvincible = false;
@@ -42,7 +43,42 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 EyeOwner.RandomlyArrangeAttacks();
             }
 
-            else if (AITimer > attackStartTime && time % 20 == 0)
+            if (time == 0)
+            {
+                AttackUtilities.ClearProjectiles();
+            }
+
+            if (time == startTime)
+            {
+                Drawing.ScreenShake(16, minionDeployTime - startTime);
+            }
+
+            if (time >= startTime && time < minionDeployTime)
+            {
+                if (time % 10 == 0)
+                {
+                    ShockwaveRing sRing = new ShockwaveRing(20, 80, 200, 10);
+
+                    sRing.Spawn(Pupil.Position, Owner);
+                }
+            }
+
+            if (time == minionDeployTime)
+            {
+                EyeBossPhaseTwoMinion[] minions = new EyeBossPhaseTwoMinion[4];
+
+                minions[0] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4, new Vector2(ScreenWidth / 3, 0));
+                minions[1] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4 * 3, new Vector2(ScreenWidth / 5, 0));
+                minions[2] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4, new Vector2(ScreenWidth - ScreenWidth / 3, 0));
+                minions[3] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4 * 3, new Vector2(ScreenWidth - ScreenWidth / 5, 0));
+
+                foreach (EyeBossPhaseTwoMinion minion in minions)
+                {
+                    minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Owner.Size / 2f, minion.MaxHP, 1, Color.White, false, true);
+                }
+            }
+
+            else if (time > minionDeployTime && time % 20 == 0)
             {
                 int projectilesPerRing;
                 bool attack = true; // true, shoot bullet rings, false, lasers
@@ -97,24 +133,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             }));
                         }
                     }
-                }
-            }
-
-            int expansionTime = 20;
-
-            if (time > attackStartTime && time <= attackStartTime + expansionTime)
-            {
-                float maxVulnerabilityRadius = 270f;
-                float progress = (time - attackStartTime) / (float)expansionTime;
-                float easedProgress = 1 - Pow(1 - progress, 5);
-
-                EyeBossPhaseTwoMinion owner = (EyeBossPhaseTwoMinion)EyeOwner;
-
-                owner.BaseVulnerabilityRadius = MathHelper.Lerp(0f, maxVulnerabilityRadius, easedProgress);
-
-                if (time == attackStartTime + expansionTime)
-                {
-                    owner.OscillateRadius = true;
                 }
             }
         }

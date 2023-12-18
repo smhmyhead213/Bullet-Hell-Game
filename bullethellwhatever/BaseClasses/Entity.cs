@@ -29,6 +29,8 @@ namespace bullethellwhatever.BaseClasses
         public int AITimer;
         public float Damage;
         public float Opacity;
+        public float InitialOpacity;
+
         public RotatedRectangle Hitbox;
 
         public Vector2 Size;
@@ -162,6 +164,22 @@ namespace bullethellwhatever.BaseClasses
         }
         public abstract void AI();
 
+        ///<summary>
+        ///Sets the entity's opacity AND initial opacity. To avoid the latter, directly set Opacity.
+        ///</summary>
+        public virtual void SetOpacity(float opacity)
+        {
+            Opacity = opacity;
+            Opacity = InitialOpacity;
+        }
+        public virtual void SetTexture(string texture)
+        {
+            Texture = Assets[texture];
+        }
+        public virtual void SetTexture(Texture2D texture)
+        {
+            Texture = texture;
+        }
         public virtual void SetOnDeath(Action action)
         {
             OnDeath = action;

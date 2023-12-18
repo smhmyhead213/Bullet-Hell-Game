@@ -55,7 +55,8 @@ namespace bullethellwhatever.UtilitySystems
         {
             foreach (Projectile p in activeProjectiles)
             {
-                p.Die();
+                if (!p.IsEffect)
+                    p.Die();
             }
         }
     }

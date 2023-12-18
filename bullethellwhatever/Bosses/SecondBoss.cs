@@ -140,10 +140,11 @@ namespace bullethellwhatever.Bosses
         
         public void DialogueTest(ref int AITimer, ref int AttackNumber)
         {
-            if (AITimer == 0)
+            if (AITimer == 1)
             {              
                 dialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400);
 
+                Drawing.ScreenShake(20, 500);
                 //TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
                 
                 //TelegraphLine t2 = new(PI, PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
@@ -158,6 +159,12 @@ namespace bullethellwhatever.Bosses
                 //ray2.SpawnDeathray(new Vector2(ScreenWidth / 4 * 3 + 50f, ScreenHeight / 2), 0f, 0f, 9999, "box", 30, 3000, PI / 240f, 0, true, Colour, "DeathrayShader", this);
             }
 
+            if (AITimer % 10 == 0)
+            {
+                ShockwaveRing sRing = new ShockwaveRing(20, 80, 200, 10);
+
+                sRing.Spawn(Position, this);
+            }
             if (AITimer == 120)
             {
                 //ChargingEnemy enemy = new ChargingEnemy(60, 120);

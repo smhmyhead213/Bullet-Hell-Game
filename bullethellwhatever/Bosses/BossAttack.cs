@@ -50,7 +50,7 @@ namespace bullethellwhatever.Bosses
         {
             if ((Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime || EndNow))
             {
-                Owner.AITimer = 0; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
+                Owner.AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
 
                 EndNow = false;
 

@@ -109,9 +109,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public override void AI()
         {
-            base.AI();
-
             HandlePhaseChanges();
+
+            base.AI();
         }
 
         public virtual void HandlePhaseChanges()
@@ -124,7 +124,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     BossAttack[] phaseTwoAttacks = new BossAttack[]
                     {
-                        new PhaseTwoBulletHell(900000),
+                        new PhaseTwoBulletHellBoss(900000),
                     };
 
                     Phase = 2;
@@ -133,21 +133,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     TargetableByHoming = false;
                     IsInvincible = true;
-
-                    EyeBossPhaseTwoMinion[] minions = new EyeBossPhaseTwoMinion[4];
-
-                    minions[0] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4, new Vector2(ScreenWidth / 3, 0));
-                    minions[1] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4 * 3, new Vector2(ScreenWidth / 5, 0));
-                    minions[2] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4, new Vector2(ScreenWidth - ScreenWidth / 3, 0));
-                    minions[3] = new EyeBossPhaseTwoMinion(this, ScreenHeight / 4 * 3, new Vector2(ScreenWidth - ScreenWidth / 5, 0));
-
-                    foreach (EyeBossPhaseTwoMinion minion in minions)
-                    {
-                        minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Size / 2f, minion.MaxHP, 1, Colour, false, true);
-                    }
-
-                    AttackUtilities.ClearProjectiles();
-
+                   
                     ReplaceAttackPattern(phaseTwoAttacks);
                 }
             }

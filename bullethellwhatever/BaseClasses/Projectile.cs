@@ -35,6 +35,8 @@ namespace bullethellwhatever.BaseClasses
         public Action OnEdgeTouch;
 
         public int MercyTimeBeforeRemoval;
+
+        public bool IsEffect;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Texture = Assets[texture];
@@ -106,6 +108,7 @@ namespace bullethellwhatever.BaseClasses
             }
 
             Opacity = 1f;
+            InitialOpacity = Opacity;
 
             Dying = false;
 
@@ -175,7 +178,6 @@ namespace bullethellwhatever.BaseClasses
 
             base.Update();
         }
-
         public override void AI()
         {
             if (ExtraAI is not null)

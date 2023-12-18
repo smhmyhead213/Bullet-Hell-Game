@@ -60,6 +60,7 @@ namespace bullethellwhatever.BaseClasses
             DealDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
+            InitialOpacity = Opacity;
 
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);
@@ -97,6 +98,7 @@ namespace bullethellwhatever.BaseClasses
             DealDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
+            InitialOpacity = Opacity;
 
             Depth = 0;
 
