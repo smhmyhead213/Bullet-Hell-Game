@@ -66,6 +66,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (!IsPlayerWithinVulnerabilityRadius()) // if the player is outside the ring
             {
+                TargetableByHoming = false;
                 IsInvincible = true;
 
                 foreach (Projectile p in activeFriendlyProjectiles)
@@ -77,7 +78,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     }
                 }
             }
-            else IsInvincible = false;
+            else
+            {
+                IsInvincible = false;
+                TargetableByHoming = true;
+            }
         }
 
         public bool IsPlayerWithinVulnerabilityRadius()

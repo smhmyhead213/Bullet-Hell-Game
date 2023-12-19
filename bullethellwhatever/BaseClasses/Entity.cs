@@ -294,7 +294,7 @@ namespace bullethellwhatever.BaseClasses
                     {
                         float interpolant = (j + 1) * (1f / (ExtraAfterImages + 1));
 
-                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f * Opacity;
 
                         // could improve by doing rotation lerping as well
 

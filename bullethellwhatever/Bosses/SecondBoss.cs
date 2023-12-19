@@ -12,6 +12,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Enemy;
 using bullethellwhatever.Enemies;
 using bullethellwhatever.Projectiles._3D;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.Bosses
 {
@@ -144,7 +145,7 @@ namespace bullethellwhatever.Bosses
             {              
                 dialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400);
 
-                Drawing.ScreenShake(20, 500);
+                //Drawing.ScreenShake(20, 500);
                 //TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
                 
                 //TelegraphLine t2 = new(PI, PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
@@ -163,13 +164,21 @@ namespace bullethellwhatever.Bosses
             {
                 ShockwaveRing sRing = new ShockwaveRing(20, 80, 200, 10);
 
-                sRing.Spawn(Position, this);
+                //sRing.Spawn(Position, this);
             }
-            if (AITimer == 120)
+            if (AITimer == 50)
             {
+                Projectile p = new Projectile();
+
+                p.Spawn(Position, Vector2.UnitX * 10f, 1f, 1, "box", 1f, Vector2.One, this, true, Color.Red, true, false);
                 //ChargingEnemy enemy = new ChargingEnemy(60, 120);
 
                 //enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
+            }
+
+            if (AITimer == 60)
+            {
+                AttackUtilities.ClearProjectiles();
             }
         }
 

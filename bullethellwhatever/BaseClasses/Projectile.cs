@@ -164,7 +164,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (Dying)
             {
-                float fadeOutTime = 10f;
+                float fadeOutTime = 10f * Updates;
 
                 Opacity = MathHelper.Lerp(1f, 0f, DyingTimer / fadeOutTime);
 

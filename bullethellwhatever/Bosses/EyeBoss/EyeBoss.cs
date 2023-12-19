@@ -46,8 +46,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             BossAttacks = new EyeBossAttack[]
             {
-                new LaserSwingProjectileBurst(850),
                 new ProjectileRows(300),
+                new LaserSwingProjectileBurst(850),               
                 new Meteors(300),
                 new EyeRay(1600),
                 new EnergyBlasts(750),
@@ -57,7 +57,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             OriginalAttacks = BossAttacks;
 
-            RandomlyArrangeAttacks();
+            //RandomlyArrangeAttacks();
         }
 
         public virtual void CreateChain(float chainLength)

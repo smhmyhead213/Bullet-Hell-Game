@@ -46,8 +46,15 @@ namespace bullethellwhatever.Bosses.EyeBoss
             if (time == 0)
             {
                 AttackUtilities.ClearProjectiles();
+
+                Owner.activeTelegraphs.Clear();
             }
 
+            if (time == 12) // for good measure
+            {
+                AttackUtilities.ClearProjectiles();
+                Owner.activeTelegraphs.Clear();
+            }
             if (time == startTime)
             {
                 Drawing.ScreenShake(16, minionDeployTime - startTime);
