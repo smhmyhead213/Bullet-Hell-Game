@@ -284,6 +284,8 @@ namespace bullethellwhatever.BaseClasses
                 if (afterimagesPositions[i] != Vector2.Zero)
                 {
                     float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                    colourMultiplier = colourMultiplier * Opacity;
+
                     Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
 
                     // Draw another afterimage between this one and the last one, for a less choppy trail.
@@ -294,7 +296,8 @@ namespace bullethellwhatever.BaseClasses
                     {
                         float interpolant = (j + 1) * (1f / (ExtraAfterImages + 1));
 
-                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f * Opacity;
+                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
+                        colourMultiplier = colourMultiplier * Opacity;
 
                         // could improve by doing rotation lerping as well
 

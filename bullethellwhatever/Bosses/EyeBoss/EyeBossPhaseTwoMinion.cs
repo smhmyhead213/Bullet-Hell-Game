@@ -102,7 +102,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             float totalHeal = Owner.MaxHP / Owner.PhaseTwoMinionCount;
 
-            float healEach = totalHeal / numberOfProjectles;
+            float healEach = totalHeal / numberOfProjectles / 5;
 
             for (int i = 0; i < numberOfProjectles; i++)
             {

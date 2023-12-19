@@ -27,7 +27,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             int animationTime = 20;
             int projectileBufferTime = 5; // time before eye looks back to player
-            int waitTimeAfter = 100;
+            int waitTimeAfter = 10;
             int cycleTime = animationTime + waitTimeAfter;
             int time = AITimer % cycleTime;
 

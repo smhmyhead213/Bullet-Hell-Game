@@ -42,43 +42,44 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 EyeOwner.RandomlyArrangeAttacks();
             }
 
-            else if (AITimer > attackStartTime && time % 20 == 0)
+            else if (AITimer > attackStartTime)
             {
                 int projectilesPerRing;
                 bool attack = true; // true, shoot bullet rings, false, lasers
 
-                if (Owner is EyeBossPhaseTwoMinion)
+                projectilesPerRing = 10;
+                if (((EyeBossPhaseTwoMinion)Owner).IsPlayerWithinVulnerabilityRadius())
                 {
-                    projectilesPerRing = 10;
-                    if (((EyeBossPhaseTwoMinion)Owner).IsPlayerWithinVulnerabilityRadius())
-                    {
-                        attack = false;
-                    }
+                    attack = false;
                 }
-                else projectilesPerRing = 20;
 
                 if (attack)
                 {
-                    float randomOffset = Utilities.RandomFloat(0, Tau);
-
-                    for (int i = 0; i < projectilesPerRing; i++)
+                    if (time % 20 == 0)
                     {
-                        if (!Utilities.RandomChance(20))
-                        {
-                            Projectile p = new Projectile();
+                        float randomOffset = Utilities.RandomFloat(0, Tau);
 
-                            p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
-                        }
-                        else
+                        for (int i = 0; i < projectilesPerRing; i++)
                         {
-                            PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
+                            if (!Utilities.RandomChance(20))
+                            {
+                                Projectile p = new Projectile();
 
-                            p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                                p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                            }
+                            else
+                            {
+                                PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
+
+                                p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                            }
                         }
                     }
                 }
                 else
                 {
+                    Pupil.LookAtPlayer(10);
+
                     if (time % 240 == 0)
                     {
                         int lasers = 5;
@@ -100,7 +101,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }
             }
 
-            int expansionTime = 20;
+            int expansionTime = 40;
 
             if (time > attackStartTime && time <= attackStartTime + expansionTime)
             {

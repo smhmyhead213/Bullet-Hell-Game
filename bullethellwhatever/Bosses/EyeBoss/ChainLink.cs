@@ -1,4 +1,5 @@
 ﻿using bullethellwhatever.DrawCode;
+using bullethellwhatever.BaseClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,11 +20,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public float Length;
         public float DampingFactor;
         public float Torque;
-        public EyeBoss Owner;
+        public NPC Owner;
         public Texture2D Texture;
-
+        public float Opacity;
         public int AITimer;
-        public ChainLink(string texture, Vector2 position, float rotation, float length, EyeBoss owner)
+        public ChainLink(string texture, Vector2 position, float rotation, float length, NPC owner)
         {
             Texture = Assets[texture];
             Position = position;
@@ -32,6 +33,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             End = CalculateEnd();
             AITimer = 0;
             Owner = owner;
+            Opacity = 1f;
         }
         public void Update()
         {
@@ -77,7 +79,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public void Draw(SpriteBatch s)
         {
-            s.Draw(Texture, Position, null, Color.White, Rotation - PI / 2, new Vector2(0, Texture.Height / 2f), new Vector2(Length / Texture.Width, 1f), SpriteEffects.None, 1);
+            s.Draw(Texture, Position, null, Color.White * Opacity, Rotation - PI / 2, new Vector2(0, Texture.Height / 2f), new Vector2(Length / Texture.Width, 1f), SpriteEffects.None, 1);
             //Drawing.BetterDraw(Texture, CalculateEnd(), null, Color.Yellow, 0, Vector2.One, SpriteEffects.None, 1);
             //Drawing.BetterDraw(Texture, Position, null, Color.Purple, 0, Vector2.One, SpriteEffects.None, 1);
         }

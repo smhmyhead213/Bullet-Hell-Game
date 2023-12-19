@@ -29,11 +29,15 @@ namespace bullethellwhatever.DrawCode
             //add a set shader call
         }
 
-        public void Spawn(Vector2 position, Entity owner)
+        public void Spawn(Vector2 position, Entity owner, Color colour)
         {
             Texture = Assets["box"];
 
-            SetShader("CircleOutlineShader");
+            Rotation = Utilities.RandomAngle();
+
+            Colour = colour;
+
+            SetShader("ShockwaveShader");
 
             SetOpacity(0.5f);
 
@@ -49,11 +53,16 @@ namespace bullethellwhatever.DrawCode
             {
                 Opacity = MathHelper.Lerp(InitialOpacity, Opacity, (LifeTime - AITimer) / (float)FadeOutTime);
             }
+
+            if (AITimer >= LifeTime)
+            {
+                Die();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Shader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
+            Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
             Shader.Parameters["uTime"]?.SetValue(AITimer);
             Shader.Parameters["radius"]?.SetValue(0.5f);
             ApplyRandomNoise(Shader);
@@ -62,7 +71,7 @@ namespace bullethellwhatever.DrawCode
 
             Texture2D texture = Assets["box"];
 
-            Drawing.BetterDraw(texture, Position, null, Color.White, 0, Vector2.One * Radius / texture.Width * 2f, SpriteEffects.None, 1);
+            Drawing.BetterDraw(texture, Position, null, Color.White, Rotation, Vector2.One * Radius / texture.Width * 2f, SpriteEffects.None, 1);
         }
     }
 }
