@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -22,8 +23,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public float Torque;
         public NPC Owner;
         public Texture2D Texture;
+        public RotatedRectangle Hitbox;
         public float Opacity;
         public int AITimer;
+        public Color Colour;
         public ChainLink(string texture, Vector2 position, float rotation, float length, NPC owner)
         {
             Texture = Assets[texture];
@@ -34,6 +37,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
             AITimer = 0;
             Owner = owner;
             Opacity = 1f;
+            Colour = Color.White;
+
+            UpdateHitbox();
         }
         public void Update()
         {
@@ -56,7 +62,15 @@ namespace bullethellwhatever.Bosses.EyeBoss
             End = CalculateEnd();
 
             AITimer++;
+
+            UpdateHitbox();
         }
+
+        public void UpdateHitbox()
+        {
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width, Length, Position + Length / 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, Rotation), Owner);
+        }
+
         public void SetDampingFactor(float dampingFactor)
         {
             DampingFactor = dampingFactor;
@@ -79,7 +93,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public void Draw(SpriteBatch s)
         {
-            s.Draw(Texture, Position, null, Color.White * Opacity, Rotation - PI / 2, new Vector2(0, Texture.Height / 2f), new Vector2(Length / Texture.Width, 1f), SpriteEffects.None, 1);
+            s.Draw(Texture, Position, null, Colour * Opacity, Rotation - PI / 2, new Vector2(0, Texture.Height / 2f), new Vector2(Length / Texture.Width, 1f), SpriteEffects.None, 1);
+
+            //Hitbox.DrawHitbox();
             //Drawing.BetterDraw(Texture, CalculateEnd(), null, Color.Yellow, 0, Vector2.One, SpriteEffects.None, 1);
             //Drawing.BetterDraw(Texture, Position, null, Color.Purple, 0, Vector2.One, SpriteEffects.None, 1);
         }

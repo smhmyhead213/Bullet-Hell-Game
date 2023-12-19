@@ -90,13 +90,64 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public override void Update()
         {
-            ChainLinks[0].Update();
+            float opacityRegenRate = 0.02f;
 
-            for (int i = 1; i < ChainLinks.Count; i++)
+            bool[] fadeInThisFrame = new bool[ChainLinks.Count]; // parallel to ChainLinks
+
+            for (int j = 0; j < fadeInThisFrame.Length; j++) // set whole array to true (link will fade in unless affected)
             {
-                ChainLinks[i].Position = ChainLinks[i - 1].End;
-                ChainLinks[i].Update();
+                fadeInThisFrame[j] = true;
             }
+
+            for (int i = 0; i < ChainLinks.Count; i++)
+            {
+                if (i != 0)
+                {
+                    ChainLinks[i].Position = ChainLinks[i - 1].End;
+                }
+
+                ChainLinks[i].Update();
+
+                int opacityIterations = 5;
+
+                if (ChainLinks[i].Hitbox.Intersects(player.Hitbox).Collided) // if player is touching current chain
+                {
+                    bool[] affectedLinks = new bool[ChainLinks.Count]; // parallel to ChainLinks
+
+                    affectedLinks[i] = true; // the link the player is on is affected
+
+                    float faintestOpacity = 0.1f;
+                    ChainLinks[i].Opacity = faintestOpacity; // apply opacity to current chain link
+
+                    for (int j = 0; j < opacityIterations; j++)
+                    {
+                        int indexOfNext = i + j + 1; // move down one
+
+                        if (indexOfNext < ChainLinks.Count) // if we are within the chain
+                        {
+                            ChainLinks[indexOfNext].Opacity = faintestOpacity + ((j + 1) * faintestOpacity); // apply opacity to chain links adjacent downwards
+                            affectedLinks[indexOfNext] = true;
+                            fadeInThisFrame[indexOfNext] = false; // do not fade in at all at this link
+                        }
+
+                        int indexOfPrevious = i - j - 1; // move up one
+
+                        if (indexOfPrevious >= 0) // if we are within the chain
+                        {
+                            ChainLinks[indexOfPrevious].Opacity = faintestOpacity + ((j + 1) * faintestOpacity); // apply opacity to chain links adjacent downwards
+                            affectedLinks[indexOfPrevious] = true;
+                            fadeInThisFrame[indexOfPrevious] = false; // do not fade in at all at this link
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < ChainLinks.Count; i++) // iterate again once everything is settled
+            {
+                if (fadeInThisFrame[i]) // only fade in those links that are not affected
+                    ChainLinks[i].Opacity = MathHelper.Clamp(ChainLinks[i].Opacity + opacityRegenRate, 0f, 1f); // gradually regain opacity up until 1
+            }
+
 
             Position = ChainLinks.Last().End;
 
@@ -111,7 +162,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             HandlePhaseChanges();
 
-            base.AI();
+            //base.AI();
         }
 
         public virtual void HandlePhaseChanges()
