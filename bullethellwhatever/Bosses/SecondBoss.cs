@@ -68,7 +68,7 @@ namespace bullethellwhatever.Bosses
         }
         public override void AI()
         {
-            prims.SetMatrices();
+            prims.Update();
 
             SetDepth(0.5f);
 

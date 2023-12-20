@@ -208,20 +208,11 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void CheckForHits()
         {
-            if (Participating)
+            if (Participating && !Dying)
             {
                 if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
                 {
-                    foreach (NPC npc in activeNPCs)
-                    {
-                        Collision collision = CollisionWithEntity(npc);
-
-                        if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
-                        {
-                            DealDamageTo(npc, collision);
-                            OnHitToNPC(npc);
-                        }
-                    }
+                    CheckForAndHitNPCs();
                 }
 
                 if (IsHarmful)
@@ -234,6 +225,19 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
+        public virtual void CheckForAndHitNPCs()
+        {
+            foreach (NPC npc in activeNPCs)
+            {
+                Collision collision = CollisionWithEntity(npc);
+
+                if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
+                {
+                    DealDamageTo(npc, collision);
+                    OnHitToNPC(npc);
+                }
+            }
+        }
         public virtual void OnHitToNPC(NPC hitNPC)
         {
 
@@ -242,6 +246,7 @@ namespace bullethellwhatever.BaseClasses
         public override void DealDamageTo(NPC npc, Collision collision)
         {
             npc.TakeDamage(collision, this);
+            HandlePierce(npc.PierceToTake);
         }
 
         public virtual void OnHitEffect(Vector2 position)

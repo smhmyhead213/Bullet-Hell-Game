@@ -13,6 +13,7 @@ using System.Xml;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -42,21 +43,23 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 EyeOwner.RandomlyArrangeAttacks();
             }
 
-            else if (AITimer > attackStartTime)
+            else if (time > attackStartTime)
             {
-                int projectilesPerRing;
                 bool attack = true; // true, shoot bullet rings, false, lasers
 
-                projectilesPerRing = 10;
-                if (((EyeBossPhaseTwoMinion)Owner).IsPlayerWithinVulnerabilityRadius())
+                EyeBossPhaseTwoMinion owner = (EyeBossPhaseTwoMinion)Owner;
+
+                if (owner.IsPlayerWithinVulnerabilityRadius())
                 {
                     attack = false;
                 }
 
                 if (attack)
                 {
-                    if (time % 20 == 0)
+                    if (time % 48 == 0)
                     {
+                        int projectilesPerRing = 9;
+
                         float randomOffset = Utilities.RandomFloat(0, Tau);
 
                         for (int i = 0; i < projectilesPerRing; i++)
@@ -66,15 +69,88 @@ namespace bullethellwhatever.Bosses.EyeBoss
                                 Projectile p = new Projectile();
 
                                 p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+
+                                p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
                             else
                             {
                                 PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
 
                                 p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+
+                                p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
                         }
                     }
+                    //int localTime = time - attackStartTime;
+
+                    //if (owner.Index == 1)
+                    //{              
+                    //    int eyeShrinkTime = 75;
+                    //    int eyeExpandTime = 15;
+                    //    int waitTime = 30;
+
+                    //    int cycleTime = eyeShrinkTime + eyeExpandTime + waitTime;
+                    //    int modulodTime = localTime % cycleTime;
+
+                    //    if (modulodTime < eyeShrinkTime)
+                    //    {
+                    //        float progress = modulodTime / (float)eyeShrinkTime;
+                    //        float easedProgress = 1 - Pow(1 - progress, 4);
+                    //        owner.Pupil.Size = Vector2.Lerp(owner.Pupil.InitialSize, owner.Pupil.InitialSize / 5f, easedProgress);
+                    //    }
+                    //    else if (modulodTime == eyeShrinkTime)
+                    //    {
+                    //        int numberOfProjectiles = 25;
+
+                    //        for (int i = 0; i < numberOfProjectiles; i++)
+                    //        {
+                    //            float xVelAmplitude = 20f;
+                    //            float xVelocity = Utilities.RandomFloat(-xVelAmplitude, xVelAmplitude);
+
+                    //            float yVelAmplitude = 20f;
+                    //            float yVelocity = Utilities.RandomFloat(-yVelAmplitude, 0);
+
+                    //            Projectile p = new Projectile();
+
+                    //            p.SetExtraAI(new Action(() =>
+                    //            {
+                    //                p.Velocity.Y = p.Velocity.Y + 0.3f; // gravity
+                    //            }));
+
+                    //            p.SetDrawAfterimages(28, 3);
+
+                    //            p.SetEdgeTouchEffect(new Action(() =>
+                    //            {
+                    //                AttackUtilities.ParticleExplosion(15, 20, 10f, Vector2.One * 0.45f, p.Position, p.Colour);
+                    //            }));
+
+                    //            p.Spawn(Pupil.Position, new Vector2(xVelocity, yVelocity), 1f, 1, "box", 1f, Vector2.One * 0.85f, Pupil, true, Color.Red, true, false);
+                    //        }
+                    //    }
+                    //    else if (modulodTime > eyeShrinkTime && modulodTime <= eyeShrinkTime + eyeExpandTime)
+                    //    {
+                    //        float progress = (modulodTime - eyeShrinkTime) / (float)eyeExpandTime;
+
+                    //        owner.Pupil.Size = Vector2.Lerp(owner.Pupil.InitialSize / 5f, owner.Pupil.InitialSize, progress);
+                    //    }
+                    //}
+                    //else if (owner.Index == 2)
+                    //{
+                    //    if (localTime % 90 == 0)
+                    //    {a
+                    //        Projectile p = new Projectile();
+
+                    //        p.SetExtraAI(new Action(() =>
+                    //        {
+                    //            p.HomeAtTarget(player.Position, 0.03f);
+                    //        }));
+
+                    //        p.SetDrawAfterimages(15, 2);
+
+                    //        p.Spawn(owner.Pupil.Position, Utilities.UnitVectorToPlayerFrom(Pupil.Position), 1f, 1, "Circle", 1.02f, Vector2.One * 0.25f, Pupil, true, Color.Orange, true, false);
+                    //    }
+                    //}
                 }
                 else
                 {

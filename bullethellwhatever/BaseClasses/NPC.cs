@@ -230,6 +230,10 @@ namespace bullethellwhatever.BaseClasses
             BlockDeathrays = block;
         }
 
+        public virtual bool IsHittable()
+        {
+            return !IsInvincible && Participating && IFrames == 0;
+        }
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1;

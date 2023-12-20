@@ -233,18 +233,21 @@ namespace bullethellwhatever.DrawCode
 
             Vector2 iconSize = Vector2.One * 0.6f;
 
-            WeaponIconsRotationToAdd = (((int)player.ActiveWeapon - (int)player.PreviousWeapon) * Tau / numberOfWeapons / player.WeaponSwitchCooldown) * player.WeaponSwitchCooldownTimer;
-
-            PermanentIconRotation = PermanentIconRotation + WeaponIconsRotationToAdd;
-
-            while (PermanentIconRotation > Tau)
+            if (MainInstance.IsActive)
             {
-                PermanentIconRotation = PermanentIconRotation - Tau; // keep within one full turn so we dont go crazy
-            }
+                WeaponIconsRotationToAdd = (((int)player.ActiveWeapon - (int)player.PreviousWeapon) * Tau / numberOfWeapons / player.WeaponSwitchCooldown) * player.WeaponSwitchCooldownTimer;
 
-            while (PermanentIconRotation < -Tau)
-            {
-                PermanentIconRotation = PermanentIconRotation + Tau; // keep within one full turn so we dont go crazy
+                PermanentIconRotation = PermanentIconRotation + WeaponIconsRotationToAdd;
+
+                while (PermanentIconRotation > Tau)
+                {
+                    PermanentIconRotation = PermanentIconRotation - Tau; // keep within one full turn so we dont go crazy
+                }
+
+                while (PermanentIconRotation < -Tau)
+                {
+                    PermanentIconRotation = PermanentIconRotation + Tau; // keep within one full turn so we dont go crazy
+                }
             }
 
             Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);

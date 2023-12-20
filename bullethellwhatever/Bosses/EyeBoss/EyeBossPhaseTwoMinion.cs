@@ -20,8 +20,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public EyeBoss Owner;
         public float BaseVulnerabilityRadius;
         public float VulnerabilityRadius;
+        public int Index;
         public bool OscillateRadius;
-        public EyeBossPhaseTwoMinion(EyeBoss owner, int linksInChain, Vector2 chainStartPos)
+        public EyeBossPhaseTwoMinion(EyeBoss owner, int chainLength, Vector2 chainStartPos, int index)
         {
             Owner = owner;
 
@@ -46,7 +47,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
             VulnerabilityRadius = BaseVulnerabilityRadius;
             OscillateRadius = false;
 
-            CreateChain(linksInChain);
+            CreateChain(chainLength);
+            Index = index;
         }
 
         public override void Update()
@@ -102,7 +104,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             float totalHeal = Owner.MaxHP / Owner.PhaseTwoMinionCount;
 
-            float healEach = totalHeal / numberOfProjectles / 5;
+            float healEach = totalHeal / numberOfProjectles;
 
             for (int i = 0; i < numberOfProjectles; i++)
             {

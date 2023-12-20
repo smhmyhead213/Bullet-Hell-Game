@@ -151,6 +151,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         progress = progress / (pupilBeAtCentreTime - startTime);
 
                         Pupil.DistanceFromEyeCentre = MathHelper.Lerp(Pupil.DistanceFromEyeCentre, 0f, progress);
+                        Pupil.Size = Vector2.Lerp(Pupil.Size, Pupil.InitialSize, progress);
                     }
                     if (time % 10 == 0)
                     {
@@ -164,10 +165,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     EyeBossPhaseTwoMinion[] minions = new EyeBossPhaseTwoMinion[4];
 
-                    minions[0] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4, new Vector2(ScreenWidth / 3, 0));
-                    minions[1] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4 * 3, new Vector2(ScreenWidth / 5, 0));
-                    minions[2] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4, new Vector2(ScreenWidth - ScreenWidth / 3, 0));
-                    minions[3] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4 * 3, new Vector2(ScreenWidth - ScreenWidth / 5, 0));
+                    minions[0] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4, new Vector2(ScreenWidth / 3, 0), 1);
+                    minions[1] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4 * 3, new Vector2(ScreenWidth / 5, 0), 2);
+                    minions[2] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4, new Vector2(ScreenWidth - ScreenWidth / 3, 0), 3);
+                    minions[3] = new EyeBossPhaseTwoMinion(EyeOwner, ScreenHeight / 4 * 3, new Vector2(ScreenWidth - ScreenWidth / 5, 0), 4);
 
                     foreach (EyeBossPhaseTwoMinion minion in minions)
                     {
@@ -181,10 +182,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     if (time % 20 == 0)
                     {
-                        int projectilesPerRing;
+                        int projectilesPerRing = 20;
                         bool attack = true; // true, shoot bullet rings, false, lasers
-
-                        projectilesPerRing = 14;
 
                         if (attack)
                         {
@@ -197,12 +196,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
                                     Projectile p = new Projectile();
 
                                     p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+
+                                    p.Rotation = Utilities.VectorToAngle(p.Velocity);
                                 }
                                 else
                                 {
                                     PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
 
                                     p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+
+                                    p.Rotation = Utilities.VectorToAngle(p.Velocity);
                                 }
                             }
                         }

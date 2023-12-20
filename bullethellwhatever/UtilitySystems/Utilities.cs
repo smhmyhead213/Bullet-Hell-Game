@@ -61,6 +61,11 @@ namespace bullethellwhatever
         {
             return player.Position - v;
         }
+
+        public static Vector2 UnitVectorToPlayerFrom(Vector2 v)
+        {
+            return Utilities.SafeNormalise(VectorToPlayerFrom(v));
+        }
         public static float AngleToPlayerFrom(Vector2 v)
         {
             return VectorToAngle(VectorToPlayerFrom(v));

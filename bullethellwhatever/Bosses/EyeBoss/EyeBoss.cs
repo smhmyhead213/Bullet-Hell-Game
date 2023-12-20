@@ -116,7 +116,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     affectedLinks[i] = true; // the link the player is on is affected
 
-                    float faintestOpacity = 0.1f;
+                    float faintestOpacity = 0.05f;
                     ChainLinks[i].Opacity = faintestOpacity; // apply opacity to current chain link
 
                     for (int j = 0; j < opacityIterations; j++)
@@ -162,7 +162,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             HandlePhaseChanges();
 
-            //base.AI();
+            base.AI();
         }
 
         public virtual void HandlePhaseChanges()
