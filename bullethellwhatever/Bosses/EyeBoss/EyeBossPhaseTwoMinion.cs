@@ -66,7 +66,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             }
             else VulnerabilityRadius = BaseVulnerabilityRadius;
 
-            if (!IsPlayerWithinVulnerabilityRadius()) // if the player is outside the ring
+            if (!IsEntityWithinVulnerabilityRadius(player)) // if the player is outside the ring
             {
                 TargetableByHoming = false;
                 IsInvincible = true;
@@ -75,7 +75,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     if (Utilities.DistanceBetweenVectors(p.Position, Position) < VulnerabilityRadius && p is not Deathray) // if the projectile is within the ring
                     {
-                        p.Die();
+                        p.InstantlyDie();
                         p.OnHitEffect(p.Position);
                     }
                 }
@@ -87,9 +87,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
             }
         }
 
-        public bool IsPlayerWithinVulnerabilityRadius()
+        public bool IsEntityWithinVulnerabilityRadius(Entity entity)
         {
-            return Utilities.DistanceBetweenVectors(player.Position, Position) < VulnerabilityRadius;
+            return Utilities.DistanceBetweenVectors(entity.Position, Position) < VulnerabilityRadius;
         }
         public override void HandlePhaseChanges()
         {

@@ -32,6 +32,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
             int time = AITimer;
             int attackStartTime = 200;
 
+            EyeBossPhaseTwoMinion owner = (EyeBossPhaseTwoMinion)Owner;
+            EyeBoss mainBoss = owner.Owner;
+
             if (activeNPCs.Count == 2) // boss and pupil are alive
             {
                 Owner.TargetableByHoming = true;
@@ -43,13 +46,25 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 EyeOwner.RandomlyArrangeAttacks();
             }
 
+            if (mainBoss.IsPerformingCircularBlasts) // if main boss is doing circular blasts
+            {
+                foreach (Projectile p in activeProjectiles)
+                {
+                    if (p.Owner == mainBoss.Pupil && owner.IsEntityWithinVulnerabilityRadius(p) && p is not Deathray) // if the projectile is within the ring and owned by the main boss's pupil
+                    {
+                        p.InstantlyDie();
+                        p.OnHitEffect(p.Position);
+                    }
+                }
+
+                // TODO: make radii shrink during blasts
+            }
+
             else if (time > attackStartTime)
             {
                 bool attack = true; // true, shoot bullet rings, false, lasers
 
-                EyeBossPhaseTwoMinion owner = (EyeBossPhaseTwoMinion)Owner;
-
-                if (owner.IsPlayerWithinVulnerabilityRadius())
+                if (owner.IsEntityWithinVulnerabilityRadius(player))
                 {
                     attack = false;
                 }
@@ -68,7 +83,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 Projectile p = new Projectile();
 
-                                p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                                //p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
 
                                 p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
@@ -76,7 +91,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
 
-                                p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                                //p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
 
                                 p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
@@ -184,8 +199,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 float maxVulnerabilityRadius = 270f;
                 float progress = (time - attackStartTime) / (float)expansionTime;
                 float easedProgress = 1 - Pow(1 - progress, 5);
-
-                EyeBossPhaseTwoMinion owner = (EyeBossPhaseTwoMinion)EyeOwner;
 
                 owner.BaseVulnerabilityRadius = MathHelper.Lerp(0f, maxVulnerabilityRadius, easedProgress);
 

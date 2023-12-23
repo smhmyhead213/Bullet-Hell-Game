@@ -16,42 +16,20 @@ namespace bullethellwhatever.DrawCode
         public BasicEffect BasicEffect;
         public GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
 
-        VertexBuffer VertexBuffer;
+        public VertexBuffer VertexBuffer;
+
+        public RasterizerState RasteriserState;
 
         Matrix WorldMatrix = Matrix.Identity;
         Matrix ViewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-        //Matrix ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), ScreenWidth / ScreenHeight, 0.01f, 100f);
         Matrix ProjectionMatrix = Matrix.CreateOrthographic(ScreenWidth, ScreenHeight, 0, 1000);
-
-        //        public struct VertexPositionColour : IVertexType
-        //        {
-        //            public Vector3 Position;
-
-        //            public Color Colour;
-
-        //            public Vector2 TextureCoordinates;
-
-        //            private static readonly VertexDeclaration _VertexDeclaration = new(new VertexElement[]
-        //{
-        //                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
-        //                new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),
-        //                new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 0),
-        //            });
-
-        //            #pragma warning disable IDE0251 // Make member 'readonly'
-        //            public VertexDeclaration VertexDeclaration => _VertexDeclaration;
-        //            #pragma warning restore IDE0251 // Make member 'readonly'
-        //            public VertexPositionColour(Vector3 position, Color colour, Vector2 texCoords)
-        //            {
-        //                Position = position;
-        //                Colour = colour;
-        //                TextureCoordinates = texCoords;
-        //            }
-        //        }
-
         public PrimitiveDrawer()
         {
             BasicEffect = new BasicEffect(GraphicsDevice);
+
+            RasteriserState = new RasterizerState();
+
+            RasteriserState.CullMode = CullMode.None;
 
             VertexPositionColor[] vertices = new VertexPositionColor[4];
 
@@ -98,9 +76,7 @@ namespace bullethellwhatever.DrawCode
             GraphicsDevice.SetVertexBuffer(VertexBuffer);
             BasicEffect.VertexColorEnabled = true;
 
-            RasterizerState rasterizerState = new RasterizerState();
-            rasterizerState.CullMode = CullMode.None;
-            GraphicsDevice.RasterizerState = rasterizerState;
+            GraphicsDevice.RasterizerState = RasteriserState;
 
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {

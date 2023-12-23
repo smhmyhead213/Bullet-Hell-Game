@@ -198,14 +198,20 @@ namespace bullethellwhatever.BaseClasses
 
             else
             {
-                DeleteNextFrame = true;
-
-                if (OnDeath is not null)
-                {
-                    OnDeath();
-                }
+                InstantlyDie();
             }
         }
+
+        public virtual void InstantlyDie()
+        {
+            DeleteNextFrame = true;
+
+            if (OnDeath is not null)
+            {
+                OnDeath();
+            }
+        }
+        
         public virtual void CheckForHits()
         {
             if (Participating && !Dying)

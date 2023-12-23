@@ -21,6 +21,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public int PhaseTwoMinionCount = 4;
 
+        public bool IsPerformingCircularBlasts;
+
         public float InitialChainDampingFactor;
         public Vector2 ChainStartPosition;
         public EyeBoss()
@@ -40,6 +42,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Pupil = new Pupil("Circle", 0, 0, Size / 4);
             Pupil.Spawn(Position, Vector2.Zero, 0f, Pupil.Texture, Pupil.Size, 0, 0, Color.Black, false, false);
             Pupil.SetParticipating(false);
+            Pupil.IsInvincible = true;
             Pupil.TargetableByHoming = false;
 
             CreateChain(ScreenHeight / 2f);
@@ -184,7 +187,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     TargetableByHoming = false;
                     IsInvincible = true;
-                   
+
                     ReplaceAttackPattern(phaseTwoAttacks);
                 }
             }
