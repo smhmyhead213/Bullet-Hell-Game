@@ -56,6 +56,8 @@ namespace bullethellwhatever.Projectiles.Base
         {
             Updates = 1;
 
+            DealDamage = isHarmful;
+
             Position = position;
             Rotation = initialRotation;
 
@@ -96,6 +98,8 @@ namespace bullethellwhatever.Projectiles.Base
         {
             Updates = 1;
 
+            DealDamage = isHarmful;
+
             Position = position;
             Rotation = initialRotation;
 
@@ -134,6 +138,8 @@ namespace bullethellwhatever.Projectiles.Base
             float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect? shader, Entity owner)
         {
             Updates = 1;
+
+            DealDamage = isHarmful;
 
             Position = position;
             Rotation = initialRotation;

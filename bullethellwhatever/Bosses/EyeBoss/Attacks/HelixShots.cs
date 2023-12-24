@@ -34,6 +34,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             int shootTime = 10;
             int totalAttackTime = waitTime + telegraphTime + shootTime;
             int time = AITimer % totalAttackTime;
+            int telegraphLockTime = 10;
 
             if (time < waitTime && time > shootTime && AITimer > totalAttackTime) // dont shoot homing projs the first time round
             {
@@ -76,7 +77,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 t.SetExtraAI(new Action(() =>
                 {
-                    if (t.TimeAlive < telegraphTime - 10)
+                    if (t.TimeAlive < telegraphTime - telegraphLockTime)
                     {
                         t.Rotation = Utilities.AngleToPlayerFrom(t.Owner.Position);
                         ShootAngle = t.Rotation;
@@ -100,7 +101,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time > waitTime && time < waitTime + telegraphTime - particleLifeTime)
             {
-                Pupil.LookAtPlayer(20);
+                if (time < waitTime + telegraphTime - particleLifeTime - telegraphLockTime)
+                {
+                    Pupil.LookAtPlayer(20);
+                }
 
                 AttackUtilities.SuckInParticles(Pupil.Position, Color.White, particleSpeed, spawnDistance, 1);
 

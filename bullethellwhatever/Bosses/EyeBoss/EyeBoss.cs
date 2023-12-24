@@ -21,8 +21,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public int PhaseTwoMinionCount = 4;
 
-        public bool IsPerformingCircularBlasts;
-
         public float InitialChainDampingFactor;
         public Vector2 ChainStartPosition;
         public EyeBoss()
@@ -49,7 +47,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             BossAttacks = new EyeBossAttack[]
             {
-                new ProjectileRows(300),
+                //new ProjectileRows(300),
                 new LaserSwingProjectileBurst(850),               
                 new Meteors(300),
                 new EyeRay(1600),

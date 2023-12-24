@@ -102,6 +102,8 @@ namespace bullethellwhatever.BaseClasses
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
 
+            DealDamage = isHarmful;
+
             if (Updates == 0) // if we havent already set updates
             {
                 Updates = 1;
@@ -221,7 +223,7 @@ namespace bullethellwhatever.BaseClasses
                     CheckForAndHitNPCs();
                 }
 
-                if (IsHarmful)
+                if (IsHarmful && DealDamage)
                 {
                     if (CollisionWithEntity(player).Collided && player.IFrames == 0 && !Dying)
                     {

@@ -180,6 +180,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     p.SetExtraAI(new Action(() =>
                     {
                         p.Velocity.Y = p.Velocity.Y + 0.3f; // gravity
+                        p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
                     p.SetDrawAfterimages(28, 3);

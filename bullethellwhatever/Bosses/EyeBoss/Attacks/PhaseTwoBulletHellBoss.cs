@@ -78,7 +78,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         BossHPRunningTotal = BossHPRunningTotal + totalHeal;
 
-                        int numberOfProjectiles = Utilities.RandomInt(5, 10);
+                        int numberOfProjectiles = (int)MathHelper.Lerp(10, 1, progress);
 
                         float healEach = totalHeal / numberOfProjectiles;
 
@@ -180,98 +180,54 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     Pupil.LookAtPlayer(20);
 
-                    int bulletHellTime = 50;
-                    int blastsTime = 300;
-                    int localTime = time - minionDeployTime;
-                    int cycleTime = bulletHellTime + blastsTime;
-                    int modulodTime = localTime % cycleTime;
-
-                    EyeOwner.IsPerformingCircularBlasts = modulodTime > bulletHellTime;
-
-                    if (!EyeOwner.IsPerformingCircularBlasts)
-                    {                      
-                        if (time % 20 == 0)
-                        {
-                            int projectilesPerRing = 20;
-                            bool attack = true; // true, shoot bullet rings, false, lasers
-
-                            if (attack)
-                            {
-                                float randomOffset = Utilities.RandomFloat(0, Tau);
-
-                                for (int i = 0; i < projectilesPerRing; i++)
-                                {
-                                    if (!Utilities.RandomChance(20))
-                                    {
-                                        Projectile p = new Projectile();
-
-                                        //p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
-
-                                        p.Rotation = Utilities.VectorToAngle(p.Velocity);
-                                    }
-                                    else
-                                    {
-                                        PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
-
-                                        //p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
-
-                                        p.Rotation = Utilities.VectorToAngle(p.Velocity);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (time % 240 == 0)
-                                {
-                                    int lasers = 5;
-                                    float initialRotation = Utilities.RandomAngle();
-
-                                    for (int i = 0; i < lasers; i++)
-                                    {
-                                        TelegraphLine t = new TelegraphLine(Tau / lasers * i + initialRotation, 0, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
-
-                                        t.SetOnDeath(new Action(() =>
-                                        {
-                                            Deathray ray = new Deathray();
-
-                                            ray.SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, 0, true, Color.Gold, "DeathrayShader", Pupil);
-                                            ray.SetStayWithOwner(true);
-                                        }));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
+                    if (time % 20 == 0)
                     {
-                        int circularBlastsLocalTime = modulodTime - bulletHellTime;
-                        int chargeUpTime = 120;
+                        int projectilesPerRing = 20;
+                        bool attack = true; // true, shoot bullet rings, false, lasers
 
-                        if (circularBlastsLocalTime == 0)
+                        if (attack)
                         {
-                            Drawing.ScreenShake(10, chargeUpTime);
-                        }
+                            float randomOffset = Utilities.RandomFloat(0, Tau);
 
-                        if (circularBlastsLocalTime > chargeUpTime && circularBlastsLocalTime % 20 == 0)
-                        {
-                            int numberOfProjectiles = 200;
-
-                            for (int i = 0; i < numberOfProjectiles;  i++)
+                            for (int i = 0; i < projectilesPerRing; i++)
                             {
-                                Projectile p = new Projectile();
-
-                                float angle = Tau / numberOfProjectiles * i;
-
-                                p.Spawn(Pupil.Position, 30f * Utilities.AngleToVector(angle), 1f, 1, "box", 1.05f, Vector2.One, Pupil, true, Color.Red, true, false);
-
-                                p.Rotation = angle;
-
-                                p.SetDrawAfterimages(11, 3);
-
-                                p.SetOnDeath(new Action(() =>
+                                if (!Utilities.RandomChance(20))
                                 {
-                                    AttackUtilities.ParticleExplosion(15, 20, 10f, Vector2.One * 0.4f, p.Position, p.Colour);
-                                }));
+                                    Projectile p = new Projectile();
+
+                                    p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+
+                                    p.Rotation = Utilities.VectorToAngle(p.Velocity);
+                                }
+                                else
+                                {
+                                    PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
+
+                                    p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+
+                                    p.Rotation = Utilities.VectorToAngle(p.Velocity);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (time % 240 == 0)
+                            {
+                                int lasers = 5;
+                                float initialRotation = Utilities.RandomAngle();
+
+                                for (int i = 0; i < lasers; i++)
+                                {
+                                    TelegraphLine t = new TelegraphLine(Tau / lasers * i + initialRotation, 0, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
+
+                                    t.SetOnDeath(new Action(() =>
+                                    {
+                                        Deathray ray = new Deathray();
+
+                                        ray.SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, 0, true, Color.Gold, "DeathrayShader", Pupil);
+                                        ray.SetStayWithOwner(true);
+                                    }));
+                                }
                             }
                         }
                     }

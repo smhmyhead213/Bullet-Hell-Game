@@ -46,21 +46,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 EyeOwner.RandomlyArrangeAttacks();
             }
 
-            if (mainBoss.IsPerformingCircularBlasts) // if main boss is doing circular blasts
-            {
-                foreach (Projectile p in activeProjectiles)
-                {
-                    if (p.Owner == mainBoss.Pupil && owner.IsEntityWithinVulnerabilityRadius(p) && p is not Deathray) // if the projectile is within the ring and owned by the main boss's pupil
-                    {
-                        p.InstantlyDie();
-                        p.OnHitEffect(p.Position);
-                    }
-                }
-
-                // TODO: make radii shrink during blasts
-            }
-
-            else if (time > attackStartTime)
+            if (time > attackStartTime)
             {
                 bool attack = true; // true, shoot bullet rings, false, lasers
 
@@ -83,7 +69,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 Projectile p = new Projectile();
 
-                                //p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                                p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
 
                                 p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
@@ -91,7 +77,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
 
-                                //p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                                p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
 
                                 p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
