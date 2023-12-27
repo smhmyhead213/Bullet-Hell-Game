@@ -8,22 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.BaseClasses;
 using System.Windows.Forms;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace bullethellwhatever.DrawCode
 {
-    public class PrimitiveDrawer
+    public class PrimitiveSet
     {
         public BasicEffect BasicEffect;
         public GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
 
         public VertexBuffer VertexBuffer;
+        public IndexBuffer IndexBuffer;
 
         public RasterizerState RasteriserState;
 
         Matrix WorldMatrix = Matrix.Identity;
         Matrix ViewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
         Matrix ProjectionMatrix = Matrix.CreateOrthographic(ScreenWidth, ScreenHeight, 0, 1000);
-        public PrimitiveDrawer()
+        public PrimitiveSet()
         {
             BasicEffect = new BasicEffect(GraphicsDevice);
 
@@ -83,7 +85,40 @@ namespace bullethellwhatever.DrawCode
                 pass.Apply();
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
             }
+        }
+    }
 
+    public class PrimAfterImageTestProj : Projectile
+    {
+        public PrimAfterImageTestProj() : base()
+        {
+            SetDrawAfterimages(20, 5);
+        }
+
+        public override void DrawAfterImages()
+        {
+            PrimitiveSet primSet = new PrimitiveSet();
+
+            int verticesCount = afterimagesPositions.Length * 3;
+
+            VertexPositionColor[] vertices = new VertexPositionColor[verticesCount];
+
+            float width = GetSize().X;
+
+            for (int i = 0; i < afterimagesPositions.Length; i++)
+            {
+                float progress = i / (float)afterimagesPositions.Length;
+                float fractionOfWidth = 1f - (width * progress);
+                float widthToUse = width * fractionOfWidth;
+                int startingIndex = i * 3;
+
+                Vector2 halfWidth = Utilities.RotateVectorClockwise(new Vector2(widthToUse / 2, 0), Rotation);
+                vertices[startingIndex] = primSet.CreateVertex(afterimagesPositions[i] + halfWidth, Colour);
+                vertices[startingIndex + 1] = primSet.CreateVertex(afterimagesPositions[i] - halfWidth, Colour);
+                vertices[startingIndex + 2] = primSet.CreateVertex(afterimagesPositions[i + 1], Colour);
+            }
+
+            short[] indices = new short[4 * verticesCount - 3];
         }
     }
 }
