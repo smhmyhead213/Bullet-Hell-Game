@@ -41,7 +41,8 @@ namespace bullethellwhatever.DrawCode
 
             SetOpacity(0.5f);
 
-            PrepareProjectile(position, Vector2.Zero, 0f, 1, 0, Vector2.Zero, owner, false, Color.White, false, false);            
+            // change this with the deletion of prepare projcetile method
+            //PrepareProjectile(position, Vector2.Zero, 0f, 1, 0, Vector2.Zero, owner, false, Color.White, false, false);            
         }
         public override void Update()
         {

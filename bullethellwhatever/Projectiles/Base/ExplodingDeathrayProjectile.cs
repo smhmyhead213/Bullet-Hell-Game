@@ -20,31 +20,7 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void AI()
         {
-            if (AITimer == 1)
-            {
-                for (int i = 0; i < NumberOfProjectiles; i++)
-                {
-                    TelegraphLine teleLine = new TelegraphLine((MathF.PI * 2 / NumberOfProjectiles * i) + Offset, 0, 0, 10, 2000, ExplosionDelay, Position, Color.White, "box", this, true);
-                }
-            }
 
-            if (Acceleration != 0)
-                Velocity = Velocity * Acceleration; //acceleration values must be very very small
-
-            if (ShouldSlowDown)
-                Velocity = Velocity * 0.98f; //slow down to a stop
-
-            if (AITimer == ExplosionDelay)
-            {
-                Explode();
-            }
-
-            if (touchingAnEdge(this))
-            {
-                Explode();
-            }
-
-            Position = Position + (Velocity * (ExplosionDelay - AITimer) / ExplosionDelay);
         }
 
         public override void Explode()

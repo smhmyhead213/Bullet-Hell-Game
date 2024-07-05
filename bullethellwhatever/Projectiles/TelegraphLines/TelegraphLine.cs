@@ -23,7 +23,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public bool DeleteNextFrame;
         public bool StayWithOwner;
         public string LineShader;
-        public bool SpawnRayAfterFinish;
         public float InitialWidth;
 
         public Deathray ToSpawn;
@@ -114,16 +113,14 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             }
         }
 
-        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
+        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner = true)
         {
-            SpawnRayAfterFinish = true;
-            ToSpawn = new Deathray();
-            ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
-        }
-        public void SpawnDeathrayOnDeath(Deathray deathray)
-        {
-            SpawnRayAfterFinish = true;
-            ToSpawn = deathray;
+            SetOnDeath(new Action(() =>
+            {
+                Deathray ray = new Deathray();
+                ray.SetStayWithOwner(stayWithOwner);
+                ray.SpawnDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);        
+            }));
         }
 
         public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner)

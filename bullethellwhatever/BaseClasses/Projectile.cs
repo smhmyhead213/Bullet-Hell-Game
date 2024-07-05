@@ -8,6 +8,8 @@ using System;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.Projectiles.TelegraphLines;
+using SharpDX.MediaFoundation;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -37,20 +39,7 @@ namespace bullethellwhatever.BaseClasses
         public int MercyTimeBeforeRemoval;
 
         public bool IsEffect;
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
-        {
-            Texture = Assets[texture];
-
-            PrepareProjectile(position, velocity, damage, pierce, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
-        }
-
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, int pierce, Texture2D texture, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
-        {
-            Texture = texture;
-
-            PrepareProjectile(position, velocity, damage, pierce, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
-        }
-        //and drawing
+        
         public void HandleBounces()
         {
             if (touchingLeft(this))
@@ -78,59 +67,7 @@ namespace bullethellwhatever.BaseClasses
                     Velocity.Y = Velocity.Y * -1f;
             }
         }
-        public virtual void PrepareProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
-        {
-            Depth = 0;
-
-            if (!DrawAfterimages) // dont set to false by default if already set to true
-            {
-                DrawAfterimages = false;
-            }
-
-            Position = position;
-            Pierce = pierce;
-            TimeOutsidePlayArea = 0;
-            PierceRemaining = Pierce;
-            Velocity = velocity;
-            Damage = damage;
-            Acceleration = acceleration;
-            Colour = colour;
-            DeleteNextFrame = false;
-            Size = size;
-            Owner = owner;
-            IsHarmful = isHarmful;
-            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
-            RemoveOnHit = removeOnHit;
-
-            DealDamage = isHarmful;
-
-            if (Updates == 0) // if we havent already set updates
-            {
-                Updates = 1;
-            }
-
-            Opacity = 1f;
-            InitialOpacity = Opacity;
-
-            Dying = false;
-
-            DyingTimer = 0;
-
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
-
-            Participating = true;
-
-            if (MercyTimeBeforeRemoval == 0)
-            {
-                MercyTimeBeforeRemoval = 60;
-            }
-
-            SetHitbox();
-
-            if (IsHarmful)
-                enemyProjectilesToAddNextFrame.Add(this);
-            else friendlyProjectilesToAddNextFrame.Add(this);
-        }
+        
         public override void Update()
         {
             AITimer++;
@@ -310,6 +247,41 @@ namespace bullethellwhatever.BaseClasses
             if (collision.Collided)
                 return collision;
             else return new Collision(Vector2.Zero, false);
+        }
+
+        /// <summary>
+        /// <para>Should be called on a single frame to create a radial burst of telegraph lines which explode into deathrays.</para>
+        /// </summary>
+        /// <param name="numberOfRays"></param>
+        /// <param name="explosionDelay"></param>
+        /// <param name="offset"></param>
+        /// <param name="shouldSlowDown"></param>
+        /// <param name="shouldAccelerate"></param>
+        /// <param name="shouldAccountForVelocityInOrientation"></param>
+        /// <param name="damage"></param>
+        /// <param name="duration"></param>
+        /// <param name="angularVelocity"></param>
+        /// <param name="angularAcceleration"></param>
+        /// <param name="isHarmful"></param>
+        /// <param name="colour"></param>
+        /// <param name="shader"></param>
+        /// <param name="owner"></param>
+        /// <param name="stayWithOwner"></param>
+        public void SpawnRadialTelegraphedBeams(float numberOfRays, int explosionDelay, float offset, bool shouldSlowDown, bool shouldAccelerate, bool shouldAccountForVelocityInOrientation, 
+            float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner)
+        {
+            if (AITimer == 1)
+            {
+                for (int i = 0; i < numberOfRays; i++)
+                {
+                    TelegraphLine teleLine = new TelegraphLine((MathF.PI * 2 / numberOfRays * i) + offset, 0, 0, 10, 2000, explosionDelay, Position, Color.White, "box", this, true);
+
+                    teleLine.SetOnDeath(new Action(() =>
+                    {
+                        teleLine.SpawnDeathrayOnDeath(damage, duration, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+                    }));
+                }
+            }
         }
     }
 }

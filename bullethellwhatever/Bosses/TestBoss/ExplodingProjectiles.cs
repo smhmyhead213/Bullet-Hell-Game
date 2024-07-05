@@ -1,6 +1,8 @@
 ﻿using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
+using SharpDX.MediaFoundation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +54,10 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, Utilities.ToRadians(AITimer - 250f));
 
+                explodingProjectile.SetExtraAI(new Action(() =>
+                {
+                    explodingProjectile.SpawnRadialTelegraphedBeams(NumberOfProjectiles, Owner.BarDuration, 0, true, true, false, )
+                });
                 explodingProjectile.Spawn(Owner.Position, 15f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, 1, "box", 0, new Vector2(2, 2), Owner, true, Color.Red, false, false);
             }
 

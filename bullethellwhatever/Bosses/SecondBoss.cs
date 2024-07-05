@@ -22,7 +22,7 @@ namespace bullethellwhatever.Bosses
 
         public float DeathrayAngularVelocity;
 
-        public PrimitiveDrawer prims;
+        public PrimitiveSet prims;
 
         public Deathray ray;
         public Deathray ray2;
@@ -53,7 +53,7 @@ namespace bullethellwhatever.Bosses
 
             Texture = Assets["box"];
 
-            prims = new PrimitiveDrawer();
+            prims = new PrimitiveSet();
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
