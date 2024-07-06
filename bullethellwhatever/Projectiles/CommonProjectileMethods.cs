@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.Projectiles.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,55 +19,9 @@ namespace bullethellwhatever.Projectiles
         {
             Projectile proj = new Projectile();
 
-            proj.Depth = 0;
             proj.Texture = Assets[texture];
 
-            if (!proj.DrawAfterimages) // dont set to false by default if already set to true
-            {
-                proj.DrawAfterimages = false;
-            }
-
-            proj.Position = position;
-            proj.Pierce = pierce;
-            proj.TimeOutsidePlayArea = 0;
-            proj.PierceRemaining = proj.Pierce;
-            proj.Velocity = velocity;
-            proj.Damage = damage;
-            proj.Acceleration = acceleration;
-            proj.Colour = colour;
-            proj.DeleteNextFrame = false;
-            proj.Size = size;
-            proj.Owner = owner;
-            proj.IsHarmful = isHarmful;
-            proj.ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
-            proj.RemoveOnHit = removeOnHit;
-
-            proj.DealDamage = isHarmful;
-
-            if (proj.Updates == 0) // if we havent already set updates
-            {
-                proj.Updates = 1;
-            }
-            proj.Opacity = 1f;
-            proj.InitialOpacity = proj.Opacity;
-            proj.Dying = false;
-
-            proj.DyingTimer = 0;
-
-            proj.Hitbox = new RotatedRectangle(proj.Rotation, proj.Texture.Width * proj.GetSize().X, proj.Texture.Height * proj.GetSize().Y, proj.Position, this);
-
-            proj.Participating = true;
-
-            if (proj.MercyTimeBeforeRemoval == 0)
-            {
-                proj.MercyTimeBeforeRemoval = 60;
-            }
-
-            proj.SetHitbox();
-
-            if (proj.IsHarmful)
-                enemyProjectilesToAddNextFrame.Add(proj);
-            else friendlyProjectilesToAddNextFrame.Add(proj);
+            proj.Prepare(position, velocity, damage, pierce, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
             return proj;
         }
@@ -75,57 +30,21 @@ namespace bullethellwhatever.Projectiles
         {
             Projectile proj = new Projectile();
 
-            proj.Depth = 0;
             proj.Texture = texture;
 
-            if (!proj.DrawAfterimages) // dont set to false by default if already set to true
-            {
-                proj.DrawAfterimages = false;
-            }
-
-            proj.Position = position;
-            proj.Pierce = pierce;
-            proj.TimeOutsidePlayArea = 0;
-            proj.PierceRemaining = proj.Pierce;
-            proj.Velocity = velocity;
-            proj.Damage = damage;
-            proj.Acceleration = acceleration;
-            proj.Colour = colour;
-            proj.DeleteNextFrame = false;
-            proj.Size = size;
-            proj.Owner = owner;
-            proj.IsHarmful = isHarmful;
-            proj.ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
-            proj.RemoveOnHit = removeOnHit;
-
-            proj.DealDamage = isHarmful;
-
-            if (proj.Updates == 0) // if we havent already set updates
-            {
-                proj.Updates = 1;
-            }
-            proj.Opacity = 1f;
-            proj.InitialOpacity = proj.Opacity;
-            proj.Dying = false;
-
-            proj.DyingTimer = 0;
-
-            proj.Hitbox = new RotatedRectangle(proj.Rotation, proj.Texture.Width * proj.GetSize().X, proj.Texture.Height * proj.GetSize().Y, proj.Position, this);
-
-            proj.Participating = true;
-
-            if (proj.MercyTimeBeforeRemoval == 0)
-            {
-                proj.MercyTimeBeforeRemoval = 60;
-            }
-
-            proj.SetHitbox();
-
-            if (proj.IsHarmful)
-                enemyProjectilesToAddNextFrame.Add(proj);
-            else friendlyProjectilesToAddNextFrame.Add(proj);
+            proj.Prepare(position, velocity, damage, pierce, acceleration, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
             return proj;
+        }
+
+        public static Deathray SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
+            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
+        {
+            Deathray ray = new Deathray();
+
+            ray.CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+
+            AddDeathrayToActiveProjectiles();
         }
     }
 }

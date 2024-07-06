@@ -15,8 +15,6 @@ namespace bullethellwhatever.BaseClasses
 {
     public class Projectile : Entity
     {
-        public float Acceleration;
-
         public Entity Owner;
         public bool RemoveOnHit;
 
@@ -40,6 +38,57 @@ namespace bullethellwhatever.BaseClasses
 
         public bool IsEffect;
         
+        public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        {
+            Depth = 0;
+
+            if (!DrawAfterimages) // dont set to false by default if already set to true
+            {
+                DrawAfterimages = false;
+            }
+
+            Position = position;
+            Pierce = pierce;
+            TimeOutsidePlayArea = 0;
+            PierceRemaining = Pierce;
+            Velocity = velocity;
+            Damage = damage;
+            Acceleration = acceleration;
+            Colour = colour;
+            DeleteNextFrame = false;
+            Size = size;
+            Owner = owner;
+            IsHarmful = isHarmful;
+            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
+            RemoveOnHit = removeOnHit;
+
+            DealDamage = isHarmful;
+
+            if (Updates == 0) // if we havent already set updates
+            {
+                Updates = 1;
+            }
+            Opacity = 1f;
+            InitialOpacity = Opacity;
+            Dying = false;
+
+            DyingTimer = 0;
+
+            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
+
+            Participating = true;
+
+            if (MercyTimeBeforeRemoval == 0)
+            {
+                MercyTimeBeforeRemoval = 60;
+            }
+
+            SetHitbox();
+
+            if (IsHarmful)
+                enemyProjectilesToAddNextFrame.Add(this);
+            else friendlyProjectilesToAddNextFrame.Add(this);
+        }
         public void HandleBounces()
         {
             if (touchingLeft(this))
