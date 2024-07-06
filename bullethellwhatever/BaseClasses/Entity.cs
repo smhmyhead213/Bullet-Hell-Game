@@ -15,6 +15,7 @@ namespace bullethellwhatever.BaseClasses
     {
         public Vector2 Position;
         public Vector2 Velocity;
+
         public Texture2D Texture;
         public NoiseMap Map;
         public Action ExtraDraw;

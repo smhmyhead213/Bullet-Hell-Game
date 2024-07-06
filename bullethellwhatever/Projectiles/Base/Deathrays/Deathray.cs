@@ -28,31 +28,15 @@ namespace bullethellwhatever.Projectiles.Base
         public bool StayWithOwner;
 
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
+            float length, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner)
         {
-            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
-
-            AddDeathrayToActiveProjectiles();
-        }
-
-        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
-        {
-            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
-
-            AddDeathrayToActiveProjectiles();
-        }
-
-        public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width,
-    float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect shader, Entity owner)
-        {
-            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
+            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, isHarmful, colour, shader, owner);
 
             AddDeathrayToActiveProjectiles();
         }
 
         public virtual Deathray CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner)
+            float length, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner)
         {
             Updates = 1;
 
@@ -72,7 +56,6 @@ namespace bullethellwhatever.Projectiles.Base
             Duration = duration;
             Texture = Assets[texture];
             AngularVelocity = angularVelocity;
-            Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
             Owner = owner;
             Colour = colour;
             IsActive = true;
@@ -93,87 +76,7 @@ namespace bullethellwhatever.Projectiles.Base
             return this;
         }
 
-        public virtual Deathray CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect? shader, Entity owner)
-        {
-            Updates = 1;
-
-            DealDamage = isHarmful;
-
-            Position = position;
-            Rotation = initialRotation;
-
-            Width = width;
-            Length = length;
-
-            Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
-
-            SetHitbox();
-
-            Duration = duration;
-            Texture = Assets[texture];
-            AngularVelocity = angularVelocity;
-            Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
-            Owner = owner;
-            Colour = colour;
-            IsActive = true;
-            IsHarmful = isHarmful;
-            Damage = damage;
-
-            if (shader != null)
-                Shader = shader;
-            else Shader = null;
-
-            RemoveOnHit = false;
-
-            InitialWidth = Width;
-            ThinOut = false;
-
-            Participating = true;
-
-            return this;
-        }
-
-        public virtual void CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, Texture2D texture, float width,
-            float length, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, Effect? shader, Entity owner)
-        {
-            Updates = 1;
-
-            DealDamage = isHarmful;
-
-            Position = position;
-            Rotation = initialRotation;
-
-            Width = width;
-            Length = length;
-
-            Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
-
-            SetHitbox();
-
-            Duration = duration;
-            Texture = texture;
-            AngularVelocity = angularVelocity;
-            Acceleration = angularAcceleration; //Acceleration works DIFFERENTLY for rays.
-            Owner = owner;
-            Colour = colour;
-            IsActive = true;
-            IsHarmful = isHarmful;
-            Damage = damage;
-
-            if (shader != null)
-                Shader = shader;
-            else Shader = null;
-
-            RemoveOnHit = false;
-
-            InitialWidth = Width;
-
-            Participating = true;
-
-            ThinOut = false;
-        }
-
+        
         //public virtual void SetNoiseMap(string fileName, float scrollSpeed)
         //{
         //    Map = Assets[fileName];
@@ -204,9 +107,6 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 ExtraAI();
             }
-
-            if (Acceleration != 0f)
-                AngularVelocity = AngularVelocity + Acceleration;
 
             Rotation = Rotation + AngularVelocity;
             Rotation = Rotation % (PI * 2); //The rotation is always 0 < r < 360.

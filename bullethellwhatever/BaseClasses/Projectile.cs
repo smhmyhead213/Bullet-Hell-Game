@@ -29,7 +29,6 @@ namespace bullethellwhatever.BaseClasses
         public float StartingOpacity;
 
         public Func<float, float>? DepthFunction;
-        public Func<float, Vector2> VelocityFunction;
 
         public Action OnHit;
         public Action OnEdgeTouch;
@@ -38,7 +37,7 @@ namespace bullethellwhatever.BaseClasses
 
         public bool IsEffect;
         
-        public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, float acceleration, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Depth = 0;
 
@@ -53,7 +52,6 @@ namespace bullethellwhatever.BaseClasses
             PierceRemaining = Pierce;
             Velocity = velocity;
             Damage = damage;
-            Acceleration = acceleration;
             Colour = colour;
             DeleteNextFrame = false;
             Size = size;
@@ -131,18 +129,6 @@ namespace bullethellwhatever.BaseClasses
             if (TimeOutsidePlayArea == 1) // just hit edge
             {
                 EdgeTouchEffect();
-            }
-
-            if (VelocityFunction is null)
-            {
-                if (Acceleration != 0)
-                {
-                    Velocity = Velocity * Acceleration;
-                }
-            }
-            else
-            {
-                Velocity = VelocityFunction(AITimer);
             }
 
             if (DepthFunction is not null)
