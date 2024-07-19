@@ -9,10 +9,10 @@ using bullethellwhatever.Projectiles.Base; //bad code
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Projectiles.Enemy;
+ 
 using bullethellwhatever.Enemies;
-using bullethellwhatever.Projectiles._3D;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses
 {
@@ -124,17 +124,28 @@ namespace bullethellwhatever.Bosses
 
         public void Explosions(ref float AITimer, ref int AttackNumber, int numberOfProjectiles) // this needs fixed 
         {
-            float offset = MathF.PI / 500f * AITimer;
+            float offset = PI / 500f * AITimer;
 
             if (AITimer % 2 == 0)
             {
                 for (int i = 0; i < numberOfProjectiles; i++)
                 {
-                    ExplodingProjectile explodingProjectile = new ExplodingProjectile(4, 120, -0.5f * offset, false, false, true);
+                    //ExplodingProjectile explodingProjectile = new ExplodingProjectile(4, 120, -0.5f * offset, false, false, true);
 
-                    float angle = (2 * MathF.PI / numberOfProjectiles) * i;
+                    float angle = 2 * PI / numberOfProjectiles * i;
 
-                    explodingProjectile.Spawn(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, 1, "box", 1f, Vector2.One, this, true, Color.Red, false, false);
+                    Projectile explodingProjectile = SpawnProjectile(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, 1, "box", Vector2.One, this, true, Color.Red, false, false);
+
+                    explodingProjectile.SetExtraAI(new Action(() =>
+                    {
+                        if (explodingProjectile.AITimer == 120)
+                        {
+                            for (int i = 0; i <= numberOfProjectiles; i++)
+                            {
+                                Projectile p = SpawnProjectile(explodingProjectile.Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, Tau / numberOfProjectiles * i), Vector2.Zero), 1f, 1, "box", Vector2.One, this, true, Color.Red, false, false);
+                            }
+                        }
+                    }));
                 }
             }
         }
@@ -168,9 +179,7 @@ namespace bullethellwhatever.Bosses
             }
             if (AITimer == 50)
             {
-                Projectile p = new Projectile();
-
-                p.Spawn(Position, Vector2.UnitX * 10f, 1f, 1, "box", 1f, Vector2.One, this, true, Color.Red, true, false);
+                Projectile p = SpawnProjectile(Position, Vector2.UnitX * 10f, 1f, 1, "box", Vector2.One, this, true, Color.Red, true, false);
                 //ChargingEnemy enemy = new ChargingEnemy(60, 120);
 
                 //enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);

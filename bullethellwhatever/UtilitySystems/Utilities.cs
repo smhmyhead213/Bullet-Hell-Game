@@ -18,7 +18,6 @@ namespace bullethellwhatever
             activeNPCs.Clear();
             activeProjectiles.Clear();
             activeFriendlyProjectiles.Clear();
-            player.PlayerDeathray.IsSpawned = false; //i cannot be bothered with this
         }
 
         public static Vector2 ClampWithinScreen(Vector2 vector)

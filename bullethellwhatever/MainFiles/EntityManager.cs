@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
 using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.Bosses;
 using bullethellwhatever.Bosses.TestBoss;
 using bullethellwhatever.UtilitySystems.Dialogue;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Bosses.CrabBoss;
 using bullethellwhatever.Bosses.EyeBoss;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -167,9 +167,6 @@ namespace bullethellwhatever.MainFiles
 
             switch (GameState.Boss)
             {
-                case GameState.Bosses.TestBoss:
-                    toSpawn = new TestBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 20), new Vector2(2, 0), Assets["box"]);
-                    break;
                 case GameState.Bosses.SecondBoss:
                     toSpawn = new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0));
                     break;

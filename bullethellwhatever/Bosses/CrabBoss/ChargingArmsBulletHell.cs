@@ -1,6 +1,7 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -86,7 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     Leg(i).PointLegInDirection(Utilities.VectorToAngle(vectorToTarget));
 
-                    TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(vectorToTarget), 0, 0, Leg(i).UpperArm.Texture.Width, 3000, 1, Leg(i).LowerClaw.Position, Color.White, "box", Owner, false);
+                    TelegraphLine t = SpawnTelegraphLine(Utilities.VectorToAngle(vectorToTarget), 0, Leg(i).UpperArm.Texture.Width, 3000, 1, Leg(i).LowerClaw.Position, Color.White, "box", Owner, false);
 
                     t.ChangeShader("OutlineTelegraphShader");
 
@@ -179,11 +180,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     for (int i = 0; i < projectilesPerRing; i++)
                     {
-                        Projectile p = new Projectile();
-
                         float angle = 2f * PI / projectilesPerRing + Utilities.RandomFloat(-PI / 30, PI / 30);
 
-                        p.Spawn(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false); //start slow and speed up fast
+                        Projectile projectile = SpawnProjectile(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false); //start slow and speed up fast
                     }
                 }
             }

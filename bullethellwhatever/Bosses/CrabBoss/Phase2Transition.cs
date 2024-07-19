@@ -1,5 +1,5 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.DrawCode;
+﻿using bullethellwhatever.DrawCode;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

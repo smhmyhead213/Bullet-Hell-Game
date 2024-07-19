@@ -1,8 +1,6 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -56,19 +55,17 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 Pupil.GoTo(distanceFromEyeCentre, pupilRotation);
                 
-                Projectile p = new Projectile();
+                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
                 p.SetDrawAfterimages(11, 3);
 
                 p.Rotation = pupilRotation;
 
-                // change this to be phase 3 only
                 p.SetExtraAI(new Action(() =>
                 {
                     p.HomeAtTarget(player.Position, 0f);
+                    p.ExponentialAccelerate(1.03f);
                 }));
-
-                p.Spawn(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false);
             }
 
             if (time > shootTime + shootDuration && time < shootTime + shootDuration + shootSlowDownTime)

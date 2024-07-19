@@ -12,6 +12,7 @@ using FMOD;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -108,7 +109,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             for (int i = 0; i < numberOfProjectles; i++)
             {
-                Projectile p = new Projectile();
+                float releaseAngle = Utilities.RandomAngle();
+
+                float speed = Utilities.RandomFloat(10f, 20f);
+
+                Projectile p = SpawnProjectile(Pupil.Position, speed * Utilities.RotateVectorClockwise(Vector2.UnitX, releaseAngle), 0f, 1, "Circle", Vector2.One * 0.1f, Owner, false, Color.LightBlue, false, true); ;
 
                 p.SetExtraAI(new Action(() =>
                 {
@@ -130,12 +135,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }));
 
                 p.SetDrawAfterimages(11, 7);
-
-                float releaseAngle = Utilities.RandomAngle();
-
-                float speed = Utilities.RandomFloat(10f, 20f);
-
-                p.Spawn(Pupil.Position, speed * Utilities.RotateVectorClockwise(Vector2.UnitX, releaseAngle), 0f, 1, "Circle", 1f, Vector2.One * 0.1f, Owner, false, Color.LightBlue, false, true);
 
                 p.SetParticipating(false);
             }

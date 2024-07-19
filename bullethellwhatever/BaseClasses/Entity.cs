@@ -53,6 +53,8 @@ namespace bullethellwhatever.BaseClasses
         public Action OnDeath;
         public Action ExtraAI;
 
+        public float[] ExtraData; // small array of floats each entity can use
+
         public float[] afterimagesRotations;
         public Vector2[] afterimagesPositions;
         public int ExtraAfterImages;
@@ -81,6 +83,10 @@ namespace bullethellwhatever.BaseClasses
         public virtual void SetNoiseMap(string fileName, float scrollSpeed)
         {
             Map = new NoiseMap(Assets[fileName], scrollSpeed);
+        }
+        public void SetExtraData(int index, float value)
+        {
+            ExtraData[index] = value;
         }
         public virtual float DepthFactor()
         {
@@ -193,6 +199,15 @@ namespace bullethellwhatever.BaseClasses
         public virtual void SetExtraDraw(Action action)
         {
             ExtraDraw = action;
+        }
+        public virtual void Heal(float amount)
+        {
+            Health = Health + amount;
+
+            if (Health > MaxHP)
+            {
+                Health = MaxHP;
+            }
         }
         public virtual void ApplyShaderParameters()
         {

@@ -52,9 +52,6 @@ namespace bullethellwhatever.Bosses.TestBoss
                 Owner.Position = new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction * 7f, Main._graphics.PreferredBackBufferHeight / screenFraction * 7f);
                 Owner.Velocity = MoveSpeed * Utilities.Normalise(new Vector2(Main._graphics.PreferredBackBufferWidth / screenFraction, Main._graphics.PreferredBackBufferHeight / screenFraction * 7f) - Owner.Position);
             }
-
-            SizeChangingProjectile projectile = new SizeChangingProjectile(0.011f, 0.014f);
-            projectile.Spawn(Owner.Position, 0.5f * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", 1.03f, new Vector2(0.6f, 0.6f), Owner, true, Color.Red, true, false);
         }
     }
 }

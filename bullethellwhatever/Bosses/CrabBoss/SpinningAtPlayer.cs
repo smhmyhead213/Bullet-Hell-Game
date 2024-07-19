@@ -1,8 +1,7 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -194,16 +194,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     if (localTime == shotTeleTime)
                     {
-                        TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Leg(i).Position), 0, 0, 20, 4000, teleDuration + 1, Leg(i).LowerClaw.Position, Color.White, "box", Leg(i).UpperArm, true);
+                        SpawnTelegraphLine(Utilities.AngleToPlayerFrom(Leg(i).Position), 0, 20, 4000, teleDuration + 1, Leg(i).LowerClaw.Position, Color.White, "box", Leg(i).UpperArm, true);
                     }
 
                     if (localTime == shotTeleTime + teleDuration)
                     {
-                        Projectile p = new Projectile();
-
-                        // that velocity method has got to be cheating come on now
-
-                        p.Spawn(Leg(i).LowerClaw.Position, 20f * Utilities.AngleToVector(Leg(i).UpperArm.activeTelegraphs[0].Rotation), 1f, 1, "box", 0, Vector2.One, Leg(i).UpperArm, true, Color.Red, true, false);
+                        SpawnProjectile(Leg(i).LowerClaw.Position, 20f * Utilities.AngleToVector(Leg(i).UpperArm.activeTelegraphs[0].Rotation), 1f, 1, "box", Vector2.One, Leg(i).UpperArm, true, Color.Red, true, false);
                     }
                 }
             }
@@ -221,9 +217,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     int fragments = Utilities.ValueFromDifficulty(4, 6, 8, 10);
 
-                    ExplodingProjectile p = new ExplodingProjectile(fragments, 120, 0, true, false, true);
+                    Projectile p = SpawnProjectile(Owner.Position, Utilities.SafeNormalise(Owner.Velocity), 1f, 1, "box", Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
 
-                    p.Spawn(Owner.Position, Utilities.SafeNormalise(Owner.Velocity), 1f, 1, "box", 0, Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
+                    p.SetExtraAI(new Action(() =>
+                    {
+                        if (p.AITimer == 120)
+                        {
+                            for (int i = 0; i < fragments; i++)
+                            {
+                                SpawnProjectile(p.Position, 3f * Utilities.AngleToVector(Tau / fragments * i), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                            }
+
+                            p.InstantlyDie();
+                        }
+                    }));
                 }
 
                 Owner.Velocity = Vector2.Lerp(Owner.Velocity, bossSpeed * Utilities.SafeNormalise(player.Position - Owner.Position), 0.01f);

@@ -1,5 +1,7 @@
 ﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Enemy;
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles;
+ 
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -94,9 +96,21 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (timeSinceClapReset > otherHandClapFrequency - 10)
             {
-                WeakHomingProjectile proj = new WeakHomingProjectile(12f, 60);
+                Projectile proj = SpawnProjectile(Leg(1).LowerClaw.Position, 8f * (player.Position - Leg(1).LowerClaw.Position), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
-                proj.Spawn(Leg(1).LowerClaw.Position, 8f * (player.Position - Leg(1).LowerClaw.Position), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
+                proj.SetExtraAI(new Action(() =>
+                {
+                    int timeToStopHoming = 60;
+                    float projSpeed = 12f;
+
+                    if (proj.AITimer < timeToStopHoming)
+                    {
+                        Vector2 vectorToTarget = Main.player.Position - proj.Position; //get a vector to the target
+
+                        proj.Velocity = projSpeed * Utilities.SafeNormalise(Vector2.Lerp(proj.Velocity, vectorToTarget, 0.003f), Vector2.Zero);
+
+                    }
+                }));
             }
 
             // move towards that position
@@ -111,12 +125,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (cosine > 0.5 && AITimer % timeBetweenShots == 0)
             {
-                Projectile proj = new Projectile();
-
                 Vector2 direction = Utilities.AngleToVector(Leg(0).LowerArm.RotationFromV());
 
-                proj.Spawn(CrabOwner.Legs[0].LowerClaw.Position, 8f * direction, 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
-                //proj.Spawn(CrabOwner.Position, 5f * Utilities.AngleToVector(PI / 2f), 1f, 1, "box", 1f, Vector2.One, Owner, true, Color.Red, true, false);
+                SpawnProjectile(CrabOwner.Legs[0].LowerClaw.Position, 8f * direction, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
             }
 
             HandleBounces(); //to prevent something funny happening

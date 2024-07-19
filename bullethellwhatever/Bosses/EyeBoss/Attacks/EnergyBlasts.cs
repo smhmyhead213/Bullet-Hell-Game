@@ -1,8 +1,7 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -105,17 +105,15 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         for (int i = 0; i < projs; i++)
                         {
-                            Projectile proj = new Projectile();
-
                             float rotation = i * Tau / projs + randomOffset;
+
+                            Projectile proj = SpawnProjectile(p.Position, 2f * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
                             proj.Rotation = rotation;
 
-                            proj.Spawn(p.Position, 2f * Utilities.AngleToVector(rotation), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false);
-
                             proj.SetExtraAI(new Action(() =>
                             {
-                                proj.Velocity = Utilities.RotateVectorClockwise(proj.Velocity, PI / 180);
+                                proj.Velocity = Utilities.RotateVectorClockwise(proj.Velocity, PI / 180) * 1.03f;
                                 proj.Rotation = Utilities.VectorToAngle(proj.Velocity);
                                 //TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(proj.Velocity), 0, 0, proj.Texture.Width * proj.GetSize().X, 2500, 1, proj.Position, Color.Red, "box", proj, true);
                             }));
@@ -130,7 +128,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Die();
                     }));
 
-                    p.Spawn(Pupil.Position, projectileSpeed * Utilities.AngleToVector(rotation), 1f, 1, "box", 1f, Vector2.One * 10f, Pupil, true, Color.White, true, false);
+                    p.SpawnProjectile(Pupil.Position, projectileSpeed * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One * 10f, Pupil, true, Color.White, true, false);
                 }
             }
         }

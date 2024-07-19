@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Enemy;
+using bullethellwhatever.Projectiles;
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using System;
@@ -70,8 +71,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     Owner.Velocity = Owner.Velocity * 0.99f; // dont spend the whole wind up moving back uniformly, slow down to show that its getting ready
 
-                    TelegraphLine t = new TelegraphLine(Utilities.RotationTowards(CrabOwner.Position, player.Position), 0, 0, CrabOwner.Texture.Width * CrabOwner.GetSize().X, 2000, 1, CrabOwner.Position, Color.White, "box", CrabOwner, true);
-                    t.ChangeShader("OutlineTelegraphShader");
+                    SpawnTelegraphLine(Utilities.RotationTowards(CrabOwner.Position, player.Position), 0, CrabOwner.Texture.Width * CrabOwner.GetSize().X, 2000, 1, CrabOwner.Position, Color.White, "box", CrabOwner, true)
+                        .ChangeShader("OutlineTelegraphShader");
+
                     CrabOwner.FacePlayer();
                 }
             }
@@ -115,15 +117,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 for (int i = 0; i < ProjectlesPerRing; i++)
                 {
-                    Projectile fast = new Projectile();
-                    Projectile med = new Projectile();
-                    Projectile slow = new Projectile();
-
                     float angle = 2f * PI / ProjectlesPerRing;
 
-                    fast.Spawn(CrabOwner.Position, 3f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.03f, Vector2.One, Owner, true, Color.Red, true, false); //start slow and speed up fast
-                    med.Spawn(CrabOwner.Position, 7f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
-                    slow.Spawn(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", 1.005f, Vector2.One, Owner, true, Color.Red, true, false);
+                    Projectile fast = SpawnProjectile(CrabOwner.Position, 3f * Utilities.AngleToVector(i * angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false); //start slow and speed up fast
+
+                    fast.SetExtraAI(new Action(() =>
+                    {
+                       fast.Velocity *= 1.03f;
+                    }));
+
+                    Projectile medium = SpawnProjectile(CrabOwner.Position, 7f * Utilities.AngleToVector(i * angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                    medium.SetExtraAI(new Action(() =>
+                    {
+                        fast.Velocity *= 1.01f;
+                    }));
+
+                    Projectile slow = SpawnProjectile(CrabOwner.Position, 4f * Utilities.AngleToVector(i * angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                    fast.SetExtraAI(new Action(() =>
+                    {
+                        fast.Velocity *= 1.005f;
+                    }));
                 }
             }
 

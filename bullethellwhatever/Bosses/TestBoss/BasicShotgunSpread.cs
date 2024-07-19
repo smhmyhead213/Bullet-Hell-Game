@@ -1,6 +1,7 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 
 using Microsoft.Xna.Framework;
@@ -62,19 +63,32 @@ namespace bullethellwhatever.Bosses.TestBoss
                     angleBetweenShots = angleBetweenShots * 2;
                 }
 
-                OscillatingSpeedProjectile singleShot = new OscillatingSpeedProjectile(projectileOscillationFrequency, ProjectileSpeed);
+                Projectile singleShot = SpawnProjectile(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
-                singleShot.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                singleShot.SetExtraAI(new Action(() =>
+                {
+                    singleShot.Oscillate(projectileOscillationFrequency, ProjectileSpeed);
+                }));
+
 
                 for (int i = 1; i < NumberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
-                    OscillatingSpeedProjectile oscillatingSpeedProjectile = new OscillatingSpeedProjectile(projectileOscillationFrequency, ProjectileSpeed);
-                    OscillatingSpeedProjectile oscillatingSpeedProjectile2 = new OscillatingSpeedProjectile(projectileOscillationFrequency, ProjectileSpeed); //one for each side of middle
+                    Projectile oscillatingProj = SpawnProjectile(Owner.Position, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, i * angleBetweenShots)),
+                        1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
-                    oscillatingSpeedProjectile.Spawn(Owner.Position, Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, i * angleBetweenShots)),
-                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
-                    oscillatingSpeedProjectile2.Spawn(Owner.Position, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Owner.Position, i * angleBetweenShots)),
-                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                    oscillatingProj.SetExtraAI(new Action(() =>
+                    {
+                        oscillatingProj.Oscillate(projectileOscillationFrequency, ProjectileSpeed);
+                    }));
+
+                    Projectile oscillatingProj2 = SpawnProjectile(Owner.Position, Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Owner.Position, i * angleBetweenShots)),
+                        1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                    oscillatingProj2.SetExtraAI(new Action(() =>
+                    {
+                        oscillatingProj2.Oscillate(projectileOscillationFrequency, ProjectileSpeed);
+                    }));
+
                 }
             }
 
@@ -84,19 +98,17 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 if (AITimer == Owner.BarDuration * 11)
                 {
-                    LaserSpinDirection = Main.player.Position.X > Owner.Position.X ? 1 : -1;
+                    LaserSpinDirection = player.Position.X > Owner.Position.X ? 1 : -1;
 
-                    MegaRayTeleLine = new TelegraphLine(angle, LaserSpinDirection * MathF.PI / 3360, LaserSpinDirection * MathF.PI / (336 * 96), 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);                 
+                    MegaRayTeleLine = SpawnTelegraphLine(angle, LaserSpinDirection * PI / 3360, 30f, 2000f, Owner.BarDuration, Owner.Position, Owner.Colour, "box", Owner, true);                 
                 }
 
                 MegaRayTeleLineRotation = MegaRayTeleLine.Rotation;
 
                 if (AITimer == Owner.BarDuration * 12)
                 {
-                    Deathray ray = new Deathray();
-
-                    ray.SpawnDeathray(Owner.Position, MegaRayTeleLineRotation, 1f, Owner.BarDuration * 3 - Owner.FramesPerMusicBeat, "box", 30f, 2000f,
-                        LaserSpinDirection * PI / 150f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
+                    Deathray ray = SpawnDeathray(Owner.Position, MegaRayTeleLineRotation, 1f, Owner.BarDuration * 3 - Owner.FramesPerMusicBeat, "box", 30f, 2000f,
+                        LaserSpinDirection * PI / 150f, true, Owner.Colour, "DeathrayShader", Owner);
                 }
             }
 
@@ -111,15 +123,14 @@ namespace bullethellwhatever.Bosses.TestBoss
                 if (Owner.CurrentBeat == 1 && Owner.JustStartedBeat)
                 {
                     FirstAttackTelegraphLineRotation = Utilities.VectorToAngle(Main.player.Position - Owner.Position);
-                    TelegraphLine telegraph = new TelegraphLine(FirstAttackTelegraphLineRotation, 0f, 0f, 20f, 2000f, Owner.FramesPerMusicBeat * 2, Owner.Position, Owner.Colour, "box", Owner, true);
+                    SpawnTelegraphLine(FirstAttackTelegraphLineRotation, 0f, 20f, 2000f, Owner.FramesPerMusicBeat * 2, Owner.Position, Owner.Colour, "box", Owner, true);
                 }
 
                 if (Owner.CurrentBeat == 3 && Owner.JustStartedBeat)
                 {
                     if (FirstAttackTelegraphLineRotation != -1f) //-1 is a flag for if the direction has not yet been decided
                     {
-                        Deathray ray = new Deathray();
-                        ray.SpawnDeathray(Owner.Position, FirstAttackTelegraphLineRotation, 1f, Owner.FramesPerMusicBeat * 2, "box", 20f, 2000f, 0f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
+                        SpawnDeathray(Owner.Position, FirstAttackTelegraphLineRotation, 1f, Owner.FramesPerMusicBeat * 2, "box", 20f, 2000f, 0f, true, Owner.Colour, "DeathrayShader", Owner);
                     }
 
                     //float predictionStrength = 500f;

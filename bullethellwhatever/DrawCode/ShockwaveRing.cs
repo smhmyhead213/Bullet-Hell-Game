@@ -1,6 +1,7 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Bosses.EyeBoss;
+using bullethellwhatever.Projectiles;
 using FMOD;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,8 +32,6 @@ namespace bullethellwhatever.DrawCode
 
         public void Spawn(Vector2 position, Entity owner, Color colour)
         {
-            Texture = Assets["box"];
-
             Rotation = Utilities.RandomAngle();
 
             Colour = colour;
@@ -41,8 +40,7 @@ namespace bullethellwhatever.DrawCode
 
             SetOpacity(0.5f);
 
-            // change this with the deletion of prepare projcetile method
-            //PrepareProjectile(position, Vector2.Zero, 0f, 1, 0, Vector2.Zero, owner, false, Color.White, false, false);            
+            this.SpawnProjectile(position, Vector2.Zero, 0f, 1, "box", Vector2.Zero, owner, false, Color.White, false, false);            
         }
         public override void Update()
         {

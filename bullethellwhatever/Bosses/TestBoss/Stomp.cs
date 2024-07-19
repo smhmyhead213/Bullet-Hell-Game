@@ -11,7 +11,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Security.Cryptography;
 using System.Xml;
 using bullethellwhatever.Projectiles.Base;
-using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.TestBoss
 {
@@ -96,9 +96,7 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                     float angleVariation = (MathF.PI / NumberOfProjectiles) / 4;
 
-                    Projectile p = new Projectile();
-
-                    p.Spawn(Owner.Position, 5f * Utilities.AngleToVector((i + 1) * MathF.PI / NumberOfProjectiles + (float)rng.NextDouble() * angleVariation - angleVariation * 2), 1f, 1, "box", 1, Vector2.One, Owner, true, Color.Red, true, false);
+                    SpawnProjectile(Owner.Position, 5f * Utilities.AngleToVector((i + 1) * MathF.PI / NumberOfProjectiles + (float)rng.NextDouble() * angleVariation - angleVariation * 2), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 }
             }
 

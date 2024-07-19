@@ -1,6 +1,7 @@
 ﻿global using static System.MathF;
 global using static bullethellwhatever.UtilitySystems.InputSystem;
 global using static bullethellwhatever.MainFiles.GameInfoMethods;
+global using static bullethellwhatever.Projectiles.CommonProjectileMethods;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,6 @@ using System.Threading.Tasks;
 using System.IO;
 
 using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Player;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework.Audio;
@@ -21,6 +21,7 @@ using System;
 using FMOD.Studio;
 using SharpDX.WIC;
 using bullethellwhatever.DrawCode.UI;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.MainFiles
 {

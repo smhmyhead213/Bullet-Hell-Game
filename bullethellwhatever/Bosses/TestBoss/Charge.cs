@@ -1,6 +1,6 @@
 ﻿using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles.Base;
-using bullethellwhatever.Projectiles.Enemy;
+ 
 using System;
 using Microsoft.Xna.Framework;
 
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.TestBoss
 {
@@ -16,7 +16,6 @@ namespace bullethellwhatever.Bosses.TestBoss
     {
         public float ChargeFrequency;
         public float ChargeSpeed;
-        public float ChargeProjectileAcceleration;
         public float ChargeProjectileSpeed;
         public bool HasChosenChargeDirection;
 
@@ -28,30 +27,6 @@ namespace bullethellwhatever.Bosses.TestBoss
         public override void InitialiseAttackValues()
         {
             ChargeFrequency = Owner.BarDuration * 2;
-
-            switch (GameState.Difficulty)
-            {
-                case GameState.Difficulties.Easy:
-                    ChargeSpeed = 5f;
-                    ChargeProjectileAcceleration = 1.01f;
-                    ChargeProjectileSpeed = 6f;
-                    break;
-                case GameState.Difficulties.Normal:
-                    ChargeSpeed = 7f;
-                    ChargeProjectileAcceleration = 1.01f;
-                    ChargeProjectileSpeed = 9f;
-                    break;
-                case GameState.Difficulties.Hard:
-                    ChargeSpeed = 9f;
-                    ChargeProjectileAcceleration = 1.035f;
-                    ChargeProjectileSpeed = 13f;
-                    break;
-                case GameState.Difficulties.Insane:
-                    ChargeSpeed = 11f;
-                    ChargeProjectileAcceleration = 1.04f;
-                    ChargeProjectileSpeed = 15f;
-                    break;
-            }
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
@@ -83,17 +58,21 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 for (int i = 0; i < projs; i++)
                 {
-                    BasicProjectile proj = new BasicProjectile();
-                    proj.Spawn(Owner.Position, 9f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), MathF.PI * 2 / projs * i),
-                        1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                    SpawnProjectile(Owner.Position, 9f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), MathF.PI * 2 / projs * i),
+                        1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 }
 
             }
 
             if (!(AITimer % ChargeFrequency > 0 && AITimer % ChargeFrequency < ChargeFrequency / 2 + 30f) && AITimer % 30 % 2 == 0 && AITimer > 0)// check if aitimer is between 1 and 15 and if its even
             {
-                Projectile projectile = new Projectile();
-                projectile.Spawn(Owner.Position, Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", ChargeProjectileAcceleration, Vector2.One, Owner, true, Color.Red, true, false);
+                float accceleration = Utilities.ValueFromDifficulty(1.01f, 1.01f, 1.035f, 1.04f);
+                Projectile proj = SpawnProjectile(Owner.Position, Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                proj.SetExtraAI(new Action(() =>
+                {
+                    proj.Velocity *= accceleration;
+                }));
 
                 //BasicProjectile projectile = new BasicProjectile();
                 //projectile.Spawn(Position, 5f * Utilities.Normalise(Main.player.Position - Position), 1f, Texture, chargeProjectileAcceleration, Vector2.One, this, true, Color.Red, true, false);

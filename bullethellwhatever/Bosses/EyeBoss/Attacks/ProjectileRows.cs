@@ -1,8 +1,7 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -52,9 +52,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     {
                         Vector2 destination = Pupil.Position + Utilities.RotateVectorClockwise(new Vector2(i * distanceBetweenProjectiles, -distanceBehindEye), angleToPlayer - PI); // error is here
 
-                        Projectile p = new Projectile();
-
                         Vector2 velocity = (destination - Pupil.Position) / timeToReachDestination;
+
+                        Projectile p = SpawnProjectile(Pupil.Position, velocity, 1f, 1, "box", Vector2.One, Pupil, true, Color.Red, true, false); ;
 
                         int projectileExtraUpdates = 2;
 
@@ -78,11 +78,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 p.Velocity = newVelocity;
                                 p.Rotation = Utilities.VectorToAngle(newVelocity);
-                                p.Acceleration = 1.013f;
+                                p.Velocity *= 1.013f;
                             }
                         }));
-
-                        p.Spawn(Pupil.Position, velocity, 1f, 1, "box", 1f, Vector2.One, Pupil, true, Color.Red, true, false);
                     }
                 }
 

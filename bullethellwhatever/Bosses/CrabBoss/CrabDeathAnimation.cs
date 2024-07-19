@@ -1,8 +1,8 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -1,7 +1,5 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+﻿using bullethellwhatever.Projectiles.Base;
+
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +10,7 @@ using bullethellwhatever.DrawCode;
 using System.Threading;
 using System.Drawing.Design;
 using SharpDX.MediaFoundation;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -177,10 +176,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     {
                         int fragments = Utilities.ValueFromDifficulty(12, 16, 20, 24);
 
-                        ExplodingProjectile proj = new ExplodingProjectile(fragments, 180, 0, false, false, false);
-                        proj.DealDamage = false;
-                        proj.DepthFunction = x => -x / 16200f * (x - 180f); //parabolic motion as if being thrown upwards
-                        proj.Spawn(TargetPosition, 5f * Utilities.AngleToVector(i * Tau / bombs), 1f, 1, "box", 0, Vector2.One * 3f, Owner, true, Color.Red, true, false);
+                        Projectile explodingProjectile = SpawnProjectile(TargetPosition, 5f * Utilities.AngleToVector(i * Tau / bombs), 1f, 1, "box", Vector2.One * 3f, Owner, true, Color.Red, true, false);
+
+                        explodingProjectile.SetExtraAI(new Action(() =>
+                        {
+                            if (explodingProjectile.AITimer == 120)
+                            {
+                                explodingProjectile.InstantlyDie();
+                            }
+                        }));
+                        explodingProjectile.SetOnDeath(new Action(() =>
+                        {
+                            for (int i = 0; i < fragments; i++)
+                            {
+                                Projectile fragment = SpawnProjectile(explodingProjectile.Position, 3f * Utilities.RotateVectorClockwise(Utilities.SafeNormalise(Vector2.UnitY, Vector2.Zero), (MathF.PI * 2 / fragments * i)),
+                                        1f, 1, "box", Vector2.One, Owner, true, Color.Red, false, false);
+                            }
+                        }));
+
+                        explodingProjectile.DealDamage = false;
                     }
                 }
 
@@ -190,9 +204,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     for (int i = 0; i < spiralArms; i++)
                     {
-                        Projectile proj = new Projectile();
-
-                        proj.Spawn(TargetPosition, 4f * Utilities.AngleToVector(i * Tau / spiralArms + (time * PI / 45f)), 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                        Projectile proj = SpawnProjectile(TargetPosition, 4f * Utilities.AngleToVector(i * Tau / spiralArms + (time * PI / 45f)), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                     }
                 }
 

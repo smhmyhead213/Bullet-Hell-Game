@@ -10,7 +10,6 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems.Dialogue;
 
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Projectiles.Enemy;
 using bullethellwhatever.Enemies;
 
 namespace bullethellwhatever.Bosses.TestBoss
@@ -57,10 +56,8 @@ namespace bullethellwhatever.Bosses.TestBoss
                 new MoveTowardsAndShotgun(BarDuration * 7),
                 new ExplodingProjectiles(BarDuration * 10),             
                 new MutantBulletHell(BarDuration * 12),                
-                new LiterallyJustABulletHell(BarDuration * 35),
                 new HorizontalChargesWithProjectiles(BarDuration * 13),
                 new Stomp(BarDuration * 17),
-                new EnemySpam(BarDuration * 16),
             };
 
         }

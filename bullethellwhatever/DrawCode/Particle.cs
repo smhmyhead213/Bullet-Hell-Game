@@ -14,7 +14,6 @@ namespace bullethellwhatever.DrawCode
         public int Lifetime;
         public Vector2 Acceleration;
         public Vector2 InitialSize;
-        public float InitialOpacity;
         public bool Shrink;
         public void Spawn(string texture, Vector2 position, Vector2 velocity, Vector2 acceleration, Vector2 size, float rotation, Color colour, float opacity, int lifetime)
         {

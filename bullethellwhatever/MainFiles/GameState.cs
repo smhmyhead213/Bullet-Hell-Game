@@ -33,7 +33,6 @@ namespace bullethellwhatever.MainFiles
         public static Difficulties? Difficulty;
         public enum Bosses
         {
-            TestBoss,
             SecondBoss,
             CrabBoss,
             EyeBoss,

@@ -71,7 +71,6 @@ namespace bullethellwhatever.DrawCode.UI
                 new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
                 new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
                 new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
-                new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu)
             };
 
             for (int i = 0; i < mainButtons.Length; i++)

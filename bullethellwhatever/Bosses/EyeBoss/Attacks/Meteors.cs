@@ -1,8 +1,7 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using SharpDX.WIC;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 float additionalRotation = Utilities.RandomFloat(-maxRotation, maxRotation);
 
-                TelegraphLine t = new TelegraphLine(PI + additionalRotation, 0, 0, thickness, ScreenHeight * 1.5f, 60, spawnPos, Color.White, "box", Owner, false);
+                TelegraphLine t = SpawnTelegraphLine(PI + additionalRotation, 0, thickness, ScreenHeight * 1.5f, 60, spawnPos, Color.White, "box", Owner, false);
 
                 Pupil.RotationWithinEye = Utilities.VectorToAngle(spawnPos - Owner.Position);
                 Pupil.DistanceFromEyeCentre = 35;
@@ -60,9 +60,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 t.ShouldThickenIn(true);
                 t.SetOnDeath(new Action(() =>
                 {
-                    BigMassiveOrb orb = new BigMassiveOrb(0, 300);
-                    Texture2D texture = Assets["box"];
+                    Texture2D texture = Assets["Circle"];
 
+                    Projectile orb = SpawnProjectile(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, "Circle", thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
+                    
                     orb.SetOnDeath(new Action(() =>
                     {
                         Drawing.ScreenShake(12, 12);
@@ -73,13 +74,15 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     orb.SetExtraAI(new Action(() =>
                     {
+                        orb.Velocity = orb.Velocity * 1.01f;
+
                         if (orb.AITimer % timeBetweenProjs == projectileTimeOffset)
                         {
                             for (int j = 0; j < 2; j++)
                             {
-                                Projectile p = new Projectile();
-
                                 float projSpeed = 2.5f;
+
+                                Projectile p = SpawnProjectile(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
 
                                 p.SetDrawAfterimages(50, 3);
 
@@ -87,24 +90,19 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 p.SetExtraAI(new Action(() =>
                                 {
+                                    p.Velocity *= 1.035f;
+
                                     p.HomeAtTarget(player.Position, 0.003f);
                                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
                                 }));
-
-                                p.Spawn(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.035f, Vector2.One * 0.6f, Owner, true, Color.White, true, false);
                             }
                         }
                     }));
 
                     orb.SetDrawAfterimages(11, 3);
-
-                    orb.Spawn(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, texture, 1.01f, thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
-
-                    orb.Bounce = false;
                 }));
             }
         }
-
         public override void ExtraDraw(SpriteBatch s)
         {
 

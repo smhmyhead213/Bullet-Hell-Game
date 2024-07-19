@@ -1,8 +1,7 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Xml;
 using System.Threading;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -48,13 +48,21 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 if (time % 2 == 0)
                 {
-                    Projectile p = new Projectile();
+                    Projectile p = SpawnProjectile(Pupil.Position, 140f * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One * 0.8f, Pupil, true, Color.Red, true, false);
 
                     p.SetExtraAI(new Action(() =>
                     {
+                        if (p.AITimer < 15)
+                        {
+                            p.ExponentialAccelerate(0.8f);
+                        }
+                        else
+                        {
+                            p.Velocity *= 1.06f;
+                        }
+
                         if (p.AITimer > 15 && p.AITimer < 20)
                         {
-                            p.Acceleration = 1.06f;
                             p.HomeAtTarget(player.Position, 0.7f);
                         }
 
@@ -62,8 +70,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     }));
 
                     p.SetDrawAfterimages(11, 7);
-
-                    p.Spawn(Pupil.Position, 140f * Utilities.AngleToVector(rotation), 1f, 1, "box", 0.8f, Vector2.One * 0.8f, Pupil, true, Color.Red, true, false);
                 }
             }
 
@@ -71,7 +77,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             {
                 Pupil.LookAtPlayer(20);
 
-                TelegraphLine t = new TelegraphLine(Utilities.AngleToPlayerFrom(Pupil.Position), 0, 0, 25, Utilities.ScreenDiagonalLength() * 1.5f, telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
+                TelegraphLine t = SpawnTelegraphLine(Utilities.AngleToPlayerFrom(Pupil.Position), 0, 25, Utilities.ScreenDiagonalLength() * 1.5f, telegraphTime, Pupil.Position, Color.White, "box", Pupil, true);
 
                 t.ThickenIn = true;
 
@@ -90,7 +96,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     ray.SetStayWithOwner(true);
                     ray.SetThinOut(true);
-                    ray.SpawnDeathray(t.Origin, t.Rotation, 1f, shootTime, "box", t.Width, t.Length, 0, 0, true, Color.White, "DeathrayShader2", Pupil);
+                    ray.SpawnDeathray(t.Origin, t.Rotation, 1f, shootTime, "box", t.Width, t.Length, 0, true, Color.White, "DeathrayShader2", Pupil);
                 }));
             }
 
@@ -125,7 +131,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 for (int i = 0; i < 2; i++)
                 {
-                    Projectile p = new Projectile();
+                    Projectile p = SpawnProjectile(Pupil.Position, Vector2.Zero, 1f, 1, "box", Vector2.One, Pupil, true, Color.Red, true, false);
 
                     float horizontalSpeed = 15f;
                     float verticalSpeedAmplitude = 30f;
@@ -142,9 +148,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
-                    p.SetDrawAfterimages(11, 4);
-
-                    p.Spawn(Pupil.Position, Vector2.Zero, 1f, 1, "box", 0f, Vector2.One, Pupil, true, Color.Red, true, false);
+                    p.SetDrawAfterimages(11, 4);                   
                 }
             }
         }

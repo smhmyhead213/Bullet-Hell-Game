@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using bullethellwhatever.BaseClasses;
 using static bullethellwhatever.Utilities;
 using bullethellwhatever.MainFiles;
 using Microsoft.Xna.Framework;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.TestBoss
 {
@@ -41,17 +41,15 @@ namespace bullethellwhatever.Bosses.TestBoss
         }
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
-            float distance = DistanceBetweenVectors(Main.player.Position, CentreOfScreen());
+            float distance = DistanceBetweenVectors(player.Position, CentreOfScreen());
 
             // Constrict the circle depending on player closeness to edge, to prevent cheese.
 
-            Owner.Position = Main.player.Position + ((distance * -4f / 11f + 600f)* AngleToVector(AngularVelocity * AITimer));
+            Owner.Position = player.Position + ((distance * -4f / 11f + 600f)* AngleToVector(AngularVelocity * AITimer));
 
             if (AITimer % 2 == 0)
             {
-                Projectile projectile = new Projectile();
-
-                projectile.Spawn(Owner.Position, 10f * SafeNormalise(Main.player.Position - Owner.Position), 1f, 1, "box", 0f, Vector2.One, Owner, true, Color.Red, true, false);
+                SpawnProjectile(Owner.Position, 10f * SafeNormalise(Main.player.Position - Owner.Position), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
             }
 
         }

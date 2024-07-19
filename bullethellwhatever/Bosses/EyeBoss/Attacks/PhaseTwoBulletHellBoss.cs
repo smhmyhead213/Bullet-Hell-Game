@@ -1,8 +1,6 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +12,7 @@ using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems;
 using System.Runtime.CompilerServices;
 using SharpDX.MediaFoundation;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -84,19 +83,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         for (int i = 0; i < numberOfProjectiles; i++)
                         {
-                            Projectile p = new Projectile();
-
-                            p.SetExtraAI(new Action(() =>
-                            {
-                                if (p.IsCollidingWith(Owner))
-                                {
-                                    p.DeleteNextFrame = true;
-                                    Owner.Heal(healEach);
-                                }
-                            }));
-
-                            p.SetDrawAfterimages(11, 7);
-
                             float speed = Utilities.RandomFloat(10f, 20f);
 
                             float randomAngle = Utilities.RandomAngle();
@@ -106,7 +92,20 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             Vector2 spawnPos = Pupil.Position + Utilities.RotateVectorClockwise(spawnDistance * Vector2.UnitX, randomAngle);
                             Vector2 velocity = speed * Utilities.SafeNormalise(Pupil.Position - spawnPos);
 
-                            p.Spawn(spawnPos, velocity, 0f, 1, "Circle", 1.05f, Vector2.One * 0.1f, Owner, false, Color.LightBlue, false, true);
+                            Projectile p = SpawnProjectile(spawnPos, velocity, 0f, 1, "Circle", Vector2.One * 0.1f, Owner, false, Color.LightBlue, false, true);
+
+                            p.SetExtraAI(new Action(() =>
+                            {
+                                if (p.IsCollidingWith(Owner))
+                                {
+                                    p.DeleteNextFrame = true;
+                                    Owner.Heal(healEach);
+                                }
+
+                                p.Velocity *= 1.05f;
+                            }));
+
+                            p.SetDrawAfterimages(11, 7);
 
                             p.SetParticipating(false);
                         }
@@ -193,19 +192,20 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 if (!Utilities.RandomChance(20))
                                 {
-                                    Projectile p = new Projectile();
-
-                                    p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                                    Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
 
                                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
                                 }
                                 else
                                 {
-                                    PlayerHealingProjectile p = new PlayerHealingProjectile(0.5f);
-
-                                    p.Spawn(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", 1f, Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, false);
+                                    Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 0f, 1, "box", Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, true);
 
                                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
+
+                                    p.SetOnHit(new Action(() =>
+                                    {
+                                        player.Heal(0.5f);
+                                    }));
                                 }
                             }
                         }
@@ -218,13 +218,11 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 for (int i = 0; i < lasers; i++)
                                 {
-                                    TelegraphLine t = new TelegraphLine(Tau / lasers * i + initialRotation, 0, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
+                                    TelegraphLine t = SpawnTelegraphLine(Tau / lasers * i + initialRotation, 0, 20, Utilities.ScreenDiagonalLength(), 120, Pupil.Position, Color.White, "box", Pupil, true);
 
                                     t.SetOnDeath(new Action(() =>
                                     {
-                                        Deathray ray = new Deathray();
-
-                                        ray.SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, 0, true, Color.Gold, "DeathrayShader", Pupil);
+                                        Deathray ray = SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, true, Color.Gold, "DeathrayShader", Pupil);
                                         ray.SetStayWithOwner(true);
                                     }));
                                 }

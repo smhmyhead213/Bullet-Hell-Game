@@ -61,13 +61,12 @@ namespace bullethellwhatever.Bosses.TestBoss
             {
                 if (AITimer < EndTime - TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam)
                 {
-                    TelegraphLine TeleLine = new TelegraphLine(AngleBetween * AITimer / TimeBetweenRays, 0f, 0f, 20, 2000, TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam, Owner.Position, Color.White, "box", Owner, true);
+                    SpawnTelegraphLine(AngleBetween * AITimer / TimeBetweenRays, 0f, 20, 2000, TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam, Owner.Position, Color.White, "box", Owner, true);
                 }
 
                 if (AITimer > TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam)
                 {
-                    Deathray ray = new Deathray();
-                    ray.SpawnDeathray(Owner.Position, AngleBetween * (AITimer - TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam) / TimeBetweenRays, 1f, 50, "box", 30, 2000, 0, 0, true, Color.Red, "DeathrayShader", Owner);
+                    SpawnDeathray(Owner.Position, AngleBetween * (AITimer - TimeBetweenRays * NumberOfRaysBetweenTelegraphAndBeam) / TimeBetweenRays, 1f, 50, "box", 30, 2000, 0, true, Color.Red, "DeathrayShader", Owner);
                 }
             }
         }

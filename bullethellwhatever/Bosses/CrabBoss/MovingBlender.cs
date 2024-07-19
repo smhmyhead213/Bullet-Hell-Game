@@ -1,8 +1,8 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FMOD;
-
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -55,9 +55,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 for (int i = 0; i < blenderBeams; i++)
                 {
-                    TelegraphLine t = new TelegraphLine(i * Tau / blenderBeams, 0, 0, 50, 3000, teleDuration, Owner.Position, Color.White, "box", Owner, true);
+                    TelegraphLine t = SpawnTelegraphLine(i * Tau / blenderBeams, 0, 50, 3000, teleDuration, Owner.Position, Color.White, "box", Owner, true);
 
-                    t.SpawnDeathrayOnDeath(1f, blenderDuration, PI / 600, 0, true, Color.Red, "DeathrayShader2", Owner, true);
+                    t.SpawnDeathrayOnDeath(1f, blenderDuration, PI / 600, true, Color.Red, "DeathrayShader2", Owner, true);
                     //t.ToSpawn.SetStayWithOwner(true);
                 }
 
@@ -142,9 +142,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     int fragments = Utilities.ValueFromDifficulty(6, 8, 10, 14);
 
-                    ExplodingProjectile p = new ExplodingProjectile(fragments, 180, 0, false, false, true);
+                    Projectile bomb = SpawnProjectile(Leg(0).LowerClaw.Position, 10f * Utilities.SafeNormalise(player.Position - Leg(0).LowerClaw.Position), 1f, 1, "box", Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
+                    bomb.SetExtraAI(new Action(() =>
+                    {
+                        if (bomb.AITimer == 180 || Entity.touchingAnEdge(bomb))
+                        {
+                            Projectile fragment = new Projectile(bomb.Position, 3f * Vector2.One, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                            RadialProjectileBurst(fragment, fragments, 0f, 3f);
+                            bomb.InstantlyDie();
+                        }
+                    }));
 
-                    p.Spawn(Leg(0).LowerClaw.Position, 10f * Utilities.SafeNormalise(player.Position - Leg(0).LowerClaw.Position), 1f, 1, "box", 0f, Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
+                    
                 }
             }
 
@@ -186,7 +195,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 float teleLength = Utilities.DistanceBetweenVectors(Leg(1).Position, TargetPosition); // telegraph line goes to target
 
-                TelegraphLine t = new TelegraphLine(toReticle, 0, 0, Leg(1).UpperArm.Texture.Width, teleLength, teleTime - 1, Leg(1).Position, Color.White, "box", Leg(1).UpperArm, true);
+                TelegraphLine t = SpawnTelegraphLine(toReticle, 0, Leg(1).UpperArm.Texture.Width, teleLength, teleTime - 1, Leg(1).Position, Color.White, "box", Leg(1).UpperArm, true);
 
                 t.ChangeShader("OutlineTelegraphShader");
             }
@@ -212,17 +221,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 for (int i = loweri; i < upperi; i++) // shotgun blast
                 {
-                    Projectile p = new Projectile();
-
                     float angleBetweenEachProjectile = Utilities.ValueFromDifficulty(PI / 6, PI / 6, PI / 6, PI / 8);
 
                     Vector2 toReticle = TargetPosition - Leg(1).Position;
 
                     Vector2 projDirection = Utilities.RotateVectorClockwise(toReticle, i * angleBetweenEachProjectile);
 
-                    TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(projDirection), 0, 0, 10, 3000, 20, Leg(1).LowerClaw.Position, Color.White, "box", Leg(1).UpperArm, false);
+                    SpawnTelegraphLine(Utilities.VectorToAngle(projDirection), 0, 10, 3000, 20, Leg(1).LowerClaw.Position, Color.White, "box", Leg(1).UpperArm, false);
 
-                    p.Spawn(Leg(1).LowerClaw.Position, 10f * Utilities.SafeNormalise(projDirection), 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                    SpawnProjectile(Leg(1).LowerClaw.Position, 10f * Utilities.SafeNormalise(projDirection), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 }
             }
 
@@ -271,9 +278,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                         Vector2 projDirection = Utilities.RotateVectorClockwise(toPlayer, i * angleBetweenEachProjectile);
 
-                        TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(projDirection), 0, 0, 10, 3000, 20, Leg(1).LowerClaw.Position, Color.White, "box", Leg(1).UpperArm, false);
+                        SpawnTelegraphLine(Utilities.VectorToAngle(projDirection), 0, 10, 3000, 20, Leg(1).LowerClaw.Position, Color.White, "box", Leg(1).UpperArm, false);
 
-                        p.Spawn(Leg(1).LowerClaw.Position, 10f * Utilities.SafeNormalise(projDirection), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                        SpawnProjectile(Leg(1).LowerClaw.Position, 10f * Utilities.SafeNormalise(projDirection), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                     }
                 }
 

@@ -1,6 +1,7 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -142,17 +143,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     for (int j = loweri; j < upperi; j++)
                     {
-                        Projectile projectile = new Projectile();
-
                         int scaledj = j * 3;
-
-                        projectile.VelocityFunction = x => new Vector2(scaledj, x * 0.1f);
 
                         float yRange = Utilities.ValueFromDifficulty(20f, 30f, 40f, 70f);
 
                         float initialYVelocity = Utilities.RandomFloat(-yRange, yRange);
 
-                        projectile.Spawn(Leg(x).LowerClaw.Position, new Vector2(scaledj, initialYVelocity), 1f, 1, "box", 0f, Vector2.One, Owner, true, Color.Red, true, false);
+                        Projectile projectile = SpawnProjectile(Leg(x).LowerClaw.Position, new Vector2(scaledj, initialYVelocity), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                        projectile.SetExtraAI(new Action(() =>
+                        {
+                            projectile.Velocity = new Vector2(scaledj, projectile.AITimer * 0.1f);
+                        }));
+
                     }
 
                     return 0; //dummy value
@@ -184,7 +187,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 
                 ToTarget = player.Position - Owner.Position;
 
-                TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(ToTarget), 0, 0, CrabOwner.Texture.Width, 3000, 1, Owner.Position, Color.White, "box", Owner, true);
+                TelegraphLine t = SpawnTelegraphLine(Utilities.VectorToAngle(ToTarget), 0, CrabOwner.Texture.Width, 3000, 1, Owner.Position, Color.White, "box", Owner, true);
 
                 t.ChangeShader("OutlineTelegraphShader");
             }
@@ -198,22 +201,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (bodyTime > crabChargeWaitTimeBefore && bodyTime % 10 == 0) // perpendicular projectiles
             {
-                Projectile projectile = new Projectile();
-                Projectile projectile2 = new Projectile();
-
                 float initialProjSpeed = 1f;
 
                 float projectileAccel = 1.03f;
 
-                TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Owner.Velocity, PI / 2)), 0, 0, 20, 3000, 15, Owner.Position, Color.White, "box", Owner, false);
+                SpawnTelegraphLine(Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Owner.Velocity, PI / 2)), 0, 20, 3000, 15, Owner.Position, Color.White, "box", Owner, false);
 
-                projectile.Spawn(Owner.Position, initialProjSpeed * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Owner.Velocity, PI / 2)), 1f, 1, "box", projectileAccel, Vector2.One, Owner, true, Color.Red, true, false);
+                Projectile p = SpawnProjectile(Owner.Position, initialProjSpeed * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Owner.Velocity, PI / 2)), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
+                p.SetExtraAI(new Action(() =>
+                {
+                    p.Velocity *= projectileAccel;
+                }));
                 // other side
 
-                TelegraphLine tagain = new TelegraphLine(Utilities.VectorToAngle(Utilities.RotateVectorCounterClockwise(Owner.Velocity, PI / 2)), 0, 0, 20, 3000, 15, Owner.Position, Color.White, "box", Owner, false);
+                SpawnTelegraphLine(Utilities.VectorToAngle(Utilities.RotateVectorCounterClockwise(Owner.Velocity, PI / 2)), 0, 20, 3000, 15, Owner.Position, Color.White, "box", Owner, false);
 
-                projectile2.Spawn(Owner.Position, initialProjSpeed * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(Owner.Velocity, PI / 2)), 1f, 1, "box", projectileAccel, Vector2.One, Owner, true, Color.Red, true, false);
+                Projectile p2 = SpawnProjectile(Owner.Position, initialProjSpeed * Utilities.SafeNormalise(Utilities.RotateVectorCounterClockwise(Owner.Velocity, PI / 2)), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                p2.SetExtraAI(new Action(() =>
+                {
+                    p2.Velocity *= projectileAccel;
+                }));
             }
 
             if (bodyTime > crabChargeWaitTimeBefore + timeBeforeDecel)

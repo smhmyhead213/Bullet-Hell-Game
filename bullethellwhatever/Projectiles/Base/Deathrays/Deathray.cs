@@ -25,6 +25,7 @@ namespace bullethellwhatever.Projectiles.Base
         public bool IsActive;
         public bool IsSpawned;
         public int Duration;
+        public bool DieAfterDuration;
         public bool StayWithOwner;
 
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
@@ -38,6 +39,8 @@ namespace bullethellwhatever.Projectiles.Base
         public virtual Deathray CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner)
         {
+            DieAfterDuration = true;
+
             Updates = 1;
 
             DealDamage = isHarmful;
@@ -86,6 +89,11 @@ namespace bullethellwhatever.Projectiles.Base
         {
             StayWithOwner = stay;
         }
+
+        public virtual void SetDieAfterDuration(bool die)
+        {
+            DieAfterDuration = die;
+        }
         public virtual void AddDeathrayToActiveProjectiles()
         {
             if (!IsSpawned)
@@ -128,7 +136,7 @@ namespace bullethellwhatever.Projectiles.Base
                 Width = MathHelper.Lerp(0, Width, (float)(Duration - AITimer) / fadeOutTime);
             }
 
-            if (AITimer > Duration && Owner is not BaseClasses.Player)
+            if (DieAfterDuration && AITimer == Duration)
             {
                 Die();
             }

@@ -1,7 +1,6 @@
 ﻿using bullethellwhatever.Projectiles.Base;
 using SharpDX.MediaFoundation;
 using System;
-using bullethellwhatever.BaseClasses;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.UtilitySystems
 {

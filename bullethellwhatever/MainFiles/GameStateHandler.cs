@@ -8,6 +8,7 @@ using static bullethellwhatever.MainFiles.GameState;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.MainFiles
 {

@@ -1,5 +1,5 @@
 ﻿using bullethellwhatever.MainFiles;
-using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.Projectiles;
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.TestBoss
                 SpinUpClockwise(ref Owner.Rotation, 80);
             }
 
-            List<BasicProjectile> projectilesToShoot = new List<BasicProjectile>();
+            List<Projectile> projectilesToShoot = new List<Projectile>();
 
             if (AITimer % 5 == 0 && AITimer > Owner.BarDuration * 3 && AITimer < Owner.BarDuration * 10)
             {
@@ -54,12 +54,12 @@ namespace bullethellwhatever.Bosses.TestBoss
 
                 for (int i = 0; i < ProjectilesInSpiral; i++)
                 {
-                    projectilesToShoot.Add(new BasicProjectile()); //add a projectile
+                    projectilesToShoot.Add(new Projectile()); //add a projectile
 
                     // shoot projectiles in a ring and rotate it based on time
                     Vector2 velocity = 5.5f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(new Vector2(0, -1), Utilities.ToRadians(i * 360 / ProjectilesInSpiral) + rotation), Vector2.Zero);
 
-                    projectilesToShoot[i].Spawn(Owner.Position, velocity, 1f, 1, "box", 1, Vector2.One, Owner, true, Color.Red, true, false);
+                    projectilesToShoot[i].SpawnProjectile(Owner.Position, velocity, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 }
 
 

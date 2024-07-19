@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.TestBoss
 {
@@ -84,9 +85,16 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer > despStartTime && AITimer % 30 == 0)
             {
-                ExplodingProjectile projectile = new ExplodingProjectile(ProjectilesPerBomb, 180, 0, false, false, false);
+                Projectile bomb = SpawnProjectile(Owner.Position, 8f * Utilities.SafeNormalise(player.Position - Owner.Position), 1f, 1, "box", new Vector2(2,2), Owner, true, Color.Red, true, false);
 
-                projectile.Spawn(Owner.Position, 8f * Utilities.SafeNormalise(player.Position - Owner.Position), 1f, 1, "box", 1f, new Vector2(2,2), Owner, true, Color.Red, true, false);
+                bomb.SetExtraAI(new Action(() =>
+                {
+                    if (bomb.AITimer == 180)
+                    {
+                        Projectile fragment = new Projectile(bomb.Position, 3f * Vector2.One, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                        RadialProjectileBurst(fragment, ProjectilesPerBomb, 0f, 3f);
+                    }
+                }));
             }
 
             if (AITimer == EndTime)

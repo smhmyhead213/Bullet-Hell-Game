@@ -85,9 +85,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18 - 60),
-                new SideImpacts(1000),
                 new BackgroundPunches(390 * 7),
-                new ExpandingOrb(1700),
             };
 
             PhaseTwoAttacks = new CrabBossAttack[]

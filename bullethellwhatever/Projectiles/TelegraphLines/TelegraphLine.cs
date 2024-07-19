@@ -30,14 +30,11 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         public Action OnDeath;
 
         public bool ThickenIn;
-        public TelegraphLine(float rotation, float rotationalVelocity, float rotationalAcceleration, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
+        public TelegraphLine(float rotation, float rotationalVelocity, float width, float length, int duration, Vector2 origin, Color colour, string texture, Entity owner, bool stayWithOwner)
         {
             Rotation = rotation;
 
-            SpawnRayAfterFinish = false;
-
             RotationalVelocity = rotationalVelocity;
-            RotationalAcceleration = rotationalAcceleration;
             Width = width;
             InitialWidth = Width;
             Length = length;
@@ -87,11 +84,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
                 {
                     OnDeath();
                 }
-
-                if (SpawnRayAfterFinish)
-                {
-                    ToSpawn.AddDeathrayToActiveProjectiles();
-                }
             }
 
             float maxThicknessTime = 3 * Duration / 4;
@@ -113,27 +105,21 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             }
         }
 
-        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner = true)
+        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner = true)
         {
             SetOnDeath(new Action(() =>
             {
                 Deathray ray = new Deathray();
                 ray.SetStayWithOwner(stayWithOwner);
-                ray.SpawnDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);        
+                ray.SpawnDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, isHarmful, colour, shader, owner);        
             }));
         }
 
-        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, float angularAcceleration, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner)
-        {
-            SpawnRayAfterFinish = true;
-            ToSpawn = new Deathray();
-            ToSpawn.CreateDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, angularAcceleration, isHarmful, colour, shader, owner);
-            ToSpawn.SetStayWithOwner(stayWithOwner);
-        }
         public void SetOnDeath(Action action)
         {
             OnDeath = action;
         }
+
         public void ChangeShader(string shaderName)
         {
             LineShader = shaderName;

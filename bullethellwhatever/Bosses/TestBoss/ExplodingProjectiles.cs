@@ -1,4 +1,5 @@
 ﻿using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
@@ -50,15 +51,28 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer % timeBetween == 0 && AITimer <= endTime && AITimer >= startTime)
             {
-                ExplodingDeathrayProjectile explodingProjectile = new ExplodingDeathrayProjectile(NumberOfProjectiles, Owner.BarDuration, 0, true, true, false);
-
                 Vector2 direction = Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, Utilities.ToRadians(AITimer - 250f));
 
+                //Projectile explodingProjectile = new Projectile(NumberOfProjectiles, Owner.BarDuration, 0, true, true, false);
+
+                Projectile explodingProjectile = SpawnProjectile(Owner.Position, 15f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, 1, "box", new Vector2(2, 2), Owner, true, Color.Red, false, false);
+                
                 explodingProjectile.SetExtraAI(new Action(() =>
                 {
-                    explodingProjectile.SpawnRadialTelegraphedBeams(NumberOfProjectiles, Owner.BarDuration, 0, true, true, false, )
-                });
-                explodingProjectile.Spawn(Owner.Position, 15f * Utilities.SafeNormalise(direction, Vector2.Zero), 1f, 1, "box", 0, new Vector2(2, 2), Owner, true, Color.Red, false, false);
+                    if (explodingProjectile.AITimer == Owner.BarDuration)
+                    {
+                        for (int i = 0; i < NumberOfProjectiles; i++)
+                        {
+                            Deathray ray = new Deathray();
+
+                            //make it explode based on its velocity, see Supreme Calamitas gigablasts exploding based on orientation
+
+                            ray.SpawnDeathray(explodingProjectile.Position, i * MathHelper.TwoPi / NumberOfProjectiles, 1f, 10, "box", 10, 2000, 0, true, Color.Red, "DeathrayShader2", Owner);
+
+                            explodingProjectile.DeleteNextFrame = true;
+                        }
+                    }
+                })); ;
             }
 
             Owner.Rotation = Utilities.ToRadians(AITimer - 250f);

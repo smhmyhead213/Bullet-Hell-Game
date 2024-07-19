@@ -1,5 +1,5 @@
 ﻿using bullethellwhatever.MainFiles;
-using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using Microsoft.Xna.Framework;
@@ -71,23 +71,32 @@ namespace bullethellwhatever.Bosses.TestBoss
 
             if (AITimer % ShotgunFrequency == 0 && (AITimer < Owner.BarDuration * 4 || AITimer > Owner.BarDuration * 5) && AITimer > Owner.BarDuration)
             {
+                Owner.Velocity = 1.1f * Utilities.Normalise(Owner.Position - player.Position);
 
-                BasicProjectile singleShot = new BasicProjectile();
+                Projectile singleShot = SpawnProjectile(Owner.Position, ProjectileSpeed * Utilities.Normalise(player.Position - Owner.Position), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
-
-                Owner.Velocity = 1.1f * Utilities.Normalise(Owner.Position - Main.player.Position);
-
-                singleShot.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Main.player.Position - Owner.Position), 1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                singleShot.SetExtraAI(new Action(() =>
+                {
+                    singleShot.Velocity = singleShot.Velocity * 1.01f;
+                }));
 
                 for (int i = 1; i < NumberOfProjectiles / 2 + 0.5f; i++) // loop for each pair of projectiles an angle away from the middle
                 {
-                    BasicProjectile shotgunBlast = new BasicProjectile();
-                    BasicProjectile shotgunBlast2 = new BasicProjectile(); //one for each side of middle
-                    shotgunBlast.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, i * angleBetweenProjectiles)),
-                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
-                    shotgunBlast2.Spawn(Owner.Position, ProjectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Owner.Position, i * angleBetweenProjectiles)),
-                        1f, 1, "box", 1.01f, Vector2.One, Owner, true, Color.Red, true, false);
+                    //one for each side of middle
+                    Projectile shotgunBlast1 = SpawnProjectile(Owner.Position, ProjectileSpeed * Utilities.Normalise(Utilities.RotateVectorClockwise(Main.player.Position - Owner.Position, i * angleBetweenProjectiles)),
+                        1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                    Projectile shotgunBlast2 = SpawnProjectile(Owner.Position, ProjectileSpeed * Utilities.Normalise(Utilities.RotateVectorCounterClockwise(Main.player.Position - Owner.Position, i * angleBetweenProjectiles)),
+                        1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
+                    shotgunBlast1.SetExtraAI(new Action(() =>
+                    {
+                        shotgunBlast1.Velocity = singleShot.Velocity * 1.01f;
+                    }));
+
+                    shotgunBlast2.SetExtraAI(new Action(() =>
+                    {
+                        shotgunBlast2.Velocity = singleShot.Velocity * 1.01f;
+                    }));
                 }
 
 

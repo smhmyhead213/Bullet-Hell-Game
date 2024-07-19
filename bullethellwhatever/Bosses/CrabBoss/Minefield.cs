@@ -1,6 +1,6 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.Base;
-using bullethellwhatever.Projectiles.Enemy;
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -77,7 +77,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Deathray ray = new Deathray();
                     // duration has to account for 2 arm opening times and stop a bit earlier
-                    ray.SpawnDeathray(Leg(1).LowerClaw.Position, PI, 1f, TimeToStartPreparingForcingPlayerRight - TimeToStartForcingPlayerLeft - timeToOpenArm, "box", 20, ScreenHeight, 0, 0, true, Color.White, "DeathrayShader2", Leg(1).LowerClaw);                    
+                    ray.SpawnDeathray(Leg(1).LowerClaw.Position, PI, 1f, TimeToStartPreparingForcingPlayerRight - TimeToStartForcingPlayerLeft - timeToOpenArm, "box", 20, ScreenHeight, 0, true, Color.White, "DeathrayShader2", Leg(1).LowerClaw);                    
                     ray.SetStayWithOwner(true);
                     CrabOwner.Velocity.X = ((ScreenWidth / 8) - (ScreenWidth / 12 * 11)) / (timeSpentMovingLeft - timeToOpenArm);
                 }
@@ -89,11 +89,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                         for (int i = 0; i < 20; i++)
                         {
                             Random rng = new Random();
-                            Projectile proj = new Projectile();
+
                             int height = rng.Next((int)CrabOwner.Position.Y, ScreenHeight);
                             int widthOffset = rng.Next(-15, 15);
 
-                            proj.Spawn(new Vector2(Leg(1).LowerClaw.Position.X + widthOffset, height), Vector2.Zero, 1f, 1, "box", 0, Vector2.One, Owner, true, Color.Red, true, false);
+                            SpawnProjectile(new Vector2(Leg(1).LowerClaw.Position.X + widthOffset, height), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                         }
                     }
                 }
@@ -102,7 +102,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             else if (time == TimeToStartPreparingForcingPlayerRight) // spend 60 opening arm
             {
                 CrabOwner.Velocity.X = 0; // NOOOOOOOOO DONT LEAVE MEEEEEEEE
-                TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, ScreenHeight, TimeToStartForcingPlayerRight - TimeToStartPreparingForcingPlayerRight, Leg(0).LowerClaw.Position, Color.White, "box", Leg(0).LowerClaw, true);
+                SpawnTelegraphLine(PI, 0, 20, ScreenHeight, TimeToStartForcingPlayerRight - TimeToStartPreparingForcingPlayerRight, Leg(0).LowerClaw.Position, Color.White, "box", Leg(0).LowerClaw, true);
             }
 
             else if (time >= TimeToStartPreparingForcingPlayerRight && time < TimeToStartForcingPlayerRight)
@@ -127,7 +127,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Deathray ray = new Deathray();
 
-                ray.SpawnDeathray(Leg(0).LowerClaw.Position, PI, 1f, TimeToMoveRightFor, "box", 20, ScreenHeight, 0, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
+                ray.SpawnDeathray(Leg(0).LowerClaw.Position, PI, 1f, TimeToMoveRightFor, "box", 20, ScreenHeight, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
                 ray.SetStayWithOwner(true);
                 CrabOwner.Velocity.X = ((ScreenWidth / 50f * 49) - (ScreenWidth / 8f)) / (TimeToMoveRightFor);
             }
@@ -138,7 +138,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Deathray ray = new Deathray();
 
-                    ray.SpawnDeathray(new Vector2(Leg(0).LowerClaw.Position.X, 0), PI, 1f, TimeToMoveRightFor, "box", 40, ScreenHeight, 0, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
+                    ray.SpawnDeathray(new Vector2(Leg(0).LowerClaw.Position.X, 0), PI, 1f, TimeToMoveRightFor, "box", 40, ScreenHeight, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
                 }
             }
 

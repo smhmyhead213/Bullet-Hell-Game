@@ -1,8 +1,7 @@
-﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.Projectiles.Base;
+﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-using bullethellwhatever.Bosses.CrabBoss.Projectiles;
-using bullethellwhatever.Projectiles.Enemy;
+
+ 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -86,15 +86,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Owner.Rotation = rotation + PI;
 
-                TelegraphLine t = new TelegraphLine(rotation, 0, 0, Owner.Texture.Width * Owner.GetSize().X, radiusOfRotation * 1.1f,
+                TelegraphLine t = SpawnTelegraphLine(rotation, 0, Owner.Texture.Width * Owner.GetSize().X, radiusOfRotation * 1.1f,
                     teleTime, Owner.Position, Color.Red, "box", Owner, false);
 
-                Ray = new Deathray().CreateDeathray(Owner.Position, rotation, 1f, beamDuration, "box", t.Width, t.Length, 0, 0, true, Color.Red, "CrabScrollingBeamShader", Owner);
+                Ray = new Deathray().CreateDeathray(Owner.Position, rotation, 1f, beamDuration, "box", t.Width, t.Length, 0, true, Color.Red, "CrabScrollingBeamShader", Owner);
 
                 Ray.SetNoiseMap("CrabScrollingBeamNoise", -0.03f);
                 Ray.SetStayWithOwner(true);
 
-                t.SpawnDeathrayOnDeath(Ray);
+                t.SetOnDeath(new Action(() =>
+                {
+                    Ray.AddDeathrayToActiveProjectiles();
+                }));
             }
 
             if (time == moveToPositionTime + 1 + teleTime)
@@ -116,13 +119,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     if (time % timeBetweenProjs == 0)
                     {
-                        Projectile p = new Projectile();
-
                         float angle = Leg(i).UpperArm.RotationFromV();
 
-                        TelegraphLine t = new TelegraphLine(angle, 0, 0, 10, 4000, 30, Leg(i).Position, Color.Red, "box", Owner, false);
+                        SpawnTelegraphLine(angle, 0, 10, 4000, 30, Leg(i).Position, Color.Red, "box", Owner, false);
 
-                        p.Spawn(Leg(i).LowerClaw.Position, 15f * Utilities.AngleToVector(angle), 1f, 1, "box", 0f, Vector2.One, Owner, true, Color.Red, true, false);
+                        Projectile p = SpawnProjectile(Leg(i).LowerClaw.Position, 15f * Utilities.AngleToVector(angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                     }
                 }
             }
@@ -174,7 +175,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     {
                         for (int j = 0; j < 2; j++)
                         {
-                            TelegraphLine t = new TelegraphLine(rotation - PI / 2 + (j * PI), 0, 0, 10, 2000, teleDuration, Owner.Position + ProjOffset + (i * betweenEach), Color.Red, "box", Owner, false);
+                            TelegraphLine t = SpawnTelegraphLine(rotation - PI / 2 + (j * PI), 0, 10, 2000, teleDuration, Owner.Position + ProjOffset + (i * betweenEach), Color.Red, "box", Owner, false);
                         }
                     }
                 }
@@ -185,10 +186,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     {
                         for (int j = 0; j < 2; j++)
                         {
-                            Projectile p = new Projectile();
-
                             float projSpeed = 2.5f;
 
+                            Projectile p = SpawnProjectile(Owner.Position + ProjOffset + (i * betweenEach), projSpeed * Utilities.AngleToVector(rotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.Red, true, false);
                             p.SetDrawAfterimages(15, 3);
 
                             p.Rotation = rotation - PI / 2 + (j * PI);
@@ -210,7 +210,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                                 }
                             }));
 
-                            p.Spawn(Owner.Position + ProjOffset + (i * betweenEach), projSpeed * Utilities.AngleToVector(rotation - PI / 2 + (j * PI)), 1f, 1, "box", 1.035f, Vector2.One * 0.6f, Owner, true, Color.Red, true, false);
+                            p.SetExtraAI(new Action(() =>
+                            {
+                                p.Velocity = p.Velocity * 1.035f;
+                            }));
                         }
                     }
                 }

@@ -11,6 +11,7 @@ using bullethellwhatever.DrawCode;
 using System.Reflection.Metadata.Ecma335;
 using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -64,6 +65,8 @@ namespace bullethellwhatever.BaseClasses
 
             dialogueSystem = new DialogueSystem(this);
             dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);
+
+            ExtraData = new float[4];
 
             IsHarmful = isHarmful;
 
@@ -146,15 +149,6 @@ namespace bullethellwhatever.BaseClasses
             return Health / MaxHP;
         }
 
-        public virtual void Heal(float amount)
-        {
-            Health = Health + amount;
-
-            if (Health > MaxHP)
-            {
-                Health = MaxHP;
-            }
-        }
         public virtual void CheckForHits() // all passive checks go here as well
         {
             if (Participating)
