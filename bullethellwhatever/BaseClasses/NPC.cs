@@ -17,7 +17,6 @@ namespace bullethellwhatever.BaseClasses
 {
     public class NPC : Entity
     {
-
         public float IFrames;
         public int MaxIFrames;
 
@@ -73,43 +72,7 @@ namespace bullethellwhatever.BaseClasses
             PrepareNPC();
         }
         //this one takes a texture directly
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
-        {
-            Updates = 1;
-
-            Depth = 0;
-
-            DamageReduction = 0;
-
-            IsInvincible = false;
-
-            TargetableByHoming = true;
-
-            DrawAfterimages = false;
-
-            Position = position;
-            Velocity = velocity;
-            Damage = damage;
-            Texture = texture;
-            Colour = colour;
-
-            Size = size;
-            Health = MaxHealth;
-            MaxHP = MaxHealth;
-            PierceToTake = pierceToTake;
-
-            DealDamage = false;
-            ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
-            Opacity = 1f;
-            InitialOpacity = Opacity;
-
-            Depth = 0;
-
-            IsHarmful = isHarmful;
-
-            PrepareNPC();
-        }
-
+        
         public override void AI()
         {
             if (ExtraAI is not null)
@@ -124,12 +87,6 @@ namespace bullethellwhatever.BaseClasses
             {
                 IFrames--;
             }
-
-            //if (Health <= 0)
-            //{
-            //    TargetableByHoming = false;
-            //}
-            //else TargetableByHoming = true;
 
             Position = Position + (Velocity * ScaleFactor());
 
