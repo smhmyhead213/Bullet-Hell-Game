@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.Bosses;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.BaseClasses
 {

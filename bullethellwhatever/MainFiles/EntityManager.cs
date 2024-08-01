@@ -2,7 +2,7 @@
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Bosses;
-using bullethellwhatever.Bosses.TestBoss;
+
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.Bosses.CrabBoss;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -168,7 +169,7 @@ namespace bullethellwhatever.MainFiles
             switch (GameState.Boss)
             {
                 case GameState.Bosses.SecondBoss:
-                    toSpawn = new SecondBoss(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0));
+                    toSpawn = new SecondBoss(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0));
                     break;
                 case GameState.Bosses.CrabBoss:
                     toSpawn = new CrabBoss();
@@ -184,9 +185,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
 
-            toSpawn.CreateNPC(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture, toSpawn.Size, toSpawn.Health, 200, toSpawn.Colour, false, true);
-            toSpawn.PrepareNPCButDontAddToListYet();
-            activeNPCs.Add(toSpawn);
+            toSpawn.Spawn(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture.Name, toSpawn.Size, toSpawn.Health, 200, toSpawn.Colour, false, true);
         }
 
     }

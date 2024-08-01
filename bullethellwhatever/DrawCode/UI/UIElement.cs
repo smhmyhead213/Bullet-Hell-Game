@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -22,7 +23,7 @@ namespace bullethellwhatever.DrawCode.UI
         public UIElement(string texture, Vector2 size, Menu owner = null, Vector2 position = default)
         {
             PositionInMenu = position;
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             Size = size;
             Owner = owner;
         }
@@ -56,7 +57,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public virtual void StandaloneUIElement()
         {
-            Menu holder = new Menu(Position, new Vector2(Texture.Width * Size.X, Texture.Height * Size.Y), Assets["box"]);
+            Menu holder = new Menu(Position, new Vector2(Texture.Width * Size.X, Texture.Height * Size.Y), AssetRegistry.GetTexture2D("box"));
             Owner = holder;
             SetPositionInMenu(holder.RelativeCentreOfMenu());
             Update();

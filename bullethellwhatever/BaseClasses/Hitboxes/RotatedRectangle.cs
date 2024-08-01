@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.Projectiles.TelegraphLines;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.BaseClasses.Hitboxes
 {
@@ -22,6 +23,12 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         public Vector2 Centre;
         public Vector2[] Vertices;
         public Entity Owner;
+
+        public RotatedRectangle()
+        {
+
+        }
+
         public RotatedRectangle(float rotation, float width, float length, Vector2 centre, Entity owner)
         {
             UpdateRectangle(rotation, width, length, centre);
@@ -104,7 +111,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         {
             for (int i = 0; i < Vertices.Length; i++)
             {
-                Texture2D texture = Assets["box"];
+                Texture2D texture = AssetRegistry.GetTexture2D("box");
 
                 s.Draw(texture, Vertices[i], null, colour, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
             }

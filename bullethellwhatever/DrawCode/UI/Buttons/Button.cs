@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode.UI.Buttons
 {
@@ -24,7 +25,7 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
         }
         public Button(string texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(texture, size, owner, position)
         {
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             Size = size;
             Position = position;
             Owner = owner;

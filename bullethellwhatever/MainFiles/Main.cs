@@ -5,6 +5,7 @@ global using static bullethellwhatever.Projectiles.CommonProjectileMethods;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using bullethellwhatever.AssetManagement;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ using FMOD.Studio;
 using SharpDX.WIC;
 using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -40,11 +42,7 @@ namespace bullethellwhatever.MainFiles
         public static GraphicsDeviceManager _graphics;
         public static VertexBuffer MainVertexBuffer;
         public static SpriteBatch _spriteBatch;
-
-        public static Dictionary<string, Texture2D> Assets = new Dictionary<string, Texture2D>();
-        public static Dictionary<string, Effect> Shaders = new Dictionary<string, Effect>();
-        public static Dictionary<string, Bank> Music = new Dictionary<string, Bank>();
-        public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
+        public static Camera MainCamera;
 
         public static SpriteFont font;
 
@@ -71,11 +69,11 @@ namespace bullethellwhatever.MainFiles
 
         public static Vector2 RawScreenArea;
 
-        public static int ScreenHeight;
-        public static int ScreenWidth;
+        public static int ActualScreenHeight;
+        public static int ActualScreenWidth;
 
-        public static float IdealScreenHeight = 1080f;
-        public static float IdealScreenWidth = 1920f;
+        public static int IdealScreenHeight = 1080;
+        public static int IdealScreenWidth = 1920;
 
         public static int GameTime;
 
@@ -88,8 +86,8 @@ namespace bullethellwhatever.MainFiles
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
 
-            ScreenWidth = _graphics.PreferredBackBufferWidth;
-            ScreenHeight = _graphics.PreferredBackBufferHeight;
+            ActualScreenWidth = _graphics.PreferredBackBufferWidth;
+            ActualScreenHeight = _graphics.PreferredBackBufferHeight;
 
             Content.RootDirectory = "Content";
 
@@ -134,65 +132,67 @@ namespace bullethellwhatever.MainFiles
 
             // -- load in assets --
 
-            string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
+            //string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
 
-            for (int i = 0; i < files.Length; i++)
-            {
-                string toSaveAs = files[i];
+            //for (int i = 0; i < files.Length; i++)
+            //{
+            //    string toSaveAs = files[i];
 
-                string filePath = string.Empty;
+            //    string filePath = string.Empty;
 
-                while (toSaveAs.Contains("\\")) //remove all slashes
-                {
-                    int indexOfSlash = toSaveAs.IndexOf("\\");
+            //    while (toSaveAs.Contains("\\")) //remove all slashes
+            //    {
+            //        int indexOfSlash = toSaveAs.IndexOf("\\");
 
-                    int startIndex = indexOfSlash + 1; //+ 1 accounts for double slash, there's two slashes in the IndexOf cos the first one is to character escape the second
+            //        int startIndex = indexOfSlash + 1; //+ 1 accounts for double slash, there's two slashes in the IndexOf cos the first one is to character escape the second
 
-                    filePath = toSaveAs.Substring(0, startIndex);
-                    toSaveAs = toSaveAs.Substring(startIndex, toSaveAs.Length - startIndex); //only take everything after the double slash
-                }
+            //        filePath = toSaveAs.Substring(0, startIndex);
+            //        toSaveAs = toSaveAs.Substring(startIndex, toSaveAs.Length - startIndex); //only take everything after the double slash
+            //    }
 
-                int indexOfDot = toSaveAs.IndexOf(".");
+            //    int indexOfDot = toSaveAs.IndexOf(".");
 
-                string fileExtension = toSaveAs.Substring(indexOfDot, toSaveAs.Length - indexOfDot); // remove file extension
+            //    string fileExtension = toSaveAs.Substring(indexOfDot, toSaveAs.Length - indexOfDot); // remove file extension
 
-                toSaveAs = toSaveAs.Substring(0, indexOfDot);
+            //    toSaveAs = toSaveAs.Substring(0, indexOfDot);
 
-                if (fileExtension == ".xnb") //only do this for .xnbs, when this was written credits.txt would crash it as a .txt doesnt work
-                {
-                    toSaveAs = toSaveAs.Substring(0, indexOfDot); //remove file extension
+            //    if (fileExtension == ".xnb") //only do this for .xnbs, when this was written credits.txt would crash it as a .txt doesnt work
+            //    {
+            //        toSaveAs = toSaveAs.Substring(0, indexOfDot); //remove file extension
 
-                    if (toSaveAs.Contains("Shader")) // This system only works if you use a naming convention that matches this
-                    {
-                        if (!(Shaders.ContainsKey(toSaveAs)))
-                            Shaders.Add(toSaveAs, Content.Load<Effect>("Shaders/" + toSaveAs));
-                    }
-                    else if (toSaveAs.Contains("Music"))
-                    {
-                        if (!Music.ContainsKey(toSaveAs))
-                        {
-                            Music.Add(toSaveAs, bank);
-                        }
-                    }
-                    else if (toSaveAs.Contains("Sound"))
-                    {
-                        if (!(Sounds.ContainsKey(toSaveAs)))
-                            Sounds.Add(toSaveAs, Content.Load<SoundEffect>(toSaveAs));
-                    }
-                    else if (toSaveAs != "font")
-                    {
-                        if (!(Assets.ContainsKey(toSaveAs)))
-                            try
-                            {
-                                Assets.Add(toSaveAs, Content.Load<Texture2D>(toSaveAs));
-                            }
-                            catch // if we fail to load in the texture, try again with a file path this time
-                            {
-                                Assets.Add(toSaveAs, Content.Load<Texture2D>(filePath + toSaveAs));
-                            }
-                    }
-                }
-            }
+            //        if (toSaveAs.Contains("Shader")) // This system only works if you use a naming convention that matches this
+            //        {
+            //            if (!(Shaders.ContainsKey(toSaveAs)))
+            //                Shaders.Add(toSaveAs, Content.Load<Effect>("Shaders/" + toSaveAs));
+            //        }
+            //        else if (toSaveAs.Contains("Music"))
+            //        {
+            //            if (!Music.ContainsKey(toSaveAs))
+            //            {
+            //                Music.Add(toSaveAs, bank);
+            //            }
+            //        }
+            //        else if (toSaveAs.Contains("Sound"))
+            //        {
+            //            if (!(Sounds.ContainsKey(toSaveAs)))
+            //                Sounds.Add(toSaveAs, Content.Load<SoundEffect>(toSaveAs));
+            //        }
+            //        else if (toSaveAs != "font")
+            //        {
+            //            if (!(Assets.ContainsKey(toSaveAs)))
+            //                try
+            //                {
+            //                    Assets.Add(toSaveAs, Content.Load<Texture2D>(toSaveAs));
+            //                }
+            //                catch // if we fail to load in the texture, try again with a file path this time
+            //                {
+            //                    Assets.Add(toSaveAs, Content.Load<Texture2D>(filePath + toSaveAs));
+            //                }
+            //        }
+            //    }
+            //}
+
+            AssetRegistry.Initialise();
 
             font = Content.Load<SpriteFont>("font");
 
@@ -213,6 +213,8 @@ namespace bullethellwhatever.MainFiles
 
             GameTime = 0;
 
+            MainCamera = new Camera();
+
             base.Initialize();
         }
 
@@ -223,6 +225,8 @@ namespace bullethellwhatever.MainFiles
             GameTime++;
 
             UpdateInputSystem();
+
+            AssetRegistry.Update();
 
             MenuManager.ManageMenus();
 
@@ -239,6 +243,8 @@ namespace bullethellwhatever.MainFiles
                     MediaPlayer.Pause();
             }
 
+            MainCamera.UpdateMatrices();
+
             Drawing.UpdateDrawer();
 
             base.Update(gameTime);
@@ -250,7 +256,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Timer++;
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
 
             //_spriteBatch.DrawString(font, MousePosition.ToString(), new Vector2(ScreenWidth / 3, ScreenHeight / 3 + 10), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
@@ -286,10 +292,9 @@ namespace bullethellwhatever.MainFiles
 
             base.Draw(gameTime);
         }
-
         public static void ChangeGraphicsDeviceTexture(int index, string texture)
         {
-            _graphics.GraphicsDevice.Textures[index] = Assets[texture];
+            _graphics.GraphicsDevice.Textures[index] = AssetRegistry.GetTexture2D(texture);
         }
     }
 }

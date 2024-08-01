@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
+using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
@@ -12,8 +12,9 @@ using System.Reflection.Metadata.Ecma335;
 using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
 
-namespace bullethellwhatever.BaseClasses
+namespace bullethellwhatever.NPCs
 {
     public class NPC : Entity
     {
@@ -48,7 +49,7 @@ namespace bullethellwhatever.BaseClasses
             Position = position;
             Velocity = velocity;
             Damage = damage;
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             Colour = colour;
 
             Size = size;
@@ -71,8 +72,7 @@ namespace bullethellwhatever.BaseClasses
 
             PrepareNPC();
         }
-        //this one takes a texture directly
-        
+
         public override void AI()
         {
             if (ExtraAI is not null)
@@ -150,7 +150,7 @@ namespace bullethellwhatever.BaseClasses
         {
             DamageReduction = MathHelper.Clamp(dr, 0f, 1f);
         }
-        
+
         public virtual void TakeDamage(Collision collision, Projectile projectile)
         {
             IFrames = MaxIFrames;
@@ -172,7 +172,7 @@ namespace bullethellwhatever.BaseClasses
                     UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
                 }
 
-                else UI.DrawHealthBar(spriteBatch, this, new Vector2(ScreenWidth / 2, ScreenHeight / 20 * 19), 900f, 30f); // boss bar
+                else UI.DrawHealthBar(spriteBatch, this, new Vector2(IdealScreenWidth / 2, IdealScreenHeight / 20 * 19), 900f, 30f); // boss bar
             }
         }
 
@@ -219,7 +219,7 @@ namespace bullethellwhatever.BaseClasses
 
             NPCsToAddNextFrame.Add(this);
         }
-        
+
         public virtual void PrepareNPCButDontAddToListYet()
         {
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);

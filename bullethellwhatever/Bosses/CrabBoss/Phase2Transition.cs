@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.DrawCode;
+﻿using bullethellwhatever.AssetManagement;
+using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
@@ -227,7 +228,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             if (Targeting)
             {
-                Drawing.BetterDraw(Assets["TargetReticle"], TargetPosition, null, Color.White, TargetRotation, Vector2.One, SpriteEffects.None, 1);
+                Drawing.BetterDraw(AssetRegistry.GetTexture2D("TargetReticle"), TargetPosition, null, Color.White, TargetRotation, Vector2.One, SpriteEffects.None, 1);
             }
         }
     }

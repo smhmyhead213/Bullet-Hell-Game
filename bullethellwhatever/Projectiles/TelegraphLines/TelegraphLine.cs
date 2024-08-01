@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Projectiles.TelegraphLines
 {
@@ -41,7 +42,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             Duration = duration;
             Origin = origin;
             Colour = colour;
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             Owner = owner;
             TimeAlive = 0;
             StayWithOwner = stayWithOwner;
@@ -105,16 +106,6 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
             }
         }
 
-        public void SpawnDeathrayOnDeath(float damage, int duration, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner, bool stayWithOwner = true)
-        {
-            SetOnDeath(new Action(() =>
-            {
-                Deathray ray = new Deathray();
-                ray.SetStayWithOwner(stayWithOwner);
-                ray.SpawnDeathray(Origin, Rotation, damage, duration, "box", Width, Length, angularVelocity, isHarmful, colour, shader, owner);        
-            }));
-        }
-
         public void SetOnDeath(Action action)
         {
             OnDeath = action;
@@ -126,19 +117,21 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         }
         public void Draw(SpriteBatch spritebatch)
         {
-            Shaders[LineShader].Parameters["uTime"]?.SetValue(TimeAlive);
-            Shaders[LineShader].Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
-            Shaders[LineShader].Parameters["duration"]?.SetValue(Duration);
+            Effect lineShader = AssetRegistry.GetShader(LineShader);
 
-            Shaders[LineShader].Parameters["colour"]?.SetValue(Colour.ToVector3());
+            lineShader.Parameters["uTime"]?.SetValue(TimeAlive);
+            lineShader.Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);
+            lineShader.Parameters["duration"]?.SetValue(Duration);
 
-            Shaders[LineShader].CurrentTechnique.Passes[0].Apply();
+            lineShader.Parameters["colour"]?.SetValue(Colour.ToVector3());
+
+            lineShader.CurrentTechnique.Passes[0].Apply();
 
             Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); //Scale the beam up to the required width and length.
 
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(player.Texture, Origin, null, Colour, Rotation + MathF.PI, originOffset, size, SpriteEffects.None, 0);
+            spritebatch.Draw(player.Texture, Origin, null, Colour, Rotation + PI, originOffset, size, SpriteEffects.None, 0);
         }
     }
 }

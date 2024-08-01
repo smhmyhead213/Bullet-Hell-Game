@@ -11,6 +11,7 @@ using System.Threading;
 using System.Drawing.Design;
 using SharpDX.MediaFoundation;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -84,7 +85,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (time < MoveToPositionTime)
                 {                   
-                    MoveToPoint(new Vector2(ScreenWidth / 2f, ScreenHeight / 10f), time, MoveToPositionTime);
+                    MoveToPoint(new Vector2(IdealScreenWidth / 2f, IdealScreenHeight / 10f), time, MoveToPositionTime);
 
                     if (!Utilities.IsQuantityWithinARangeOfAValue(Owner.Depth, finalDepth, 0.02f)) //if looping the attack, dont bother doing the depth stuff again
                     {
@@ -262,7 +263,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             if (Targeting)
             {
-                Drawing.BetterDraw(Assets["TargetReticle"], TargetPosition, null, Color.White * TargetTransparency, TargetRotation, Vector2.One * TargetSize, SpriteEffects.None, 1);
+                Drawing.BetterDraw(AssetRegistry.GetTexture2D("TargetReticle"), TargetPosition, null, Color.White * TargetTransparency, TargetRotation, Vector2.One * TargetSize, SpriteEffects.None, 1);
             }
         }
     }

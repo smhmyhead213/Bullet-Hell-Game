@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.Projectiles;
@@ -68,7 +69,7 @@ namespace bullethellwhatever.DrawCode
 
             Shader.CurrentTechnique.Passes[0].Apply();
 
-            Texture2D texture = Assets["box"];
+            Texture2D texture = AssetRegistry.GetTexture2D("box");
 
             Drawing.BetterDraw(texture, Position, null, Color.White, Rotation, Vector2.One * Radius / texture.Width * 2f, SpriteEffects.None, 1);
         }

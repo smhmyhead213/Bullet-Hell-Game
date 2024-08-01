@@ -38,7 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Owner.DealDamage = false;
 
-                Vector2 moveTo = new Vector2(ScreenWidth / 6 * 5f, ScreenHeight / 6 * 5f);
+                Vector2 moveTo = new Vector2(IdealScreenWidth / 6 * 5f, IdealScreenHeight / 6 * 5f);
 
                 MoveToPoint(moveTo, time, moveToPositionTime);
 

@@ -22,9 +22,6 @@ namespace bullethellwhatever.DrawCode
 
         public RasterizerState RasteriserState;
 
-        Matrix WorldMatrix = Matrix.Identity;
-        Matrix ViewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-        Matrix ProjectionMatrix = Matrix.CreateOrthographic(ScreenWidth, ScreenHeight, 0, 1000);
         public PrimitiveSet()
         {
             BasicEffect = new BasicEffect(GraphicsDevice);
@@ -41,10 +38,10 @@ namespace bullethellwhatever.DrawCode
             //vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
             //vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
 
-            vertices[0] = CreateVertex(Utilities.CentreOfScreen(), Color.Red);
-            vertices[1] = CreateVertex(new Vector2(0, ScreenHeight), Color.Green);
-            vertices[2] = CreateVertex(new Vector2(ScreenWidth, ScreenHeight), Color.Blue);
-            vertices[3] = CreateVertex(new Vector2(ScreenWidth / 2, 0), Color.Yellow);
+            vertices[0] = CreateVertex(Utilities.CentreOfScreen(), Color.Red); // should the vertex positions be on actual screen size or ideal? ask if prims are affected by camera
+            vertices[1] = CreateVertex(new Vector2(0, IdealScreenHeight), Color.Green);
+            vertices[2] = CreateVertex(new Vector2(IdealScreenWidth, IdealScreenHeight), Color.Blue);
+            vertices[3] = CreateVertex(new Vector2(IdealScreenWidth / 2, 0), Color.Yellow);
 
             VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
             VertexBuffer.SetData(vertices);
@@ -52,7 +49,7 @@ namespace bullethellwhatever.DrawCode
 
         public Vector3 GameCoordsToVertexCoords(Vector2 coords)
         {
-            return new Vector3(coords.X - ScreenWidth / 2, ScreenHeight / 2 - coords.Y, 0);
+            return new Vector3(coords.X - IdealScreenWidth / 2, IdealScreenHeight / 2 - coords.Y, 0);
         }
 
         public VertexPositionColor CreateVertex(Vector2 coords, Color colour)
@@ -61,13 +58,11 @@ namespace bullethellwhatever.DrawCode
         }
         public Vector3 GameCoordsToVertexCoords(float x, float y)
         {
-            return new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
+            return new Vector3(x - IdealScreenWidth / 2, IdealScreenHeight / 2 - y, 0);
         }
         public void SetMatrices()
         {
-            BasicEffect.World = WorldMatrix;
-            BasicEffect.View = ViewMatrix;
-            BasicEffect.Projection = ProjectionMatrix;
+
         }
         public void Update()
         {

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using SharpDX.WIC;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -46,13 +47,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time == 0)
             {
-                Vector2 spawnPos = new Vector2(Utilities.RandomFloat(thickness / 2, ScreenWidth - thickness / 2), 0);
+                Vector2 spawnPos = new Vector2(Utilities.RandomFloat(thickness / 2, IdealScreenWidth - thickness / 2), 0);
 
                 float maxRotation = PI / 60;
 
                 float additionalRotation = Utilities.RandomFloat(-maxRotation, maxRotation);
 
-                TelegraphLine t = SpawnTelegraphLine(PI + additionalRotation, 0, thickness, ScreenHeight * 1.5f, 60, spawnPos, Color.White, "box", Owner, false);
+                TelegraphLine t = SpawnTelegraphLine(PI + additionalRotation, 0, thickness, IdealScreenHeight * 1.5f, 60, spawnPos, Color.White, "box", Owner, false);
 
                 Pupil.RotationWithinEye = Utilities.VectorToAngle(spawnPos - Owner.Position);
                 Pupil.DistanceFromEyeCentre = 35;
@@ -60,7 +61,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 t.ShouldThickenIn(true);
                 t.SetOnDeath(new Action(() =>
                 {
-                    Texture2D texture = Assets["Circle"];
+                    Texture2D texture = AssetRegistry.GetTexture2D("Circle");
 
                     Projectile orb = SpawnProjectile(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, "Circle", thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
                     

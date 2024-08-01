@@ -10,6 +10,8 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using SharpDX.MediaFoundation;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Projectiles
 {
@@ -48,7 +50,7 @@ namespace bullethellwhatever.Projectiles
 
         public void CreateProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
 
             Depth = 0;
 

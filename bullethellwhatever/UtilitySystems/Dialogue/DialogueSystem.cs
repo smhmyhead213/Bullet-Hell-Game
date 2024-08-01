@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {

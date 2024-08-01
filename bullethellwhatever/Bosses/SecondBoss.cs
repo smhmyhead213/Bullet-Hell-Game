@@ -9,10 +9,11 @@ using bullethellwhatever.Projectiles.Base; //bad code
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.DrawCode;
- 
-using bullethellwhatever.Enemies;
+
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
+using SharpDX.Direct3D9;
 
 namespace bullethellwhatever.Bosses
 {
@@ -46,12 +47,11 @@ namespace bullethellwhatever.Bosses
             IsHarmful = true;
             Rotation = PI / 6f;
             Size = new Vector2(3f, 3f);
-
             Opacity = 0.1f;
 
             Colour = Color.White;
 
-            Texture = Assets["box"];
+            Texture = AssetRegistry.GetTexture2D("box");
 
             prims = new PrimitiveSet();
         }

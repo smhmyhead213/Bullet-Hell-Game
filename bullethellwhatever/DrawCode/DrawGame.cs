@@ -10,6 +10,8 @@ using System;
 using bullethellwhatever.DrawCode.UI.Buttons;
 using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -33,7 +35,7 @@ namespace bullethellwhatever.DrawCode
             }
 
             // FPS counter.
-            Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(ScreenWidth / 4, ScreenHeight / 4), Main._spriteBatch, Main.font, Color.White);
+            Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
             List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();          
             List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
@@ -200,22 +202,22 @@ namespace bullethellwhatever.DrawCode
         {
             Drawing.RestartSpriteBatchForShaders(s);
 
-            Vector2 hudPos = new Vector2(ScreenWidth / 10f, ScreenHeight / 10f);
+            Vector2 hudPos = new Vector2(IdealScreenWidth / 10f, IdealScreenHeight / 10f);
 
-            Texture2D hud = Assets["HUDBody"];
+            Texture2D hud = AssetRegistry.GetTexture2D("HUDBody");
 
             RotatedRectangle hudBox = new RotatedRectangle(0, hud.Width, hud.Height, hudPos, player);
             hudBox.UpdateVertices();
 
             float opacity = player.Hitbox.Intersects(hudBox).Collided ? 0.2f : 1f;
 
-            Shaders["PlayerHealthBarShader"].Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
+            AssetRegistry.GetShader("PlayerHealthBarShader").Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
 
-            Shaders["PlayerHealthBarShader"].CurrentTechnique.Passes[0].Apply();
+            AssetRegistry.GetShader("PlayerHealthBarShader").CurrentTechnique.Passes[0].Apply();
 
             //UI.DrawHealthBar(_spriteBatch, player, new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), 12.6f, 0.7f);
 
-            Drawing.BetterDraw(Assets["box"], new Vector2(IdealScreenWidth / 7.6f, IdealScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("box"), new Vector2(IdealScreenWidth / 7.6f, IdealScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
             Drawing.RestartSpriteBatchForNotShaders(s);
 
@@ -250,9 +252,9 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
-            Drawing.BetterDraw(Assets["HomingWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(Assets["MachineWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(Assets["LaserWeaponIcon"], iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("HomingWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("MachineWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("LaserWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
         }
 
         public static void ResetHUD()

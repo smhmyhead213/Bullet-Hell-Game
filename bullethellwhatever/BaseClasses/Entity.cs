@@ -8,6 +8,8 @@ using System;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using System.Collections.Generic;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -82,7 +84,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void SetNoiseMap(string fileName, float scrollSpeed)
         {
-            Map = new NoiseMap(Assets[fileName], scrollSpeed);
+            Map = new NoiseMap(AssetRegistry.GetTexture2D(fileName), scrollSpeed);
         }
         public void SetExtraData(int index, float value)
         {
@@ -179,9 +181,15 @@ namespace bullethellwhatever.BaseClasses
             Opacity = opacity;
             Opacity = InitialOpacity;
         }
+
+        public virtual void SetRotation(float rotation)
+        {
+            Rotation = rotation;
+            UpdateHitbox();
+        }
         public virtual void SetTexture(string texture)
         {
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
         }
         public virtual void SetTexture(Texture2D texture)
         {
@@ -231,17 +239,17 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void ApplyRandomNoise()
         {
-            Shader.Parameters["randomNoiseMap"]?.SetValue(Assets["RandomNoise"]);
+            Shader.Parameters["randomNoiseMap"]?.SetValue(AssetRegistry.GetTexture2D("RandomNoise"));
         }
 
         public virtual void ApplyRandomNoise(Effect shader)
         {
-            shader.Parameters["randomNoiseMap"]?.SetValue(Assets["RandomNoise"]);
+            shader.Parameters["randomNoiseMap"]?.SetValue(AssetRegistry.GetTexture2D("RandomNoise"));
         }
 
         public virtual void SetShader(string filename)
         {
-            Shader = Shaders[filename];
+            Shader = AssetRegistry.GetShader(filename);
         }
 
         public virtual void Die()

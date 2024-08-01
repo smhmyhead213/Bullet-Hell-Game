@@ -13,6 +13,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -30,7 +31,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             ChainStartPosition = chainStartPos;
 
             Velocity = Vector2.Zero;
-            Texture = Assets["Circle"];
+            Texture = AssetRegistry.GetTexture2D("Circle");
             Size = Vector2.One * 2f;
 
             MaxHP = 20;
@@ -170,7 +171,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 Drawing.RestartSpriteBatchForShaders(spriteBatch);
             }
 
-            Effect circleShader = Shaders["CircleOutlineShader"];
+            Effect circleShader = AssetRegistry.GetShader("CircleOutlineShader");
 
             circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
             circleShader.Parameters["uTime"]?.SetValue(AITimer);
@@ -179,7 +180,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             circleShader.CurrentTechnique.Passes[0].Apply();
 
-            Texture2D texture = Assets["box"];
+            Texture2D texture = AssetRegistry.GetTexture2D("box");
 
             Drawing.BetterDraw(texture, Pupil.Position, null, Color.White, 0, Vector2.One * VulnerabilityRadius / texture.Width * 2f, SpriteEffects.None, 1);
 

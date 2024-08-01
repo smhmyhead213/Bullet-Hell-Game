@@ -10,7 +10,8 @@ using bullethellwhatever.UtilitySystems;
 using System.Diagnostics.Contracts;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.MainFiles;
-
+using bullethellwhatever.AssetManagement;
+using System.Runtime.CompilerServices;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -45,52 +46,36 @@ namespace bullethellwhatever.DrawCode
         public static void RestartSpriteBatchForShaders(SpriteBatch s)
         {
             s.End();
-            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap);
+            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap, transformMatrix: MainCamera.Matrix);
         }
 
         public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
         {
             s.End();
-            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
+            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: MainCamera.Matrix);
         }
 
-        public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
+        public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
 
             //Draw the item at the position, moved by the amount the screen is shaking.
 
-            if (screenShakeObject.Timer > 0)
-            {
-                Vector2 positionWithScreenShake = new(position.X + screenShakeObject.Magnitude.X, position.Y + screenShakeObject.Magnitude.Y);
+            Vector2 screenShakeAdd = screenShakeObject.Timer > 0 ? ScreenShakeMagnitude : Vector2.Zero;
+            Vector2 finalOrigin = origin is null ? new Vector2(texture.Width / 2, texture.Height / 2) : origin.Value;
 
-                _spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
-            }
+            _spriteBatch.Draw(texture, position + screenShakeAdd, sourceRectangle, color, rotation, finalOrigin, scale, spriteEffects, layerDepth);
 
-            else _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffects, layerDepth);
         }
-
-        public static void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects spriteEffects, float layerDepth)
+        public static void BetterDraw(ManagedTexture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {
-            //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
-
-            //Draw the item at the position, moved by the amount the screen is shaking.
-
-            if (screenShakeObject.Timer > 0)
-            {
-                Vector2 positionWithScreenShake = new(position.X + screenShakeObject.Magnitude.X, position.Y + screenShakeObject.Magnitude.Y);
-
-                _spriteBatch.Draw(texture, positionWithScreenShake, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
-            }
-
-            else _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
+            BetterDraw(texture.Asset, position, sourceRectangle, color, rotation, scale, spriteEffects, layerDepth, origin);
         }
-
         public static void DrawTelegraphs(Entity entity)
         {
             foreach (TelegraphLine telegraphLine in entity.activeTelegraphs)
             {
-                telegraphLine.Draw(Main._spriteBatch);
+                telegraphLine.Draw(_spriteBatch);
             }
         }
         public static void ScreenShake(int magnitude, int duration)

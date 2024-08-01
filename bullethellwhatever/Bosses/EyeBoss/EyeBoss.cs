@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.AssetManagement;
+using SharpDX.Direct3D9;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -24,26 +26,28 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public float InitialChainDampingFactor;
         public Vector2 ChainStartPosition;
         public EyeBoss()
-        {        
+        {
             //Position = Utilities.CentreOfScreen();
             Velocity = Vector2.Zero;
-            Texture = Assets["Circle"];
+            Texture = AssetRegistry.GetTexture2D("Circle");
             Size = Vector2.One * 2f;
 
-            ChainStartPosition = new Vector2(ScreenWidth / 2, 0);
+            ChainStartPosition = new Vector2(IdealScreenWidth / 2, 0);
 
             Phase = 1;
             MaxHP = 5;
 
             Colour = Color.White;
 
-            Pupil = new Pupil("Circle", 0, 0, Size / 4);
-            Pupil.Spawn(Position, Vector2.Zero, 0f, Pupil.Texture, Pupil.Size, 0, 0, Color.Black, false, false);
+            string pupilTexture = "Circle";
+
+            Pupil = new Pupil(pupilTexture, 0, 0, Size / 4);
+            Pupil.Spawn(Position, Vector2.Zero, 0f, pupilTexture, Pupil.Size, 0, 0, Color.Black, false, false);
             Pupil.SetParticipating(false);
             Pupil.IsInvincible = true;
             Pupil.TargetableByHoming = false;
 
-            CreateChain(ScreenHeight / 2f);
+            CreateChain(IdealScreenHeight / 2f);
 
             BossAttacks = new EyeBossAttack[]
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using bullethellwhatever.AssetManagement;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace bullethellwhatever.DrawCode
         public NoiseMap(Texture2D map, float scrollSpeed)
         {
             Texture = map;
+            ScrollSpeed = scrollSpeed;
+        }
+        public NoiseMap(ManagedTexture map, float scrollSpeed)
+        {
+            Texture = map.Asset;
             ScrollSpeed = scrollSpeed;
         }
     }

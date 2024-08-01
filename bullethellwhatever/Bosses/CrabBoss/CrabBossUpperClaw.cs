@@ -48,7 +48,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     originOffset = new Vector2(Texture.Width, 0);
                 }
 
-                Drawing.Draw(Texture, Position, null, Colour, Rotation, originOffset, GetSize(), SpriteEffects.FlipHorizontally, 1f);
+                Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.FlipHorizontally, 1f, originOffset);
             }
             else base.Draw(spriteBatch);
         }

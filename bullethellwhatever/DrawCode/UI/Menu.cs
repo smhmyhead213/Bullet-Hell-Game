@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -40,7 +41,7 @@ namespace bullethellwhatever.DrawCode.UI
         {
             Position = position;
             Size = size;
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
 
             PrepareMenu();
         }
@@ -58,7 +59,7 @@ namespace bullethellwhatever.DrawCode.UI
             UIElements = new List<UIElement>();
             ButtonCooldown = 0;
 
-            if (Texture == Assets["box"])
+            if (Texture == AssetRegistry.GetTexture2D("box"))
                 BackgroundColour = Color.Black; // dont colour if none is specified
             else BackgroundColour = Color.White;
 

@@ -12,6 +12,8 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -54,7 +56,7 @@ namespace bullethellwhatever.BaseClasses
         {
             dialogueSystem = new DialogueSystem(this);
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
         }
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
@@ -141,7 +143,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (downPressed && touchingBottom(this))
             {
-                Position.Y = ScreenHeight - (Texture.Height / 2f * GetSize().Y);
+                Position.Y = IdealScreenHeight - (Texture.Height / 2f * GetSize().Y);
             }
 
             if (leftPressed && !touchingLeft(this))
@@ -161,7 +163,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (rightPressed && touchingRight(this))
             {
-                Position.X = ScreenWidth - (Texture.Width / 2f * GetSize().X);
+                Position.X = IdealScreenWidth - (Texture.Width / 2f * GetSize().X);
             }
 
             if (IsKeyPressed(Keys.LeftShift))
@@ -235,7 +237,7 @@ namespace bullethellwhatever.BaseClasses
                 Utilities.InitialiseGame();
                 Restarted = true;
 
-                BackButton start = new BackButton("StartButton", Vector2.One * 3, null, new Vector2(ScreenWidth / 4, ScreenHeight / 4));
+                BackButton start = new BackButton("StartButton", Vector2.One * 3, null, new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4));
 
                 start.SetClickEvent(new Action(() =>
                 {
@@ -457,7 +459,7 @@ namespace bullethellwhatever.BaseClasses
             if (IsKeyPressed(Keys.K))
             {
                 for (int i = 0; i < activeProjectiles.Count; i++)
-                    Utilities.drawTextInDrawMethod(activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.ScreenWidth / 3, Main.ScreenHeight / 3 + 10 * i), spriteBatch, Main.font, Colour); ;
+                    Utilities.drawTextInDrawMethod(activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.IdealScreenWidth / 3, Main.IdealScreenHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
             }
 
             if (DashAbility.IsExecuting)

@@ -35,7 +35,7 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 if (!PauseMenuDisplayed)
                 {
-                    PauseMenu = new Menu(Utilities.CentreOfScreen(), new Vector2(ScreenWidth / 6, ScreenHeight / 6), "MenuBG");
+                    PauseMenu = new Menu(Utilities.CentreOfScreen(), new Vector2(IdealScreenWidth / 6, IdealScreenHeight / 6), "MenuBG");
 
                     PauseMenu.SetDraggable(true);
                     PauseMenu.SetImportant(true);

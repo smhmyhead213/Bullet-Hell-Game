@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.MainFiles
 {

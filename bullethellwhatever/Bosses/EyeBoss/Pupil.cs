@@ -1,5 +1,6 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -24,7 +25,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public Pupil(string texture, float distanceFromEyeCentre, float rotationWithinEye, Vector2 size)
         {
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             DistanceFromEyeCentre = distanceFromEyeCentre;
             RotationWithinEye = rotationWithinEye;
             Size = size;

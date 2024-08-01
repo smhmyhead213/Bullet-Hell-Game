@@ -9,6 +9,7 @@ using bullethellwhatever.DrawCode.UI.Buttons;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.VisualBasic.Logging;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -16,13 +17,13 @@ namespace bullethellwhatever.DrawCode.UI
     {
         public static void CreateTitleScreenMenu()
         {
-            Menu titleMenu = new Menu(Utilities.CentreOfScreen(), ScreenWidth, ScreenHeight, Assets["box"]);
+            Menu titleMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
 
             Button[] buttons = new Button[]
             {
-                new Button(Assets["StartButton"], new Vector2(3, 3), titleMenu),
-                new Button(Assets["SettingsButton"], new Vector2(3, 3), titleMenu),
-                new Button(Assets["StartButton"], new Vector2(3, 3), titleMenu),
+                new Button(AssetRegistry.GetTexture2D("StartButton"), new Vector2(3, 3), titleMenu),
+                new Button(AssetRegistry.GetTexture2D("SettingsButton"), new Vector2(3, 3), titleMenu),
+                new Button(AssetRegistry.GetTexture2D("StartButton"), new Vector2(3, 3), titleMenu),
             };
 
             Action[] actions = new Action[]
@@ -64,13 +65,13 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateBossSelectMenu()
         {
-            Menu bossSelectMenu = new Menu(Utilities.CentreOfScreen(), ScreenWidth, ScreenHeight, Assets["box"]);
+            Menu bossSelectMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
 
             Button[] mainButtons = new Button[] // the buttons all in a row
             {
-                new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
-                new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
-                new Button(Assets["BossButton"], new Vector2(3, 3), bossSelectMenu),
+                new Button(AssetRegistry.GetTexture2D("BossButton"), new Vector2(3, 3), bossSelectMenu),
+                new Button(AssetRegistry.GetTexture2D("BossButton"), new Vector2(3, 3), bossSelectMenu),
+                new Button(AssetRegistry.GetTexture2D("BossButton"), new Vector2(3, 3), bossSelectMenu),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -96,7 +97,7 @@ namespace bullethellwhatever.DrawCode.UI
                 bossSelectMenu.AddUIElement(mainButtons[i]);
             }
 
-            BackButton backButton = new BackButton(Assets["Back"], new Vector2(3, 3), bossSelectMenu);
+            BackButton backButton = new BackButton(AssetRegistry.GetTexture2D("Back"), new Vector2(3, 3), bossSelectMenu);
 
             backButton.SetPositionInMenu(new Vector2(bossSelectMenu.Width() / 5, bossSelectMenu.Height() / 5));
 
@@ -106,7 +107,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateDifficultySelectMenu()
         {
-            Menu difficultySelectMenu = new Menu(Utilities.CentreOfScreen(), ScreenWidth, ScreenHeight, Assets["box"]);
+            Menu difficultySelectMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
 
             string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
@@ -135,7 +136,7 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
 
-            BackButton backButton = new BackButton(Assets["Back"], new Vector2(3, 3), difficultySelectMenu);
+            BackButton backButton = new BackButton(AssetRegistry.GetTexture2D("Back"), new Vector2(3, 3), difficultySelectMenu);
 
             backButton.SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / 5, difficultySelectMenu.Height() / 5));
 
@@ -145,7 +146,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateSettingsMenu()
         {
-            Menu settingsMenu = new Menu(Utilities.CentreOfScreen(), ScreenWidth, ScreenHeight, Assets["box"]);
+            Menu settingsMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
 
             Button[] mainButtons = new Button[]
             {
@@ -172,7 +173,7 @@ namespace bullethellwhatever.DrawCode.UI
                 settingsMenu.AddUIElement(mainButtons[i]);
             }
 
-            BackButton backButton = new BackButton(Assets["Back"], new Vector2(3, 3), settingsMenu);
+            BackButton backButton = new BackButton(AssetRegistry.GetTexture2D("Back"), new Vector2(3, 3), settingsMenu);
 
             backButton.SetPositionInMenu(new Vector2(settingsMenu.Width() / 5, settingsMenu.Height() / 5));
 
@@ -183,7 +184,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateCreditsMenu()
         {
-            BackButton backButton = new BackButton("Back", new Vector2(3, 3), null, new Vector2(ScreenWidth / 5f, ScreenHeight / 5f));
+            BackButton backButton = new BackButton("Back", new Vector2(3, 3), null, new Vector2(IdealScreenWidth / 5f, IdealScreenHeight / 5f));
 
             backButton.SetClickEvent(new Action(() =>
             {
@@ -216,7 +217,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             float emptySpaceOnLeft = (1 - progress) / 2; // fraction of bar width
 
-            Texture2D texture = Assets["box"];
+            Texture2D texture = AssetRegistry.GetTexture2D("box");
 
             RotatedRectangle HPBar = new(0, BarWidth, BarHeight, positionOfBar, player);
             HPBar.UpdateVertices();
@@ -236,8 +237,8 @@ namespace bullethellwhatever.DrawCode.UI
             //Utilities.drawTextInDrawMethod(
             //    "Controls: WASD to move, Left Click or Enter to shoot, Space to dash, Shift for precision.", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White);
 
-            Utilities.drawTextInDrawMethod(
-                $"IntPtr size: {IntPtr.Size}", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White);
+            //Utilities.drawTextInDrawMethod(
+            //    $"IntPtr size: {IntPtr.Size}", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White); what was this?
         }
     }
 }

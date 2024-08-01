@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.NPCs;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -32,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Owner = owner;
             Leg = leg;
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             Size = Vector2.One;
             IsHarmful = true;
             Damage = 1f;
@@ -146,7 +148,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     RotationalVelocity = -Sign(Velocity.X) * PI / 12;
                 }
 
-                if (vertexX > ScreenWidth && Velocity.X > 0)
+                if (vertexX > IdealScreenWidth && Velocity.X > 0)
                 {
                     Velocity.X = Velocity.X * -1f;
                 }
@@ -156,7 +158,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Velocity.Y = Velocity.Y * -1f;
                 }
 
-                if (vertexY > ScreenHeight && Velocity.Y > 0)
+                if (vertexY > IdealScreenHeight && Velocity.Y > 0)
                 {
                     Velocity.Y = Velocity.Y * -1f;
 
@@ -176,7 +178,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            Drawing.Draw(Texture, Position, null, Colour, Rotation, originOffset, GetSize(), SpriteEffects.None, 1f);
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.None, 1f, originOffset);
 
             //Hitbox.DrawVertices(spriteBatch, Color.Red);
         }

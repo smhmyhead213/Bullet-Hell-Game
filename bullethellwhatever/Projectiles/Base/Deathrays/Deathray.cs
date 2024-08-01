@@ -11,6 +11,8 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Projectiles.Base
 {
@@ -57,7 +59,7 @@ namespace bullethellwhatever.Projectiles.Base
             SetHitbox();
             
             Duration = duration;
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             AngularVelocity = angularVelocity;
             Owner = owner;
             Colour = colour;
@@ -66,7 +68,7 @@ namespace bullethellwhatever.Projectiles.Base
             Damage = damage;
 
             if (shader != null)
-                Shader = Shaders[shader];
+                Shader = AssetRegistry.GetShader(shader);
             else Shader = null;
 
             RemoveOnHit = false;
@@ -188,11 +190,11 @@ namespace bullethellwhatever.Projectiles.Base
 
         public Collision BeamEdgeTouch()
         {
-            Vector2 bucket = EdgeTouchPointGivenX(ScreenWidth);
+            Vector2 bucket = EdgeTouchPointGivenX(IdealScreenWidth);
 
             if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching right?
             {
-                return new Collision(EdgeTouchPointGivenX(ScreenWidth), true);
+                return new Collision(EdgeTouchPointGivenX(IdealScreenWidth), true);
             }
 
             bucket = EdgeTouchPointGivenX(0);
@@ -209,11 +211,11 @@ namespace bullethellwhatever.Projectiles.Base
                 return new Collision(EdgeTouchPointGivenY(0), true);
             }
 
-            bucket = EdgeTouchPointGivenY(ScreenHeight);
+            bucket = EdgeTouchPointGivenY(IdealScreenHeight);
 
             if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching bottom?
             {
-                return new Collision(EdgeTouchPointGivenY(ScreenHeight), true);
+                return new Collision(EdgeTouchPointGivenY(IdealScreenHeight), true);
             }
 
             else return new Collision(Vector2.Zero, false);

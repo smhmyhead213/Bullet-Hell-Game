@@ -22,9 +22,9 @@ namespace bullethellwhatever
 
         public static Vector2 ClampWithinScreen(Vector2 vector)
         {
-            vector.X = MathHelper.Clamp(vector.X, 0, ScreenWidth);
+            vector.X = MathHelper.Clamp(vector.X, 0, IdealScreenWidth);
 
-            vector.Y = MathHelper.Clamp(vector.Y, 0, ScreenHeight); // keep target winthin bounds
+            vector.Y = MathHelper.Clamp(vector.Y, 0, IdealScreenHeight); // keep target winthin bounds
 
             return vector;
         }
@@ -71,7 +71,10 @@ namespace bullethellwhatever
         }
         public static void drawTextInDrawMethod(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour)
         {
-            //_spriteBatch.Begin();
+            //_spriteBatch
+            //
+            //
+            //();
             _spriteBatch.DrawString(font, stringg, position, colour); // fix later
             //_spriteBatch.End();
         }
@@ -88,7 +91,7 @@ namespace bullethellwhatever
 
         public static float DistanceBetweenEntities(Entity entity1, Entity entity2)
         {
-            return MathF.Sqrt(MathF.Pow((entity1.Position.X - entity2.Position.X), 2) + MathF.Pow((entity1.Position.Y - entity2.Position.Y), 2));
+            return Sqrt(Pow((entity1.Position.X - entity2.Position.X), 2) + Pow((entity1.Position.Y - entity2.Position.Y), 2));
         }
 
         public static float DistanceBetweenVectors(Vector2 v1, Vector2 v2)
@@ -238,7 +241,7 @@ namespace bullethellwhatever
 
         public static float ScreenDiagonalLength()
         {
-            return Sqrt(ScreenWidth * ScreenWidth + ScreenHeight * ScreenHeight);
+            return Sqrt(IdealScreenWidth * IdealScreenWidth + IdealScreenHeight * IdealScreenHeight);
         }
         public static Vector3 ColorToVec3(Color color)
         {
@@ -246,7 +249,7 @@ namespace bullethellwhatever
         }
         public static bool IsVectorWithinScreen(Vector2 v)
         {
-            return v.X >= 0 && v.X <= ScreenWidth && v.Y >= 0 && v.Y <= ScreenHeight;
+            return v.X >= 0 && v.X <= IdealScreenWidth && v.Y >= 0 && v.Y <= IdealScreenHeight;
         }
         public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
     }

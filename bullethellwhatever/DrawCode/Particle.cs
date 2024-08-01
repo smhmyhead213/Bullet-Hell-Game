@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -17,7 +18,7 @@ namespace bullethellwhatever.DrawCode
         public bool Shrink;
         public void Spawn(string texture, Vector2 position, Vector2 velocity, Vector2 acceleration, Vector2 size, float rotation, Color colour, float opacity, int lifetime)
         {
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
 
             Lifetime = lifetime;
 

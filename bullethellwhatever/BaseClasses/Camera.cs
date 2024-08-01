@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,12 @@ namespace bullethellwhatever.BaseClasses
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
-        public Vector2 Position;
+        public Microsoft.Xna.Framework.Vector2 Position;
 
         /// <summary>
         /// The origin point of the camera, where it has its centre (0,0).
         /// </summary>
-        public Vector2 Origin; // camera origin
+        public Microsoft.Xna.Framework.Vector2 Origin; // camera origin
 
         private Matrix4x4 RotationMatrix; // to be added (what rotation matrix would be used, considering that the origin is the top left)
 
@@ -32,28 +33,40 @@ namespace bullethellwhatever.BaseClasses
         private Matrix4x4 ZoomMatrix; // scale matrix that allows for zooming in and out
         public Camera()
         {
-            Viewport = new(0, 0, ScreenWidth, ScreenHeight);
+            Viewport = new(0, 0, ActualScreenWidth, ActualScreenHeight); // should this be ideal or actual screen height?
+
             TranslationMatrix = Matrix4x4.Identity;
             ZoomMatrix = Matrix4x4.Identity;
             RotationMatrix = Matrix4x4.Identity;
-            Position = new Vector2(0, 0);
-            Origin = new Vector2(0, 0);
+            Position = new Microsoft.Xna.Framework.Vector2(0, 0);
+            Origin = new Microsoft.Xna.Framework.Vector2(0, 0);
         }
 
         public void UpdateMatrices()
         {
-            TranslationMatrix = Matrix4x4.CreateTranslation(new Vector3(Position, 0));
-            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(new Vector3(Origin, 0));
-            Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix * originTransform;
+            TranslationMatrix = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(Position.X, Position.Y, 0));
+
+            // the zoom matrix normally zooms the camera to the top left of the screen.
+            // this fixes the problem by translating everything so the zoom point is at the top left of the screen, zooming, and then moving everything back.
+
+            System.Numerics.Vector3 originVector = new(Origin.X, Origin.Y, 0);
+
+            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(originVector);
+            Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(-originVector);
+
+            Matrix = TranslationMatrix * RotationMatrix * moveBackFromCorner * ZoomMatrix * originTransform;
         }
 
-        public void MoveCameraBy(Vector2 offset)
+        public void MoveCameraBy(Microsoft.Xna.Framework.Vector2 offset)
         {
             Position += offset;
         }
-        public void SetCameraPositon(Vector2 position)
+        /// <summary>
+        /// <param name="position">The position of the camera in world co-ordinates.</param>
+        /// </summary>
+        public void SetCameraPositon(Microsoft.Xna.Framework.Vector2 position)
         {
-            Position = position;
+            Position = Utilities.CentreOfScreen() - position;
         }
         public void SetRotation(float radians)
         {
@@ -61,13 +74,13 @@ namespace bullethellwhatever.BaseClasses
         }
         public void SetZoom(float zoomFactor)
         {
-            SetZoom(zoomFactor, Vector2.Zero);
+            SetZoom(zoomFactor, Utilities.CentreOfScreen());
         }
-        public void SetZoom(float zoomFactor, Vector2 focusPoint) // make sure this takes in a draw coordinate and not a world coordinate, otherwise anomalies may appear
+        public void SetZoom(float zoomFactor, Microsoft.Xna.Framework.Vector2 focusPoint) // make sure this takes in a draw coordinate and not a world coordinate, otherwise anomalies may appear
         {
             Origin = focusPoint;
 
-            Matrix4x4 zoomMatrix = Matrix4x4.CreateScale(new Vector3(zoomFactor, zoomFactor, 0));
+            Matrix4x4 zoomMatrix = Matrix4x4.CreateScale(new System.Numerics.Vector3(zoomFactor, zoomFactor, 0));
 
             ZoomMatrix = zoomMatrix;
         }
@@ -83,8 +96,8 @@ namespace bullethellwhatever.BaseClasses
         {
             ResetTranslation();
             ResetZoom();
-            Origin = Vector2.Zero;
-            Position = Vector2.Zero;
+            Origin = Microsoft.Xna.Framework.Vector2.Zero;
+            Position = Microsoft.Xna.Framework.Vector2.Zero;
         }
     }
 

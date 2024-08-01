@@ -1,5 +1,4 @@
 ﻿using bullethellwhatever.DrawCode;
-using bullethellwhatever.BaseClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -8,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -29,7 +30,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public Color Colour;
         public ChainLink(string texture, Vector2 position, float rotation, float length, NPC owner)
         {
-            Texture = Assets[texture];
+            Texture = AssetRegistry.GetTexture2D(texture);
             Position = position;
             Rotation = rotation; // these rotations should be angles from vertical
             Length = length;

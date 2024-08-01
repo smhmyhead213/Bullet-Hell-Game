@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FMOD;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -55,10 +56,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 for (int i = 0; i < blenderBeams; i++)
                 {
-                    TelegraphLine t = SpawnTelegraphLine(i * Tau / blenderBeams, 0, 50, 3000, teleDuration, Owner.Position, Color.White, "box", Owner, true);
+                    float rotation = i * Tau / blenderBeams;
 
-                    t.SpawnDeathrayOnDeath(1f, blenderDuration, PI / 600, true, Color.Red, "DeathrayShader2", Owner, true);
-                    //t.ToSpawn.SetStayWithOwner(true);
+                    TelegraphLine t = SpawnTelegraphLine(rotation, 0, 50, 3000, teleDuration, Owner.Position, Color.White, "box", Owner, true);
+
+                    t.SetOnDeath(new Action(() =>
+                    {
+                        Deathray ray = new Deathray();
+                        ray.SetStayWithOwner(true);
+                        ray.SpawnDeathray(t.Origin, rotation, 1f, blenderDuration, "box", 50, 3000, PI / 600, true, Color.White, "DeathrayShader2", Owner);
+                    }));
                 }
 
                 LeftArmStartPos = Leg(0).Position;
@@ -185,9 +192,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 TargetPosition = player.Position; // target past player
 
-                TargetPosition.X = MathHelper.Clamp(TargetPosition.X, 0, ScreenWidth);
+                TargetPosition.X = MathHelper.Clamp(TargetPosition.X, 0, IdealScreenWidth);
 
-                TargetPosition.Y = MathHelper.Clamp(TargetPosition.Y, 0, ScreenHeight); // keep target winthin bounds
+                TargetPosition.Y = MathHelper.Clamp(TargetPosition.Y, 0, IdealScreenHeight); // keep target winthin bounds
 
                 float toReticle = Utilities.VectorToAngle(TargetPosition - Leg(1).Position);
 
@@ -304,7 +311,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             if (Targeting)
             {
-                Drawing.BetterDraw(Assets["TargetReticle"], TargetPosition, null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
+                Drawing.BetterDraw(AssetRegistry.GetTexture2D("TargetReticle"), TargetPosition, null, Color.White, 0, Vector2.One, SpriteEffects.None, 1);
             }
         }
     }
