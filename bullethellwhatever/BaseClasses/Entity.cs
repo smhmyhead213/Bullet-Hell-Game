@@ -96,7 +96,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual Vector2 GetSize() // get a size that corresponds to the current depth
         {
-            return Vector2.LerpPrecise(Size, Size / 10f, Depth) * ScaleFactor();
+            return Vector2.LerpPrecise(Size, Size / 10f, Depth);
         }
 
         public void SetVelocity(Vector2 vel)

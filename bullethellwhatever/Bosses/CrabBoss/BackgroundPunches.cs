@@ -158,8 +158,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     // i have reached a level of programming godhood where i can say "yeah this will probably work" and it actually works (neglecting the fact i have no idea why)
 
-                    Vector2 maxUpperArmSize = Vector2.One * (halfPunchDist / leg.UpperArm.Texture.Height) / ScaleFactor();
-                    Vector2 maxLowerArmSize = Vector2.One * (halfPunchDist / leg.LowerArm.Texture.Height) / ScaleFactor();
+                    Vector2 maxUpperArmSize = Vector2.One * (halfPunchDist / leg.UpperArm.Texture.Height);
+                    Vector2 maxLowerArmSize = Vector2.One * (halfPunchDist / leg.LowerArm.Texture.Height);
 
                     Leg(ArmIndex).UpperArm.Size = Vector2.LerpPrecise(Vector2.One, maxUpperArmSize, (time - PunchTime) / (float)PunchDuration); // GAHHH I HATE INTEGER DIVISION
                     Leg(ArmIndex).LowerArm.Size = Vector2.LerpPrecise(Vector2.One, maxLowerArmSize, (time - PunchTime) / (float)PunchDuration);

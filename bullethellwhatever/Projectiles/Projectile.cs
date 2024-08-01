@@ -179,7 +179,7 @@ namespace bullethellwhatever.Projectiles
                 ExtraAI();
             }
 
-            Position = Position + Velocity * ScaleFactor();
+            Position = Position + Velocity;
         }
 
         public override void Die()

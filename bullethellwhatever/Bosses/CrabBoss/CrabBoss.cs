@@ -105,7 +105,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
-            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation) * ScaleFactor() * DepthFactor();
+            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation) * DepthFactor();
         }
         public Vector2 CalculateArmPostions(int expandedi)
         {

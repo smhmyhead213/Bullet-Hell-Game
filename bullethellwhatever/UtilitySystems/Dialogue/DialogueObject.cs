@@ -36,7 +36,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
         public void DoDialogue()
         {
-            float heightAboveEntity = 50f * ScaleFactor();
+            float heightAboveEntity = 50f;
             Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y) - heightAboveEntity);
 
             //fix this drawing every possible string every frame

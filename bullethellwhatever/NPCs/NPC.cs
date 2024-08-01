@@ -88,7 +88,7 @@ namespace bullethellwhatever.NPCs
                 IFrames--;
             }
 
-            Position = Position + (Velocity * ScaleFactor());
+            Position = Position + Velocity;
 
             AITimer++;
 
