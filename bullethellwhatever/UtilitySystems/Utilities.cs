@@ -228,7 +228,7 @@ namespace bullethellwhatever
         }
         public static bool ImportantMenusPresent()
         {
-            foreach (Menu menu in activeMenus)
+            foreach (Menu menu in UIManager.ActiveUIElements)
             { 
                 if (menu.Important)
                 {

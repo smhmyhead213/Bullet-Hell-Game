@@ -11,7 +11,7 @@ LGL
 helpful people:
 
 Dominic Karma
-Toasty
+Imogen
 C Spike
 MrGrak
 nkast
@@ -41,3 +41,8 @@ The Pyro
 bean.ie
 Blast
 catt
+
+softwares used (add full credit and licensing later)
+fmod
+monogame
+log4net

@@ -64,7 +64,7 @@ namespace bullethellwhatever.BaseClasses
         /// <summary>
         /// <param name="position">The position of the camera in world co-ordinates.</param>
         /// </summary>
-        public void SetCameraPositon(Microsoft.Xna.Framework.Vector2 position)
+        public void SetCameraPosition(Microsoft.Xna.Framework.Vector2 position)
         {
             Position = Utilities.CentreOfScreen() - position;
         }

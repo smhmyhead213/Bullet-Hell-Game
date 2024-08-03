@@ -35,16 +35,17 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 if (!PauseMenuDisplayed)
                 {
-                    PauseMenu = new Menu(Utilities.CentreOfScreen(), new Vector2(IdealScreenWidth / 6, IdealScreenHeight / 6), "MenuBG");
+                    PauseMenu = new Menu("MenuBG", new Vector2(IdealScreenWidth / 6, IdealScreenHeight / 6), Utilities.CentreOfScreen());
 
                     PauseMenu.SetDraggable(true);
                     PauseMenu.SetImportant(true);
 
-                    ExitButton exitGame = new ExitButton("ExitButton", Vector2.One * 3f, PauseMenu);
+                    ExitButton exitGame = new ExitButton("ExitButton", Vector2.One * 3f);
+
+                    exitGame.AddToMenu(PauseMenu);
 
                     exitGame.SetPositionInMenu(PauseMenu.RelativeCentreOfMenu());
 
-                    PauseMenu.AddUIElement(exitGame);
                     PauseMenu.Display();
 
                     PauseMenuDisplayed = true;

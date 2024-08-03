@@ -226,7 +226,7 @@ namespace bullethellwhatever.BaseClasses
                 EntityManager.SpawnBoss();
                 Restarted = false;
 
-                foreach (Menu m in activeMenus) // none of the active menus are important so they can go bye bye
+                foreach (Menu m in UIManager.ActiveUIElements) // none of the active menus are important so they can go bye bye
                 {
                     m.Hide();
                 }
@@ -237,14 +237,14 @@ namespace bullethellwhatever.BaseClasses
                 Utilities.InitialiseGame();
                 Restarted = true;
 
-                BackButton start = new BackButton("StartButton", Vector2.One * 3, null, new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4));
+                BackButton start = new BackButton("StartButton", Vector2.One * 3, new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4));
 
                 start.SetClickEvent(new Action(() =>
                 {
                     GameState.SetGameState(GameState.GameStates.TitleScreen);
                 }));
 
-                start.StandaloneUIElement();
+                start.AddToActiveUIElements();
 
                 musicSystem.StopMusic();
             }

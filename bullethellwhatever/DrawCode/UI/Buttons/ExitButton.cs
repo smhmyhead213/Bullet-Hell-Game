@@ -12,7 +12,7 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
 {
     public class ExitButton : Button
     {
-        public ExitButton(string texture, Vector2 size, Menu owner = null, Vector2 position = default) : base(AssetRegistry.GetTexture2D(texture), size, owner, position)
+        public ExitButton(string texture, Vector2 size, Vector2 position = default) : base(texture, size, position)
         {
             Texture = AssetRegistry.GetTexture2D(texture);
             Size = size;

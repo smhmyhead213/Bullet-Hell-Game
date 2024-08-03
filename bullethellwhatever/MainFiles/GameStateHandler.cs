@@ -17,13 +17,10 @@ namespace bullethellwhatever.MainFiles
     {
         public bool isGameStarted;
         public string activeBoss; //use a swicth statement to spawn a boss in
-        public List<Menu> MenusToAdd;
-        public List<Menu> MenusToRemove;
 
         public GameStateHandler()
         {
-            MenusToAdd = new List<Menu>();
-            MenusToRemove = new List<Menu>();
+
         }
         public void HandleGame()
         {
@@ -31,11 +28,6 @@ namespace bullethellwhatever.MainFiles
             EntityManager.ParticlesToRemove = new List<Particle>();
 
             ManageLists();
-
-            foreach (Menu menu in activeMenus)
-            {
-                menu.Update();
-            }
 
             switch (State)
             {
@@ -85,19 +77,6 @@ namespace bullethellwhatever.MainFiles
             {
                 activeParticles.Remove(p);
             }
-
-            foreach (Menu menu in MenusToAdd)
-            {
-                activeMenus.Add(menu);
-            }
-
-            foreach (Menu menu in MenusToRemove)
-            {
-                activeMenus.Remove(menu);
-            }
-
-            MenusToRemove = new List<Menu>();
-            MenusToAdd = new List<Menu>();
         }
 
         public void ManageLists()
@@ -107,7 +86,7 @@ namespace bullethellwhatever.MainFiles
                 activeProjectiles.Add(projectile);
             }
 
-            Main.enemyProjectilesToAddNextFrame.Clear();
+            enemyProjectilesToAddNextFrame.Clear();
 
             foreach (Projectile projectile in friendlyProjectilesToAddNextFrame)
             {

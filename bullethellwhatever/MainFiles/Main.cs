@@ -38,7 +38,6 @@ namespace bullethellwhatever.MainFiles
 
         public float ZoomFactor = 1f;
 
-
         public static GraphicsDeviceManager _graphics;
         public static VertexBuffer MainVertexBuffer;
         public static SpriteBatch _spriteBatch;
@@ -77,7 +76,6 @@ namespace bullethellwhatever.MainFiles
 
         public static int GameTime;
 
-        public static List<Menu> activeMenus = new List<Menu>();
         public Main() : base()
         {
             MainInstance = this;
@@ -209,6 +207,8 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.Initialise();
 
+            UIManager.Initialise();
+
             MenuManager.Initialise();
 
             GameTime = 0;
@@ -229,6 +229,8 @@ namespace bullethellwhatever.MainFiles
             AssetRegistry.Update();
 
             MenuManager.ManageMenus();
+
+            UIManager.ManageUI();
 
             if (MainInstance.IsActive)
             {
@@ -282,7 +284,7 @@ namespace bullethellwhatever.MainFiles
                     break;
             }
 
-            UI.DrawMenus(_spriteBatch);
+            UIManager.DrawUI(_spriteBatch);
 
             _spriteBatch.End();
 

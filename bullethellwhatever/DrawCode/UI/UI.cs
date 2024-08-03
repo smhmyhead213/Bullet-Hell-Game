@@ -17,13 +17,13 @@ namespace bullethellwhatever.DrawCode.UI
     {
         public static void CreateTitleScreenMenu()
         {
-            Menu titleMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
+            Menu titleMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
 
             Button[] buttons = new Button[]
             {
-                new Button(AssetRegistry.GetTexture2D("StartButton"), new Vector2(3, 3), titleMenu),
-                new Button(AssetRegistry.GetTexture2D("SettingsButton"), new Vector2(3, 3), titleMenu),
-                new Button(AssetRegistry.GetTexture2D("StartButton"), new Vector2(3, 3), titleMenu),
+                new Button("StartButton", new Vector2(3, 3)),
+                new Button("SettingsButton", new Vector2(3, 3)),
+                new Button("StartButton", new Vector2(3, 3)),
             };
 
             Action[] actions = new Action[]
@@ -51,6 +51,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             for (int i = 0; i < buttons.Length; i++)
             {
+                buttons[i].AddToMenu(titleMenu);
+
                 buttons[i].SetPositionInMenu(new Vector2(titleMenu.Width() / (buttons.Length + 1) * (i + 1), titleMenu.Height() / 2f));
 
                 buttons[i].Update();
@@ -65,17 +67,19 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateBossSelectMenu()
         {
-            Menu bossSelectMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
+            Menu bossSelectMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
 
             Button[] mainButtons = new Button[] // the buttons all in a row
             {
-                new Button(AssetRegistry.GetTexture2D("BossButton"), new Vector2(3, 3), bossSelectMenu),
-                new Button(AssetRegistry.GetTexture2D("BossButton"), new Vector2(3, 3), bossSelectMenu),
-                new Button(AssetRegistry.GetTexture2D("BossButton"), new Vector2(3, 3), bossSelectMenu),
+                new Button("BossButton", new Vector2(3, 3)),
+                new Button("BossButton", new Vector2(3, 3)),
+                new Button("BossButton", new Vector2(3, 3)),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
             {
+                mainButtons[i].AddToMenu(bossSelectMenu);
+
                 mainButtons[i].SetPositionInMenu(new Vector2(bossSelectMenu.Width() / (mainButtons.Length + 1) * (i + 1), bossSelectMenu.Height() / 2f));
 
                 mainButtons[i].Update();
@@ -97,7 +101,9 @@ namespace bullethellwhatever.DrawCode.UI
                 bossSelectMenu.AddUIElement(mainButtons[i]);
             }
 
-            BackButton backButton = new BackButton(AssetRegistry.GetTexture2D("Back"), new Vector2(3, 3), bossSelectMenu);
+            BackButton backButton = new BackButton("Back", new Vector2(3, 3));
+
+            backButton.AddToMenu(bossSelectMenu);
 
             backButton.SetPositionInMenu(new Vector2(bossSelectMenu.Width() / 5, bossSelectMenu.Height() / 5));
 
@@ -107,7 +113,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateDifficultySelectMenu()
         {
-            Menu difficultySelectMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
+            Menu difficultySelectMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
 
             string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
@@ -115,7 +121,9 @@ namespace bullethellwhatever.DrawCode.UI
 
             for (int i = 0; i < mainButtons.Length; i++)
             {
-                mainButtons[i] = new Button(buttonTexturesToDraw[i], Vector2.One * 3f, difficultySelectMenu);
+                mainButtons[i] = new Button(buttonTexturesToDraw[i], Vector2.One * 3f);
+
+                mainButtons[i].AddToMenu(difficultySelectMenu);
 
                 mainButtons[i].SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / (mainButtons.Length + 1) * (i + 1), difficultySelectMenu.Height() / 2f));
 
@@ -136,7 +144,9 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
 
-            BackButton backButton = new BackButton(AssetRegistry.GetTexture2D("Back"), new Vector2(3, 3), difficultySelectMenu);
+            BackButton backButton = new BackButton("Back", new Vector2(3, 3));
+
+            backButton.AddToMenu(difficultySelectMenu);
 
             backButton.SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / 5, difficultySelectMenu.Height() / 5));
 
@@ -146,16 +156,18 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateSettingsMenu()
         {
-            Menu settingsMenu = new Menu(Utilities.CentreOfScreen(), IdealScreenWidth, IdealScreenHeight, AssetRegistry.GetTexture2D("box"));
+            Menu settingsMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
 
             Button[] mainButtons = new Button[]
             {
-                new Button("NumberKeys", new Vector2(3, 3), settingsMenu),
-                new Button("Scroll", new Vector2(3, 3), settingsMenu),
+                new Button("NumberKeys", new Vector2(3, 3)),
+                new Button("Scroll", new Vector2(3, 3))
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
             {
+                mainButtons[i].AddToMenu(settingsMenu);
+
                 mainButtons[i].SetPositionInMenu(new Vector2(settingsMenu.Width() / (mainButtons.Length + 1) * (i + 1), settingsMenu.Height() / 2f));
 
                 mainButtons[i].Update();
@@ -173,7 +185,9 @@ namespace bullethellwhatever.DrawCode.UI
                 settingsMenu.AddUIElement(mainButtons[i]);
             }
 
-            BackButton backButton = new BackButton(AssetRegistry.GetTexture2D("Back"), new Vector2(3, 3), settingsMenu);
+            BackButton backButton = new BackButton("Back", new Vector2(3, 3));
+
+            backButton.AddToMenu(settingsMenu);
 
             backButton.SetPositionInMenu(new Vector2(settingsMenu.Width() / 5, settingsMenu.Height() / 5));
 
@@ -184,26 +198,14 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateCreditsMenu()
         {
-            BackButton backButton = new BackButton("Back", new Vector2(3, 3), null, new Vector2(IdealScreenWidth / 5f, IdealScreenHeight / 5f));
+            BackButton backButton = new BackButton("Back", new Vector2(3, 3), new Vector2(IdealScreenWidth / 5f, IdealScreenHeight / 5f));
 
             backButton.SetClickEvent(new Action(() =>
             {
                 SetGameState(GameStates.TitleScreen);
             }));
 
-            backButton.StandaloneUIElement();
-        }
-
-        public static void DrawMenus(SpriteBatch spriteBatch)
-        {
-            Drawing.RestartSpriteBatchForUI(spriteBatch);
-
-            foreach (Menu menu in activeMenus)
-            {
-                menu.Draw(spriteBatch);
-            }
-
-            // no need to restart again after this because menus are the last thing drawn
+            backButton.AddToActiveUIElements();
         }
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
         {

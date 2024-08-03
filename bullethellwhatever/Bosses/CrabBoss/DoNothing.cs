@@ -22,7 +22,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             Owner.Position.X += 3f;
-            MainCamera.SetCameraPositon(Owner.Position);
+            MainCamera.SetCameraPosition(Owner.Position);
             MainCamera.SetZoom(1f + AITimer / 400f);
         }
     }

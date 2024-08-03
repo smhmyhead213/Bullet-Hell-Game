@@ -84,7 +84,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BossAttacks = new CrabBossAttack[]
             {
-                new DoNothing(9999),
                 new TestAttack(BarDuration * 15),
                 new CrabCharge(BarDuration * 18 - 60),
                 new BackgroundPunches(390 * 7),
