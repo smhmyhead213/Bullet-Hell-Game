@@ -61,11 +61,29 @@ namespace bullethellwhatever.MainFiles
             {
                 activeFriendlyProjectiles.Add(projectile);
             }
+
+            foreach (Particle p in ParticlesToAdd)
+            {
+                activeParticles.Add(p);
+            }
+
+            enemyProjectilesToAddNextFrame.Clear();
+
+            friendlyProjectilesToAddNextFrame.Clear();
+
+            ParticlesToAdd.Clear();
+
+            NPCsToAddNextFrame.Clear();
         }
 
         public static void RunAIs()
         {
+            ParticlesToAdd = new List<Particle>();
+            ParticlesToRemove = new List<Particle>();
+
             List<TelegraphLine> toRemove = new List<TelegraphLine>();
+
+            AddEntitiesNextFrame();
 
             player.AI();
             player.UpdateHitbox();
@@ -159,6 +177,11 @@ namespace bullethellwhatever.MainFiles
             {
                 p.AI();
                 p.Update();
+            }
+
+            foreach (Particle p in EntityManager.ParticlesToRemove)
+            {
+                activeParticles.Remove(p);
             }
         }
 

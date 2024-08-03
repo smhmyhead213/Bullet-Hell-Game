@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Rotation = rotation + PI;
 
                 TelegraphLine t = SpawnTelegraphLine(rotation, 0, Owner.Texture.Width * Owner.GetSize().X, radiusOfRotation * 1.1f,
-                    teleTime, Owner.Position, Color.Red, "box", Owner, false);
+                    teleTime, Owner.Position, Color.White, "box", Owner, false);
 
                 Ray = new Deathray().CreateDeathray(Owner.Position, rotation, 1f, beamDuration, "box", t.Width, t.Length, 0, true, Color.Red, "CrabScrollingBeamShader", Owner);
 

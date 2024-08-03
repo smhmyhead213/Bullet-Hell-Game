@@ -201,10 +201,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             if (BoostersActive)
             {
-                spriteBatch.End();
-
-                //spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, transformMatrix: MainCamera.Matrix);
-
                 Drawing.RestartSpriteBatchForShaders(spriteBatch);
 
                 Effect boosterShader = AssetRegistry.GetShader("CrabRocketBoosterShader");

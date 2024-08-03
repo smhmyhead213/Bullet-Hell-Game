@@ -24,11 +24,6 @@ namespace bullethellwhatever.MainFiles
         }
         public void HandleGame()
         {
-            EntityManager.ParticlesToAdd = new List<Particle>();
-            EntityManager.ParticlesToRemove = new List<Particle>();
-
-            ManageLists();
-
             switch (State)
             {
                 case GameStates.TitleScreen:
@@ -68,39 +63,6 @@ namespace bullethellwhatever.MainFiles
                 }
             }
 
-            foreach (Particle p in EntityManager.ParticlesToAdd)
-            {
-                activeParticles.Add(p);
-            }
-
-            foreach (Particle p in EntityManager.ParticlesToRemove)
-            {
-                activeParticles.Remove(p);
-            }
-        }
-
-        public void ManageLists()
-        {
-            foreach (Projectile projectile in enemyProjectilesToAddNextFrame)
-            {
-                activeProjectiles.Add(projectile);
-            }
-
-            enemyProjectilesToAddNextFrame.Clear();
-
-            foreach (Projectile projectile in friendlyProjectilesToAddNextFrame)
-            {
-                activeFriendlyProjectiles.Add(projectile);
-            }
-
-            friendlyProjectilesToAddNextFrame.Clear();
-
-            foreach (NPC npc in NPCsToAddNextFrame)
-            {
-                activeNPCs.Add(npc);
-            }
-
-            NPCsToAddNextFrame.Clear();
         }
     }
 }

@@ -35,11 +35,11 @@ namespace bullethellwhatever.DrawCode
             // coordinates within VertexPositionColour are fractions of the screen.
 
             //vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
-            //vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
+            //vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Red);
             //vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
 
             vertices[0] = CreateVertex(Utilities.CentreOfScreen(), Color.Red); // should the vertex positions be on actual screen size or ideal? ask if prims are affected by camera
-            vertices[1] = CreateVertex(new Vector2(0, IdealScreenHeight), Color.Green);
+            vertices[1] = CreateVertex(new Vector2(0, IdealScreenHeight), Color.Red);
             vertices[2] = CreateVertex(new Vector2(IdealScreenWidth, IdealScreenHeight), Color.Blue);
             vertices[3] = CreateVertex(new Vector2(IdealScreenWidth / 2, 0), Color.Yellow);
 

@@ -123,6 +123,8 @@ namespace bullethellwhatever.AssetManagement
         }
         public static void PopulateFileNameMap()
         {
+            //File.Delete("Content\\TelegraphLineShader.xnb");
+
             string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
 
             for (int i = 0; i < files.Length; i++)
@@ -148,8 +150,8 @@ namespace bullethellwhatever.AssetManagement
                 {
                     toSaveAs = toSaveAs.Substring(0, indexOfDot); //remove file extension
 
-                    if (!FileNameMap.ContainsKey(toSaveAs))
-                        FileNameMap.Add(toSaveAs, RemoveContentPrefix(RemoveFileExtenstion(files[i])));
+                    //if (!FileNameMap.ContainsKey(toSaveAs))
+                    FileNameMap.Add(toSaveAs, RemoveContentPrefix(RemoveFileExtenstion(files[i])));
                 }
             }
         }

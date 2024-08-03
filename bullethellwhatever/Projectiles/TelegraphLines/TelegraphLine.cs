@@ -131,7 +131,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
 
             Vector2 originOffset = new Vector2(5f, 0f); //i have no idea why the value 5 works everytime i have genuinely no clue
 
-            spritebatch.Draw(player.Texture, Origin, null, Colour, Rotation + PI, originOffset, size, SpriteEffects.None, 0);
+            spritebatch.Draw(Texture, Origin, null, Colour, Rotation + PI, originOffset, size, SpriteEffects.None, 0);
         }
     }
 }
