@@ -62,7 +62,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             OriginalAttacks = BossAttacks;
 
-            RandomlyArrangeAttacks();
+            //RandomlyArrangeAttacks();
         }
 
         public virtual void CreateChain(float chainLength)

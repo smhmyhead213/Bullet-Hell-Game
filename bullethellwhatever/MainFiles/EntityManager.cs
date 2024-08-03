@@ -16,8 +16,8 @@ namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
-        public static List<Particle> ParticlesToRemove;
-        public static List<Particle> ParticlesToAdd;
+        public static List<Particle> ParticlesToRemove = new List<Particle>();
+        public static List<Particle> ParticlesToAdd = new List<Particle>();
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
@@ -78,9 +78,6 @@ namespace bullethellwhatever.MainFiles
 
         public static void RunAIs()
         {
-            ParticlesToAdd = new List<Particle>();
-            ParticlesToRemove = new List<Particle>();
-
             List<TelegraphLine> toRemove = new List<TelegraphLine>();
 
             AddEntitiesNextFrame();
@@ -179,7 +176,7 @@ namespace bullethellwhatever.MainFiles
                 p.Update();
             }
 
-            foreach (Particle p in EntityManager.ParticlesToRemove)
+            foreach (Particle p in ParticlesToRemove)
             {
                 activeParticles.Remove(p);
             }
@@ -205,8 +202,6 @@ namespace bullethellwhatever.MainFiles
             toSpawn.InitialiseBoss();
 
             Drawing.ScreenShakeTimer = 0;
-
-            Drawing.screenShakeObject = new UtilitySystems.ScreenShakeObject(0, 0);
 
             toSpawn.Spawn(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture.Name, toSpawn.Size, toSpawn.Health, 200, toSpawn.Colour, false, true);
         }

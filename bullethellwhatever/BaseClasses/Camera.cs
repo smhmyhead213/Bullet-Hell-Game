@@ -16,6 +16,7 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 Matrix;
 
+        public float ScreenShakeOffset;
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
@@ -40,11 +41,12 @@ namespace bullethellwhatever.BaseClasses
             RotationMatrix = Matrix4x4.Identity;
             Position = new Microsoft.Xna.Framework.Vector2(0, 0);
             Origin = new Microsoft.Xna.Framework.Vector2(0, 0);
+            ScreenShakeOffset = 0;
         }
 
         public void UpdateMatrices()
         {
-            TranslationMatrix = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(Position.X, Position.Y, 0));
+            TranslationMatrix = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(Position.X + ScreenShakeOffset, Position.Y + ScreenShakeOffset, 0));
 
             // the zoom matrix normally zooms the camera to the top left of the screen.
             // this fixes the problem by translating everything so the zoom point is at the top left of the screen, zooming, and then moving everything back.
@@ -84,6 +86,11 @@ namespace bullethellwhatever.BaseClasses
 
             ZoomMatrix = zoomMatrix;
         }
+
+        public void SetScreenShakeOffset(float offset)
+        {
+            ScreenShakeOffset = offset;
+        }
         public void ResetTranslation()
         {
             TranslationMatrix = Matrix4x4.Identity;
@@ -92,12 +99,13 @@ namespace bullethellwhatever.BaseClasses
         {
             ZoomMatrix = Matrix4x4.Identity;
         }
-        public void ResetMatrices()
+        public void Reset()
         {
             ResetTranslation();
             ResetZoom();
             Origin = Microsoft.Xna.Framework.Vector2.Zero;
             Position = Microsoft.Xna.Framework.Vector2.Zero;
+            ScreenShakeOffset = 0;
         }
     }
 

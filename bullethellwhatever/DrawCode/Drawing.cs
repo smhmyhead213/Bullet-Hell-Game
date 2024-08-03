@@ -18,24 +18,23 @@ namespace bullethellwhatever.DrawCode
     public static class Drawing
     {
         public static bool AreButtonsDrawn;
-        public static ScreenShakeObject screenShakeObject;
-        public static Vector2 ScreenShakeMagnitude;
-        public static int ScreenShakeDuration;
+
+        public static float ScreenShakeMagnitude;
         public static int ScreenShakeTimer;
-        public static bool IsScreenShaking;
+        public static bool IsScreenShaking => ScreenShakeTimer > 0;
         public static int Timer;
 
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
-            screenShakeObject = new ScreenShakeObject(0, 0);
+
         }
 
         public static void UpdateDrawer()
         {
-            if (screenShakeObject is not null && !Utilities.ImportantMenusPresent() && MainInstance.IsActive)
+            if (!Utilities.ImportantMenusPresent() && MainInstance.IsActive)
             {
-                screenShakeObject.TickDownDuration();
+                ScreenShakeTimer--;
             }
         }
         public static void RestartSpriteBatchForUI(SpriteBatch s)
@@ -59,13 +58,9 @@ namespace bullethellwhatever.DrawCode
         {
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
 
-            //Draw the item at the position, moved by the amount the screen is shaking.
-
-            Vector2 screenShakeAdd = screenShakeObject.Timer > 0 ? ScreenShakeMagnitude : Vector2.Zero;
             Vector2 finalOrigin = origin is null ? new Vector2(texture.Width / 2, texture.Height / 2) : origin.Value;
 
-            _spriteBatch.Draw(texture, position + screenShakeAdd, sourceRectangle, color, rotation, finalOrigin, scale, spriteEffects, layerDepth);
-
+            _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, finalOrigin, scale, spriteEffects, layerDepth);
         }
         public static void BetterDraw(ManagedTexture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {
@@ -80,21 +75,28 @@ namespace bullethellwhatever.DrawCode
         }
         public static void ScreenShake(int magnitude, int duration)
         {
-            if (magnitude >= screenShakeObject.Magnitude.X) //always apply strongest screen shake
-                screenShakeObject = new ScreenShakeObject(magnitude, duration);
+            if (magnitude >= ScreenShakeMagnitude) //always apply strongest screen shake
+            { 
+                ScreenShakeMagnitude = magnitude;
+                ScreenShakeTimer = duration;
+            }
         }
 
         public static void StopScreenShake()
         {
-            screenShakeObject = new ScreenShakeObject(0, 0);
+            ScreenShakeTimer = 0;
+            MainCamera.SetScreenShakeOffset(0f);
         }
         public static void HandleScreenShake() //under the hood screen shaking
         {
-            if (screenShakeObject is not null && !Utilities.ImportantMenusPresent() && MainInstance.IsActive) 
+            if (!Utilities.ImportantMenusPresent() && MainInstance.IsActive) 
             {
-                Random rng = new Random();
-
-                screenShakeObject.Magnitude = new(rng.Next((int)screenShakeObject.MaxMagnitude.X), rng.Next((int)screenShakeObject.MaxMagnitude.Y));
+                MainCamera.SetScreenShakeOffset(Utilities.RandomFloat(0f, ScreenShakeMagnitude));
+            }
+            
+            if (!IsScreenShaking)
+            {
+                MainCamera.SetScreenShakeOffset(0f);
             }
         }
 
