@@ -27,7 +27,7 @@ namespace bullethellwhatever.DrawCode
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
-
+            DrawGame.PlayerHUD = new UI.Player.PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(IdealScreenWidth / 10f, IdealScreenHeight / 10f));
         }
 
         public static void UpdateDrawer()

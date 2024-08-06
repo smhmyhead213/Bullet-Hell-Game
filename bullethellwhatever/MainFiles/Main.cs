@@ -190,8 +190,6 @@ namespace bullethellwhatever.MainFiles
             //    }
             //}
 
-            AssetRegistry.Initialise();
-
             font = Content.Load<SpriteFont>("font");
 
             UI.CreateTitleScreenMenu();
@@ -204,6 +202,8 @@ namespace bullethellwhatever.MainFiles
             GameState.State = GameState.GameStates.TitleScreen;
 
             gameStateHandler = new GameStateHandler();
+
+            AssetRegistry.Initialise();
 
             Drawing.Initialise();
 

@@ -61,7 +61,7 @@ namespace bullethellwhatever.MainFiles
                 case GameStates.DifficultySelect : UI.CreateDifficultySelectMenu(); break;
                 case GameStates.Credits: UI.CreateCreditsMenu(); break;
                 case GameStates.InGame:
-                    DrawGame.ResetHUD();
+                    DrawGame.PlayerHUD.ResetHUD();
                     break; // dont bother doing anything
                 default: throw new Exception("if you hit this exception you really messed up"); // no game state is active somehow
             }
