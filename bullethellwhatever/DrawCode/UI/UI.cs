@@ -21,9 +21,9 @@ namespace bullethellwhatever.DrawCode.UI
 
             Button[] buttons = new Button[]
             {
-                new Button("StartButton", new Vector2(3, 3)),
-                new Button("SettingsButton", new Vector2(3, 3)),
-                new Button("StartButton", new Vector2(3, 3)),
+                new Button("StartButton", new Vector2(150, 60)),
+                new Button("SettingsButton", new Vector2(150, 60)),
+                new Button("StartButton", new Vector2(150, 60)),
             };
 
             Action[] actions = new Action[]
@@ -71,9 +71,9 @@ namespace bullethellwhatever.DrawCode.UI
 
             Button[] mainButtons = new Button[] // the buttons all in a row
             {
-                new Button("BossButton", new Vector2(3, 3)),
-                new Button("BossButton", new Vector2(3, 3)),
-                new Button("BossButton", new Vector2(3, 3)),
+                new Button("BossButton", new Vector2(150, 60)),
+                new Button("BossButton", new Vector2(150, 60)),
+                new Button("BossButton", new Vector2(150, 60)),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -101,7 +101,7 @@ namespace bullethellwhatever.DrawCode.UI
                 bossSelectMenu.AddUIElement(mainButtons[i]);
             }
 
-            BackButton backButton = new BackButton("Back", new Vector2(3, 3));
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
             backButton.AddToMenu(bossSelectMenu);
 
@@ -121,7 +121,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             for (int i = 0; i < mainButtons.Length; i++)
             {
-                mainButtons[i] = new Button(buttonTexturesToDraw[i], Vector2.One * 3f);
+                mainButtons[i] = new Button(buttonTexturesToDraw[i], new Vector2(150, 60));
 
                 mainButtons[i].AddToMenu(difficultySelectMenu);
 
@@ -144,7 +144,7 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
 
-            BackButton backButton = new BackButton("Back", new Vector2(3, 3));
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
             backButton.AddToMenu(difficultySelectMenu);
 
@@ -160,8 +160,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             Button[] mainButtons = new Button[]
             {
-                new Button("NumberKeys", new Vector2(3, 3)),
-                new Button("Scroll", new Vector2(3, 3))
+                new Button("NumberKeys", new Vector2(150, 60)),
+                new Button("Scroll", new Vector2(150, 60))
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -185,7 +185,7 @@ namespace bullethellwhatever.DrawCode.UI
                 settingsMenu.AddUIElement(mainButtons[i]);
             }
 
-            BackButton backButton = new BackButton("Back", new Vector2(3, 3));
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
             backButton.AddToMenu(settingsMenu);
 
@@ -198,7 +198,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateCreditsMenu()
         {
-            BackButton backButton = new BackButton("Back", new Vector2(3, 3), new Vector2(IdealScreenWidth / 5f, IdealScreenHeight / 5f));
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60), new Vector2(IdealScreenWidth / 5f, IdealScreenHeight / 5f));
 
             backButton.SetClickEvent(new Action(() =>
             {

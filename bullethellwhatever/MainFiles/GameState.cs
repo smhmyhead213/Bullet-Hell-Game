@@ -21,7 +21,7 @@ namespace bullethellwhatever.MainFiles
         }
 
         public static GameStates State;
-        public static GameStates PreviousState;
+        public static Stack<GameStates> PreviousStates = new Stack<GameStates>();
         public enum Difficulties
         {
             Easy, //chloe gamemode
@@ -44,9 +44,13 @@ namespace bullethellwhatever.MainFiles
 
         public static bool HasASettingBeenChanged;
 
-        public static void SetGameState(GameStates state)
+        public static void SetGameState(GameStates state, bool wasRevertedFromPreviousState = false)
         {
-            PreviousState = State;
+            if (!wasRevertedFromPreviousState)
+            {
+                PreviousStates.Push(State);
+            }
+
             State = state;
 
             switch (State)
@@ -65,7 +69,7 @@ namespace bullethellwhatever.MainFiles
 
         public static void RevertToPreviousGameState()
         {
-            SetGameState(PreviousState);
+            SetGameState(PreviousStates.Pop(), true);
         }
     }
 }

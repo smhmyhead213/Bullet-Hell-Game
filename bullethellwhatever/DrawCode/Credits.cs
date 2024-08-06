@@ -29,7 +29,7 @@ namespace bullethellwhatever.DrawCode
             {
                 CreditPositions[i].Y = CreditPositions[i].Y - 1f;
                 
-                if (CreditPositions[i].Y > 0f && CreditPositions[i].Y < Main._graphics.PreferredBackBufferHeight)
+                if (CreditPositions[i].Y > 0f && CreditPositions[i].Y < _graphics.PreferredBackBufferHeight) // the use of preferredbackbufferheight might cause resolution independence problems
                 {
                     Utilities.drawTextInDrawMethod(Credit[i], CreditPositions[i], spriteBatch, font, Color.White);
                 }
@@ -39,6 +39,7 @@ namespace bullethellwhatever.DrawCode
         public static void ReadInCredits()
         {
             Credit = File.ReadAllLines(@"Content/credits.txt", Encoding.UTF8);
+
             ReadInCreditsAlready = true;
 
             // also initialise positions

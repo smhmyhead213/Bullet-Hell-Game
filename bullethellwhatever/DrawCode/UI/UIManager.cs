@@ -59,5 +59,20 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Draw(spriteBatch);
             }
         }
+
+        public static List<UIElement> GetListOfActiveMenus()
+        {
+            List<UIElement> output = new List<UIElement>();
+
+            foreach (UIElement element in ActiveUIElements)
+            {
+                if (element is Menu)
+                {
+                    output.Add((Menu)element);
+                }
+            }
+
+            return output;
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace bullethellwhatever.DrawCode.UI
                 HandleClick();
             }
 
-            ClickBox = new(Position.X - (Texture.Width / 2 * Size.X), Position.Y - (Texture.Height / 2 * Size.Y), Texture.Width * Size.X, Texture.Height * Size.Y);
+            ClickBox = new(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);
         }
         public virtual Vector2 CalculateActualPostion()
         {
@@ -96,12 +96,9 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public virtual void Draw(SpriteBatch s)
         {
-            if (ClickBox.Contains(MousePosition))
-            {
-                Drawing.BetterDraw(Texture, Position, null, Color.Red, 0, Size, SpriteEffects.None, 1);
-            }
-            else
-                Drawing.BetterDraw(Texture, Position, null, Color.White, 0, Size, SpriteEffects.None, 1);
+            Color colour = ClickBox.Contains(MousePosition) ? Color.Red : Color.White;
+
+            Drawing.BetterDraw(Texture, Position, null, colour, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
         }
     }
 }

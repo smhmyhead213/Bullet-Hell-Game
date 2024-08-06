@@ -40,7 +40,7 @@ namespace bullethellwhatever.DrawCode.UI
                     PauseMenu.SetDraggable(true);
                     PauseMenu.SetImportant(true);
 
-                    ExitButton exitGame = new ExitButton("ExitButton", Vector2.One * 3f);
+                    ExitButton exitGame = new ExitButton("ExitButton", new Vector2(150, 60));
 
                     exitGame.AddToMenu(PauseMenu);
 

@@ -51,7 +51,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     EntityManager.SpawnBoss();
                     player = new Player("box");
-                    player.Spawn(new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
+                    player.Spawn(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 10 * 9), new Vector2(0, 0), 10, "box");
                     activeProjectiles.Clear();
                     isGameStarted = true;
                 }

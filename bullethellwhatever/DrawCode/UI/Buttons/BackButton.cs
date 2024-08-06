@@ -21,7 +21,6 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
         public override void HandleClick()
         {
             GameState.RevertToPreviousGameState();
-            Owner.Hide();
 
             base.HandleClick();
         }
