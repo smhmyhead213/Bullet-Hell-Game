@@ -264,25 +264,12 @@ namespace bullethellwhatever.MainFiles
 
             switch (GameState.State)
             {
-                case GameState.GameStates.TitleScreen:
-                    UI.DrawTitleScreen(_spriteBatch);
-                    break;
-                case GameState.GameStates.BossSelect:
-                    //UI.DrawBossSelect(_spriteBatch);
-                    break;
-                case GameState.GameStates.DifficultySelect:
-                    //UI.DrawDifficultySelect(_spriteBatch);
-                    break;
-                case GameState.GameStates.Settings:
-                    //UI.DrawSettings(_spriteBatch);
-                    break;
-                case GameState.GameStates.InGame:
-                    DrawGame.DrawTheGame(gameTime, _spriteBatch);
-                    break;
                 case GameState.GameStates.Credits:
                     Credits.CreditSequence(_spriteBatch);
                     break;
             }
+
+            DrawGame.DrawTheGame(gameTime, _spriteBatch);
 
             UIManager.DrawUI(_spriteBatch);
 

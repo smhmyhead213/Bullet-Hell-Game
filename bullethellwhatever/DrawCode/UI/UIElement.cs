@@ -19,8 +19,10 @@ namespace bullethellwhatever.DrawCode.UI
         public Vector2 Size;
         public Texture2D Texture;
         public Menu Owner;
-        public bool IsInMenu => Owner is not null;
 
+        public float Opacity;
+        public bool IsInMenu => Owner is not null;
+        
         public RectangleButGood ClickBox;
         public Action ClickEvent;
         public UIElement(string texture, Vector2 size, Vector2 position = default)
@@ -28,6 +30,8 @@ namespace bullethellwhatever.DrawCode.UI
             PositionInMenu = position;
             Texture = AssetRegistry.GetTexture2D(texture);
             Size = size;
+
+            Opacity = 1;
         }
 
         public virtual void Update()
@@ -94,11 +98,17 @@ namespace bullethellwhatever.DrawCode.UI
         {
             UIManager.UIElemntsToRemoveNextFrame.Add(this);
         }
+
+        public void SetOpacity(float opacity)
+        {
+            Opacity = opacity;
+        }
+
         public virtual void Draw(SpriteBatch s)
         {
             Color colour = ClickBox.Contains(MousePosition) ? Color.Red : Color.White;
-
-            Drawing.BetterDraw(Texture, Position, null, colour, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+            
+            Drawing.BetterDraw(Texture, Position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
         }
     }
 }

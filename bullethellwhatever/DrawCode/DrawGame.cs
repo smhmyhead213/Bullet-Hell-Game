@@ -25,13 +25,6 @@ namespace bullethellwhatever.DrawCode
 
             DialogueSystem.DrawDialogues(s);
 
-            if (activeNPCs.Count == 0) // stuff to draw while the player is not in combat 
-            {
-                Utilities.drawTextInDrawMethod("Press Q to restart the fight. If you wish to change your settings or the difficulty, click the button.", new Vector2(_graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 2), Main._spriteBatch, Main.font, Color.White);
-
-                //Add in the title screen button.
-            }
-
             // FPS counter.
             Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4), Main._spriteBatch, Main.font, Color.White);
 

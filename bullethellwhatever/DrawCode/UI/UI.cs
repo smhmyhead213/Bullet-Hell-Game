@@ -19,6 +19,8 @@ namespace bullethellwhatever.DrawCode.UI
         {
             Menu titleMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
 
+            titleMenu.SetOpacity(0f);
+
             Button[] buttons = new Button[]
             {
                 new Button("StartButton", new Vector2(150, 60)),
@@ -58,8 +60,6 @@ namespace bullethellwhatever.DrawCode.UI
                 buttons[i].Update();
 
                 buttons[i].SetClickEvent(actions[i]);
-
-                titleMenu.AddUIElement(buttons[i]);
             }
 
             titleMenu.Display();
@@ -68,6 +68,8 @@ namespace bullethellwhatever.DrawCode.UI
         public static void CreateBossSelectMenu()
         {
             Menu bossSelectMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+
+            bossSelectMenu.SetOpacity(0f);
 
             Button[] mainButtons = new Button[] // the buttons all in a row
             {
@@ -97,23 +99,26 @@ namespace bullethellwhatever.DrawCode.UI
                 });
 
                 mainButtons[i].SetClickEvent(startButtonAction);
-
-                bossSelectMenu.AddUIElement(mainButtons[i]);
             }
 
             BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
+            backButton.SetClickEvent(new Action(() =>
+            {
+                bossSelectMenu.Hide();
+            }));
+
             backButton.AddToMenu(bossSelectMenu);
 
             backButton.SetPositionInMenu(new Vector2(bossSelectMenu.Width() / 5, bossSelectMenu.Height() / 5));
-
-            bossSelectMenu.AddUIElement(backButton);
 
             bossSelectMenu.Display();
         }
         public static void CreateDifficultySelectMenu()
         {
             Menu difficultySelectMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+
+            difficultySelectMenu.SetOpacity(0f);
 
             string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
@@ -123,7 +128,7 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 mainButtons[i] = new Button(buttonTexturesToDraw[i], new Vector2(150, 60));
 
-                mainButtons[i].AddToMenu(difficultySelectMenu);
+                difficultySelectMenu.AddUIElement(mainButtons[i]);
 
                 mainButtons[i].SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / (mainButtons.Length + 1) * (i + 1), difficultySelectMenu.Height() / 2f));
 
@@ -139,24 +144,26 @@ namespace bullethellwhatever.DrawCode.UI
                 });
 
                 mainButtons[i].SetClickEvent(startButtonAction);
-
-                difficultySelectMenu.AddUIElement(mainButtons[i]);
             }
 
-
             BackButton backButton = new BackButton("Back", new Vector2(150, 60));
+
+            backButton.SetClickEvent(new Action(() =>
+            {
+                difficultySelectMenu.Hide();
+            }));
 
             backButton.AddToMenu(difficultySelectMenu);
 
             backButton.SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / 5, difficultySelectMenu.Height() / 5));
-
-            difficultySelectMenu.AddUIElement(backButton);
 
             difficultySelectMenu.Display();
         }
         public static void CreateSettingsMenu()
         {
             Menu settingsMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+
+            settingsMenu.SetOpacity(0f);
 
             Button[] mainButtons = new Button[]
             {
@@ -174,24 +181,25 @@ namespace bullethellwhatever.DrawCode.UI
 
                 Action startButtonAction = new Action(() =>
                 {
-                    WeaponSwitchControl = i == 0 ? false : true;
+                    WeaponSwitchControl = i == 0 ? false : true; // ??
                     SetGameState(GameStates.Settings);
                     Drawing.ConfirmControlSettingsChange(_spriteBatch);
                     settingsMenu.Hide();
                 });
 
                 mainButtons[i].SetClickEvent(startButtonAction);
-
-                settingsMenu.AddUIElement(mainButtons[i]);
             }
 
             BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
+            backButton.SetClickEvent(new Action(() =>
+            {
+                settingsMenu.Hide();
+            }));
+
             backButton.AddToMenu(settingsMenu);
 
             backButton.SetPositionInMenu(new Vector2(settingsMenu.Width() / 5, settingsMenu.Height() / 5));
-
-            settingsMenu.AddUIElement(backButton);
 
             settingsMenu.Display();
         }
@@ -202,7 +210,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             backButton.SetClickEvent(new Action(() =>
             {
-                SetGameState(GameStates.TitleScreen);
+                backButton.Remove();
             }));
 
             backButton.AddToActiveUIElements();

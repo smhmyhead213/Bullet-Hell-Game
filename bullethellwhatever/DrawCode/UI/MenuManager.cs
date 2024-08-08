@@ -20,7 +20,7 @@ namespace bullethellwhatever.DrawCode.UI
         public static Menu PauseMenu;
         public static void Initialise()
         {
-            MenuCooldown = 20;
+            MenuCooldown = 10;
             MenuCooldownTimer = MenuCooldown;
             PauseMenuDisplayed = false;
         }
