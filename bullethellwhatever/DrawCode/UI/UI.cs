@@ -23,7 +23,12 @@ namespace bullethellwhatever.DrawCode.UI
             titleMenu.SetOpacity(0f);
 
             float titleElementsStartOffsetToRightOfScreen = 300f;
-            float titleElementEndOffsetToRightOfScreen = -300f;
+            float titleBannerEndOffsetToRightOfScreen = -300f;
+            float[] titleElementEndOffsetToRightOfScreen = new float[3]
+                { -250f,
+                  -225f,
+                  -225f };
+
             float titleBannerY = 200f;
             float yDistanceBetweenButtonsOnMainMenu = 200f;
             float timeToFadeIn = 60;
@@ -66,7 +71,7 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 float progress = MathHelper.Clamp(EasingFunctions.EaseOutElastic(titleBanner.AITimer / timeToFadeIn), 0f, 2f);
 
-                titleBanner.Position.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen, progress);
+                titleBanner.Position.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleBannerEndOffsetToRightOfScreen, progress);
             }));
 
             for (int i = 0; i < buttons.Length; i++)
@@ -94,7 +99,7 @@ namespace bullethellwhatever.DrawCode.UI
 
                     //due to the use of idealscreen width, this will break the buttons position if the menu is moved. change idealscreenwidth to right side of main menu if this needs fixed.
 
-                    buttons[locali].PositionInMenu.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen, progress);
+                    buttons[locali].PositionInMenu.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen[locali], progress);
                 }));
             }
 

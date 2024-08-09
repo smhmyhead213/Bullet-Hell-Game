@@ -12,6 +12,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\bin\Windows\Sounds\**" />
+    <Compile Remove="Content\Sounds\**" />
+    <EmbeddedResource Remove="Content\bin\Windows\Sounds\**" />
+    <EmbeddedResource Remove="Content\Sounds\**" />
+    <None Remove="Content\bin\Windows\Sounds\**" />
+    <None Remove="Content\Sounds\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Content\Music\TestBossMusic.mp3" />
   </ItemGroup>
   <ItemGroup>

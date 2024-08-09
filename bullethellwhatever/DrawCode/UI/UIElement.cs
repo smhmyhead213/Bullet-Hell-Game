@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.AssetManagement;
 using System.Windows.Forms;
+using bullethellwhatever.UtilitySystems.SoundSystems;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -115,6 +116,8 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 ClickEvent();
             }
+
+            SoundSystem.PlaySound("testsound");
         }
         public bool IsClicked()
         {

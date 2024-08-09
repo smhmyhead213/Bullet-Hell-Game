@@ -35,13 +35,13 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
             if (!IsSongPlaying)
             {
                 //MediaPlayer.Play(ActiveSong);
-                FMODSystem.getVCA("vca:/ MyVCA", out VCA vca);
-                vca.setVolume(0.5f);
+                //FMODSystem.getVCA("vca:/ MyVCA", out VCA vca);
+                //vca.setVolume(0.5f);
                 var path = "event:/TestBossMusic";
-                FMODSystem.getEvent(path, out EventDescription evDesc);
-                evDesc.createInstance(out EventInstance evInst);
-                evInst.start();
-                evInst.release();
+                //FMODSystem.getEvent(path, out EventDescription evDesc);
+                //evDesc.createInstance(out EventInstance evInst);
+                //evInst.start();
+                //evInst.release();
                 IsSongPlaying = true;
             }
         }

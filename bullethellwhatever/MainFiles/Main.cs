@@ -62,8 +62,6 @@ namespace bullethellwhatever.MainFiles
 
         public static SoundEffectInstance musicInstance;
 
-        public static FMOD.Studio.System FMODSystem;
-
         public static Player player;
 
         public static Vector2 RawScreenArea;
@@ -110,23 +108,7 @@ namespace bullethellwhatever.MainFiles
         {
             // -- set up fmod --
 
-            FMOD.Memory.GetStats(out _, out _);
-            FMOD.Studio.System.create(out var fmodStudioSystem);
-            FMODSystem = fmodStudioSystem;
-            fmodStudioSystem.getCoreSystem(out var fmodSystem);
-            fmodSystem.setDSPBufferSize(256, 4);
-            fmodStudioSystem.initialize(
-              128,
-              INITFLAGS.NORMAL,
-              FMOD.INITFLAGS.NORMAL,
-              (IntPtr)0
-            );
-            fmodStudioSystem.loadBankFile(
-            // adjust this path to wherever you want to keep your .bank files
-            "Music/Master.bank",
-            LOAD_BANK_FLAGS.NORMAL,
-            out Bank bank
-            );
+            SoundSystem.SetUpFMOD();
 
             // -- load in assets --
 
@@ -220,7 +202,7 @@ namespace bullethellwhatever.MainFiles
 
         protected override void Update(GameTime gameTime)
         {
-            FMODSystem.update(); 
+            SoundSystem.Update(); 
 
             GameTime++;
 

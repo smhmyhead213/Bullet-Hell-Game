@@ -275,12 +275,6 @@
 /processorParam:TextureFormat=Color
 /build:MenuBG.png
 
-#begin Music/Master.bank
-/copy:Music/Master.bank
-
-#begin Music/Master.strings.bank
-/copy:Music/Master.strings.bank
-
 #begin NormalButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -460,6 +454,15 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/TelegraphLineShader.fx
+
+#begin Sounds/bullethellgamesounds.bank
+/copy:Sounds/bullethellgamesounds.bank
+
+#begin Sounds/Master.bank
+/copy:Sounds/Master.bank
+
+#begin Sounds/Master.strings.bank
+/copy:Sounds/Master.strings.bank
 
 #begin StartButton.png
 /importer:TextureImporter
