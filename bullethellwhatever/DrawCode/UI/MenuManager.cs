@@ -31,7 +31,7 @@ namespace bullethellwhatever.DrawCode.UI
                 MenuCooldownTimer--;
             }
 
-            if (IsKeyPressed(Keys.Escape) && GameState.State == GameState.GameStates.InGame && MenuCooldownTimer == 0)
+            if (IsKeyPressed(Keys.Escape) && MenuCooldownTimer == 0)
             {
                 if (!PauseMenuDisplayed)
                 {

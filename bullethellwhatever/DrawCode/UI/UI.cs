@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.VisualBasic.Logging;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -21,11 +22,19 @@ namespace bullethellwhatever.DrawCode.UI
 
             titleMenu.SetOpacity(0f);
 
-            Button[] buttons = new Button[]
+            float titleElementsStartOffsetToRightOfScreen = 300f;
+            float titleElementEndOffsetToRightOfScreen = -300f;
+            float titleBannerY = 200f;
+            float yDistanceBetweenButtonsOnMainMenu = 200f;
+            float timeToFadeIn = 60;
+
+            InactiveElement titleBanner = new InactiveElement("TitleBanner", 1f);
+
+            UIElement[] buttons = new UIElement[]
             {
-                new Button("StartButton", new Vector2(150, 60)),
-                new Button("SettingsButton", new Vector2(150, 60)),
-                new Button("StartButton", new Vector2(150, 60)),
+                new Button("PlayButton", 1.5f),
+                new Button("SettingsButton", 1.5f),
+                new Button("CreditsButton", 1.5f),
             };
 
             Action[] actions = new Action[]
@@ -40,26 +49,53 @@ namespace bullethellwhatever.DrawCode.UI
                 {
                     SetGameState(GameStates.Settings);
                     titleMenu.Hide();
-                    //CreateSettingsMenu();
                 }),
 
                 new Action(() => // credits button action
                 {
                     SetGameState(GameStates.Credits);
                     titleMenu.Hide();
-                    //CreateCreditsMenu();
                 }),
             };
+
+            titleBanner.AddToMenu(titleMenu);
+
+            titleBanner.SetPositionInMenu(new Vector2(IdealScreenWidth + titleElementsStartOffsetToRightOfScreen, titleBannerY));
+
+            titleBanner.SetExtraAI(new Action(() =>
+            {
+                float progress = MathHelper.Clamp(EasingFunctions.EaseOutElastic(titleBanner.AITimer / timeToFadeIn), 0f, 2f);
+
+                titleBanner.Position.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen, progress);
+            }));
 
             for (int i = 0; i < buttons.Length; i++)
             {
                 buttons[i].AddToMenu(titleMenu);
 
-                buttons[i].SetPositionInMenu(new Vector2(titleMenu.Width() / (buttons.Length + 1) * (i + 1), titleMenu.Height() / 2f));
+                buttons[i].SetPositionInMenu(new Vector2(IdealScreenWidth + titleElementsStartOffsetToRightOfScreen, titleBannerY + (i + 1) * yDistanceBetweenButtonsOnMainMenu));
 
                 buttons[i].Update();
 
                 buttons[i].SetClickEvent(actions[i]);
+            }
+
+            int delayBetweenButtonMovements = 30;
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                int locali = i;
+
+                buttons[i].SetExtraAI(new Action(() =>
+                {
+                    float timeToUse = MathHelper.Clamp(buttons[locali].AITimer - (locali + 1) * delayBetweenButtonMovements, 0f, timeToFadeIn); // clamp the time value to use to go no less than 0, the easing function does not respond well to inputs < 0
+
+                    float progress = EasingFunctions.EaseOutElastic(timeToUse / timeToFadeIn);
+
+                    //due to the use of idealscreen width, this will break the buttons position if the menu is moved. change idealscreenwidth to right side of main menu if this needs fixed.
+
+                    buttons[locali].PositionInMenu.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen, progress);
+                }));
             }
 
             titleMenu.Display();
@@ -140,6 +176,7 @@ namespace bullethellwhatever.DrawCode.UI
                 {
                     SetGameState(GameStates.InGame);
                     GameState.Difficulty = (Difficulties)locali;
+                    EntityManager.SpawnBoss();
                     difficultySelectMenu.Hide();
                 });
 

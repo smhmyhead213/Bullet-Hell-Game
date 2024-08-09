@@ -239,6 +239,10 @@ namespace bullethellwhatever
             return false;
         }
 
+        public static Vector2 TextureDimensionsToVector(this Texture2D texture)
+        {
+            return new Vector2(texture.Width, texture.Height);
+        }
         public static float ScreenDiagonalLength()
         {
             return Sqrt(IdealScreenWidth * IdealScreenWidth + IdealScreenHeight * IdealScreenHeight);

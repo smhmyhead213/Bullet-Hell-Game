@@ -20,28 +20,68 @@ namespace bullethellwhatever.DrawCode.UI
         public Texture2D Texture;
         public Menu Owner;
 
+        public Color Colour;
+
         public float Opacity;
+        public int AITimer;
         public bool IsInMenu => Owner is not null;
         
         public RectangleButGood ClickBox;
+
+        public Action ExtraAI;
         public Action ClickEvent;
+
+        /// <summary>
+        /// Constructs a new UIElement.
+        /// </summary>
+        /// <param name="texture">The name of the texture to used used when drawing the UIElement.</param>
+        /// <param name="size">The size of the UIElement.</param>
+        /// <param name="position">The position of the UIElement.</param>
         public UIElement(string texture, Vector2 size, Vector2 position = default)
         {
             PositionInMenu = position;
             Texture = AssetRegistry.GetTexture2D(texture);
+
             Size = size;
+
+            AITimer = 0;
+
+            Colour = Color.White;
+
+            Opacity = 1;
+        }
+
+        /// <summary>
+        /// Constructs a new UIElement.
+        /// </summary>
+        /// <param name="texture">The name of the texture to used used when drawing the UIElement.</param>
+        /// <param name="size">A scale multiplier of the texture's size to scale it up.</param>
+        /// <param name="position">The position of the UIElement.</param>
+        public UIElement(string texture, float size, Vector2 position = default)
+        {
+            PositionInMenu = position;
+            Texture = AssetRegistry.GetTexture2D(texture);
+
+            Size = Texture.TextureDimensionsToVector() * size;
+
+            AITimer = 0;
+
+            Colour = Color.White;
 
             Opacity = 1;
         }
 
         public virtual void Update()
         {
+            if (ExtraAI is not null)
+                ExtraAI();
+
             if (IsInMenu)
             {
                 Position = CalculateActualPostion();
             }
 
-            if (IsClicked() && UIManager.ButtonCooldown == 0 && !WasMouseDownLastFrame)
+            if (CanBeClicked())
             {
                 UIManager.ButtonCooldown = UIManager.DefaultButtonCooldown;
 
@@ -49,6 +89,13 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
             ClickBox = new(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);
+
+            AITimer++;
+        }
+
+        public virtual bool CanBeClicked()
+        {
+            return IsClicked() && UIManager.ButtonCooldown == 0 && !WasMouseDownLastFrame;
         }
         public virtual Vector2 CalculateActualPostion()
         {
@@ -57,6 +104,10 @@ namespace bullethellwhatever.DrawCode.UI
         public virtual void SetClickEvent(Action action)
         {
             ClickEvent = action;
+        }
+        public virtual void SetExtraAI(Action extraAI)
+        {
+            ExtraAI = extraAI;
         }
         public virtual void HandleClick()
         {
@@ -103,10 +154,13 @@ namespace bullethellwhatever.DrawCode.UI
         {
             Opacity = opacity;
         }
-
+        public virtual Color ColourIfHovered()
+        {
+            return ClickBox.Contains(MousePosition) ? Color.Red : Colour; // in the future make the colour more red, not just red
+        }
         public virtual void Draw(SpriteBatch s)
         {
-            Color colour = ClickBox.Contains(MousePosition) ? Color.Red : Color.White;
+            Color colour = ColourIfHovered();
             
             Drawing.BetterDraw(Texture, Position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
         }

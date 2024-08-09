@@ -124,6 +124,18 @@
 #begin credits.txt
 /copy:credits.txt
 
+#begin CreditsButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:CreditsButton.png
+
 #begin EasyButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -293,6 +305,18 @@
 /processorParam:TextureFormat=Color
 /build:NumberKeys.png
 
+#begin PlayButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayButton.png
+
 #begin Scroll.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -460,4 +484,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TargetReticle.png
+
+#begin TitleBanner.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TitleBanner.png
 

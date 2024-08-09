@@ -13,8 +13,6 @@ namespace bullethellwhatever.DrawCode.UI
 {
     public class Menu : UIElement
     {
-        public Color BackgroundColour;
-
         public List<UIElement> UIElements;
 
         public bool Important; // whether or not stuff in game can happen while this menu is up
@@ -37,9 +35,8 @@ namespace bullethellwhatever.DrawCode.UI
         public void PrepareMenu()
         {          
             if (Texture == AssetRegistry.GetTexture2D("box"))
-                BackgroundColour = Color.Black; // dont colour if none is specified
-            else BackgroundColour = Color.White;
-
+                Colour = Color.Black; // dont colour if none is specified
+             
             Important = false;
             Draggable = false;
 
@@ -55,11 +52,6 @@ namespace bullethellwhatever.DrawCode.UI
         public void SetDraggable(bool draggable)
         {
             Draggable = draggable;
-        }
-
-        public void SetBackgroundColour(Color colour)
-        {
-            BackgroundColour = colour;
         }
 
         public void Display()
@@ -125,7 +117,7 @@ namespace bullethellwhatever.DrawCode.UI
         public Vector2 TopLeft() => Position - RelativeCentreOfMenu();
         public override void Draw(SpriteBatch s)
         {
-            Drawing.BetterDraw(Texture, Position, null, BackgroundColour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
+            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
 
             foreach (UIElement uiElement in UIElements)
             {

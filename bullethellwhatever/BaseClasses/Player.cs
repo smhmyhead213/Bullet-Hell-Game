@@ -195,7 +195,7 @@ namespace bullethellwhatever.BaseClasses
                     SwitchWeapon(Weapons.MachineGun);
                 }
 
-                if (IsKeyPressed(Keys.Q) && Main.activeNPCs.Count == 0)
+                if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0)
                 {
                     Health = MaxHP;
                     EntityManager.SpawnBoss();
