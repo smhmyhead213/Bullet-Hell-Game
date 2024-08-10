@@ -39,8 +39,6 @@ namespace bullethellwhatever.BaseClasses
 
         public Deathray PlayerDeathray;
         public bool Restarted;
-
-        public DialogueSystem dialogueSystem;
         public enum Weapons
         {
             Homing,
@@ -54,7 +52,6 @@ namespace bullethellwhatever.BaseClasses
         #region Spawning
         public Player(string texture)
         {
-            dialogueSystem = new DialogueSystem(this);
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
             Texture = AssetRegistry.GetTexture2D(texture);
         }

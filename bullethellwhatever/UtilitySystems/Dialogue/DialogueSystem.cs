@@ -11,50 +11,41 @@ using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {
-    public class DialogueSystem
-    {
-        public int DialogueTimer;
-        public int CharactersWritten;
-        public string StringWritten;
-        public DialogueObject dialogueObject;
-        public Entity Owner;
-        public bool HasWritingStarted;
-        public DialogueSystem(Entity owner)
+    public static class DialogueSystem
+    {      
+        public static List<DialogueObject> ActiveDialogues = new List<DialogueObject>();
+
+        public static void Initialise()
         {
-            DialogueTimer = 0;
-            CharactersWritten = 0;
-            Owner = owner;
             
         }
+
         public static void DrawDialogues(SpriteBatch spriteBatch)
         {
-            foreach (NPC npc in Main.activeNPCs)
+            foreach (DialogueObject obj in ActiveDialogues)
             {
-                if (npc.dialogueSystem.dialogueObject is not null)
-                {
-                    Vector2 drawPosition = new Vector2(npc.dialogueSystem.dialogueObject.Position.X - 3.5f * npc.dialogueSystem.dialogueObject.Text.Length, npc.dialogueSystem.dialogueObject.Position.Y);
-
-                    Utilities.drawTextInDrawMethod(npc.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
-                }
-            }
-
-            if (player.dialogueSystem.dialogueObject is not null)
-            {
-                Vector2 drawPosition = new Vector2(player.dialogueSystem.dialogueObject.Position.X - 3.5f * player.dialogueSystem.dialogueObject.Text.Length, player.dialogueSystem.dialogueObject.Position.Y);
-
-                Utilities.drawTextInDrawMethod(player.dialogueSystem.dialogueObject.Text, drawPosition, spriteBatch, Main.font, Color.White);
+                obj.Draw(spriteBatch);
             }
         }
 
-        public void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration)
+        public static void Update()
         {
-            dialogueObject = new DialogueObject(dialogueToWrite, Owner, framesBetweenLetters, duration);
+            foreach (DialogueObject obj in ActiveDialogues)
+            {
+                obj.DoDialogue();
+            }
         }
-
-        public void ClearDialogue()
+        public static void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration, Entity owner)
         {
-            dialogueObject.Text = string.Empty;
-            dialogueObject.CharactersWritten = 0;
+            ActiveDialogues.Add(new DialogueObject(dialogueToWrite, framesBetweenLetters, duration, owner));
+        }
+        public static void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration, Vector2 position)
+        {
+            ActiveDialogues.Add(new DialogueObject(dialogueToWrite, framesBetweenLetters, duration, position));
+        }
+        public static void ClearDialogues()
+        {
+            ActiveDialogues.Clear();
         }
     }
 }

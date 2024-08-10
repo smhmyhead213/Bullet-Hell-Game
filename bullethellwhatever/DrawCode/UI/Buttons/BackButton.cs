@@ -14,8 +14,7 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
     {
         public BackButton(string texture, Vector2 size, Vector2 position = default) : base(texture, size, position)
         {
-            Texture = AssetRegistry.GetTexture2D(texture);
-            Size = size;
+            
         }
 
         public override void HandleClick()

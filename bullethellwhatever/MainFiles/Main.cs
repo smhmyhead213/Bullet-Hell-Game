@@ -110,68 +110,6 @@ namespace bullethellwhatever.MainFiles
 
             SoundSystem.SetUpFMOD();
 
-            // -- load in assets --
-
-            //string[] files = Directory.GetFiles("Content", "", SearchOption.AllDirectories);
-
-            //for (int i = 0; i < files.Length; i++)
-            //{
-            //    string toSaveAs = files[i];
-
-            //    string filePath = string.Empty;
-
-            //    while (toSaveAs.Contains("\\")) //remove all slashes
-            //    {
-            //        int indexOfSlash = toSaveAs.IndexOf("\\");
-
-            //        int startIndex = indexOfSlash + 1; //+ 1 accounts for double slash, there's two slashes in the IndexOf cos the first one is to character escape the second
-
-            //        filePath = toSaveAs.Substring(0, startIndex);
-            //        toSaveAs = toSaveAs.Substring(startIndex, toSaveAs.Length - startIndex); //only take everything after the double slash
-            //    }
-
-            //    int indexOfDot = toSaveAs.IndexOf(".");
-
-            //    string fileExtension = toSaveAs.Substring(indexOfDot, toSaveAs.Length - indexOfDot); // remove file extension
-
-            //    toSaveAs = toSaveAs.Substring(0, indexOfDot);
-
-            //    if (fileExtension == ".xnb") //only do this for .xnbs, when this was written credits.txt would crash it as a .txt doesnt work
-            //    {
-            //        toSaveAs = toSaveAs.Substring(0, indexOfDot); //remove file extension
-
-            //        if (toSaveAs.Contains("Shader")) // This system only works if you use a naming convention that matches this
-            //        {
-            //            if (!(Shaders.ContainsKey(toSaveAs)))
-            //                Shaders.Add(toSaveAs, Content.Load<Effect>("Shaders/" + toSaveAs));
-            //        }
-            //        else if (toSaveAs.Contains("Music"))
-            //        {
-            //            if (!Music.ContainsKey(toSaveAs))
-            //            {
-            //                Music.Add(toSaveAs, bank);
-            //            }
-            //        }
-            //        else if (toSaveAs.Contains("Sound"))
-            //        {
-            //            if (!(Sounds.ContainsKey(toSaveAs)))
-            //                Sounds.Add(toSaveAs, Content.Load<SoundEffect>(toSaveAs));
-            //        }
-            //        else if (toSaveAs != "font")
-            //        {
-            //            if (!(Assets.ContainsKey(toSaveAs)))
-            //                try
-            //                {
-            //                    Assets.Add(toSaveAs, Content.Load<Texture2D>(toSaveAs));
-            //                }
-            //                catch // if we fail to load in the texture, try again with a file path this time
-            //                {
-            //                    Assets.Add(toSaveAs, Content.Load<Texture2D>(filePath + toSaveAs));
-            //                }
-            //        }
-            //    }
-            //}
-
             font = Content.Load<SpriteFont>("font");
 
             UI.CreateTitleScreenMenu();
@@ -202,7 +140,7 @@ namespace bullethellwhatever.MainFiles
 
         protected override void Update(GameTime gameTime)
         {
-            SoundSystem.Update(); 
+            SoundSystem.Update();
 
             GameTime++;
 
@@ -226,6 +164,8 @@ namespace bullethellwhatever.MainFiles
                 if (musicSystem.ActiveSong is not null)
                     MediaPlayer.Pause();
             }
+
+            DialogueSystem.Update();
 
             MainCamera.UpdateMatrices();
 

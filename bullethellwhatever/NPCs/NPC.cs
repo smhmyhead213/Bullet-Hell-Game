@@ -19,6 +19,7 @@ namespace bullethellwhatever.NPCs
     public class NPC : Entity
     {
         public float IFrames;
+
         public int MaxIFrames;
 
         public bool IsInvincible;
@@ -31,7 +32,6 @@ namespace bullethellwhatever.NPCs
 
         public float DamageReduction;
 
-        public DialogueSystem dialogueSystem;
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1; //default
@@ -62,9 +62,6 @@ namespace bullethellwhatever.NPCs
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
             InitialOpacity = Opacity;
-
-            dialogueSystem = new DialogueSystem(this);
-            dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);
 
             ExtraData = new float[4];
 
@@ -225,8 +222,6 @@ namespace bullethellwhatever.NPCs
             Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             Participating = true;
             SetHitbox();
-            dialogueSystem = new DialogueSystem(this);
-            dialogueSystem.dialogueObject = new DialogueObject(string.Empty, this, 1, 1);
         }
     }
 }

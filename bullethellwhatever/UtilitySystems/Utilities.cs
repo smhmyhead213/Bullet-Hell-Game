@@ -78,6 +78,17 @@ namespace bullethellwhatever
             _spriteBatch.DrawString(font, stringg, position, colour); // fix later
             //_spriteBatch.End();
         }
+        public static void drawTextOutDrawMethod(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour)
+        {
+
+            _spriteBatch.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: MainCamera.Matrix);
+            //
+            //
+            //();
+            _spriteBatch.DrawString(font, stringg, position, colour); // fix later
+            _spriteBatch.End();
+            //_spriteBatch.End();
+        }
 
         public static float ToDegrees(this float angleRadians)
         {

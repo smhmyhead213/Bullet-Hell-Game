@@ -1,6 +1,6 @@
 ﻿using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.DrawCode;
-
+using bullethellwhatever.UtilitySystems.Dialogue;
  
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
@@ -140,7 +140,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     if (!Obliterated)
                     {
-                        Owner.dialogueSystem.Dialogue("I CAN SEE YOU OVER THERE", 3, 180);
+                        DialogueSystem.Dialogue("I CAN SEE YOU OVER THERE", 3, 180, Owner);
                         Obliterated = true;
                     }
 

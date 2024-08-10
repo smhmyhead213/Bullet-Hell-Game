@@ -104,19 +104,16 @@ namespace bullethellwhatever.DrawCode
         {
             string ControlChangedTo = "";
 
-            if (GameState.HasASettingBeenChanged)
+            if (GameState.WeaponSwitchControl)
             {
-                if (GameState.WeaponSwitchControl)
-                {
-                    ControlChangedTo = "Weapon switch control switched to scroll wheel.";
-                }
-
-                else
-                {
-                    ControlChangedTo = "Weapon switch control switched to number keys.";
-                }
+                ControlChangedTo = "Weapon switch control switched to scroll wheel.";
             }
-            Utilities.drawTextInDrawMethod(ControlChangedTo, new Vector2(Main._graphics.PreferredBackBufferWidth / 2, Main._graphics.PreferredBackBufferHeight / 10 * 7), Main._spriteBatch, Main.font, Color.White);
+            else
+            {
+                ControlChangedTo = "Weapon switch control switched to number keys.";
+            }
+
+            DialogueSystem.Dialogue(ControlChangedTo, 1, 9999, new Vector2(IdealScreenWidth / 2, IdealScreenHeight / 10 * 7));
         }
     }
 }

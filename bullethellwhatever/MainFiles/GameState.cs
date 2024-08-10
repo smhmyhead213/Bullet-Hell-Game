@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.UI;
+using bullethellwhatever.UtilitySystems.Dialogue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,6 @@ namespace bullethellwhatever.MainFiles
 
         public static bool WeaponSwitchControl; //true for scroll, false for number keys
 
-        public static bool HasASettingBeenChanged;
-
         public static void SetGameState(GameStates state, bool wasRevertedFromPreviousState = false)
         {
             if (!wasRevertedFromPreviousState)
@@ -67,6 +66,12 @@ namespace bullethellwhatever.MainFiles
             }
         }
 
+        public static void ChangeWeaponSwitchControl(bool switchControl)
+        {
+            WeaponSwitchControl = switchControl;
+            DialogueSystem.ClearDialogues(); // figure out how to make the previous dialogue prompt disappear when a new one appears
+            Drawing.ConfirmControlSettingsChange(_spriteBatch);
+        }
         public static void RevertToPreviousGameState()
         {
             SetGameState(PreviousStates.Pop(), true);

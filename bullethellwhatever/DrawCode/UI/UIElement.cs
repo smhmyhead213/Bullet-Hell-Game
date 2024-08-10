@@ -40,7 +40,8 @@ namespace bullethellwhatever.DrawCode.UI
         /// <param name="position">The position of the UIElement.</param>
         public UIElement(string texture, Vector2 size, Vector2 position = default)
         {
-            PositionInMenu = position;
+            Position = position;
+
             Texture = AssetRegistry.GetTexture2D(texture);
 
             Size = size;
@@ -60,7 +61,8 @@ namespace bullethellwhatever.DrawCode.UI
         /// <param name="position">The position of the UIElement.</param>
         public UIElement(string texture, float size, Vector2 position = default)
         {
-            PositionInMenu = position;
+            Position = position;
+
             Texture = AssetRegistry.GetTexture2D(texture);
 
             Size = Texture.TextureDimensionsToVector() * size;
@@ -117,7 +119,7 @@ namespace bullethellwhatever.DrawCode.UI
                 ClickEvent();
             }
 
-            SoundSystem.PlaySound("testsound");
+            //SoundSystem.PlaySound("testsound");
         }
         public bool IsClicked()
         {

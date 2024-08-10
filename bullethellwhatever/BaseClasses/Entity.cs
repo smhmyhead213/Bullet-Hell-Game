@@ -174,7 +174,7 @@ namespace bullethellwhatever.BaseClasses
         public abstract void AI();
 
         ///<summary>
-        ///Sets the entity's opacity AND initial opacity. To avoid the latter, directly set Opacity.
+        /// Sets the entity's opacity AND initial opacity. To avoid the latter, directly set Opacity.
         ///</summary>
         public virtual void SetOpacity(float opacity)
         {

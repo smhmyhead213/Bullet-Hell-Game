@@ -221,11 +221,12 @@ namespace bullethellwhatever.DrawCode.UI
 
                 mainButtons[i].Update();
 
+                int locali = i;
+
                 Action startButtonAction = new Action(() =>
                 {
-                    WeaponSwitchControl = i == 0 ? false : true; // ??
+                    ChangeWeaponSwitchControl(locali == 0 ? false : true); // ??
                     SetGameState(GameStates.Settings);
-                    Drawing.ConfirmControlSettingsChange(_spriteBatch);
                     settingsMenu.Hide();
                 });
 

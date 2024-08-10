@@ -42,7 +42,7 @@ namespace bullethellwhatever.Bosses
             HasChosenChargeDirection = false;
             AttackNumber = 1;
             IsDesperationOver = false;
-            dialogueSystem = new DialogueSystem(this);
+
             DeathrayAngularVelocity = 180f;
             IsHarmful = true;
             Rotation = PI / 6f;
@@ -154,7 +154,7 @@ namespace bullethellwhatever.Bosses
         {
             if (AITimer == 1)
             {              
-                dialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400);
+                DialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400, this);
 
                 //Drawing.ScreenShake(20, 500);
                 //TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
