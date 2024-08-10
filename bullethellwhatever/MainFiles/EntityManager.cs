@@ -20,7 +20,7 @@ namespace bullethellwhatever.MainFiles
         public static List<Particle> ParticlesToAdd = new List<Particle>();
         public static void RemoveEntities()
         {
-            activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(NPC));
+            activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && NPC.TouchingAnEdge());
             activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
 
             //foreach (Projectile projectile in activeProjectiles)
@@ -40,8 +40,8 @@ namespace bullethellwhatever.MainFiles
             //}
 
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
-            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval);
-            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval && projectile.AITimer > 5);
+            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval);
+            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval && projectile.AITimer > 5);
             activeFriendlyProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
 
             //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);

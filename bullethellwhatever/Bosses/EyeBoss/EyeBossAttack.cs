@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public override void HandleBounces()
         {
-            if (Entity.touchingLeft(Owner))
+            if (Owner.TouchingLeft())
             {
                 if (Owner.Velocity.X < 0)
                 {
@@ -33,7 +33,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }
             }
 
-            if (Entity.touchingRight(Owner))
+            if (Owner.TouchingRight())
             {
                 if (Owner.Velocity.X > 0)
                 {
@@ -42,14 +42,14 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             }
 
-            if (Entity.touchingTop(Owner))
+            if (Owner.TouchingTop())
             {
                 if (Owner.Velocity.Y < 0)
                     Owner.Velocity.Y = Owner.Velocity.Y * -1f;
 
             }
 
-            if (Entity.touchingBottom(Owner))
+            if (Owner.TouchingBottom())
             {
                 if (Owner.Velocity.Y > 0)
                     Owner.Velocity.Y = Owner.Velocity.Y * -1f;

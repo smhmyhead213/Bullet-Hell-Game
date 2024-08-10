@@ -89,7 +89,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     for (int i = 0; i < 2; i++)
                     {
-                        if (Entity.touchingTop(Leg(i).LowerClaw) || Entity.touchingLeft(Leg(i).LowerClaw) || Entity.touchingRight(Leg(i).LowerClaw)) // dont get stuck to bottom
+                        if (Leg(i).LowerClaw.TouchingTop() || Leg(i).LowerClaw.TouchingLeft() || Leg(i).LowerClaw.TouchingRight()) // dont get stuck to bottom
                         {
                             Leg(i).Velocity = Vector2.Zero; // stop if we've hit ceiling / wall
 

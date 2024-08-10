@@ -121,7 +121,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Leg(i).Velocity = Leg(i).Velocity - (Leg(i).Velocity / (handDecelTime - DecelerationTimer));
 
-                    if (Entity.touchingAnEdge(Leg(i).UpperArm) && Entity.touchingAnEdge(Leg(i).LowerClaw)) // if an arm leaves the area
+                    if (Leg(i).UpperArm.TouchingAnEdge() && Leg(i).LowerClaw.TouchingAnEdge()) // if an arm leaves the area
                     {
                         Leg(i).Velocity = Leg(i).Velocity * 0.8f; // dont go too far out
                     }

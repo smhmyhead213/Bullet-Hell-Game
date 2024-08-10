@@ -109,26 +109,26 @@ namespace bullethellwhatever.Projectiles
         }
         public void HandleBounces()
         {
-            if (touchingLeft(this))
+            if (TouchingLeft())
             {
                 if (Velocity.X < 0)
                     Velocity.X = Velocity.X * -1;
             }
 
-            if (touchingRight(this))
+            if (TouchingRight())
             {
                 if (Velocity.X > 0)
                     Velocity.X = Velocity.X * -1;
             }
 
-            if (touchingTop(this))
+            if (TouchingTop())
             {
                 if (Velocity.Y < 0)
                     Velocity.Y = Velocity.Y * -1f;
 
             }
 
-            if (touchingBottom(this))
+            if (TouchingBottom())
             {
                 if (Velocity.Y > 0)
                     Velocity.Y = Velocity.Y * -1f;
@@ -139,7 +139,7 @@ namespace bullethellwhatever.Projectiles
         {
             AITimer++;
 
-            if (touchingAnEdge(this))
+            if (TouchingAnEdge())
             {
                 TimeOutsidePlayArea++;
             }

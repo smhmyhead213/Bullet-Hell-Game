@@ -108,7 +108,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 TimeSpentCharging++;
             }
 
-            if (IsCharging && Entity.touchingAnEdge(CrabOwner) && TimeSpentCharging > 30) // fixes instantly stop charging if its started while out of bounds
+            if (IsCharging && CrabOwner.TouchingAnEdge() && TimeSpentCharging > 30) // fixes instantly stop charging if its started while out of bounds
             {
                 IsCharging = false;
                 TimeSpentCharging = 0;

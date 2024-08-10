@@ -152,7 +152,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Projectile bomb = SpawnProjectile(Leg(0).LowerClaw.Position, 10f * Utilities.SafeNormalise(player.Position - Leg(0).LowerClaw.Position), 1f, 1, "box", Vector2.One * 1.5f, Owner, true, Color.Red, true, false);
                     bomb.SetExtraAI(new Action(() =>
                     {
-                        if (bomb.AITimer == 180 || Entity.touchingAnEdge(bomb))
+                        if (bomb.AITimer == 180 || bomb.TouchingAnEdge())
                         {
                             Projectile fragment = new Projectile(bomb.Position, 3f * Vector2.One, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                             RadialProjectileBurst(fragment, fragments, 0f, 3f);
@@ -246,7 +246,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Leg(1).Velocity = Leg(1).Velocity * 0.7f; // decelerate after reaching target
 
-                if (Entity.touchingAnEdge(Leg(1).LowerClaw))
+                if (Leg(1).LowerClaw.TouchingAnEdge())
                 {
                     Leg(1).Velocity = Leg(1).Velocity * 0f; // stop if we hit an edge
                 }

@@ -30,6 +30,7 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
                 //IsSongPlaying = false;
             }
         }
+
         public void PlayMusic()
         {
             if (!IsSongPlaying)

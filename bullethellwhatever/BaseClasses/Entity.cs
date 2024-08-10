@@ -132,39 +132,39 @@ namespace bullethellwhatever.BaseClasses
 
             Drawing.ScreenShake(3, 10);
         }
-        public static bool touchingBottom(Entity entity)
+        public bool TouchingBottom()
         {
-            if (entity.Position.Y + entity.Texture.Height * entity.GetSize().Y / 2 >= _graphics.PreferredBackBufferHeight)
+            if (Position.Y + Texture.Height * GetSize().Y / 2 >= IdealScreenHeight)
                 return true;
             else return false;
             //if at the bottom
         }
 
-        public static bool touchingTop(Entity entity)
+        public bool TouchingTop()
         {
-            if (entity.Position.Y  - entity.Texture.Height * entity.GetSize().Y / 2 <= 0)
+            if (Position.Y - Texture.Height * GetSize().Y / 2 <= 0)
                 return true;
             else return false;
         }
 
-        public static bool touchingRight(Entity entity)
+        public bool TouchingRight()
         {
-            if (entity.Position.X + entity.Texture.Width * entity.GetSize().X / 2 >= _graphics.PreferredBackBufferWidth)
+            if (Position.X + Texture.Width * GetSize().X / 2 >= IdealScreenWidth)
                 return true;
             else return false;
         }
 
-        public static bool touchingLeft(Entity entity)
+        public bool TouchingLeft()
         {
-            if (entity.Position.X - entity.Texture.Width * entity.GetSize().X / 2 <= 0)
+            if (Position.X - Texture.Width * GetSize().X / 2 <= 0)
                 return true;
             else return false;
         }
 
-        public static bool touchingAnEdge(Entity entity)
+        public bool TouchingAnEdge()
         {
-            if (touchingTop(entity) || touchingBottom(entity) ||
-                    touchingLeft(entity) || touchingRight(entity))
+            if (TouchingTop() || TouchingBottom() ||
+                    TouchingLeft() || TouchingRight())
             {
                 return true;
             }

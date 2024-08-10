@@ -126,42 +126,42 @@ namespace bullethellwhatever.BaseClasses
             bool rightPressed = IsKeyPressed(Keys.D);
             bool leftPressed = IsKeyPressed(Keys.A);
 
-            if (upPressed && !touchingTop(this))
+            if (upPressed && !TouchingTop())
             {
                 Velocity.Y = Velocity.Y - 1f;
             }
 
-            if (upPressed && touchingTop(this))
+            if (upPressed && TouchingTop())
             {
                 Position.Y = Texture.Height / 2f * GetSize().Y;
             }
 
-            if (downPressed && !touchingBottom(this))
+            if (downPressed && !TouchingBottom())
             {
                 Velocity.Y = Velocity.Y + 1f;
             }
 
-            if (downPressed && touchingBottom(this))
+            if (downPressed && TouchingBottom())
             {
                 Position.Y = IdealScreenHeight - (Texture.Height / 2f * GetSize().Y);
             }
 
-            if (leftPressed && !touchingLeft(this))
+            if (leftPressed && !TouchingLeft())
             {
                 Velocity.X = Velocity.X - 1f;
             }
 
-            if (leftPressed && touchingLeft(this))
+            if (leftPressed && TouchingLeft())
             {
                 Position.X = Texture.Width / 2f * GetSize().X;
             }
 
-            if (rightPressed && !touchingRight(this))
+            if (rightPressed && !TouchingRight())
             {
                 Velocity.X = Velocity.X + 1f;
             }
 
-            if (rightPressed && touchingRight(this))
+            if (rightPressed && TouchingRight())
             {
                 Position.X = IdealScreenWidth - (Texture.Width / 2f * GetSize().X);
             }
