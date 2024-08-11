@@ -175,7 +175,7 @@ namespace bullethellwhatever.BaseClasses
                 Size = DefaultHitbox;
             }
 
-            if (GameState.WeaponSwitchControl) //if scroll wheel controls
+            if (GameState.WeaponSwitchControl == GameState.WeaponSwitchControls.ScrollWheel)
             {
                 if (mouseState.ScrollWheelValue / 120 % 3 == 0 && WeaponSwitchCooldownTimer == 0)  //are you happy now Gemma??????????????????????
                 {
@@ -225,7 +225,7 @@ namespace bullethellwhatever.BaseClasses
 
                 foreach (Menu m in UIManager.ActiveUIElements) // none of the active menus are important so they can go bye bye
                 {
-                    m.Hide();
+                    m.Display();
                 }
             }
 
@@ -241,7 +241,7 @@ namespace bullethellwhatever.BaseClasses
                     GameState.SetGameState(GameState.GameStates.TitleScreen);
                 }));
 
-                start.AddToActiveUIElements();
+                start.Display();
 
                 musicSystem.StopMusic();
             }
@@ -261,6 +261,11 @@ namespace bullethellwhatever.BaseClasses
             //    float multiplier = 3f;
             //    MoveSpeed = MoveSpeed * multiplier;
             //}
+        }
+
+        public override void Delete()
+        {
+            // add something if the player will ever be deleted
         }
         public override void AI() //cooldowns and iframes and stuff are handled here
         {

@@ -10,27 +10,25 @@ using System;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.MainFiles
 {
-    public class GameStateHandler
+    public static class GameStateHandler
     {
-        public bool isGameStarted
+        public static bool isGameStarted
         {
             get;
             set;
         }
-        public string activeBoss; //use a swicth statement to spawn a boss in
+        public static string activeBoss; //use a swicth statement to spawn a boss in
 
-        public GameStateHandler()
-        {
-
-        }
-        public void HandleGame()
+        public static void HandleGame()
         {
             switch (State)
             {
                 case GameStates.TitleScreen:
+                    HandleTitleScreen();
                     Credits.ReadInCreditsAlready = false; // i know this is an awful way to do it, in the future make credits reset when opened
                     break;            
             }
@@ -46,8 +44,31 @@ namespace bullethellwhatever.MainFiles
 
             if (!Utilities.ImportantMenusPresent())
             {
-                EntityManager.RemoveEntities(); //remove all entities queued for deletion
                 EntityManager.RunAIs();
+            }
+
+            EntityManager.RemoveEntities(); //remove all entities queued for deletion
+
+            TimeInCurrentGameState++;
+        }
+
+        public static void HandleTitleScreen()
+        {
+            string weaponSwitchInstruction = WeaponSwitchControl == WeaponSwitchControls.NumberKeys ? "Press 1, 2 or 3 to switch weapons." : "Use the scroll wheel to switch weapons.";
+            string[] instructions = new string[]
+            {
+                "Left click to use your weapon.",
+                weaponSwitchInstruction,
+                "Press space to dash. You are immune to damage while dashing."
+            };
+
+            int timeBetweenInstructions = 120;
+            int yDistanceBetweenInstructions = 30;
+            int index = TimeInCurrentGameState / timeBetweenInstructions;
+
+            if (TimeInCurrentGameState % timeBetweenInstructions == 0 && index < instructions.Length)
+            {
+                DialogueSystem.Dialogue(instructions[index], 1, new Vector2(IdealScreenWidth / 5, IdealScreenHeight / 3 + yDistanceBetweenInstructions * index));
             }
         }
     }

@@ -154,7 +154,7 @@ namespace bullethellwhatever.Bosses
         {
             if (AITimer == 1)
             {              
-                DialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, 400, this);
+                DialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, this, 400);
 
                 //Drawing.ScreenShake(20, 500);
                 //TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);

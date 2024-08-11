@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace bullethellwhatever.MainFiles
 {
-    public class GameState
+    public static class GameState
     {
         public enum GameStates
         {
@@ -23,6 +23,7 @@ namespace bullethellwhatever.MainFiles
 
         public static GameStates State;
         public static Stack<GameStates> PreviousStates = new Stack<GameStates>();
+        public static int TimeInCurrentGameState;
         public enum Difficulties
         {
             Easy, //chloe gamemode
@@ -41,21 +42,38 @@ namespace bullethellwhatever.MainFiles
 
         public static Bosses Boss;
 
-        public static bool WeaponSwitchControl; //true for scroll, false for number keys
+        public enum WeaponSwitchControls
+        {
+            NumberKeys,
+            ScrollWheel,
+        }
+
+        public static WeaponSwitchControls WeaponSwitchControl; //true for scroll, false for number keys
 
         public static void SetGameState(GameStates state, bool wasRevertedFromPreviousState = false)
         {
+            TimeInCurrentGameState = 0;
+
             if (!wasRevertedFromPreviousState)
             {
                 PreviousStates.Push(State);
             }
 
+            // what to do to handle the transition out of the old state
+            switch (State)
+            {
+                case GameStates.TitleScreen: DialogueSystem.ClearDialogues(); break;
+            }
+
             State = state;
 
+
+            // what to do to handle the transition TO the new state
             switch (State)
             {
                 case GameStates.TitleScreen: UI.CreateTitleScreenMenu(); break;
-                case GameStates.BossSelect : UI.CreateBossSelectMenu(); break;
+                case GameStates.BossSelect : UI.CreateBossSelectMenu();
+                    break;
                 case GameStates.Settings: UI.CreateSettingsMenu(); break;
                 case GameStates.DifficultySelect : UI.CreateDifficultySelectMenu(); break;
                 case GameStates.Credits: UI.CreateCreditsMenu(); break;
@@ -66,7 +84,7 @@ namespace bullethellwhatever.MainFiles
             }
         }
 
-        public static void ChangeWeaponSwitchControl(bool switchControl)
+        public static void ChangeWeaponSwitchControl(WeaponSwitchControls switchControl)
         {
             WeaponSwitchControl = switchControl;
             DialogueSystem.ClearDialogues(); // figure out how to make the previous dialogue prompt disappear when a new one appears

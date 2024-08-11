@@ -45,7 +45,7 @@ namespace bullethellwhatever.BaseClasses
         public float MaxHP;
         public bool DeleteNextFrame;
         public float Rotation;
-        public bool IsDesperationOver;
+
         public bool ShouldRemoveOnEdgeTouch;
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
@@ -261,9 +261,13 @@ namespace bullethellwhatever.BaseClasses
                 OnDeath();
             }
 
-            IsDesperationOver = true;
             DeleteNextFrame = true;
         }
+
+        /// <summary>
+        /// Completely removes an entity from the game, without triggering any on death behaviour.
+        /// </summary>
+        public abstract void Delete();
 
         public virtual void SetDrawAfterimages(int length, int extraImages)
         {

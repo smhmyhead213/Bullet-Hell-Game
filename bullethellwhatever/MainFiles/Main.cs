@@ -45,9 +45,6 @@ namespace bullethellwhatever.MainFiles
 
         public static SpriteFont font;
 
-        public static GameStateHandler gameStateHandler;
-        public static GameState gameState = new GameState();
-
         public static List<NPC> activeNPCs = new List<NPC>();
         public static List<NPC> activeFriendlyNPCs = new List<NPC>();
         public static List<Projectile> activeProjectiles = new List<Projectile>();
@@ -111,17 +108,11 @@ namespace bullethellwhatever.MainFiles
             SoundSystem.SetUpFMOD();
 
             font = Content.Load<SpriteFont>("font");
-
-            UI.CreateTitleScreenMenu();
         }
 
         protected override void Initialize()
         {          
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            GameState.State = GameState.GameStates.TitleScreen;
-
-            gameStateHandler = new GameStateHandler();
 
             AssetRegistry.Initialise();
 
@@ -130,6 +121,8 @@ namespace bullethellwhatever.MainFiles
             UIManager.Initialise();
 
             MenuManager.Initialise();
+
+            GameState.SetGameState(GameState.GameStates.TitleScreen);
 
             GameTime = 0;
 
@@ -154,7 +147,7 @@ namespace bullethellwhatever.MainFiles
 
             if (MainInstance.IsActive)
             {
-                gameStateHandler.HandleGame();
+                GameStateHandler.HandleGame();
 
                 if (musicSystem.ActiveSong is not null)
                     musicSystem.PlayMusic();

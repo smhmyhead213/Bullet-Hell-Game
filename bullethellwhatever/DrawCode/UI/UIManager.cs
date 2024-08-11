@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,24 @@ namespace bullethellwhatever.DrawCode.UI
             foreach (UIElement element in ActiveUIElements)
             {
                 element.Draw(spriteBatch);
+            }
+        }
+
+        public static void ClearMenus()
+        {
+            List<UIElement> menus = GetListOfActiveMenus();
+
+            foreach (UIElement menu in menus)
+            {
+                menu.Remove();
+            }
+        }
+
+        public static void ClearUI()
+        {
+            foreach (UIElement element in ActiveUIElements)
+            {
+                element.Remove();
             }
         }
 

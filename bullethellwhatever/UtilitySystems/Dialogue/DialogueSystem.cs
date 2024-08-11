@@ -35,13 +35,13 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
                 obj.DoDialogue();
             }
         }
-        public static void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration, Entity owner)
+        public static void Dialogue(string dialogueToWrite, int framesBetweenLetters, Entity owner, int duration = -1, float scale = 1f)
         {
-            ActiveDialogues.Add(new DialogueObject(dialogueToWrite, framesBetweenLetters, duration, owner));
+            ActiveDialogues.Add(new DialogueObject(dialogueToWrite, framesBetweenLetters, duration, owner, scale));
         }
-        public static void Dialogue(string dialogueToWrite, int framesBetweenLetters, int duration, Vector2 position)
+        public static void Dialogue(string dialogueToWrite, int framesBetweenLetters, Vector2 position, int duration = -1, float scale = 1f)
         {
-            ActiveDialogues.Add(new DialogueObject(dialogueToWrite, framesBetweenLetters, duration, position));
+            ActiveDialogues.Add(new DialogueObject(dialogueToWrite, framesBetweenLetters, duration, position, scale));
         }
         public static void ClearDialogues()
         {

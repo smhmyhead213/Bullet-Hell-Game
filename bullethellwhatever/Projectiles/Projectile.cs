@@ -206,6 +206,11 @@ namespace bullethellwhatever.Projectiles
             }
         }
 
+        public override void Delete()
+        {
+            DeleteNextFrame = true;
+        }
+
         public virtual void CheckForHits()
         {
             if (Participating && !Dying)

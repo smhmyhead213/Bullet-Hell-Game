@@ -11,6 +11,7 @@ using Microsoft.VisualBasic.Logging;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.UtilitySystems.Dialogue;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -47,19 +48,19 @@ namespace bullethellwhatever.DrawCode.UI
                 new Action(() => // start button action
                 {
                     SetGameState(GameStates.BossSelect);
-                    titleMenu.Hide();
+                    titleMenu.Remove();
                 }),
 
                 new Action(() => // settings button action
                 {
                     SetGameState(GameStates.Settings);
-                    titleMenu.Hide();
+                    titleMenu.Remove();
                 }),
 
                 new Action(() => // credits button action
                 {
                     SetGameState(GameStates.Credits);
-                    titleMenu.Hide();
+                    titleMenu.Remove();
                 }),
             };
 
@@ -135,7 +136,7 @@ namespace bullethellwhatever.DrawCode.UI
 
                     GameState.Boss = (GameState.Bosses)locali;
 
-                    bossSelectMenu.Hide();
+                    bossSelectMenu.Remove();
                     //CreateDifficultySelectMenu();
                 });
 
@@ -146,7 +147,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             backButton.SetClickEvent(new Action(() =>
             {
-                bossSelectMenu.Hide();
+                bossSelectMenu.Remove();
             }));
 
             backButton.AddToMenu(bossSelectMenu);
@@ -182,7 +183,7 @@ namespace bullethellwhatever.DrawCode.UI
                     SetGameState(GameStates.InGame);
                     GameState.Difficulty = (Difficulties)locali;
                     EntityManager.SpawnBoss();
-                    difficultySelectMenu.Hide();
+                    difficultySelectMenu.Remove();
                 });
 
                 mainButtons[i].SetClickEvent(startButtonAction);
@@ -192,7 +193,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             backButton.SetClickEvent(new Action(() =>
             {
-                difficultySelectMenu.Hide();
+                difficultySelectMenu.Remove();
             }));
 
             backButton.AddToMenu(difficultySelectMenu);
@@ -225,9 +226,7 @@ namespace bullethellwhatever.DrawCode.UI
 
                 Action startButtonAction = new Action(() =>
                 {
-                    ChangeWeaponSwitchControl(locali == 0 ? false : true); // ??
-                    SetGameState(GameStates.Settings);
-                    settingsMenu.Hide();
+                    ChangeWeaponSwitchControl(locali == 0 ? WeaponSwitchControls.NumberKeys : WeaponSwitchControls.ScrollWheel); // ??
                 });
 
                 mainButtons[i].SetClickEvent(startButtonAction);
@@ -237,7 +236,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             backButton.SetClickEvent(new Action(() =>
             {
-                settingsMenu.Hide();
+                settingsMenu.Remove();
+                DialogueSystem.ClearDialogues();
             }));
 
             backButton.AddToMenu(settingsMenu);
@@ -256,7 +256,7 @@ namespace bullethellwhatever.DrawCode.UI
                 backButton.Remove();
             }));
 
-            backButton.AddToActiveUIElements();
+            backButton.Display();
         }
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
         {
@@ -284,14 +284,6 @@ namespace bullethellwhatever.DrawCode.UI
             _spriteBatch.Draw(texture, positionOfBar, null, Color.LimeGreen * opacity, 0f, new Vector2(texture.Width / 2, texture.Height / 2), size, SpriteEffects.None, 0f);
 
             _spriteBatch.Draw(texture, new Vector2(positionOfBar.X - emptySpaceOnLeft * BarWidth, positionOfBar.Y), null, Color.Red * opacity, 0f, new Vector2(texture.Width / 2, texture.Height / 2), new Vector2(size.X * progress, size.Y), SpriteEffects.None, 0f);
-        }
-        public static void DrawTitleScreen(SpriteBatch _spriteBatch)
-        {
-            //Utilities.drawTextInDrawMethod(
-            //    "Controls: WASD to move, Left Click or Enter to shoot, Space to dash, Shift for precision.", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White);
-
-            //Utilities.drawTextInDrawMethod(
-            //    $"IntPtr size: {IntPtr.Size}", new Vector2(ScreenWidth / 2, ScreenHeight / 5 * 2), _spriteBatch, font, Color.White); what was this?
         }
     }
 }

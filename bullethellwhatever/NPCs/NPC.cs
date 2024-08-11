@@ -32,6 +32,8 @@ namespace bullethellwhatever.NPCs
 
         public float DamageReduction;
 
+        public bool IsDesperationOver;
+
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1; //default
@@ -147,7 +149,10 @@ namespace bullethellwhatever.NPCs
         {
             DamageReduction = MathHelper.Clamp(dr, 0f, 1f);
         }
-
+        public override void Delete()
+        {
+            DeleteNextFrame = true;
+        }
         public virtual void TakeDamage(Collision collision, Projectile projectile)
         {
             IFrames = MaxIFrames;

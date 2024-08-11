@@ -144,7 +144,7 @@ namespace bullethellwhatever.DrawCode.UI
             }
         }
 
-        public void AddToActiveUIElements()
+        public virtual void Display()
         {
             if (Owner is null) // only add to the active ui elements if not part of a menu. the menu will handle updating and drawing the ui element
                 UIManager.UIElementsToAddNextFrame.Add(this);

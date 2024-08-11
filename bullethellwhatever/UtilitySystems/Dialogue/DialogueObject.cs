@@ -19,10 +19,12 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
         public int Duration;
         public int DialogueTimer;
 
+        public float Size;
+
         public bool DeleteNextFrame;
         public int CharactersWritten;
 
-        public DialogueObject(string text, int framesBetweenLetters, int duration, Entity owner)
+        public DialogueObject(string text, int framesBetweenLetters, int duration, Entity owner, float size = 1f)
         {
             Text = string.Empty;
             TextToWrite = text;
@@ -33,8 +35,10 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             Owner = owner;
 
             DialogueTimer = 0;
+
+            Size = size;
         }
-        public DialogueObject(string text, int framesBetweenLetters, int duration, Vector2 position)
+        public DialogueObject(string text, int framesBetweenLetters, int duration, Vector2 position, float size = 1f)
         {
             Text = string.Empty;
 
@@ -49,6 +53,8 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             Position = position;
 
             DialogueTimer = 0;
+
+            Size = size;
         }
 
         public void DoDialogue()
@@ -74,7 +80,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
             DialogueTimer++;
 
-            if (DialogueTimer == Duration)
+            if (DialogueTimer == Duration && Duration == -1)
             {
                 Text = string.Empty;
             }
@@ -82,7 +88,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Utilities.drawTextInDrawMethod(Text, Position, spriteBatch, font, Color.White);
+            Utilities.drawTextInDrawMethod(Text, Position, spriteBatch, font, Color.White, Size);
         }
     }
 }

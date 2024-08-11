@@ -140,7 +140,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     if (!Obliterated)
                     {
-                        DialogueSystem.Dialogue("I CAN SEE YOU OVER THERE", 3, 180, Owner);
+                        DialogueSystem.Dialogue("I CAN SEE YOU OVER THERE", 3, Owner, 180);
                         Obliterated = true;
                     }
 

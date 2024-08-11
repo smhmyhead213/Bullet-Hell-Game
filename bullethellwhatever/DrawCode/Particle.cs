@@ -83,5 +83,10 @@ namespace bullethellwhatever.DrawCode
         {
             EntityManager.ParticlesToRemove.Add(this);
         }
+
+        public override void Delete()
+        {
+            Die();
+        }
     }
 }

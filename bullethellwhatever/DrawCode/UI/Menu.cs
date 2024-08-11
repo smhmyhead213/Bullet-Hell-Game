@@ -54,14 +54,14 @@ namespace bullethellwhatever.DrawCode.UI
             Draggable = draggable;
         }
 
-        public void Display()
+        public bool IsDisplayed()
         {
-            UIManager.UIElementsToAddNextFrame.Add(this);
+            return UIManager.ActiveUIElements.Contains(this);
         }
 
-        public void Hide()
+        public override void Display()
         {
-            UIManager.UIElemntsToRemoveNextFrame.Add(this);
+            UIManager.UIElementsToAddNextFrame.Add(this);
         }
 
         public override void Update()

@@ -21,7 +21,7 @@ namespace bullethellwhatever.MainFiles
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && NPC.TouchingAnEdge());
-            activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame && NPC.IsDesperationOver == true);
+            activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame);
 
             //foreach (Projectile projectile in activeProjectiles)
             //{
@@ -173,6 +173,27 @@ namespace bullethellwhatever.MainFiles
             foreach (Particle p in ParticlesToRemove)
             {
                 activeParticles.Remove(p);
+            }
+        }
+
+        /// <summary>
+        /// Clears all NPCs and projectiles except for the player.
+        /// </summary>
+        public static void Clear()
+        {
+            foreach (Projectile p in activeProjectiles)
+            {
+                p.Delete();
+            }
+
+            foreach (Projectile p in activeFriendlyProjectiles)
+            {
+                p.Delete();
+            }
+
+            foreach (NPC npc in activeNPCs)
+            {
+                npc.Delete();
             }
         }
 

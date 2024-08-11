@@ -15,14 +15,13 @@ namespace bullethellwhatever.DrawCode.UI
         public static int MenuCooldown;
         public static int MenuCooldownTimer;
 
-        public static bool PauseMenuDisplayed;
-
         public static Menu PauseMenu;
         public static void Initialise()
         {
             MenuCooldown = 10;
             MenuCooldownTimer = MenuCooldown;
-            PauseMenuDisplayed = false;
+
+            PauseMenu = new Menu("MenuBG", new Vector2(IdealScreenWidth / 3, IdealScreenHeight / 6), Utilities.CentreOfScreen());
         }
         public static void ManageMenus()
         {
@@ -33,10 +32,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (IsKeyPressed(Keys.Escape) && MenuCooldownTimer == 0)
             {
-                if (!PauseMenuDisplayed)
+                if (!PauseMenu.IsDisplayed())
                 {
-                    PauseMenu = new Menu("MenuBG", new Vector2(IdealScreenWidth / 6, IdealScreenHeight / 6), Utilities.CentreOfScreen());
-
                     PauseMenu.SetDraggable(true);
                     PauseMenu.SetImportant(true);
 
@@ -44,17 +41,27 @@ namespace bullethellwhatever.DrawCode.UI
 
                     exitGame.AddToMenu(PauseMenu);
 
-                    exitGame.SetPositionInMenu(PauseMenu.RelativeCentreOfMenu());
+                    exitGame.SetPositionInMenu(new Vector2(PauseMenu.Width() / 3f, PauseMenu.Height() / 2f));
+
+                    Button mainMenuButton = new Button("StartButton", 3f);
+
+                    mainMenuButton.AddToMenu(PauseMenu);
+
+                    mainMenuButton.SetPositionInMenu(new Vector2(PauseMenu.Width() / 3f * 2f, PauseMenu.Height() / 2f));
+
+                    mainMenuButton.SetClickEvent(new Action(() =>
+                    {
+                        UIManager.ClearUI();
+                        EntityManager.Clear();
+                        GameState.SetGameState(GameState.GameStates.TitleScreen);
+                    }));
 
                     PauseMenu.Display();
-
-                    PauseMenuDisplayed = true;
                 }
 
                 else
                 {
-                    PauseMenu.Hide();
-                    PauseMenuDisplayed = false;
+                    PauseMenu.Remove();
                 }
 
                 MenuCooldownTimer = MenuCooldown;
