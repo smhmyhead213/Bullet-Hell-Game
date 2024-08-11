@@ -82,7 +82,5 @@ namespace bullethellwhatever.BaseClasses
                 //else AttackNumber = 1;
             }
         }
-
-
     }
 }

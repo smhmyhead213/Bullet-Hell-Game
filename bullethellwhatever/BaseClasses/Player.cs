@@ -326,6 +326,11 @@ namespace bullethellwhatever.BaseClasses
         }
         #endregion
 
+        public void FullHeal()
+        {
+            Heal(MaxHP - Health);
+        }
+
         #region Shooting
 
         public void Shoot()
