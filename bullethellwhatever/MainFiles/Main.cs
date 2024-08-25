@@ -2,6 +2,7 @@
 global using static bullethellwhatever.UtilitySystems.InputSystem;
 global using static bullethellwhatever.MainFiles.GameInfoMethods;
 global using static bullethellwhatever.Projectiles.CommonProjectileMethods;
+global using static bullethellwhatever.UtilitySystems.ScreenManager;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,6 +25,7 @@ using SharpDX.WIC;
 using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -59,6 +61,8 @@ namespace bullethellwhatever.MainFiles
 
         public static SoundEffectInstance musicInstance;
 
+        public static RenderTarget2D MainRT;
+
         public static Player player;
 
         public static Vector2 RawScreenArea;
@@ -87,7 +91,10 @@ namespace bullethellwhatever.MainFiles
             IsMouseVisible = true;
 
             _graphics.HardwareModeSwitch = false;
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
+
+            Window.AllowUserResizing = true;
+            
             _graphics.ApplyChanges();
         }
         //public Matrix GamePerspective
@@ -127,6 +134,14 @@ namespace bullethellwhatever.MainFiles
             GameTime = 0;
 
             MainCamera = new Camera();
+
+            ResizingView = false;
+            UpdateView();
+            Window.ClientSizeChanged += WindowSizeChange;
+            _graphics.DeviceReset += GraphicsManager_DeviceReset;
+            _graphics.DeviceCreated += GraphicsManager_DeviceCreated;
+
+            MainRT = new RenderTarget2D(GraphicsDevice, IdealScreenWidth, IdealScreenHeight);
 
             base.Initialize();
         }
@@ -169,13 +184,13 @@ namespace bullethellwhatever.MainFiles
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
             Drawing.Timer++;
 
             _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
 
-            //_spriteBatch.DrawString(font, MousePosition.ToString(), new Vector2(ScreenWidth / 3, ScreenHeight / 3 + 10), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            GraphicsDevice.SetRenderTarget(MainRT);
+
+            GraphicsDevice.Clear(Color.Black);
 
             switch (GameState.State)
             {
@@ -187,6 +202,13 @@ namespace bullethellwhatever.MainFiles
             DrawGame.DrawTheGame(gameTime, _spriteBatch);
 
             UIManager.DrawUI(_spriteBatch);
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Viewport = ScreenViewport;
+
+            _spriteBatch.Begin(transformMatrix: ScreenMatrix);
+
+            _spriteBatch.Draw(MainRT, Vector2.Zero, Color.White);
 
             _spriteBatch.End();
 

@@ -51,6 +51,7 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         {
             FMODStudioSystem.update();
         }
+
         /// <summary>
         /// Wrapper that should be used around any FMOD method so that an exception is thrown when an error occurs. Without this, FMOD can silently crash and fail.
         /// </summary>

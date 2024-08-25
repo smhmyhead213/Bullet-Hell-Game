@@ -40,17 +40,20 @@ namespace bullethellwhatever.DrawCode
         public static void RestartSpriteBatchForUI(SpriteBatch s)
         {
             s.End();
+            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
         }
         public static void RestartSpriteBatchForShaders(SpriteBatch s)
         {
             s.End();
+            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap, transformMatrix: MainCamera.Matrix);
         }
 
         public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
         {
             s.End();
+            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: MainCamera.Matrix);
         }
 

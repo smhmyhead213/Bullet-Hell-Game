@@ -35,11 +35,11 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             float opacity = player.Hitbox.Intersects(hudBox).Collided ? 0.2f : 1f;
 
-            AssetRegistry.GetShader("PlayerHealthBarShader").Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
+            Effect hpBarShader = AssetRegistry.GetShader("PlayerHealthBarShader");
 
-            AssetRegistry.GetShader("PlayerHealthBarShader").CurrentTechnique.Passes[0].Apply();
+            hpBarShader.Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
 
-            //UI.DrawHealthBar(_spriteBatch, player, new Vector2(ScreenWidth / 7.6f, ScreenHeight / 8.8f), 12.6f, 0.7f);
+            hpBarShader.CurrentTechnique.Passes[0].Apply();
 
             Drawing.BetterDraw(AssetRegistry.GetTexture2D("box"), new Vector2(IdealScreenWidth / 7.6f, IdealScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 

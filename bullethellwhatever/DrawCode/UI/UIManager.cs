@@ -59,6 +59,8 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 element.Draw(spriteBatch);
             }
+
+            _spriteBatch.End();
         }
 
         public static void ClearMenus()

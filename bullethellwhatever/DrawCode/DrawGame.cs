@@ -56,7 +56,7 @@ namespace bullethellwhatever.DrawCode
                 else ProjectilestoDrawWithoutShader.Add(projectile);
             }
 
-            foreach (NPC npc in Main.activeNPCs)
+            foreach (NPC npc in activeNPCs)
             {
                 if (npc.Shader is not null)
                 {
@@ -86,11 +86,12 @@ namespace bullethellwhatever.DrawCode
 
             // ------------------------------------------------------------------------------------------------------
 
+            PlayerHUD.Draw(_spriteBatch);
+
             foreach (Entity entity in FriendlyProjectilesToDrawWithoutShader)
             {
                 entity.Draw(s);
             }
-
 
             Drawing.RestartSpriteBatchForShaders(s);
 
@@ -103,7 +104,7 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
-                    entity.Draw(Main._spriteBatch);
+                    entity.Draw(_spriteBatch);
             }
 
             Drawing.RestartSpriteBatchForShaders(s);
@@ -164,29 +165,8 @@ namespace bullethellwhatever.DrawCode
 
             foreach (NPC npc in activeNPCs)
             {
-                npc.DrawHPBar(Main._spriteBatch);
+                npc.DrawHPBar(_spriteBatch);
             }
-            
-            PlayerHUD.Draw(_spriteBatch);
-
-            //Select a control indicator based on the currently selected control scheme.
-            //string ControlInstruction = GameState.WeaponSwitchControl ? " , use the scroll wheel to switch weapons." : " , use the number keys 1, 2 and 3 to switch weapons";
-
-            ////Write different text depending on which weapon is active.
-            //switch (Main.player.ActiveWeapon)
-            //{
-            //    case Player.Weapons.Laser:
-            //        Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.Yellow);
-            //        break;
-            //    case Player.Weapons.MachineGun:
-            //        Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.SkyBlue);
-            //        break;
-            //    case Player.Weapons.Homing:
-            //        Utilities.drawTextInDrawMethod("Current weapon: " + Main.player.ActiveWeapon.ToString() + ControlInstruction, new Vector2(Main._graphics.PreferredBackBufferWidth / 20, Main._graphics.PreferredBackBufferHeight / 20), Main._spriteBatch, Main.font, Color.LimeGreen);
-            //        break;
-            //}
-
-            //Begin using the shader.
         }
     }
 }
