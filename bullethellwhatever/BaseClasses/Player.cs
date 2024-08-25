@@ -140,7 +140,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (downPressed && TouchingBottom())
             {
-                Position.Y = IdealScreenHeight - (Texture.Height / 2f * GetSize().Y);
+                Position.Y = GameHeight - (Texture.Height / 2f * GetSize().Y);
             }
 
             if (leftPressed && !TouchingLeft())
@@ -160,7 +160,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (rightPressed && TouchingRight())
             {
-                Position.X = IdealScreenWidth - (Texture.Width / 2f * GetSize().X);
+                Position.X = GameWidth - (Texture.Width / 2f * GetSize().X);
             }
 
             if (IsKeyPressed(Keys.LeftShift))
@@ -234,7 +234,7 @@ namespace bullethellwhatever.BaseClasses
                 Utilities.InitialiseGame();
                 Restarted = true;
 
-                BackButton start = new BackButton("StartButton", Vector2.One * 3, new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4));
+                BackButton start = new BackButton("StartButton", Vector2.One * 3, new Vector2(GameWidth / 4, GameHeight / 4));
 
                 start.SetClickEvent(new Action(() =>
                 {
@@ -466,7 +466,7 @@ namespace bullethellwhatever.BaseClasses
             if (IsKeyPressed(Keys.K))
             {
                 for (int i = 0; i < activeProjectiles.Count; i++)
-                    Utilities.drawTextInDrawMethod(activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.IdealScreenWidth / 3, Main.IdealScreenHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
+                    Utilities.drawTextInDrawMethod(activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.GameWidth / 3, Main.GameHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
             }
 
             if (DashAbility.IsExecuting)

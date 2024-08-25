@@ -164,10 +164,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     EyeBossPhaseTwoMinion[] minions = new EyeBossPhaseTwoMinion[4];
 
-                    minions[0] = new EyeBossPhaseTwoMinion(EyeOwner, (int)IdealScreenHeight / 4, new Vector2(IdealScreenWidth / 3, 0), 1);
-                    minions[1] = new EyeBossPhaseTwoMinion(EyeOwner, (int)IdealScreenHeight / 4 * 3, new Vector2(IdealScreenWidth / 5, 0), 2);
-                    minions[2] = new EyeBossPhaseTwoMinion(EyeOwner, (int)IdealScreenHeight / 4, new Vector2(IdealScreenWidth - IdealScreenWidth / 3, 0), 3);
-                    minions[3] = new EyeBossPhaseTwoMinion(EyeOwner, (int)IdealScreenHeight / 4 * 3, new Vector2(IdealScreenWidth - IdealScreenWidth / 5, 0), 4);
+                    minions[0] = new EyeBossPhaseTwoMinion(EyeOwner, (int)GameHeight / 4, new Vector2(GameWidth / 3, 0), 1);
+                    minions[1] = new EyeBossPhaseTwoMinion(EyeOwner, (int)GameHeight / 4 * 3, new Vector2(GameWidth / 5, 0), 2);
+                    minions[2] = new EyeBossPhaseTwoMinion(EyeOwner, (int)GameHeight / 4, new Vector2(GameWidth - GameWidth / 3, 0), 3);
+                    minions[3] = new EyeBossPhaseTwoMinion(EyeOwner, (int)GameHeight / 4 * 3, new Vector2(GameWidth - GameWidth / 5, 0), 4);
 
                     foreach (EyeBossPhaseTwoMinion minion in minions)
                     {

@@ -21,7 +21,9 @@ namespace bullethellwhatever.UtilitySystems
             KeyboardState = Keyboard.GetState();
             MouseState = Mouse.GetState();
 
-            MousePosition = new Vector2(MouseState.X, MouseState.Y);
+            Vector2 rawMousePosition = new Vector2(MouseState.X, MouseState.Y);
+
+            MousePosition = (rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y)) / ScreenScaleFactor();
         }
 
         public static bool IsLeftClickDown()

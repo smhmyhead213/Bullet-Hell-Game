@@ -174,7 +174,7 @@ namespace bullethellwhatever.NPCs
                     UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
                 }
 
-                else UI.DrawHealthBar(spriteBatch, this, new Vector2(IdealScreenWidth / 2, IdealScreenHeight / 20 * 19), 900f, 30f); // boss bar
+                else UI.DrawHealthBar(spriteBatch, this, new Vector2(GameWidth / 2, GameHeight / 20 * 19), 900f, 30f); // boss bar
             }
         }
 

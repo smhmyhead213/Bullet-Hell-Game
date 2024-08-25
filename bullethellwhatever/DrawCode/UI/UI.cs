@@ -19,7 +19,7 @@ namespace bullethellwhatever.DrawCode.UI
     {
         public static void CreateTitleScreenMenu()
         {
-            Menu titleMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+            Menu titleMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             titleMenu.SetOpacity(0f);
 
@@ -66,20 +66,20 @@ namespace bullethellwhatever.DrawCode.UI
 
             titleBanner.AddToMenu(titleMenu);
 
-            titleBanner.SetPositionInMenu(new Vector2(IdealScreenWidth + titleElementsStartOffsetToRightOfScreen, titleBannerY));
+            titleBanner.SetPositionInMenu(new Vector2(GameWidth + titleElementsStartOffsetToRightOfScreen, titleBannerY));
 
             titleBanner.SetExtraAI(new Action(() =>
             {
                 float progress = MathHelper.Clamp(EasingFunctions.EaseOutElastic(titleBanner.AITimer / timeToFadeIn), 0f, 2f);
 
-                titleBanner.Position.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleBannerEndOffsetToRightOfScreen, progress);
+                titleBanner.Position.X = GameWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleBannerEndOffsetToRightOfScreen, progress);
             }));
 
             for (int i = 0; i < buttons.Length; i++)
             {
                 buttons[i].AddToMenu(titleMenu);
 
-                buttons[i].SetPositionInMenu(new Vector2(IdealScreenWidth + titleElementsStartOffsetToRightOfScreen, titleBannerY + (i + 1) * yDistanceBetweenButtonsOnMainMenu));
+                buttons[i].SetPositionInMenu(new Vector2(GameWidth + titleElementsStartOffsetToRightOfScreen, titleBannerY + (i + 1) * yDistanceBetweenButtonsOnMainMenu));
 
                 buttons[i].Update();
 
@@ -98,9 +98,9 @@ namespace bullethellwhatever.DrawCode.UI
 
                     float progress = EasingFunctions.EaseOutElastic(timeToUse / timeToFadeIn);
 
-                    //due to the use of idealscreen width, this will break the buttons position if the menu is moved. change idealscreenwidth to right side of main menu if this needs fixed.
+                    //due to the use of idealscreen width, this will break the buttons position if the menu is moved. change GameWidth to right side of main menu if this needs fixed.
 
-                    buttons[locali].PositionInMenu.X = IdealScreenWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen[locali], progress);
+                    buttons[locali].PositionInMenu.X = GameWidth + MathHelper.Lerp(titleElementsStartOffsetToRightOfScreen, titleElementEndOffsetToRightOfScreen[locali], progress);
                 }));
             }
 
@@ -109,7 +109,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateBossSelectMenu()
         {
-            Menu bossSelectMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+            Menu bossSelectMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             bossSelectMenu.SetOpacity(0f);
 
@@ -158,7 +158,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateDifficultySelectMenu()
         {
-            Menu difficultySelectMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+            Menu difficultySelectMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             difficultySelectMenu.SetOpacity(0f);
 
@@ -204,14 +204,23 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateSettingsMenu()
         {
-            Menu settingsMenu = new Menu("box", new Vector2(IdealScreenWidth, IdealScreenHeight), Utilities.CentreOfScreen());
+            Menu settingsMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             settingsMenu.SetOpacity(0f);
+
+            //Button fullScreenButton = new Button("StartButton", 3f);
+
+            //fullScreenButton.AddToMenu(settingsMenu);
+            //fullScreenButton.PositionInMenu = new Vector2(GameWidth / 2f, GameHeight / 3f);
+            //fullScreenButton.SetClickEvent(new Action(() =>
+            //{
+            //    _graphics.IsFullScreen = !_graphics.IsFullScreen;
+            //}));
 
             Button[] mainButtons = new Button[]
             {
                 new Button("NumberKeys", new Vector2(150, 60)),
-                new Button("Scroll", new Vector2(150, 60))
+                new Button("Scroll", new Vector2(150, 60)),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -249,7 +258,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateCreditsMenu()
         {
-            BackButton backButton = new BackButton("Back", new Vector2(150, 60), new Vector2(IdealScreenWidth / 5f, IdealScreenHeight / 5f));
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60), new Vector2(GameWidth / 5f, GameHeight / 5f));
 
             backButton.SetClickEvent(new Action(() =>
             {

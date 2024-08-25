@@ -49,7 +49,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time < TimeToStartForcingPlayerLeft)
             {
-                Vector2 position = new Vector2(IdealScreenWidth / 8 * 7, IdealScreenHeight / 8);
+                Vector2 position = new Vector2(GameWidth / 8 * 7, GameHeight / 8);
                 MoveToPoint(position, time, TimeToStartForcingPlayerLeft);
             }
 
@@ -77,9 +77,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Deathray ray = new Deathray();
                     // duration has to account for 2 arm opening times and stop a bit earlier
-                    ray.SpawnDeathray(Leg(1).LowerClaw.Position, PI, 1f, TimeToStartPreparingForcingPlayerRight - TimeToStartForcingPlayerLeft - timeToOpenArm, "box", 20, IdealScreenHeight, 0, true, Color.White, "DeathrayShader2", Leg(1).LowerClaw);                    
+                    ray.SpawnDeathray(Leg(1).LowerClaw.Position, PI, 1f, TimeToStartPreparingForcingPlayerRight - TimeToStartForcingPlayerLeft - timeToOpenArm, "box", 20, GameHeight, 0, true, Color.White, "DeathrayShader2", Leg(1).LowerClaw);                    
                     ray.SetStayWithOwner(true);
-                    CrabOwner.Velocity.X = ((IdealScreenWidth / 8) - (IdealScreenWidth / 12 * 11)) / (timeSpentMovingLeft - timeToOpenArm);
+                    CrabOwner.Velocity.X = ((GameWidth / 8) - (GameWidth / 12 * 11)) / (timeSpentMovingLeft - timeToOpenArm);
                 }
                 
                 else
@@ -90,7 +90,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                         {
                             Random rng = new Random();
 
-                            int height = rng.Next((int)CrabOwner.Position.Y, (int)IdealScreenHeight);
+                            int height = rng.Next((int)CrabOwner.Position.Y, (int)GameHeight);
                             int widthOffset = rng.Next(-15, 15);
 
                             SpawnProjectile(new Vector2(Leg(1).LowerClaw.Position.X + widthOffset, height), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
@@ -102,7 +102,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             else if (time == TimeToStartPreparingForcingPlayerRight) // spend 60 opening arm
             {
                 CrabOwner.Velocity.X = 0; // NOOOOOOOOO DONT LEAVE MEEEEEEEE
-                SpawnTelegraphLine(PI, 0, 20, IdealScreenHeight, TimeToStartForcingPlayerRight - TimeToStartPreparingForcingPlayerRight, Leg(0).LowerClaw.Position, Color.White, "box", Leg(0).LowerClaw, true);
+                SpawnTelegraphLine(PI, 0, 20, GameHeight, TimeToStartForcingPlayerRight - TimeToStartPreparingForcingPlayerRight, Leg(0).LowerClaw.Position, Color.White, "box", Leg(0).LowerClaw, true);
             }
 
             else if (time >= TimeToStartPreparingForcingPlayerRight && time < TimeToStartForcingPlayerRight)
@@ -127,9 +127,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Deathray ray = new Deathray();
 
-                ray.SpawnDeathray(Leg(0).LowerClaw.Position, PI, 1f, TimeToMoveRightFor, "box", 20, IdealScreenHeight, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
+                ray.SpawnDeathray(Leg(0).LowerClaw.Position, PI, 1f, TimeToMoveRightFor, "box", 20, GameHeight, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
                 ray.SetStayWithOwner(true);
-                CrabOwner.Velocity.X = ((IdealScreenWidth / 50f * 49) - (IdealScreenWidth / 8f)) / (TimeToMoveRightFor);
+                CrabOwner.Velocity.X = ((GameWidth / 50f * 49) - (GameWidth / 8f)) / (TimeToMoveRightFor);
             }
 
             else if (time > TimeToStartForcingPlayerRight && time < TimeToStartForcingPlayerRight + TimeToMoveRightFor)
@@ -138,7 +138,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 {
                     Deathray ray = new Deathray();
 
-                    ray.SpawnDeathray(new Vector2(Leg(0).LowerClaw.Position.X, 0), PI, 1f, TimeToMoveRightFor, "box", 40, IdealScreenHeight, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
+                    ray.SpawnDeathray(new Vector2(Leg(0).LowerClaw.Position.X, 0), PI, 1f, TimeToMoveRightFor, "box", 40, GameHeight, 0, true, Color.White, "DeathrayShader2", Leg(0).LowerClaw);
                 }
             }
 

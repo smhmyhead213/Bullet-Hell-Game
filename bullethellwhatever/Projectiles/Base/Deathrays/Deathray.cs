@@ -190,11 +190,11 @@ namespace bullethellwhatever.Projectiles.Base
 
         public Collision BeamEdgeTouch()
         {
-            Vector2 bucket = EdgeTouchPointGivenX(IdealScreenWidth);
+            Vector2 bucket = EdgeTouchPointGivenX(GameWidth);
 
             if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching right?
             {
-                return new Collision(EdgeTouchPointGivenX(IdealScreenWidth), true);
+                return new Collision(EdgeTouchPointGivenX(GameWidth), true);
             }
 
             bucket = EdgeTouchPointGivenX(0);
@@ -211,11 +211,11 @@ namespace bullethellwhatever.Projectiles.Base
                 return new Collision(EdgeTouchPointGivenY(0), true);
             }
 
-            bucket = EdgeTouchPointGivenY(IdealScreenHeight);
+            bucket = EdgeTouchPointGivenY(GameHeight);
 
             if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching bottom?
             {
-                return new Collision(EdgeTouchPointGivenY(IdealScreenHeight), true);
+                return new Collision(EdgeTouchPointGivenY(GameHeight), true);
             }
 
             else return new Collision(Vector2.Zero, false);

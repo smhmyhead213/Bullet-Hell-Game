@@ -68,7 +68,7 @@ namespace bullethellwhatever.MainFiles
 
             if (TimeInCurrentGameState % timeBetweenInstructions == 0 && index < instructions.Length)
             {
-                DialogueSystem.Dialogue(instructions[index], 1, new Vector2(IdealScreenWidth / 5, IdealScreenHeight / 3 + yDistanceBetweenInstructions * index));
+                DialogueSystem.Dialogue(instructions[index], 1, new Vector2(GameWidth / 5, GameHeight / 3 + yDistanceBetweenInstructions * index));
             }
         }
     }

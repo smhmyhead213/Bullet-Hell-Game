@@ -21,7 +21,7 @@ namespace bullethellwhatever.DrawCode.UI
             MenuCooldown = 10;
             MenuCooldownTimer = MenuCooldown;
 
-            PauseMenu = new Menu("MenuBG", new Vector2(IdealScreenWidth / 3, IdealScreenHeight / 6), Utilities.CentreOfScreen());
+            PauseMenu = new Menu("MenuBG", new Vector2(GameWidth / 3, GameHeight / 6), Utilities.CentreOfScreen());
         }
         public static void ManageMenus()
         {

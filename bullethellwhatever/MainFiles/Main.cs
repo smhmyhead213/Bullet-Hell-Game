@@ -67,11 +67,8 @@ namespace bullethellwhatever.MainFiles
 
         public static Vector2 RawScreenArea;
 
-        public static int ActualScreenHeight;
-        public static int ActualScreenWidth;
-
-        public static int IdealScreenHeight = 1080;
-        public static int IdealScreenWidth = 1920;
+        public static int GameHeight = 1080;
+        public static int GameWidth = 1920;
 
         public static int GameTime;
 
@@ -82,9 +79,6 @@ namespace bullethellwhatever.MainFiles
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
-
-            ActualScreenWidth = _graphics.PreferredBackBufferWidth;
-            ActualScreenHeight = _graphics.PreferredBackBufferHeight;
 
             Content.RootDirectory = "Content";
 
@@ -103,7 +97,7 @@ namespace bullethellwhatever.MainFiles
         //    {
         //        RawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
 
-        //        Vector2 zoom = RawScreenArea / new Vector2(IdealScreenWidth, IdealScreenHeight) * ZoomFactor;
+        //        Vector2 zoom = RawScreenArea / new Vector2(GameWidth, GameHeight) * ZoomFactor;
         //        return Matrix.CreateScale(zoom.X, zoom.Y, 1f);
         //    }
         //}
@@ -141,7 +135,7 @@ namespace bullethellwhatever.MainFiles
             _graphics.DeviceReset += GraphicsManager_DeviceReset;
             _graphics.DeviceCreated += GraphicsManager_DeviceCreated;
 
-            MainRT = new RenderTarget2D(GraphicsDevice, IdealScreenWidth, IdealScreenHeight);
+            MainRT = new RenderTarget2D(GraphicsDevice, GameWidth, GameHeight);
 
             base.Initialize();
         }

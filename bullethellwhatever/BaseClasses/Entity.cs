@@ -134,7 +134,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public bool TouchingBottom()
         {
-            if (Position.Y + Texture.Height * GetSize().Y / 2 >= IdealScreenHeight)
+            if (Position.Y + Texture.Height * GetSize().Y / 2 >= GameHeight)
                 return true;
             else return false;
             //if at the bottom
@@ -149,7 +149,7 @@ namespace bullethellwhatever.BaseClasses
 
         public bool TouchingRight()
         {
-            if (Position.X + Texture.Width * GetSize().X / 2 >= IdealScreenWidth)
+            if (Position.X + Texture.Width * GetSize().X / 2 >= GameWidth)
                 return true;
             else return false;
         }

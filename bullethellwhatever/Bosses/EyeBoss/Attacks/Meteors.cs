@@ -47,13 +47,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time == 0)
             {
-                Vector2 spawnPos = new Vector2(Utilities.RandomFloat(thickness / 2, IdealScreenWidth - thickness / 2), 0);
+                Vector2 spawnPos = new Vector2(Utilities.RandomFloat(thickness / 2, GameWidth - thickness / 2), 0);
 
                 float maxRotation = PI / 60;
 
                 float additionalRotation = Utilities.RandomFloat(-maxRotation, maxRotation);
 
-                TelegraphLine t = SpawnTelegraphLine(PI + additionalRotation, 0, thickness, IdealScreenHeight * 1.5f, 60, spawnPos, Color.White, "box", Owner, false);
+                TelegraphLine t = SpawnTelegraphLine(PI + additionalRotation, 0, thickness, GameHeight * 1.5f, 60, spawnPos, Color.White, "box", Owner, false);
 
                 Pupil.RotationWithinEye = Utilities.VectorToAngle(spawnPos - Owner.Position);
                 Pupil.DistanceFromEyeCentre = 35;

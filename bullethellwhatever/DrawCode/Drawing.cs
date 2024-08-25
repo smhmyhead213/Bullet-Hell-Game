@@ -27,7 +27,7 @@ namespace bullethellwhatever.DrawCode
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
-            DrawGame.PlayerHUD = new UI.Player.PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(IdealScreenWidth / 10f, IdealScreenHeight / 10f));
+            DrawGame.PlayerHUD = new UI.Player.PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(GameWidth / 10f, GameHeight / 10f));
         }
 
         public static void UpdateDrawer()
@@ -117,7 +117,7 @@ namespace bullethellwhatever.DrawCode
                 ControlChangedTo = "Weapon switch control switched to number keys.";
             }
 
-            DialogueSystem.Dialogue(ControlChangedTo, 1, new Vector2(IdealScreenWidth / 2, IdealScreenHeight / 10 * 7));
+            DialogueSystem.Dialogue(ControlChangedTo, 1, new Vector2(GameWidth / 2, GameHeight / 10 * 7));
         }
     }
 }

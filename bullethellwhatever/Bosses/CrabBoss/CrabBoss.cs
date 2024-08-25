@@ -232,7 +232,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    UI.DrawHealthBar(_spriteBatch, Legs[i].CalculateHP() / Legs[i].CalculateMaxHP(), new Vector2(IdealScreenWidth / 8 + (i * (IdealScreenWidth / 8 * 6)), IdealScreenHeight / 20 * 19), IdealScreenWidth / 10, 25);
+                    UI.DrawHealthBar(_spriteBatch, Legs[i].CalculateHP() / Legs[i].CalculateMaxHP(), new Vector2(GameWidth / 8 + (i * (GameWidth / 8 * 6)), GameHeight / 20 * 19), GameWidth / 10, 25);
                 }
             }
 

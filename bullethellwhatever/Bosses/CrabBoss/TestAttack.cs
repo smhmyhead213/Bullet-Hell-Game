@@ -59,8 +59,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 Random rng = new Random();
 
-                int xpos = rng.Next((int)IdealScreenWidth / 8, (int)IdealScreenWidth / 8 * 7);
-                int ypos = rng.Next((int)IdealScreenHeight / 8, (int)IdealScreenHeight / 8 * 7);
+                int xpos = rng.Next((int)GameWidth / 8, (int)GameWidth / 8 * 7);
+                int ypos = rng.Next((int)GameHeight / 8, (int)GameHeight / 8 * 7);
 
                 PositionToMoveTo = new Vector2(xpos, ypos);
 

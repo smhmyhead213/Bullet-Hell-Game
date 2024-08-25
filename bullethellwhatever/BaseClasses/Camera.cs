@@ -34,8 +34,6 @@ namespace bullethellwhatever.BaseClasses
         private Matrix4x4 ZoomMatrix; // scale matrix that allows for zooming in and out
         public Camera()
         {
-            Viewport = new(0, 0, ActualScreenWidth, ActualScreenHeight); // should this be ideal or actual screen height?
-
             TranslationMatrix = Matrix4x4.Identity;
             ZoomMatrix = Matrix4x4.Identity;
             RotationMatrix = Matrix4x4.Identity;

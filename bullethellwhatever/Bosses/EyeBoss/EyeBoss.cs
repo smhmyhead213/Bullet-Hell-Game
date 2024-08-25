@@ -32,7 +32,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Texture = AssetRegistry.GetTexture2D("Circle");
             Size = Vector2.One * 2f;
 
-            ChainStartPosition = new Vector2(IdealScreenWidth / 2, 0);
+            ChainStartPosition = new Vector2(GameWidth / 2, 0);
 
             Phase = 1;
             MaxHP = 5;
@@ -47,7 +47,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Pupil.IsInvincible = true;
             Pupil.TargetableByHoming = false;
 
-            CreateChain(IdealScreenHeight / 2f);
+            CreateChain(GameHeight / 2f);
 
             BossAttacks = new EyeBossAttack[]
             {

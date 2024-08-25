@@ -37,19 +37,24 @@ namespace bullethellwhatever.UtilitySystems
             float width = MainInstance.GraphicsDevice.PresentationParameters.BackBufferWidth;
             float height = MainInstance.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
-            if (width / IdealScreenWidth > height / IdealScreenHeight)
+            if (width / GameWidth > height / GameHeight)
             {
-                ViewWidth = (int)(height / IdealScreenHeight * IdealScreenWidth);
+                ViewWidth = (int)(height / GameHeight * GameWidth);
                 ViewHeight = (int)height;
             }
             else
             {
                 ViewWidth = (int)width;
-                ViewHeight = (int)(width / IdealScreenWidth * IdealScreenHeight);
+                ViewHeight = (int)(width / GameWidth * GameHeight);
             }
 
-            ScreenMatrix = Matrix4x4.CreateScale((float)ViewWidth / IdealScreenWidth);
+            ScreenMatrix = Matrix4x4.CreateScale(ScreenScaleFactor());
             ScreenViewport = new((int)(width / 2f - ViewWidth / 2f), (int)(height / 2f - ViewHeight / 2f), ViewWidth, ViewHeight, 0f, 1f);
+        }
+
+        public static float ScreenScaleFactor()
+        {
+            return (float)ViewWidth / GameWidth;
         }
     }
 }

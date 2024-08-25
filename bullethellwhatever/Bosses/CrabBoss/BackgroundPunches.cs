@@ -85,7 +85,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (time < MoveToPositionTime)
                 {                   
-                    MoveToPoint(new Vector2(IdealScreenWidth / 2f, IdealScreenHeight / 10f), time, MoveToPositionTime);
+                    MoveToPoint(new Vector2(GameWidth / 2f, GameHeight / 10f), time, MoveToPositionTime);
 
                     if (!Utilities.IsQuantityWithinARangeOfAValue(Owner.Depth, finalDepth, 0.02f)) //if looping the attack, dont bother doing the depth stuff again
                     {

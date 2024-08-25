@@ -148,7 +148,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     RotationalVelocity = -Sign(Velocity.X) * PI / 12;
                 }
 
-                if (vertexX > IdealScreenWidth && Velocity.X > 0)
+                if (vertexX > GameWidth && Velocity.X > 0)
                 {
                     Velocity.X = Velocity.X * -1f;
                 }
@@ -158,7 +158,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Velocity.Y = Velocity.Y * -1f;
                 }
 
-                if (vertexY > IdealScreenHeight && Velocity.Y > 0)
+                if (vertexY > GameHeight && Velocity.Y > 0)
                 {
                     Velocity.Y = Velocity.Y * -1f;
 

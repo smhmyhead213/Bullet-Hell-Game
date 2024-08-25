@@ -41,15 +41,15 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             hpBarShader.CurrentTechnique.Passes[0].Apply();
 
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("box"), new Vector2(IdealScreenWidth / 7.6f, IdealScreenHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("box"), new Vector2(GameWidth / 7.6f, GameHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
             Drawing.RestartSpriteBatchForNotShaders(s);
 
-            Drawing.BetterDraw(Texture, new Vector2(IdealScreenWidth / 10f, IdealScreenHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Texture, new Vector2(GameWidth / 10f, GameHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
 
             //---------------------- handle rotating weapon icons --------------------------
 
-            Vector2 iconRotationAxis = new Vector2(IdealScreenWidth / 15.174f, IdealScreenHeight / 10f);
+            Vector2 iconRotationAxis = new Vector2(GameWidth / 15.174f, GameHeight / 10f);
 
             Vector2 drawDistanceFromCentre = new Vector2(0, -30f);
 

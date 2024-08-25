@@ -22,9 +22,9 @@ namespace bullethellwhatever
 
         public static Vector2 ClampWithinScreen(Vector2 vector)
         {
-            vector.X = MathHelper.Clamp(vector.X, 0, IdealScreenWidth);
+            vector.X = MathHelper.Clamp(vector.X, 0, GameWidth);
 
-            vector.Y = MathHelper.Clamp(vector.Y, 0, IdealScreenHeight); // keep target winthin bounds
+            vector.Y = MathHelper.Clamp(vector.Y, 0, GameHeight); // keep target winthin bounds
 
             return vector;
         }
@@ -257,7 +257,7 @@ namespace bullethellwhatever
         }
         public static float ScreenDiagonalLength()
         {
-            return Sqrt(IdealScreenWidth * IdealScreenWidth + IdealScreenHeight * IdealScreenHeight);
+            return Sqrt(GameWidth * GameWidth + GameHeight * GameHeight);
         }
         public static Vector3 ColorToVec3(Color color)
         {
@@ -265,7 +265,7 @@ namespace bullethellwhatever
         }
         public static bool IsVectorWithinScreen(Vector2 v)
         {
-            return v.X >= 0 && v.X <= IdealScreenWidth && v.Y >= 0 && v.Y <= IdealScreenHeight;
+            return v.X >= 0 && v.X <= GameWidth && v.Y >= 0 && v.Y <= GameHeight;
         }
         public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
     }

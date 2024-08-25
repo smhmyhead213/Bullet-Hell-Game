@@ -192,9 +192,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 TargetPosition = player.Position; // target past player
 
-                TargetPosition.X = MathHelper.Clamp(TargetPosition.X, 0, IdealScreenWidth);
+                TargetPosition.X = MathHelper.Clamp(TargetPosition.X, 0, GameWidth);
 
-                TargetPosition.Y = MathHelper.Clamp(TargetPosition.Y, 0, IdealScreenHeight); // keep target winthin bounds
+                TargetPosition.Y = MathHelper.Clamp(TargetPosition.Y, 0, GameHeight); // keep target winthin bounds
 
                 float toReticle = Utilities.VectorToAngle(TargetPosition - Leg(1).Position);
 

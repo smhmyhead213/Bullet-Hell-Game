@@ -26,7 +26,7 @@ namespace bullethellwhatever.DrawCode
             DialogueSystem.DrawDialogues(s);
 
             // FPS counter.
-            Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(IdealScreenWidth / 4, IdealScreenHeight / 4), Main._spriteBatch, Main.font, Color.White);
+            Utilities.drawTextInDrawMethod((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(GameWidth / 4, GameHeight / 4), Main._spriteBatch, Main.font, Color.White);
 
             List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();          
             List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
