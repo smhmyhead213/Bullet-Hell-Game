@@ -43,18 +43,11 @@ namespace bullethellwhatever.DrawCode.UI
 
                     exitGame.SetPositionInMenu(new Vector2(PauseMenu.Width() / 3f, PauseMenu.Height() / 2f));
 
-                    Button mainMenuButton = new Button("StartButton", 3f);
+                    MainMenuButton mainMenuButton = new MainMenuButton("StartButton", 3f);
 
                     mainMenuButton.AddToMenu(PauseMenu);
 
                     mainMenuButton.SetPositionInMenu(new Vector2(PauseMenu.Width() / 3f * 2f, PauseMenu.Height() / 2f));
-
-                    mainMenuButton.SetClickEvent(new Action(() =>
-                    {
-                        UIManager.ClearUI();
-                        EntityManager.Clear();
-                        GameState.SetGameState(GameState.GameStates.TitleScreen);
-                    }));
 
                     PauseMenu.Display();
                 }

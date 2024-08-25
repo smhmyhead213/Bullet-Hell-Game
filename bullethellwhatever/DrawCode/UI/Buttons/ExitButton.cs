@@ -10,7 +10,7 @@ using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode.UI.Buttons
 {
-    public class ExitButton : Button
+    public class ExitButton : UIElement
     {
         public ExitButton(string texture, Vector2 size, Vector2 position = default) : base(texture, size, position)
         {

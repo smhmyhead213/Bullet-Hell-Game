@@ -267,7 +267,7 @@ namespace bullethellwhatever
         {
             return v.X >= 0 && v.X <= GameWidth && v.Y >= 0 && v.Y <= GameHeight;
         }
-        public static Vector2 CentreOfScreen() =>  new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+        public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
     }
 
 }

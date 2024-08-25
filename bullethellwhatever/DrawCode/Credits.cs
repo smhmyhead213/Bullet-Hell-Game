@@ -29,7 +29,7 @@ namespace bullethellwhatever.DrawCode
             {
                 CreditPositions[i].Y = CreditPositions[i].Y - 1f;
                 
-                if (CreditPositions[i].Y > 0f && CreditPositions[i].Y < _graphics.PreferredBackBufferHeight) // the use of preferredbackbufferheight might cause resolution independence problems
+                if (CreditPositions[i].Y > 0f && CreditPositions[i].Y < GameHeight) // the use of preferredbackbufferheight might cause resolution independence problems
                 {
                     Utilities.drawTextInDrawMethod(Credit[i], CreditPositions[i], spriteBatch, font, Color.White);
                 }
@@ -48,7 +48,7 @@ namespace bullethellwhatever.DrawCode
 
             for (int i = 0; i < Credit.Length; i++)
             {
-                CreditPositions[i] = new Vector2(_graphics.PreferredBackBufferWidth / 2, (i + 1) * 50);
+                CreditPositions[i] = new Vector2(GameWidth / 2, (i + 1) * 50);
             }
         }
     }

@@ -38,9 +38,9 @@ namespace bullethellwhatever.DrawCode.UI
 
             UIElement[] buttons = new UIElement[]
             {
-                new Button("PlayButton", 1.5f),
-                new Button("SettingsButton", 1.5f),
-                new Button("CreditsButton", 1.5f),
+                new UIElement("PlayButton", 1.5f),
+                new UIElement("SettingsButton", 1.5f),
+                new UIElement("CreditsButton", 1.5f),
             };
 
             Action[] actions = new Action[]
@@ -113,11 +113,11 @@ namespace bullethellwhatever.DrawCode.UI
 
             bossSelectMenu.SetOpacity(0f);
 
-            Button[] mainButtons = new Button[] // the buttons all in a row
+            UIElement[] mainButtons = new UIElement[] // the buttons all in a row
             {
-                new Button("BossButton", new Vector2(150, 60)),
-                new Button("BossButton", new Vector2(150, 60)),
-                new Button("BossButton", new Vector2(150, 60)),
+                new UIElement("BossButton", new Vector2(150, 60)),
+                new UIElement("BossButton", new Vector2(150, 60)),
+                new UIElement("BossButton", new Vector2(150, 60)),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -164,11 +164,11 @@ namespace bullethellwhatever.DrawCode.UI
 
             string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
-            Button[] mainButtons = new Button[buttonTexturesToDraw.Length]; // the buttons all in a row
+            UIElement[] mainButtons = new UIElement[buttonTexturesToDraw.Length]; // the buttons all in a row
 
             for (int i = 0; i < mainButtons.Length; i++)
             {
-                mainButtons[i] = new Button(buttonTexturesToDraw[i], new Vector2(150, 60));
+                mainButtons[i] = new UIElement(buttonTexturesToDraw[i], new Vector2(150, 60));
 
                 difficultySelectMenu.AddUIElement(mainButtons[i]);
 
@@ -217,10 +217,10 @@ namespace bullethellwhatever.DrawCode.UI
             //    _graphics.IsFullScreen = !_graphics.IsFullScreen;
             //}));
 
-            Button[] mainButtons = new Button[]
+            UIElement[] mainButtons = new UIElement[]
             {
-                new Button("NumberKeys", new Vector2(150, 60)),
-                new Button("Scroll", new Vector2(150, 60)),
+                new UIElement("NumberKeys", new Vector2(150, 60)),
+                new UIElement("Scroll", new Vector2(150, 60)),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)

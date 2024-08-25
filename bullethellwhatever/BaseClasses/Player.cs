@@ -317,7 +317,7 @@ namespace bullethellwhatever.BaseClasses
             else
             {
                 Health = MaxHP;
-                Position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+                Position = Utilities.CentreOfScreen();
 
                 musicSystem.StopMusic();
 

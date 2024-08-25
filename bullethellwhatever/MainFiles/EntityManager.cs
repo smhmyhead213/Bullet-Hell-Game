@@ -204,7 +204,7 @@ namespace bullethellwhatever.MainFiles
             switch (GameState.Boss)
             {
                 case GameState.Bosses.SecondBoss:
-                    toSpawn = new SecondBoss(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), new Vector2(0, 0));
+                    toSpawn = new SecondBoss(Utilities.CentreOfScreen(), new Vector2(0, 0));
                     break;
                 case GameState.Bosses.CrabBoss:
                     toSpawn = new CrabBoss();
