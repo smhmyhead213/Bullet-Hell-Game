@@ -59,7 +59,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (Health <= 0)
             {               
-                IsDesperationOver = true;
+                CanDie = true;
             }
 
             if (OscillateRadius)

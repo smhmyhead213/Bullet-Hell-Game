@@ -32,7 +32,7 @@ namespace bullethellwhatever.NPCs
 
         public float DamageReduction;
 
-        public bool IsDesperationOver;
+        public bool CanDie;
 
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
@@ -109,7 +109,7 @@ namespace bullethellwhatever.NPCs
         {
             if (Participating)
             {
-                if (Health < 0 && IsDesperationOver)
+                if (Health < 0 && CanDie)
                 {
                     Die();
 

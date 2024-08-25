@@ -41,7 +41,7 @@ namespace bullethellwhatever.Bosses
             IFrames = 5f;
             HasChosenChargeDirection = false;
             AttackNumber = 1;
-            IsDesperationOver = false;
+            CanDie = false;
 
             DeathrayAngularVelocity = 180f;
             IsHarmful = true;
@@ -72,7 +72,7 @@ namespace bullethellwhatever.Bosses
 
             SetDepth(0.5f);
 
-            if (Health < 0 && IsDesperationOver)
+            if (Health < 0 && CanDie)
                 Die();
 
             if (AITimer == 0)
@@ -107,7 +107,7 @@ namespace bullethellwhatever.Bosses
         {
             if (Health <= 0)
             {
-                IsDesperationOver = true;
+                CanDie = true;
             }
 
             switch (AttackNumber)

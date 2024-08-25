@@ -109,7 +109,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time == EndTime - 1)
             {
-                Owner.IsDesperationOver = true;
+                Owner.CanDie = true;
                 Owner.Die();
 
                 for (int i = 0; i < 2; i++)

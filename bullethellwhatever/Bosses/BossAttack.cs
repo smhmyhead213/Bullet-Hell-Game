@@ -70,7 +70,7 @@ namespace bullethellwhatever.Bosses
                 }
             }
 
-            if (Owner.Health <= 0 && !Owner.IsDesperationOver && !HasResetAITimerForDesperation)
+            if (Owner.Health <= 0 && !Owner.CanDie && !HasResetAITimerForDesperation)
             {
                 HasResetAITimerForDesperation = true;
             }
