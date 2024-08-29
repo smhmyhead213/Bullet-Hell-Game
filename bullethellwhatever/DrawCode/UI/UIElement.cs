@@ -89,7 +89,7 @@ namespace bullethellwhatever.DrawCode.UI
                 Position = CalculateActualPostion();
             }
 
-            if (IsHovered() && Owner is not null && Owner == UIManager.InteractableWithTab)
+            if (IsHovered() && Owner is not null && Owner == UIManager.InteractableUIElement())
             {
                 Owner.IndexOfSelected = -1; // if a button is hovered over, abort tab navigation
             }
@@ -157,6 +157,21 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 throw new Exception("cannot set menu position of buttons that arent in a menu. maybe you forgot to add them to the menu?");
             }
+        }
+        /// <summary>
+        /// Handles the pressing of Tab when this element is selected. For example, a button will simply increment the index of interactable thus passing interactibility to the next UIElement, but a menu will pass it to the next button it contains and to the next element after having exhausted all of its elements
+        /// </summary>
+        public virtual void HandleTab()
+        {
+            UIManager.IncrementIndexOfInteractable();
+        }
+
+        /// <summary>
+        /// Defines the code that will be executed when the Enter key is pressed while this UIElement is interactable with the Tab key. For example, buttons will simply call HandleClick(), but menus will call the HandleClick() of their selected button.
+        /// </summary>
+        public virtual void HandleEnter()
+        {
+            HandleClick();
         }
 
         public virtual void Display()

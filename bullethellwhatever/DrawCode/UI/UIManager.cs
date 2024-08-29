@@ -15,12 +15,15 @@ namespace bullethellwhatever.DrawCode.UI
         public static List<UIElement> UIElementsToAddNextFrame;
 
         /// <summary>
-        /// The one menu at a time that can be naviagted using the Tab key
+        /// The one menu at a time that can be naviagted using the Tab key.
         /// </summary>
-        public static Menu InteractableWithTab;
+        public static int IndexOfInteractable;
+
         public static int DefaultButtonCooldown => 25;
         public static int ButtonCooldown;
+        public static int NavigationCooldown => 8;
 
+        public static int NavigationCooldownTimer;
         public static void Initialise()
         {
             ActiveUIElements = new List<UIElement>();
@@ -28,6 +31,8 @@ namespace bullethellwhatever.DrawCode.UI
             UIElementsToAddNextFrame = new List<UIElement>();
 
             ButtonCooldown = 0;
+
+            NavigationCooldownTimer = 0;
         }
         public static void ManageUI()
         {
@@ -55,14 +60,41 @@ namespace bullethellwhatever.DrawCode.UI
                 ButtonCooldown--;
             }
 
-            // if there is no prioritised menu OR the prioritised menu is not displayed AND there are menus
-
-            if (GetListOfActiveMenus().Count > 0 && (InteractableWithTab is null || !InteractableWithTab.IsDisplayed()))
+            if (NavigationCooldownTimer > 0)
             {
-                InteractableWithTab = LatestAddedMenu();
+                NavigationCooldownTimer--;
+            }
+
+            if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Enter) && ButtonCooldown == 0)
+            {
+                ActiveUIElements[IndexOfInteractable].HandleEnter();
+                ButtonCooldown = DefaultButtonCooldown;
+            }
+
+            if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && NavigationCooldownTimer == 0)
+            {
+                ActiveUIElements[IndexOfInteractable].HandleTab();
+                NavigationCooldownTimer = NavigationCooldown;
             }
         }
 
+        public static void IncrementIndexOfInteractable()
+        {
+            if (IndexOfInteractable == ActiveUIElements.Count - 1)
+            {
+                IndexOfInteractable = -1;
+            }
+
+            else
+            {
+                IndexOfInteractable++;
+            }
+        }
+
+        public static UIElement InteractableUIElement()
+        {
+            return ActiveUIElements[IndexOfInteractable];
+        }
         public static void DrawUI(SpriteBatch spriteBatch)
         {
             Drawing.RestartSpriteBatchForUI(spriteBatch);

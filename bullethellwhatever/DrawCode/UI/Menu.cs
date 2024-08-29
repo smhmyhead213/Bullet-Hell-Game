@@ -20,9 +20,6 @@ namespace bullethellwhatever.DrawCode.UI
         public int TimeSinceLastDrag;
 
         public int IndexOfSelected;
-        private int NavigationCooldown => 8;
-
-        private int NavigationCooldownTimer;
 
         public Menu(string texture, Vector2 size, Vector2 position) : base(texture, size, position)
         {
@@ -47,7 +44,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             IndexOfSelected = -1;
 
-            NavigationCooldownTimer = 0;
+            UIManager.NavigationCooldownTimer = 0;
 
             UpdateClickBox();
         }
@@ -69,7 +66,6 @@ namespace bullethellwhatever.DrawCode.UI
         public override void Display()
         {
             UIManager.UIElementsToAddNextFrame.Add(this);
-            UIManager.InteractableWithTab = this; // when a new menu is created, immediately give priority to it
         }
 
         public override void Update()
@@ -87,32 +83,6 @@ namespace bullethellwhatever.DrawCode.UI
                     Vector2 mouseRelativePosition = MousePosition - TopLeft();
 
                     Position = TopLeft() + mouseRelativePosition;
-
-                    UIManager.InteractableWithTab = this;
-                }
-            }
-
-            if (UIManager.InteractableWithTab != this)
-            {
-                IndexOfSelected = -1;
-            }
-
-            if (NavigationCooldownTimer > 0)
-            {
-                NavigationCooldownTimer--;
-            }
-
-            if (UIManager.InteractableWithTab == this)
-            {
-                if (NavigationCooldownTimer == 0 && IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
-                {
-                    UpdateSelectedElement();
-                    NavigationCooldownTimer = NavigationCooldown;
-                }
-
-                if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Enter) && IndexOfSelected > 0)
-                {
-                    UIElements[IndexOfSelected].HandleClick();
                 }
             }
 
@@ -154,6 +124,21 @@ namespace bullethellwhatever.DrawCode.UI
             }
         }
 
+        public override void HandleEnter()
+        {
+            if (IndexOfSelected > 0)
+            {
+                UIElements[IndexOfSelected].HandleClick();
+            }
+        }
+        public override void HandleTab()
+        {
+            if (UIManager.NavigationCooldownTimer == 0)
+            {
+                UpdateSelectedElement();
+                UIManager.NavigationCooldownTimer = UIManager.NavigationCooldown;
+            }
+        }
         public UIElement? GetSelectedElement()
         {
             if (IndexOfSelected >= 0)

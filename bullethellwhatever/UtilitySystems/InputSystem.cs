@@ -38,8 +38,6 @@ namespace bullethellwhatever.UtilitySystems
         public static bool IsKeyPressed(Keys key)
         {
             return KeyboardState.IsKeyDown(key);
-        }
-
-    
+        }   
     }
 }
