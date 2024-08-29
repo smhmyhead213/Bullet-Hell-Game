@@ -113,7 +113,8 @@ namespace bullethellwhatever.Bosses
             switch (AttackNumber)
             {
                 case 1:
-                    DialogueTest(ref AITimer, ref AttackNumber);
+                    DialogueTest(
+                        ref AITimer, ref AttackNumber);
                     break;
                 default:
                     AttackNumber = 1;

@@ -17,6 +17,7 @@ namespace bullethellwhatever.DrawCode.UI
     {
         public Vector2 PositionInMenu; // position relative to menu its contained in
         public Vector2 Position; // actual position in game
+        public Vector2 InitialSize;
         public Vector2 Size;
         public Texture2D Texture;
         public Menu Owner;
@@ -46,6 +47,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             Size = size;
 
+            InitialSize = Size;
+
             AITimer = 0;
 
             Colour = Color.White;
@@ -66,6 +69,8 @@ namespace bullethellwhatever.DrawCode.UI
             Texture = AssetRegistry.GetTexture2D(texture);
 
             Size = Texture.TextureDimensionsToVector() * size;
+
+            InitialSize = Size;
 
             AITimer = 0;
 
@@ -119,7 +124,7 @@ namespace bullethellwhatever.DrawCode.UI
                 ClickEvent();
             }
 
-            SoundSystem.PlaySound("testsound");
+            //SoundSystem.PlaySound("testsound");
         }
         public bool IsClicked()
         {

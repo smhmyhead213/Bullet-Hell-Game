@@ -73,6 +73,18 @@
 /processorParam:TextureFormat=Color
 /build:CrabBody.png
 
+#begin CrabBoss.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:CrabBoss.png
+
 #begin CrabLowerArm.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -159,6 +171,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ExitButton.png
+
+#begin EyeBoss.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EyeBoss.png
 
 #begin font.spritefont
 /importer:FontDescriptionImporter
@@ -287,7 +311,7 @@
 /processorParam:TextureFormat=Color
 /build:NormalButton.png
 
-#begin NumberKeys.png
+#begin NumberKeysOff.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -297,7 +321,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:NumberKeys.png
+/build:NumberKeysOff.png
+
+#begin NumberKeysOn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:NumberKeysOn.png
 
 #begin PlayButton.png
 /importer:TextureImporter
@@ -311,7 +347,7 @@
 /processorParam:TextureFormat=Color
 /build:PlayButton.png
 
-#begin Scroll.png
+#begin ScrollWheelOff.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -321,7 +357,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Scroll.png
+/build:ScrollWheelOff.png
+
+#begin ScrollWheelOn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ScrollWheelOn.png
 
 #begin SettingsButton.png
 /importer:TextureImporter

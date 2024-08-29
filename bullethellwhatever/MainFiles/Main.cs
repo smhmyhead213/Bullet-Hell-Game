@@ -91,16 +91,6 @@ namespace bullethellwhatever.MainFiles
             
             _graphics.ApplyChanges();
         }
-        //public Matrix GamePerspective
-        //{
-        //    get
-        //    {
-        //        RawScreenArea = new(MainInstance.GraphicsDevice.Viewport.Width, MainInstance.GraphicsDevice.Viewport.Height);
-
-        //        Vector2 zoom = RawScreenArea / new Vector2(GameWidth, GameHeight) * ZoomFactor;
-        //        return Matrix.CreateScale(zoom.X, zoom.Y, 1f);
-        //    }
-        //}
 
         protected override void LoadContent()
         {

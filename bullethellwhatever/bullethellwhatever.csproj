@@ -11,25 +11,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Content\bin\Windows\Sounds\**" />
-    <Compile Remove="Content\Sounds\**" />
-    <EmbeddedResource Remove="Content\bin\Windows\Sounds\**" />
-    <EmbeddedResource Remove="Content\Sounds\**" />
-    <None Remove="Content\bin\Windows\Sounds\**" />
-    <None Remove="Content\Sounds\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Content\Music\TestBossMusic.mp3" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.17" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Music\" />
-  </ItemGroup>
+
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />

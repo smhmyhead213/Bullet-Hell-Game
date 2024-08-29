@@ -4,6 +4,7 @@ using bullethellwhatever.MainFiles;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using static bullethellwhatever.MainFiles.GameState;
 using bullethellwhatever.DrawCode.UI.Buttons;
 using Microsoft.Xna.Framework.Input;
@@ -12,6 +13,8 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using SharpDX.DirectWrite;
+using log4net.Core;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -24,11 +27,11 @@ namespace bullethellwhatever.DrawCode.UI
             titleMenu.SetOpacity(0f);
 
             float titleElementsStartOffsetToRightOfScreen = 300f;
-            float titleBannerEndOffsetToRightOfScreen = -300f;
+            float titleBannerEndOffsetToRightOfScreen = -350f;
             float[] titleElementEndOffsetToRightOfScreen = new float[3]
-                { -250f,
-                  -225f,
-                  -225f };
+                { -300f,
+                  -300f,
+                  -300f };
 
             float titleBannerY = 200f;
             float yDistanceBetweenButtonsOnMainMenu = 200f;
@@ -115,9 +118,9 @@ namespace bullethellwhatever.DrawCode.UI
 
             UIElement[] mainButtons = new UIElement[] // the buttons all in a row
             {
-                new UIElement("BossButton", new Vector2(150, 60)),
-                new UIElement("BossButton", new Vector2(150, 60)),
-                new UIElement("BossButton", new Vector2(150, 60)),
+                new UIElement("BossButton", 3f),
+                new UIElement("CrabBoss", 0.5f),
+                new UIElement("EyeBoss", 0.5f),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -219,8 +222,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             UIElement[] mainButtons = new UIElement[]
             {
-                new UIElement("NumberKeys", new Vector2(150, 60)),
-                new UIElement("Scroll", new Vector2(150, 60)),
+                new UIElement("NumberKeysOff", 0.5f),
+                new UIElement("ScrollWheelOff", 0.5f),
             };
 
             for (int i = 0; i < mainButtons.Length; i++)
@@ -240,6 +243,37 @@ namespace bullethellwhatever.DrawCode.UI
 
                 mainButtons[i].SetClickEvent(startButtonAction);
             }
+
+            float scaleFactorForSelected = 1.4f;
+
+            string[] selectedTextures = new string[] {
+                "NumberKeysOn",
+                "ScrollWheelOn"
+            };
+
+            string[] notSelectedTextures = new string[] {
+                "NumberKeysOff",
+                "ScrollWheelOff"
+            };
+
+            for (int i = 0; i < mainButtons.Length; i++)
+            {
+                int locali = i;
+
+                mainButtons[locali].SetExtraAI(new Action(() =>
+                {
+                    if (WeaponSwitchControl == (WeaponSwitchControls)locali)
+                    {
+                        mainButtons[locali].Texture = AssetRegistry.GetTexture2D(selectedTextures[locali]);
+                        mainButtons[locali].Size = mainButtons[locali].InitialSize * scaleFactorForSelected;
+                    }
+                    else
+                    {
+                        mainButtons[locali].Texture = AssetRegistry.GetTexture2D(notSelectedTextures[locali]);
+                        mainButtons[locali].Size = mainButtons[locali].InitialSize;
+                    }
+                }));
+            }           
 
             BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
