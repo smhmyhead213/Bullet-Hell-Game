@@ -89,6 +89,11 @@ namespace bullethellwhatever.DrawCode.UI
                 Position = CalculateActualPostion();
             }
 
+            if (IsHovered() && Owner is not null && Owner == UIManager.InteractableWithTab)
+            {
+                Owner.IndexOfSelected = -1; // if a button is hovered over, abort tab navigation
+            }
+
             if (CanBeClicked())
             {
                 UIManager.ButtonCooldown = UIManager.DefaultButtonCooldown;
@@ -126,9 +131,14 @@ namespace bullethellwhatever.DrawCode.UI
 
             //SoundSystem.PlaySound("testsound");
         }
+
+        public bool IsHovered()
+        {
+            return ClickBox.Contains(MousePosition);
+        }
         public bool IsClicked()
         {
-            return ClickBox.Contains(MousePosition) && IsLeftClickDown();
+            return IsHovered() && IsLeftClickDown();
         }
 
         public void AddToMenu(Menu menu)
@@ -164,13 +174,25 @@ namespace bullethellwhatever.DrawCode.UI
         {
             Opacity = opacity;
         }
-        public virtual Color ColourIfHovered()
+
+        public bool IsSelected()
         {
-            return ClickBox.Contains(MousePosition) ? Color.Red : Colour; // in the future make the colour more red, not just red
+            bool isSelectedByMenu = false;
+
+            if (Owner is not null && Owner.GetSelectedElement() == this)
+            {
+                isSelectedByMenu = true;
+            }
+
+            return ClickBox.Contains(MousePosition) || isSelectedByMenu;
+        }
+        public virtual Color ColourIfSelected()
+        {
+            return IsSelected() ? Color.Red : Colour; // in the future make the colour more red, not just red
         }
         public virtual void Draw(SpriteBatch s)
         {
-            Color colour = ColourIfHovered();
+            Color colour = ColourIfSelected();
             
             Drawing.BetterDraw(Texture, Position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
         }

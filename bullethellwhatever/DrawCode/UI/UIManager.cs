@@ -13,6 +13,11 @@ namespace bullethellwhatever.DrawCode.UI
         public static List<UIElement> ActiveUIElements;
         public static List<UIElement> UIElemntsToRemoveNextFrame;
         public static List<UIElement> UIElementsToAddNextFrame;
+
+        /// <summary>
+        /// The one menu at a time that can be naviagted using the Tab key
+        /// </summary>
+        public static Menu InteractableWithTab;
         public static int DefaultButtonCooldown => 25;
         public static int ButtonCooldown;
 
@@ -48,6 +53,13 @@ namespace bullethellwhatever.DrawCode.UI
             if (ButtonCooldown > 0)
             {
                 ButtonCooldown--;
+            }
+
+            // if there is no prioritised menu OR the prioritised menu is not displayed AND there are menus
+
+            if (GetListOfActiveMenus().Count > 0 && (InteractableWithTab is null || !InteractableWithTab.IsDisplayed()))
+            {
+                InteractableWithTab = LatestAddedMenu();
             }
         }
 
@@ -94,6 +106,17 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
             return output;
+        }
+
+        public static Menu? LatestAddedMenu()
+        {
+            List<UIElement> activeMenus = GetListOfActiveMenus();
+
+            if (activeMenus.Count > 0)
+            {
+                return (Menu)activeMenus.Last();
+            }
+            else return null;
         }
     }
 }

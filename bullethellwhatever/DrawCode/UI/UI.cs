@@ -116,6 +116,17 @@ namespace bullethellwhatever.DrawCode.UI
 
             bossSelectMenu.SetOpacity(0f);
 
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
+
+            backButton.SetClickEvent(new Action(() =>
+            {
+                bossSelectMenu.Remove();
+            }));
+
+            backButton.AddToMenu(bossSelectMenu);
+
+            backButton.SetPositionInMenu(new Vector2(bossSelectMenu.Width() / 5, bossSelectMenu.Height() / 5));
+
             UIElement[] mainButtons = new UIElement[] // the buttons all in a row
             {
                 new UIElement("BossButton", 3f),
@@ -145,17 +156,6 @@ namespace bullethellwhatever.DrawCode.UI
 
                 mainButtons[i].SetClickEvent(startButtonAction);
             }
-
-            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
-
-            backButton.SetClickEvent(new Action(() =>
-            {
-                bossSelectMenu.Remove();
-            }));
-
-            backButton.AddToMenu(bossSelectMenu);
-
-            backButton.SetPositionInMenu(new Vector2(bossSelectMenu.Width() / 5, bossSelectMenu.Height() / 5));
 
             bossSelectMenu.Display();
         }

@@ -30,7 +30,7 @@ namespace bullethellwhatever.DrawCode.UI
             return false;
         }
 
-        public override Color ColourIfHovered()
+        public override Color ColourIfSelected()
         {
             return Colour; // do not change colour if hovered
         }

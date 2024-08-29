@@ -43,7 +43,7 @@ namespace bullethellwhatever.DrawCode.UI
 
                     exitGame.SetPositionInMenu(new Vector2(PauseMenu.Width() / 3f, PauseMenu.Height() / 2f));
 
-                    MainMenuButton mainMenuButton = new MainMenuButton("StartButton", 3f);
+                    MainMenuButton mainMenuButton = new MainMenuButton("MainMenuButton", new Vector2(150, 60));
 
                     mainMenuButton.AddToMenu(PauseMenu);
 
