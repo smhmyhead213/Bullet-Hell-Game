@@ -17,7 +17,11 @@ namespace bullethellwhatever.DrawCode.UI
         /// <summary>
         /// The one menu at a time that can be naviagted using the Tab key.
         /// </summary>
-        public static int IndexOfInteractable;
+        public static int IndexOfInteractable
+        {
+            get;
+            set;
+        }
 
         public static int DefaultButtonCooldown => 25;
         public static int ButtonCooldown;
@@ -51,6 +55,11 @@ namespace bullethellwhatever.DrawCode.UI
             foreach (UIElement element in UIElementsToAddNextFrame)
             {
                 ActiveUIElements.Add(element);
+
+                if (element is Menu)
+                {
+                    IndexOfInteractable = ActiveUIElements.IndexOf(element); // immediately give interaction priority to menus immediately when they spawn
+                }
             }
 
             UIElementsToAddNextFrame.Clear();
@@ -73,27 +82,41 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && NavigationCooldownTimer == 0)
             {
-                ActiveUIElements[IndexOfInteractable].HandleTab();
-                NavigationCooldownTimer = NavigationCooldown;
+                if (IndexOfInteractable == -1)
+                {
+                    IncrementIndexOfInteractable();
+                }
+                else
+                {
+                    ActiveUIElements[IndexOfInteractable].HandleTab();
+                    NavigationCooldownTimer = NavigationCooldown;
+                }
             }
         }
 
         public static void IncrementIndexOfInteractable()
         {
-            if (IndexOfInteractable == ActiveUIElements.Count - 1)
+            IndexOfInteractable++;
+
+            if (IndexOfInteractable == ActiveUIElements.Count)
             {
                 IndexOfInteractable = -1;
             }
-
-            else
-            {
-                IndexOfInteractable++;
-            }
         }
 
-        public static UIElement InteractableUIElement()
+        public static UIElement? InteractableUIElement()
         {
-            return ActiveUIElements[IndexOfInteractable];
+            return IndexOfInteractable == -1 ? null : ActiveUIElements[IndexOfInteractable];
+        }
+
+        public static void ResetAllSelections()
+        {
+            List<UIElement> allMenus = GetListOfActiveMenus();
+
+            foreach (UIElement element in allMenus)
+            {
+                ((Menu)element).IndexOfSelected = -1;
+            }
         }
         public static void DrawUI(SpriteBatch spriteBatch)
         {
@@ -104,6 +127,7 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Draw(spriteBatch);
             }
 
+            Utilities.drawTextInDrawMethod(IndexOfInteractable.ToString(), Utilities.CentreOfScreen() / 4f, spriteBatch, font, Microsoft.Xna.Framework.Color.White);
             _spriteBatch.End();
         }
 

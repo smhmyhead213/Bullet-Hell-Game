@@ -34,6 +34,8 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 if (!PauseMenu.IsDisplayed())
                 {
+                    UIManager.ResetAllSelections();
+
                     PauseMenu.SetDraggable(true);
                     PauseMenu.SetImportant(true);
 

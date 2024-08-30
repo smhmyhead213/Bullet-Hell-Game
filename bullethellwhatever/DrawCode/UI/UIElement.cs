@@ -180,7 +180,7 @@ namespace bullethellwhatever.DrawCode.UI
                 UIManager.UIElementsToAddNextFrame.Add(this);
         }
 
-        public void Remove()
+        public virtual void Remove()
         {
             UIManager.UIElemntsToRemoveNextFrame.Add(this);
         }

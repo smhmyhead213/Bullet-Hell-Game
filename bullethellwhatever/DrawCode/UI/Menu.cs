@@ -42,7 +42,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             TimeSinceLastDrag = 0;
 
-            IndexOfSelected = -1;
+            UIManager.ResetAllSelections();
 
             UIManager.NavigationCooldownTimer = 0;
 
@@ -68,6 +68,12 @@ namespace bullethellwhatever.DrawCode.UI
             UIManager.UIElementsToAddNextFrame.Add(this);
         }
 
+        public override void Remove()
+        {
+            UIManager.IndexOfInteractable = UIManager.ActiveUIElements.IndexOf(this) - 1;
+            base.Remove();
+        }
+
         public override void Update()
         {
             if (Draggable)
@@ -83,6 +89,8 @@ namespace bullethellwhatever.DrawCode.UI
                     Vector2 mouseRelativePosition = MousePosition - TopLeft();
 
                     Position = TopLeft() + mouseRelativePosition;
+
+                    UIManager.IndexOfInteractable = UIManager.ActiveUIElements.IndexOf(this);
                 }
             }
 
