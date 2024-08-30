@@ -119,7 +119,6 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 IndexOfSelected = 0; // no ui element selected
             }
-
             else
             {
                 IndexOfSelected++; // if we are not at the last ui element, increment               
@@ -129,7 +128,7 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 if (IndexOfSelected == UIElements.Count) // if we are at the last ui element
                 {
-                    IndexOfSelected = -1; // no ui element selected
+                    IndexOfSelected = 0; // no ui element selected
                 }
                 else
                 {
@@ -186,7 +185,7 @@ namespace bullethellwhatever.DrawCode.UI
                 uiElement.Draw(s);
             }
 
-            Utilities.drawTextInDrawMethod(IndexOfSelected.ToString(), Utilities.CentreOfScreen() / 4f + new Vector2(0f, 50f), s, font, Color.White);
+            Utilities.drawTextInDrawMethod("Index of selected = " + IndexOfSelected.ToString(), Utilities.CentreOfScreen() / 4f + new Vector2(0f, 50f), s, font, Color.White);
         }
     }
 }

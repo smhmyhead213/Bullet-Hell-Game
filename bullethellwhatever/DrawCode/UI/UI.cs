@@ -165,6 +165,17 @@ namespace bullethellwhatever.DrawCode.UI
 
             difficultySelectMenu.SetOpacity(0f);
 
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
+
+            backButton.SetClickEvent(new Action(() =>
+            {
+                difficultySelectMenu.Remove();
+            }));
+
+            backButton.AddToMenu(difficultySelectMenu);
+
+            backButton.SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / 5, difficultySelectMenu.Height() / 5));
+
             string[] buttonTexturesToDraw = { "EasyButton", "NormalButton", "HardButton", "InsaneButton" };
 
             UIElement[] mainButtons = new UIElement[buttonTexturesToDraw.Length]; // the buttons all in a row
@@ -192,17 +203,6 @@ namespace bullethellwhatever.DrawCode.UI
                 mainButtons[i].SetClickEvent(startButtonAction);
             }
 
-            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
-
-            backButton.SetClickEvent(new Action(() =>
-            {
-                difficultySelectMenu.Remove();
-            }));
-
-            backButton.AddToMenu(difficultySelectMenu);
-
-            backButton.SetPositionInMenu(new Vector2(difficultySelectMenu.Width() / 5, difficultySelectMenu.Height() / 5));
-
             difficultySelectMenu.Display();
         }
         public static void CreateSettingsMenu()
@@ -210,6 +210,18 @@ namespace bullethellwhatever.DrawCode.UI
             Menu settingsMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             settingsMenu.SetOpacity(0f);
+
+            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
+
+            backButton.SetClickEvent(new Action(() =>
+            {
+                settingsMenu.Remove();
+                DialogueSystem.ClearDialogues();
+            }));
+
+            backButton.AddToMenu(settingsMenu);
+
+            backButton.SetPositionInMenu(new Vector2(settingsMenu.Width() / 5, settingsMenu.Height() / 5));
 
             //Button fullScreenButton = new Button("StartButton", 3f);
 
@@ -273,19 +285,7 @@ namespace bullethellwhatever.DrawCode.UI
                         mainButtons[locali].Size = mainButtons[locali].InitialSize;
                     }
                 }));
-            }           
-
-            BackButton backButton = new BackButton("Back", new Vector2(150, 60));
-
-            backButton.SetClickEvent(new Action(() =>
-            {
-                settingsMenu.Remove();
-                DialogueSystem.ClearDialogues();
-            }));
-
-            backButton.AddToMenu(settingsMenu);
-
-            backButton.SetPositionInMenu(new Vector2(settingsMenu.Width() / 5, settingsMenu.Height() / 5));
+            }
 
             settingsMenu.Display();
         }

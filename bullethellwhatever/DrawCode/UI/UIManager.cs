@@ -47,22 +47,22 @@ namespace bullethellwhatever.DrawCode.UI
 
             UIElemntsToRemoveNextFrame.Clear();
 
-            foreach (UIElement element in ActiveUIElements)
-            {
-                element.Update();
-            }
-
             foreach (UIElement element in UIElementsToAddNextFrame)
             {
-                //if (element is Menu)
-                //{
-                //    IndexOfInteractable = ActiveUIElements.Count; // immediately give interaction priority to menus immediately when they spawn
-                //}
+                if (element is Menu)
+                {
+                    IndexOfInteractable = ActiveUIElements.Count; // immediately give interaction priority to menus immediately when they spawn
+                }
 
                 ActiveUIElements.Add(element);
             }
 
             UIElementsToAddNextFrame.Clear();
+
+            foreach (UIElement element in ActiveUIElements)
+            {
+                element.Update();
+            }
 
             if (ButtonCooldown > 0)
             {
@@ -128,8 +128,8 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Draw(spriteBatch);
             }
 
-            Utilities.drawTextInDrawMethod(IndexOfInteractable.ToString(), Utilities.CentreOfScreen() / 4f, spriteBatch, font, Microsoft.Xna.Framework.Color.White);
-            Utilities.drawTextInDrawMethod(NavigationCooldownTimer.ToString(), Utilities.CentreOfScreen() / 4f + new Microsoft.Xna.Framework.Vector2(0f, 100f), spriteBatch, font, Microsoft.Xna.Framework.Color.White);
+            Utilities.drawTextInDrawMethod("Interactable Index = " + IndexOfInteractable.ToString(), Utilities.CentreOfScreen() / 4f, spriteBatch, font, Microsoft.Xna.Framework.Color.White);
+            Utilities.drawTextInDrawMethod("Navigation Cooldown = " + NavigationCooldownTimer.ToString(), Utilities.CentreOfScreen() / 4f + new Microsoft.Xna.Framework.Vector2(0f, 100f), spriteBatch, font, Microsoft.Xna.Framework.Color.White);
             _spriteBatch.End();
         }
 

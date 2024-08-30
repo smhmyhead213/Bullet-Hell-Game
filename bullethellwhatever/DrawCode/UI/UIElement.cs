@@ -192,6 +192,11 @@ namespace bullethellwhatever.DrawCode.UI
 
         public bool IsSelected()
         {
+            if (ClickBox.Contains(MousePosition))
+            {
+                return true;
+            }
+
             if (Owner is not null && Owner.GetSelectedElement() == this)
             {
                 return true;
@@ -202,7 +207,8 @@ namespace bullethellwhatever.DrawCode.UI
                 return true;
             }
 
-            return ClickBox.Contains(MousePosition);
+            return false;
+            
         }
         public virtual Color ColourIfSelected()
         {
