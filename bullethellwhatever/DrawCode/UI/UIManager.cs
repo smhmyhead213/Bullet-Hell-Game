@@ -54,12 +54,12 @@ namespace bullethellwhatever.DrawCode.UI
 
             foreach (UIElement element in UIElementsToAddNextFrame)
             {
-                ActiveUIElements.Add(element);
+                //if (element is Menu)
+                //{
+                //    IndexOfInteractable = ActiveUIElements.Count; // immediately give interaction priority to menus immediately when they spawn
+                //}
 
-                if (element is Menu)
-                {
-                    IndexOfInteractable = ActiveUIElements.IndexOf(element); // immediately give interaction priority to menus immediately when they spawn
-                }
+                ActiveUIElements.Add(element);
             }
 
             UIElementsToAddNextFrame.Clear();
@@ -82,6 +82,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && NavigationCooldownTimer == 0)
             {
+                NavigationCooldownTimer = NavigationCooldown;
+
                 if (IndexOfInteractable == -1)
                 {
                     IncrementIndexOfInteractable();
@@ -89,7 +91,6 @@ namespace bullethellwhatever.DrawCode.UI
                 else
                 {
                     ActiveUIElements[IndexOfInteractable].HandleTab();
-                    NavigationCooldownTimer = NavigationCooldown;
                 }
             }
         }
@@ -128,6 +129,7 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
             Utilities.drawTextInDrawMethod(IndexOfInteractable.ToString(), Utilities.CentreOfScreen() / 4f, spriteBatch, font, Microsoft.Xna.Framework.Color.White);
+            Utilities.drawTextInDrawMethod(NavigationCooldownTimer.ToString(), Utilities.CentreOfScreen() / 4f + new Microsoft.Xna.Framework.Vector2(0f, 100f), spriteBatch, font, Microsoft.Xna.Framework.Color.White);
             _spriteBatch.End();
         }
 

@@ -192,14 +192,17 @@ namespace bullethellwhatever.DrawCode.UI
 
         public bool IsSelected()
         {
-            bool isSelectedByMenu = false;
-
             if (Owner is not null && Owner.GetSelectedElement() == this)
             {
-                isSelectedByMenu = true;
+                return true;
             }
 
-            return ClickBox.Contains(MousePosition) || isSelectedByMenu;
+            if (this == UIManager.InteractableUIElement())
+            {
+                return true;
+            }
+
+            return ClickBox.Contains(MousePosition);
         }
         public virtual Color ColourIfSelected()
         {

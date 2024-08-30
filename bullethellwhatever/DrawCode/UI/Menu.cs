@@ -19,7 +19,11 @@ namespace bullethellwhatever.DrawCode.UI
 
         public int TimeSinceLastDrag;
 
-        public int IndexOfSelected;
+        public int IndexOfSelected
+        {
+            get;
+            set;
+        }
 
         public Menu(string texture, Vector2 size, Vector2 position) : base(texture, size, position)
         {
@@ -41,6 +45,8 @@ namespace bullethellwhatever.DrawCode.UI
             Draggable = false;
 
             TimeSinceLastDrag = 0;
+
+            IndexOfSelected = -1;
 
             UIManager.ResetAllSelections();
 
@@ -111,41 +117,37 @@ namespace bullethellwhatever.DrawCode.UI
         {
             if (IndexOfSelected == UIElements.Count - 1) // if we are at the last ui element
             {
-                IndexOfSelected = -1; // no ui element selected
+                IndexOfSelected = 0; // no ui element selected
             }
 
             else
             {
-                IndexOfSelected++; // if we are not at the last ui element, increment
+                IndexOfSelected++; // if we are not at the last ui element, increment               
+            }
 
-                while (UIElements[IndexOfSelected] is InactiveElement) // if the newly selected ui element does nothing on click (change this condition)
+            while (UIElements[IndexOfSelected] is InactiveElement) // if the newly selected ui element does nothing on click (change this condition to better represent any uninteractable element)
+            {
+                if (IndexOfSelected == UIElements.Count) // if we are at the last ui element
                 {
-                    if (IndexOfSelected == UIElements.Count) // if we are at the last ui element
-                    {
-                        IndexOfSelected = -1; // no ui element selected
-                    }
-                    else
-                    {
-                        IndexOfSelected++; // go to next ui element
-                    }
+                    IndexOfSelected = -1; // no ui element selected
+                }
+                else
+                {
+                    IndexOfSelected++; // go to next ui element
                 }
             }
         }
 
         public override void HandleEnter()
         {
-            if (IndexOfSelected > 0)
+            if (IndexOfSelected >= 0)
             {
                 UIElements[IndexOfSelected].HandleClick();
             }
         }
         public override void HandleTab()
         {
-            if (UIManager.NavigationCooldownTimer == 0)
-            {
-                UpdateSelectedElement();
-                UIManager.NavigationCooldownTimer = UIManager.NavigationCooldown;
-            }
+            UpdateSelectedElement();
         }
         public UIElement? GetSelectedElement()
         {
@@ -183,6 +185,8 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 uiElement.Draw(s);
             }
+
+            Utilities.drawTextInDrawMethod(IndexOfSelected.ToString(), Utilities.CentreOfScreen() / 4f + new Vector2(0f, 50f), s, font, Color.White);
         }
     }
 }
