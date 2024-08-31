@@ -105,13 +105,13 @@ namespace bullethellwhatever.MainFiles
         {          
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            InputSystem.Initialise();
+
             AssetRegistry.Initialise();
 
             Drawing.Initialise();
 
             UIManager.Initialise();
-
-            MenuManager.Initialise();
 
             GameState.SetGameState(GameState.GameStates.TitleScreen);
 
@@ -139,8 +139,6 @@ namespace bullethellwhatever.MainFiles
             UpdateInputSystem();
 
             AssetRegistry.Update();
-
-            MenuManager.ManageMenus();
 
             UIManager.ManageUI();
 

@@ -23,8 +23,6 @@ namespace bullethellwhatever.BaseClasses
         public int DashCooldown;
         public int DashDuration => 10;
 
-        public int TimeAlive;
-
         public Dash DashAbility;
         
         public int DashTimer;
@@ -90,7 +88,7 @@ namespace bullethellwhatever.BaseClasses
 
             Restarted = false;
 
-            TimeAlive = 0;
+            AITimer = 0;
 
             PlayerDeathray = SpawnDeathray(Position, 0f, 0.03f, 60, "box", 50f, 2000f, 0f, false, Color.Red, "PlayerDeathrayShader", this);
 
@@ -232,13 +230,15 @@ namespace bullethellwhatever.BaseClasses
             if (IsKeyPressed(Keys.R) && Restarted == false)
             {
                 Utilities.InitialiseGame();
+
                 Restarted = true;
 
-                BackButton start = new BackButton("StartButton", Vector2.One * 3, new Vector2(GameWidth / 4, GameHeight / 4));
+                UIElement start = new UIElement("MainMenuButton", 1f, new Vector2(GameWidth / 4, GameHeight / 4));
 
                 start.SetClickEvent(new Action(() =>
                 {
                     GameState.SetGameState(GameState.GameStates.TitleScreen);
+                    start.Remove();
                 }));
 
                 start.Display();
@@ -269,7 +269,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
-            TimeAlive++;
+            AITimer++;
 
             var mouseState = Mouse.GetState();
 
@@ -308,7 +308,7 @@ namespace bullethellwhatever.BaseClasses
 
                 }
 
-                if ((mouseState.LeftButton == ButtonState.Pressed || IsKeyPressed(Keys.Enter)) && ShotCooldownRemaining == 0 && TimeAlive > 10)
+                if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0 && AITimer > 10)
                 {
                     ShotCooldownRemaining = ShotCooldown;
                     Shoot();

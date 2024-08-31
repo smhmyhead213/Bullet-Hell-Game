@@ -126,7 +126,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             if (Owner.AITimer > 500)
             {
-                Utilities.drawTextInDrawMethod("You win! Press R to restart the fight.", Utilities.CentreOfScreen(), s, font, Color.White);
+                Utilities.drawTextInDrawMethod("You win! Press Q to restart the fight.", Utilities.CentreOfScreen(), s, font, Color.White);
             }
         }
     }

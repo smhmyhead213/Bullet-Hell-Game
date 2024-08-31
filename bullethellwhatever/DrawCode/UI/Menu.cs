@@ -33,6 +33,8 @@ namespace bullethellwhatever.DrawCode.UI
 
             UIElements = new List<UIElement>();
 
+            Name = "";
+
             PrepareMenu();
         }
 
@@ -49,8 +51,6 @@ namespace bullethellwhatever.DrawCode.UI
             IndexOfSelected = -1;
 
             UIManager.ResetAllSelections();
-
-            UIManager.NavigationCooldownTimer = 0;
 
             UpdateClickBox();
         }
@@ -82,6 +82,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public override void Update()
         {
+            base.Update();
+
             if (Draggable)
             {
                 TimeSinceLastDrag++;
@@ -185,7 +187,7 @@ namespace bullethellwhatever.DrawCode.UI
                 uiElement.Draw(s);
             }
 
-            Utilities.drawTextInDrawMethod("Index of selected = " + IndexOfSelected.ToString(), Utilities.CentreOfScreen() / 4f + new Vector2(0f, 50f), s, font, Color.White);
+            //Utilities.drawTextInDrawMethod("Index of selected = " + IndexOfSelected.ToString(), Utilities.CentreOfScreen() / 4f + new Vector2(0f, 50f), s, font, Color.White);
         }
     }
 }

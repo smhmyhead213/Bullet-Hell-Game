@@ -301,6 +301,40 @@ namespace bullethellwhatever.DrawCode.UI
 
             backButton.Display();
         }
+
+        public static void CreatePauseMenu()
+        {
+            UIManager.ResetAllSelections();
+
+            Menu pauseMenu = new Menu("MenuBG", new Vector2(GameWidth / 3, GameHeight / 6), Utilities.CentreOfScreen());
+
+            pauseMenu.Name = "PauseMenu";
+
+            pauseMenu.SetDraggable(true);
+            pauseMenu.SetImportant(true);
+
+            ExitButton exitGame = new ExitButton("ExitButton", new Vector2(150, 60));
+
+            exitGame.AddToMenu(pauseMenu);
+
+            exitGame.SetPositionInMenu(new Vector2(pauseMenu.Width() / 3f, pauseMenu.Height() / 2f));
+
+            MainMenuButton mainMenuButton = new MainMenuButton("MainMenuButton", new Vector2(150, 60));
+
+            mainMenuButton.AddToMenu(pauseMenu);
+
+            mainMenuButton.SetPositionInMenu(new Vector2(pauseMenu.Width() / 3f * 2f, pauseMenu.Height() / 2f));
+
+            pauseMenu.SetExtraAI(new Action(() =>
+            {
+                if (IsKeyPressedAndWasntLastFrame(Keys.Escape))
+                {
+                    pauseMenu.Remove();
+                }
+            }));
+
+            pauseMenu.Display();
+        }
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
         {
             float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;

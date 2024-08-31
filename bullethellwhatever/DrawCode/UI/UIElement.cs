@@ -33,6 +33,7 @@ namespace bullethellwhatever.DrawCode.UI
         public Action ExtraAI;
         public Action ClickEvent;
 
+        public string Name;
         /// <summary>
         /// Constructs a new UIElement.
         /// </summary>
@@ -54,6 +55,8 @@ namespace bullethellwhatever.DrawCode.UI
             Colour = Color.White;
 
             Opacity = 1;
+
+            Name = "";
         }
 
         /// <summary>
@@ -77,6 +80,8 @@ namespace bullethellwhatever.DrawCode.UI
             Colour = Color.White;
 
             Opacity = 1;
+
+            Name = "";
         }
 
         public virtual void Update()
@@ -96,8 +101,6 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (CanBeClicked())
             {
-                UIManager.ButtonCooldown = UIManager.DefaultButtonCooldown;
-
                 HandleClick();
             }
 
@@ -108,7 +111,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual bool CanBeClicked()
         {
-            return IsClicked() && UIManager.ButtonCooldown == 0 && !WasMouseDownLastFrame;
+            return IsClicked() && !WasMouseDownLastFrame;
         }
         public virtual Vector2 CalculateActualPostion()
         {
@@ -138,7 +141,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public bool IsClicked()
         {
-            return IsHovered() && IsLeftClickDown();
+            return IsHovered() && IsLeftClickDown() && !WasMouseDownLastFrame;
         }
 
         public void AddToMenu(Menu menu)

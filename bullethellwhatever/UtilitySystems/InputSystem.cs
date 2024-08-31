@@ -13,17 +13,53 @@ namespace bullethellwhatever.UtilitySystems
         public static KeyboardState KeyboardState;
         public static MouseState MouseState;
         public static Vector2 MousePosition;
+
+        public static Dictionary<Keys, KeyData> KeyStates;
+
         public static bool WasMouseDownLastFrame;
+
+        public class KeyData
+        {
+            public bool WasDownLastFrame;
+            public bool IsDown;
+
+            public KeyData()
+            {
+                WasDownLastFrame = false;
+                IsDown = false;
+            }
+        }
+        public static void Initialise()
+        {
+            KeyStates = new Dictionary<Keys, KeyData>();
+
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                KeyStates.Add(key, new KeyData());
+            }
+        }
+
         public static void UpdateInputSystem()
         {
             WasMouseDownLastFrame = IsLeftClickDown();
 
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                KeyStates[key].WasDownLastFrame = KeyboardState.IsKeyDown(key);
+            }
+
             KeyboardState = Keyboard.GetState();
+
             MouseState = Mouse.GetState();
 
             Vector2 rawMousePosition = new Vector2(MouseState.X, MouseState.Y);
 
             MousePosition = (rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y)) / ScreenScaleFactor();
+
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                KeyStates[key].IsDown = KeyboardState.IsKeyDown(key);
+            }
         }
 
         public static bool IsLeftClickDown()
@@ -37,7 +73,16 @@ namespace bullethellwhatever.UtilitySystems
         }
         public static bool IsKeyPressed(Keys key)
         {
-            return KeyboardState.IsKeyDown(key);
-        }   
+            return KeyStates[key].IsDown;
+        }
+        public static bool WasKeyPressedLastFrame(Keys key)
+        {
+            return KeyStates[key].WasDownLastFrame;
+        }
+
+        public static bool IsKeyPressedAndWasntLastFrame(Keys key)
+        {
+            return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
+        }
     }
 }

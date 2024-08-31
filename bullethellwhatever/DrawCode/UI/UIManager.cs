@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,20 +24,11 @@ namespace bullethellwhatever.DrawCode.UI
             set;
         }
 
-        public static int DefaultButtonCooldown => 25;
-        public static int ButtonCooldown;
-        public static int NavigationCooldown => 8;
-
-        public static int NavigationCooldownTimer;
         public static void Initialise()
         {
             ActiveUIElements = new List<UIElement>();
             UIElemntsToRemoveNextFrame = new List<UIElement>();
             UIElementsToAddNextFrame = new List<UIElement>();
-
-            ButtonCooldown = 0;
-
-            NavigationCooldownTimer = 0;
         }
         public static void ManageUI()
         {
@@ -64,26 +56,13 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Update();
             }
 
-            if (ButtonCooldown > 0)
-            {
-                ButtonCooldown--;
-            }
-
-            if (NavigationCooldownTimer > 0)
-            {
-                NavigationCooldownTimer--;
-            }
-
-            if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Enter) && ButtonCooldown == 0)
+            if (IsKeyPressed(Keys.Enter) && !WasKeyPressedLastFrame(Keys.Enter))
             {
                 ActiveUIElements[IndexOfInteractable].HandleEnter();
-                ButtonCooldown = DefaultButtonCooldown;
             }
 
-            if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && NavigationCooldownTimer == 0)
+            if (IsKeyPressed(Keys.Tab) && !WasKeyPressedLastFrame(Keys.Tab))
             {
-                NavigationCooldownTimer = NavigationCooldown;
-
                 if (IndexOfInteractable == -1)
                 {
                     IncrementIndexOfInteractable();
@@ -92,6 +71,11 @@ namespace bullethellwhatever.DrawCode.UI
                 {
                     ActiveUIElements[IndexOfInteractable].HandleTab();
                 }
+            }
+
+            if (IsKeyPressed(Keys.Escape) && !WasKeyPressedLastFrame(Keys.Escape) && !UIElementExists("PauseMenu"))
+            {
+                UI.CreatePauseMenu();
             }
         }
 
@@ -128,8 +112,7 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Draw(spriteBatch);
             }
 
-            Utilities.drawTextInDrawMethod("Interactable Index = " + IndexOfInteractable.ToString(), Utilities.CentreOfScreen() / 4f, spriteBatch, font, Microsoft.Xna.Framework.Color.White);
-            Utilities.drawTextInDrawMethod("Navigation Cooldown = " + NavigationCooldownTimer.ToString(), Utilities.CentreOfScreen() / 4f + new Microsoft.Xna.Framework.Vector2(0f, 100f), spriteBatch, font, Microsoft.Xna.Framework.Color.White);
+            //Utilities.drawTextInDrawMethod("Interactable Index = " + IndexOfInteractable.ToString(), Utilities.CentreOfScreen() / 4f, spriteBatch, font, Microsoft.Xna.Framework.Color.White);
             _spriteBatch.End();
         }
 
@@ -151,6 +134,30 @@ namespace bullethellwhatever.DrawCode.UI
             }
         }
 
+        public static bool UIElementExists(string menuName) // make this so it can search for buttons within menus
+        {
+            foreach (UIElement element in ActiveUIElements)
+            {
+                if (element.Name == menuName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        public static UIElement? GetUIElement(string menuName)
+        {
+            foreach (UIElement element in ActiveUIElements)
+            {
+                if (element.Name == menuName)
+                {
+                    return element;
+                }
+            }
+
+            return null;
+        }
         public static List<UIElement> GetListOfActiveMenus()
         {
             List<UIElement> output = new List<UIElement>();

@@ -16,6 +16,10 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
         {
             
         }
+        public BackButton(string texture, float size, Vector2 position = default) : base(texture, size, position)
+        {
+
+        }
 
         public override void HandleClick()
         {
