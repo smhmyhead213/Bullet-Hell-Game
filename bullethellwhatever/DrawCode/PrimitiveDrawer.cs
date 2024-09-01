@@ -55,7 +55,7 @@ namespace bullethellwhatever.DrawCode
 
         public RasterizerState RasteriserState;
 
-        public PrimitiveSet(VertexPositionColor[] vertices)
+        public PrimitiveSet(VertexPositionColor[] vertices, short[] indices)
         {
             BasicEffect = new BasicEffect(GraphicsDevice);
 
@@ -65,6 +65,9 @@ namespace bullethellwhatever.DrawCode
 
             PrimitiveManager.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.VertexBuffer.SetData(vertices);
+
+            PrimitiveManager.IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.IndexBuffer.SetData(indices);
         }
 
         public void Draw()
@@ -96,13 +99,13 @@ namespace bullethellwhatever.DrawCode
 
         public override void DrawAfterImages()
         {
-            int verticesCount = afterimagesPositions.Length * 2;
+            int verticesCount = afterimagesPositions.Length * 2 + 1;
 
             VertexPositionColor[] vertices = new VertexPositionColor[verticesCount];
 
-            short[] indices = new short[4 * verticesCount - 3];
+            short[] indices = new short[verticesCount * 3];
 
-            float width = GetSize().X;
+            float width = GetSize().X * Texture.Width;
 
             for (int i = 0; i < afterimagesPositions.Length; i++)
             {
@@ -113,13 +116,26 @@ namespace bullethellwhatever.DrawCode
 
                 if (i != afterimagesPositions.Length - 1)
                 {
-                    vertices[startingIndex] =
+                    Vector2 directionToNextPoint = Utilities.SafeNormalise(afterimagesPositions[i + 1] - afterimagesPositions[i]);
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(afterimagesPositions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), Colour);
+                    vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(afterimagesPositions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), Colour);
+                }
+                else
+                {
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(afterimagesPositions[i], Colour);
                 }
             }
 
-            PrimitiveSet primSet = new PrimitiveSet(vertices);
+            for (int i = 0; i < indices.Length; i = i + 3)
+            {
+                indices[i] = (short)i;
+                indices[i + 1] = (short)(i + 1);
+                indices[i + 2] = (short)(i + 2);
+            }
 
-            primSet.SendToDrawer();
+            PrimitiveSet primSet = new PrimitiveSet(vertices, indices);
+
+            primSet.Draw();
         }
     }
 }

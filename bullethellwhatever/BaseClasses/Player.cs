@@ -330,7 +330,11 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 float damage = 0.28f * 100f;
 
-                Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
+                //Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
+
+                PrimAfterImageTestProj projectile = new PrimAfterImageTestProj();
+
+                projectile.SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
 
                 projectile.SetExtraData(0, 0); // extra data 0 represents how long the projectile has gone without a target
 
