@@ -52,8 +52,6 @@ namespace bullethellwhatever.Bosses
             Colour = Color.White;
 
             Texture = AssetRegistry.GetTexture2D("box");
-
-            prims = new PrimitiveSet();
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -67,9 +65,7 @@ namespace bullethellwhatever.Bosses
             prims.Draw();
         }
         public override void AI()
-        {
-            prims.Update();
-
+        { 
             SetDepth(0.5f);
 
             if (Health < 0 && CanDie)

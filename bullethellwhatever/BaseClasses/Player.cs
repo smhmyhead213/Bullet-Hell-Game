@@ -277,16 +277,23 @@ namespace bullethellwhatever.BaseClasses
             }
             else
             {
-                Health = MaxHP;
-                Position = Utilities.CentreOfScreen();
-
-                musicSystem.StopMusic();
-
-                Utilities.InitialiseGame();
+                Die();
             }
         }
         #endregion
 
+        public override void Die()
+        {
+            Health = MaxHP;
+
+            Position = Utilities.CentreOfScreen();
+
+            musicSystem.StopMusic();
+
+            Utilities.InitialiseGame();
+
+            UI.CreateAfterBossMenu();
+        }
         public void FullHeal()
         {
             Heal(MaxHP - Health);

@@ -9,68 +9,67 @@ using System.Threading.Tasks;
 
 using System.DirectoryServices.ActiveDirectory;
 using bullethellwhatever.Projectiles;
+using System.ComponentModel.Design.Serialization;
 
 namespace bullethellwhatever.DrawCode
 {
+    public static class PrimitiveManager
+    {
+        public static List<PrimitiveSet> PrimitiveSets;
+
+        public static VertexBuffer VertexBuffer;
+        public static IndexBuffer IndexBuffer;
+
+        public static int MaxUsedIndex;
+
+        public static void Initialise()
+        {
+            PrimitiveSets = new List<PrimitiveSet>();
+            MaxUsedIndex = 0;
+        }
+        public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
+        {
+            return new Vector3(coords.X - GameWidth / 2, GameHeight / 2 - coords.Y, 0);
+        }
+
+        public static VertexPositionColor CreateVertex(Vector2 coords, Color colour)
+        {
+            return new VertexPositionColor(GameCoordsToVertexCoords(coords), colour);
+        }
+        public static Vector3 GameCoordsToVertexCoords(float x, float y)
+        {
+            return new Vector3(x - GameWidth / 2, GameHeight / 2 - y, 0);
+        }
+        public static void DrawPrimitives()
+        {
+            foreach (PrimitiveSet prims in PrimitiveSets)
+            {
+                prims.Draw();
+            }
+        }
+    }
     public class PrimitiveSet
     {
         public BasicEffect BasicEffect;
         public GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
 
-        public VertexBuffer VertexBuffer;
-        public IndexBuffer IndexBuffer;
-
         public RasterizerState RasteriserState;
 
-        public PrimitiveSet()
+        public PrimitiveSet(VertexPositionColor[] vertices)
         {
             BasicEffect = new BasicEffect(GraphicsDevice);
 
             RasteriserState = new RasterizerState();
 
-            RasteriserState.CullMode = CullMode.None;
+            RasteriserState.CullMode = CullMode.None; // do i cull? no idae
 
-            VertexPositionColor[] vertices = new VertexPositionColor[4];
-
-            // coordinates within VertexPositionColour are fractions of the screen.
-
-            //vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
-            //vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Red);
-            //vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
-
-            vertices[0] = CreateVertex(Utilities.CentreOfScreen(), Color.Red); // should the vertex positions be on actual screen size or ideal? ask if prims are affected by camera
-            vertices[1] = CreateVertex(new Vector2(0, GameHeight), Color.Red);
-            vertices[2] = CreateVertex(new Vector2(GameWidth, GameHeight), Color.Blue);
-            vertices[3] = CreateVertex(new Vector2(GameWidth / 2, 0), Color.Yellow);
-
-            VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
-            VertexBuffer.SetData(vertices);
+            PrimitiveManager.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.VertexBuffer.SetData(vertices);
         }
 
-        public Vector3 GameCoordsToVertexCoords(Vector2 coords)
-        {
-            return new Vector3(coords.X - GameWidth / 2, GameHeight / 2 - coords.Y, 0);
-        }
-
-        public VertexPositionColor CreateVertex(Vector2 coords, Color colour)
-        {
-            return new VertexPositionColor(GameCoordsToVertexCoords(coords), colour);
-        }
-        public Vector3 GameCoordsToVertexCoords(float x, float y)
-        {
-            return new Vector3(x - GameWidth / 2, GameHeight / 2 - y, 0);
-        }
-        public void SetMatrices()
-        {
-
-        }
-        public void Update()
-        {
-            SetMatrices();
-        }
         public void Draw()
         {
-            GraphicsDevice.SetVertexBuffer(VertexBuffer);
+            GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
             BasicEffect.VertexColorEnabled = true;
 
             GraphicsDevice.RasterizerState = RasteriserState;
@@ -80,6 +79,11 @@ namespace bullethellwhatever.DrawCode
                 pass.Apply();
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
             }
+        }
+
+        public void SendToDrawer()
+        {
+
         }
     }
 
@@ -92,11 +96,11 @@ namespace bullethellwhatever.DrawCode
 
         public override void DrawAfterImages()
         {
-            PrimitiveSet primSet = new PrimitiveSet();
-
-            int verticesCount = afterimagesPositions.Length * 3;
+            int verticesCount = afterimagesPositions.Length * 2;
 
             VertexPositionColor[] vertices = new VertexPositionColor[verticesCount];
+
+            short[] indices = new short[4 * verticesCount - 3];
 
             float width = GetSize().X;
 
@@ -105,15 +109,17 @@ namespace bullethellwhatever.DrawCode
                 float progress = i / (float)afterimagesPositions.Length;
                 float fractionOfWidth = 1f - (width * progress);
                 float widthToUse = width * fractionOfWidth;
-                int startingIndex = i * 3;
+                int startingIndex = i * 2;
 
-                Vector2 halfWidth = Utilities.RotateVectorClockwise(new Vector2(widthToUse / 2, 0), Rotation);
-                vertices[startingIndex] = primSet.CreateVertex(afterimagesPositions[i] + halfWidth, Colour);
-                vertices[startingIndex + 1] = primSet.CreateVertex(afterimagesPositions[i] - halfWidth, Colour);
-                vertices[startingIndex + 2] = primSet.CreateVertex(afterimagesPositions[i + 1], Colour);
+                if (i != afterimagesPositions.Length - 1)
+                {
+                    vertices[startingIndex] =
+                }
             }
 
-            short[] indices = new short[4 * verticesCount - 3];
+            PrimitiveSet primSet = new PrimitiveSet(vertices);
+
+            primSet.SendToDrawer();
         }
     }
 }

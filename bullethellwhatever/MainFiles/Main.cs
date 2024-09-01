@@ -101,6 +101,8 @@ namespace bullethellwhatever.MainFiles
 
             InputSystem.Initialise();
 
+            PrimitiveManager.Initialise();
+
             AssetRegistry.Initialise();
 
             Drawing.Initialise();
