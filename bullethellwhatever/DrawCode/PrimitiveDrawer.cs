@@ -55,8 +55,12 @@ namespace bullethellwhatever.DrawCode
 
         public RasterizerState RasteriserState;
 
+        public int IndiceCount;
+
         public PrimitiveSet(VertexPositionColor[] vertices, short[] indices)
         {
+            IndiceCount = indices.Length;
+
             BasicEffect = new BasicEffect(GraphicsDevice);
 
             RasteriserState = new RasterizerState();
@@ -76,11 +80,12 @@ namespace bullethellwhatever.DrawCode
             BasicEffect.VertexColorEnabled = true;
 
             GraphicsDevice.RasterizerState = RasteriserState;
+            GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
 
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount);
             }
         }
 
