@@ -263,7 +263,7 @@ namespace bullethellwhatever.BaseClasses
 
             DeleteNextFrame = true;
         }
-
+       
         /// <summary>
         /// Completely removes an entity from the game, without triggering any on death behaviour.
         /// </summary>

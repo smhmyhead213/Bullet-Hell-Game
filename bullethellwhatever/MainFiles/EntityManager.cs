@@ -16,6 +16,13 @@ namespace bullethellwhatever.MainFiles
 {
     public class EntityManager
     {
+
+        public static List<NPC> activeNPCs = new List<NPC>();
+        public static List<NPC> activeFriendlyNPCs = new List<NPC>();
+        public static List<Projectile> activeProjectiles = new List<Projectile>();
+        public static List<Projectile> activeFriendlyProjectiles = new List<Projectile>();
+        public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
+        public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Particle> ParticlesToRemove = new List<Particle>();
         public static List<Particle> ParticlesToAdd = new List<Particle>();
         public static void RemoveEntities()

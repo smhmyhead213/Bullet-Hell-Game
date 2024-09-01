@@ -15,9 +15,9 @@ namespace bullethellwhatever
     {
         public static void InitialiseGame()
         {
-            activeNPCs.Clear();
-            activeProjectiles.Clear();
-            activeFriendlyProjectiles.Clear();
+            EntityManager.activeNPCs.Clear();
+            EntityManager.activeProjectiles.Clear();
+            EntityManager.activeFriendlyProjectiles.Clear();
         }
 
         public static Vector2 ClampWithinScreen(Vector2 vector)

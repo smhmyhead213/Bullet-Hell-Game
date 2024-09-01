@@ -47,12 +47,6 @@ namespace bullethellwhatever.MainFiles
 
         public static SpriteFont font;
 
-        public static List<NPC> activeNPCs = new List<NPC>();
-        public static List<NPC> activeFriendlyNPCs = new List<NPC>();
-        public static List<Projectile> activeProjectiles = new List<Projectile>();
-        public static List<Projectile> activeFriendlyProjectiles = new List<Projectile>();
-        public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
-        public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Particle> activeParticles = new List<Particle>();
 
         public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
@@ -140,10 +134,9 @@ namespace bullethellwhatever.MainFiles
 
             AssetRegistry.Update();
 
-            UIManager.ManageUI();
-
             if (MainInstance.IsActive)
             {
+                UIManager.ManageUI();
                 GameStateHandler.HandleGame();
 
                 if (musicSystem.ActiveSong is not null)

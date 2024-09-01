@@ -52,8 +52,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LockArmPositions = true;
             PlayerSaidOpeningDialogue = false;
 
-            BarDuration = 60; //to be changed
-
             Legs = new CrabLeg[2];
             ArmPositionsOnBody = new Vector2[2];
             BoosterPositions = new Vector2[2];
@@ -84,8 +82,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BossAttacks = new CrabBossAttack[]
             {
-                new TestAttack(BarDuration * 15),
-                new CrabCharge(BarDuration * 18 - 60),
+                new TestAttack(60 * 15),
+                new CrabCharge(60 * 18 - 60),
                 new BackgroundPunches(390 * 7),
             };
 

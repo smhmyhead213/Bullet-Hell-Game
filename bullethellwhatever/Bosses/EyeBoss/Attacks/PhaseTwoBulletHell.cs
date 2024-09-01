@@ -35,7 +35,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             EyeBossPhaseTwoMinion owner = (EyeBossPhaseTwoMinion)Owner;
             EyeBoss mainBoss = owner.Owner;
 
-            if (activeNPCs.Count == 2) // boss and pupil are alive
+            if (EntityManager.activeNPCs.Count == 2) // boss and pupil are alive
             {
                 Owner.TargetableByHoming = true;
                 Owner.IsInvincible = false;

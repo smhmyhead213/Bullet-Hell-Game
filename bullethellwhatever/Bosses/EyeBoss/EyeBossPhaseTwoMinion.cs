@@ -14,6 +14,7 @@ using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -73,7 +74,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 TargetableByHoming = false;
                 IsInvincible = true;
 
-                foreach (Projectile p in activeFriendlyProjectiles)
+                foreach (Projectile p in EntityManager.activeFriendlyProjectiles)
                 {
                     if (Utilities.DistanceBetweenVectors(p.Position, Position) < VulnerabilityRadius && p is not Deathray) // if the projectile is within the ring
                     {

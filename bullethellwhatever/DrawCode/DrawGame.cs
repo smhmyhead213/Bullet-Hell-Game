@@ -47,7 +47,7 @@ namespace bullethellwhatever.DrawCode
             }
             else NPCstoDrawWithoutShader.Add(player);
 
-            foreach (Projectile projectile in activeProjectiles)
+            foreach (Projectile projectile in EntityManager.activeProjectiles)
             {
                 if (projectile.Shader is not null)
                 {
@@ -56,7 +56,7 @@ namespace bullethellwhatever.DrawCode
                 else ProjectilestoDrawWithoutShader.Add(projectile);
             }
 
-            foreach (NPC npc in activeNPCs)
+            foreach (NPC npc in EntityManager.activeNPCs)
             {
                 if (npc.Shader is not null)
                 {
@@ -65,7 +65,7 @@ namespace bullethellwhatever.DrawCode
                 else NPCstoDrawWithoutShader.Add(npc);
             }
 
-            foreach (Projectile projectile in Main.activeFriendlyProjectiles)
+            foreach (Projectile projectile in EntityManager.activeFriendlyProjectiles)
             {
                 if (projectile.Shader is not null)
                 {
@@ -160,10 +160,10 @@ namespace bullethellwhatever.DrawCode
 
             foreach (Particle p in ParticlesToDrawWithoutShader)
             {
-                p.Draw(Main._spriteBatch);
+                p.Draw(_spriteBatch);
             }
 
-            foreach (NPC npc in activeNPCs)
+            foreach (NPC npc in EntityManager.activeNPCs)
             {
                 npc.DrawHPBar(_spriteBatch);
             }

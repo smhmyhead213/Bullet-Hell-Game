@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -45,9 +47,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Owner.activeTelegraphs.Clear();
 
-                for (int i = 0; i < activeProjectiles.Count; i++)
+                for (int i = 0; i < EntityManager.activeProjectiles.Count; i++)
                 {
-                    activeProjectiles[i].Die();
+                    EntityManager.activeProjectiles[i].Die();
                 }
 
                 Owner.Velocity = (player.Position - Owner.Position) / fallApartTime;
@@ -120,13 +122,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Leg(i).LowerClaw.Die();
                 }
             }
-        }
 
-        public override void ExtraDraw(SpriteBatch s)
-        {
-            if (Owner.AITimer > 500)
+            if (Owner.AITimer == 120)
             {
-                Utilities.drawTextInDrawMethod("You win! Press Q to restart the fight.", Utilities.CentreOfScreen(), s, font, Color.White);
+                UI.CreateAfterBossMenu();
             }
         }
     }

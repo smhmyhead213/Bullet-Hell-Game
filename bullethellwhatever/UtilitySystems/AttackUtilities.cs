@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.UtilitySystems
 {
@@ -53,7 +54,7 @@ namespace bullethellwhatever.UtilitySystems
 
         public static void ClearProjectiles()
         {
-            foreach (Projectile p in activeProjectiles)
+            foreach (Projectile p in EntityManager.activeProjectiles)
             {
                 if (!p.IsEffect)
                     p.Die();

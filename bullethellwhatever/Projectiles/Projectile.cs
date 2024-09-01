@@ -104,8 +104,8 @@ namespace bullethellwhatever.Projectiles
             CreateProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
             if (IsHarmful)
-                enemyProjectilesToAddNextFrame.Add(this);
-            else friendlyProjectilesToAddNextFrame.Add(this);
+                EntityManager.enemyProjectilesToAddNextFrame.Add(this);
+            else EntityManager.friendlyProjectilesToAddNextFrame.Add(this);
         }
         public void HandleBounces()
         {
@@ -233,7 +233,7 @@ namespace bullethellwhatever.Projectiles
 
         public virtual void CheckForAndHitNPCs()
         {
-            foreach (NPC npc in activeNPCs)
+            foreach (NPC npc in EntityManager.activeNPCs)
             {
                 Collision collision = CollisionWithEntity(npc);
 

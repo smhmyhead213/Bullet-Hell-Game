@@ -190,7 +190,7 @@ namespace bullethellwhatever.BaseClasses
                     SwitchWeapon(Weapons.MachineGun);
                 }
 
-                if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0)
+                if (IsKeyPressed(Keys.Q) && EntityManager.activeNPCs.Count == 0)
                 {
                     Health = MaxHP;
                     EntityManager.SpawnBoss();
@@ -213,37 +213,6 @@ namespace bullethellwhatever.BaseClasses
                 {
                     SwitchWeapon(Weapons.MachineGun);
                 }
-            }
-
-            if (IsKeyPressed(Keys.Q) && activeNPCs.Count == 0 && !Utilities.ImportantMenusPresent() && !IsKeyPressed(Keys.R)) // haha suck it
-            {
-                Health = MaxHP;
-                EntityManager.SpawnBoss();
-                Restarted = false;
-
-                foreach (Menu m in UIManager.ActiveUIElements) // none of the active menus are important so they can go bye bye
-                {
-                    m.Display();
-                }
-            }
-
-            if (IsKeyPressed(Keys.R) && Restarted == false)
-            {
-                Utilities.InitialiseGame();
-
-                Restarted = true;
-
-                UIElement start = new UIElement("MainMenuButton", 1f, new Vector2(GameWidth / 4, GameHeight / 4));
-
-                start.SetClickEvent(new Action(() =>
-                {
-                    GameState.SetGameState(GameState.GameStates.TitleScreen);
-                    start.Remove();
-                }));
-
-                start.Display();
-
-                musicSystem.StopMusic();
             }
 
             if (DashCooldown > 0)
@@ -281,14 +250,6 @@ namespace bullethellwhatever.BaseClasses
             Velocity = Vector2.Zero; //this will change if anything is pressed
 
             HandleKeyPresses();
-
-            if (IsKeyPressed(Keys.J))
-            {
-                foreach (Projectile p in activeFriendlyProjectiles)
-                {
-                    p.DeleteNextFrame = true;
-                }
-            }
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
@@ -402,11 +363,11 @@ namespace bullethellwhatever.BaseClasses
                     {
                         bool validTarget = false;
 
-                        if (activeNPCs.Count > 0)
+                        if (EntityManager.activeNPCs.Count > 0)
                         {
                             projectile.Opacity = 1f; // come back to full opacity if a target is found while fading out
 
-                            foreach (NPC npc in activeNPCs)
+                            foreach (NPC npc in EntityManager.activeNPCs)
                             {
                                 if (npc.TargetableByHoming && npc.Participating)
                                 {
@@ -465,8 +426,8 @@ namespace bullethellwhatever.BaseClasses
         {
             if (IsKeyPressed(Keys.K))
             {
-                for (int i = 0; i < activeProjectiles.Count; i++)
-                    Utilities.drawTextInDrawMethod(activeProjectiles[i].ToString() + " " + activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(Main.GameWidth / 3, Main.GameHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
+                for (int i = 0; i < EntityManager.activeProjectiles.Count; i++)
+                    Utilities.drawTextInDrawMethod(EntityManager.activeProjectiles[i].ToString() + " " + EntityManager.activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + EntityManager.activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(GameWidth / 3, GameHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
             }
 
             if (DashAbility.IsExecuting)

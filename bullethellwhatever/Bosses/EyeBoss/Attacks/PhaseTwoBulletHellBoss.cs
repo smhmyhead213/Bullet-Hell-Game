@@ -37,7 +37,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             int startTime = 100;
             int minionDeployTime = 240;
 
-            if (activeNPCs.Count == 2 && AITimer > minionDeployTime) // only boss and pupil are alive
+            if (EntityManager.activeNPCs.Count == 2 && AITimer > minionDeployTime) // only boss and pupil are alive
             {
                 Owner.TargetableByHoming = true;
                 Owner.IsInvincible = false;

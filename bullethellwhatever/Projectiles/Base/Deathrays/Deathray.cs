@@ -104,9 +104,9 @@ namespace bullethellwhatever.Projectiles.Base
 
                 if (IsHarmful)
                 {
-                    enemyProjectilesToAddNextFrame.Add(this);
+                    EntityManager.enemyProjectilesToAddNextFrame.Add(this);
                 }
-                else friendlyProjectilesToAddNextFrame.Add(this);
+                else EntityManager.friendlyProjectilesToAddNextFrame.Add(this);
             }
         }
         public override void AI()

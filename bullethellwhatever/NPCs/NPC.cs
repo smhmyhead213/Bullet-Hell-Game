@@ -113,7 +113,7 @@ namespace bullethellwhatever.NPCs
                 {
                     Die();
 
-                    foreach (Projectile projectile in activeProjectiles)
+                    foreach (Projectile projectile in EntityManager.activeProjectiles)
                     {
                         if (projectile.Owner == this)
                         {
@@ -124,7 +124,7 @@ namespace bullethellwhatever.NPCs
 
                 if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
                 {
-                    foreach (NPC npc in activeNPCs) // if not harmful (player allegiance), search for entities to attack
+                    foreach (NPC npc in EntityManager.activeNPCs) // if not harmful (player allegiance), search for entities to attack
                     {
                         Collision c = CollisionWithEntity(npc);
 

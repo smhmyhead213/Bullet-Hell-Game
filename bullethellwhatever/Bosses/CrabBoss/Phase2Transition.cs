@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.MainFiles;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
@@ -59,7 +60,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 CrabOwner.LockArmPositions = true;
 
-                foreach (Projectile p in activeProjectiles)
+                foreach (Projectile p in EntityManager.activeProjectiles)
                 {
                     p.Die(); //clear all projectiles
                 }

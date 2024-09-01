@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.Projectiles;
+﻿using bullethellwhatever.MainFiles;
+using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.Base;
  
 using bullethellwhatever.Projectiles.TelegraphLines;
@@ -144,7 +145,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (time == TimeToStartForcingPlayerRight + TimeToMoveRightFor - 1)
             {
-                foreach (Projectile p in activeProjectiles)
+                foreach (Projectile p in EntityManager.activeProjectiles)
                 {
                     p.Die();
                 }    

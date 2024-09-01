@@ -1,17 +1,16 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using bullethellwhatever.Bosses;
 using bullethellwhatever.NPCs;
+using bullethellwhatever.DrawCode.UI;
+using bullethellwhatever.DrawCode.UI.Buttons;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.BaseClasses
 {
     public class Boss : NPC
     {
         public int AttackNumber; //position in pattern
-        public int FramesPerMusicBeat;
-        public int BeatsPerBar;
-        public int BarDuration;
-        public int CurrentBeat;
-        public bool JustStartedBeat;
 
         public BossAttack[] BossAttacks;
 
@@ -81,6 +80,13 @@ namespace bullethellwhatever.BaseClasses
                 //    AttackNumber = 0; // remember 0 is desp / death anim
                 //else AttackNumber = 1;
             }
+        }
+
+        public override void Die()
+        {
+            base.Die();
+
+            UI.CreateAfterBossMenu();
         }
     }
 }

@@ -151,7 +151,6 @@ namespace bullethellwhatever.DrawCode.UI
                     GameState.Boss = (GameState.Bosses)locali;
 
                     bossSelectMenu.Remove();
-                    //CreateDifficultySelectMenu();
                 });
 
                 mainButtons[i].SetClickEvent(startButtonAction);
@@ -335,6 +334,32 @@ namespace bullethellwhatever.DrawCode.UI
 
             pauseMenu.Display();
         }
+
+        public static void CreateAfterBossMenu()
+        {
+            MainMenuButton mainMenuButton = new MainMenuButton("MainMenuButton", new Vector2(150, 60));
+
+            mainMenuButton.Position = Utilities.CentreOfScreen() - new Vector2(GameWidth / 5f, 0);
+
+            mainMenuButton.Display();
+
+            UIElement playButton = new UIElement("PlayButton", new Vector2(150, 60));
+
+            playButton.Position = Utilities.CentreOfScreen() + new Vector2(GameWidth / 5f, 0);
+
+            playButton.SetClickEvent(new Action(() =>
+            {
+                Utilities.InitialiseGame();
+                player.FullHeal();
+                EntityManager.SpawnBoss();
+
+                playButton.Remove();
+                mainMenuButton.Remove();
+            }));
+
+            playButton.Display();
+        }
+
         public static void DrawHealthBar(SpriteBatch _spriteBatch, Entity entityToDrawHPBarFor, Vector2 positionOfBar, float BarWidth, float BarHeight)
         {
             float healthRatio = entityToDrawHPBarFor.Health / entityToDrawHPBarFor.MaxHP;
