@@ -31,6 +31,15 @@ namespace bullethellwhatever.DrawCode
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
         {
             //return new Vector3(coords.X - GameWidth / 2, GameHeight / 2 - coords.Y, 0);
+
+            // move 0,0 to centre of screen
+            coords = coords - Utilities.CentreOfScreen();
+            // move negative Y direction to bottom
+            coords.Y *= -1f;
+            // squish X and Y coordinates to -1 to 1 range
+            coords.X /= Utilities.CentreOfScreen().X;
+            coords.Y /= Utilities.CentreOfScreen().Y;
+
             return new Vector3(coords.X, coords.Y, 0);
         }
 
@@ -106,32 +115,35 @@ namespace bullethellwhatever.DrawCode
 
         public override void DrawAfterImages()
         {
-            int verticesCount = afterimagesPositions.Length * 2 + 1;
-
-            VertexPositionColor[] vertices = new VertexPositionColor[verticesCount];
-
-            short[] indices = new short[verticesCount * 3];
-
             float width = GetSize().X * Texture.Width;
 
             // the array index where the afterimages start to be 0,0 
 
-            int usedVerticesIndex = 0;
+            int usedVerticesIndex = afterimagesPositions.Length - 1;
 
             for (int i = 0; i < afterimagesPositions.Length; i++)
+            {
+                if (afterimagesPositions[i] == Vector2.Zero)
+                {
+                    usedVerticesIndex = i;
+                    break;
+                }
+            }
+
+            // use only the number of after image indices as there are existing afterimages that are non zero
+
+            int vertexCount = 2 * usedVerticesIndex - 1;
+
+            VertexPositionColor[] vertices = new VertexPositionColor[vertexCount];
+
+            for (int i = 0; i < usedVerticesIndex; i++)
             {
                 float progress = i / (float)afterimagesPositions.Length;
                 float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
                 int startingIndex = i * 2;
 
-                //if (afterimagesPositions[i] == Vector2.Zero)
-                //{
-                //    usedVerticesIndex = i;
-                //    break;
-                //}
-
-                if (i != afterimagesPositions.Length - 1)
+                if (i != usedVerticesIndex - 1)
                 {
                     Vector2 directionToNextPoint = Utilities.SafeNormalise(afterimagesPositions[i + 1] - afterimagesPositions[i]);
                     vertices[startingIndex] = PrimitiveManager.CreateVertex(afterimagesPositions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), Colour);
@@ -142,6 +154,8 @@ namespace bullethellwhatever.DrawCode
                     vertices[startingIndex] = PrimitiveManager.CreateVertex(afterimagesPositions[i], Colour);
                 }
             }
+
+            short[] indices = new short[vertexCount * 3];
 
             for (int i = 0; i < indices.Length; i += 3)
             {
