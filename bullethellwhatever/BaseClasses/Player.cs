@@ -340,7 +340,7 @@ namespace bullethellwhatever.BaseClasses
 
                 projectile.SetUpdates(2);
 
-                projectile.SetDrawAfterimages(22, 3);
+                //projectile.SetDrawAfterimages(22, 3);
 
                 projectile.SetOnHit(new Action(() =>
                 {

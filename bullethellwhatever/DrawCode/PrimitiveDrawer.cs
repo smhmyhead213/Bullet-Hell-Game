@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.DirectoryServices.ActiveDirectory;
 using bullethellwhatever.Projectiles;
 using System.ComponentModel.Design.Serialization;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -29,7 +30,8 @@ namespace bullethellwhatever.DrawCode
         }
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
         {
-            return new Vector3(coords.X - GameWidth / 2, GameHeight / 2 - coords.Y, 0);
+            //return new Vector3(coords.X - GameWidth / 2, GameHeight / 2 - coords.Y, 0);
+            return new Vector3(coords.X, coords.Y, 0);
         }
 
         public static VertexPositionColor CreateVertex(Vector2 coords, Color colour)
@@ -112,12 +114,22 @@ namespace bullethellwhatever.DrawCode
 
             float width = GetSize().X * Texture.Width;
 
+            // the array index where the afterimages start to be 0,0 
+
+            int usedVerticesIndex = 0;
+
             for (int i = 0; i < afterimagesPositions.Length; i++)
             {
                 float progress = i / (float)afterimagesPositions.Length;
-                float fractionOfWidth = 1f - (width * progress);
+                float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
                 int startingIndex = i * 2;
+
+                //if (afterimagesPositions[i] == Vector2.Zero)
+                //{
+                //    usedVerticesIndex = i;
+                //    break;
+                //}
 
                 if (i != afterimagesPositions.Length - 1)
                 {
@@ -131,13 +143,22 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
-            for (int i = 0; i < indices.Length; i = i + 3)
+            for (int i = 0; i < indices.Length; i += 3)
             {
                 indices[i] = (short)i;
                 indices[i + 1] = (short)(i + 1);
                 indices[i + 2] = (short)(i + 2);
             }
 
+            Texture2D texture = AssetRegistry.GetTexture2D("box");
+
+            //_spriteBatch.Draw(texture, Utilities.CentreOfScreen(), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
+
+            //foreach (VertexPositionColor vertex in vertices)
+            //{
+            //    _spriteBatch.Draw(texture, new Vector2(vertex.Position.X, vertex.Position.Y), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
+            //}
+            
             PrimitiveSet primSet = new PrimitiveSet(vertices, indices);
 
             primSet.Draw();
