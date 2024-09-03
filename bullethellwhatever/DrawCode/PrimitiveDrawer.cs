@@ -117,41 +117,38 @@ namespace bullethellwhatever.DrawCode
         {
             float width = GetSize().X * Texture.Width;
 
-            // the array index where the afterimages start to be 0,0 
-
-            int usedVerticesIndex = afterimagesPositions.Length - 1;
-
-            for (int i = 0; i < afterimagesPositions.Length; i++)
-            {
-                if (afterimagesPositions[i] == Vector2.Zero)
-                {
-                    usedVerticesIndex = i;
-                    break;
-                }
-            }
+            Vector2[] positions = afterimagesPositions.Where(position => position != Vector2.Zero).ToArray();
 
             // use only the number of after image indices as there are existing afterimages that are non zero
 
-            int vertexCount = 2 * usedVerticesIndex - 1;
+            int vertexCount = 2 * positions.Length - 1;
 
             VertexPositionColor[] vertices = new VertexPositionColor[vertexCount];
 
-            for (int i = 0; i < usedVerticesIndex; i++)
+            for (int i = 0; i < positions.Length; i++)
             {
-                float progress = i / (float)afterimagesPositions.Length;
+                float progress = i / (float)positions.Length;
                 float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
                 int startingIndex = i * 2;
 
-                if (i != usedVerticesIndex - 1)
+                if (i != positions.Length - 1)
                 {
-                    Vector2 directionToNextPoint = Utilities.SafeNormalise(afterimagesPositions[i + 1] - afterimagesPositions[i]);
-                    vertices[startingIndex] = PrimitiveManager.CreateVertex(afterimagesPositions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), Colour);
-                    vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(afterimagesPositions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), Colour);
+                    Vector2 directionToNextPoint = Utilities.SafeNormalise(positions[i + 1] - positions[i]);
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), Colour);
+                    vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), Colour);
                 }
                 else
                 {
-                    vertices[startingIndex] = PrimitiveManager.CreateVertex(afterimagesPositions[i], Colour);
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], Colour);
+                }
+            }
+
+            foreach (VertexPositionColor vertex in vertices)
+            {
+                if (vertex.Position.X == 0)
+                {
+                    throw new Exception("amogyabsi");
                 }
             }
 

@@ -193,7 +193,7 @@ namespace bullethellwhatever
 
             return rng.Next(max - min + 1) + min;
         }
-        public static T[] moveArrayElementsUpAndAddToStart<T>(ref T[] array, T toAdd) //make generic
+        public static T[] moveArrayElementsUpAndAddToStart<T>(ref T[] array, T toAdd)
         {
             T[] newArray = new T[array.Length];
             newArray[0] = toAdd;
