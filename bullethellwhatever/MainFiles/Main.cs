@@ -99,6 +99,8 @@ namespace bullethellwhatever.MainFiles
         {          
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            PrimitiveManager.Initialise();
+
             InputSystem.Initialise();
 
             AssetRegistry.Initialise();

@@ -19,6 +19,15 @@ namespace bullethellwhatever.DrawCode
         public static VertexBuffer VertexBuffer;
         public static IndexBuffer IndexBuffer;
 
+        public static RasterizerState RasteriserState;
+
+        public static void Initialise()
+        {
+            RasteriserState = new RasterizerState();
+
+            RasteriserState.CullMode = CullMode.None; // do i cull? no idae
+        }
+
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
         {
             // move 0,0 to centre of screen
@@ -52,17 +61,11 @@ namespace bullethellwhatever.DrawCode
         public BasicEffect BasicEffect;
         public GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
 
-        public RasterizerState RasteriserState;
-
         public int IndiceCount;
 
         public PrimitiveSet(VertexPositionColor[] vertices, short[] indices)
         {
             BasicEffect = new BasicEffect(GraphicsDevice);
-
-            RasteriserState = new RasterizerState();
-
-            RasteriserState.CullMode = CullMode.None; // do i cull? no idae
 
             PrimitiveManager.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.VertexBuffer.SetData(vertices);
@@ -80,7 +83,7 @@ namespace bullethellwhatever.DrawCode
             GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
             BasicEffect.VertexColorEnabled = true;
 
-            GraphicsDevice.RasterizerState = RasteriserState;
+            GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
             GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
 
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
@@ -125,7 +128,7 @@ namespace bullethellwhatever.DrawCode
                 }
                 else
                 {
-                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], Colour);
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], Color.Blue);
                 }
             }
 
@@ -136,9 +139,11 @@ namespace bullethellwhatever.DrawCode
             //    _spriteBatch.Draw(texture, PrimitiveManager.VertexCoordsToGameCoords(new Vector2(vertex.Position.X, vertex.Position.Y)), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
             //}
 
-            short[] indices = new short[vertexCount * 3];
+            int numberOfTriangles = vertices.Length - 2;
 
-            for (int i = 0; i < indices.Length / 3; i++)
+            short[] indices = new short[numberOfTriangles * 3];
+
+            for (int i = 0; i < numberOfTriangles; i++)
             {
                 int startingIndex = i * 3;
                 indices[startingIndex] = (short)i;
