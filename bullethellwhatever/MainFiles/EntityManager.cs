@@ -123,10 +123,10 @@ namespace bullethellwhatever.MainFiles
             {
                 for (int i = 0; i < projectile.Updates; i++)
                 {
+                    projectile.Update();
                     projectile.AI();
                     projectile.UpdateHitbox();
                     projectile.CheckForHits();
-                    projectile.Update();
                 }
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
@@ -150,10 +150,10 @@ namespace bullethellwhatever.MainFiles
             {
                 for (int i = 0; i < projectile.Updates; i++)
                 {
+                    projectile.Update();
                     projectile.AI();
                     projectile.UpdateHitbox();
                     projectile.CheckForHits();
-                    projectile.Update();
                 }
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)

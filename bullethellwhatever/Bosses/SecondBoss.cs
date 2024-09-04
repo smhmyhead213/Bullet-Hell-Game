@@ -62,7 +62,7 @@ namespace bullethellwhatever.Bosses
             //    Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
             //    Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
             //}
-            prims.Draw();
+            //prims.Draw();
         }
         public override void AI()
         { 

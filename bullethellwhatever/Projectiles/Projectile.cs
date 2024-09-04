@@ -139,6 +139,8 @@ namespace bullethellwhatever.Projectiles
         {
             AITimer++;
 
+            base.Update();
+
             if (TouchingAnEdge())
             {
                 TimeOutsidePlayArea++;
@@ -169,8 +171,6 @@ namespace bullethellwhatever.Projectiles
                     base.Die();
                 }
             }
-
-            base.Update();
         }
         public override void AI()
         {
