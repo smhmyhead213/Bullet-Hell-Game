@@ -123,8 +123,8 @@ namespace bullethellwhatever.MainFiles
             {
                 for (int i = 0; i < projectile.Updates; i++)
                 {
-                    projectile.Update();
                     projectile.AI();
+                    projectile.Update();
                     projectile.UpdateHitbox();
                     projectile.CheckForHits();
                 }
@@ -150,8 +150,8 @@ namespace bullethellwhatever.MainFiles
             {
                 for (int i = 0; i < projectile.Updates; i++)
                 {
-                    projectile.Update();
                     projectile.AI();
+                    projectile.Update();
                     projectile.UpdateHitbox();
                     projectile.CheckForHits();
                 }

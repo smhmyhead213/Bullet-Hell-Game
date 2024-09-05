@@ -16,6 +16,8 @@ namespace bullethellwhatever.DrawCode
 {
     public static class PrimitiveManager
     {
+        public static GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
+
         public static VertexBuffer VertexBuffer;
         public static IndexBuffer IndexBuffer;
 
@@ -51,45 +53,43 @@ namespace bullethellwhatever.DrawCode
 
             return coords;
         }
-        public static VertexPositionColor CreateVertex(Vector2 coords, Color colour)
+        public static VertexPositionColorTexture CreateVertex(Vector2 coords, Color colour, Vector2 texCoords)
         {
-            return new VertexPositionColor(GameCoordsToVertexCoords(coords), colour);
+            return new VertexPositionColorTexture(GameCoordsToVertexCoords(coords), colour, texCoords);
         }
     }
     public class PrimitiveSet
     {
         public BasicEffect BasicEffect;
-        public GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
 
         public int IndiceCount;
-
-        public PrimitiveSet(VertexPositionColor[] vertices, short[] indices)
+        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader = null)
         {
-            BasicEffect = new BasicEffect(GraphicsDevice);
+            BasicEffect = new BasicEffect(PrimitiveManager.GraphicsDevice);
+            BasicEffect.VertexColorEnabled = true;
 
-            PrimitiveManager.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
+            //BasicEffect = AssetRegistry.GetShader("OutlineTelegraphShader");
+
+            PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.VertexBuffer.SetData(vertices);
 
-            PrimitiveManager.IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.IndexBuffer.SetData(indices);
 
-
             IndiceCount = indices.Length;
-
         }
 
         public void Draw()
         {
-            GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
-            BasicEffect.VertexColorEnabled = true;
+            PrimitiveManager.GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
 
-            GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
-            GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
+            PrimitiveManager.GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
+            PrimitiveManager.GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
 
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount);
+                PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount);
             }
         }
     }
@@ -111,7 +111,7 @@ namespace bullethellwhatever.DrawCode
          
             int vertexCount = 2 * positions.Length - 1;
 
-            VertexPositionColor[] vertices = new VertexPositionColor[vertexCount];
+            VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[vertexCount];
 
             for (int i = 0; i < positions.Length; i++)
             {
@@ -120,15 +120,17 @@ namespace bullethellwhatever.DrawCode
                 float widthToUse = width * fractionOfWidth;
                 int startingIndex = i * 2;
 
+                Color colour = Colour * fractionOfWidth;
+
                 if (i != positions.Length - 1)
                 {
                     Vector2 directionToNextPoint = Utilities.SafeNormalise(positions[i + 1] - positions[i]);
-                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), Colour);
-                    vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), Colour);
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(0f, progress));
+                    vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(1f, progress));
                 }
                 else
                 {
-                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], Color.Blue);
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], colour, new Vector2(0f, progress));
                 }
             }
 
