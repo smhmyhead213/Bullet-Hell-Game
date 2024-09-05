@@ -61,14 +61,23 @@ namespace bullethellwhatever.DrawCode
     public class PrimitiveSet
     {
         public BasicEffect BasicEffect;
+        public Effect Shader;
 
         public int IndiceCount;
-        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader = null)
+        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader)
         {
             BasicEffect = new BasicEffect(PrimitiveManager.GraphicsDevice);
-            BasicEffect.VertexColorEnabled = true;
 
-            //BasicEffect = AssetRegistry.GetShader("OutlineTelegraphShader");
+            if (shader is not null)
+            {
+                Shader = AssetRegistry.GetShader(shader);
+            }
+            else
+            {
+                Shader = null;
+            }
+
+            BasicEffect.VertexColorEnabled = true;
 
             PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.VertexBuffer.SetData(vertices);
@@ -99,6 +108,7 @@ namespace bullethellwhatever.DrawCode
         public PrimAfterImageTestProj() : base()
         {
             SetDrawAfterimages(20, 5);
+            Shader = AssetRegistry.GetShader("PrimitiveTestShader");
         }
 
         public override void DrawAfterImages()
@@ -152,8 +162,11 @@ namespace bullethellwhatever.DrawCode
                 indices[startingIndex + 1] = (short)(i + 1);
                 indices[startingIndex + 2] = (short)(i + 2);
             }
-            
-            PrimitiveSet primSet = new PrimitiveSet(vertices, indices);
+
+
+            PrimitiveSet primSet = new PrimitiveSet(vertices, indices, "PrimitiveTestShader");
+
+            primSet.Shader.CurrentTechnique.Passes[0].Apply();
 
             primSet.Draw();
         }

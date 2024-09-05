@@ -491,6 +491,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/PlayerHealthBarShader.fx
 
+#begin Shaders/PrimitiveTestShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/PrimitiveTestShader.fx
+
 #begin Shaders/RandomNoise.png
 /importer:TextureImporter
 /processor:TextureProcessor
