@@ -118,7 +118,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                                 //TelegraphLine t = new TelegraphLine(Utilities.VectorToAngle(proj.Velocity), 0, 0, proj.Texture.Width * proj.GetSize().X, 2500, 1, proj.Position, Color.Red, "box", proj, true);
                             }));
 
-                            proj.SetDrawAfterimages(11, 4);
+                            proj.SetDrawAfterimages(11);
                         }
 
                     }));

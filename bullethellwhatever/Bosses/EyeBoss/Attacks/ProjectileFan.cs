@@ -57,7 +57,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 
                 Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
-                p.SetDrawAfterimages(11, 3);
+                p.SetDrawAfterimages(11);
 
                 p.Rotation = pupilRotation;
 

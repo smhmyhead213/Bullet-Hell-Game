@@ -136,7 +136,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     }
                 }));
 
-                p.SetDrawAfterimages(11, 7);
+                p.SetDrawAfterimages(11);
 
                 p.SetParticipating(false);
             }

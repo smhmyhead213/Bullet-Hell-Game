@@ -79,7 +79,7 @@ namespace bullethellwhatever.BaseClasses
 
             ShouldRemoveOnEdgeTouch = false;
 
-            SetDrawAfterimages(DashDuration, 3);
+            SetDrawAfterimages(DashDuration);
 
             Colour = Color.White;
 
@@ -254,7 +254,6 @@ namespace bullethellwhatever.BaseClasses
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
             Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
-            Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesRotations, Rotation);
 
             if (Health > 0)
             {
@@ -330,17 +329,15 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 float damage = 0.28f * 100f;
 
-                //Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
-
-                PrimAfterImageTestProj projectile = new PrimAfterImageTestProj();
+                Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
 
                 projectile.SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
 
                 projectile.SetExtraData(0, 0); // extra data 0 represents how long the projectile has gone without a target
 
-                projectile.SetUpdates(2);
+                //projectile.SetUpdates(2);
 
-                //projectile.SetDrawAfterimages(22, 3);
+                projectile.SetDrawAfterimages(22);
 
                 projectile.SetOnHit(new Action(() =>
                 {
@@ -443,34 +440,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (DashAbility.IsExecuting)
             {
-                int extraImages = 3;
-
-                for (int i = 0; i < afterimagesPositions.Length; i++)
-                {
-                    if (afterimagesPositions[i] != Vector2.Zero)
-                    {
-                        float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-                        Drawing.BetterDraw(Main.player.Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
-
-                        // Draw another afterimage between this one and the last one, for a less choppy trail.
-
-                        if (i > 0)
-                        {
-                            for (int j = 0; j < extraImages; j++)
-                            {
-                                float interpolant = (j + 1) * (1f / (extraImages + 1));
-
-                                colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-
-                                Drawing.BetterDraw(Main.player.Texture, Vector2.Lerp(afterimagesPositions[i], afterimagesPositions[i - 1], interpolant), null, Colour * colourMultiplier,
-                                    afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i + interpolant) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
-                            }
-                        }
-
-                    }
-                }
-
-                DrawAfterimages = true;
+                DrawAfterImages();
             }
             else DrawAfterimages = false;
 

@@ -189,7 +189,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                             float projSpeed = 2.5f;
 
                             Projectile p = SpawnProjectile(Owner.Position + ProjOffset + (i * betweenEach), projSpeed * Utilities.AngleToVector(rotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.Red, true, false);
-                            p.SetDrawAfterimages(15, 3);
+                            p.SetDrawAfterimages(15);
 
                             p.Rotation = rotation - PI / 2 + (j * PI);
 

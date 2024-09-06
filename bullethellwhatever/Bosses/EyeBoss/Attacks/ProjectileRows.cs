@@ -58,7 +58,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         int projectileExtraUpdates = 2;
 
-                        p.SetDrawAfterimages(11 * projectileExtraUpdates, 7);
+                        p.SetDrawAfterimages(11 * projectileExtraUpdates);
 
                         p.MercyTimeBeforeRemoval = 240 * projectileExtraUpdates;
 

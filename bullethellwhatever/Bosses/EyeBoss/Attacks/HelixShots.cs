@@ -69,7 +69,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
-                    p.SetDrawAfterimages(11, 7);
+                    p.SetDrawAfterimages(11);
                 }
             }
 
@@ -148,7 +148,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
-                    p.SetDrawAfterimages(11, 4);                   
+                    p.SetDrawAfterimages(11);                   
                 }
             }
         }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
+using System.Linq;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -57,7 +58,6 @@ namespace bullethellwhatever.BaseClasses
 
         public float[] ExtraData; // small array of floats each entity can use
 
-        public float[] afterimagesRotations;
         public Vector2[] afterimagesPositions;
         public int ExtraAfterImages;
 
@@ -66,7 +66,6 @@ namespace bullethellwhatever.BaseClasses
             if (DrawAfterimages)
             {
                 Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
-                Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesRotations, Rotation);
             }
         }
         public virtual void SetUpdates(int updates)
@@ -269,20 +268,18 @@ namespace bullethellwhatever.BaseClasses
         /// </summary>
         public abstract void Delete();
 
-        public virtual void SetDrawAfterimages(int length, int extraImages)
+        public virtual void SetDrawAfterimages(int length)
         {
             DrawAfterimages = true;
 
-            ExtraAfterImages = extraImages;
-
             afterimagesPositions = new Vector2[length];
-            afterimagesRotations = new float[length];
         }
 
         public virtual bool IsCollidingWith(Entity other)
         {
             return Hitbox.Intersects(other.Hitbox).Collided;
         }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (ExtraDraw is not null)
@@ -307,35 +304,64 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void DrawAfterImages()
         {
-            for (int i = 0; i < afterimagesPositions.Length; i++)
+            float width = GetSize().X * Texture.Width;
+
+            Vector2[] positions = afterimagesPositions.Where(position => position != Vector2.Zero).ToArray();
+
+            // use only the number of after image indices as there are existing afterimages that are non zero
+
+            int vertexCount = 2 * positions.Length - 1;
+
+            VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[vertexCount];
+
+            if (positions.Length > 1)
             {
-                if (afterimagesPositions[i] != Vector2.Zero)
+                for (int i = 0; i < positions.Length; i++)
                 {
-                    float colourMultiplier = (float)(afterimagesPositions.Length - (i + 1)) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-                    colourMultiplier = colourMultiplier * Opacity;
+                    float progress = i / (float)positions.Length;
+                    float fractionOfWidth = 1f - progress;
+                    float widthToUse = width * fractionOfWidth;
+                    int startingIndex = i * 2;
 
-                    Drawing.BetterDraw(Texture, afterimagesPositions[i], null, Colour * colourMultiplier, Rotation, GetSize() * (afterimagesPositions.Length - 1 - i) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                    Color colour = Colour * fractionOfWidth;
 
-                    // Draw another afterimage between this one and the last one, for a less choppy trail.
-
-                    Vector2 previousImage = i == 0 ? Position : afterimagesPositions[i - 1];
-
-                    for (int j = 0; j < ExtraAfterImages; j++)
+                    if (i != positions.Length - 1)
                     {
-                        float interpolant = (j + 1) * (1f / (ExtraAfterImages + 1));
-
-                        colourMultiplier = (float)(afterimagesPositions.Length - (i + 1) + interpolant) / (float)(afterimagesPositions.Length + 1) - 0.2f;
-                        colourMultiplier = colourMultiplier * Opacity;
-
-                        // could improve by doing rotation lerping as well
-
-                        Drawing.BetterDraw(Texture, Vector2.Lerp(afterimagesPositions[i], previousImage, interpolant), null, Colour * colourMultiplier,
-                            afterimagesRotations[i], GetSize() * (afterimagesPositions.Length - 1 - i + interpolant) / afterimagesPositions.Length, SpriteEffects.None, 0f); //draw afterimages
+                        Vector2 directionToNextPoint = Utilities.SafeNormalise(positions[i + 1] - positions[i]);
+                        vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(0f, progress));
+                        vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(1f, progress));
                     }
-
+                    else
+                    {
+                        vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], colour, new Vector2(0f, progress));
+                    }
                 }
+
+                //Texture2D texture = AssetRegistry.GetTexture2D("box");
+
+                //foreach (VertexPositionColor vertex in vertices)
+                //{
+                //    _spriteBatch.Draw(texture, PrimitiveManager.VertexCoordsToGameCoords(new Vector2(vertex.Position.X, vertex.Position.Y)), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
+                //}
+
+                int numberOfTriangles = vertices.Length - 2;
+
+                short[] indices = new short[numberOfTriangles * 3];
+
+                for (int i = 0; i < numberOfTriangles; i++)
+                {
+                    int startingIndex = i * 3;
+                    indices[startingIndex] = (short)i;
+                    indices[startingIndex + 1] = (short)(i + 1);
+                    indices[startingIndex + 2] = (short)(i + 2);
+                }
+
+                PrimitiveSet primSet = new PrimitiveSet(vertices, indices);
+
+                primSet.Draw();
             }
         }
+
         public void SetHitbox()
         {
             UpdateHitbox();
