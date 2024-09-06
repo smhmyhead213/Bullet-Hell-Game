@@ -24,10 +24,13 @@ namespace bullethellwhatever.DrawCode
         public static bool IsScreenShaking => ScreenShakeTimer > 0;
         public static int Timer;
 
+        public static bool DrawingShaders;
+
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
             DrawGame.PlayerHUD = new UI.Player.PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(GameWidth / 10f, GameHeight / 10f));
+            DrawingShaders = false;
         }
 
         public static void UpdateDrawer()
@@ -42,12 +45,14 @@ namespace bullethellwhatever.DrawCode
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
+            DrawingShaders = false;
         }
         public static void RestartSpriteBatchForShaders(SpriteBatch s)
         {
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap, transformMatrix: MainCamera.Matrix);
+            DrawingShaders = true;
         }
 
         public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
@@ -55,6 +60,7 @@ namespace bullethellwhatever.DrawCode
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: MainCamera.Matrix);
+            DrawingShaders = false;
         }
 
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)

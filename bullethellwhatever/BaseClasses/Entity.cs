@@ -297,12 +297,12 @@ namespace bullethellwhatever.BaseClasses
                 Shader.CurrentTechnique.Passes[0].Apply();
             }
 
+            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
+
             if (DrawAfterimages)
             {
                 DrawAfterImages();
             }
-
-            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
         }
 
         public virtual void DrawAfterImages()

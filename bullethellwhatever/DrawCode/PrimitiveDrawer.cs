@@ -64,7 +64,7 @@ namespace bullethellwhatever.DrawCode
         public Effect Shader;
 
         public int IndiceCount;
-        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader)
+        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader = null)
         {
             BasicEffect = new BasicEffect(PrimitiveManager.GraphicsDevice);
 
@@ -90,6 +90,14 @@ namespace bullethellwhatever.DrawCode
 
         public void Draw()
         {
+            bool wasDrawingShaders = Drawing.DrawingShaders;
+            bool shouldSwitchToShaderDrawing = !wasDrawingShaders && Shader is not null;
+
+            if (shouldSwitchToShaderDrawing)
+            {
+                Drawing.RestartSpriteBatchForShaders(_spriteBatch);
+            }
+
             PrimitiveManager.GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
 
             PrimitiveManager.GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
@@ -98,7 +106,18 @@ namespace bullethellwhatever.DrawCode
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount);
+            }
+
+            if (Shader is not null)
+            {
+                Shader.CurrentTechnique.Passes[0].Apply();
+            }
+
+            PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount);
+
+            if (shouldSwitchToShaderDrawing)
+            {
+                Drawing.RestartSpriteBatchForNotShaders(_spriteBatch);
             }
         }
     }
@@ -108,7 +127,6 @@ namespace bullethellwhatever.DrawCode
         public PrimAfterImageTestProj() : base()
         {
             SetDrawAfterimages(20, 5);
-            Shader = AssetRegistry.GetShader("PrimitiveTestShader");
         }
 
         public override void DrawAfterImages()
@@ -164,9 +182,7 @@ namespace bullethellwhatever.DrawCode
             }
 
 
-            PrimitiveSet primSet = new PrimitiveSet(vertices, indices, "PrimitiveTestShader");
-
-            primSet.Shader.CurrentTechnique.Passes[0].Apply();
+            PrimitiveSet primSet = new PrimitiveSet(vertices, indices);
 
             primSet.Draw();
         }
