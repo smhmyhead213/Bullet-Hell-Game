@@ -182,7 +182,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
-                    p.SetDrawAfterimages(28);
+                    p.SetDrawAfterimages(20);
 
                     p.SetEdgeTouchEffect(new Action(() =>
                     {

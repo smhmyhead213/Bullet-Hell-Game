@@ -54,9 +54,9 @@ namespace bullethellwhatever.Projectiles
 
             Depth = 0;
 
-            if (!DrawAfterimages) // dont set to false by default if already set to true
+            if (!DrawTrail) // dont set to false by default if already set to true
             {
-                DrawAfterimages = false;
+                DrawTrail = false;
             }
 
             Position = position;

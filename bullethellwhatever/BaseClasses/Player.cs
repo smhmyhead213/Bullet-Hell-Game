@@ -440,9 +440,10 @@ namespace bullethellwhatever.BaseClasses
 
             if (DashAbility.IsExecuting)
             {
-                DrawAfterImages();
+                DrawPrimitiveTrail();
             }
-            else DrawAfterimages = false;
+
+            else DrawTrail = false;
 
             Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 

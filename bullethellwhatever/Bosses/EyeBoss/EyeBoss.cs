@@ -52,11 +52,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
             BossAttacks = new EyeBossAttack[]
             {
                 //new ProjectileRows(300),
-                new LaserSwingProjectileBurst(850),               
                 new Meteors(300),
+                new LaserSwingProjectileBurst(850),
+                new HelixShots(1270),
                 new EyeRay(1600),
                 new EnergyBlasts(750),
-                new HelixShots(1270),
+
                 new ProjectileFan(600),
             };
 

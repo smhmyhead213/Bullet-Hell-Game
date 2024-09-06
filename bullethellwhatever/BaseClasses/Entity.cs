@@ -26,7 +26,7 @@ namespace bullethellwhatever.BaseClasses
         public Action ApplyExtraShaderParameters;
 
         public float Depth;
-        public bool DrawAfterimages;
+        public bool DrawTrail;
 
         public bool DealDamage;
         public bool IsHarmful;
@@ -59,11 +59,10 @@ namespace bullethellwhatever.BaseClasses
         public float[] ExtraData; // small array of floats each entity can use
 
         public Vector2[] afterimagesPositions;
-        public int ExtraAfterImages;
 
         public virtual void Update()
         {
-            if (DrawAfterimages)
+            if (DrawTrail)
             {
                 Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
             }
@@ -270,7 +269,7 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void SetDrawAfterimages(int length)
         {
-            DrawAfterimages = true;
+            DrawTrail = true;
 
             afterimagesPositions = new Vector2[length];
         }
@@ -296,13 +295,13 @@ namespace bullethellwhatever.BaseClasses
 
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
 
-            if (DrawAfterimages)
+            if (DrawTrail)
             {
-                DrawAfterImages();
+                DrawPrimitiveTrail();
             }
         }
 
-        public virtual void DrawAfterImages()
+        public virtual void DrawPrimitiveTrail()
         {
             float width = GetSize().X * Texture.Width;
 
