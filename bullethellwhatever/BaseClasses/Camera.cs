@@ -97,6 +97,17 @@ namespace bullethellwhatever.BaseClasses
         {
             ZoomMatrix = Matrix4x4.Identity;
         }
+        
+        public Matrix4x4 ShaderMatrix() // credit to imogen
+        {
+            // create view matrix towards z axis
+            Matrix4x4 viewMatrix = Matrix4x4.CreateLookAt(System.Numerics.Vector3.Zero, System.Numerics.Vector3.UnitZ, System.Numerics.Vector3.UnitY);
+
+            // flip 180 degrees
+            viewMatrix = Matrix4x4.CreateRotationZ(PI);
+
+            return Matrix4x4.CreateOrthographicOffCenter(0f, GameWidth, 0f, GameHeight, 0f, 1f) * viewMatrix;
+        }
         public void Reset()
         {
             ResetTranslation();

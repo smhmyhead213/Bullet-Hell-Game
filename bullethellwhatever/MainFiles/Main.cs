@@ -167,7 +167,7 @@ namespace bullethellwhatever.MainFiles
 
             GraphicsDevice.SetRenderTarget(MainRT);
 
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             switch (GameState.State)
             {

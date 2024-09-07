@@ -22,12 +22,14 @@ namespace bullethellwhatever.DrawCode
         public static IndexBuffer IndexBuffer;
 
         public static RasterizerState RasteriserState;
-
+        public static BasicEffect BasicEffect;
         public static void Initialise()
         {
             RasteriserState = new RasterizerState();
 
             RasteriserState.CullMode = CullMode.None; // do i cull? no idae
+
+            BasicEffect = new BasicEffect(GraphicsDevice);
         }
 
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
@@ -60,14 +62,11 @@ namespace bullethellwhatever.DrawCode
     }
     public class PrimitiveSet
     {
-        public BasicEffect BasicEffect;
         public Effect Shader;
 
         public int IndiceCount;
         public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader = null)
         {
-            BasicEffect = new BasicEffect(PrimitiveManager.GraphicsDevice);
-
             if (shader is not null)
             {
                 Shader = AssetRegistry.GetShader(shader);
@@ -77,7 +76,7 @@ namespace bullethellwhatever.DrawCode
                 Shader = null;
             }
 
-            BasicEffect.VertexColorEnabled = true;
+            PrimitiveManager.BasicEffect.VertexColorEnabled = true;
 
             PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.VertexBuffer.SetData(vertices);
@@ -103,10 +102,8 @@ namespace bullethellwhatever.DrawCode
             PrimitiveManager.GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
             PrimitiveManager.GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
 
-            foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
+            // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME (it does the matrix world stuff)
+            PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
 
             if (Shader is not null)
             {

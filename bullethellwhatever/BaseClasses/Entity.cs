@@ -286,6 +286,11 @@ namespace bullethellwhatever.BaseClasses
                 ExtraDraw();
             }
 
+            if (DrawTrail)
+            {
+                DrawPrimitiveTrail();
+            }
+
             if (Shader is not null)
             {
                 ApplyShaderParameters();
@@ -295,10 +300,6 @@ namespace bullethellwhatever.BaseClasses
 
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
 
-            if (DrawTrail)
-            {
-                DrawPrimitiveTrail();
-            }
         }
 
         public virtual void DrawPrimitiveTrail()
@@ -355,7 +356,7 @@ namespace bullethellwhatever.BaseClasses
                     indices[startingIndex + 2] = (short)(i + 2);
                 }
 
-                PrimitiveSet primSet = new PrimitiveSet(vertices, indices);
+                PrimitiveSet primSet = new PrimitiveSet(vertices, indices, "PrimitiveTestShader");
 
                 primSet.Draw();
             }
