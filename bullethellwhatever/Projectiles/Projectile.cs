@@ -54,11 +54,6 @@ namespace bullethellwhatever.Projectiles
 
             Depth = 0;
 
-            if (!DrawTrail) // dont set to false by default if already set to true
-            {
-                DrawTrail = false;
-            }
-
             Position = position;
             Pierce = pierce;
             TimeOutsidePlayArea = 0;

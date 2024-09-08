@@ -26,7 +26,6 @@ namespace bullethellwhatever.BaseClasses
         public Action ApplyExtraShaderParameters;
 
         public float Depth;
-        public bool DrawTrail;
 
         public bool DealDamage;
         public bool IsHarmful;

@@ -44,8 +44,6 @@ namespace bullethellwhatever.NPCs
 
             IsInvincible = false;
 
-            DrawTrail = false;
-
             TargetableByHoming = true;
 
             Position = position;
@@ -192,8 +190,6 @@ namespace bullethellwhatever.NPCs
             Updates = 1;
 
             Depth = 0;
-
-            DrawTrail = false;
 
             Position = position;
             Velocity = velocity;
