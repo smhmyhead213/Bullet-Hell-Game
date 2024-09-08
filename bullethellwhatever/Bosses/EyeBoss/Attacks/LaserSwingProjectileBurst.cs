@@ -89,7 +89,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 Projectile p = SpawnProjectile(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
 
-                                p.SetDrawAfterimages(50);
+                                p.AddTrail(50);
 
                                 p.Rotation = additionalRotation - PI / 2 + (j * PI);
 
@@ -182,7 +182,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Rotation = Utilities.VectorToAngle(p.Velocity);
                     }));
 
-                    p.SetDrawAfterimages(20);
+                    p.AddTrail(20);
 
                     p.SetEdgeTouchEffect(new Action(() =>
                     {

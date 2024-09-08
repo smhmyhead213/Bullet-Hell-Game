@@ -105,7 +105,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                                 p.Velocity *= 1.05f;
                             }));
 
-                            p.SetDrawAfterimages(11);
+                            p.AddTrail(11);
 
                             p.SetParticipating(false);
                         }

@@ -65,6 +65,11 @@ namespace bullethellwhatever.DrawCode
         public Effect Shader;
 
         public int IndiceCount;
+        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, Effect shader = null)
+        {
+            Shader = shader;
+            PrepareBuffers(vertices, indices);
+        }
         public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader = null)
         {
             if (shader is not null)
@@ -76,6 +81,11 @@ namespace bullethellwhatever.DrawCode
                 Shader = null;
             }
 
+            PrepareBuffers(vertices, indices);
+        }
+
+        private void PrepareBuffers(VertexPositionColorTexture[] vertices, short[] indices)
+        {
             PrimitiveManager.BasicEffect.VertexColorEnabled = true;
 
             PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
@@ -86,7 +96,6 @@ namespace bullethellwhatever.DrawCode
 
             IndiceCount = indices.Length;
         }
-
         public void Draw()
         {
             bool wasDrawingShaders = Drawing.DrawingShaders;

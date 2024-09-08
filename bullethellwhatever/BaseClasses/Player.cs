@@ -79,7 +79,6 @@ namespace bullethellwhatever.BaseClasses
 
             ShouldRemoveOnEdgeTouch = false;
 
-            SetDrawAfterimages(DashDuration);
 
             Colour = Color.White;
 
@@ -253,7 +252,10 @@ namespace bullethellwhatever.BaseClasses
 
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
-            Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+            foreach (Component component in AdditionalComponents)
+            {
+                component.Update();
+            }
 
             if (Health > 0)
             {
@@ -337,7 +339,7 @@ namespace bullethellwhatever.BaseClasses
 
                 //projectile.SetUpdates(2);
 
-                projectile.SetDrawAfterimages(22);
+                projectile.AddTrail(22);
 
                 projectile.SetOnHit(new Action(() =>
                 {
@@ -438,18 +440,16 @@ namespace bullethellwhatever.BaseClasses
                     Utilities.drawTextInDrawMethod(EntityManager.activeProjectiles[i].ToString() + " " + EntityManager.activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + EntityManager.activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(GameWidth / 3, GameHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
             }
 
-            if (DashAbility.IsExecuting)
-            {
-                DrawPrimitiveTrail();
-            }
-
-            else DrawTrail = false;
-
             Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
 
             Drawing.BetterDraw(Texture, Position, null, Color.White * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
+
+            foreach (Component component in AdditionalComponents)
+            {
+                component.Draw(spriteBatch);
+            }
         }
     }
 }

@@ -85,7 +85,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                 Projectile p = SpawnProjectile(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
 
-                                p.SetDrawAfterimages(50);
+                                p.AddTrail(50);
 
                                 p.Rotation = additionalRotation - PI / 2 + (j * PI);
 
@@ -100,7 +100,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         }
                     }));
 
-                    orb.SetDrawAfterimages(11);
+                    orb.AddTrail(11);
                 }));
             }
         }

@@ -58,13 +58,13 @@ namespace bullethellwhatever.BaseClasses
 
         public float[] ExtraData; // small array of floats each entity can use
 
-        public Vector2[] afterimagesPositions;
+        public List<Component> AdditionalComponents = new List<Component>(); 
 
         public virtual void Update()
         {
-            if (DrawTrail)
+            foreach (Component component in AdditionalComponents)
             {
-                Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Position);
+                component.Update();
             }
         }
         public virtual void SetUpdates(int updates)
@@ -267,11 +267,11 @@ namespace bullethellwhatever.BaseClasses
         /// </summary>
         public abstract void Delete();
 
-        public virtual void SetDrawAfterimages(int length)
+        public virtual void AddTrail(int length, string shader = null)
         {
-            DrawTrail = true;
+            PrimitiveTrail trail = new PrimitiveTrail(this, length, shader);
 
-            afterimagesPositions = new Vector2[length];
+            AdditionalComponents.Add(trail);
         }
 
         public virtual bool IsCollidingWith(Entity other)
@@ -286,11 +286,6 @@ namespace bullethellwhatever.BaseClasses
                 ExtraDraw();
             }
 
-            if (DrawTrail)
-            {
-                DrawPrimitiveTrail();
-            }
-
             if (Shader is not null)
             {
                 ApplyShaderParameters();
@@ -300,65 +295,9 @@ namespace bullethellwhatever.BaseClasses
 
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
 
-        }
-
-        public virtual void DrawPrimitiveTrail()
-        {
-            float width = GetSize().X * Texture.Width;
-
-            Vector2[] positions = afterimagesPositions.Where(position => position != Vector2.Zero).ToArray();
-
-            // use only the number of after image indices as there are existing afterimages that are non zero
-
-            int vertexCount = 2 * positions.Length - 1;
-
-            VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[vertexCount];
-
-            if (positions.Length > 1)
+            foreach (Component component in AdditionalComponents)
             {
-                for (int i = 0; i < positions.Length; i++)
-                {
-                    float progress = i / (float)positions.Length;
-                    float fractionOfWidth = 1f - progress;
-                    float widthToUse = width * fractionOfWidth;
-                    int startingIndex = i * 2;
-
-                    Color colour = Colour * fractionOfWidth;
-
-                    if (i != positions.Length - 1)
-                    {
-                        Vector2 directionToNextPoint = Utilities.SafeNormalise(positions[i + 1] - positions[i]);
-                        vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(0f, progress));
-                        vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(1f, progress));
-                    }
-                    else
-                    {
-                        vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], colour, new Vector2(0f, progress));
-                    }
-                }
-
-                //Texture2D texture = AssetRegistry.GetTexture2D("box");
-
-                //foreach (VertexPositionColor vertex in vertices)
-                //{
-                //    _spriteBatch.Draw(texture, PrimitiveManager.VertexCoordsToGameCoords(new Vector2(vertex.Position.X, vertex.Position.Y)), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
-                //}
-
-                int numberOfTriangles = vertices.Length - 2;
-
-                short[] indices = new short[numberOfTriangles * 3];
-
-                for (int i = 0; i < numberOfTriangles; i++)
-                {
-                    int startingIndex = i * 3;
-                    indices[startingIndex] = (short)i;
-                    indices[startingIndex + 1] = (short)(i + 1);
-                    indices[startingIndex + 2] = (short)(i + 2);
-                }
-
-                PrimitiveSet primSet = new PrimitiveSet(vertices, indices, "PrimitiveTestShader");
-
-                primSet.Draw();
+                component.Draw(spriteBatch);
             }
         }
 

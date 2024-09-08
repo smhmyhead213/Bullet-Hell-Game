@@ -1,11 +1,13 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.DrawCode;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever.BaseClasses
+namespace bullethellwhatever.Abilities
 {
     public abstract class Ability
     {
@@ -46,10 +48,16 @@ namespace bullethellwhatever.BaseClasses
 
                 if (Timer == Duration)
                 {
+                    OnAbilityFinish();
                     IsExecuting = false;
                     Cooldown.Timer = Cooldown.Duration;
                 }
             }
+        }
+
+        public virtual void OnAbilityFinish()
+        {
+            
         }
     }
 }

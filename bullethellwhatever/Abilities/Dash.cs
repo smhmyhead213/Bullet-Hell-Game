@@ -1,4 +1,5 @@
 ﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,14 @@ namespace bullethellwhatever.Abilities
             if (JustActivated)
             {
                 Owner.IFrames = Duration;
+                PrimitiveTrail trail = new PrimitiveTrail(Owner, 10);
+                Owner.AdditionalComponents.Add(trail);
             }
+        }
+
+        public override void OnAbilityFinish()
+        {
+            Owner.AdditionalComponents = Owner.AdditionalComponents.Where(component => component is not PrimitiveTrail).ToList();
         }
     }
 }
