@@ -77,7 +77,6 @@ namespace bullethellwhatever.DrawCode
             }
 
             PrimitiveManager.BasicEffect.VertexColorEnabled = true;
-            PrimitiveManager.BasicEffect.TextureEnabled = true;
 
             PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.VertexBuffer.SetData(vertices);
@@ -102,6 +101,8 @@ namespace bullethellwhatever.DrawCode
 
             PrimitiveManager.GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
             PrimitiveManager.GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
+
+            PrimitiveManager.BasicEffect.TextureEnabled = Shader is not null;
 
             // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
             PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
