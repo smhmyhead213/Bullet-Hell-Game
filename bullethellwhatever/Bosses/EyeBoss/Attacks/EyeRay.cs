@@ -16,9 +16,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class EyeRay : EyeBossAttack
     {
         public Deathray ray; // lowercase because Ray is pre defined or something idk
-        public EyeRay(int endTime) : base(endTime)
+        public EyeRay() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

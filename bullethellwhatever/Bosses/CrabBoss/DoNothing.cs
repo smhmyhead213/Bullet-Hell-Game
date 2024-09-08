@@ -14,11 +14,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class DoNothing : CrabBossAttack
     {
-        public DoNothing(int endTime) : base(endTime)
-        {
-            EndTime = endTime;
-        }
-
         public override void Execute(ref int AITimer, ref int AttackNumber)
         {
             Owner.Position.X += 3f;

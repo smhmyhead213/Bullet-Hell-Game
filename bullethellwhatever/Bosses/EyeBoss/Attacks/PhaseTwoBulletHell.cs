@@ -19,9 +19,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class PhaseTwoBulletHell : EyeBossAttack
     {
-        public PhaseTwoBulletHell(int endTime) : base(endTime)
+        public PhaseTwoBulletHell() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

@@ -12,10 +12,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
     {
         public EyeBoss EyeOwner;
         public Pupil Pupil;
-        public EyeBossAttack(int endTime) : base(endTime)
-        {
-            EndTime = endTime;
-        }
 
         public override void InitialiseAttackValues()
         {

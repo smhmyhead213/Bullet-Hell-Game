@@ -52,13 +52,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
             BossAttacks = new EyeBossAttack[]
             {
                 //new ProjectileRows(300),
-                new Meteors(300),
-                new LaserSwingProjectileBurst(850),
-                new HelixShots(1270),
-                new EyeRay(1600),
-                new EnergyBlasts(750),
+                new Meteors(),
+                new LaserSwingProjectileBurst(),
+                new HelixShots(),
+                new EyeRay(),
+                new EnergyBlasts(),
 
-                new ProjectileFan(600),
+                new ProjectileFan(),
             };
 
             OriginalAttacks = BossAttacks;
@@ -181,7 +181,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     BossAttack[] phaseTwoAttacks = new BossAttack[]
                     {
-                        new PhaseTwoBulletHellBoss(900000),
+                        new PhaseTwoBulletHellBoss(),
                     };
 
                     Phase = 2;

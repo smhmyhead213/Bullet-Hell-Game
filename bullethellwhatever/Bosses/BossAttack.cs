@@ -12,13 +12,11 @@ namespace bullethellwhatever.Bosses
 {
     public abstract class BossAttack
     {
-        public int EndTime;
         public Boss Owner;
         public bool HasResetAITimerForDesperation;
         public bool EndNow;
-        public BossAttack(int endTime)
+        public BossAttack()
         {
-            EndTime = endTime;
             EndNow = false;
         }
 
@@ -48,7 +46,7 @@ namespace bullethellwhatever.Bosses
 
         public virtual void TryEndAttack(ref int AITimer, ref int AttackNumber)
         {
-            if ((Owner.AITimer == Owner.BossAttacks[Owner.AttackNumber].EndTime || EndNow))
+            if (EndNow)
             {
                 Owner.AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
 
@@ -125,15 +123,6 @@ namespace bullethellwhatever.Bosses
 
             // top 5 integration moments
             Owner.Velocity = Utilities.SafeNormalise(vectorToPoint, Vector2.Zero) * (2f * PI * distanceToTravel / duration) * Sin(PI * movementTimer / duration);
-        }
-        public void SpinUpClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
-        {
-            rotation = Owner.Rotation + MathF.PI / 90 * Owner.AITimer / 80f; //spin up
-        }
-
-        public void SpinUpCounterClockwise(ref float rotation, float accel) //as accel parameter increases, the actual accel decreases
-        {
-            rotation = Owner.Rotation - MathF.PI / 90 * Owner.AITimer / 80f; //spin up
         }
     }
 }

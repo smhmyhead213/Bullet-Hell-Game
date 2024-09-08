@@ -41,7 +41,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             BossAttack[] attacks = new BossAttack[]
             {
-                new PhaseTwoBulletHell(90000),
+                new PhaseTwoBulletHell(),
             };
 
             ReplaceAttackPattern(attacks);

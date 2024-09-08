@@ -15,9 +15,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class EnergyBlasts : EyeBossAttack
     {
-        public EnergyBlasts(int endTime) : base(endTime)
+        public EnergyBlasts() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

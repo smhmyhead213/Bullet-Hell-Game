@@ -18,9 +18,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class HelixShots : EyeBossAttack
     {
         public float ShootAngle;
-        public HelixShots(int endTime) : base(endTime)
+        public HelixShots() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

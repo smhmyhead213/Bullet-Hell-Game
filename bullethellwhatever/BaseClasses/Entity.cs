@@ -57,7 +57,8 @@ namespace bullethellwhatever.BaseClasses
 
         public float[] ExtraData; // small array of floats each entity can use
 
-        public List<Component> AdditionalComponents = new List<Component>(); 
+        public List<Component> AdditionalComponents = new List<Component>();
+        public abstract void AI();
 
         public virtual void Update()
         {
@@ -168,7 +169,6 @@ namespace bullethellwhatever.BaseClasses
 
             return false;
         }
-        public abstract void AI();
 
         ///<summary>
         /// Sets the entity's opacity AND initial opacity. To avoid the latter, directly set Opacity.

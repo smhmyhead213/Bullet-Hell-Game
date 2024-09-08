@@ -17,9 +17,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class Meteors : EyeBossAttack
     {
-        public Meteors(int endTime) : base(endTime)
+        public Meteors() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

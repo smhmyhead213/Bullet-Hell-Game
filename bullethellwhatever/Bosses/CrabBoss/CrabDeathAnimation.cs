@@ -17,9 +17,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabDeathAnimation : CrabBossAttack
     {
-        public CrabDeathAnimation(int endTime) : base(endTime)
+        public CrabDeathAnimation() : base()
         {
-            EndTime = endTime;
+
         }
 
         public override void InitialiseAttackValues()
@@ -109,7 +109,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 HandleBounces();
             }
 
-            if (time == EndTime - 1)
+            int endTime = 200;
+
+            if (time == endTime - 1)
             {
                 Owner.CanDie = true;
                 Owner.Die();

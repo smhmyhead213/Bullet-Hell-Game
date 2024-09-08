@@ -19,9 +19,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
     {
         public float AngleToSwing;
         public int SwingPassesComplete;
-        public LaserSwingProjectileBurst(int endTime) : base(endTime)
+        public LaserSwingProjectileBurst() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

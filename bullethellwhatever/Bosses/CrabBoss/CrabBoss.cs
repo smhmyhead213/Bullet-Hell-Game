@@ -82,18 +82,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             BossAttacks = new CrabBossAttack[]
             {
-                new TestAttack(60 * 15),
-                new CrabCharge(60 * 18 - 60),
-                new BackgroundPunches(390 * 7),
+                new DoNothing()
             };
 
             PhaseTwoAttacks = new CrabBossAttack[]
             {
-                new CrabDeathray(1200),
-                new SpinningAtPlayer(1200),
-                new ChargingArmBulletHell(900),
-                new RainingProjectileCharges(900),
-                new MovingBlender(1000),
+
             };
 
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
@@ -145,7 +139,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (Health <= 0 && StartedDeathAnim == false)
             {
-                ReplaceAttackPattern(new BossAttack[] { new CrabDeathAnimation(1000) });
+                ReplaceAttackPattern(new BossAttack[] { });
                 StartedDeathAnim = true;
             }
 
@@ -155,7 +149,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 CrabBossAttack[] attacks = new CrabBossAttack[]
                 {
-                    new PhaseTwoTransition(1000), // flush attack pattern and replace
+                    
                 };
 
                 ReplaceAttackPattern(attacks);

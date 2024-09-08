@@ -21,9 +21,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public int TimerAfterAllMinionsDie;
         public float BossInitialHP; // hp before the boss starts to heal
         public float BossHPRunningTotal; // to detemine the amount of HP the boss has after the current projectiles heal it
-        public PhaseTwoBulletHellBoss(int endTime) : base(endTime)
+        public PhaseTwoBulletHellBoss() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {

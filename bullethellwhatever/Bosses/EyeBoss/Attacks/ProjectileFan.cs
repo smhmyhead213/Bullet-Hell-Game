@@ -15,9 +15,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class ProjectileFan : EyeBossAttack
     {
         public float FanStartAngle;
-        public ProjectileFan(int endTime) : base(endTime)
+        public ProjectileFan() : base()
         {
-            EndTime = endTime;
+
         }
         public override void InitialiseAttackValues()
         {
