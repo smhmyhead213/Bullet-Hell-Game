@@ -41,18 +41,11 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    float4 black = float4(0, 0, 0, 1);
+    float4 green = float4(0, 1, 0, 1);
     float4 red = float4(1, 0, 0, 1);
     float2 uv = input.TextureCoordinates;
     
-    if (uv.x == 0 && uv.y == 0)
-    {
-        return red;
-    }
-    else
-    {
-        return black;
-    }
+    return smoothstep(red, green, uv.y);
 }
 
 Technique Technique1
