@@ -34,7 +34,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float SpinVelOnDeath = PI / 40;
 
-        public CrabBossAttack[] PhaseTwoAttacks;
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
@@ -80,16 +79,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             }
 
-            BossAttacks = new CrabBossAttack[]
-            {
-                new DoNothing()
-            };
-
-            PhaseTwoAttacks = new CrabBossAttack[]
-            {
-
-            };
-
+            CurrentAttack = new CrabPunch(this);
+            
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
             //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
         }
@@ -139,7 +130,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (Health <= 0 && StartedDeathAnim == false)
             {
-                ReplaceAttackPattern(new BossAttack[] { });
                 StartedDeathAnim = true;
             }
 
@@ -147,13 +137,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (Legs[0].Dead && Legs[1].Dead && !StartedPhaseTwoTransition)
             {
-                CrabBossAttack[] attacks = new CrabBossAttack[]
-                {
-                    
-                };
-
-                ReplaceAttackPattern(attacks);
-                
                 StartedPhaseTwoTransition = true;
             }
 

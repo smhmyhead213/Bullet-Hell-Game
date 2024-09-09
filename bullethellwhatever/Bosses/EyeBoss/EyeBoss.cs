@@ -17,7 +17,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class EyeBoss : Boss
     {
         public List<ChainLink> ChainLinks = new List<ChainLink>();
-        public BossAttack[] OriginalAttacks;
         public Pupil Pupil;
         public int Phase;
 
@@ -49,19 +48,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             CreateChain(GameHeight / 2f);
 
-            BossAttacks = new EyeBossAttack[]
-            {
-                //new ProjectileRows(300),
-                new Meteors(),
-                new LaserSwingProjectileBurst(),
-                new HelixShots(),
-                new EyeRay(),
-                new EnergyBlasts(),
-
-                new ProjectileFan(),
-            };
-
-            OriginalAttacks = BossAttacks;
+            CurrentAttack = new Meteors(this);
 
             //RandomlyArrangeAttacks();
         }
@@ -179,10 +166,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     Drawing.StopScreenShake();
 
-                    BossAttack[] phaseTwoAttacks = new BossAttack[]
-                    {
-                        new PhaseTwoBulletHellBoss(),
-                    };
+                    CurrentAttack = new PhaseTwoBulletHellBoss(this);               
 
                     Phase = 2;
 
@@ -190,8 +174,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     TargetableByHoming = false;
                     IsInvincible = true;
-
-                    ReplaceAttackPattern(phaseTwoAttacks);
                 }
             }
         }

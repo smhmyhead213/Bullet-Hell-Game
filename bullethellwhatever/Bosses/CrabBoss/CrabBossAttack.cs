@@ -1,4 +1,6 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿
+using bullethellwhatever.BaseClasses;
+using bullethellwhatever.NPCs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabBoss CrabOwner;
 
+        public CrabBossAttack(CrabBoss owner) : base(owner) 
+        {
+            CrabOwner = owner;
+        }
         public override void InitialiseAttackValues()
         {
             CrabOwner = (CrabBoss)Owner;

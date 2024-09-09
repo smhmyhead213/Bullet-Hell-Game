@@ -16,7 +16,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class EyeRay : EyeBossAttack
     {
         public Deathray ray; // lowercase because Ray is pre defined or something idk
-        public EyeRay() : base()
+        public EyeRay(EyeBoss owner) : base(owner)
         {
 
         }
@@ -26,7 +26,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             ray = new Deathray();
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int time = AITimer;
             int startTime = 60;

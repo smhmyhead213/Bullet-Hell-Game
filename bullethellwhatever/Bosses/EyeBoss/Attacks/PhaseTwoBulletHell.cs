@@ -19,7 +19,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class PhaseTwoBulletHell : EyeBossAttack
     {
-        public PhaseTwoBulletHell() : base()
+        public PhaseTwoBulletHell(EyeBoss owner) : base(owner)
         {
 
         }
@@ -27,7 +27,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             base.InitialiseAttackValues();
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int time = AITimer;
             int attackStartTime = 200;
@@ -42,8 +42,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 AttackUtilities.ClearProjectiles();
                 EyeOwner.Phase++;
-                EyeOwner.ReplaceAttackPattern(EyeOwner.OriginalAttacks);
-                EyeOwner.RandomlyArrangeAttacks();
             }
 
             if (time > attackStartTime)

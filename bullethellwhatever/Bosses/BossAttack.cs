@@ -7,24 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.Bosses
 {
     public abstract class BossAttack
     {
-        public Boss Owner;
+        public NPC Owner;
         public bool HasResetAITimerForDesperation;
         public bool EndNow;
-        public BossAttack()
+
+        public float[] ExtraData;
+        public BossAttack(NPC owner)
         {
             EndNow = false;
+            Owner = owner;
+
+            ExtraData = new float[4];
         }
 
         public virtual void InitialiseAttackValues()
         {
 
         }
-        public virtual void Execute(ref int AITimer, ref int AttackNumber)
+        public virtual void Execute(int AITimer)
         {
 
         }
@@ -37,6 +43,18 @@ namespace bullethellwhatever.Bosses
         public virtual void End()
         {
             EndNow = true;
+            Owner.CurrentAttack = PickNextAttack();
+            Owner.AITimer = -1; // will be increased in update() immediately after
+
+            ClearExtraData();
+        }
+
+        public virtual void ClearExtraData()
+        {
+            for (int i = 0; i < ExtraData.Length; i++)
+            {
+                ExtraData[i] = 0;
+            }
         }
 
         public virtual void ExtraAttackEnd()
@@ -44,35 +62,6 @@ namespace bullethellwhatever.Bosses
 
         }
 
-        public virtual void TryEndAttack(ref int AITimer, ref int AttackNumber)
-        {
-            if (EndNow)
-            {
-                Owner.AITimer = -1; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0, change back to -1 if cringe things happen
-
-                EndNow = false;
-
-                Owner.Rotation = 0;
-
-                if (Owner.AttackNumber != Owner.BossAttacks.Length - 1)
-                {
-                    Owner.AttackNumber++;
-                    Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
-                    ExtraAttackEnd();
-                }
-                else
-                {
-                    Owner.AttackNumber = 0;
-                    Owner.BossAttacks[Owner.AttackNumber].InitialiseAttackValues();
-                    ExtraAttackEnd();
-                }
-            }
-
-            if (Owner.Health <= 0 && !Owner.CanDie && !HasResetAITimerForDesperation)
-            {
-                HasResetAITimerForDesperation = true;
-            }
-        }
 
         public virtual void HandleBounces()
         {
@@ -123,6 +112,11 @@ namespace bullethellwhatever.Bosses
 
             // top 5 integration moments
             Owner.Velocity = Utilities.SafeNormalise(vectorToPoint, Vector2.Zero) * (2f * PI * distanceToTravel / duration) * Sin(PI * movementTimer / duration);
+        }
+
+        public virtual BossAttack PickNextAttack()
+        {
+            return this;
         }
     }
 }

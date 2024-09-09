@@ -17,7 +17,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabDeathAnimation : CrabBossAttack
     {
-        public CrabDeathAnimation() : base()
+        public CrabDeathAnimation(CrabBoss owner) : base(owner)
         {
 
         }
@@ -26,7 +26,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             base.InitialiseAttackValues();
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int time = AITimer;
 

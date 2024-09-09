@@ -15,7 +15,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class EnergyBlasts : EyeBossAttack
     {
-        public EnergyBlasts() : base()
+        public EnergyBlasts(EyeBoss owner) : base(owner)
         {
 
         }
@@ -23,7 +23,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             base.InitialiseAttackValues();
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int time = AITimer;
 

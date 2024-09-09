@@ -21,7 +21,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public int TimerAfterAllMinionsDie;
         public float BossInitialHP; // hp before the boss starts to heal
         public float BossHPRunningTotal; // to detemine the amount of HP the boss has after the current projectiles heal it
-        public PhaseTwoBulletHellBoss() : base()
+        public PhaseTwoBulletHellBoss(EyeBoss owner) : base(owner)
         {
 
         }
@@ -31,7 +31,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             TimerAfterAllMinionsDie = 0;
             BossHPRunningTotal = 0;
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int time = AITimer;
             int startTime = 100;
@@ -113,8 +113,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     else if (timeAfterWait == healTime + eyeRecentreTime + waitTimeAfterSpawningHealing)
                     {
                         EyeOwner.Phase++;
-                        EyeOwner.ReplaceAttackPattern(EyeOwner.OriginalAttacks);
-                        EyeOwner.RandomlyArrangeAttacks();
                     }
                 }
 

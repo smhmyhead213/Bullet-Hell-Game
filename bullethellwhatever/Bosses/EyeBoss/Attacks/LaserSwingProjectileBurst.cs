@@ -19,7 +19,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
     {
         public float AngleToSwing;
         public int SwingPassesComplete;
-        public LaserSwingProjectileBurst() : base()
+        public LaserSwingProjectileBurst(EyeBoss owner) : base(owner)
         {
 
         }
@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             AngleToSwing = 0;
             SwingPassesComplete = 0;
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int rayTelegraphTime = 60;
             int rayDuration = 10;

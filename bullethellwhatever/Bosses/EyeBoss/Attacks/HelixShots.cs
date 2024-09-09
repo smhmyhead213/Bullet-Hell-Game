@@ -18,7 +18,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class HelixShots : EyeBossAttack
     {
         public float ShootAngle;
-        public HelixShots() : base()
+        public HelixShots(EyeBoss owner) : base(owner)
         {
 
         }
@@ -27,7 +27,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             base.InitialiseAttackValues();
             ShootAngle = 0;
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int waitTime = 45;
             int telegraphTime = 60;

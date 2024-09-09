@@ -12,7 +12,10 @@ namespace bullethellwhatever.Bosses.EyeBoss
     {
         public EyeBoss EyeOwner;
         public Pupil Pupil;
+        public EyeBossAttack(EyeBoss owner) : base(owner)
+        {
 
+        }
         public override void InitialiseAttackValues()
         {
             EyeOwner = (EyeBoss)Owner;
@@ -54,10 +57,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public override void ExtraAttackEnd()
         {
-            if (Owner.AttackNumber == Owner.BossAttacks.Length - 1 && EyeOwner is not EyeBossPhaseTwoMinion)
-            {
-                Owner.RandomlyArrangeAttacks();
-            }
+
         }
     }
 }

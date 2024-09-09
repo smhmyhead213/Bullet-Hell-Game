@@ -17,7 +17,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 {
     public class Meteors : EyeBossAttack
     {
-        public Meteors() : base()
+        public Meteors(EyeBoss owner) : base(owner)
         {
 
         }
@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         {
             base.InitialiseAttackValues();
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int timeBetweenMeteors = 30; // set this to 10 for insane mode, trust me
             int time = AITimer % timeBetweenMeteors;

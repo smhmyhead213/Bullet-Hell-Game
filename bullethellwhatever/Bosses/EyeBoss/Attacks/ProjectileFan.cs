@@ -15,7 +15,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
     public class ProjectileFan : EyeBossAttack
     {
         public float FanStartAngle;
-        public ProjectileFan() : base()
+        public ProjectileFan(EyeBoss owner) : base(owner)
         {
 
         }
@@ -24,7 +24,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             base.InitialiseAttackValues();
             FanStartAngle = 0;
         }
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public override void Execute(int AITimer)
         {
             int shootTime = 100;
             int shootDuration = 450;

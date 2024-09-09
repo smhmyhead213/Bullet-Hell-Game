@@ -30,6 +30,7 @@ namespace bullethellwhatever.DrawCode
 
         public static RasterizerState RasteriserState;
         public static BasicEffect BasicEffect;
+
         public static void Initialise()
         {
             RasteriserState = new RasterizerState();
@@ -101,7 +102,7 @@ namespace bullethellwhatever.DrawCode
             
             PrimitiveManager.VertexBuffer.SetData(vertices, 0, vertices.Length);
 
-            //PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.IndexBuffer.SetData(indices, 0, indices.Length);
 
             IndiceCount = indices.Length;

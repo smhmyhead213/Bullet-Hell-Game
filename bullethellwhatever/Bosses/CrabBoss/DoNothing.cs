@@ -14,7 +14,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class DoNothing : CrabBossAttack
     {
-        public override void Execute(ref int AITimer, ref int AttackNumber)
+        public DoNothing(CrabBoss owner) : base(owner)
+        {
+
+        }
+        public override void Execute(int AITimer)
         {
             Owner.Position.X += 3f;
             MainCamera.SetCameraPosition(Owner.Position);

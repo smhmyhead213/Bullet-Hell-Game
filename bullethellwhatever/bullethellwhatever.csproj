@@ -42,9 +42,5 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <Folder Include="Bosses\CrabBoss\Attacks\" />
-	</ItemGroup>
 
 </Project>

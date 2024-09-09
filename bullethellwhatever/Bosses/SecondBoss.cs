@@ -40,7 +40,6 @@ namespace bullethellwhatever.Bosses
             AITimer = 0;
             IFrames = 5f;
             HasChosenChargeDirection = false;
-            AttackNumber = 1;
             CanDie = false;
 
             DeathrayAngularVelocity = 180f;
@@ -104,18 +103,6 @@ namespace bullethellwhatever.Bosses
             if (Health <= 0)
             {
                 CanDie = true;
-            }
-
-            switch (AttackNumber)
-            {
-                case 1:
-                    DialogueTest(
-                        ref AITimer, ref AttackNumber);
-                    break;
-                default:
-                    AttackNumber = 1;
-                    break;
-
             }
         }
 

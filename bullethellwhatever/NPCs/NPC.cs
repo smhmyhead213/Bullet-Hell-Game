@@ -13,6 +13,7 @@ using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.Bosses;
 
 namespace bullethellwhatever.NPCs
 {
@@ -33,6 +34,8 @@ namespace bullethellwhatever.NPCs
         public float DamageReduction;
 
         public bool CanDie;
+
+        public BossAttack CurrentAttack;
 
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {

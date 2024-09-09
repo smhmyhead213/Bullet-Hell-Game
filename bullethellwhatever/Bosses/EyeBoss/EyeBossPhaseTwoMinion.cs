@@ -39,13 +39,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             Colour = Color.White;
 
-            BossAttack[] attacks = new BossAttack[]
-            {
-                new PhaseTwoBulletHell(),
-            };
 
-            ReplaceAttackPattern(attacks);
-
+            CurrentAttack = new PhaseTwoBulletHell(this);
+            
             BaseVulnerabilityRadius = 0;
             VulnerabilityRadius = BaseVulnerabilityRadius;
             OscillateRadius = false;
