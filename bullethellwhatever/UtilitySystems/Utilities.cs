@@ -193,7 +193,7 @@ namespace bullethellwhatever
 
             return rng.Next(max - min + 1) + min;
         }
-        public static T[] moveArrayElementsUpAndAddToStart<T>(ref T[] array, T toAdd)
+        public static T[] moveArrayElementsUpAndAddToStart<T>(T[] array, T toAdd)
         {
             T[] newArray = new T[array.Length];
             newArray[0] = toAdd;
@@ -203,9 +203,7 @@ namespace bullethellwhatever
                 newArray[i] = array[i - 1];
             }
 
-            array = newArray;
-
-            return array;
+            return newArray;
         }
 
         public static T ValueFromDifficulty<T>(T easy, T normal, T hard, T insane)

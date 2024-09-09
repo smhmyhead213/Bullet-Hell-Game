@@ -32,7 +32,7 @@ namespace bullethellwhatever.DrawCode
         }
         public override void Update()
         {
-            Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Owner.Position);
+            afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
         }
 
         public override void Draw(SpriteBatch s)
@@ -43,7 +43,7 @@ namespace bullethellwhatever.DrawCode
 
             // use only the number of after image indices as there are existing afterimages that are non zero
 
-            int vertexCount = 2 * positions.Length - 1;
+            int vertexCount = 2 * positions.Length;
 
             VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[vertexCount];
 
@@ -58,24 +58,12 @@ namespace bullethellwhatever.DrawCode
 
                     Color colour = Owner.Colour * fractionOfWidth;
 
-                    if (i != positions.Length - 1)
-                    {
-                        Vector2 directionToNextPoint = Utilities.SafeNormalise(positions[i + 1] - positions[i]);
-                        vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(0f, progress));
-                        vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(1f, progress));
-                    }
-                    else
-                    {
-                        vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i], colour, new Vector2(0f, progress));
-                    }
+                    // find direction to next point if this is not the last one, otherwise use any vector as it gets multiplied by zero anyway
+                    Vector2 directionToNextPoint = i != positions.Length - 1 ? Utilities.SafeNormalise(positions[i + 1] - positions[i]) : Vector2.One;
+                    vertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(0f, progress));
+                    vertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(directionToNextPoint, PI / 2f), colour, new Vector2(1f, progress));
+
                 }
-
-                //Texture2D texture = AssetRegistry.GetTexture2D("box");
-
-                //foreach (VertexPositionColor vertex in vertices)
-                //{
-                //    _spriteBatch.Draw(texture, PrimitiveManager.VertexCoordsToGameCoords(new Vector2(vertex.Position.X, vertex.Position.Y)), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
-                //}
 
                 int numberOfTriangles = vertices.Length - 2;
 

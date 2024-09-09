@@ -19,7 +19,14 @@ namespace bullethellwhatever.DrawCode
         public static GraphicsDevice GraphicsDevice => _graphics.GraphicsDevice;
 
         public static VertexBuffer VertexBuffer;
-        public static IndexBuffer IndexBuffer;
+        public static IndexBuffer IndexBuffer
+        {
+            get;
+            set;
+        }
+
+        public static readonly int MaxVertices = 6144;
+        public static readonly int MaxIndices = 16384;
 
         public static RasterizerState RasteriserState;
         public static BasicEffect BasicEffect;
@@ -30,6 +37,10 @@ namespace bullethellwhatever.DrawCode
             RasteriserState.CullMode = CullMode.None; // do i cull? no idae
 
             BasicEffect = new BasicEffect(GraphicsDevice);
+
+            VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), MaxVertices, BufferUsage.WriteOnly);
+
+            IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), MaxIndices, BufferUsage.WriteOnly);
         }
 
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
@@ -87,12 +98,11 @@ namespace bullethellwhatever.DrawCode
         private void PrepareBuffers(VertexPositionColorTexture[] vertices, short[] indices)
         {
             PrimitiveManager.BasicEffect.VertexColorEnabled = true;
+            
+            PrimitiveManager.VertexBuffer.SetData(vertices, 0, vertices.Length);
 
-            PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
-            PrimitiveManager.VertexBuffer.SetData(vertices);
-
-            PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
-            PrimitiveManager.IndexBuffer.SetData(indices);
+            //PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.IndexBuffer.SetData(indices, 0, indices.Length);
 
             IndiceCount = indices.Length;
         }
