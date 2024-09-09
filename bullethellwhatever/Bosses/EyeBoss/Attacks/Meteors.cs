@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using SharpDX.WIC;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {
@@ -106,7 +107,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public override void ExtraDraw(SpriteBatch s)
         {
-
+            Utilities.drawTextInDrawMethod(EntityManager.activeProjectiles.Count.ToString(), new Vector2(GameWidth / 5f, GameHeight / 1.5f), s, font, Color.White);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace bullethellwhatever.DrawCode
                 else FriendlyProjectilesToDrawWithoutShader.Add(projectile);
             }
 
-            foreach (Particle p in activeParticles)
+            foreach (Particle p in EntityManager.activeParticles)
             {
                 if (p.Shader is not null)
                 {

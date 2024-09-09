@@ -13,7 +13,6 @@ namespace bullethellwhatever.DrawCode
     public class PrimitiveTrail : Component
     {
         public Vector2[] afterimagesPositions;
-        public PrimitiveSet PrimitiveSet;
         public Effect Shader;
 
         public PrimitiveTrail(Entity owner, int length, string shader = null)
@@ -32,7 +31,7 @@ namespace bullethellwhatever.DrawCode
         }
         public override void Update()
         {
-            Utilities.moveArrayElementsUpAndAddToStart(ref afterimagesPositions, Owner.Position);
+            afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
         }
 
         public override void Draw(SpriteBatch s)
@@ -70,16 +69,9 @@ namespace bullethellwhatever.DrawCode
                     }
                 }
 
-                //Texture2D texture = AssetRegistry.GetTexture2D("box");
-
-                //foreach (VertexPositionColor vertex in vertices)
-                //{
-                //    _spriteBatch.Draw(texture, PrimitiveManager.VertexCoordsToGameCoords(new Vector2(vertex.Position.X, vertex.Position.Y)), null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
-                //}
-
                 int numberOfTriangles = vertices.Length - 2;
-
-                short[] indices = new short[numberOfTriangles * 3];
+                int indiceCount = numberOfTriangles * 3;
+                short[] indices = new short[indiceCount];
 
                 for (int i = 0; i < numberOfTriangles; i++)
                 {

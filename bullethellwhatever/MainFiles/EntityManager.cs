@@ -25,6 +25,9 @@ namespace bullethellwhatever.MainFiles
         public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Particle> ParticlesToRemove = new List<Particle>();
         public static List<Particle> ParticlesToAdd = new List<Particle>();
+
+        public static List<Particle> activeParticles = new List<Particle>();
+
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && NPC.TouchingAnEdge());
@@ -181,6 +184,8 @@ namespace bullethellwhatever.MainFiles
             {
                 activeParticles.Remove(p);
             }
+
+            ParticlesToRemove.Clear();
         }
 
         /// <summary>

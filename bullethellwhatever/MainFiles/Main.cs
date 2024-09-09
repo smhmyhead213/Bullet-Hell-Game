@@ -47,8 +47,6 @@ namespace bullethellwhatever.MainFiles
 
         public static SpriteFont font;
 
-        public static List<Particle> activeParticles = new List<Particle>();
-
         public static List<NPC> NPCsToAddNextFrame = new List<NPC>();
 
         public static MusicSystem musicSystem = new MusicSystem();
