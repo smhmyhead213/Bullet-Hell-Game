@@ -23,12 +23,6 @@ namespace bullethellwhatever.DrawCode
 
         public static RasterizerState RasteriserState;
         public static BasicEffect BasicEffect;
-
-        public static readonly int MaxVertices = 6000;
-        public static readonly int MaxIndices = 17997;
-
-        public static VertexPositionColorTexture[] MainVertices;
-        public static short[] MainIndices;
         public static void Initialise()
         {
             RasteriserState = new RasterizerState();
@@ -36,12 +30,6 @@ namespace bullethellwhatever.DrawCode
             RasteriserState.CullMode = CullMode.None; // do i cull? no idae
 
             BasicEffect = new BasicEffect(GraphicsDevice);
-
-            MainVertices = new VertexPositionColorTexture[MaxVertices];
-            MainIndices = new short[MaxIndices];
-
-            VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), MaxVertices, BufferUsage.WriteOnly);
-            IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), MaxIndices, BufferUsage.WriteOnly);
         }
 
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
@@ -75,6 +63,7 @@ namespace bullethellwhatever.DrawCode
     public class PrimitiveSet
     {
         public Effect Shader;
+
         public int IndiceCount;
         public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, Effect shader = null)
         {
@@ -99,11 +88,11 @@ namespace bullethellwhatever.DrawCode
         {
             PrimitiveManager.BasicEffect.VertexColorEnabled = true;
 
-            //PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
-            PrimitiveManager.VertexBuffer.SetData(vertices, 0, vertices.Length);
+            PrimitiveManager.VertexBuffer = new VertexBuffer(PrimitiveManager.GraphicsDevice, typeof(VertexPositionColorTexture), vertices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.VertexBuffer.SetData(vertices);
 
-            //PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
-            PrimitiveManager.IndexBuffer.SetData(indices, 0, indices.Length);
+            PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
+            PrimitiveManager.IndexBuffer.SetData(indices);
 
             IndiceCount = indices.Length;
         }
