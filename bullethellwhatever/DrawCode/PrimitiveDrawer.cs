@@ -131,8 +131,11 @@ namespace bullethellwhatever.DrawCode
             PrimitiveManager.BasicEffect.TextureEnabled = Shader is not null;
 
             // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
-            PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
 
+            //PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(MainCamera.Matrix);
+
+            PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
+            
             if (Shader is not null)
             {
                 Shader.CurrentTechnique.Passes[0].Apply();

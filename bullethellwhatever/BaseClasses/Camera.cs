@@ -97,7 +97,7 @@ namespace bullethellwhatever.BaseClasses
         {
             ZoomMatrix = Matrix4x4.Identity;
         }
-        
+
         public Matrix4x4 ShaderMatrix() // credit to imogen
         {
             // create view matrix towards z axis
