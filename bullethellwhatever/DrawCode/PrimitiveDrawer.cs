@@ -102,7 +102,7 @@ namespace bullethellwhatever.DrawCode
             
             PrimitiveManager.VertexBuffer.SetData(vertices, 0, vertices.Length);
 
-            PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
+            //PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
             PrimitiveManager.IndexBuffer.SetData(indices, 0, indices.Length);
 
             IndiceCount = indices.Length;
@@ -132,7 +132,7 @@ namespace bullethellwhatever.DrawCode
                 Shader.CurrentTechnique.Passes[0].Apply();
             }
 
-            PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount);
+            PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount / 3);
 
             if (shouldSwitchToShaderDrawing)
             {
