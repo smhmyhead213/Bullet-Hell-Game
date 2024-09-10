@@ -36,6 +36,7 @@ namespace bullethellwhatever.NPCs
         public bool CanDie;
 
         public BossAttack CurrentAttack;
+        public BossAttack PreviousAttack;
 
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {

@@ -24,9 +24,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(int AITimer)
         {
             float angleToSwingThrough = PI;
-            int slowDownTime = 30;
-            int swingTime = 30;
-            int bufferTimeAfterSwing = 45;
+            int slowDownTime = 20;
+            int swingTime = 15;
+            int bufferTimeAfterSwing = 12;
 
             ref float initialSpeed = ref ExtraData[0];
             ref float initialRotation = ref ExtraData[1];
@@ -38,19 +38,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 initialSpeed = Owner.Velocity.Length();
             }
 
-            if (AITimer < slowDownTime)
+            if (AITimer < slowDownTime - 1) 
             {
                 Owner.Velocity -= Utilities.SafeNormalise(Owner.Velocity) * initialSpeed / (float)slowDownTime;
             }
 
-            int timeBeforeStoppingToSwing = 10;
-
-            if (AITimer > slowDownTime - timeBeforeStoppingToSwing && AITimer < slowDownTime + swingTime - timeBeforeStoppingToSwing)
+            if (AITimer > slowDownTime && AITimer < slowDownTime + swingTime)
             {                
-                int localTime = AITimer - slowDownTime - timeBeforeStoppingToSwing;
+                int localTime = AITimer - slowDownTime;
 
-                float anglePreviousFrame = angleToSwingThrough * EasingFunctions.EaseOutExpo((localTime - 1) / (float)swingTime);
-                float angleThisFrame = angleToSwingThrough * EasingFunctions.EaseOutExpo(localTime / (float)swingTime);
+                float anglePreviousFrame = angleToSwingThrough * EasingFunctions.Linear((localTime - 1) / (float)swingTime);
+                float angleThisFrame = angleToSwingThrough * EasingFunctions.Linear(localTime / (float)swingTime);
 
                 CrabOwner.Legs[0].RotateLeg(angleThisFrame - anglePreviousFrame);
 
@@ -59,16 +57,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (localTime % timeBetweenProjectiles == 0)
                 {
                     Vector2 spawnPosition = CrabOwner.Legs[0].LowerClaw.Position;
-                    float projectileInitialSpeed = 0.1f;
-
+                    float projectileInitialSpeed = 5f;
+                    
                     Projectile p = SpawnProjectile(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Legs[0].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
 
                     p.AddTrail(22);
 
+                    int projectileSlowTime = 20;
+
                     p.SetExtraAI(new Action(() =>
                     {
-                        p.Velocity += 0.5f * Utilities.SafeNormalise(p.Velocity);
+                        if (p.AITimer <= projectileSlowTime)
+                        {
+                            p.Velocity *= 0.99f;
+                        }
+                        else
+                        {
+                            p.Velocity += 1f * Utilities.SafeNormalise(p.Velocity);
+                        }
                     }));
                 }
             }

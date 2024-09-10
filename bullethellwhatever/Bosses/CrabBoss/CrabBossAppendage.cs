@@ -11,6 +11,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.AssetManagement;
+using SharpDX.XAudio2;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {

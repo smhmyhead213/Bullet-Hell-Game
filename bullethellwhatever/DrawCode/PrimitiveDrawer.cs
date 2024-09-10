@@ -138,6 +138,7 @@ namespace bullethellwhatever.DrawCode
                 Shader.CurrentTechnique.Passes[0].Apply();
             }
 
+            // dont ask what the division by 3 is. i dont know. it doesnt work otherwise.
             PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount / 3);
 
             if (shouldSwitchToShaderDrawing)
