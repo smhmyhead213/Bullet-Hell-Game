@@ -28,6 +28,9 @@ namespace bullethellwhatever.DrawCode
         public static readonly int MaxVertices = 6144;
         public static readonly int MaxIndices = 16384;
 
+        public static VertexPositionColorTexture[] MainVertices;
+        public static short[] MainIndices;
+
         public static RasterizerState RasteriserState;
         public static BasicEffect BasicEffect;
 
@@ -36,6 +39,9 @@ namespace bullethellwhatever.DrawCode
             RasteriserState = new RasterizerState();
 
             RasteriserState.CullMode = CullMode.None; // do i cull? no idae
+
+            MainVertices = new VertexPositionColorTexture[MaxVertices];
+            MainIndices = new short[MaxIndices];
 
             BasicEffect = new BasicEffect(GraphicsDevice);
 
@@ -77,12 +83,12 @@ namespace bullethellwhatever.DrawCode
         public Effect Shader;
 
         public int IndiceCount;
-        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, Effect shader = null)
+        public PrimitiveSet(int verticesCount, int indicesCount, Effect shader = null)
         {
             Shader = shader;
-            PrepareBuffers(vertices, indices);
+            PrepareBuffers(verticesCount, indicesCount);
         }
-        public PrimitiveSet(VertexPositionColorTexture[] vertices, short[] indices, string? shader = null)
+        public PrimitiveSet(int verticesCount, int indicesCount, string? shader = null)
         {
             if (shader is not null)
             {
@@ -93,19 +99,19 @@ namespace bullethellwhatever.DrawCode
                 Shader = null;
             }
 
-            PrepareBuffers(vertices, indices);
+            PrepareBuffers(verticesCount, indicesCount);
         }
 
-        private void PrepareBuffers(VertexPositionColorTexture[] vertices, short[] indices)
+        private void PrepareBuffers(int verticesCount, int indicesCount)
         {
             PrimitiveManager.BasicEffect.VertexColorEnabled = true;
             
-            PrimitiveManager.VertexBuffer.SetData(vertices, 0, vertices.Length);
+            PrimitiveManager.VertexBuffer.SetData(PrimitiveManager.MainVertices, 0, verticesCount);
 
             //PrimitiveManager.IndexBuffer = new IndexBuffer(PrimitiveManager.GraphicsDevice, typeof(short), indices.Length, BufferUsage.WriteOnly);
-            PrimitiveManager.IndexBuffer.SetData(indices, 0, indices.Length);
+            PrimitiveManager.IndexBuffer.SetData(PrimitiveManager.MainIndices, 0, indicesCount);
 
-            IndiceCount = indices.Length;
+            IndiceCount = indicesCount;
         }
         public void Draw()
         {

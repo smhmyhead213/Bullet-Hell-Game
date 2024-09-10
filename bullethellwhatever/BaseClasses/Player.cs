@@ -339,7 +339,7 @@ namespace bullethellwhatever.BaseClasses
 
                 //projectile.SetUpdates(2);
 
-                projectile.AddTrail(22);
+                projectile.AddTrail(22, "PrimitiveTestShader");
 
                 projectile.SetOnHit(new Action(() =>
                 {
