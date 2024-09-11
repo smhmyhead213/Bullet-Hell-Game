@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharpDX.MediaFoundation;
+using bullethellwhatever.MainFiles;
+using System.Threading;
 
 
 namespace bullethellwhatever.BaseClasses
@@ -17,6 +19,8 @@ namespace bullethellwhatever.BaseClasses
         public Matrix4x4 Matrix;
 
         public float ScreenShakeOffset;
+
+        public float CameraRotation;
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
@@ -27,11 +31,16 @@ namespace bullethellwhatever.BaseClasses
         /// </summary>
         public Microsoft.Xna.Framework.Vector2 Origin; // camera origin
 
-        private Matrix4x4 RotationMatrix; // to be added (what rotation matrix would be used, considering that the origin is the top left)
+        /// <summary>
+        /// The point in world space that the camera can rotate around.
+        /// </summary>
+        public Microsoft.Xna.Framework.Vector2 RotationAxis;
 
-        private Matrix4x4 TranslationMatrix; // translation matrix that allows for camera panning
+        public Matrix4x4 RotationMatrix; // to be added (what rotation matrix would be used, considering that the origin is the top left)
 
-        private Matrix4x4 ZoomMatrix; // scale matrix that allows for zooming in and out
+        public Matrix4x4 TranslationMatrix; // translation matrix that allows for camera panning
+
+        public Matrix4x4 ZoomMatrix; // scale matrix that allows for zooming in and out
         public Camera()
         {
             TranslationMatrix = Matrix4x4.Identity;
@@ -39,26 +48,44 @@ namespace bullethellwhatever.BaseClasses
             RotationMatrix = Matrix4x4.Identity;
             Position = new Microsoft.Xna.Framework.Vector2(0, 0);
             Origin = new Microsoft.Xna.Framework.Vector2(0, 0);
+            RotationAxis = Utilities.CentreOfScreen();
             ScreenShakeOffset = 0;
+            CameraRotation = 0;
+            SetZoom(0.5f, new Microsoft.Xna.Framework.Vector2(0, 0));
+            //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
         }
 
         public void UpdateMatrices()
         {
+            //SetRotation(PI / 2);
+
+            RotationMatrix = Matrix4x4.CreateRotationZ(CameraRotation);
+
             TranslationMatrix = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(Position.X + ScreenShakeOffset, Position.Y + ScreenShakeOffset, 0));
 
             // the zoom matrix normally zooms the camera to the top left of the screen.
             // this fixes the problem by translating everything so the zoom point is at the top left of the screen, zooming, and then moving everything back.
 
-            System.Numerics.Vector3 originVector = new(Origin.X, Origin.Y, 0);
+            System.Numerics.Vector3 originVector = new(GameWidth - Origin.X, GameHeight - Origin.Y, 0);
 
             Matrix4x4 originTransform = Matrix4x4.CreateTranslation(originVector);
             Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(-originVector);
+            Matrix4x4 overallZoomMatrix = moveBackFromCorner * ZoomMatrix * originTransform;
 
-            Matrix = TranslationMatrix * RotationMatrix * moveBackFromCorner * ZoomMatrix * originTransform;
+            // rotating currently rotates around 0,0.
+            // we can move the camera over the rotation axis, do the rotation and translate back.
+
+            System.Numerics.Vector3 rotationAxisVector = new(RotationAxis.X, RotationAxis.Y, 0);
+
+            Matrix4x4 axisTransform = Matrix4x4.CreateTranslation(rotationAxisVector);
+            Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
+            Matrix4x4 overallRotateMatrix = moveBackFromAxis * RotationMatrix * axisTransform;
+
+            Matrix = TranslationMatrix * overallRotateMatrix * overallZoomMatrix;
         }
 
         public void MoveCameraBy(Microsoft.Xna.Framework.Vector2 offset)
-        {
+        { 
             Position += offset;
         }
         /// <summary>
@@ -70,7 +97,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public void SetRotation(float radians)
         {
-            RotationMatrix = Matrix4x4.CreateRotationZ(radians);
+            CameraRotation = radians;            
         }
         public void SetZoom(float zoomFactor)
         {
@@ -98,15 +125,26 @@ namespace bullethellwhatever.BaseClasses
             ZoomMatrix = Matrix4x4.Identity;
         }
 
-        public Matrix4x4 ShaderMatrix() // credit to imogen
+        public Matrix4x4 ShaderMatrix()
         {
-            // create view matrix towards z axis
-            Matrix4x4 viewMatrix = Matrix4x4.CreateLookAt(System.Numerics.Vector3.Zero, System.Numerics.Vector3.UnitZ, System.Numerics.Vector3.UnitY);
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3((Position.X + ScreenShakeOffset) / GameWidth * 2, (Position.Y + ScreenShakeOffset) / GameHeight * 2, 0));
 
-            // flip 180 degrees
-            viewMatrix = Matrix4x4.CreateRotationZ(PI);
+            System.Numerics.Vector3 originVector = new(Origin.X / GameWidth * 2f, Origin.Y / GameHeight * 2f, 0);
 
-            return Matrix4x4.CreateOrthographicOffCenter(0f, GameWidth, 0f, GameHeight, 0f, 1f) * viewMatrix;
+            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(originVector);
+            Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(-originVector);
+            Matrix4x4 overallZoomMatrix = moveBackFromCorner * ZoomMatrix * originTransform;
+
+            // rotating currently rotates around 0,0.
+            // we can move the camera over the rotation axis, do the rotation and translate back.
+
+            //System.Numerics.Vector3 rotationAxisVector = new(RotationAxis.X / GameWidth, RotationAxis.Y / GameHeight, 0);
+
+            //Matrix4x4 axisTransform = Matrix4x4.CreateTranslation(rotationAxisVector);
+            //Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
+            //Matrix4x4 overallRotateMatrix = moveBackFromAxis * RotationMatrix * axisTransform;
+
+            return translation *  overallZoomMatrix;
         }
         public void Reset()
         {

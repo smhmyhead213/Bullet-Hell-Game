@@ -44,7 +44,7 @@ namespace bullethellwhatever.DrawCode
         {
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
+            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: MainCamera.Matrix);
             DrawingShaders = false;
         }
         public static void RestartSpriteBatchForShaders(SpriteBatch s)

@@ -132,7 +132,7 @@ namespace bullethellwhatever.DrawCode
 
             // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
 
-            //PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(MainCamera.Matrix);
+            PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(MainCamera.ShaderMatrix());
 
             PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
             

@@ -22,8 +22,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            MainCamera.SetZoom(0.5f);
-
             int pullBackArmTime = 20;
             int swingDuration = 10;
             int attackDuration = 75;
