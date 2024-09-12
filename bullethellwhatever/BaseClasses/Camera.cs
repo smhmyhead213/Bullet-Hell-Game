@@ -46,21 +46,16 @@ namespace bullethellwhatever.BaseClasses
         public Matrix4x4 ZoomMatrix; // scale matrix that allows for zooming in and out
         public Camera()
         {
-            TranslationMatrix = Matrix4x4.Identity;
-            ZoomMatrix = Matrix4x4.Identity;
-            RotationMatrix = Matrix4x4.Identity;
-            Position = new Microsoft.Xna.Framework.Vector2(0, 0);
-            Origin = Utilities.CentreOfScreen();
-            RotationAxis = Utilities.CentreOfScreen();
-            ScreenShakeOffset = 0;
-            CameraRotation = 0;            
+            Reset();
+            UpdateMatrices();
         }
 
         public void UpdateMatrices()
         {
             // The camera translation has positive X and Y directions as right and down respectively.
 
-            SetRotation(PI / 2);
+            CameraRotation = 0;
+            //Position = new Microsoft.Xna.Framework.Vector2(-300, 0);
 
             //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
             //SetZoom(0.5f, Utilities.CentreOfScreen() * 1.5f);
@@ -91,8 +86,9 @@ namespace bullethellwhatever.BaseClasses
         }
 
         public void MoveCameraBy(Microsoft.Xna.Framework.Vector2 offset)
-        { 
+        {
             Position += offset;
+            UpdateMatrices();
         }
         /// <summary>
         /// <param name="position">The position of the camera in world co-ordinates.</param>
@@ -100,10 +96,12 @@ namespace bullethellwhatever.BaseClasses
         public void SetCameraPosition(Microsoft.Xna.Framework.Vector2 position)
         {
             Position = Utilities.CentreOfScreen() - position;
+            UpdateMatrices();
         }
         public void SetRotation(float radians)
         {
-            CameraRotation = radians;            
+            CameraRotation = radians;
+            UpdateMatrices();
         }
         public void SetZoom(float zoomFactor)
         {
@@ -118,25 +116,31 @@ namespace bullethellwhatever.BaseClasses
             Matrix4x4 zoomMatrix = Matrix4x4.CreateScale(new System.Numerics.Vector3(zoomFactor, zoomFactor, 0));
 
             ZoomMatrix = zoomMatrix;
+
+            UpdateMatrices();
         }
 
         public void SetScreenShakeOffset(float offset)
         {
             ScreenShakeOffset = offset;
+            UpdateMatrices();
         }
         public void ResetTranslation()
         {
             TranslationMatrix = Matrix4x4.Identity;
+            UpdateMatrices();
         }
         public void ResetZoom()
         {
             ZoomMatrix = Matrix4x4.Identity;
+            UpdateMatrices();
         }
 
         public Matrix4x4 ShaderMatrix()
         {
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3((Position.X + ScreenShakeOffset) / GameWidth * 2, (Position.Y + ScreenShakeOffset) / GameHeight * 2, 0));
 
+            // we need to transform in vertex coords, the coordinates that the primitives use.
             Microsoft.Xna.Framework.Vector2 vertexOrigin = Utilities.GameCoordsToVertexCoords(Origin);
 
             System.Numerics.Vector3 originVector = new(vertexOrigin.X, vertexOrigin.Y, 0);
@@ -147,22 +151,31 @@ namespace bullethellwhatever.BaseClasses
 
             // rotating currently rotates around 0,0.
             // we can move the camera over the rotation axis, do the rotation and translate back.
+            // we need to transform in vertex coords, the coordinates that the primitives use.
 
-            //System.Numerics.Vector3 rotationAxisVector = new(RotationAxis.X / GameWidth, RotationAxis.Y / GameHeight, 0);
+            Microsoft.Xna.Framework.Vector2 vertexAxisOfRotation = Utilities.GameCoordsToVertexCoords(RotationAxis);
 
-            //Matrix4x4 axisTransform = Matrix4x4.CreateTranslation(rotationAxisVector);
-            //Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
-            //Matrix4x4 overallRotateMatrix = moveBackFromAxis * RotationMatrix * axisTransform;
+            //convert to vector3
+            System.Numerics.Vector3 translate = new(vertexAxisOfRotation.X, vertexAxisOfRotation.Y, 0);
 
-            return translation *  overallZoomMatrix;
+            Matrix4x4 axisTransform = Matrix4x4.CreateTranslation(-translate);
+            Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(translate);
+
+            Matrix4x4 overallRotateMatrix = moveBackFromAxis * RotationMatrix * axisTransform;
+
+            return translation * overallRotateMatrix * overallZoomMatrix;
         }
         public void Reset()
         {
-            ResetTranslation();
-            ResetZoom();
-            Origin = Microsoft.Xna.Framework.Vector2.Zero;
-            Position = Microsoft.Xna.Framework.Vector2.Zero;
+            TranslationMatrix = Matrix4x4.Identity;
+            ZoomMatrix = Matrix4x4.Identity;
+            RotationMatrix = Matrix4x4.Identity;
+            Position = new Microsoft.Xna.Framework.Vector2(0, 0);
+            Origin = Utilities.CentreOfScreen();
+            RotationAxis = Utilities.CentreOfScreen();
             ScreenShakeOffset = 0;
+            CameraRotation = 0;
+            CameraScale = 1;
         }
     }
 

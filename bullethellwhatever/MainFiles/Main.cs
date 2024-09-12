@@ -152,8 +152,6 @@ namespace bullethellwhatever.MainFiles
 
             DialogueSystem.Update();
 
-            MainCamera.UpdateMatrices();
-
             Drawing.UpdateDrawer();
 
             base.Update(gameTime);
