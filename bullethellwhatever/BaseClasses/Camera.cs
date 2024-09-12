@@ -53,18 +53,17 @@ namespace bullethellwhatever.BaseClasses
             Origin = Utilities.CentreOfScreen();
             RotationAxis = Utilities.CentreOfScreen();
             ScreenShakeOffset = 0;
-            CameraRotation = 0;
-            
-            //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
+            CameraRotation = 0;            
         }
 
         public void UpdateMatrices()
         {
             // The camera translation has positive X and Y directions as right and down respectively.
 
-            //SetRotation(PI / 2);
+            SetRotation(PI / 2);
 
-            SetZoom(0.5f, new Microsoft.Xna.Framework.Vector2(GameWidth, 0));
+            //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
+            //SetZoom(0.5f, Utilities.CentreOfScreen() * 1.5f);
 
             RotationMatrix = Matrix4x4.CreateRotationZ(CameraRotation);
 
@@ -138,10 +137,12 @@ namespace bullethellwhatever.BaseClasses
         {
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3((Position.X + ScreenShakeOffset) / GameWidth * 2, (Position.Y + ScreenShakeOffset) / GameHeight * 2, 0));
 
-            System.Numerics.Vector3 originVector = new((GameWidth - Origin.X) / GameWidth, (GameHeight - Origin.Y) / GameHeight, 0);
+            Microsoft.Xna.Framework.Vector2 vertexOrigin = Utilities.GameCoordsToVertexCoords(Origin);
 
-            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(originVector);
-            Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(-originVector);
+            System.Numerics.Vector3 originVector = new(vertexOrigin.X, vertexOrigin.Y, 0);
+
+            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(-originVector);
+            Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(originVector);
             Matrix4x4 overallZoomMatrix = moveBackFromCorner * ZoomMatrix * originTransform;
 
             // rotating currently rotates around 0,0.
