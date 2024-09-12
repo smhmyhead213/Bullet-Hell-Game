@@ -21,6 +21,9 @@ namespace bullethellwhatever.BaseClasses
         public float ScreenShakeOffset;
 
         public float CameraRotation;
+
+        public float CameraScale;
+
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
@@ -47,17 +50,21 @@ namespace bullethellwhatever.BaseClasses
             ZoomMatrix = Matrix4x4.Identity;
             RotationMatrix = Matrix4x4.Identity;
             Position = new Microsoft.Xna.Framework.Vector2(0, 0);
-            Origin = new Microsoft.Xna.Framework.Vector2(0, 0);
+            Origin = Utilities.CentreOfScreen();
             RotationAxis = Utilities.CentreOfScreen();
             ScreenShakeOffset = 0;
             CameraRotation = 0;
-            SetZoom(0.5f, new Microsoft.Xna.Framework.Vector2(0, 0));
+            
             //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
         }
 
         public void UpdateMatrices()
         {
+            // The camera translation has positive X and Y directions as right and down respectively.
+
             //SetRotation(PI / 2);
+
+            SetZoom(0.5f, new Microsoft.Xna.Framework.Vector2(GameWidth, 0));
 
             RotationMatrix = Matrix4x4.CreateRotationZ(CameraRotation);
 
@@ -66,10 +73,10 @@ namespace bullethellwhatever.BaseClasses
             // the zoom matrix normally zooms the camera to the top left of the screen.
             // this fixes the problem by translating everything so the zoom point is at the top left of the screen, zooming, and then moving everything back.
 
-            System.Numerics.Vector3 originVector = new(GameWidth - Origin.X, GameHeight - Origin.Y, 0);
+            System.Numerics.Vector3 originVector = new(Origin.X - GameWidth, Origin.Y - GameHeight, 0);
 
-            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(originVector);
-            Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(-originVector);
+            Matrix4x4 originTransform = Matrix4x4.CreateTranslation(-originVector);
+            Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(originVector);
             Matrix4x4 overallZoomMatrix = moveBackFromCorner * ZoomMatrix * originTransform;
 
             // rotating currently rotates around 0,0.
@@ -105,6 +112,8 @@ namespace bullethellwhatever.BaseClasses
         }
         public void SetZoom(float zoomFactor, Microsoft.Xna.Framework.Vector2 focusPoint) // make sure this takes in a draw coordinate and not a world coordinate, otherwise anomalies may appear
         {
+            CameraScale = zoomFactor;
+
             Origin = focusPoint;
 
             Matrix4x4 zoomMatrix = Matrix4x4.CreateScale(new System.Numerics.Vector3(zoomFactor, zoomFactor, 0));
@@ -129,7 +138,7 @@ namespace bullethellwhatever.BaseClasses
         {
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3((Position.X + ScreenShakeOffset) / GameWidth * 2, (Position.Y + ScreenShakeOffset) / GameHeight * 2, 0));
 
-            System.Numerics.Vector3 originVector = new(Origin.X / GameWidth * 2f, Origin.Y / GameHeight * 2f, 0);
+            System.Numerics.Vector3 originVector = new((GameWidth - Origin.X) / GameWidth, (GameHeight - Origin.Y) / GameHeight, 0);
 
             Matrix4x4 originTransform = Matrix4x4.CreateTranslation(originVector);
             Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(-originVector);

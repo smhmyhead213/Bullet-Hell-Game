@@ -56,7 +56,7 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Update();
             }
 
-            if (IsKeyPressed(Keys.Enter) && !WasKeyPressedLastFrame(Keys.Enter))
+            if (IsKeyPressed(Keys.Enter) && !WasKeyPressedLastFrame(Keys.Enter) && IndexOfInteractable >= 0)
             {
                 ActiveUIElements[IndexOfInteractable].HandleEnter();
             }

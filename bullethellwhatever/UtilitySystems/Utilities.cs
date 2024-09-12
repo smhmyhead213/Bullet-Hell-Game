@@ -265,6 +265,18 @@ namespace bullethellwhatever
         {
             return v.X >= 0 && v.X <= GameWidth && v.Y >= 0 && v.Y <= GameHeight;
         }
+        public static Vector2 GameCoordsToVertexCoords(Vector2 coords)
+        {
+            // move 0,0 to centre of screen
+            coords = coords - CentreOfScreen();
+            // move negative Y direction to bottom
+            coords.Y *= -1f;
+            // squish X and Y coordinates to -1 to 1 range
+            coords.X /= CentreOfScreen().X;
+            coords.Y /= CentreOfScreen().Y;
+
+            return new Vector2(coords.X, coords.Y);
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
     }
 
