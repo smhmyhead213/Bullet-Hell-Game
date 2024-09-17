@@ -17,6 +17,11 @@ namespace bullethellwhatever.Bosses
         public bool HasResetAITimerForDesperation;
         public bool EndNow;
 
+        /// <summary>
+        /// Useful int to hold a value to help choose the next attack.
+        /// </summary>
+        public int NextAttack;
+
         public float[] ExtraData;
         public BossAttack(NPC owner)
         {

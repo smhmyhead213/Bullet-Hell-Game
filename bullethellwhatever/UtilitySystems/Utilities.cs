@@ -19,12 +19,20 @@ namespace bullethellwhatever
             EntityManager.activeProjectiles.Clear();
             EntityManager.activeFriendlyProjectiles.Clear();
         }
-
+        /// <summary>
+        /// Returns -1 if index is 0 and 1 if index is 1.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static int ExpandedIndex(int index)
+        {
+            return Sign(index - 0.3f); // 0.3 can be anything positive between less than 1
+        }
         public static Vector2 ClampWithinScreen(Vector2 vector)
         {
             vector.X = MathHelper.Clamp(vector.X, 0, GameWidth);
 
-            vector.Y = MathHelper.Clamp(vector.Y, 0, GameHeight); // keep target winthin bounds
+            vector.Y = MathHelper.Clamp(vector.Y, 0, GameHeight); // keep target within bounds
 
             return vector;
         }
@@ -40,7 +48,7 @@ namespace bullethellwhatever
         }
         public static Vector2 Normalise(Vector2 vectorToNormalise)
         {
-            float distance = MathF.Sqrt(vectorToNormalise.X * vectorToNormalise.X + vectorToNormalise.Y * vectorToNormalise.Y);
+            float distance = Sqrt(vectorToNormalise.X * vectorToNormalise.X + vectorToNormalise.Y * vectorToNormalise.Y);
             return new Vector2(vectorToNormalise.X / distance, vectorToNormalise.Y / distance);
         }
 
@@ -51,7 +59,7 @@ namespace bullethellwhatever
 
             else
             {
-                float distance = MathF.Sqrt(vectorToNormalise.X * vectorToNormalise.X + vectorToNormalise.Y * vectorToNormalise.Y);
+                float distance = vectorToNormalise.Length();
                 return new Vector2(vectorToNormalise.X / distance, vectorToNormalise.Y / distance);
             }
         }

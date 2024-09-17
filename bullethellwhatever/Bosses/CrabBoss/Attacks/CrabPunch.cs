@@ -15,7 +15,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabPunch : CrabBossAttack
     {
-        public int NextAttack;
         public CrabPunch(CrabBoss owner) : base(owner)
         {
 

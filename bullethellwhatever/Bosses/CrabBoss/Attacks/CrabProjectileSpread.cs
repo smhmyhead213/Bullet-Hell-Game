@@ -40,6 +40,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (AITimer < slowDownTime - 1) 
             {
+                if (Owner.Velocity.Length() < 0.01f) // prevent NaN error
+                {
+                    Owner.Velocity = Vector2.Zero;
+                }
+
                 Owner.Velocity -= Utilities.SafeNormalise(Owner.Velocity) * initialSpeed / (float)slowDownTime;
             }
 
@@ -64,17 +69,21 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     p.AddTrail(22);
 
-                    int projectileSlowTime = 20;
+                    int projectileSlowTime = 26;
 
                     p.SetExtraAI(new Action(() =>
                     {
-                        if (p.AITimer <= projectileSlowTime)
+                        if (p.AITimer < projectileSlowTime)
+                        {  
+                            p.Velocity *= 0.98f;
+                        }
+                        else if (p.AITimer == projectileSlowTime)
                         {
-                            p.Velocity *= 0.99f;
+                            p.Velocity += 5f * Utilities.SafeNormalise(p.Velocity);
                         }
                         else
                         {
-                            p.Velocity += 1f * Utilities.SafeNormalise(p.Velocity);
+                            p.Velocity *= 1.05f;
                         }
                     }));
                 }

@@ -431,6 +431,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/CrabScrollingBeamShader.fx
 
+#begin Shaders/CrabSmallOrb.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/CrabSmallOrb.fx
+
 #begin Shaders/DeathrayShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
