@@ -26,7 +26,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int swingDuration = 10;
             int attackDuration = 75;
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
-            int chargeTrackingTime = 25;
+            int chargeTrackingTime = 5;
+            int accelerateTime = 25;
 
             float angleToPullBackArm = PI / 3f;
             float additionalAngleToSwingThrough = PI / 2f;
@@ -38,22 +39,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             CrabOwner.Rotation = Utilities.VectorToAngle(-toPlayer);
 
+            ref float initialSpeed = ref ExtraData[2];
+
             if (AITimer == 0)
             {
+                initialSpeed = Owner.Velocity.Length();
                 swingTime = 60;
             }
 
-            if (AITimer < chargeTrackingTime)
+            if (AITimer < accelerateTime)
             {
-                float trackingCompletionRatio = AITimer / (float)chargeTrackingTime;
-                // if the previous attack was not a punch, the boss needs to accelerate 
-                if (Owner.PreviousAttack is not CrabPunch)
+                float trackingCompletionRatio = AITimer / (float)accelerateTime;
+                float differenceBetweenTopAndInitialChargeSpeed = topChargeSpeed - initialSpeed;
+
+                float chargeSpeed = MathHelper.Lerp(initialSpeed, topChargeSpeed, EasingFunctions.EaseInOutQuart(trackingCompletionRatio));
+
+                if (AITimer < chargeTrackingTime)
                 {
-                    Owner.Velocity = topChargeSpeed * EasingFunctions.EaseInOutQuart(trackingCompletionRatio) * Utilities.SafeNormalise(toPlayer);
+                    Owner.Velocity = chargeSpeed * Utilities.SafeNormalise(toPlayer);
                 }
                 else
                 {
-                    Owner.Velocity = trackingCompletionRatio * topChargeSpeed * Utilities.SafeNormalise(toPlayer);
+                    Owner.Velocity = chargeSpeed * Utilities.SafeNormalise(Owner.Velocity);
                 }
             }
 
@@ -89,6 +96,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer == attackDuration)
             {
                 NextAttack = Utilities.RandomInt(1, 2);
+                // reuse the extra data index that was used for the speed at the start of the attack
+
+                initialSpeed = Owner.Velocity.Length();
 
                 // if the next attack is chosen to be projectile spread = 1
 
@@ -104,12 +114,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer > attackDuration && AITimer <= attackDuration + armRotateBackToNeutralTime)
             {
                 Leg(0).RotateLeg(additionalAngleToSwingThrough / (float)armRotateBackToNeutralTime);
+
+                float localTime = AITimer - attackDuration;
+
+                float speedInterpolant = EasingFunctions.EaseInQuart(localTime / armRotateBackToNeutralTime);
+
+                Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialSpeed, 0, speedInterpolant);
             }
 
             if (AITimer == attackDuration + armRotateBackToNeutralTime)
             {
                 End();
             }
+
+            HandleBounces();
         }
 
         public override BossAttack PickNextAttack()

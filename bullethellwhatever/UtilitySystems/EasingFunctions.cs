@@ -32,7 +32,10 @@ namespace bullethellwhatever.UtilitySystems
         {
             return 1 - (1 - progress) * (1 - progress);
         }
-
+        public static float EaseInQuart(float progress)
+        {
+            return Pow(progress, 4);
+        }
         public static float EaseInOutQuart(float progress)
         {
             return progress < 0.5 ? 8 * progress * progress * progress * progress : 1 - Pow(-2 * progress + 2, 4) / 2;
