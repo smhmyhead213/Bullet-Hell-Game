@@ -63,7 +63,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float distanceFromCentre = length(uv - float2(0.5, 0.5));
     float whiteIntensity = DetermineWhiteIntensity(1. - distanceFromCentre);
-    float3 col = float3(whiteIntensity);
+    float3 col = float3(whiteIntensity, whiteIntensity, whiteIntensity);
 
     // Output to screen
     return float4(col, 1.0);

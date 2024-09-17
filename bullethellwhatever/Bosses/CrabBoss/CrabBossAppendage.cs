@@ -237,6 +237,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
+            Texture2D texture = AssetRegistry.GetTexture2D("box");
+
+            //spriteBatch.Draw(texture, Position, null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
             //Hitbox.DrawVertices(spriteBatch, Color.Red);
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
