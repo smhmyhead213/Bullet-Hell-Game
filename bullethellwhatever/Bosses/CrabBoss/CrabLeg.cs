@@ -23,10 +23,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         //public bool LockPosition;
 
-        public CrabBossUpperArm UpperArm;
-        public CrabBossLowerArm LowerArm;
-        public CrabBossUpperClaw UpperClaw;
-        public CrabBossLowerClaw LowerClaw;
+        public CrabBossAppendage[] LegParts;
+        public CrabBossAppendage UpperArm => LegParts[0];
+        public CrabBossAppendage LowerArm => LegParts[1];
+        public CrabBossAppendage UpperClaw => LegParts[2];
+        public CrabBossAppendage LowerClaw => LegParts[3];
 
         public bool HorizontalFlip;
 
@@ -34,15 +35,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public CrabLeg(Vector2 position, CrabBoss owner, int legIndex)
         {
+            LegParts = new CrabBossAppendage[4];
             Owner = owner;
 
-            UpperArm = new CrabBossUpperArm(Owner, this, "CrabUpperArm", legIndex);
+            LegParts[0] = new CrabBossAppendage(Owner, this, AppendageType.UpperArm, legIndex);
             UpperArm.SetMaxHP(50f, true);
-            LowerArm = new CrabBossLowerArm(Owner, this, "CrabLowerArm", legIndex);
+            LegParts[1] = new CrabBossAppendage(Owner, this, AppendageType.LowerArm, legIndex);
             LowerArm.SetMaxHP(35f, true);
-            UpperClaw = new CrabBossUpperClaw(Owner, this, "CrabUpperClaw", legIndex);
+            LegParts[2] = new CrabBossAppendage(Owner, this, AppendageType.UpperClaw, legIndex);
             UpperClaw.SetMaxHP(20f, true);
-            LowerClaw = new CrabBossLowerClaw(Owner, this, "CrabLowerClaw", legIndex);
+            LegParts[3] = new CrabBossAppendage(Owner, this, AppendageType.LowerClaw, legIndex);
             LowerClaw.SetMaxHP(20f, true);
 
             HorizontalFlip = false;

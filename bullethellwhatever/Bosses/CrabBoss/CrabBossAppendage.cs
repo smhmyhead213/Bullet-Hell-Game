@@ -15,9 +15,17 @@ using SharpDX.XAudio2;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
+    public enum AppendageType
+    {
+        UpperArm,
+        LowerArm,
+        UpperClaw,
+        LowerClaw,
+    }
     public class CrabBossAppendage : NPC
     {
-
+        public AppendageType Type;
+        
         public Vector2 End; //where other limbs attach on
 
         public CrabLeg Leg;
@@ -31,10 +39,38 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float RotationToAdd;
 
         public float Gravity;
-        public CrabBossAppendage(Entity owner, CrabLeg leg, string texture, int legIndex)
+        public CrabBossAppendage(Entity owner, CrabLeg leg, AppendageType appendageType, int legIndex)
         {
             Owner = owner;
             Leg = leg;
+            Type = appendageType;
+
+            string texture = "";
+
+            switch (Type)
+            {
+                case AppendageType.UpperArm:
+                    {
+                        texture = "CrabUpperArm";
+                        break;
+                    }
+                case AppendageType.LowerArm:
+                    {
+                        texture = "CrabLowerArm";
+                        break;
+                    }
+                case AppendageType.UpperClaw:
+                    {
+                        texture = "CrabUpperClaw";
+                        break;
+                    }
+                case AppendageType.LowerClaw:
+                    {
+                        texture = "CrabLowerClaw";
+                        break;
+                    }
+            }
+
             Texture = AssetRegistry.GetTexture2D(texture);
             Size = Vector2.One;
             IsHarmful = true;
@@ -119,6 +155,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Vector2 centre = Vector2.Lerp(Position, CalculateEnd(), 0.5f); // centre is halfway along arm
 
+            if (Type == AppendageType.UpperClaw)
+            {
+                centre = centre - Utilities.RotateVectorClockwise(new Vector2(Texture.Width / 2f * GetSize().X, 0f), Rotation); // yeah totally sure yeah i was there yeah thats crazy man so true for real?
+            }
+
             Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, centre);
 
             Hitbox.UpdateVertices();
@@ -173,13 +214,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
+            SpriteEffects spriteEffect = SpriteEffects.None;
 
-            if (this is CrabBossUpperClaw)
+            if (Type == AppendageType.UpperClaw)
             {
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), SpriteEffects.None, 1f, originOffset);
+            if (LegIndex == 0)
+            {
+                if (Type == AppendageType.UpperClaw)
+                {
+                    originOffset = new Vector2(Texture.Width, 0);
+                }
+                else
+                {
+                    originOffset = new Vector2(Texture.Width / 2, 0f);
+                }
+
+                spriteEffect = SpriteEffects.FlipHorizontally;
+            }
+
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
             //Hitbox.DrawVertices(spriteBatch, Color.Red);
         }

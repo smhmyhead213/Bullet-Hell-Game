@@ -54,7 +54,7 @@ namespace bullethellwhatever.BaseClasses
         {
             // The camera translation has positive X and Y directions as right and down respectively.
 
-            CameraRotation = PI / 12;
+            //CameraRotation = PI / 12;
             //Position = new Microsoft.Xna.Framework.Vector2(-600, 0);
 
             //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
@@ -172,6 +172,7 @@ namespace bullethellwhatever.BaseClasses
 
             Microsoft.Xna.Framework.Vector2 vertexAxisOfRotation = Utilities.GameCoordsToVertexCoords(RotationAxis);
 
+            // TO DO: MAKE PRIMITVES WORK WITH CAMERA ROTATION
             // rotating currently rotates around 0,0.
             // we can move the camera over the rotation axis, do the rotation and translate back.
 
