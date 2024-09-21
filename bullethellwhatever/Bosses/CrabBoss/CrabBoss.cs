@@ -80,7 +80,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             }
 
-            CurrentAttack = new CrabMoveWithOrb(this);
+            CurrentAttack = new CrabPunch(this);
             
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
             //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);

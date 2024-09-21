@@ -23,20 +23,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             int pullBackArmTime = 20;
             int swingDuration = 10;
-            int attackDuration = 75;
+
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
             int accelerateTime = 25;
 
             float angleToPullBackArm = PI / 3f;
             float additionalAngleToSwingThrough = PI / 2f;
+            float totalSwingAngle = angleToPullBackArm - additionalAngleToSwingThrough;
             float angleToSwingThrough = angleToPullBackArm + additionalAngleToSwingThrough; // chosen so that the arm is parallel to body in good position for a follow up projectile spread
             float topChargeSpeed = 30f;
 
             Vector2 toPlayer = player.Position - Owner.Position;
             float angleToPlayer = Utilities.VectorToAngle(toPlayer);
-
-            CrabOwner.Rotation = Utilities.VectorToAngle(-toPlayer);
 
             ref float initialSpeed = ref ExtraData[2];
 
@@ -92,36 +91,34 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 CrabOwner.Legs[0].RotateLeg(-(angleThisFrame - anglePreviousFrame));
             }
 
-            if (AITimer == attackDuration)
+            if (AITimer < swingTime)
             {
-                NextAttack = Utilities.RandomInt(1, 2);
-                // reuse the extra data index that was used for the speed at the start of the attack
-
-                initialSpeed = Owner.Velocity.Length();
-
-                // if the next attack is chosen to be projectile spread = 1
-
-                if (NextAttack == 1)
-                {
-                    End();
-                }
-                // otherwise continue the attack and move arm back to neutral position
+                CrabOwner.Rotation = Utilities.VectorToAngle(-toPlayer);
+            }
+            else if (AITimer >= swingTime && AITimer < swingTime + swingDuration)
+            {
+                CrabOwner.Rotation += totalSwingAngle / swingDuration * 3f;
             }
 
-            int armRotateBackToNeutralTime = 10;
+            int timeToDecelAfterSwing = 12;
+            int decelerateTime = 10;
 
-            if (AITimer > attackDuration && AITimer <= attackDuration + armRotateBackToNeutralTime)
+            if (AITimer == swingTime + timeToDecelAfterSwing)
             {
-                Leg(0).RotateLeg(additionalAngleToSwingThrough / (float)armRotateBackToNeutralTime);
+                // set initial speed to decelerate from 
+                initialSpeed = Owner.Velocity.Length();
+            }
 
-                float localTime = AITimer - attackDuration;
+            if (AITimer > swingTime + timeToDecelAfterSwing && AITimer <= swingTime + swingDuration + timeToDecelAfterSwing)
+            {
+                float localTime = AITimer - swingTime- timeToDecelAfterSwing;
 
-                float speedInterpolant = EasingFunctions.EaseInQuart(localTime / armRotateBackToNeutralTime);
+                float speedInterpolant = (float)localTime / decelerateTime;
 
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialSpeed, 0, speedInterpolant);
             }
 
-            if (AITimer == attackDuration + armRotateBackToNeutralTime)
+            if (AITimer == swingTime + timeToDecelAfterSwing + decelerateTime)
             {
                 End();
             }
@@ -131,14 +128,35 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            if (NextAttack == 1)
+            return new CrabPunchToCrabPunchTransition(CrabOwner);
+        }
+    }
+
+    public class CrabPunchToCrabPunchTransition : CrabBossAttack
+    {
+        public CrabPunchToCrabPunchTransition(CrabBoss owner) : base(owner)
+        {
+
+        }
+
+        public override void Execute(int AITimer)
+        {
+            int armRotateBackToNeutralTime = 10;
+            float additionalAngleToSwingThrough = PI / 2f;
+
+            if (AITimer > 0 && AITimer <= armRotateBackToNeutralTime)
             {
-                return new CrabProjectileSpread(CrabOwner);
+                Leg(0).RotateLeg(additionalAngleToSwingThrough / (float)armRotateBackToNeutralTime);
             }
-            else
+
+            if (AITimer == armRotateBackToNeutralTime)
             {
-                return new CrabPunch(CrabOwner);
+                End();
             }
+        }
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabPunch(CrabOwner);
         }
     }
 }
