@@ -129,6 +129,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerClaw.Hitbox.DrawHitbox();
         }
 
+        public void SetAllRotations(float rotation)
+        {
+            foreach (CrabBossAppendage appendage in LegParts)
+            {
+                appendage.Rotation = rotation;
+            }
+        }
         public float CalculateMaxHP()
         {
             return UpperArm.MaxHP + LowerArm.MaxHP + UpperClaw.MaxHP + LowerClaw.MaxHP;

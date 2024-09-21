@@ -3,6 +3,7 @@ using bullethellwhatever.Projectiles;
 
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems;
+using Microsoft.VisualBasic.Logging;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -142,11 +143,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(int AITimer)
         {
             int armRotateBackToNeutralTime = 10;
-            float additionalAngleToSwingThrough = PI / 2f;
+
+            float additionalAngleToSwingThrough = PI / 2f; // undo the arm swing
 
             if (AITimer > 0 && AITimer <= armRotateBackToNeutralTime)
             {
-                Leg(0).RotateLeg(additionalAngleToSwingThrough / (float)armRotateBackToNeutralTime);
+                float interpolant = AITimer / (float)armRotateBackToNeutralTime;
+
+                
             }
 
             if (AITimer == armRotateBackToNeutralTime)
