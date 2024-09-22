@@ -96,6 +96,8 @@ namespace bullethellwhatever.NPCs
             base.Update();
 
             Rotation = Rotation + RotationalVelocity;
+
+            Rotation = Rotation % (2 * PI);
         }
         public virtual Collision CollisionWithEntity(Entity entity)
         {
