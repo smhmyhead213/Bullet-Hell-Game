@@ -40,12 +40,28 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
             ref float initialSpeed = ref ExtraData[2];
+            ref float chosenArm = ref Owner.ExtraData[0];
+            int chosenArmInt = (int)chosenArm;
 
             if (AITimer == 0)
             {
                 initialSpeed = Owner.Velocity.Length();
                 swingTime = 60;
+
+                // clear owner ai variables
+                Owner.ClearExtraData();
+
+                if (Utilities.DistanceBetweenVectors(Leg(0).Position, player.Position) < Utilities.DistanceBetweenVectors(Leg(1).Position, player.Position))
+                {
+                    chosenArm = 1;
+                }
+                else
+                {
+                    chosenArm = 1;
+                }
             }
+
+            int expandedi = -Utilities.ExpandedIndex((int)chosenArm);
 
             if (AITimer < accelerateTime)
             {
@@ -69,7 +85,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 // figure out what angle to swing through this frame.
                 float angleNextFrame = angleToPullBackArm * EasingFunctions.EaseOutQuad((AITimer + 1) / (float)pullBackArmTime);
                 float angleThisFrame = angleToPullBackArm * EasingFunctions.EaseOutQuad(AITimer / (float)pullBackArmTime);
-                CrabOwner.Legs[0].RotateLeg(angleNextFrame - angleThisFrame);
+                CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * (angleNextFrame - angleThisFrame));
             }
 
             ref float HasSetSwingTime = ref ExtraData[0]; // if this is 0, swing has not been set. if 1, swing has been set
@@ -90,7 +106,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 float angleNextFrame = angleToSwingThrough * EasingFunctions.EaseOutExpo((localTime + 1) / (float)swingDuration);
                 float angleThisFrame = angleToSwingThrough * EasingFunctions.EaseOutExpo(localTime / (float)swingDuration);
 
-                CrabOwner.Legs[0].RotateLeg(-(angleNextFrame - angleThisFrame));
+                CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * -(angleNextFrame - angleThisFrame));
             }
 
             if (AITimer < swingTime)
@@ -99,7 +115,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
             else if (AITimer >= swingTime && AITimer < swingTime + swingDuration)
             {
-                CrabOwner.Rotation += totalSwingAngle / swingDuration;
+                CrabOwner.Rotation += expandedi * totalSwingAngle / swingDuration;
             }
 
             int timeToDecelAfterSwing = 12;
@@ -130,7 +146,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunchToCrabPunchTransition(CrabOwner);
+            return new CrabPunchToCrabPunchTransition(CrabOwner); ;
+            int nextAttack = Utilities.RandomInt(1, 2);
+            if (nextAttack == 1)
+                return new CrabPunchToCrabPunchTransition(CrabOwner);
+            else return new CrabProjectileSpread(CrabOwner);
         }
     }
 
@@ -148,6 +168,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float angleToPullBackArm = PI / 3f;
             float additionalAngleToSwingThrough = PI; // im like fairly certain it doesnt do this complete angle when swinging but who knows at this point
             float totalSwingAngle = (additionalAngleToSwingThrough - angleToPullBackArm) / 2f; //idk why dividing by 2 works it just does
+
+            // this always occurs after the crab punch so the owners extradata[0] will still be the chosen arm
+            ref float chosenArm = ref Owner.ExtraData[0];
+            int expandedi = -Utilities.ExpandedIndex((int)chosenArm);
 
             if (AITimer > 0 && AITimer <= armRotateBackToNeutralTime)
             {
@@ -173,7 +197,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
 
-                Leg(0).RotateLeg(totalSwingAngle / armRotateBackToNeutralTime);
+                Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
             }
 
             if (AITimer == armRotateBackToNeutralTime)

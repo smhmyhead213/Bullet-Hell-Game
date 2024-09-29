@@ -55,7 +55,11 @@ namespace bullethellwhatever.BaseClasses
         public Action OnDeath;
         public Action ExtraAI;
 
-        public float[] ExtraData; // small array of floats each entity can use
+        public float[] ExtraData
+        {
+            get;
+            set;
+        } // small array of floats each entity can use
 
         public List<Component> AdditionalComponents = new List<Component>();
         public abstract void AI();
@@ -66,6 +70,11 @@ namespace bullethellwhatever.BaseClasses
             {
                 component.Update();
             }
+        }
+
+        public void ClearExtraData()
+        {
+            ExtraData = new float[ExtraData.Length];
         }
         public virtual void SetUpdates(int updates)
         {
