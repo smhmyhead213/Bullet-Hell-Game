@@ -51,13 +51,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 // clear owner ai variables
                 Owner.ClearExtraData();
 
-                if (Utilities.DistanceBetweenVectors(Leg(0).Position, player.Position) < Utilities.DistanceBetweenVectors(Leg(1).Position, player.Position))
+                if (Utilities.DistanceBetweenVectors(Leg(0).Position, player.Position) > Utilities.DistanceBetweenVectors(Leg(1).Position, player.Position))
                 {
-                    chosenArm = 1;
+                    // set the chosenArm npc data slot to the number representing representing the closer arm
+                    Owner.ExtraData[0] = 1;
                 }
                 else
                 {
-                    chosenArm = 1;
+                    Owner.ExtraData[0] = 0;
                 }
             }
 
@@ -146,7 +147,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunchToCrabPunchTransition(CrabOwner); ;
+            return new CrabPunchToProjectileSpreadTransition(CrabOwner);
             int nextAttack = Utilities.RandomInt(1, 2);
             if (nextAttack == 1)
                 return new CrabPunchToCrabPunchTransition(CrabOwner);
@@ -207,7 +208,60 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunch(CrabOwner);
+            return new CrabProjectileSpread(CrabOwner);
+        }
+    }
+
+    public class CrabPunchToProjectileSpreadTransition : CrabBossAttack
+    {
+        public CrabPunchToProjectileSpreadTransition(CrabBoss owner) : base(owner)
+        {
+
+        }
+
+        public override void Execute(int AITimer)
+        {
+            int armRotateBackToNeutralTime = 10;
+
+            // this always occurs after the crab punch so the owners extradata[0] will still be the chosen arm
+            ref float chosenArm = ref Owner.ExtraData[0];
+            int expandedi = -Utilities.ExpandedIndex((int)chosenArm);
+
+            if (AITimer > 0 && AITimer <= armRotateBackToNeutralTime)
+            {
+                float interpolant = AITimer / (float)armRotateBackToNeutralTime;
+
+                Vector2 toPlayer = Owner.Position - player.Position;
+                float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+                float angleToPlayerMinusTwoPi = angleToPlayer - 2 * PI;
+
+                // these angles are functionally the same
+
+                float angleToUse;
+
+                // determine which direction to turn towards to minimise turn angle
+                if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
+                {
+                    angleToUse = angleToPlayer;
+                }
+                else
+                {
+                    angleToUse = angleToPlayerMinusTwoPi;
+                }
+
+                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
+
+                //Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
+            }
+
+            if (AITimer == armRotateBackToNeutralTime)
+            {
+                End();
+            }
+        }
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabProjectileSpread(CrabOwner);
         }
     }
 }

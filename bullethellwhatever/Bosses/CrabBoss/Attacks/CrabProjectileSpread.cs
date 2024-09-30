@@ -24,12 +24,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(int AITimer)
         {
             float angleToSwingThrough = PI;
+
             int slowDownTime = 20;
             int swingTime = 15;
             int bufferTimeAfterSwing = 12;
 
             ref float initialSpeed = ref ExtraData[0];
             ref float initialRotation = ref ExtraData[1];
+            ref float chosenArm = ref Owner.ExtraData[0];
+            int chosenArmInt = (int)chosenArm;
 
             CrabOwner.FacePlayer();
 
@@ -55,16 +58,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 float anglePreviousFrame = angleToSwingThrough * EasingFunctions.Linear((localTime - 1) / (float)swingTime);
                 float angleThisFrame = angleToSwingThrough * EasingFunctions.Linear(localTime / (float)swingTime);
 
-                CrabOwner.Legs[0].RotateLeg(angleThisFrame - anglePreviousFrame);
+                int expandedi = -Utilities.ExpandedIndex(chosenArmInt);
+
+                CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * (angleThisFrame - anglePreviousFrame));
 
                 int timeBetweenProjectiles = 2;
 
                 if (localTime % timeBetweenProjectiles == 0)
                 {
-                    Vector2 spawnPosition = CrabOwner.Legs[0].LowerClaw.Position;
+                    Vector2 spawnPosition = CrabOwner.Legs[chosenArmInt].LowerClaw.Position;
                     float projectileInitialSpeed = 5f;
                     
-                    Projectile p = SpawnProjectile(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Legs[0].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Legs[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
 
                     p.AddTrail(22);
