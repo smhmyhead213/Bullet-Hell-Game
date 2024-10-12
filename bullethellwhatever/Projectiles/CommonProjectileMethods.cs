@@ -37,8 +37,10 @@ namespace bullethellwhatever.Projectiles
             for (int i = 0; i < numberOfProjectiles; i++)
             {
                 // change the texture used here once ManagedTexture is implemented
-                SpawnProjectile(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Size,
+                Projectile p = SpawnProjectile(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Size,
                     projectile.Owner, projectile.IsHarmful, projectile.Colour, projectile.ShouldRemoveOnEdgeTouch, projectile.RemoveOnHit);
+
+                p.Texture = projectile.Texture;
             }
         }
         public static Deathray SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,

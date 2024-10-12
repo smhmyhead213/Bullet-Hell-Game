@@ -23,7 +23,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int expandedi = Utilities.ExpandedIndex(ChosenArmIndex());
 
-            if (AITimer == 0)
+            CrabOwner.FacePlayer();
+
+            Vector2 target = player.Position + new Vector2(0, -500f);
+
+            Owner.Velocity += Utilities.SafeNormalise(target - Owner.Position) * 0.2f;
+            int loopedAITImer = AITimer % (pullBackArmTime + throwTime);
+           
+            if (loopedAITImer == 0)
             {
                 Projectile bomb = SpawnProjectile(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 
@@ -40,20 +47,33 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 bomb.SetEdgeTouchEffect(new Action(() =>
                 {
-                    Projectile p = new Projectile(bomb.Position, Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
-                    RadialProjectileBurst(p, 60, 0, 10f);
+                    int numberOfProjectiles = 26;
+
+                    for (int i = 0; i < numberOfProjectiles; i++)
+                    {
+                        Projectile p = SpawnProjectile(bomb.Position, 0.1f * Utilities.AngleToVector(Tau / numberOfProjectiles * i), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+
+                        p.AddTrail(22);
+
+                        p.SetExtraAI(new Action(() =>
+                        {
+                            p.Velocity += 0.2f * Utilities.SafeNormalise(p.Velocity);
+                        }));
+
+                    }
+
                     bomb.InstantlyDie();
                 }));
             }
 
-            if (AITimer < pullBackArmTime)
+            if (loopedAITImer < pullBackArmTime)
             {
-                RotateArm(ChosenArmIndex(), -expandedi * PI / 2, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
+                RotateArm(ChosenArmIndex(), -expandedi * PI / 2, loopedAITImer, pullBackArmTime, EasingFunctions.EaseOutQuad);
             }
 
-            if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + throwTime)
+            if (loopedAITImer >= pullBackArmTime && loopedAITImer < pullBackArmTime + throwTime)
             {
-                int localTime = AITimer - pullBackArmTime;
+                int localTime = loopedAITImer - pullBackArmTime;
 
                 RotateArm(ChosenArmIndex(), -expandedi *- PI / 2, localTime, throwTime, EasingFunctions.EaseOutQuad);
             }
