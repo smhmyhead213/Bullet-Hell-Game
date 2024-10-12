@@ -1,6 +1,8 @@
 ﻿
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.NPCs;
+using bullethellwhatever.UtilitySystems;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,29 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void ExtraAttackEnd()
         {
             CrabOwner.ResetArmRotations();
+        }
+
+        public void ChooseMainArm(int index)
+        {
+            Owner.ExtraData[0] = index;
+        }
+
+        public int ChosenArmIndex()
+        {
+            return (int)Owner.ExtraData[0];
+        }
+        public CrabLeg ChosenArm()
+        {
+            return Leg((int)Owner.ExtraData[0]);
+        }
+
+        // time should be from 0 to durationTotal
+        public void RotateArm(int index, float totalAngle, int time, int durationTotal, Func<float, float> easing)
+        {
+            float angleNextFrame = totalAngle * easing((time + 1) / (float)durationTotal);
+            float angleThisFrame = totalAngle * easing(time / (float)durationTotal);
+
+            CrabOwner.Legs[index].RotateLeg(angleNextFrame - angleThisFrame);
         }
 
         public override void HandleBounces()

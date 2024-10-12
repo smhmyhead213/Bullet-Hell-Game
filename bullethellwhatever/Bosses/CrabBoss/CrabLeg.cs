@@ -136,6 +136,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 appendage.Rotation = rotation;
             }
         }
+        public Vector2 PositionAtDistanceFromWrist(float distance)
+        {
+            return LowerArm.CalculateEnd() + (Utilities.AngleToVector(LowerArm.RotationFromV()) * distance);
+        }
         public float CalculateMaxHP()
         {
             return UpperArm.MaxHP + LowerArm.MaxHP + UpperClaw.MaxHP + LowerClaw.MaxHP;

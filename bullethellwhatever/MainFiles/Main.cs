@@ -79,7 +79,7 @@ namespace bullethellwhatever.MainFiles
             IsMouseVisible = true;
 
             _graphics.HardwareModeSwitch = false;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
 
             Window.AllowUserResizing = true;
             

@@ -54,11 +54,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Utilities.DistanceBetweenVectors(Leg(0).Position, player.Position) > Utilities.DistanceBetweenVectors(Leg(1).Position, player.Position))
                 {
                     // set the chosenArm npc data slot to the number representing representing the closer arm
-                    Owner.ExtraData[0] = 1;
+                    ChooseMainArm(1);
                 }
                 else
                 {
-                    Owner.ExtraData[0] = 0;
+                    ChooseMainArm(0);
                 }
             }
 
@@ -86,6 +86,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 // figure out what angle to swing through this frame.
                 float angleNextFrame = angleToPullBackArm * EasingFunctions.EaseOutQuad((AITimer + 1) / (float)pullBackArmTime);
                 float angleThisFrame = angleToPullBackArm * EasingFunctions.EaseOutQuad(AITimer / (float)pullBackArmTime);
+
                 CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * (angleNextFrame - angleThisFrame));
             }
 

@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             float angleToSwingThrough = PI;
 
-            int slowDownTime = 20;
+            int slowDownTime = 3;
             int swingTime = 15;
             int bufferTimeAfterSwing = 12;
 
