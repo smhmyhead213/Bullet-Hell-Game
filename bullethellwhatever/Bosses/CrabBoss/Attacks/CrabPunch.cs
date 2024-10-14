@@ -1,4 +1,5 @@
 ﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.Bosses.CrabBoss.Attacks;
 using bullethellwhatever.Projectiles;
 
 using bullethellwhatever.Projectiles.TelegraphLines;
@@ -147,18 +148,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
 
         public override BossAttack PickNextAttack()
-        {
-            return new CrabPunchToProjectileSpreadTransition(CrabOwner);
-            int nextAttack = Utilities.RandomInt(1, 2);
-            if (nextAttack == 1)
-                return new CrabPunchToCrabPunchTransition(CrabOwner);
-            else return new CrabProjectileSpread(CrabOwner);
+        {            
+            int nextAttack = Utilities.RandomInt(1, 3);
+            if (nextAttack == 1 || nextAttack == 2)
+                return new CrabPunchToNeutralTransition(CrabOwner);
+            else
+                return new CrabPunchToProjectileSpreadTransition(CrabOwner);
         }
     }
 
-    public class CrabPunchToCrabPunchTransition : CrabBossAttack
+    public class CrabPunchToNeutralTransition : CrabBossAttack
     {
-        public CrabPunchToCrabPunchTransition(CrabBoss owner) : base(owner)
+        public CrabPunchToNeutralTransition(CrabBoss owner) : base(owner)
         {
 
         }
@@ -209,7 +210,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
-            return new CrabProjectileSpread(CrabOwner);
+            int nextAttack = Utilities.RandomInt(1, 2);
+            if (nextAttack == 1)
+                return new CrabPunch(CrabOwner);
+            else
+                return new CrabBombThrow(CrabOwner);
         }
     }
 

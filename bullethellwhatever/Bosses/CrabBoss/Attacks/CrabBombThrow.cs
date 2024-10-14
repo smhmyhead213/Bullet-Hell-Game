@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
+using System.Windows.Forms.Design;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -21,17 +22,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int pullBackArmTime = 45;
             int throwTime = 15;
 
+            float pullBackArmAngle = PI / 2;
+            float throwAngle = 2 * PI / 3;
             int expandedi = Utilities.ExpandedIndex(ChosenArmIndex());
+            float jumpBackSpeed = 10f;
 
             CrabOwner.FacePlayer();
 
-            Vector2 target = player.Position + new Vector2(0, -500f);
-
-            Owner.Velocity += Utilities.SafeNormalise(target - Owner.Position) * 0.2f;
-            int loopedAITImer = AITimer % (pullBackArmTime + throwTime);
-           
-            if (loopedAITImer == 0)
+            if (AITimer == 0)
             {
+                Owner.Velocity = Utilities.SafeNormalise(Owner.Position - player.Position) * jumpBackSpeed;
+
                 Projectile bomb = SpawnProjectile(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 
                 bomb.SetExtraAI(new Action(() =>
@@ -66,17 +67,60 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 }));
             }
 
-            if (loopedAITImer < pullBackArmTime)
+            if (AITimer < pullBackArmTime)
             {
-                RotateArm(ChosenArmIndex(), -expandedi * PI / 2, loopedAITImer, pullBackArmTime, EasingFunctions.EaseOutQuad);
+                RotateArm(ChosenArmIndex(), -expandedi * pullBackArmAngle, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
+
+                Owner.Velocity = Owner.Velocity * 0.965f;
             }
 
-            if (loopedAITImer >= pullBackArmTime && loopedAITImer < pullBackArmTime + throwTime)
+            if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + throwTime)
             {
-                int localTime = loopedAITImer - pullBackArmTime;
+                int localTime = AITimer - pullBackArmTime;
 
-                RotateArm(ChosenArmIndex(), -expandedi *- PI / 2, localTime, throwTime, EasingFunctions.EaseOutQuad);
+                RotateArm(ChosenArmIndex(), -expandedi * -throwAngle, localTime, throwTime, EasingFunctions.EaseOutQuad);
             }
+
+            if (AITimer == pullBackArmTime + throwTime)
+            {
+                End();
+            }
+        }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new BombThrowToNeutralTransition(CrabOwner);
+        }
+    }
+
+    public class BombThrowToNeutralTransition : CrabBossAttack
+    {
+        public BombThrowToNeutralTransition(CrabBoss owner) : base(owner)
+        {
+
+        }
+
+        public override void Execute(int AITimer)
+        {
+            int duration = 30;
+            int expandedi = Utilities.ExpandedIndex(ChosenArmIndex());
+            float pullBackArmAngle = PI / 2;
+            float throwAngle = 2 * PI / 3;
+
+            float difference = throwAngle - pullBackArmAngle;
+
+            if (AITimer < duration)
+            {
+                RotateArm(ChosenArmIndex(), -expandedi * difference, AITimer, duration, EasingFunctions.EaseOutQuad);
+            }
+            if (AITimer == duration)
+            {
+                End();
+            }
+        }
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabPunch(CrabOwner);
         }
     }
 }
