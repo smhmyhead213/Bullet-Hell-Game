@@ -21,6 +21,8 @@ namespace bullethellwhatever.DrawCode
         public static PlayerHUD PlayerHUD;
         public static void DrawTheGame(GameTime gameTime, SpriteBatch s)
         {
+            _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
+
             Drawing.HandleScreenShake();
 
             DialogueSystem.DrawDialogues(s);
@@ -167,6 +169,8 @@ namespace bullethellwhatever.DrawCode
             {
                 npc.DrawHPBar(_spriteBatch);
             }
+
+            s.End();
         }
     }
 }
