@@ -7,6 +7,7 @@ using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
 using System.Windows.Forms.Design;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -77,6 +78,20 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         float interpolant = localTime / (float)slowDownDuration;
 
                         bomb.Velocity = Vector2.LerpPrecise(bomb.Velocity, Vector2.Zero, interpolant);
+
+                        float distanceFromBombToSpawnParticles = 100;
+                        float angle = Utilities.RandomAngle();
+
+                        int suckInTime = 15;
+
+                        Particle p = new Particle();
+
+                        Vector2 spawnLocation = bomb.Position + Utilities.AngleToVector(angle) * distanceFromBombToSpawnParticles;
+                        Vector2 spawnVelocity = distanceFromBombToSpawnParticles / suckInTime * Utilities.AngleToVector(angle + PI);
+
+                        p.SetShader("EnergyParticleShader");
+
+                        p.Spawn("box", spawnLocation, spawnVelocity, Vector2.Zero, new Vector2(0.5f, 2.5f), angle, Color.White, 1f, suckInTime);
                     }
 
                     if (bomb.AITimer == bombExplodeTime)
