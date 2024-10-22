@@ -23,6 +23,11 @@ namespace bullethellwhatever.UtilitySystems
             if (progress == 1f) return 1f;
             else return Pow(2, -10 * progress) * Sin((progress * 10 - 0.75f) * c4) + 1;
         }
+
+        public static float EaseInQuint(float progress)
+        {
+            return Pow(progress, 5);
+        }
         public static float EaseOutExpo(float progress)
         {
             return progress == 1 ? 1 : 1 - Pow(2, -10 * progress);

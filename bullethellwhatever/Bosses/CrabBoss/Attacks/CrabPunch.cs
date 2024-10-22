@@ -211,7 +211,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override BossAttack PickNextAttack()
         {
             int nextAttack = Utilities.RandomInt(1, 2);
-            if (nextAttack == 1)
+            if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
                 return new CrabPunch(CrabOwner);
             else
                 return new CrabBombThrow(CrabOwner);
@@ -253,7 +253,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 else
                 {
                     angleToUse = angleToPlayerMinusTwoPi;
-                }
+                };
 
                 Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
 

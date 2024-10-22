@@ -52,6 +52,10 @@ namespace bullethellwhatever
             return new Vector2(vectorToNormalise.X / distance, vectorToNormalise.Y / distance);
         }
 
+        //public static Vector2 LerpVectorDirection(Vector2 vec1, float angle, float interpolant)
+        //{
+        //    return SafeNormalise(Vector2.LerpPrecise(vec1, AngleToVector(angle) * vec1.Length(), interpolant)); 
+        //}
         public static Vector2 SafeNormalise(Vector2 vectorToNormalise, Vector2 fallback = default)
         {
             if (vectorToNormalise == Vector2.Zero)
@@ -291,6 +295,21 @@ namespace bullethellwhatever
 
             return new Vector2(coords.X, coords.Y);
         }
+
+        public static float SmallestAngleBetween(float angle1, float angle2)
+        {
+            float difference = Abs(angle1 - angle2);
+
+            if (difference <= PI)
+            {
+                return difference;
+            }
+            else
+            {
+                return 2 * PI - difference;
+            }
+        }
+
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
     }
 

@@ -50,7 +50,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                         p.SetExtraAI(new Action(() =>
                         {
-                            p.Velocity += 0.2f * Utilities.SafeNormalise(p.Velocity);
+                            p.Velocity += 0.4f * Utilities.SafeNormalise(p.Velocity);
                         }));
 
                     }
@@ -168,6 +168,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override BossAttack PickNextAttack()
         {
+            // we always leap away before this attack so we're usually far enough for a charge
             return new CrabPunch(CrabOwner);
         }
     }
