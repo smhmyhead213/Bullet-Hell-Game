@@ -59,8 +59,6 @@ namespace bullethellwhatever.MainFiles
 
         public static Player player;
 
-        public static Vector2 RawScreenArea;
-
         public static readonly int GameHeight = 1080;
         public static readonly int GameWidth = 1920;
 

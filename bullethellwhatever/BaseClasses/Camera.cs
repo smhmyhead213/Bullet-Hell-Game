@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SharpDX.MediaFoundation;
 using bullethellwhatever.MainFiles;
 using System.Threading;
+using SharpDX.Direct3D9;
 
 
 namespace bullethellwhatever.BaseClasses
@@ -23,6 +24,8 @@ namespace bullethellwhatever.BaseClasses
         public float CameraRotation;
 
         public float CameraScale;
+
+        public Rectangle VisibleArea;
 
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
@@ -48,6 +51,14 @@ namespace bullethellwhatever.BaseClasses
         {
             Reset();
             UpdateMatrices();
+        }
+
+        public void UpdateVisibleArea()
+        {
+            // try again later
+            Microsoft.Xna.Framework.Vector2 centre = Position;
+            Microsoft.Xna.Framework.Vector2 topLeft = Microsoft.Xna.Framework.Vector2.Zero;
+            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, GameWidth, GameHeight);
         }
 
         public void UpdateMatrices()

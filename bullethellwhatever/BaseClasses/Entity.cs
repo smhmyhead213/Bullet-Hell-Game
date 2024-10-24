@@ -141,7 +141,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public bool TouchingBottom()
         {
-            if (Position.Y + Texture.Height * GetSize().Y / 2 >= GameHeight)
+            if (Position.Y + Texture.Height * GetSize().Y / 2 >= MainCamera.VisibleArea.Bottom)
                 return true;
             else return false;
             //if at the bottom
@@ -149,21 +149,21 @@ namespace bullethellwhatever.BaseClasses
 
         public bool TouchingTop()
         {
-            if (Position.Y - Texture.Height * GetSize().Y / 2 <= 0)
+            if (Position.Y - Texture.Height * GetSize().Y / 2 <= MainCamera.VisibleArea.Top)
                 return true;
             else return false;
         }
 
         public bool TouchingRight()
         {
-            if (Position.X + Texture.Width * GetSize().X / 2 >= GameWidth)
+            if (Position.X + Texture.Width * GetSize().X / 2 >= MainCamera.VisibleArea.Right)
                 return true;
             else return false;
         }
 
         public bool TouchingLeft()
         {
-            if (Position.X - Texture.Width * GetSize().X / 2 <= 0)
+            if (Position.X - Texture.Width * GetSize().X / 2 <= MainCamera.VisibleArea.Left)
                 return true;
             else return false;
         }
