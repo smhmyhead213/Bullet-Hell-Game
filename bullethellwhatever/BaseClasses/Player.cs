@@ -127,7 +127,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (upPressed && TouchingTop())
             {
-                Position.Y = Texture.Height / 2f * GetSize().Y;
+                Position.Y = MainCamera.VisibleArea.Top + Texture.Height / 2f * GetSize().Y;
             }
 
             if (downPressed && !TouchingBottom())
@@ -137,7 +137,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (downPressed && TouchingBottom())
             {
-                Position.Y = GameHeight - (Texture.Height / 2f * GetSize().Y);
+                Position.Y = MainCamera.VisibleArea.Bottom + GameHeight - (Texture.Height / 2f * GetSize().Y);
             }
 
             if (leftPressed && !TouchingLeft())
@@ -147,7 +147,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (leftPressed && TouchingLeft())
             {
-                Position.X = Texture.Width / 2f * GetSize().X;
+                Position.X = MainCamera.VisibleArea.Left + Texture.Width / 2f * GetSize().X;
             }
 
             if (rightPressed && !TouchingRight())
@@ -157,7 +157,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (rightPressed && TouchingRight())
             {
-                Position.X = GameWidth - (Texture.Width / 2f * GetSize().X);
+                Position.X = MainCamera.VisibleArea.Right + GameWidth - (Texture.Width / 2f * GetSize().X);
             }
 
             if (IsKeyPressed(Keys.LeftShift))

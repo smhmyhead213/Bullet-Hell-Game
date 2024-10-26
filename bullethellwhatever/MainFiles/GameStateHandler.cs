@@ -37,7 +37,7 @@ namespace bullethellwhatever.MainFiles
             {
                 //EntityManager.SpawnBoss();
                 player = new Player("box");
-                player.Spawn(new Vector2(GameWidth / 2, GameHeight / 10 * 9), new Vector2(0, 0), 10, "box");
+                player.Spawn(Utilities.PlayerSpawnPosition(), new Vector2(0, 0), 10, "box");
                 EntityManager.Clear();
                 isGameStarted = true;
             }

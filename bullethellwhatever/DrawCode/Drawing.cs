@@ -12,7 +12,6 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.AssetManagement;
 using System.Runtime.CompilerServices;
-
 namespace bullethellwhatever.DrawCode
 {
     public static class Drawing
@@ -29,7 +28,6 @@ namespace bullethellwhatever.DrawCode
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
-            DrawGame.PlayerHUD = new UI.Player.PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(GameWidth / 10f, GameHeight / 10f));
             DrawingShaders = false;
         }
 
@@ -40,28 +38,24 @@ namespace bullethellwhatever.DrawCode
                 ScreenShakeTimer--;
             }
         }
-        public static void RestartSpriteBatchForUI(SpriteBatch s)
+        public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera)
         {
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap);
-            DrawingShaders = false;
-        }
-        public static void RestartSpriteBatchForShaders(SpriteBatch s)
-        {
-            s.End();
-            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap, transformMatrix: MainCamera.Matrix);
+            System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
+            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap, transformMatrix: transform);
             DrawingShaders = true;
         }
 
-        public static void RestartSpriteBatchForNotShaders(SpriteBatch s)
+        public static void RestartSpriteBatchForNotShaders(SpriteBatch s, bool useCamera)
         {
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: MainCamera.Matrix);
+            System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
+            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: transform);
             DrawingShaders = false;
         }
+
 
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {

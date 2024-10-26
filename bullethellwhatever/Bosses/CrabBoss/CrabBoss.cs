@@ -80,7 +80,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             }
 
-            CurrentAttack = new CrabFlail(this);
+            CurrentAttack = new NeutralToCrabFlailChargeTransition(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
@@ -180,7 +180,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             if (BoostersActive)
             {
-                Drawing.RestartSpriteBatchForShaders(spriteBatch);
+                Drawing.RestartSpriteBatchForShaders(spriteBatch, true);
 
                 Effect boosterShader = AssetRegistry.GetShader("CrabRocketBoosterShader");
                 boosterShader.CurrentTechnique.Passes[0].Apply();
@@ -203,14 +203,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
 
                 if (Shader is not null) //if we were already drawing stuff that had shaders
-                    Drawing.RestartSpriteBatchForShaders(spriteBatch);
-                else Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
+                    Drawing.RestartSpriteBatchForShaders(spriteBatch, true);
+                else Drawing.RestartSpriteBatchForNotShaders(spriteBatch, true);
             }
 
             base.Draw(spriteBatch);
 
-            spriteBatch.Draw(AssetRegistry.GetTexture2D("box"), MainCamera.Position, null, Color.Blue, Rotation + PI, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
-            spriteBatch.Draw(AssetRegistry.GetTexture2D("box"), Position, null, Color.Red, Rotation + PI, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
 
             //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);
             //Hitbox.DrawHitbox();

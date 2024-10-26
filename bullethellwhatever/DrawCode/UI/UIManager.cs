@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using bullethellwhatever.DrawCode.UI.Player;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +17,7 @@ namespace bullethellwhatever.DrawCode.UI
         public static List<UIElement> UIElemntsToRemoveNextFrame;
         public static List<UIElement> UIElementsToAddNextFrame;
 
+        public static PlayerHUD PlayerHUD;
         /// <summary>
         /// The one menu at a time that can be naviagted using the Tab key.
         /// </summary>
@@ -29,6 +32,8 @@ namespace bullethellwhatever.DrawCode.UI
             ActiveUIElements = new List<UIElement>();
             UIElemntsToRemoveNextFrame = new List<UIElement>();
             UIElementsToAddNextFrame = new List<UIElement>();
+
+            PlayerHUD = new PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(GameWidth / 10f, GameHeight / 10f));
         }
         public static void ManageUI()
         {
@@ -105,7 +110,9 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void DrawUI(SpriteBatch spriteBatch)
         {
-            Drawing.RestartSpriteBatchForUI(spriteBatch);
+            Drawing.RestartSpriteBatchForShaders(spriteBatch, false);
+
+            PlayerHUD.Draw(_spriteBatch);
 
             foreach (UIElement element in ActiveUIElements)
             {

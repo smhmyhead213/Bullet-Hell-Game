@@ -18,7 +18,6 @@ namespace bullethellwhatever.DrawCode
 {
     public static class DrawGame
     {
-        public static PlayerHUD PlayerHUD;
         public static void DrawTheGame(GameTime gameTime, SpriteBatch s)
         {
             _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
@@ -88,28 +87,26 @@ namespace bullethellwhatever.DrawCode
 
             // ------------------------------------------------------------------------------------------------------
 
-            PlayerHUD.Draw(_spriteBatch);
-
             foreach (Entity entity in FriendlyProjectilesToDrawWithoutShader)
             {
                 entity.Draw(s);
             }
 
-            Drawing.RestartSpriteBatchForShaders(s);
+            Drawing.RestartSpriteBatchForShaders(s, true);
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
             {
                 entity.Draw(s);
             }
 
-            Drawing.RestartSpriteBatchForNotShaders(s);
+            Drawing.RestartSpriteBatchForNotShaders(s, true);
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
                     entity.Draw(_spriteBatch);
             }
 
-            Drawing.RestartSpriteBatchForShaders(s);
+            Drawing.RestartSpriteBatchForShaders(s, true);
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -153,7 +150,7 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
-            Drawing.RestartSpriteBatchForNotShaders(s);
+            Drawing.RestartSpriteBatchForNotShaders(s, true);
 
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {

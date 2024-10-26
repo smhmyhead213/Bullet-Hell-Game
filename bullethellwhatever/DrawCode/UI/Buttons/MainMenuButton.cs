@@ -25,6 +25,7 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
             UIManager.ClearUI();
             EntityManager.Clear();
             GameState.SetGameState(GameState.GameStates.TitleScreen);
+            player.Position = Utilities.PlayerSpawnPosition();
         }
     }
 }

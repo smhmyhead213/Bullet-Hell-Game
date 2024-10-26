@@ -296,6 +296,20 @@ namespace bullethellwhatever
             return new Vector2(coords.X, coords.Y);
         }
 
+        public static Vector2 TopLeft(this Rectangle rect)
+        {
+            return new Vector2(rect.Left, rect.Top);
+        }
+
+        public static Vector2 BottomRight(this Rectangle rect)
+        {
+            return new Vector2(rect.Right, rect.Bottom);
+        }
+
+        public static Vector2 PlayerSpawnPosition()
+        {
+            return new Vector2(GameWidth / 2, GameHeight / 10 * 9);
+        }
         public static float SmallestAngleBetween(float angle1, float angle2)
         {
             float difference = Abs(angle1 - angle2);

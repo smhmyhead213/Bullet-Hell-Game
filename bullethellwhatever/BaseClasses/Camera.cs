@@ -79,7 +79,7 @@ namespace bullethellwhatever.BaseClasses
 
         public void UpdateVisibleArea()
         {
-            //Position =  new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
+            //Position = new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight);
             // try again later
             Microsoft.Xna.Framework.Vector2 centre = Position;
             Microsoft.Xna.Framework.Vector2 topLeft = centre - Utilities.CentreOfScreen();

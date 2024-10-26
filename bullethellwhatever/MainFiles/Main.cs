@@ -107,11 +107,11 @@ namespace bullethellwhatever.MainFiles
 
             UIManager.Initialise();
 
+            MainCamera = new Camera();
+
             GameState.SetGameState(GameState.GameStates.TitleScreen);
 
             GameTime = 0;
-
-            MainCamera = new Camera();
 
             ResizingView = false;
             UpdateView();

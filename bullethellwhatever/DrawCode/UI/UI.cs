@@ -15,13 +15,20 @@ using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using SharpDX.DirectWrite;
 using log4net.Core;
+using bullethellwhatever.DrawCode.UI.Player;
 
 namespace bullethellwhatever.DrawCode.UI
 {
     public static class UI
     {
+        public static void ResetCameraForMenus()
+        {
+            MainCamera.Reset();
+        }
         public static void CreateTitleScreenMenu()
         {
+            ResetCameraForMenus();
+
             Menu titleMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             titleMenu.SetOpacity(0f);
@@ -112,6 +119,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateBossSelectMenu()
         {
+            ResetCameraForMenus();
+
             Menu bossSelectMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             bossSelectMenu.SetOpacity(0f);
@@ -160,6 +169,8 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateDifficultySelectMenu()
         {
+            ResetCameraForMenus();
+
             Menu difficultySelectMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             difficultySelectMenu.SetOpacity(0f);
@@ -206,6 +217,8 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void CreateSettingsMenu()
         {
+            ResetCameraForMenus();
+
             Menu settingsMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             settingsMenu.SetOpacity(0f);
@@ -291,6 +304,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateCreditsMenu()
         {
+            ResetCameraForMenus();
+
             BackButton backButton = new BackButton("Back", new Vector2(150, 60), new Vector2(GameWidth / 5f, GameHeight / 5f));
 
             backButton.SetClickEvent(new Action(() =>
@@ -337,6 +352,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreateAfterBossMenu()
         {
+            ResetCameraForMenus();
+
             MainMenuButton mainMenuButton = new MainMenuButton("MainMenuButton", new Vector2(150, 60));
 
             mainMenuButton.Position = Utilities.CentreOfScreen() - new Vector2(GameWidth / 5f, 0);

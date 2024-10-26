@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
-    public class CrabFlail : CrabBossAttack
-    { 
-        public CrabFlail(CrabBoss owner) : base(owner)
+    public class NeutralToCrabFlailChargeTransition : CrabBossAttack
+    {
+        public NeutralToCrabFlailChargeTransition(CrabBoss owner) : base(owner)
         {
 
         }
@@ -19,13 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             int spinUpTime = 60;
             float spinAngularAccel = PI / 540;
-            int accelerateTime = 10;
-            int slowDownTime = 30;
-            int chargeTime = 20;
-
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
-
-            MainCamera.Position = Owner.Position;
 
             if (AITimer < spinUpTime)
             {
@@ -44,32 +39,87 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Owner.Velocity = interpolant * moveBackSpeed * Utilities.SafeNormalise(Owner.Position - player.Position);
             }
 
-            float maxChargeSpeed = 30f;
-
             Owner.Rotation += angularVelocity;
 
             if (AITimer == spinUpTime)
             {
+                End();
+            }
+        }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabFlail(CrabOwner);
+        }
+    }
+    public class CrabFlail : CrabBossAttack
+    { 
+        public CrabFlail(CrabBoss owner) : base(owner)
+        {
+
+        }
+
+        public override void Execute(int AITimer)
+        {            
+            int accelerateTime = 10;
+            int slowDownTime = 30;
+            int chargeTime = 20;
+
+            ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
+            Owner.Rotation += angularVelocity;
+
+            // to do: make camera pan logartihmically to boss
+            MainCamera.Position = Owner.Position;
+
+            float maxChargeSpeed = 30f;
+
+            if (AITimer == 0)
+            {
                 Owner.Velocity = Utilities.SafeNormalise(player.Position - Owner.Position) * 0.01f; // set direction of movement but dont start moving
             }
 
-            if (AITimer > spinUpTime && AITimer <= spinUpTime + accelerateTime)
+            if (AITimer > 0 && AITimer <= accelerateTime)
             {
-                int localTime = AITimer - spinUpTime;
+                int localTime = AITimer;
                 float interpolant = EasingFunctions.EaseOutExpo(localTime / (float)accelerateTime);
                 
                 Owner.Velocity = maxChargeSpeed * interpolant * Utilities.SafeNormalise(Owner.Velocity);
             }
 
-            // revisit movement formula and add projectile barfing
-            if (AITimer > spinUpTime + accelerateTime + chargeTime && AITimer <= spinUpTime + accelerateTime + chargeTime + slowDownTime)
+            float projSpeed = 10f;
+
+            if (AITimer > accelerateTime && AITimer <= accelerateTime + chargeTime)
             {
-                //Owner.Velocity = maxChargeSpeed * Utilities.SafeNormalise(player.Position - Owner.Position);
-                int localTime = AITimer - (spinUpTime + accelerateTime + chargeTime);
+                float projAngle = Utilities.RandomAngle();
+                Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                p.AddTrail(22);
+            }
+
+            // revisit movement formula and add projectile barfing
+            if (AITimer >  accelerateTime + chargeTime && AITimer <= accelerateTime + chargeTime + slowDownTime)
+            {
+                int localTime = AITimer - (accelerateTime + chargeTime);
                 float interpolant = 1 - EasingFunctions.EaseOutExpo(localTime / (float)slowDownTime);
 
                 Owner.Velocity = maxChargeSpeed * interpolant * Utilities.SafeNormalise(Owner.Velocity);
-            }            
+
+                float projAngle = Utilities.RandomAngle();
+
+                //Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                //p.AddTrail(22);
+            }
+
+            int waitTimeBeforeAttackEnd = 10;
+
+            if (AITimer == accelerateTime + chargeTime + slowDownTime + waitTimeBeforeAttackEnd)
+            {
+                End();
+            }
+        }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabFlail(CrabOwner);
         }
     }
 }
