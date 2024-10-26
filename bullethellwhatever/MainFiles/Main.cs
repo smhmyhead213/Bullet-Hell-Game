@@ -150,6 +150,9 @@ namespace bullethellwhatever.MainFiles
 
             DialogueSystem.Update();
 
+            // to do: move this to a new camera Update method if something else needs updated as well
+            MainCamera.UpdateVisibleArea();
+
             Drawing.UpdateDrawer();
 
             base.Update(gameTime);

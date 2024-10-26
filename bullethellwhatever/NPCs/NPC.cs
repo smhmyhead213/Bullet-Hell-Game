@@ -173,12 +173,12 @@ namespace bullethellwhatever.NPCs
             {
                 //base.Draw(spriteBatch);
 
-                if (this is not Boss)
-                {
-                    UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
-                }
+                //if (this is not Boss)
+                //{
+                //    UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
+                //}
 
-                else UI.DrawHealthBar(spriteBatch, this, new Vector2(GameWidth / 2, GameHeight / 20 * 19), 900f, 30f); // boss bar
+                //else  // boss bar
             }
         }
 

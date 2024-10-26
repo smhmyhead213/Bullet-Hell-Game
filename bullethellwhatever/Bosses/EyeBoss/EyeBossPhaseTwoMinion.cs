@@ -143,7 +143,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (Participating)
             {
-                UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
+                // to do: make these spanw a health bar
+                //UI.DrawHealthBar(spriteBatch, this, Position + new Vector2(0, 10f * DepthFactor()), 50f * DepthFactor(), 10f * DepthFactor());
             }
         }
 

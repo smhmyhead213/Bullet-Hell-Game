@@ -95,13 +95,13 @@ namespace bullethellwhatever.DrawCode
         {
             ScreenShakeTimer = 0;
             ScreenShakeMagnitude = 0;
-            MainCamera.SetScreenShakeOffset(0f);
+            MainCamera.ScreenShakeOffset = 0f;
         }
         public static void HandleScreenShake() //under the hood screen shaking
         {
             if (!Utilities.ImportantMenusPresent() && MainInstance.IsActive && IsScreenShaking) 
             {
-                MainCamera.SetScreenShakeOffset(Utilities.RandomFloat(-ScreenShakeMagnitude, ScreenShakeMagnitude));
+                MainCamera.ScreenShakeOffset = Utilities.RandomFloat(-ScreenShakeMagnitude, ScreenShakeMagnitude);
             }
             
             if (!IsScreenShaking)

@@ -81,7 +81,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             CurrentAttack = new CrabFlail(this);
-            
+
+            HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
+            hpBar.Display();
+
             //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
             //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
         }
@@ -204,15 +207,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 else Drawing.RestartSpriteBatchForNotShaders(spriteBatch);
             }
 
-            if (!StartedPhaseTwoTransition)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    UI.DrawHealthBar(_spriteBatch, Legs[i].CalculateHP() / Legs[i].CalculateMaxHP(), new Vector2(GameWidth / 8 + (i * (GameWidth / 8 * 6)), GameHeight / 20 * 19), GameWidth / 10, 25);
-                }
-            }
-
             base.Draw(spriteBatch);
+
+            spriteBatch.Draw(AssetRegistry.GetTexture2D("box"), MainCamera.Position, null, Color.Blue, Rotation + PI, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
+            spriteBatch.Draw(AssetRegistry.GetTexture2D("box"), Position, null, Color.Red, Rotation + PI, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
 
             //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);
             //Hitbox.DrawHitbox();

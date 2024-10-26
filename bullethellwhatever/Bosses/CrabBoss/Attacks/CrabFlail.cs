@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
 
-            MainCamera.SetCameraPosition(Owner.Position);
+            MainCamera.Position = Owner.Position;
 
             if (AITimer < spinUpTime)
             {

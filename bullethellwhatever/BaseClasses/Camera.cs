@@ -19,7 +19,20 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 Matrix;
 
-        public float ScreenShakeOffset;
+        private float screenShakeOffset;
+        private Microsoft.Xna.Framework.Vector2 position;
+        public float ScreenShakeOffset
+        {
+            get
+            {
+                return screenShakeOffset;
+            }
+            set
+            {
+                screenShakeOffset = value;
+                UpdateMatrices();
+            }
+        }
 
         public float CameraRotation;
 
@@ -30,7 +43,18 @@ namespace bullethellwhatever.BaseClasses
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
-        public Microsoft.Xna.Framework.Vector2 Position;
+        public Microsoft.Xna.Framework.Vector2 Position
+        {
+            get
+            {
+                return position;
+            }
+            set
+            {
+                position = value;
+                UpdateMatrices();
+            }
+        }
 
         /// <summary>
         /// The origin point of the camera, where it has its centre (0,0).
@@ -55,9 +79,10 @@ namespace bullethellwhatever.BaseClasses
 
         public void UpdateVisibleArea()
         {
+            //Position =  new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
             // try again later
             Microsoft.Xna.Framework.Vector2 centre = Position;
-            Microsoft.Xna.Framework.Vector2 topLeft = Microsoft.Xna.Framework.Vector2.Zero;
+            Microsoft.Xna.Framework.Vector2 topLeft = centre - Utilities.CentreOfScreen();
             VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, GameWidth, GameHeight);
         }
 
@@ -84,11 +109,11 @@ namespace bullethellwhatever.BaseClasses
 
         private Matrix4x4 CalculateTranslationMatrix()
         {
-            return Matrix4x4.CreateTranslation(new System.Numerics.Vector3(Position.X + ScreenShakeOffset, Position.Y + ScreenShakeOffset, 0));
+            Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
+            return Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-(cameraPos.X + ScreenShakeOffset), -(cameraPos.Y + ScreenShakeOffset), 0));
         }
         private Matrix4x4 CalculateScaleMatrix()
         {
-
             // the zoom matrix normally zooms the camera to the top left of the screen.
             // this fixes the problem by translating everything so the zoom point is at the top left of the screen, zooming, and then moving everything back.
 
@@ -121,19 +146,11 @@ namespace bullethellwhatever.BaseClasses
         /// <summary>
         /// <param name="position">The position of the camera in world co-ordinates.</param>
         /// </summary>
-        public void SetCameraPosition(Microsoft.Xna.Framework.Vector2 position)
-        {
-            Position = Utilities.CentreOfScreen() - position;
-            UpdateMatrices();
-        }
+
         public void SetRotation(float radians)
         {
             CameraRotation = radians;
             UpdateMatrices();
-        }
-        public void SetZoom(float zoomFactor)
-        {
-            SetZoom(zoomFactor, Utilities.CentreOfScreen());
         }
         public void SetZoom(float zoomFactor, Microsoft.Xna.Framework.Vector2 focusPoint) // make sure this takes in a draw coordinate and not a world coordinate, otherwise anomalies may appear
         {
@@ -148,11 +165,6 @@ namespace bullethellwhatever.BaseClasses
             UpdateMatrices();
         }
 
-        public void SetScreenShakeOffset(float offset)
-        {
-            ScreenShakeOffset = offset;
-            UpdateMatrices();
-        }
         public void ResetTranslation()
         {
             TranslationMatrix = Matrix4x4.Identity;
@@ -166,7 +178,8 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 ShaderMatrix()
         {
-            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3((Position.X + ScreenShakeOffset) / GameWidth * 2, (Position.Y + ScreenShakeOffset) / GameHeight * 2, 0));
+            Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-(cameraPos.X + ScreenShakeOffset) / GameWidth * 2, (cameraPos.Y + ScreenShakeOffset) / GameHeight * 2, 0));
 
             // we need to transform in vertex coords, the coordinates that the primitives use.
             Microsoft.Xna.Framework.Vector2 vertexOrigin = Utilities.GameCoordsToVertexCoords(Origin);
@@ -192,14 +205,14 @@ namespace bullethellwhatever.BaseClasses
             Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
             Matrix4x4 overallRotateMatrix = moveBackFromAxis * Matrix4x4.CreateRotationZ(CameraRotation) * axisTransform;
 
-            return translation * overallRotateMatrix * overallZoomMatrix;
+            return translation * overallZoomMatrix;
         }
         public void Reset()
         {
             TranslationMatrix = Matrix4x4.Identity;
             ZoomMatrix = Matrix4x4.Identity;
             RotationMatrix = Matrix4x4.Identity;
-            Position = new Microsoft.Xna.Framework.Vector2(0, 0);
+            Position = Utilities.CentreOfScreen();
             Origin = Utilities.CentreOfScreen();
             RotationAxis = Utilities.CentreOfScreen();
             ScreenShakeOffset = 0;
