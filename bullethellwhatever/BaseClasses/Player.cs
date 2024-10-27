@@ -71,7 +71,7 @@ namespace bullethellwhatever.BaseClasses
             ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Homing;
 
-            MoveSpeed = 5.5f;
+            MoveSpeed = DefaultMoveSpeed;
 
             WeaponSwitchCooldown = 15;
 
@@ -171,6 +171,8 @@ namespace bullethellwhatever.BaseClasses
                 MoveSpeed = DefaultMoveSpeed;
                 Size = DefaultHitbox;
             }
+
+            ControlCamera();
 
             if (GameState.WeaponSwitchControl == GameState.WeaponSwitchControls.ScrollWheel)
             {
@@ -298,6 +300,28 @@ namespace bullethellwhatever.BaseClasses
         public void FullHeal()
         {
             Heal(MaxHP - Health);
+        }
+
+        public void ControlCamera()
+        {
+            MainCamera.Position = Position;
+
+            float minZoom = 1f;
+
+            NPC furthest = FurthestEnemyFromPlayer();
+
+            if (furthest is not null)
+            {
+                float distance = Utilities.DistanceBetweenVectors(Position, furthest.Position);
+                float scaleFactor = Min(minZoom, (GameHeight / 2) / distance);
+
+                MainCamera.CameraScale = scaleFactor;
+            }
+            else
+            {
+                MainCamera.CameraScale = minZoom;
+            }
+
         }
 
         #region Shooting
@@ -432,6 +456,40 @@ namespace bullethellwhatever.BaseClasses
             }
         }
         #endregion
+
+        public NPC? FurthestEnemyFromPlayer()
+        {
+            if (EntityManager.activeNPCs.Count == 0)
+            {
+                return null;
+            }
+
+            int indexOfFurthest = 0;
+            float furthestDistance = 0f;
+            bool foundConsideredNPC = false;
+
+            for (int i = 0; i < EntityManager.activeNPCs.Count; i++) 
+            {
+                if (EntityManager.activeNPCs[i].ConsideredForCameraZoom())
+                {
+                    foundConsideredNPC = true;
+
+                    float distance = Utilities.DistanceBetweenVectors(EntityManager.activeNPCs[i].Position, player.Position);
+                    if (distance > furthestDistance)
+                    {
+                        indexOfFurthest = i;
+                        furthestDistance = distance;
+                    }
+                }
+            }
+
+            if (!foundConsideredNPC)
+            {
+                return null;
+            }
+
+            return EntityManager.activeNPCs[indexOfFurthest];
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (IsKeyPressed(Keys.K))

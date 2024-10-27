@@ -69,7 +69,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             Owner.Rotation += angularVelocity;
 
             // to do: make camera pan logartihmically to boss
-            MainCamera.Position = Owner.Position;
+            //MainCamera.Position = Owner.Position;
 
             float maxChargeSpeed = 30f;
 
@@ -93,10 +93,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float projAngle = Utilities.RandomAngle();
                 Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 p.AddTrail(22);
+                p.Rotation = projAngle;
             }
 
             // revisit movement formula and add projectile barfing
-            if (AITimer >  accelerateTime + chargeTime && AITimer <= accelerateTime + chargeTime + slowDownTime)
+            if (AITimer > accelerateTime + chargeTime && AITimer <= accelerateTime + chargeTime + slowDownTime)
             {
                 int localTime = AITimer - (accelerateTime + chargeTime);
                 float interpolant = 1 - EasingFunctions.EaseOutExpo(localTime / (float)slowDownTime);
@@ -107,6 +108,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 //Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 //p.AddTrail(22);
+                //p.Rotation = projAngle;
             }
 
             int waitTimeBeforeAttackEnd = 10;

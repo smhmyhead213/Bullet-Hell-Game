@@ -74,6 +74,15 @@ namespace bullethellwhatever.NPCs
             PrepareNPC();
         }
 
+        /// <summary>
+        /// Returns a bool corresponding to whether or not the camera should try to zoom to accomodate for this NPC.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool ConsideredForCameraZoom()
+        {
+            return true;
+        }
+
         public override void AI()
         {
             if (ExtraAI is not null)

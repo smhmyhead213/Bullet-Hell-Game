@@ -83,7 +83,7 @@ namespace bullethellwhatever.BaseClasses
             // try again later
             Microsoft.Xna.Framework.Vector2 centre = Position;
             Microsoft.Xna.Framework.Vector2 topLeft = centre - Utilities.CentreOfScreen();
-            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, GameWidth, GameHeight);
+            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)(GameWidth), (int)(GameHeight));
         }
 
         public void UpdateMatrices()
@@ -134,10 +134,7 @@ namespace bullethellwhatever.BaseClasses
             Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
             return moveBackFromAxis * RotationMatrix * axisTransform;
         }
-        public void ApplyScale()
-        {
 
-        }
         public void MoveCameraBy(Microsoft.Xna.Framework.Vector2 offset)
         {
             Position += offset;

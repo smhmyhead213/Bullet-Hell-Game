@@ -177,6 +177,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Rotate(-Rotation + angle + PI);
         }
 
+        public override bool ConsideredForCameraZoom()
+        {
+            return false;
+        }
         public void HandleBounces()
         {
             for (int i = 0; i < Hitbox.Vertices.Length; i++)
