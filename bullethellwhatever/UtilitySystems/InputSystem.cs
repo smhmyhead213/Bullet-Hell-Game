@@ -39,6 +39,10 @@ namespace bullethellwhatever.UtilitySystems
             }
         }
 
+        public static Vector2 MousePositionWithCamera()
+        {
+            return MousePosition + MainCamera.VisibleArea.TopLeft();
+        }
         public static void UpdateInputSystem()
         {
             WasMouseDownLastFrame = IsLeftClickDown();

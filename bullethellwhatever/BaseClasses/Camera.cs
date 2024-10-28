@@ -82,8 +82,8 @@ namespace bullethellwhatever.BaseClasses
             //Position = new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight);
             // try again later
             Microsoft.Xna.Framework.Vector2 centre = Position;
-            Microsoft.Xna.Framework.Vector2 topLeft = centre - Utilities.CentreOfScreen();
-            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)(GameWidth), (int)(GameHeight));
+            Microsoft.Xna.Framework.Vector2 topLeft = centre - (Utilities.CentreOfScreen() / CameraScale);
+            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)(GameWidth / CameraScale), (int)(GameHeight / CameraScale));
         }
 
         public void UpdateMatrices()

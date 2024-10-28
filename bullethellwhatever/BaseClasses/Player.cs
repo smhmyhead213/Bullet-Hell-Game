@@ -304,16 +304,23 @@ namespace bullethellwhatever.BaseClasses
 
         public void ControlCamera()
         {
-            MainCamera.Position = Position;
+            MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.1f);
 
             float minZoom = 1f;
+            float maxZoom = 2f;
 
             NPC furthest = FurthestEnemyFromPlayer();
 
             if (furthest is not null)
             {
                 float distance = Utilities.DistanceBetweenVectors(Position, furthest.Position);
+
                 float scaleFactor = Min(minZoom, (GameHeight / 2) / distance);
+
+                if (scaleFactor > maxZoom)
+                {
+                    scaleFactor = maxZoom;
+                }
 
                 MainCamera.CameraScale = scaleFactor;
             }
@@ -343,10 +350,10 @@ namespace bullethellwhatever.BaseClasses
 
                 Random rnd = new Random();
 
-                Projectile playerProjectile = SpawnProjectile(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
+                Projectile playerProjectile = SpawnProjectile(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
                     0.4f, 1, "MachineGunProjectile", Vector2.One, this, false, Color.LightBlue, true, true);
 
-                playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Utilities.Normalise(MousePosition - Position), Utilities.ToRadians(rnd.Next(-10, 10))));
+                playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Position), Utilities.ToRadians(rnd.Next(-10, 10))));
             }
 
             else if (ActiveWeapon == Weapons.Homing)
@@ -355,13 +362,11 @@ namespace bullethellwhatever.BaseClasses
                 float initialVelocity = 7f;
                 float damage = 0.28f * 100f;
 
-                Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
-
-                projectile.SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePosition - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
+                Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePositionWithCamera() - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
 
                 projectile.SetExtraData(0, 0); // extra data 0 represents how long the projectile has gone without a target
 
-                //projectile.SetUpdates(2);
+                projectile.SetUpdates(2);
 
                 projectile.AddTrail(22, "PrimitiveTestShader");
 

@@ -125,6 +125,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void AI()
         {
+            if (CurrentAttack is CrabPunch)
+            {
+                Colour = Color.Pink;
+            }
+            else
+            {
+                Colour = Color.White;
+            }
+
             if (!PlayerSaidOpeningDialogue)
             {
                 PlayerSaidOpeningDialogue = true;

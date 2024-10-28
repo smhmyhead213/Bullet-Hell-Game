@@ -6,6 +6,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.VisualBasic.Logging;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
             int accelerateTime = 25;
+            int maxChargeTime = 36;
 
             float angleToPullBackArm = PI / 3f;
             float additionalAngleToSwingThrough = PI; // im like fairly certain it doesnt do this complete angle when swinging but who knows at this point
@@ -47,7 +49,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer == 0)
             {
                 initialSpeed = Owner.Velocity.Length();
-                swingTime = 60;
+                swingTime = maxChargeTime;
 
                 // clear owner ai variables
                 Owner.ClearExtraData();
@@ -85,10 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer < pullBackArmTime)
             {
                 // figure out what angle to swing through this frame.
-                float angleNextFrame = angleToPullBackArm * EasingFunctions.EaseOutQuad((AITimer + 1) / (float)pullBackArmTime);
-                float angleThisFrame = angleToPullBackArm * EasingFunctions.EaseOutQuad(AITimer / (float)pullBackArmTime);
-
-                CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * (angleNextFrame - angleThisFrame));
+                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
             }
 
             ref float HasSetSwingTime = ref ExtraData[0]; // if this is 0, swing has not been set. if 1, swing has been set
@@ -106,10 +105,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer > swingTime && AITimer <= swingTime + swingDuration)
             {
                 int localTime = AITimer - (int)swingTime;
-                float angleNextFrame = angleToSwingThrough * EasingFunctions.EaseOutExpo((localTime + 1) / (float)swingDuration);
-                float angleThisFrame = angleToSwingThrough * EasingFunctions.EaseOutExpo(localTime / (float)swingDuration);
 
-                CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * -(angleNextFrame - angleThisFrame));
+                RotateArm(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.EaseOutExpo);
             }
 
             if (AITimer < swingTime)
@@ -143,8 +140,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 End();
             }
-
-            HandleBounces();
         }
 
         public override BossAttack PickNextAttack()
@@ -154,6 +149,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 return new CrabPunchToNeutralTransition(CrabOwner);
             else
                 return new CrabPunchToProjectileSpreadTransition(CrabOwner);
+        }
+
+        public override void ExtraDraw(SpriteBatch s)
+        {
+            Utilities.drawTextInDrawMethod(Owner.AITimer.ToString(), player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White);
         }
     }
 
