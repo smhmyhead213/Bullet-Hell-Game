@@ -44,6 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             ref float initialSpeed = ref ExtraData[2];
             ref float chosenArm = ref Owner.ExtraData[0];
+            ref float HasSetSwingTime = ref ExtraData[0]; // if this is 0, swing has not been set. if 1, swing has been set
             int chosenArmInt = (int)chosenArm;
 
             if (AITimer == 0)
@@ -90,7 +91,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
             }
 
-            ref float HasSetSwingTime = ref ExtraData[0]; // if this is 0, swing has not been set. if 1, swing has been set
             float swingProximity = 300f;
 
             if (AITimer > pullBackArmTime && HasSetSwingTime == 0) // if the arm is fully pulled back and a swing time hasnt been chosen, the boss can choose when to punch
@@ -98,7 +98,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Utilities.DistanceBetweenEntities(player, Owner) < swingProximity)
                 {
                     HasSetSwingTime = 1f;
-                    swingTime = AITimer + 1; // swing on the next frame
+                    dswingTime = AITimer + 1; // swing on the next frame
                 }
             }
 
