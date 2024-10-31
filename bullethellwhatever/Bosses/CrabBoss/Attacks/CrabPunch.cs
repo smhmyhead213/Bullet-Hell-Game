@@ -153,7 +153,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void ExtraDraw(SpriteBatch s)
         {
-            Utilities.drawTextInDrawMethod(Owner.AITimer.ToString(), player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White);
+            Utilities.drawTextInDrawMethod(Owner.AITimer.ToString(), player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
+            Utilities.drawTextInDrawMethod(ExtraData[1].ToString(), player.Position + new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
         }
     }
 

@@ -310,6 +310,11 @@ namespace bullethellwhatever
         {
             return new Vector2(GameWidth / 2, GameHeight / 10 * 9);
         }
+
+        public static Vector2 PlayerMenuPosition()
+        {
+            return CentreOfScreen();
+        }
         public static float SmallestAngleBetween(float angle1, float angle2)
         {
             float difference = Abs(angle1 - angle2);
