@@ -37,7 +37,10 @@ namespace bullethellwhatever.UtilitySystems
         {
             return progress == 1 ? 1 : 1 - Pow(2, -10 * progress);
         }
-
+        public static double EaseOutExpo(double progress)
+        {
+            return progress == 1 ? 1 : 1 - Math.Pow(2, -10 * progress);
+        }
         public static float EaseOutQuad(float progress)
         {
             return 1 - (1 - progress) * (1 - progress);

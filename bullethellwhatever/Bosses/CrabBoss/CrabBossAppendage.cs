@@ -89,7 +89,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Gravity = 0.7f; // for death anim
 
-            Colour = Color.White;
+            Colour = Color.Green;
         }
 
         public override void Update()

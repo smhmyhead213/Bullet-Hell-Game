@@ -191,11 +191,11 @@ namespace bullethellwhatever
             return (float)generated;
         }
 
-        public static float DerivativeOfFunctionAtTime(Func<double, double> function, float time)
+        public static float DerivativeOfFunctionAtTime(Func<double, double> function, double time)
         {
-            double h = 1e-6f;
+            double h = 1e-9f;
 
-            return (float)((function((double)time + h) - function((double)time)) / h);
+            return (float)((function(time + h) - function(time)) / h);
         }
         public static bool RandomChance(int oneIn)
         {

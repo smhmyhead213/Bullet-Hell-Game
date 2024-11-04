@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int maxChargeTime = 36;
 
             float angleToPullBackArm = PI / 3f;
-            float additionalAngleToSwingThrough = PI; // im like fairly certain it doesnt do this complete angle when swinging but who knows at this point
+            float additionalAngleToSwingThrough = angleToPullBackArm + PI / 2f; // im like fairly certain it doesnt do this complete angle when swinging but who knows at this point
             float totalSwingAngle = angleToPullBackArm - additionalAngleToSwingThrough;
             float angleToSwingThrough = angleToPullBackArm + additionalAngleToSwingThrough; // chosen so that the arm is parallel to body in good position for a follow up projectile spread
             float topChargeSpeed = 35f;
@@ -51,6 +51,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 initialSpeed = Owner.Velocity.Length();
                 swingTime = maxChargeTime;
+                HasSetSwingTime = 0f;
 
                 // clear owner ai variables
                 Owner.ClearExtraData();
@@ -90,6 +91,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 // figure out what angle to swing through this frame.
                 RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
             }
+            else
+            {
+                End();
+            }
 
             float swingProximity = 300f;
 
@@ -97,6 +102,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 if (Utilities.DistanceBetweenEntities(player, Owner) < swingProximity)
                 {
+                    //Owner.Colour = Owner.Colour == Color.White ? Color.Blue : Color.White;
                     HasSetSwingTime = 1f;
                     swingTime = AITimer + 1; // swing on the next frame
                 }
@@ -143,9 +149,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
 
         public override BossAttack PickNextAttack()
-        {            
+        {
+            return new DoNothing(CrabOwner);
             int nextAttack = Utilities.RandomInt(1, 3);
-            if (nextAttack == 1 || nextAttack == 2)
+            if (nextAttack == 1 || nextAttack == 2 || true)
                 return new CrabPunchToNeutralTransition(CrabOwner);
             else
                 return new CrabPunchToProjectileSpreadTransition(CrabOwner);
@@ -169,9 +176,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             int armRotateBackToNeutralTime = 10;
 
-            float angleToPullBackArm = PI / 3f;
-            float additionalAngleToSwingThrough = PI; // im like fairly certain it doesnt do this complete angle when swinging but who knows at this point
-            float totalSwingAngle = (additionalAngleToSwingThrough - angleToPullBackArm) / 2f; //idk why dividing by 2 works it just does
+            float totalSwingAngle = PI / 2f; //idk why dividing by 2 works it just does
 
             // this always occurs after the crab punch so the owners extradata[0] will still be the chosen arm
             ref float chosenArm = ref Owner.ExtraData[0];
@@ -201,7 +206,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
 
-                Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
+                Leg((int)chosenArm).RotateLeg(-expandedi * totalSwingAngle / armRotateBackToNeutralTime);
             }
 
             if (AITimer == armRotateBackToNeutralTime)
@@ -212,8 +217,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override BossAttack PickNextAttack()
         {
             int nextAttack = Utilities.RandomInt(1, 2);
-            if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
-                return new CrabPunch(CrabOwner);
+            //if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
+            if (true)
+                return new DoNothing(CrabOwner);
             else
                 return new CrabBombThrow(CrabOwner);
         }

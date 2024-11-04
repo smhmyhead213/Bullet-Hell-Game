@@ -31,7 +31,11 @@ namespace bullethellwhatever.BaseClasses
         public bool IsHarmful;
         public int AITimer;
         public float Damage;
-        public float Opacity;
+        public float Opacity
+        {
+            get;
+            set;
+        }
         public float InitialOpacity;
 
         public RotatedRectangle Hitbox;
@@ -44,7 +48,11 @@ namespace bullethellwhatever.BaseClasses
         public float Health;
         public float MaxHP;
         public bool DeleteNextFrame;
-        public float Rotation;
+        public float Rotation
+        {
+            get;
+            set;
+        }
 
         public bool ShouldRemoveOnEdgeTouch;
         public Color Colour;
