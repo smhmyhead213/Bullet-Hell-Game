@@ -339,7 +339,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 ShotCooldown = 1f;
 
-                float initialRotation = Utilities.VectorToAngle(MousePosition - Position);
+                float initialRotation = Utilities.VectorToAngle(MousePositionWithCamera() - Position);
 
                 PlayerDeathray.Rotation = initialRotation;
             }

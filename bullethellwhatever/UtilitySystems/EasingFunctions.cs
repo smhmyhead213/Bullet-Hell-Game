@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,12 +29,20 @@ namespace bullethellwhatever.UtilitySystems
         {
             return Pow(progress, 5);
         }
+        public static double EaseInQuint(double progress)
+        {
+            return Math.Pow(progress, 5);
+        }
         public static float EaseOutExpo(float progress)
         {
             return progress == 1 ? 1 : 1 - Pow(2, -10 * progress);
         }
 
         public static float EaseOutQuad(float progress)
+        {
+            return 1 - (1 - progress) * (1 - progress);
+        }
+        public static double EaseOutQuad(double progress)
         {
             return 1 - (1 - progress) * (1 - progress);
         }

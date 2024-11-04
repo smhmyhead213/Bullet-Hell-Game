@@ -98,7 +98,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (Utilities.DistanceBetweenEntities(player, Owner) < swingProximity)
                 {
                     HasSetSwingTime = 1f;
-                    dswingTime = AITimer + 1; // swing on the next frame
+                    swingTime = AITimer + 1; // swing on the next frame
                 }
             }
 

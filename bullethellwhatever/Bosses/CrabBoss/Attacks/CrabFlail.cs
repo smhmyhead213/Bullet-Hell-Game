@@ -104,7 +104,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 Owner.Velocity = maxChargeSpeed * interpolant * Utilities.SafeNormalise(Owner.Velocity);
 
-                float projAngle = Utilities.RandomAngle();
+                float projAngle = Utilities.RandomAngle();                
 
                 //Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 //p.AddTrail(22);
