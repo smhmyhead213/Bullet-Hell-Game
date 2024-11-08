@@ -248,6 +248,12 @@ namespace bullethellwhatever.BaseClasses
                 WeaponSwitchCooldownTimer--;
             }
 
+            if (IsKeyPressedAndWasntLastFrame(Keys.R))
+            {
+                EntityManager.Clear();
+                EntityManager.SpawnBoss();
+            }
+
             Velocity = Vector2.Zero; //this will change if anything is pressed
 
             HandleKeyPresses();

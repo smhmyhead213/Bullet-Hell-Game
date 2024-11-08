@@ -25,13 +25,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            int pullBackArmTime = 180;
-            int swingDuration = 60;
+            int pullBackArmTime = 20;
+            int swingDuration = 10;
 
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
             int accelerateTime = 25;
-            int maxChargeTime = 100;
+            int maxChargeTime = 36;
 
             float angleToPullBackArm = PI / 2f;
             float angleToSwingThrough = PI;
@@ -103,7 +103,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (AITimer > swingTime && AITimer <= swingTime + swingDuration)
+            if (AITimer >= swingTime && AITimer < swingTime + swingDuration)
             {
                 int localTime = AITimer - (int)swingTime;
 
@@ -177,7 +177,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             ref float chosenArm = ref Owner.ExtraData[0];
             int expandedi = Utilities.ExpandedIndex((int)chosenArm);
 
-            if (AITimer > 0 && AITimer <= armRotateBackToNeutralTime)
+            if (AITimer < armRotateBackToNeutralTime)
             {
                 float interpolant = AITimer / (float)armRotateBackToNeutralTime;
 
@@ -201,7 +201,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
 
-                RotateArm(ChosenArmIndex(), totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
+                RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
             }
 
             if (AITimer == armRotateBackToNeutralTime)
