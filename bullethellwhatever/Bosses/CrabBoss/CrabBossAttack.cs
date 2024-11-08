@@ -44,17 +44,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
 
         // time should be from 0 to durationTotal
-        public void RotateArm(int index, float totalAngle, int time, int durationTotal, Func<double, double> easing)
+        public void RotateArm(int index, float totalAngle, int time, int durationTotal, Func<float, float> easing)
         {
-            //float angleNextFrame = totalAngle * easing((time + 1) / (float)durationTotal);
-            //float angleThisFrame = totalAngle * easing(time / (float)durationTotal);
+            float angleNextFrame = totalAngle * easing((time + 1) / (float)durationTotal);
+            float angleThisFrame = totalAngle * easing(time / (float)durationTotal);
 
-            //CrabOwner.Legs[index].RotateLeg(angleNextFrame - angleThisFrame);
-
+            CrabOwner.Legs[index].RotateLeg(angleNextFrame - angleThisFrame);
+        }
+        public void RotateArmD(int index, float totalAngle, int time, int durationTotal, Func<double, double> easing)
+        {
             float rotationalVelocity = totalAngle * Utilities.DerivativeOfFunctionAtTime(easing, (float)time / durationTotal);
             CrabOwner.Legs[index].RotateLeg(rotationalVelocity);
         }
-
         public override void HandleBounces()
         {
             if (Owner.TouchingLeft())
