@@ -107,7 +107,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int localTime = AITimer - (int)swingTime;
 
-                RotateArm(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.EaseOutExpo);
+                RotateArmD(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.EaseOutExpo);
             }
 
             if (AITimer < swingTime)
