@@ -33,9 +33,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int accelerateTime = 25;
             int maxChargeTime = 36;
 
-            float angleToPullBackArm = PI / 2f;
-            float angleToSwingThrough = PI;
-            float topChargeSpeed = 0f;
+            float angleToPullBackArm = PI / 3f;
+            float angleToSwingThrough = PI / 3f + PI / 2f;
+            float topChargeSpeed = 35f;
 
             Vector2 toPlayer = player.Position - Owner.Position;
             float angleToPlayer = Utilities.VectorToAngle(toPlayer);
@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 // figure out what angle to swing through this frame.
                 // easeoutquad
-                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.Linear);
+                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
             }
 
             float swingProximity = 300f;
@@ -107,7 +107,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int localTime = AITimer - (int)swingTime;
 
                 //easeoutexpo
-                RotateArm(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.Linear);
+                RotateArm(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.EaseOutExpo);
             }
 
             if (AITimer < swingTime)
@@ -116,7 +116,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
             else if (AITimer >= swingTime && AITimer < swingTime + swingDuration)
             {
-                //CrabOwner.Rotation += expandedi * totalSwingAngle / swingDuration;
+                CrabOwner.Rotation += expandedi * -angleToSwingThrough / swingDuration;
             }
 
             int timeToDecelAfterSwing = 12;
@@ -145,9 +145,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunchToNeutralTransition(CrabOwner);
             int nextAttack = Utilities.RandomInt(1, 3);
-            if (nextAttack == 1 || nextAttack == 2 || true)
+            if (nextAttack == 1 || nextAttack == 2)
                 return new CrabPunchToNeutralTransition(CrabOwner);
             else
                 return new CrabPunchToProjectileSpreadTransition(CrabOwner);
@@ -155,8 +154,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void ExtraDraw(SpriteBatch s)
         {
-            Utilities.drawTextInDrawMethod("attacking", player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
-            Utilities.drawTextInDrawMethod(ExtraData[1].ToString(), player.Position + new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
+            //Utilities.drawTextInDrawMethod("attacking", player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
+            //Utilities.drawTextInDrawMethod(ExtraData[1].ToString(), player.Position + new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
         }
     }
 
@@ -169,7 +168,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void Execute(int AITimer)
         {
-            int armRotateBackToNeutralTime = 60;
+            int armRotateBackToNeutralTime = 10;
 
             float totalSwingAngle = PI / 2f;
 
@@ -213,17 +212,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunch(CrabOwner);
             int nextAttack = Utilities.RandomInt(1, 2);
-            //if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
-            if (true)
-                return new DoNothing(CrabOwner);
+            if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
+                return new CrabPunch(CrabOwner);
             else
                 return new CrabBombThrow(CrabOwner);
         }
         public override void ExtraDraw(SpriteBatch s)
         {
-            Utilities.drawTextInDrawMethod("resetting", player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
+            //Utilities.drawTextInDrawMethod("resetting", player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
         }
     }
 

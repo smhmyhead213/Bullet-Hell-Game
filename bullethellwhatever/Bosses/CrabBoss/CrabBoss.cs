@@ -125,8 +125,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void AI()
         {
-            Opacity = 0.1f;
-
             if (CurrentAttack is CrabPunch)
             {
                 //Colour = Color.Pink;
