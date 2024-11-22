@@ -41,9 +41,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
             ref float initialSpeed = ref ExtraData[2];
-            ref float chosenArm = ref Owner.ExtraData[0];
             ref float HasSetSwingTime = ref ExtraData[0]; // if this is 0, swing has not been set. if 1, swing has been set
-            int chosenArmInt = (int)chosenArm;
 
             if (AITimer == 0)
             {
@@ -66,7 +64,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            int expandedi = -Utilities.ExpandedIndex((int)chosenArm);
+            int expandedi = -Utilities.ExpandedIndex(ChosenArmIndex());
 
             if (AITimer < accelerateTime)
             {
@@ -88,7 +86,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer < pullBackArmTime)
             {
                 // figure out what angle to swing through this frame.
-                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
+                // easeoutquad
+                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.Linear);
             }
 
             float swingProximity = 300f;
@@ -107,7 +106,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int localTime = AITimer - (int)swingTime;
 
-                RotateArmD(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.EaseOutExpo);
+                //easeoutexpo
+                RotateArm(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.Linear);
             }
 
             if (AITimer < swingTime)
@@ -200,6 +200,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
 
                 Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
+
+                // i think this is the problem?
 
                 RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
             }

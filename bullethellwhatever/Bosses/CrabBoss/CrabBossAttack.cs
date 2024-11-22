@@ -53,7 +53,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public void RotateArmD(int index, float totalAngle, int time, int durationTotal, Func<double, double> easing)
         {
-            float rotationalVelocity = totalAngle * Utilities.DerivativeOfFunctionAtTime(easing, (double)time / durationTotal) * (1f / 60f); // summing up derivatives so we need a dt term
+            float rotationalVelocity = totalAngle * Utilities.DerivativeOfFunctionAtTime(easing, (double)time / durationTotal) * (1f / (durationTotal + 1)); // summing up derivatives so we need a dt term
             CrabOwner.Legs[index].RotateLeg(rotationalVelocity);
         }
         public override void HandleBounces()
