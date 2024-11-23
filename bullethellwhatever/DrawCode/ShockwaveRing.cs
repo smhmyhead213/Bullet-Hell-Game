@@ -65,7 +65,7 @@ namespace bullethellwhatever.DrawCode
             Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
             Shader.Parameters["uTime"]?.SetValue(AITimer);
             Shader.Parameters["radius"]?.SetValue(0.5f);
-            ApplyRandomNoise(Shader);
+            Shader.ApplyRandomNoise();
 
             Shader.CurrentTechnique.Passes[0].Apply();
 

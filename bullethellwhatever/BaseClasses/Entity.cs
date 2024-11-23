@@ -256,10 +256,6 @@ namespace bullethellwhatever.BaseClasses
             Shader.Parameters["randomNoiseMap"]?.SetValue(AssetRegistry.GetTexture2D("RandomNoise"));
         }
 
-        public virtual void ApplyRandomNoise(Effect shader)
-        {
-            shader.Parameters["randomNoiseMap"]?.SetValue(AssetRegistry.GetTexture2D("RandomNoise"));
-        }
 
         public virtual void SetShader(string filename)
         {

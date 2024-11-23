@@ -1,5 +1,8 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Bosses.CrabBoss.Attacks;
+using bullethellwhatever.Bosses.EyeBoss;
+using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
 
 using bullethellwhatever.Projectiles.TelegraphLines;
@@ -7,7 +10,6 @@ using bullethellwhatever.UtilitySystems;
 using Microsoft.VisualBasic.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -92,11 +94,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             float swingProximity = 300f;
 
-            if (AITimer > pullBackArmTime && HasSetSwingTime == 0) // if the arm is fully pulled back and a swing time hasnt been chosen, the boss can choose when to punch
+            if (AITimer > pullBackArmTime && HasSetSwingTime == 0 && AITimer < maxChargeTime) // if the arm is fully pulled back and a swing time hasnt been chosen, the boss can choose when to punch
             {
                 if (Utilities.DistanceBetweenEntities(player, Owner) < swingProximity)
                 {
-                    //Owner.Colour = Owner.Colour == Color.White ? Color.Blue : Color.White;
                     HasSetSwingTime = 1f;
                     swingTime = AITimer + 1; // swing on the next frame
                 }
@@ -154,6 +155,30 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void ExtraDraw(SpriteBatch s)
         {
+            //bool npcHasShader = Owner.Shader is not null;
+
+            //if (!npcHasShader)
+            //{
+            //    Drawing.RestartSpriteBatchForShaders(s, true);
+            //}
+
+            //Effect circleShader = AssetRegistry.GetShader("CircleOutlineShader");
+
+            //circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
+            //circleShader.Parameters["uTime"]?.SetValue(Owner.AITimer);
+            //circleShader.Parameters["radius"]?.SetValue(0.5f);
+            //circleShader.ApplyRandomNoise();
+
+            //circleShader.CurrentTechnique.Passes[0].Apply();
+
+            //Texture2D texture = AssetRegistry.GetTexture2D("box");
+
+            //Drawing.BetterDraw(texture, Owner.Position, null, Color.White, 0, Vector2.One * 300f / texture.Width * 2f, SpriteEffects.None, 1);
+
+            //if (!npcHasShader)
+            //{
+            //    Drawing.RestartSpriteBatchForNotShaders(s, true);
+            //}
             //Utilities.drawTextInDrawMethod("attacking", player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
             //Utilities.drawTextInDrawMethod(ExtraData[1].ToString(), player.Position + new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
         }
@@ -173,8 +198,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float totalSwingAngle = PI / 2f;
 
             // this always occurs after the crab punch so the owners extradata[0] will still be the chosen arm
-            ref float chosenArm = ref Owner.ExtraData[0];
-            int expandedi = Utilities.ExpandedIndex((int)chosenArm);
+            int expandedi = Utilities.ExpandedIndex(ChosenArmIndex());
 
             if (AITimer < armRotateBackToNeutralTime)
             {

@@ -174,7 +174,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
             circleShader.Parameters["uTime"]?.SetValue(AITimer);
             circleShader.Parameters["radius"]?.SetValue(0.5f);
-            ApplyRandomNoise(circleShader);
+            circleShader.ApplyRandomNoise();
 
             circleShader.CurrentTechnique.Passes[0].Apply();
 

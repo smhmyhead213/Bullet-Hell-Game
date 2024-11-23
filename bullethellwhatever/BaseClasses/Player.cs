@@ -328,11 +328,11 @@ namespace bullethellwhatever.BaseClasses
                     scaleFactor = maxZoom;
                 }
 
-                MainCamera.CameraScale = scaleFactor;
+                MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f);
             }
             else
             {
-                MainCamera.CameraScale = minZoom;
+                MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f);
             }
 
         }
