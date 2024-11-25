@@ -310,7 +310,7 @@ namespace bullethellwhatever.BaseClasses
 
         public void ControlCamera()
         {
-            MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.1f);
+            MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);
 
             float minZoom = 1f;
             float maxZoom = 2f;
@@ -323,9 +323,9 @@ namespace bullethellwhatever.BaseClasses
 
                 float scaleFactor = Min(minZoom, (GameHeight / 2) / distance);
 
-                if (scaleFactor > maxZoom)
+                if (scaleFactor < 1f / maxZoom)
                 {
-                    scaleFactor = maxZoom;
+                    scaleFactor = 1f / maxZoom;
                 }
 
                 MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f);

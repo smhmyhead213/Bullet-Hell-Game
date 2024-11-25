@@ -236,11 +236,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
-            int nextAttack = Utilities.RandomInt(1, 2);
+            int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
                 return new CrabPunch(CrabOwner);
-            else
+            else if (nextAttack == 2)
                 return new CrabBombThrow(CrabOwner);
+            else
+                return new NeutralToCrabFlailChargeTransition(CrabOwner);
         }
         public override void ExtraDraw(SpriteBatch s)
         {

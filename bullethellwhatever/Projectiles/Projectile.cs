@@ -87,7 +87,7 @@ namespace bullethellwhatever.Projectiles
 
             if (MercyTimeBeforeRemoval == 0)
             {
-                MercyTimeBeforeRemoval = 60;
+                MercyTimeBeforeRemoval = 180;
             }
 
             ExtraData = new float[4];

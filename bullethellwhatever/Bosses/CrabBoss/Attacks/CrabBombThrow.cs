@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Position - player.Position) * jumpBackSpeed;
 
-                Projectile bomb = SpawnProjectile(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                Projectile bomb = SpawnProjectile(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, false, false);
 
                 Action bombExplode = new Action(() =>
                 {

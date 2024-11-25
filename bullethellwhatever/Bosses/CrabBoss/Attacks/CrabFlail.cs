@@ -49,14 +49,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabFlail(CrabOwner);
+            return new CrabFlail(CrabOwner, 0);
         }
     }
     public class CrabFlail : CrabBossAttack
-    { 
-        public CrabFlail(CrabBoss owner) : base(owner)
+    {
+        public int Repetitions;
+        public CrabFlail(CrabBoss owner, int repetitions) : base(owner)
         {
-
+            Repetitions = repetitions;
         }
 
         public override void Execute(int AITimer)
@@ -94,6 +95,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 p.AddTrail(22);
                 p.Rotation = projAngle;
+
+                p.SetExtraAI(new Action(() =>
+                {
+                    if (p.AITimer > 120)
+                    {
+                        p.Velocity *= 1.01f;
+                    }
+                }));
             }
 
             // revisit movement formula and add projectile barfing
@@ -121,7 +130,48 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabFlail(CrabOwner);
+            int rng = Utilities.RandomInt(5, 10);
+
+            if (rng < 10 - Repetitions)
+            {
+                return new CrabFlail(CrabOwner, Repetitions + 1);
+            }
+            else
+            {
+                return new CrabFlailToNeutralTransition(CrabOwner);
+            }
+        }
+    }
+
+    public class CrabFlailToNeutralTransition : CrabBossAttack
+    {
+        public CrabFlailToNeutralTransition(CrabBoss owner) : base(owner)
+        {
+
+        }
+
+        public override void Execute(int AITimer)
+        {
+            int decelTime = 60;
+            
+            ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
+            float angularAccel = -angularVelocity / 5;
+
+            angularVelocity += angularAccel;
+
+            Owner.Rotation += angularVelocity;        
+
+            if (AITimer == decelTime)
+            {
+                CrabOwner.ResetArmRotations();
+                End();
+            }
+
+        }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new NeutralToCrabFlailChargeTransition(CrabOwner);
         }
     }
 }
