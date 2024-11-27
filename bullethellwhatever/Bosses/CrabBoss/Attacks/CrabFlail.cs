@@ -152,14 +152,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            int decelTime = 60;
+            int decelTime = 120000;
             
-            ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
-            float angularAccel = -angularVelocity / 5;
+            ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved
 
-            angularVelocity += angularAccel;
+            // subtract pi from the boss rotation since the boss faces towards its rotation
+            float rotationToPlayer = Utilities.SmallestAngleBetween(Utilities.BringAngleIntoRange(Owner.Rotation + PI), Utilities.AngleToPlayerFrom(Owner.Position));
 
-            Owner.Rotation += angularVelocity;        
+            angularVelocity = 0.2f * rotationToPlayer;
+
+            Owner.Rotation += angularVelocity;
 
             if (AITimer == decelTime)
             {

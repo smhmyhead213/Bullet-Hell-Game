@@ -316,9 +316,34 @@ namespace bullethellwhatever
         {
             return CentreOfScreen();
         }
+
+        /// <summary>
+        /// Takes an angle and returns an equivalent angle between 0 and 2PI.
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <returns></returns>
+        public static float BringAngleIntoRange(float angle)
+        {
+            while (angle < 0)
+            {
+                angle += 2 * PI;
+            }
+
+            while (angle > 2 * PI)
+            {
+                angle -= 2 * PI;
+            }
+
+            return angle;
+        }
+
         public static float SmallestAngleBetween(float angle1, float angle2)
         {
-            float difference = Abs(angle1 - angle2);
+            // bring both angles into 0 < theta < 2pi
+            angle1 = BringAngleIntoRange(angle1);
+            angle2 = BringAngleIntoRange(angle2);
+
+            float difference = angle1 - angle2;
 
             if (difference <= PI)
             {
