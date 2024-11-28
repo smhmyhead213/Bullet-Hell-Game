@@ -9,6 +9,9 @@ using bullethellwhatever.DrawCode.UI;
 using System.Collections.Generic;
 using System.Linq;
 using bullethellwhatever.AssetManagement;
+using System.IO;
+using System.Security.Cryptography.Xml;
+using System.Diagnostics;
 
 namespace bullethellwhatever
 {
@@ -206,6 +209,10 @@ namespace bullethellwhatever
         {
             return RandomFloat(0, Tau);
         }
+        public static float RandomAngle(float min, float max)
+        {
+            return RandomFloat(min, max);
+        }
         public static int RandomInt(int min, int max)
         {
             Random rng = new Random();
@@ -337,22 +344,27 @@ namespace bullethellwhatever
             return angle;
         }
 
-        public static float SmallestAngleBetween(float angle1, float angle2)
+        /// <summary>
+        /// Returns the smallest angle clockwise between two angles that are clockwise from the vertical.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static float SmallestAngleTo(float start, float end)
         {
-            // bring both angles into 0 < theta < 2pi
-            angle1 = BringAngleIntoRange(angle1);
-            angle2 = BringAngleIntoRange(angle2);
+            start = BringAngleIntoRange(start);
+            end = BringAngleIntoRange(end);
 
-            float difference = angle1 - angle2;
+            // figure out what sign the angle between has
+            int sign = Sign(end - start);
+            float result = BringAngleIntoRange(Abs(end - start));
+            
+            if (result > PI)
+            {
+                result -= 2 * PI;
+            }
 
-            if (difference <= PI)
-            {
-                return difference;
-            }
-            else
-            {
-                return 2 * PI - difference;
-            }
+            return result * sign;
         }
 
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);

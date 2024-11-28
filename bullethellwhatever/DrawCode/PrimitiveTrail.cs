@@ -15,6 +15,7 @@ namespace bullethellwhatever.DrawCode
         public Vector2[] afterimagesPositions;
         public PrimitiveSet PrimitiveSet;
         public Effect Shader;
+        public float Opacity;
 
         public PrimitiveTrail(Entity owner, int length, string shader = null)
         {
@@ -28,6 +29,7 @@ namespace bullethellwhatever.DrawCode
             }
 
             Owner = owner;
+            Opacity = 1f;
             afterimagesPositions = new Vector2[length];
         }
         public override void Update()
@@ -54,7 +56,7 @@ namespace bullethellwhatever.DrawCode
                     float widthToUse = width * fractionOfWidth;
                     int startingIndex = i * 2;
 
-                    Color colour = Owner.Colour * fractionOfWidth;
+                    Color colour = Owner.Colour * fractionOfWidth * Opacity;
 
                     // find direction to next point if this is not the last one, otherwise use any vector as it gets multiplied by zero anyway
                     Vector2 directionToNextPoint = i != positions.Length - 1 ? Utilities.SafeNormalise(positions[i + 1] - positions[i]) : Vector2.One;

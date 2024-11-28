@@ -14,6 +14,7 @@ using bullethellwhatever.DrawCode.UI;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -79,6 +80,11 @@ namespace bullethellwhatever.BaseClasses
 
             ShouldRemoveOnEdgeTouch = false;
 
+            PrimitiveTrail trail = new PrimitiveTrail(this, 10);
+            trail.SetName("PlayerTrail");
+            trail.Opacity = EasingFunctions.EaseParabolic(0.9f); // a bug lead to me finding this nice number
+
+            AdditionalComponents.Add(trail);
 
             Colour = Color.White;
 
@@ -105,6 +111,18 @@ namespace bullethellwhatever.BaseClasses
 
         #endregion
         #region AI
+        public PrimitiveTrail? GetTrail()
+        {
+            foreach (Component comp in AdditionalComponents)
+            {
+                if (comp.Name == "PlayerTrail")
+                {
+                    return (PrimitiveTrail)comp;
+                }
+            }
+
+            return null; // if this is hit we're in trouble
+        }
         public void SwitchWeapon(Weapons weapon)
         {
             PreviousWeapon = ActiveWeapon;
@@ -374,7 +392,7 @@ namespace bullethellwhatever.BaseClasses
 
                 projectile.SetUpdates(2);
 
-                projectile.AddTrail(22, "PrimitiveTestShader");
+                projectile.AddTrail(22);
 
                 projectile.SetOnHit(new Action(() =>
                 {

@@ -106,7 +106,7 @@ namespace bullethellwhatever.NPCs
 
             Rotation = Rotation + RotationalVelocity;
 
-            Rotation = Rotation % (2 * PI);
+            Rotation = Utilities.BringAngleIntoRange(Rotation);
         }
         public virtual Collision CollisionWithEntity(Entity entity)
         {

@@ -1,11 +1,14 @@
 ﻿using bullethellwhatever.BaseClasses;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.Projectiles;
+using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace bullethellwhatever.Abilities
 {
@@ -20,24 +23,34 @@ namespace bullethellwhatever.Abilities
         }  
         public override void Execute()
         {        
-            base.Execute();
-
             if (IsExecuting)
             {
                 Owner.MoveSpeed = Owner.MoveSpeed * 4f;
+                // make trail fade in and out
+                float interpolant = (float)Timer / Duration;
+                Owner.GetTrail().Opacity = EasingFunctions.EaseParabolic(interpolant);
+
+                float particleAngleVariance = PI / 6;
+                float rotation = Utilities.VectorToAngle(Owner.Velocity) + PI + Utilities.RandomAngle(-particleAngleVariance, particleAngleVariance);
+
+                Particle p = new Particle();
+
+                Vector2 velocity = 10f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
+                int lifetime = 20;
+                p.Spawn("box", Owner.Position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, Owner.Colour, 1f, 20);
             }
 
             if (JustActivated)
             {
                 Owner.IFrames = Duration;
-                PrimitiveTrail trail = new PrimitiveTrail(Owner, 10);
-                Owner.AdditionalComponents.Add(trail);
             }
+
+            base.Execute();
         }
 
         public override void OnAbilityFinish()
         {
-            Owner.AdditionalComponents = Owner.AdditionalComponents.Where(component => component is not PrimitiveTrail).ToList();
+            
         }
     }
 }

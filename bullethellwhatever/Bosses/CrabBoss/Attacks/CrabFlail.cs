@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -18,9 +19,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            int spinUpTime = 60;
-            float spinAngularAccel = PI / 540;
+            int spinUpTime = 20;
+            float spinAngularAccel = PI / 180;
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
+            float holdOutArmsAngle = PI / 2;
 
             if (AITimer < spinUpTime)
             {
@@ -29,8 +31,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 for (int i = 0; i < 2; i++)
                 {
                     int expandedi = Utilities.ExpandedIndex(i);
-                    float holdOutArmsAngle = PI / 2;
-                    RotateArm(i, -expandedi * holdOutArmsAngle, AITimer, spinUpTime, EasingFunctions.EaseInQuint);
+                    
+                    RotateArm(i, -expandedi * holdOutArmsAngle, AITimer, spinUpTime, EasingFunctions.EaseInOutCirc);
                 }
 
                 // move away from player
@@ -152,12 +154,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            int decelTime = 120000;
+            int decelTime = 60;
             
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved
+            float holdOutArmsAngle = PI / 2;
 
             // subtract pi from the boss rotation since the boss faces towards its rotation
-            float rotationToPlayer = Utilities.SmallestAngleBetween(Utilities.BringAngleIntoRange(Owner.Rotation + PI), Utilities.AngleToPlayerFrom(Owner.Position));
+            float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
 
             angularVelocity = 0.2f * rotationToPlayer;
 
@@ -169,11 +172,28 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 End();
             }
 
+            for (int i = 0; i < 2; i++)
+            {
+                int expandedi = Utilities.ExpandedIndex(i);
+
+                RotateArm(i, expandedi * holdOutArmsAngle, AITimer, decelTime, EasingFunctions.EaseOutBack);
+            }
         }
 
         public override BossAttack PickNextAttack()
         {
-            return new NeutralToCrabFlailChargeTransition(CrabOwner);
+            int rng = Utilities.RandomInt(1, 2);
+
+            switch (rng)
+            {
+                case 1:
+                    return new CrabPunch(CrabOwner);
+                case 2:
+                    return new CrabBombThrow(CrabOwner);
+            }
+
+            // idk how this would get reached but whatever
+            return new CrabPunch(CrabOwner);
         }
     }
 }

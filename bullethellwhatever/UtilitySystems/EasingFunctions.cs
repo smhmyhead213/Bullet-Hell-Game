@@ -57,5 +57,39 @@ namespace bullethellwhatever.UtilitySystems
         {
             return progress < 0.5 ? 8 * progress * progress * progress * progress : 1 - Pow(-2 * progress + 2, 4) / 2;
         }
+
+        public static float EaseOutBack(float progress)
+        {
+            // idk what these constants are
+            float c1 = 1.70158f;
+            float c3 = c1 + 1f;
+
+            return 1 + c3 * Pow(progress - 1, 3) + c1 * Pow(progress - 1, 2);
+        }
+
+        public static float EaseInOutCirc(float progress)
+        {
+            return progress < 0.5 ? (1 - Sqrt(1 - Pow(2 * progress, 2))) / 2 : (Sqrt(1 - Pow(-2 * progress + 2, 2)) + 1) / 2;
+        }
+
+        /// <summary>
+        /// Eases from 0 to 1 to 0 parabolically.
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <returns></returns>
+        public static float EaseParabolic(float progress, float end_progress = 1f)
+        {
+            // the parabola should be of the form y = kx(x-progress) and then normalised by dividing by its maximum value in terms of progress.
+            return -4f * progress * (progress - end_progress) / Pow(end_progress, 2f);
+        }
+        /// <summary>
+        /// "Flips" a number between 0 and 1 - 0.3 becomes 0.7, 1 becomes 0 etc
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <returns></returns>
+        public static float Flip(float progress)
+        {
+            return -(progress - 0.5f) + 0.5f;
+        }
     }
 }
