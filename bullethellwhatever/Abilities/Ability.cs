@@ -11,7 +11,8 @@ namespace bullethellwhatever.Abilities
 {
     public abstract class Ability
     {
-        public Cooldown Cooldown;
+        public int Cooldown;
+        public int CooldownTime;
         public Player Owner;
         public int Duration;
         public int Timer;
@@ -25,16 +26,16 @@ namespace bullethellwhatever.Abilities
 
             if (!IsExecuting)
             {
-                if (IsKeyDown && Cooldown.Timer == 0)
+                if (IsKeyDown && Cooldown == 0)
                 {
                     IsExecuting = true;
                     JustActivated = true;
                     Timer = 0;
                 }
 
-                if (Cooldown.Timer > 0)
+                if (Cooldown > 0)
                 {
-                    Cooldown.Timer--;
+                    Cooldown--;
                 }
             }
             else
@@ -50,7 +51,7 @@ namespace bullethellwhatever.Abilities
                 {
                     OnAbilityFinish();
                     IsExecuting = false;
-                    Cooldown.Timer = Cooldown.Duration;
+                    Cooldown = CooldownTime;
                 }
             }
         }

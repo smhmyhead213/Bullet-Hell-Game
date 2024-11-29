@@ -18,8 +18,8 @@ namespace bullethellwhatever.Abilities
         { 
             Duration = duration;
             KeyBind = keyBind;
-            Cooldown = new Cooldown(cooldown);
             Owner = owner;
+            CooldownTime = 40;
         }  
         public override void Execute()
         {        

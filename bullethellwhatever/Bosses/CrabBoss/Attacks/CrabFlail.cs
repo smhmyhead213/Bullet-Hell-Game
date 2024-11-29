@@ -117,6 +117,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 float projAngle = Utilities.RandomAngle();                
 
+                // spawn projectiles when spinning down
                 //Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 //p.AddTrail(22);
                 //p.Rotation = projAngle;
@@ -154,7 +155,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            int decelTime = 60;
+            int decelTime = 30;
             
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved
             float holdOutArmsAngle = PI / 2;

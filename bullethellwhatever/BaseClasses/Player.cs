@@ -15,6 +15,7 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.Abilities.Weapons;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -30,23 +31,20 @@ namespace bullethellwhatever.BaseClasses
         public Vector2 DefaultHitbox => new Vector2(1f, 1f);
 
         public float IFrames;
-        public float ShotCooldown;
-        public float ShotCooldownRemaining;
         public int WeaponSwitchCooldownTimer;
         public int WeaponSwitchCooldown;
         public float MoveSpeed;
 
-        public Deathray PlayerDeathray;
         public bool Restarted;
+
+        public HomingWeapon HomingWeapon;
         public enum Weapons
         {
             Homing,
-            MachineGun,
-            Laser,           
+            MachineGun,        
         }
 
         public Weapons ActiveWeapon;
-        public Weapons PreviousWeapon;
 
         #region Spawning
         public Player(string texture)
@@ -68,8 +66,6 @@ namespace bullethellwhatever.BaseClasses
 
             Health = MaxHP; // put this back to normal
             Size = DefaultHitbox;
-            ShotCooldown = 20f;
-            ShotCooldownRemaining = 0f;
             ActiveWeapon = Weapons.Homing;
 
             MoveSpeed = DefaultMoveSpeed;
@@ -93,17 +89,9 @@ namespace bullethellwhatever.BaseClasses
 
             Restarted = false;
 
+            PlayerWeaponManager.Initialise(this);
+
             AITimer = 0;
-
-            PlayerDeathray = SpawnDeathray(Position, 0f, 0.03f, 60, "box", 50f, 2000f, 0f, false, Color.Red, "PlayerDeathrayShader", this);
-
-            PlayerDeathray.SetStayWithOwner(true);
-            PlayerDeathray.SetDieAfterDuration(false);
-
-            PlayerDeathray.SetExtraAI(new Action(() =>
-            {
-                PlayerDeathray.IsActive = IsLeftClickDown() && ActiveWeapon == Weapons.Laser;
-            }));
         }
         #endregion
 
@@ -125,7 +113,6 @@ namespace bullethellwhatever.BaseClasses
         }
         public void SwitchWeapon(Weapons weapon)
         {
-            PreviousWeapon = ActiveWeapon;
             ActiveWeapon = weapon;
             WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
         }
@@ -192,48 +179,6 @@ namespace bullethellwhatever.BaseClasses
 
             ControlCamera();
 
-            if (GameState.WeaponSwitchControl == GameState.WeaponSwitchControls.ScrollWheel)
-            {
-                if (mouseState.ScrollWheelValue / 120 % 3 == 0 && WeaponSwitchCooldownTimer == 0)  //are you happy now Gemma??????????????????????
-                {
-                    SwitchWeapon(Weapons.Homing);
-                }
-
-                if (mouseState.ScrollWheelValue / 120 % 3 == 1 && WeaponSwitchCooldownTimer == 0)
-                {
-                    SwitchWeapon(Weapons.Laser);
-                }
-
-                if (mouseState.ScrollWheelValue / 120 % 3 == 2 && WeaponSwitchCooldownTimer == 0)
-                {
-                    SwitchWeapon(Weapons.MachineGun);
-                }
-
-                if (IsKeyPressed(Keys.Q) && EntityManager.activeNPCs.Count == 0)
-                {
-                    Health = MaxHP;
-                    EntityManager.SpawnBoss();
-                }
-            }
-
-            else
-            {
-                if (IsKeyPressed(Keys.D1) && WeaponSwitchCooldownTimer == 0)
-                {
-                    SwitchWeapon(Weapons.Homing);
-                }
-
-                if (IsKeyPressed(Keys.D2) && WeaponSwitchCooldownTimer == 0)
-                {
-                    SwitchWeapon(Weapons.Laser);
-                }
-
-                if (IsKeyPressed(Keys.D3) && WeaponSwitchCooldownTimer == 0)
-                {
-                    SwitchWeapon(Weapons.MachineGun);
-                }
-            }
-
             if (DashCooldown > 0)
                 DashCooldown--;
 
@@ -276,6 +221,8 @@ namespace bullethellwhatever.BaseClasses
 
             HandleKeyPresses();
 
+            PlayerWeaponManager.Update();
+
             Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
 
             foreach (Component component in AdditionalComponents)
@@ -288,19 +235,7 @@ namespace bullethellwhatever.BaseClasses
                 if (IFrames > 0)
                 {
                     IFrames--;
-                }
-
-                if (ShotCooldownRemaining > 0)
-                {
-                    ShotCooldownRemaining--;
-
-                }
-
-                if (mouseState.LeftButton == ButtonState.Pressed && ShotCooldownRemaining == 0 && AITimer > 10)
-                {
-                    ShotCooldownRemaining = ShotCooldown;
-                    Shoot();
-                }              
+                }      
             }
             else
             {
@@ -354,137 +289,6 @@ namespace bullethellwhatever.BaseClasses
             }
 
         }
-
-        #region Shooting
-
-        public void Shoot()
-        {
-            if (ActiveWeapon == Weapons.Laser)
-            {
-                ShotCooldown = 1f;
-
-                float initialRotation = Utilities.VectorToAngle(MousePositionWithCamera() - Position);
-
-                PlayerDeathray.Rotation = initialRotation;
-            }
-
-            else if (ActiveWeapon == Weapons.MachineGun)
-            {
-                ShotCooldown = 3f;
-
-                Random rnd = new Random();
-
-                Projectile playerProjectile = SpawnProjectile(Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Position), Utilities.ToRadians(rnd.Next(-10, 10))),
-                    0.4f, 1, "MachineGunProjectile", Vector2.One, this, false, Color.LightBlue, true, true);
-
-                playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Position), Utilities.ToRadians(rnd.Next(-10, 10))));
-            }
-
-            else if (ActiveWeapon == Weapons.Homing)
-            {
-                ShotCooldown = 10f;
-                float initialVelocity = 7f;
-                float damage = 0.28f * 100f;
-
-                Projectile projectile = SpawnProjectile(Position, initialVelocity * Utilities.Normalise(MousePositionWithCamera() - Position), damage, 1, "box", Vector2.One, this, false, Color.LimeGreen, true, true);
-
-                projectile.SetExtraData(0, 0); // extra data 0 represents how long the projectile has gone without a target
-
-                projectile.SetUpdates(2);
-
-                projectile.AddTrail(22);
-
-                projectile.SetOnHit(new Action(() =>
-                {
-                    if (projectile.Owner == player)
-                    {
-                        int numberOfParticles = Utilities.RandomInt(1, 4);
-
-                        for (int i = 0; i < numberOfParticles; i++)
-                        {
-                            float rotation = Utilities.RandomFloat(0, Tau);
-
-                            Particle p = new Particle();
-
-                            Vector2 velocity = 10f * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
-                            int lifetime = 20;
-
-                            p.Spawn("box", projectile.Position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, projectile.Colour, 1f, 20);
-                        }
-                    }
-                }));
-                projectile.SetExtraAI(new Action(() =>
-                {
-                    ref float TimeWithNoTarget = ref projectile.ExtraData[0];
-
-                    int homingTime = 30 * projectile.Updates;
-
-                    NPC closestNPC = new NPC(); //the target
-                    float minDistance = float.MaxValue;
-
-                    if (projectile.AITimer > homingTime)
-                    {
-                        bool validTarget = false;
-
-                        if (EntityManager.activeNPCs.Count > 0)
-                        {
-                            projectile.Opacity = 1f; // come back to full opacity if a target is found while fading out
-
-                            foreach (NPC npc in EntityManager.activeNPCs)
-                            {
-                                if (npc.TargetableByHoming && npc.Participating)
-                                {
-                                    float distance = Utilities.DistanceBetweenEntities(projectile, npc);
-                                    if (distance < minDistance)
-                                    {
-                                        minDistance = distance;
-                                        closestNPC = npc;
-                                    }
-
-                                    validTarget = true;
-                                }
-                            }
-
-                            if (validTarget)
-                                projectile.Velocity = 0.4f / projectile.Updates * Vector2.Normalize(closestNPC.Position - projectile.Position) * (projectile.AITimer - homingTime);
-                        }
-
-                        else
-                        {
-                            TimeWithNoTarget++;
-                            projectile.Velocity = projectile.Velocity * 0.98f; // slow down if no target
-                        }
-
-                        if (!validTarget)
-                        {
-                            TimeWithNoTarget++;
-                            projectile.Velocity = projectile.Velocity * 0.98f; // slow down if no target
-                        }
-                    }
-
-                    int beginFading = 50;
-
-                    if (TimeWithNoTarget >= beginFading) //after a second of not finding a target
-                    {
-                        // if almost expired, start fading out
-
-                        int fadeOutTime = 60;
-
-                        projectile.Opacity = MathHelper.Lerp(1f, 0f, ((float)TimeWithNoTarget - beginFading) / fadeOutTime);
-
-                        if (TimeWithNoTarget > fadeOutTime + beginFading)
-                        {
-                            projectile.DeleteNextFrame = true;
-
-                            projectile.OnHitEffect(projectile.Position);
-                        }
-                    }
-
-                    projectile.Rotation = Utilities.VectorToAngle(projectile.Velocity);
-                }));
-            }
-        }
-        #endregion
 
         public NPC? FurthestEnemyFromPlayer()
         {
