@@ -27,7 +27,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             MapKeybinds(AvailableWeapons, keybinds);
 
-            SwitchWeapon(0);
+            SwitchWeapon(1);
         }
 
         public static void MapKeybinds(Weapon[] weapons, Keys[] keybinds)

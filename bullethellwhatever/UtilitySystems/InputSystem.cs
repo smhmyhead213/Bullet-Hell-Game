@@ -71,6 +71,10 @@ namespace bullethellwhatever.UtilitySystems
             return MouseState.LeftButton == ButtonState.Pressed;
         }
 
+        public static bool LeftClickReleased()
+        {
+            return WasMouseDownLastFrame && !IsLeftClickDown();
+        }
         public static bool IsRightClickDown()
         {
             return MouseState.RightButton == ButtonState.Pressed;

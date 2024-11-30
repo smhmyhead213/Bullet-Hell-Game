@@ -1,4 +1,5 @@
 ﻿using bullethellwhatever.BaseClasses;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace bullethellwhatever.Abilities.Weapons
 {
     public abstract class Weapon
     {
-        public int AITimer;
         public float Damage;
         public int PrimaryFireCoolDownDuration;
         public int SecondaryFireCoolDownDuration;
@@ -24,19 +24,18 @@ namespace bullethellwhatever.Abilities.Weapons
         public abstract void WeaponInitialise();
         public void Initialise()
         {
-            AITimer = 0;
-
-            PrimaryFireCoolDown = 0;
-            SecondaryFireCoolDown = 0;
+            PrimaryFireCoolDown = PrimaryFireCoolDownDuration;
+            SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
 
             // the above allocations can be changed in weaponinit
             WeaponInitialise();
         }
         public abstract bool CanSwitchWeapon();
+        /// <summary>
+        /// Handles the basic primary fire and secondary fire cooldowns. Override to disable these.
+        /// </summary>
         public void BaseUpdate()
         {
-            AITimer++;
-
             if (PrimaryFireCoolDown > 0)
             {
                 PrimaryFireCoolDown--;
@@ -69,6 +68,10 @@ namespace bullethellwhatever.Abilities.Weapons
             return SecondaryFireCoolDown == 0 && IsRightClickDown();
         }
 
+        public virtual void Draw(SpriteBatch s)
+        {
+
+        }
         public abstract void PrimaryFire();
         public abstract void SecondaryFire();
         public abstract void AI();

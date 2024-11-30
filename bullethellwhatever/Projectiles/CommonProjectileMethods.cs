@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
@@ -60,13 +61,11 @@ namespace bullethellwhatever.Projectiles
             return new TelegraphLine(rotation, rotationalVelocity, width, length, duration, origin, colour, texture, owner, stayWithOwner);
         }
 
-        public static void Oscillate(this Projectile projectile, float oscillationFrequency, float projectileSpeed, float phaseShift = 0)
+        // makes a projectile spawn with a velocityh that hits 0 at the end of its lifetime
+        public static void FadeOutParticle(this Particle p, float rotation, float speed, int lifetime, Vector2 position, Color colour)
         {
-            // what the hell is the 1.5 for???????
-
-            float speed = projectileSpeed * (Sin(projectile.AITimer / oscillationFrequency) + 1.5f);
-
-            projectile.Velocity = speed * Utilities.SafeNormalise(projectile.Velocity, Vector2.Zero);
+            Vector2 velocity = speed * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
+            p.Spawn("box", position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, colour, 1f, 20);
         }
         public static void ExponentialAccelerate(this Projectile projectile, float acceleration)
         {

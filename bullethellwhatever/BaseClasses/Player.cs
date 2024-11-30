@@ -331,6 +331,8 @@ namespace bullethellwhatever.BaseClasses
                     Utilities.drawTextInDrawMethod(EntityManager.activeProjectiles[i].ToString() + " " + EntityManager.activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + EntityManager.activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(GameWidth / 3, GameHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
             }
 
+            PlayerWeaponManager.ActiveWeapon.Draw(spriteBatch);
+
             Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
