@@ -42,8 +42,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public Vector2[] CreateLightningPoints()
         {
             // pick an endpoint for the lightning trail at a varying distance from the player
-            float minDistance = 100f;
-            float maxDistance = 200f;
+            float minDistance = 75f;
+            float maxDistance = 130f;
             int lightningPoints = 8;
             float lightningAngleVariance = PI / 4f;
 
@@ -80,7 +80,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public void CreateLightningPrims()
         {
-            float lightningThickness = 5f;
+            float lightningThickness = 10f;
 
             Vector2[] lightningBasePoints = CreateLightningPoints();
 
@@ -119,9 +119,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
             }
 
-            Effect shader = null;
-
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, "LightningShader");
 
             primSet.Draw();
         }

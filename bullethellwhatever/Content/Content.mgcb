@@ -497,6 +497,12 @@
 /processorParam:TextureFormat=Color
 /build:Shaders/FireNoise2.png
 
+#begin Shaders/LightningShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/LightningShader.fx
+
 #begin Shaders/OutlineTelegraphShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -514,6 +520,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/PlayerHealthBarShader.fx
+
+#begin Shaders/PrimitiveTestShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/PrimitiveTestShader.fx
 
 #begin Shaders/PrimitiveTestShader.fx
 /importer:EffectImporter
