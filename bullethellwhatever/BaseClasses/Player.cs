@@ -95,9 +95,6 @@ namespace bullethellwhatever.BaseClasses
         }
         #endregion
 
-        #region Input Handling
-
-        #endregion
         #region AI
         public PrimitiveTrail? GetTrail()
         {
@@ -127,7 +124,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (upPressed && !TouchingTop())
             {
-                Velocity.Y = Velocity.Y - 1f;
+                Velocity.Y = Velocity.Y - MoveSpeed;
             }
 
             if (upPressed && TouchingTop())
@@ -137,7 +134,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (downPressed && !TouchingBottom())
             {
-                Velocity.Y = Velocity.Y + 1f;
+                Velocity.Y = Velocity.Y + MoveSpeed;
             }
 
             if (downPressed && TouchingBottom())
@@ -147,7 +144,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (leftPressed && !TouchingLeft())
             {
-                Velocity.X = Velocity.X - 1f;
+                Velocity.X = Velocity.X - MoveSpeed;
             }
 
             if (leftPressed && TouchingLeft())
@@ -157,7 +154,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (rightPressed && !TouchingRight())
             {
-                Velocity.X = Velocity.X + 1f;
+                Velocity.X = Velocity.X + MoveSpeed;
             }
 
             if (rightPressed && TouchingRight())
@@ -217,13 +214,13 @@ namespace bullethellwhatever.BaseClasses
                 EntityManager.SpawnBoss();
             }
 
-            Velocity = Vector2.Zero; //this will change if anything is pressed
+            Velocity = Vector2.Zero;
 
             HandleKeyPresses();
 
             PlayerWeaponManager.Update();
 
-            Position = Position + MoveSpeed * Utilities.SafeNormalise(Velocity, Vector2.Zero);
+            Position = Position + Velocity;
 
             foreach (Component component in AdditionalComponents)
             {

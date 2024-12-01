@@ -156,11 +156,17 @@ namespace bullethellwhatever.Abilities.Weapons
                     BurstTimeLeft--;
 
                     Random rnd = new Random();
-
-                    Projectile playerProjectile = SpawnProjectile(Owner.Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Owner.Position), Utilities.ToRadians(rnd.Next(-10, 10))),
+                    float angleVariance = PI / 120;
+                    float angle = Utilities.RandomAngle(-angleVariance, angleVariance);
+                    
+                    Projectile playerProjectile = SpawnProjectile(Owner.Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Owner.Position), angle),
                         0.4f, 1, "MachineGunProjectile", Vector2.One, Owner, false, Color.LightBlue, true, true);
 
-                    playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Owner.Position), Utilities.ToRadians(rnd.Next(-10, 10))));
+                    Vector2 toMouse = Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position);
+
+                    playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(toMouse, angle));
+
+                    Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
                 }
             }
 
