@@ -497,6 +497,18 @@
 /processorParam:TextureFormat=Color
 /build:Shaders/FireNoise2.png
 
+#begin Shaders/LightningNoise.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Shaders/LightningNoise.png
+
 #begin Shaders/LightningShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -520,12 +532,6 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/PlayerHealthBarShader.fx
-
-#begin Shaders/PrimitiveTestShader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shaders/PrimitiveTestShader.fx
 
 #begin Shaders/PrimitiveTestShader.fx
 /importer:EffectImporter

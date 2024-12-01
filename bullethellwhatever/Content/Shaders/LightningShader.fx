@@ -10,6 +10,7 @@ sampler2D noiseSampler = sampler_state
 matrix worldViewProjection;
 
 float uTime;
+float3 colour;
 int direction; // 1 or -1
 
 struct VertexShaderInput
@@ -49,14 +50,15 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     //mainTexture needs to be used to occupy register 0
     
-    float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
+    //float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
     
-    float2 uv = input.TextureCoordinates + dummy;
+    float2 uv = input.TextureCoordinates;
     
     float distanceFromCenterX = abs(0.5 - uv.x);
-    float4 colour = float4(1, 1, 1, 1);
+    float whiteAmount = 0.8f - pow(distanceFromCenterX, 2.0);
+    float3 white = float3(whiteAmount, whiteAmount, whiteAmount);
     float opacity = pow(1 - distanceFromCenterX, 5);
-    return colour * opacity;
+    return float4(colour + white, 1) * opacity + 0.0f * tex2D(noiseSampler, uv);
 }
 
 Technique Technique1

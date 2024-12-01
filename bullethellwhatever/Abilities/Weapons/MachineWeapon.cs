@@ -42,8 +42,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public Vector2[] CreateLightningPoints()
         {
             // pick an endpoint for the lightning trail at a varying distance from the player
-            float minDistance = 75f;
-            float maxDistance = 130f;
+            float minDistance = 200f;
+            float maxDistance = 300f;
             int lightningPoints = 8;
             float lightningAngleVariance = PI / 4f;
 
@@ -85,11 +85,14 @@ namespace bullethellwhatever.Abilities.Weapons
             Vector2[] lightningBasePoints = CreateLightningPoints();
 
             for (int i = 0; i < lightningBasePoints.Length - 1; i++)
-            {
+            {                
+                float progress = (i + 1) / (float)lightningBasePoints.Length;
+                float thickness = MathHelper.Lerp(lightningThickness, 0f, progress);
+
                 // calculate the angle from one lightning point to the next.
                 float angleToNext = Utilities.VectorToAngle(lightningBasePoints[i + 1] - lightningBasePoints[i]);
                 // use this to make two points on either side of each lightning point that are perpendicular to the angle between the lightning points
-                float distBetweenBasePointAndVertex = lightningThickness / 2f;
+                float distBetweenBasePointAndVertex = thickness / 2f;
 
                 Vector2 vertex1 = lightningBasePoints[i] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext + PI / 2);
                 Vector2 vertex2 = lightningBasePoints[i] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext - PI / 2);
@@ -101,8 +104,8 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 PrimitiveManager.MainVertices[startingIndex] = PrimitiveManager.CreateVertex(vertex1, Color.LightSkyBlue, new Vector2(0f , 0f));
                 PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(vertex2, Color.LightSkyBlue, new Vector2(1f, 0f));
-                PrimitiveManager.MainVertices[startingIndex + 2] = PrimitiveManager.CreateVertex(vertex3, Color.LightSkyBlue, new Vector2(0f, 1f));
-                PrimitiveManager.MainVertices[startingIndex + 3] = PrimitiveManager.CreateVertex(vertex4, Color.LightSkyBlue, new Vector2(1f, 1f));
+                PrimitiveManager.MainVertices[startingIndex + 2] = PrimitiveManager.CreateVertex(vertex3, Color.LightSkyBlue, new Vector2(0f, progress));
+                PrimitiveManager.MainVertices[startingIndex + 3] = PrimitiveManager.CreateVertex(vertex4, Color.LightSkyBlue, new Vector2(1f, progress));
             }
 
             //now we assign the indice buffer
@@ -119,7 +122,10 @@ namespace bullethellwhatever.Abilities.Weapons
                 PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
             }
 
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, "LightningShader");
+            Effect shader = AssetRegistry.GetShader("LightningShader");
+            shader.Parameters["colour"]?.SetValue(new Vector3(0f, 0.59f, 1f));
+            shader.Parameters["noiseMap"]?.SetValue(AssetRegistry.GetTexture2D("LightningNoise"));
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
 
             primSet.Draw();
         }
