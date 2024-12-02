@@ -97,21 +97,16 @@ namespace bullethellwhatever.Abilities.Weapons
                 Vector2 vertex1 = lightningBasePoints[i] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext + PI / 2);
                 Vector2 vertex2 = lightningBasePoints[i] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext - PI / 2);
 
-                Vector2 vertex3 = lightningBasePoints[i + 1] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext + PI / 2);
-                Vector2 vertex4 = lightningBasePoints[i + 1] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext - PI / 2);
-
-                int startingIndex = i * 4;
+                int startingIndex = i * 2;
 
                 PrimitiveManager.MainVertices[startingIndex] = PrimitiveManager.CreateVertex(vertex1, Color.LightSkyBlue, new Vector2(0f , 0f));
                 PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(vertex2, Color.LightSkyBlue, new Vector2(1f, 0f));
-                PrimitiveManager.MainVertices[startingIndex + 2] = PrimitiveManager.CreateVertex(vertex3, Color.LightSkyBlue, new Vector2(0f, progress));
-                PrimitiveManager.MainVertices[startingIndex + 3] = PrimitiveManager.CreateVertex(vertex4, Color.LightSkyBlue, new Vector2(1f, progress));
             }
 
             //now we assign the indice buffer
 
-            int numberOfTriangles = 2 * lightningBasePoints.Length - 2;
-            int vertexCount = 4 * lightningBasePoints.Length - 4;
+            int numberOfTriangles = 2 * (lightningBasePoints.Length - 1) - 2;
+            int vertexCount = (lightningBasePoints.Length - 1) * 2;
             int indexCount = numberOfTriangles * 3;
 
             for (int i = 0; i < numberOfTriangles; i++)
@@ -172,7 +167,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(toMouse, angle));
 
-                    Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
+                    //Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
                 }
             }
 
