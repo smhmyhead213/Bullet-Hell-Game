@@ -162,6 +162,8 @@ namespace bullethellwhatever.BaseClasses
                 Position.X = MainCamera.VisibleArea.Right + GameWidth - (Texture.Width / 2f * GetSize().X);
             }
 
+            Velocity = MoveSpeed * Utilities.SafeNormalise(Velocity);
+
             if (IsKeyPressed(Keys.LeftShift))
             {
                 MoveSpeed = DefaultMoveSpeed / 2;

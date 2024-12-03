@@ -42,8 +42,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public Vector2[] CreateLightningPoints()
         {
             // pick an endpoint for the lightning trail at a varying distance from the player
-            float minDistance = 200f;
-            float maxDistance = 300f;
+            float minDistance = 70f;
+            float maxDistance = 100f;
             int lightningPoints = 8;
             float lightningAngleVariance = PI / 4f;
 
@@ -167,7 +167,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(toMouse, angle));
 
-                    //Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
+                    Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
                 }
             }
 
