@@ -167,7 +167,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(toMouse, angle));
 
-                    Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
+                    //Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
                 }
             }
 
