@@ -233,7 +233,8 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void ApplyShaderParameters()
         {
-            Shader.Parameters["uTime"]?.SetValue(AITimer);
+            if (Shader is not null)
+                Shader.Parameters["uTime"]?.SetValue(AITimer);
 
             if (Map is not null)
             {

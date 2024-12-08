@@ -41,7 +41,7 @@ namespace bullethellwhatever.UtilitySystems
 
         public static Vector2 MousePositionWithCamera()
         {
-            return MousePosition + MainCamera.VisibleArea.TopLeft();
+            return (MousePosition / MainCamera.CameraScale) + MainCamera.VisibleArea.TopLeft();
         }
         public static void UpdateInputSystem()
         {

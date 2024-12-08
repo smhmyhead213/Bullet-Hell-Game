@@ -4,6 +4,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.Projectiles.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.MediaFoundation;
@@ -16,22 +17,24 @@ using System.Threading.Tasks;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
-    public class MachineWeapon : Weapon
+    public class LaserWeapon : Weapon
     {
         public int FullChargeTime;
         public int ChargeTimer;
-        public int BurstDuration;
-        public int BurstTimeLeft;
-        public MachineWeapon(Player player) : base(player)
+        public int LaserDuration;
+        public int Cooldown;
+        public int CooldownTimer;
+        public LaserWeapon(Player player) : base(player)
         {
             
         }
         public override void WeaponInitialise()
         {
             PrimaryFireCoolDownDuration = 3;
+            Cooldown = 30;
+            CooldownTimer = 0;
             FullChargeTime = 45;
-            BurstDuration = 20;
-            BurstTimeLeft = 0;
+            LaserDuration = 20;
             ChargeTimer = 0;
         }
         public override bool CanSwitchWeapon()
@@ -126,6 +129,11 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void AI()
         {
+            if (OnCooldown())
+            {
+                CooldownTimer--;
+            }
+
             if (Charging())
             {
                 if (ChargeTimer < FullChargeTime)
@@ -142,51 +150,43 @@ namespace bullethellwhatever.Abilities.Weapons
 
             if (Charged() && LeftClickReleased())
             {
-                BurstTimeLeft = BurstDuration;
+                CooldownTimer = Cooldown;
+
+                float damage = 0.1f;
+
+                Deathray d = SpawnDeathray(Owner.Position, Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position), damage, LaserDuration, "box", 100, 2000, 0, false, Color.LightSkyBlue, "PlayerDeathrayShader", Owner);
+
+                d.SetThinOut(true);
+
+                d.SetStayWithOwner(true);
+
+                d.SetNoiseMap("CrabScrollingBeamNoise", 0.3f);
+
+                d.SetExtraAI(new Action(() =>
+                {
+                    d.Rotation = Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position);
+                }));
             }
 
             if (LeftClickReleased())
             {
                 ChargeTimer = 0;
             }
-
-            if (Firing())
-            {
-                if (BurstTimeLeft > 0)
-                {
-                    BurstTimeLeft--;
-
-                    Random rnd = new Random();
-                    float angleVariance = PI / 120;
-                    float angle = Utilities.RandomAngle(-angleVariance, angleVariance);
-                    
-                    Projectile playerProjectile = SpawnProjectile(Owner.Position, 20f * Utilities.RotateVectorClockwise(Utilities.Normalise(MousePositionWithCamera() - Owner.Position), angle),
-                        0.4f, 1, "MachineGunProjectile", Vector2.One, Owner, false, Color.LightBlue, true, true);
-
-                    Vector2 toMouse = Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position);
-
-                    playerProjectile.Rotation = Utilities.VectorToAngle(Utilities.RotateVectorClockwise(toMouse, angle));
-
-                    //Owner.Velocity += -BurstTimeLeft * 2f * toMouse;
-                }
-            }
-
         }
 
         public bool Charging()
         {
             // if we are charging up and left click is held (chaneg to button when keybind changing is added) and we are not firing
-            return IsLeftClickDown() && BurstTimeLeft == 0;
+            return IsLeftClickDown() && CooldownTimer == 0;
         }
         public bool Charged()
         {
             return ChargeTimer == FullChargeTime;
         }
-        public bool Firing()
+        public bool OnCooldown()
         {
-            return BurstTimeLeft > 0;
+            return CooldownTimer > 0;
         }
-
         public override void PrimaryFire()
         {
             

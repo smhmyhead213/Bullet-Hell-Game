@@ -48,20 +48,25 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
     return output;
 }
 
+float easeInExpo(float x)
+{
+    return x == 0 ? 0 : pow(2, 10 * x - 10);
+}
+
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
     
     float2 uv = input.TextureCoordinates + dummy;
     
-    deathrayPulsationRate = 3.0;
+    deathrayPulsationRate = 1.0;
     float sineOscillation = sin(uTime / deathrayPulsationRate - 12 * uv.y);
     float distanceFromCentre = abs(uv.x - 0.5);
     
         // Calculate the opacity of the point using an exponential function to make the opacity decrease drastically.
         // A sine is used to vary the exponent to produce a pulsing effect.
-    
-    float opacity = pow(1 - distanceFromCentre, sineOscillation + 7);
+
+    float opacity = pow(1 - distanceFromCentre, sineOscillation);
     
         // Adjust red and white values to achieve the desired effect.
     

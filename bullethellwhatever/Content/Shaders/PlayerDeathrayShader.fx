@@ -9,6 +9,7 @@
 
 matrix WorldViewProjection;
 int uTime;
+float3 colour;
 
 struct VertexShaderInput
 {
@@ -121,17 +122,11 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
         // Adjust red and white values to achieve the desired effect.
 
-    float red = 2.5 - distanceFromCentre;
+    float colourAmount = 2.5 - distanceFromCentre;
     float white = 0.15 * sineOscillation + 0.8 - distanceFromCentre * 2.;
     
-    output = float4(red, white, white, 1) * opacity;
-    
-    if (opacity < 0.3)
-    {
-        output = sineWaves(uv);
-    }
-    return output;
-
+    float4 final = float4(lerp(white, colourAmount, colour.r), lerp(white, colourAmount, colour.g), lerp(white, colourAmount, colour.b), 1);
+    return final * opacity;
 }
 
 
