@@ -16,7 +16,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public int PrimaryFireCoolDown;
         public int SecondaryFireCoolDown;
         public Player Owner;
-
+        public int AITimer;
         public Weapon(Player player)
         {
             Owner = player;
@@ -26,16 +26,21 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             PrimaryFireCoolDown = PrimaryFireCoolDownDuration;
             SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
-
+            AITimer = 0;
             // the above allocations can be changed in weaponinit
             WeaponInitialise();
         }
-        public abstract bool CanSwitchWeapon();
+        public virtual bool CanSwitchWeapon()
+        {
+            return true;
+        }
         /// <summary>
         /// Handles the basic primary fire and secondary fire cooldowns. Override to disable these.
         /// </summary>
         public void BaseUpdate()
         {
+            AITimer++;
+
             if (PrimaryFireCoolDown > 0)
             {
                 PrimaryFireCoolDown--;
