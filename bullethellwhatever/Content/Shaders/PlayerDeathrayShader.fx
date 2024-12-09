@@ -1,15 +1,16 @@
-﻿#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_4_0
-#else
-	#define VS_SHADERMODEL vs_4_0_level_9_3
-	#define PS_SHADERMODEL ps_4_0_level_9_3
-#endif
+﻿sampler mainTexture : register(s0);
+//sampler2D noise : register(s1);
+texture noiseMap;
+
+sampler2D noiseSampler = sampler_state
+{
+    Texture = <noiseMap>;
+};
 
 matrix WorldViewProjection;
 int uTime;
 float3 colour;
+float scrollSpeed;
 
 struct VertexShaderInput
 {
@@ -43,99 +44,28 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     return output;
 }
 
-float4 sineWaves(in float2 uv)
-{
-    float thickness = 0.25;
-    float squish = 30;
-    float frequency = 0.523;
-    float tolerance = 0.05;
-    
-    float sine = thickness * sin(squish * uv.y - (frequency * uTime));
-    
-    float positiveSine = sine + 0.5;
-    float negativeSine = -sine + 0.5;
-    
-    float4 colour;
-    float opacity;
-    
-    if (uv.x > positiveSine - tolerance && uv.x < positiveSine + tolerance)
-    {
-        float distanceFromSine = abs(positiveSine - uv.x);
-        
-        opacity = lerp(1, 0, distanceFromSine / tolerance);
-        
-        float white = 0.5 - distanceFromSine * 2;
-        
-        colour = float4(1, white, white, 1);
-    }
-    else if (uv.x > negativeSine - tolerance && uv.x < negativeSine + tolerance)
-    {
-        float distanceFromSine = abs(negativeSine - uv.x);
-        
-        opacity = lerp(1, 0, distanceFromSine / tolerance);
-        
-        float white = 0.5 - distanceFromSine * 2;
-        
-        colour = float4(1, white, white, 1);
-    }
-    else
-    {
-        opacity = 0;
-        colour = float4(0, 0, 0, 0);
-    }
-    
-    return colour * opacity;
-}
-
-float4 laser(in float2 uv)
-{
-    float sineOscillation = sin(12. * uTime - 3. * uv.y);
-    float distanceFromCentre = abs(uv.x - 0.5);
-    
-        // Calculate the opacity of the point using an exponential function to make the opacity decrease drastically.
-        // A sine is used to vary the exponent to produce a pulsing effect.
-    
-    float opacity = pow(1. - distanceFromCentre, sineOscillation + 40.);
-    
-        // Adjust red and white values to achieve the desired effect.
-
-    float red = 2.5 - distanceFromCentre;
-    float white = 0.15 * sineOscillation + 0.8 - distanceFromCentre * 2.;
-    
-    float output = float4(red, white, white, 1) * opacity;
-    
-    return output;
-}
-
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float2 uv = input.TextureCoordinates;
-    float4 output = sineWaves(uv);
+    float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
+    float2 uv = input.TextureCoordinates + dummy;
     
-    float sineOscillation = sin(12. * uTime - 3. * uv.y);
-    float distanceFromCentre = abs(uv.x - 0.5);
-    
-        // Calculate the opacity of the point using an exponential function to make the opacity decrease drastically.
-        // A sine is used to vary the exponent to produce a pulsing effect.
-    
-    float opacity = pow(1. - distanceFromCentre, sineOscillation + 10.);
-    
-        // Adjust red and white values to achieve the desired effect.
-
-    float colourAmount = 2.5 - distanceFromCentre;
-    float white = 0.15 * sineOscillation + 0.8 - distanceFromCentre * 2.;
-    
-    float4 final = float4(lerp(white, colourAmount, colour.r), lerp(white, colourAmount, colour.g), lerp(white, colourAmount, colour.b), 1);
-    return final * opacity;
+    float distanceFromCenter = abs(0.5 - uv.x);
+    float opacity = 1 - 2 * distanceFromCenter;
+    // amplify already bright areas and diminish everywhere else
+    float scrollOffset = (scrollSpeed * uTime) % 1;
+    float4 sample = tex2D(noiseSampler, uv + float2(scrollOffset, scrollOffset));
+    // controls the threshold above which to be bright
+    float lenience = 0.9;
+    float strength = pow(sample + lenience, 5) - 0.2;
+    return float4(colour, 1) * strength * opacity;
 }
 
-
-
-technique BasicColorDrawing
+Technique Technique1
 {
-	pass P0
-	{
-		//VertexShader = compile VS_SHADERMODEL MainVS();
-		PixelShader = compile PS_SHADERMODEL MainPS();
-	}
-};
+    pass ShaderPass
+    {
+        //VertexShader = compile vs_4_0 VertexShaderFunction();
+        PixelShader = compile ps_4_0 MainPS();
+        
+    }
+}

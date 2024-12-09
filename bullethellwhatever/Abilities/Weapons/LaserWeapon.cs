@@ -122,7 +122,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             Effect shader = AssetRegistry.GetShader("LightningShader");
             shader.Parameters["colour"]?.SetValue(new Vector3(0f, 0.59f, 1f));
-            shader.Parameters["noiseMap"]?.SetValue(AssetRegistry.GetTexture2D("LightningNoise"));
+            shader.Parameters["noiseMap"]?.SetValue(AssetRegistry.GetTexture2D("CrabScrollingBeamNoise"));
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
 
             primSet.Draw();
@@ -154,13 +154,13 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 float damage = 0.1f;
 
-                Deathray d = SpawnDeathray(Owner.Position, Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position), damage, LaserDuration, "box", 100, 2000, 0, false, Color.LightSkyBlue, "PlayerDeathrayShader", Owner);
+                Deathray d = SpawnDeathray(Owner.Position, Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position), damage, LaserDuration, "box", 30, 2000, 0, false, Color.LightSkyBlue, "PlayerDeathrayShader", Owner);
 
                 d.SetThinOut(true);
 
                 d.SetStayWithOwner(true);
 
-                d.SetNoiseMap("CrabScrollingBeamNoise", 0.3f);
+                d.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
 
                 d.SetExtraAI(new Action(() =>
                 {
