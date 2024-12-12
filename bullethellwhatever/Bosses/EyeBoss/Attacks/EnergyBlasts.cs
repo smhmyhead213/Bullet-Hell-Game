@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             p.Die();
                         }
 
-                        p.Map.ScrollSpeed = p.Velocity.Length() / projectileSpeed * mapScrollSpeed;
+                        p.Shader.Map.ScrollSpeed = p.Velocity.Length() / projectileSpeed * mapScrollSpeed;
                     }));
 
                     p.SetOnDeath(new Action(() =>

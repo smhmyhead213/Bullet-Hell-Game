@@ -1,16 +1,14 @@
 ﻿sampler mainTexture : register(s0);
-//sampler2D noise : register(s1);
+
 texture noiseMap;
+sampler noiseMapSampler : register(s1);
 
-sampler2D noiseSampler = sampler_state
-{
-    Texture = <noiseMap>;
-};
+matrix worldViewProjection;
 
-matrix WorldViewProjection;
 float uTime;
-float3 colour;
+float transparency;
 float scrollSpeed;
+float3 colour;
 
 struct VertexShaderInput
 {
@@ -32,10 +30,11 @@ struct VertexShaderOutput
     // over the triangle, and provided as input to your pixel shader.
 };
 
-VertexShaderOutput MainVS(in VertexShaderInput input)
+VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 {
+    
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    float4 pos = mul(input.Position, WorldViewProjection);
+    float4 pos = mul(input.Position, worldViewProjection);
     output.Position = pos;
     
     output.Color = input.Color;
@@ -44,20 +43,15 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     return output;
 }
 
-float4 MainPS(VertexShaderOutput input) : COLOR
-{
+float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+{   
+    //mainTexture needs to be used to occupy register 0
+    
     float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
+    
     float2 uv = input.TextureCoordinates + dummy;
     
-    float distanceFromCenter = abs(0.5 - uv.x);
-    float opacity = 1 - 2 * distanceFromCenter;
-    // amplify already bright areas and diminish everywhere else
-    float scrollOffset = (scrollSpeed * uTime) % 1;
-    float4 sample = tex2D(noiseSampler, uv + float2(scrollOffset, scrollOffset));
-    // controls the threshold above which to be bright
-    float lenience = 0.9;
-    float strength = pow(sample + lenience, 5) - 0.2;
-    return float4(colour, 1) * strength * opacity;
+    return float4(1, 1, 1, 1);
 }
 
 Technique Technique1
@@ -65,7 +59,7 @@ Technique Technique1
     pass ShaderPass
     {
         //VertexShader = compile vs_4_0 VertexShaderFunction();
-        PixelShader = compile ps_4_0 MainPS();
+        PixelShader = compile ps_4_0 PixelShaderFunction();
         
     }
 }

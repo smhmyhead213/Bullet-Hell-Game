@@ -71,10 +71,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                             float interpolant = EasingFunctions.EaseOutExpo(p.AITimer / (float)particleLifetime);
                             p.Velocity *= 0.95f;
                             p.Opacity = MathHelper.Lerp(1f, 0f, interpolant);
+                            p.Shader.SetColour(p.Colour * p.Opacity);
                         }));
 
                         p.SetShader("EnergyParticleShader");
-                        p.Shader.Parameters["colour"]?.SetValue(Color.Orange.ToVector3());
                     }
 
                     bomb.InstantlyDie();
@@ -112,7 +112,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         Vector2 spawnVelocity = distanceFromBombToSpawnParticles / suckInTime * Utilities.AngleToVector(angle + PI);
 
                         p.SetShader("EnergyParticleShader");
-                        p.Shader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
 
                         p.Spawn("box", spawnLocation, spawnVelocity, Vector2.Zero, new Vector2(0.5f, 2.5f), angle, Color.White, 1f, suckInTime);
                     }

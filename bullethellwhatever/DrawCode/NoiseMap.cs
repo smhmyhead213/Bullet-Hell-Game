@@ -17,10 +17,5 @@ namespace bullethellwhatever.DrawCode
             Texture = map;
             ScrollSpeed = scrollSpeed;
         }
-        public NoiseMap(ManagedTexture map, float scrollSpeed)
-        {
-            Texture = map.Asset;
-            ScrollSpeed = scrollSpeed;
-        }
     }
 }

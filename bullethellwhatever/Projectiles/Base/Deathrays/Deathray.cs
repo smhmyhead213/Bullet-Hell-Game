@@ -68,7 +68,7 @@ namespace bullethellwhatever.Projectiles.Base
             Damage = damage;
 
             if (shader != null)
-                Shader = AssetRegistry.GetShader(shader);
+                Shader = new Shader(shader, Colour);
             else Shader = null;
 
             RemoveOnHit = false;
@@ -269,20 +269,7 @@ namespace bullethellwhatever.Projectiles.Base
         {
             ThinOut = thinOut;
         }
-        public override void ApplyShaderParameters()
-        {
-            base.ApplyShaderParameters();
-           
-            Shader.Parameters["duration"]?.SetValue(Duration);
 
-            Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
-
-            if (Map is not null)
-            {
-                Shader.Parameters["noiseMap"]?.SetValue(Map.Texture);
-                Shader.Parameters["scrollSpeed"]?.SetValue(Map.ScrollSpeed);
-            }            
-        }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (BeamEdgeTouch().Collided)
@@ -294,7 +281,7 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 ApplyShaderParameters();
 
-                Shader.CurrentTechnique.Passes[0].Apply();
+                Shader.Apply();
 
                 Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); // Scale the beam up to the required width and length.
 

@@ -62,12 +62,11 @@ namespace bullethellwhatever.DrawCode
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Shader.Parameters["colour"]?.SetValue(Colour.ToVector3());
-            Shader.Parameters["uTime"]?.SetValue(AITimer);
-            Shader.Parameters["radius"]?.SetValue(0.5f);
-            Shader.ApplyRandomNoise();
+            Shader.SetParameter("radius", 0.5f);
 
-            Shader.CurrentTechnique.Passes[0].Apply();
+            ApplyRandomNoise();
+
+            Shader.Apply();
 
             Texture2D texture = AssetRegistry.GetTexture2D("box");
 

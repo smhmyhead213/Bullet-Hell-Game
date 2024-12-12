@@ -20,7 +20,6 @@ namespace bullethellwhatever.BaseClasses
         public Vector2 Velocity;
 
         public Texture2D Texture;
-        public NoiseMap Map;
         public Action ExtraDraw;
 
         public Action ApplyExtraShaderParameters;
@@ -57,7 +56,7 @@ namespace bullethellwhatever.BaseClasses
         public bool ShouldRemoveOnEdgeTouch;
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
-        public Effect? Shader;
+        public Shader? Shader;
         public int Updates;
 
         public Action OnDeath;
@@ -99,7 +98,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void SetNoiseMap(string fileName, float scrollSpeed)
         {
-            Map = new NoiseMap(AssetRegistry.GetTexture2D(fileName), scrollSpeed);
+            Shader.SetNoiseMap(fileName, scrollSpeed);
         }
         public void SetExtraData(int index, float value)
         {
@@ -233,14 +232,8 @@ namespace bullethellwhatever.BaseClasses
         }
         public virtual void ApplyShaderParameters()
         {
-            if (Shader is not null)
-                Shader.Parameters["uTime"]?.SetValue(AITimer);
-
-            if (Map is not null)
-            {
-                Shader.Parameters["noiseMap"]?.SetValue(Map.Texture);
-                Shader.Parameters["scrollSpeed"]?.SetValue(Map.ScrollSpeed);
-            }
+            // assumption made that we want to pass into the shader the colour of the entity
+            Shader.UpdateShaderParameters(AITimer);
 
             if (ApplyExtraShaderParameters is not null)
             {
@@ -254,13 +247,13 @@ namespace bullethellwhatever.BaseClasses
 
         public virtual void ApplyRandomNoise()
         {
-            Shader.Parameters["randomNoiseMap"]?.SetValue(AssetRegistry.GetTexture2D("RandomNoise"));
+            Shader.SetParameter("randomNoiseMap", AssetRegistry.GetTexture2D("RandomNoise"));
         }
 
 
         public virtual void SetShader(string filename)
         {
-            Shader = AssetRegistry.GetShader(filename);
+            Shader = new Shader(filename, Color.White);
         }
 
         public virtual void Die()
@@ -303,7 +296,7 @@ namespace bullethellwhatever.BaseClasses
             {
                 ApplyShaderParameters();
 
-                Shader.CurrentTechnique.Passes[0].Apply();
+                Shader.Apply();
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);

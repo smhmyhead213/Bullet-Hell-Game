@@ -7,7 +7,10 @@ sampler2D randomNoiseSampler = sampler_state
 };
 
 texture noiseMap;
-sampler noiseMapSampler : register(s1);
+sampler2D noiseMapSampler = sampler_state // test in future if this works
+{
+    Texture = <noiseMap>;
+};
 
 matrix worldViewProjection;
 
