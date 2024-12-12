@@ -39,7 +39,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
             Size = Vector2.One * 1.5f;
-            Position = Utilities.CentreWithCamera();
+            Position = Utilities.CentreWithCamera() - new Vector2(0f, GameHeight / 4f);
             MaxHP = 400f;
 
             Colour = Color.White;
@@ -80,7 +80,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             }
 
-            CurrentAttack = new CrabIntro(this);
+            CurrentAttack = new CrabPunch(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
