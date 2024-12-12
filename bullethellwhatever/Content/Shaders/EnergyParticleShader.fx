@@ -6,6 +6,7 @@ sampler noiseMapSampler : register(s1);
 matrix worldViewProjection;
 
 float uTime;
+float transparency;
 int duration;
 int direction; // 1 or -1
 float3 colour;
@@ -47,17 +48,29 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float2 uv = input.TextureCoordinates;
-    float centreX = 0.5;
-    float centreY = 0.5;
-    float distanceFromCenterX = abs(centreX - uv.x);
-    float distanceFromCenterY = abs(centreY - uv.y);
-    float colourContribX = centreX - distanceFromCenterX;
-    // contribute less y as we reach top and bottom
-    float colourContribY = centreY - distanceFromCenterY;
-    colourContribX = pow(colourContribX + 0.5, 4);
-    colourContribY = pow(colourContribY, 1);
-    float saturation = colourContribX + colourContribY;
-    return float4(saturation, saturation, saturation, 0);  
+    //float centreX = 0.5;
+    //float centreY = 0.5;
+    //float distanceFromCenterX = abs(centreX - uv.x);
+    //float distanceFromCenterY = abs(centreY - uv.y);
+    //float colourContribX = centreX - distanceFromCenterX;
+    //// contribute less y as we reach top and bottom
+    //float colourContribY = centreY - distanceFromCenterY;
+    //colourContribX = pow(colourContribX + 0.5, 4);
+    //colourContribY = pow(colourContribY, 1);
+    //float saturation = colourContribX + colourContribY;
+    //return float4(saturation, saturation, saturation, 0);
+    
+    float2 centred = uv - float2(0.5, 0.5);
+    bool colourThis = abs(2 * centred.x) + abs(centred.y) < 0.5;
+	
+    if (colourThis)
+    {
+        return float4(colour, transparency);
+    }
+    else
+    {
+        return float4(0, 0, 0, 0);
+    }
 }
 
 Technique Technique1

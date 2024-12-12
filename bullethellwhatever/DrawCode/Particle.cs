@@ -16,6 +16,7 @@ namespace bullethellwhatever.DrawCode
         public Vector2 Acceleration;
         public Vector2 InitialSize;
         public bool Shrink;
+        public bool FadeOut;
         public void Spawn(string texture, Vector2 position, Vector2 velocity, Vector2 acceleration, Vector2 size, float rotation, Color colour, float opacity, int lifetime)
         {
             Texture = AssetRegistry.GetTexture2D(texture);
@@ -36,6 +37,7 @@ namespace bullethellwhatever.DrawCode
             InitialOpacity = Opacity;
 
             Shrink = false;
+            FadeOut = true;
 
             EntityManager.ParticlesToAdd.Add(this);
         }
@@ -56,16 +58,19 @@ namespace bullethellwhatever.DrawCode
             Velocity = Velocity + Acceleration;
             Position = Position + Velocity;
 
-            int fadeOutTime = 15;
-
-            if (AITimer > Lifetime - fadeOutTime)
+            if (FadeOut)
             {
-                Opacity = MathHelper.Lerp(0, InitialOpacity, (float)(Lifetime - AITimer) / fadeOutTime);
-            }
+                int fadeOutTime = 15;
 
-            if (Shrink)
-            {
-                Size = Vector2.Lerp(InitialSize, Vector2.Zero, (float)AITimer / Lifetime);
+                if (AITimer > Lifetime - fadeOutTime)
+                {
+                    Opacity = MathHelper.Lerp(0, InitialOpacity, (float)(Lifetime - AITimer) / fadeOutTime);
+                }
+
+                if (Shrink)
+                {
+                    Size = Vector2.Lerp(InitialSize, Vector2.Zero, (float)AITimer / Lifetime);
+                }
             }
 
             if (AITimer == Lifetime)

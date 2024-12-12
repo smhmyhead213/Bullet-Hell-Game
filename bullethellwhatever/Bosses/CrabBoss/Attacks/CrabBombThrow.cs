@@ -8,6 +8,7 @@ using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
 using System.Windows.Forms.Design;
 using bullethellwhatever.DrawCode;
+using System.Runtime.InteropServices;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -55,6 +56,27 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     }
 
+                    int particles = 20;
+                    float particleSpeed = 10f;
+                    int particleLifetime = 30;
+
+                    for (int i = 0; i < particles; i++)
+                    {
+                        float angle = Utilities.RandomAngle();
+                        Particle p = new Particle();
+                        p.Spawn("box", bomb.Position, particleSpeed * Utilities.RandomFloat(0.5f, 1.5f) * Utilities.AngleToVector(angle), Vector2.Zero, new Vector2(0.5f, 2.5f), angle, Color.Orange, 1f, particleLifetime);
+
+                        p.SetExtraAI(new Action(() =>
+                        {
+                            float interpolant = EasingFunctions.EaseOutExpo(p.AITimer / (float)particleLifetime);
+                            p.Velocity *= 0.95f;
+                            p.Opacity = MathHelper.Lerp(1f, 0f, interpolant);
+                        }));
+
+                        p.SetShader("EnergyParticleShader");
+                        p.Shader.Parameters["colour"]?.SetValue(Color.Orange.ToVector3());
+                    }
+
                     bomb.InstantlyDie();
                 });
 
@@ -79,7 +101,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                         bomb.Velocity = Vector2.LerpPrecise(bomb.Velocity, Vector2.Zero, interpolant);
 
-                        float distanceFromBombToSpawnParticles = 100;
+                        float distanceFromBombToSpawnParticles = 200;
                         float angle = Utilities.RandomAngle();
 
                         int suckInTime = 15;
@@ -90,6 +112,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         Vector2 spawnVelocity = distanceFromBombToSpawnParticles / suckInTime * Utilities.AngleToVector(angle + PI);
 
                         p.SetShader("EnergyParticleShader");
+                        p.Shader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
 
                         p.Spawn("box", spawnLocation, spawnVelocity, Vector2.Zero, new Vector2(0.5f, 2.5f), angle, Color.White, 1f, suckInTime);
                     }

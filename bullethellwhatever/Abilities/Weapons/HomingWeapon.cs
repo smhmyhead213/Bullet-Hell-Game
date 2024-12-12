@@ -3,6 +3,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,29 @@ namespace bullethellwhatever.Abilities.Weapons
             float damage = 0.28f * 100f;
 
             Projectile projectile = SpawnProjectile(Owner.Position, initialVelocity * Utilities.Normalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LimeGreen, true, true);
+
+            int particles = 1;
+            float particleSpeed = 10f;
+            int particleLifetime = 30;
+
+            for (int i = 0; i < particles; i++)
+            {
+                float angle = Utilities.RandomAngle();
+                Particle p = new Particle();
+                p.Spawn("box", Owner.Position, particleSpeed * Utilities.RandomFloat(0.5f, 1.5f) * Utilities.AngleToVector(angle), Vector2.Zero, new Vector2(0.5f, 2.5f), angle, Color.Orange, 1f, particleLifetime);
+
+                p.SetExtraAI(new Action(() =>
+                {
+                    float interpolant = EasingFunctions.EaseOutExpo(p.AITimer / (float)particleLifetime);
+                    p.Velocity *= 0.95f;
+                    p.Opacity = MathHelper.Lerp(1f, 0f, interpolant);
+                }));
+
+                p.SetShader("EnergyParticleShader");
+                p.FadeOut = false;
+                p.Shader.Parameters["colour"]?.SetValue(Color.Orange.ToVector3());
+                p.Shader.Parameters["transparency"]?.SetValue(p.Opacity);
+            }
 
             projectile.SetExtraData(0, 0); // extra data 0 represents how long the projectile has gone without a target
 
