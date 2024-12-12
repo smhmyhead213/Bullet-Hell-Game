@@ -23,7 +23,7 @@ namespace bullethellwhatever.DrawCode.UI
     {
         public static void ResetCameraForMenus()
         {
-            MainCamera.Reset();
+            //MainCamera.Reset();
         }
         public static void CreateTitleScreenMenu()
         {

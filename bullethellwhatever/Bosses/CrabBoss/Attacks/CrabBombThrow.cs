@@ -68,7 +68,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                         p.SetExtraAI(new Action(() =>
                         {
-                            float interpolant = EasingFunctions.EaseOutExpo(p.AITimer / (float)particleLifetime);
+                            float interpolant = p.AITimer / (float)particleLifetime;
                             p.Velocity *= 0.95f;
                             p.Opacity = MathHelper.Lerp(1f, 0f, interpolant);
                             p.Shader.SetColour(p.Colour * p.Opacity);

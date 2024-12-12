@@ -68,7 +68,7 @@ namespace bullethellwhatever.DrawCode.UI
         public UIElement(string texture, float size, Vector2 position = default)
         {
             Position = position;
-
+             
             Texture = AssetRegistry.GetTexture2D(texture);
 
             Size = Texture.TextureDimensionsToVector() * size;

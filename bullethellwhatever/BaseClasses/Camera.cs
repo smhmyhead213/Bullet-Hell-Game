@@ -40,6 +40,7 @@ namespace bullethellwhatever.BaseClasses
 
         public Rectangle VisibleArea;
 
+        public bool Locked;
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
@@ -75,8 +76,13 @@ namespace bullethellwhatever.BaseClasses
         {
             Reset();
             UpdateMatrices();
+            Locked = false;
         }
 
+        public void LockCamera(bool locked)
+        {
+            Locked = locked;
+        }
         public void UpdateVisibleArea()
         {
             //Position = new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight);

@@ -262,31 +262,33 @@ namespace bullethellwhatever.BaseClasses
 
         public void ControlCamera()
         {
-            MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);
-
-            float minZoom = 1f;
-            float maxZoom = 2f;
-
-            NPC furthest = FurthestEnemyFromPlayer();
-
-            if (furthest is not null)
+            if (!MainCamera.Locked)
             {
-                float distance = Utilities.DistanceBetweenVectors(Position, furthest.Position);
+                MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);
 
-                float scaleFactor = Min(minZoom, (GameHeight / 2) / distance);
+                float minZoom = 1f;
+                float maxZoom = 2f;
 
-                if (scaleFactor < 1f / maxZoom)
+                NPC furthest = FurthestEnemyFromPlayer();
+
+                if (furthest is not null)
                 {
-                    scaleFactor = 1f / maxZoom;
+                    float distance = Utilities.DistanceBetweenVectors(Position, furthest.Position);
+
+                    float scaleFactor = Min(minZoom, (GameHeight / 2) / distance);
+
+                    if (scaleFactor < 1f / maxZoom)
+                    {
+                        scaleFactor = 1f / maxZoom;
+                    }
+
+                    MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f);
                 }
-
-                MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f);
+                else
+                {
+                    MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f);
+                }
             }
-            else
-            {
-                MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f);
-            }
-
         }
 
         public NPC? FurthestEnemyFromPlayer()
