@@ -345,7 +345,7 @@ namespace bullethellwhatever
         }
 
         /// <summary>
-        /// Returns the smallest angle clockwise between two angles that are clockwise from the vertical.
+        /// Returns the smallest angle clockwise between two angles as one clockwise from the vertical.
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>

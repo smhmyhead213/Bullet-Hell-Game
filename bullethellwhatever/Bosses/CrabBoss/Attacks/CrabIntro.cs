@@ -23,16 +23,30 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             float distanceAbovePlayer = GameHeight / 4f;
             float distanceToLeftOfPlayer = GameWidth * 2f;
+            int moveInDuration = 60;
+            int numberOfSpins = 10;
+            int waitTimeAfterStopping = 60;
 
             if (AITimer == 0)
             {
                 MainCamera.LockCamera(true);
+                //player.LockMovement();
                 Owner.Position = Utilities.CentreWithCamera() - new Vector2(distanceToLeftOfPlayer, distanceAbovePlayer);
+                Owner.Velocity = Vector2.UnitX * distanceToLeftOfPlayer / (float)moveInDuration;
+                Owner.RotationalVelocity = numberOfSpins * Tau / moveInDuration;
             }
 
-            if (Owner.Position.X < player.Position.X)
+            if (AITimer == moveInDuration)
             {
-                Owner.Velocity = 35f * Vector2.UnitX;
+                Owner.Velocity = Vector2.Zero;
+                Owner.RotationalVelocity = 0;
+                //player.UnlockMovement();
+                MainCamera.LockCamera(false);
+            }
+
+            if (AITimer == moveInDuration + waitTimeAfterStopping)
+            {
+                End();
             }
         }
 

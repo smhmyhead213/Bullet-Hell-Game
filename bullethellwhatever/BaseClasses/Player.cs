@@ -36,6 +36,7 @@ namespace bullethellwhatever.BaseClasses
         public float MoveSpeed;
 
         public bool Restarted;
+        public bool InputLocked;
 
         public HomingWeapon HomingWeapon;
         public enum Weapons
@@ -51,6 +52,7 @@ namespace bullethellwhatever.BaseClasses
         {
             DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
             Texture = AssetRegistry.GetTexture2D(texture);
+            InputLocked = false;
         }
         public void Spawn(Vector2 position, Vector2 initialVelocity, float damage, string texture) //initialise player data
         {
@@ -218,7 +220,10 @@ namespace bullethellwhatever.BaseClasses
 
             Velocity = Vector2.Zero;
 
-            HandleKeyPresses();
+            if (!InputLocked)
+            {
+                HandleKeyPresses();
+            }
 
             PlayerWeaponManager.Update();
 
@@ -260,6 +265,14 @@ namespace bullethellwhatever.BaseClasses
             Heal(MaxHP - Health);
         }
 
+        public void LockMovement()
+        {
+            InputLocked = true;
+        }
+        public void UnlockMovement()
+        {
+            InputLocked = false;
+        }
         public void ControlCamera()
         {
             if (!MainCamera.Locked)

@@ -146,6 +146,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
+            return new CrabPunchToNeutralTransition(CrabOwner);
+
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 || nextAttack == 2)
                 return new CrabPunchToNeutralTransition(CrabOwner);
@@ -204,25 +206,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 float interpolant = AITimer / (float)armRotateBackToNeutralTime;
 
-                Vector2 toPlayer = Owner.Position - player.Position;
+                Vector2 toPlayer = player.Position - Owner.Position;
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
-                float angleToPlayerMinusTwoPi = angleToPlayer - 2 * PI;
 
-                // these angles are functionally the same
+                float bossFacingAngle = Owner.Rotation + PI;
+                float angleToTurnTo = bossFacingAngle - PI + Utilities.SmallestAngleTo(bossFacingAngle, angleToPlayer);
 
-                float angleToUse;
-                
-                // determine which direction to turn towards to minimise turn angle
-                if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))               
-                {
-                    angleToUse = angleToPlayer;
-                }
-                else
-                {
-                    angleToUse = angleToPlayerMinusTwoPi;
-                }
-
-                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
+                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, Utilities.BringAngleIntoRange(angleToTurnTo), interpolant);
 
                 // i think this is the problem?
 
@@ -236,6 +226,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
+            return new CrabPunch(CrabOwner);
+
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
                 return new CrabPunch(CrabOwner);
@@ -267,27 +259,29 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (AITimer > 0 && AITimer <= armRotateBackToNeutralTime)
             {
-                float interpolant = AITimer / (float)armRotateBackToNeutralTime;
+                float interpolant = EasingFunctions.EaseOutQuad(AITimer / (float)armRotateBackToNeutralTime);
 
                 Vector2 toPlayer = Owner.Position - player.Position;
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
-                float angleToPlayerMinusTwoPi = angleToPlayer - 2 * PI;
 
                 // these angles are functionally the same
 
-                float angleToUse;
+                //float angleToUse;
 
                 // determine which direction to turn towards to minimise turn angle
-                if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
-                {
-                    angleToUse = angleToPlayer;
-                }
-                else
-                {
-                    angleToUse = angleToPlayerMinusTwoPi;
-                };
+                //if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
+                //{
+                //    angleToUse = angleToPlayer;
+                //}
+                //else
+                //{
+                //    angleToUse = angleToPlayerMinusTwoPi;
+                //};
 
-                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
+                float bossFacingAngle = Owner.Rotation + PI;
+                float angleToTurnTo = bossFacingAngle = Utilities.SmallestAngleTo(bossFacingAngle, angleToPlayer);
+
+                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToTurnTo, interpolant);
 
                 //Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
             }
