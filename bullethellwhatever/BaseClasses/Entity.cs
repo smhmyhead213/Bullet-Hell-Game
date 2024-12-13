@@ -24,8 +24,6 @@ namespace bullethellwhatever.BaseClasses
 
         public Action ApplyExtraShaderParameters;
 
-        public float Depth;
-
         public bool DealDamage;
         public bool IsHarmful;
         public int AITimer;
@@ -92,10 +90,7 @@ namespace bullethellwhatever.BaseClasses
         {
             Size = size;
         }
-        public virtual void SetDepth(float depth)
-        {
-            Depth = MathHelper.Clamp(depth, 0f, 1f);
-        }
+
         public virtual void SetNoiseMap(string fileName, float scrollSpeed)
         {
             Shader.SetNoiseMap(fileName, scrollSpeed);
@@ -104,13 +99,10 @@ namespace bullethellwhatever.BaseClasses
         {
             ExtraData[index] = value;
         }
-        public virtual float DepthFactor()
-        {
-            return MathHelper.Lerp(1, 0.1f, Depth);
-        }
+
         public virtual Vector2 GetSize() // get a size that corresponds to the current depth
         {
-            return Vector2.LerpPrecise(Size, Size / 10f, Depth);
+            return Size;
         }
 
         public void SetVelocity(Vector2 vel)

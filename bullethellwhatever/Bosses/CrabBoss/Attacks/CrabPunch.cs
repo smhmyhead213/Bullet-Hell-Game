@@ -210,7 +210,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
                 float bossFacingAngle = Owner.Rotation + PI;
-                float angleToTurnTo = bossFacingAngle - PI + Utilities.SmallestAngleTo(bossFacingAngle, angleToPlayer);
+                float angleToTurnTo = Owner.Rotation + Utilities.SmallestAngleTo(bossFacingAngle, angleToPlayer);
 
                 Owner.Rotation = MathHelper.Lerp(Owner.Rotation, Utilities.BringAngleIntoRange(angleToTurnTo), interpolant);
 

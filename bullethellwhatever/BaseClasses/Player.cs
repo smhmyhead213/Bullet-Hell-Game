@@ -62,7 +62,6 @@ namespace bullethellwhatever.BaseClasses
             Participating = true;
 
             IFrames = 0;
-            Depth = 0;
 
             MaxHP = 15;
 

@@ -30,8 +30,6 @@ namespace bullethellwhatever.Projectiles
         public int DyingTimer;
         public float StartingOpacity;
 
-        public Func<float, float> DepthFunction;
-
         public Action OnHit;
         public Action OnEdgeTouch;
 
@@ -51,8 +49,6 @@ namespace bullethellwhatever.Projectiles
         public void CreateProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Texture = AssetRegistry.GetTexture2D(texture);
-
-            Depth = 0;
 
             Position = position;
             Pierce = pierce;
@@ -146,11 +142,6 @@ namespace bullethellwhatever.Projectiles
             if (TimeOutsidePlayArea == 1) // just hit edge
             {
                 EdgeTouchEffect();
-            }
-
-            if (DepthFunction is not null)
-            {
-                SetDepth(DepthFunction(AITimer));
             }
 
             if (Dying)

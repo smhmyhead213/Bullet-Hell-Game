@@ -113,14 +113,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Size = size;
             LowerClaw.Size = size;
         }
-
-        public void SetAllDepths(float depth)
-        {
-            UpperArm.SetDepth(depth);
-            LowerArm.SetDepth(depth);
-            UpperClaw.SetDepth(depth);
-            LowerClaw.SetDepth(depth);
-        }
         public void DrawHitboxes()
         {
             UpperArm.Hitbox.DrawHitbox();
@@ -154,7 +146,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (Owner.LockArmPositions)
             {
                 int expandedi = LegIndex * 2 - 1; // i = 0, this = -1, i = 1, this = 1
-                float factorToMoveArms = MathHelper.Lerp(1f, 0.1f, Owner.Depth);
 
                 //Position = Owner.Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Owner.Texture.Width / 1.4f * factorToMoveArms, Owner.Texture.Height / 2.54f * factorToMoveArms), Owner.Rotation);
                 Position = Owner.CalculateArmPostions(expandedi);
@@ -173,7 +164,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (UpperClaw.LegIndex == 0)
                 {
                     UpperClaw.Position = LowerArm.CalculateEnd();
-                    UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.DepthFactor() * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
+                    UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
                 }
                 else UpperClaw.Position = LowerArm.CalculateEnd();
 

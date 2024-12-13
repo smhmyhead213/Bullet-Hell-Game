@@ -51,7 +51,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             BoostersActive = false;
             LockArmPositions = true;
             PlayerSaidOpeningDialogue = false;
-
+            
             Legs = new CrabLeg[2];
             ArmPositionsOnBody = new Vector2[2];
             BoosterPositions = new Vector2[2];
@@ -91,7 +91,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
-            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation) * DepthFactor();
+            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation);
         }
         public Vector2 CalculateArmPostions(int expandedi)
         {
@@ -108,13 +108,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
-        public void SetArmDepth(int armIndex, float depth) // 0 or 1 for left and right arms
-        {
-            Legs[armIndex].UpperArm.Depth = depth;
-            Legs[armIndex].LowerArm.Depth = depth;
-            Legs[armIndex].UpperClaw.Depth = depth;
-            Legs[armIndex].LowerClaw.Depth = depth;
-        }
         public void SetBoosters(bool on)
         {
             BoostersActive = on;

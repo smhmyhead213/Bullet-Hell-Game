@@ -42,8 +42,6 @@ namespace bullethellwhatever.NPCs
         {
             Updates = 1; //default
 
-            Depth = 0;
-
             DamageReduction = 0;
 
             IsInvincible = false;
@@ -203,8 +201,6 @@ namespace bullethellwhatever.NPCs
         public virtual void CreateNPC(Vector2 position, Vector2 velocity, float damage, Texture2D texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
         {
             Updates = 1;
-
-            Depth = 0;
 
             Position = position;
             Velocity = velocity;
