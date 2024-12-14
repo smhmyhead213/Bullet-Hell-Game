@@ -132,10 +132,14 @@ namespace bullethellwhatever.Abilities.Weapons
             if (OnCooldown())
             {
                 CooldownTimer--;
-            }
-            
+            }          
+        }
 
-            if (Charged() && LeftClickReleased())
+        public override void LeftClickReleasedBehaviour()
+        {
+            ChargeTimer = 0;
+
+            if (Charged())
             {
                 CooldownTimer = Cooldown;
 
@@ -154,13 +158,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     d.Rotation = Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position);
                 }));
             }
-
-            if (LeftClickReleased())
-            {
-                ChargeTimer = 0;
-            }
         }
-
         public override void LeftClickHeldBehaviour()
         {
             if (Charging())

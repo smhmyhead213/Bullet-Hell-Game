@@ -79,6 +79,11 @@ namespace bullethellwhatever.Abilities.Weapons
 
         }
 
+        public virtual void LeftClickReleasedBehaviour()
+        {
+
+        }
+
         public virtual bool CanPrimaryFire()
         {
             return PrimaryFireCoolDown == 0 && IsLeftClickDown();
