@@ -146,8 +146,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunchToNeutralTransition(CrabOwner);
-
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 || nextAttack == 2)
                 return new CrabPunchToNeutralTransition(CrabOwner);
@@ -209,10 +207,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Vector2 toPlayer = player.Position - Owner.Position;
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
-                float bossFacingAngle = Owner.Rotation + PI;
-                float angleToTurnTo = Owner.Rotation + Utilities.SmallestAngleTo(bossFacingAngle, angleToPlayer);
+                float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
 
-                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, Utilities.BringAngleIntoRange(angleToTurnTo), interpolant);
+                Owner.Rotation += 0.2f * rotationToPlayer;
 
                 // i think this is the problem?
 
@@ -226,8 +223,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunch(CrabOwner);
-
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
                 return new CrabPunch(CrabOwner);
@@ -238,12 +233,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void ExtraDraw(SpriteBatch s)
         {
-            Utilities.drawTextInDrawMethod("boss rotation " + (Owner.Rotation + PI).ToString(), player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
+            //Utilities.drawTextInDrawMethod("boss rotation " + (Owner.Rotation + PI).ToString(), player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
 
-            Vector2 toPlayer = player.Position - Owner.Position;
-            float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+            //Vector2 toPlayer = player.Position - Owner.Position;
+            //float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
-            Utilities.drawTextInDrawMethod("angle to player " + angleToPlayer.ToString(), player.Position - new Vector2(0f, 100f), _spriteBatch, font, Color.White, 2);
+            //Utilities.drawTextInDrawMethod("angle to player " + angleToPlayer.ToString(), player.Position - new Vector2(0f, 100f), _spriteBatch, font, Color.White, 2);
         }
     }
 
@@ -268,25 +263,21 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 toPlayer = Owner.Position - player.Position;
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+                float angleToPlayerMinusTwoPi = angleToPlayer - Tau;
 
-                // these angles are functionally the same
+                float angleToUse;
 
-                //float angleToUse;
+               // determine which direction to turn towards to minimise turn angle
+                if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
+                {
+                    angleToUse = angleToPlayer;
+                }
+                else
+                {
+                    angleToUse = angleToPlayerMinusTwoPi;
+                };
 
-                // determine which direction to turn towards to minimise turn angle
-                //if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
-                //{
-                //    angleToUse = angleToPlayer;
-                //}
-                //else
-                //{
-                //    angleToUse = angleToPlayerMinusTwoPi;
-                //};
-
-                float bossFacingAngle = Owner.Rotation + PI;
-                float angleToTurnTo = bossFacingAngle = Utilities.SmallestAngleTo(bossFacingAngle, angleToPlayer);
-
-                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToTurnTo, interpolant);
+                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
 
                 //Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
             }
