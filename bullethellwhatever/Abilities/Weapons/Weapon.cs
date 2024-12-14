@@ -45,6 +45,11 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 LeftClickHeldBehaviour();
             }
+
+            if (LeftClickReleased())
+            {
+                LeftClickReleasedBehaviour();
+            }
         }
 
         /// <summary>
