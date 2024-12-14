@@ -34,13 +34,24 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             return true;
         }
-        /// <summary>
-        /// Handles the basic primary fire and secondary fire cooldowns. Override to disable these.
-        /// </summary>
+
         public void BaseUpdate()
         {
             AITimer++;
 
+            HandleCooldowns();
+
+            if (IsLeftClickDown() && WasMouseDownLastFrame)
+            {
+                LeftClickHeldBehaviour();
+            }
+        }
+
+        /// <summary>
+        /// Handles the basic primary fire and secondary fire cooldowns. Override to disable these.
+        /// </summary>
+        public virtual void HandleCooldowns()
+        {
             if (PrimaryFireCoolDown > 0)
             {
                 PrimaryFireCoolDown--;
@@ -62,6 +73,10 @@ namespace bullethellwhatever.Abilities.Weapons
                 SecondaryFire();
                 SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
             }
+        }
+        public virtual void LeftClickHeldBehaviour()
+        {
+
         }
 
         public virtual bool CanPrimaryFire()

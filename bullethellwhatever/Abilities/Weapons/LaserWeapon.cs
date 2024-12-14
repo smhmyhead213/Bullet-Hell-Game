@@ -133,20 +133,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 CooldownTimer--;
             }
-
-            if (Charging())
-            {
-                if (ChargeTimer < FullChargeTime)
-                {
-                    ChargeTimer++;
-                }
-
-                if (!Charged())
-                {
-                    Particle p = new Particle();
-                    p.FadeOutParticle(Utilities.RandomAngle(), 10f, 20, Owner.Position, Color.LightSkyBlue);
-                }
-            }
+            
 
             if (Charged() && LeftClickReleased())
             {
@@ -174,10 +161,26 @@ namespace bullethellwhatever.Abilities.Weapons
             }
         }
 
+        public override void LeftClickHeldBehaviour()
+        {
+            if (Charging())
+            {
+                if (ChargeTimer < FullChargeTime)
+                {
+                    ChargeTimer++;
+                }
+
+                if (!Charged())
+                {
+                    Particle p = new Particle();
+                    p.FadeOutParticle(Utilities.RandomAngle(), 10f, 20, Owner.Position, Color.LightSkyBlue);
+                }
+            }
+        }
         public bool Charging()
         {
             // if we are charging up and left click is held (chaneg to button when keybind changing is added) and we are not firing
-            return IsLeftClickDown() && CooldownTimer == 0;
+            return CooldownTimer == 0;
         }
         public bool Charged()
         {
@@ -202,17 +205,6 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 CreateLightningPrims();
             }
-
-            //foreach (Vector2 vertex in CreateLightningVertices())
-            //{
-            //    Texture2D texture = AssetRegistry.GetTexture2D("box");
-            //    Drawing.BetterDraw(texture, vertex, null, Color.Red, 0f, Vector2.One * 0.2f, SpriteEffects.None, 0f);
-            //}
-
-            //Utilities.drawTextInDrawMethod("charge timer " + ChargeTimer.ToString(), Owner.Position + new Vector2(0f, 100f), s, font, Color.White);
-            //Utilities.drawTextInDrawMethod("charging " + Charging().ToString(), Owner.Position + new Vector2(0f, 150f), s, font, Color.White);
-            //Utilities.drawTextInDrawMethod("charged " + Charged().ToString(), Owner.Position + new Vector2(0f, 200f), s, font, Color.White);
-            //Utilities.drawTextInDrawMethod("firing " + Firing().ToString(), Owner.Position + new Vector2(0f, 250f), s, font, Color.White);
         }
     }
 }
