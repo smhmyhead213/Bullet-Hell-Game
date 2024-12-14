@@ -12,7 +12,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using System.Linq;
 
-namespace bullethellwhatever.BaseClasses
+namespace bullethellwhatever.BaseClasses.Entities
 {
     public abstract class Entity
     {
@@ -21,6 +21,8 @@ namespace bullethellwhatever.BaseClasses
 
         public Texture2D Texture;
         public Action ExtraDraw;
+
+        public EntityLabels Label;
 
         public Action ApplyExtraShaderParameters;
 
@@ -54,7 +56,7 @@ namespace bullethellwhatever.BaseClasses
         public bool ShouldRemoveOnEdgeTouch;
         public Color Colour;
         public List<TelegraphLine> activeTelegraphs = new List<TelegraphLine>();
-        public Shader? Shader;
+        public Shader Shader;
         public int Updates;
 
         public Action OnDeath;
@@ -259,7 +261,7 @@ namespace bullethellwhatever.BaseClasses
 
             DeleteNextFrame = true;
         }
-       
+
         /// <summary>
         /// Completely removes an entity from the game, without triggering any on death behaviour.
         /// </summary>

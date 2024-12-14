@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.BaseClasses.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

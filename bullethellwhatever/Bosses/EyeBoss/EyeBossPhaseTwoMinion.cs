@@ -1,5 +1,4 @@
 ﻿using bullethellwhatever.DrawCode.UI;
-using bullethellwhatever.BaseClasses;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
@@ -15,6 +14,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {

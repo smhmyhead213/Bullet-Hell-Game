@@ -5,8 +5,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
-using bullethellwhatever.BaseClasses;
+using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles.Base;

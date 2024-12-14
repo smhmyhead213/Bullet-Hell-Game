@@ -7,11 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.MainFiles;
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.AssetManagement;
-using SharpDX.XAudio2;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {

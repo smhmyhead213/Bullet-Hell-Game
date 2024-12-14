@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.BaseClasses.Hitboxes
 {

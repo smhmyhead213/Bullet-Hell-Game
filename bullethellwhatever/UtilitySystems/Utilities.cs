@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.UI;
@@ -12,6 +10,7 @@ using bullethellwhatever.AssetManagement;
 using System.IO;
 using System.Security.Cryptography.Xml;
 using System.Diagnostics;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever
 {

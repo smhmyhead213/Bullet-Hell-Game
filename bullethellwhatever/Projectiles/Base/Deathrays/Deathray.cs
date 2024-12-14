@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Projectiles.Base
 {

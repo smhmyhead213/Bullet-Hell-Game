@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
@@ -14,6 +13,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.Bosses;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.NPCs
 {

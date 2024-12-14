@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
-
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.UtilitySystems;
@@ -12,6 +10,7 @@ using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.AssetManagement;
 using System.Runtime.CompilerServices;
+using bullethellwhatever.BaseClasses.Entities;
 namespace bullethellwhatever.DrawCode
 {
     public static class Drawing

@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Projectiles.TelegraphLines
 {

@@ -1,5 +1,4 @@
-﻿using bullethellwhatever.BaseClasses;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.DrawCode
 {

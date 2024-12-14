@@ -67,13 +67,13 @@ namespace bullethellwhatever.Abilities.Weapons
                 SecondaryFireCoolDown--;
             }
 
-            if (CanPrimaryFire())
+            if (PrimaryFiring())
             {
                 PrimaryFire();
                 PrimaryFireCoolDown = PrimaryFireCoolDownDuration;
             }
 
-            if (CanSecondaryFire())
+            if (SecondaryFiring())
             {
                 SecondaryFire();
                 SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
@@ -89,13 +89,21 @@ namespace bullethellwhatever.Abilities.Weapons
 
         }
 
-        public virtual bool CanPrimaryFire()
+        public virtual bool PrimaryFireReady()
         {
-            return PrimaryFireCoolDown == 0 && IsLeftClickDown();
+            return PrimaryFireCoolDown == 0;
         }
-        public virtual bool CanSecondaryFire()
+        public virtual bool SecondaryFireReady()
         {
-            return SecondaryFireCoolDown == 0 && IsRightClickDown();
+            return SecondaryFireCoolDown == 0;
+        }
+        public virtual bool PrimaryFiring()
+        {
+            return PrimaryFireReady() && IsLeftClickDown();
+        }
+        public virtual bool SecondaryFiring()
+        {
+            return SecondaryFireReady() && IsRightClickDown();
         }
 
         public virtual void Draw(SpriteBatch s)

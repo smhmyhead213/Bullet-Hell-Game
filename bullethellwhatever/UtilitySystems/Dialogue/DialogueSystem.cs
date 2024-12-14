@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {

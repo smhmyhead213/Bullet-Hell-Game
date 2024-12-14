@@ -22,8 +22,8 @@ namespace bullethellwhatever.Abilities.Weapons
             WeaponSwitchCooldown = 0;
             Keybinds = new Dictionary<Weapon, Keys>();
 
-            AvailableWeapons = [new HomingWeapon(owner), new LaserWeapon(owner)];
-            Keys[] keybinds = [Keys.D1, Keys.D2];
+            AvailableWeapons = [new HomingWeapon(owner), new LaserWeapon(owner), new ShotgunWeapon(owner)];
+            Keys[] keybinds = [Keys.D1, Keys.D2, Keys.D3];
 
             MapKeybinds(AvailableWeapons, keybinds);
 

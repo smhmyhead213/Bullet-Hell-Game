@@ -1,5 +1,5 @@
 ﻿using bullethellwhatever.AssetManagement;
-using bullethellwhatever.BaseClasses;
+using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.Projectiles;

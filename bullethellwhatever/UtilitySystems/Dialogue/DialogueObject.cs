@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using bullethellwhatever.BaseClasses;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {

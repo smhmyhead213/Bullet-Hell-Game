@@ -16,6 +16,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Abilities.Weapons;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.BaseClasses
 {

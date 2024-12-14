@@ -1,7 +1,6 @@
 ﻿using bullethellwhatever.MainFiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using bullethellwhatever.BaseClasses;
 using bullethellwhatever.UtilitySystems.Dialogue;
 using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
@@ -13,6 +12,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode.UI.Player;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.DrawCode
 {

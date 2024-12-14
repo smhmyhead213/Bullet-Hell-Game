@@ -12,6 +12,7 @@ using SharpDX.MediaFoundation;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Projectiles
 {
