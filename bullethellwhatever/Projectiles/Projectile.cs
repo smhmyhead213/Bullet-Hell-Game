@@ -166,6 +166,7 @@ namespace bullethellwhatever.Projectiles
                 ExtraAI();
             }
 
+            // move to update to make overriding ai easier?
             Position = Position + Velocity;
         }
 
@@ -303,6 +304,11 @@ namespace bullethellwhatever.Projectiles
             if (collision.Collided)
                 return collision;
             else return new Collision(Vector2.Zero, false);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
         }
     }
 }

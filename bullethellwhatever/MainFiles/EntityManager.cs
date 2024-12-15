@@ -30,28 +30,10 @@ namespace bullethellwhatever.MainFiles
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && NPC.TouchingAnEdge());
             activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame);
 
-            //foreach (Projectile projectile in activeProjectiles)
-            //{
-            //    if (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 10)
-            //    {
-            //        projectile.Die(); // do the die behaviour if getting removed
-            //    }
-            //}
-
-            //foreach (Projectile projectile in activeFriendlyProjectiles)
-            //{
-            //    if (projectile.DeleteNextFrame || (projectile.ShouldRemoveOnEdgeTouch && Entity.touchingAnEdge(projectile) && projectile.TimeOutsidePlayArea > 60 && projectile.AITimer > 5))
-            //    {
-            //        projectile.Die(); // do the die behaviour if getting removed
-            //    }
-            //}
-
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
             activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval);
             activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval && projectile.AITimer > 5);
             activeFriendlyProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
-
-            //Main.activeDialogues.RemoveAll(DialogueObject => DialogueObject.DeleteNextFrame);
         }
 
         public static void AddEntitiesNextFrame()
