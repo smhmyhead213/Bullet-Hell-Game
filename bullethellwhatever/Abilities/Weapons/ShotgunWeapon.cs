@@ -29,8 +29,8 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public override void PrimaryFire()
         {
-            float spreadAngle = PI;
-            int projectiles = 1; // keep this an odd number
+            float spreadAngle = PI / 3;
+            int projectiles = 5; // keep this an odd number
             float angleBetween = spreadAngle / projectiles;
             float damage = 1.3f;
             float projectileSpeed = 30f;
