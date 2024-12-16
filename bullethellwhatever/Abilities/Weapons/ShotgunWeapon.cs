@@ -45,6 +45,15 @@ namespace bullethellwhatever.Abilities.Weapons
                 Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
 
                 p.Rotation = firingAngle;
+                p.Opacity = 0f;
+
+                p.SetExtraAI(new Action(() =>
+                {
+                    if (p.Opacity < 1f)
+                    {
+                        p.Opacity += 0.1f;
+                    }
+                }));
 
                 p.AddTrail(14);
             }

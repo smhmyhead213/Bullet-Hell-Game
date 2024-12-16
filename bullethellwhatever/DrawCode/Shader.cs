@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.AssetManagement;
+using System.Reflection;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -56,6 +57,7 @@ namespace bullethellwhatever.DrawCode
 
         public void Apply(int pass = 0)
         {
+            _graphics.GraphicsDevice.Textures[1] = Map.Texture;
             Effect.CurrentTechnique.Passes[pass].Apply();
         }
     }

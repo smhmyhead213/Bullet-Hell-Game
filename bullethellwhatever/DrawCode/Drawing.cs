@@ -42,7 +42,7 @@ namespace bullethellwhatever.DrawCode
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
-            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.LinearWrap, transformMatrix: transform);
+            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointWrap, transformMatrix: transform);
             DrawingShaders = true;
         }
 

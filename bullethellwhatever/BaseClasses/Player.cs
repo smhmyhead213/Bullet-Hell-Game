@@ -39,7 +39,6 @@ namespace bullethellwhatever.BaseClasses
         public bool Restarted;
         public bool InputLocked;
 
-        public HomingWeapon HomingWeapon;
         public enum Weapons
         {
             Homing,

@@ -1,11 +1,6 @@
 ﻿sampler mainTexture : register(s0);
-//sampler2D noise : register(s1);
-texture noiseMap;
 
-sampler2D noiseSampler = sampler_state
-{
-    Texture = <noiseMap>;
-};
+sampler noiseSampler : register(s1);
 
 matrix WorldViewProjection;
 float uTime;
