@@ -57,7 +57,7 @@ namespace bullethellwhatever.DrawCode
 
         public void Apply(int pass = 0)
         {
-            _graphics.GraphicsDevice.Textures[1] = Map.Texture;
+            //_graphics.GraphicsDevice.Textures[1] = Map.Texture;
             Effect.CurrentTechnique.Passes[pass].Apply();
         }
     }
