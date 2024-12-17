@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.MainFiles;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -53,6 +55,22 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         p.Opacity += 0.1f;
                     }
+
+                    foreach (Projectile proj in EntityManager.activeFriendlyProjectiles)
+                    {
+                        if (proj.Label == EntityLabels.ShotgunAttractor)
+                        {
+                            if (p.IsCollidingWith(proj))
+                            {
+                                p.InstantlyDie();
+                                proj.ExtraData[0] += 1f; // count how many pellets hit the attractor
+                            }
+
+                            p.Velocity = projectileSpeed * Utilities.SafeNormalise(proj.Position - p.Position);
+
+                            break;
+                        }                       
+                    }
                 }));
 
                 p.AddTrail(14);
@@ -61,7 +79,30 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public override void SecondaryFire()
         {
-            
+            // remove existing attractors
+
+            foreach (Projectile proj in EntityManager.activeFriendlyProjectiles)
+            {
+                if (proj.Label == EntityLabels.ShotgunAttractor)
+                {
+                    proj.Die();
+                }
+            }
+
+            float projectileSpeed = 5f;
+            float damage = 0.1f;
+
+            Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, true, true);
+
+            p.Label = EntityLabels.ShotgunAttractor;
+
+            p.SetExtraAI(new Action(() =>
+            {
+                if (p.ExtraData[0] == 5f)
+                {
+                    p.Die();
+                }
+            }));
         }
     }
 }
