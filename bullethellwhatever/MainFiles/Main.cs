@@ -139,8 +139,8 @@ namespace bullethellwhatever.MainFiles
 
             if (MainInstance.IsActive)
             {
-                UIManager.ManageUI();
                 GameStateHandler.HandleGame();
+                UIManager.ManageUI();
 
                 if (musicSystem.ActiveSong is not null)
                     musicSystem.PlayMusic();

@@ -2,6 +2,7 @@
 using bullethellwhatever.BaseClasses.Hitboxes;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using bullethellwhatever.UtilitySystems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,10 +71,22 @@ namespace bullethellwhatever.DrawCode.UI.Player
         {
             base.Update();
 
-            if (PlayerWeaponManager.WeaponSwitchCooldownTimer > 0)
-            {
-                WeaponHUDRotation += TotalAngleToRotate / PlayerWeaponManager.WeaponSwitchCooldown;
-            }
+            //if (PlayerWeaponManager.WeaponSwitchCooldownTimer > 0)
+            //{
+            //    WeaponHUDRotation += TotalAngleToRotate / PlayerWeaponManager.WeaponSwitchCooldown;
+            //}
+
+            int numberOfWeapons = PlayerWeaponManager.AvailableWeapons.Length;
+            float lastWeaponAngle = Tau / numberOfWeapons * PlayerWeaponManager.LastWeaponIndex;
+            float activeWeaponAngle = Tau / numberOfWeapons * PlayerWeaponManager.ActiveWeaponIndex;
+
+            float interpolant = 1f - (float)PlayerWeaponManager.WeaponSwitchCooldownTimer / PlayerWeaponManager.WeaponSwitchCooldown;
+
+            // decide on the smallest angle that will reach the target
+
+            float smallestAngle = Utilities.SmallestAngleTo(lastWeaponAngle, activeWeaponAngle);
+
+            WeaponHUDRotation = MathHelper.LerpPrecise(lastWeaponAngle, activeWeaponAngle, EasingFunctions.EaseOutQuad(interpolant));
         }
         public override void Draw(SpriteBatch s)
         {
