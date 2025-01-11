@@ -34,6 +34,7 @@ namespace bullethellwhatever.DrawCode.UI
             UIElementsToAddNextFrame = new List<UIElement>();
 
             PlayerHUD = new PlayerHUD("HUDBody", new Vector2(260, 128), new Vector2(GameWidth / 10f, GameHeight / 10f));
+            PlayerHUD.Display();
         }
         public static void ManageUI()
         {
@@ -110,9 +111,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void DrawUI(SpriteBatch spriteBatch)
         {
-            Drawing.RestartSpriteBatchForShaders(spriteBatch, false);
-
-            PlayerHUD.Draw(_spriteBatch);
+            PlayerHUD.Draw(spriteBatch);
 
             foreach (UIElement element in ActiveUIElements)
             {
@@ -165,6 +164,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             return null;
         }
+
         public static List<UIElement> GetListOfActiveMenus()
         {
             List<UIElement> output = new List<UIElement>();

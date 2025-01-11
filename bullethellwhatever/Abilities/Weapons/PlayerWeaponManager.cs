@@ -1,4 +1,6 @@
 ﻿using bullethellwhatever.BaseClasses;
+using bullethellwhatever.DrawCode.UI;
+using bullethellwhatever.DrawCode.UI.Player;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -14,12 +16,16 @@ namespace bullethellwhatever.Abilities.Weapons
     {
         public static Weapon[] AvailableWeapons;
         public static Weapon ActiveWeapon;
+        public static int LastWeaponIndex;
+        public static int ActiveWeaponIndex;
         public static Dictionary<Weapon, Keys> Keybinds;
-        public static int WeaponSwitchCooldown;
-        public static int WeaponSwitchCooldownTimer = 20;
+        public static int WeaponSwitchCooldown = 10;
+        public static int WeaponSwitchCooldownTimer = 0;
         public static void Initialise(Player owner)
         {
-            WeaponSwitchCooldown = 0;
+            int initialWeaponIndex = 0;
+
+            LastWeaponIndex = initialWeaponIndex;
             Keybinds = new Dictionary<Weapon, Keys>();
 
             AvailableWeapons = [new HomingWeapon(owner), new LaserWeapon(owner), new ShotgunWeapon(owner)];
@@ -27,7 +33,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             MapKeybinds(AvailableWeapons, keybinds);
 
-            SwitchWeapon(1);
+            SwitchWeapon(initialWeaponIndex, true);
         }
 
         public static void MapKeybinds(Weapon[] weapons, Keys[] keybinds)
@@ -39,10 +45,19 @@ namespace bullethellwhatever.Abilities.Weapons
                 Keybinds.Add(weapons[i], keybinds[i]);
             }
         }
-        public static void SwitchWeapon(int index)
+        public static void SwitchWeapon(int index, bool forceSwitch = false)
         {
-            ActiveWeapon = AvailableWeapons[index];
-            ActiveWeapon.Initialise();
+            // this code needs to be run at the start when the weapon is set to be initially zero. the override bool can be used here.
+
+            if (index != ActiveWeaponIndex || forceSwitch) // dont bother switching to the same weapon
+            {
+                LastWeaponIndex = ActiveWeaponIndex;
+                ActiveWeapon = AvailableWeapons[index];
+                ActiveWeaponIndex = index;
+                ActiveWeapon.Initialise();
+                WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
+                UIManager.PlayerHUD.BeginRotation();
+            }
         }
         public static void Update()
         {
@@ -58,6 +73,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     if (IsKeyPressed(Keybinds[AvailableWeapons[i]]))
                     {
                         SwitchWeapon(i);
+                        break; // to prevent multiple weapons being held at once and casuing issues
                     }
                 }
             }

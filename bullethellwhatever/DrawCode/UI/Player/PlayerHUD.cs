@@ -7,23 +7,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.Abilities.Weapons;
 
 namespace bullethellwhatever.DrawCode.UI.Player
 {
     public class PlayerHUD : UIElement
     {
-        public static float WeaponIconsRotationToAdd;
-        public static float PermanentIconRotation;
+        public static float WeaponHUDRotation;
+        public static float TotalAngleToRotate;
 
         public PlayerHUD(string texture, Vector2 size, Vector2 position) : base(texture, size, position)
         {
-
+            ResetHUD();
         }
 
         public void ResetHUD()
         {
-            PermanentIconRotation = 0;
-            WeaponIconsRotationToAdd = 0;
+            WeaponHUDRotation = 0;
+        }
+        public void BeginRotation()
+        {
+            int activeIndex = PlayerWeaponManager.ActiveWeaponIndex;
+            int lastIndex = PlayerWeaponManager.LastWeaponIndex;
+            int numberOfWeapons = PlayerWeaponManager.AvailableWeapons.Length;
+            // calculate the angle the weapon HUD should be at so that the currently selected weapon is at the top.
+
+            float targetAngle = activeIndex * Tau / 3f;
+
+            // calculate the signed "difference" between the current and previous weapons.
+            int differenceLeft = (activeIndex - lastIndex) % numberOfWeapons;
+            int differenceRight = (lastIndex - activeIndex) % numberOfWeapons;
+            int indexDifference = (int)Min(differenceLeft, differenceRight);
+
+            int rotationDirection = 0;
+
+            if (differenceLeft > differenceRight)
+            {
+                rotationDirection = -1;
+            }
+            else
+            {
+                rotationDirection = 1;
+            }
+
+            TotalAngleToRotate = rotationDirection * indexDifference * Tau / numberOfWeapons;
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            if (PlayerWeaponManager.WeaponSwitchCooldownTimer > 0)
+            {
+                WeaponHUDRotation += TotalAngleToRotate / PlayerWeaponManager.WeaponSwitchCooldown;
+            }
         }
         public override void Draw(SpriteBatch s)
         {
@@ -55,18 +92,13 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             //Drawing.BetterDraw(Assets["box"], iconRotationAxis, null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
 
-            float numberOfWeapons = 3;
+            float numberOfWeapons = PlayerWeaponManager.AvailableWeapons.Length;
 
             Vector2 iconSize = Vector2.One * 0.6f;
 
-            if (MainInstance.IsActive)
-            {
-                
-            }
-
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("HomingWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("MachineWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("LaserWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + PermanentIconRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("HomingWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("MachineWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            Drawing.BetterDraw(AssetRegistry.GetTexture2D("LaserWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
         }
     }
 }
