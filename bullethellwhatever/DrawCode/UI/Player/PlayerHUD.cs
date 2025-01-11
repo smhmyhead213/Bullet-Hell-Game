@@ -82,7 +82,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             float interpolant = 1f - (float)PlayerWeaponManager.WeaponSwitchCooldownTimer / PlayerWeaponManager.WeaponSwitchCooldown;
 
-            // decide on the smallest angle that will reach the target
+            // decide on the smallest angle that will reach the target (to do: minimise rotation)
 
             float smallestAngle = Utilities.SmallestAngleTo(lastWeaponAngle, activeWeaponAngle);
 
