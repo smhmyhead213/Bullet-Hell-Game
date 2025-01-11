@@ -91,7 +91,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Colour = Color.White;
         }
 
-        public override void Update()
+        public override void PostUpdate()
         {
             //Rotation = Rotation + PI / 60f;
             //if (this is CrabBossUpperArm)

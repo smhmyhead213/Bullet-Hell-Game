@@ -50,9 +50,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Index = index;
         }
 
-        public override void Update()
+        public override void PostUpdate()
         {
-            base.Update();
+            base.PostUpdate();
 
             if (Health <= 0)
             {               

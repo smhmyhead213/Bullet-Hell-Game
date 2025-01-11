@@ -158,9 +158,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
-        public override void Update()
+        public override void PostUpdate()
         {
-            base.Update();
+            base.PostUpdate();
 
             for (int i = 0; i < 2; i++)
             {

@@ -43,9 +43,9 @@ namespace bullethellwhatever.DrawCode
 
             this.SpawnProjectile(position, Vector2.Zero, 0f, 1, "box", Vector2.Zero, owner, false, Color.White, false, false);            
         }
-        public override void Update()
+        public override void PostUpdate()
         {
-            base.Update();
+            base.PostUpdate();
 
             Radius = Radius + ExpansionRate;
 

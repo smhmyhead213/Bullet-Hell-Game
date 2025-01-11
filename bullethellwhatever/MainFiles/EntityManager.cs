@@ -69,8 +69,6 @@ namespace bullethellwhatever.MainFiles
         {
             List<TelegraphLine> toRemove = new List<TelegraphLine>();
 
-            AddEntitiesNextFrame();
-
             player.AI();
             player.UpdateHitbox();
 
@@ -78,10 +76,11 @@ namespace bullethellwhatever.MainFiles
             {
                 for (int i = 0; i < npc.Updates; i++)
                 {
+                    npc.PreUpdate();
                     npc.AI();
                     npc.UpdateHitbox();
                     npc.CheckForHits();
-                    npc.Update();
+                    npc.PostUpdate();
                 }
 
                 foreach (TelegraphLine telegraphLine in npc.activeTelegraphs)
@@ -104,9 +103,10 @@ namespace bullethellwhatever.MainFiles
             foreach (Projectile projectile in activeProjectiles)
             {
                 for (int i = 0; i < projectile.Updates; i++)
-                {
+                { 
+                    projectile.PreUpdate();
                     projectile.AI();
-                    projectile.Update();
+                    projectile.PostUpdate();
                     projectile.UpdateHitbox();
                     projectile.CheckForHits();
                 }
@@ -132,8 +132,9 @@ namespace bullethellwhatever.MainFiles
             {
                 for (int i = 0; i < projectile.Updates; i++)
                 {
+                    projectile.PreUpdate();
                     projectile.AI();
-                    projectile.Update();
+                    projectile.PostUpdate();
                     projectile.UpdateHitbox();
                     projectile.CheckForHits();
                 }
@@ -155,14 +156,17 @@ namespace bullethellwhatever.MainFiles
 
             foreach (Particle p in activeParticles)
             {
+                p.PreUpdate();
                 p.AI();
-                p.Update();
+                p.PostUpdate();
             }
 
             foreach (Particle p in ParticlesToRemove)
             {
                 activeParticles.Remove(p);
             }
+
+            AddEntitiesNextFrame();
         }
 
         /// <summary>

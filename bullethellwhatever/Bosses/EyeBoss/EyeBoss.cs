@@ -81,7 +81,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 ChainLinks.Add(c);
             }
         }
-        public override void Update()
+        public override void PostUpdate()
         {
             float opacityRegenRate = 0.02f;
 
@@ -148,7 +148,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             Pupil.CalculatePosition();
 
-            base.Update();
+            base.PostUpdate();
         }
 
         public override void AI()

@@ -71,12 +71,23 @@ namespace bullethellwhatever.BaseClasses.Entities
         public List<Component> AdditionalComponents = new List<Component>();
         public abstract void AI();
 
-        public virtual void Update()
+        /// <summary>
+        /// An update that occurs BEFORE the AI runs.
+        /// </summary>
+        public virtual void PreUpdate()
         {
             foreach (Component component in AdditionalComponents)
             {
                 component.Update();
             }
+        }
+
+        /// <summary>
+        /// An update that occurs BEFORE the AI runs.
+        /// </summary>
+        public virtual void PostUpdate()
+        {
+
         }
 
         public void ClearExtraData()

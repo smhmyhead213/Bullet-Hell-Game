@@ -129,11 +129,11 @@ namespace bullethellwhatever.Projectiles
             }
         }
 
-        public override void Update()
+        public override void PostUpdate()
         {
             AITimer++;
 
-            base.Update();
+            base.PostUpdate();
 
             if (TouchingAnEdge())
             {

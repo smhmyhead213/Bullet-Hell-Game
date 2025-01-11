@@ -89,7 +89,7 @@ namespace bullethellwhatever.NPCs
             }
         }
 
-        public override void Update()
+        public override void PostUpdate()
         {
             if (IFrames > 0)
             {
@@ -100,7 +100,7 @@ namespace bullethellwhatever.NPCs
 
             AITimer++;
 
-            base.Update();
+            base.PostUpdate();
 
             Rotation = Rotation + RotationalVelocity;
 

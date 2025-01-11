@@ -42,9 +42,9 @@ namespace bullethellwhatever.DrawCode
             EntityManager.ParticlesToAdd.Add(this);
         }
 
-        public override void Update()
+        public override void PostUpdate()
         {
-            base.Update();
+            base.PostUpdate();
 
             AITimer++;
         }

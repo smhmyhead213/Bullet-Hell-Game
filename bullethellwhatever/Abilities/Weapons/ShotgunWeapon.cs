@@ -32,10 +32,10 @@ namespace bullethellwhatever.Abilities.Weapons
         public override void PrimaryFire()
         {
             float spreadAngle = PI / 3;
-            int projectiles = 5; // keep this an odd number
+            int projectiles = 3; // keep this an odd number
             float angleBetween = spreadAngle / projectiles;
             float damage = 1.3f;
-            float projectileSpeed = 30f;
+            float projectileSpeed = 30;
 
             Vector2 toMouse = MousePositionWithCamera() - Owner.Position;
             float startingAngle = Utilities.VectorToAngle(toMouse) - (projectiles / 2) * angleBetween;
@@ -47,15 +47,10 @@ namespace bullethellwhatever.Abilities.Weapons
                 Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
 
                 p.Rotation = firingAngle;
-                p.Opacity = 0f;
+                p.Opacity = 1f;
 
                 p.SetExtraAI(new Action(() =>
                 {
-                    if (p.Opacity < 1f)
-                    {
-                        p.Opacity += 0.1f;
-                    }
-
                     foreach (Projectile proj in EntityManager.activeFriendlyProjectiles)
                     {
                         if (proj.Label == EntityLabels.ShotgunAttractor)
