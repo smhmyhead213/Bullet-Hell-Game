@@ -37,6 +37,19 @@ namespace bullethellwhatever.DrawCode.UI.Player
             // calculate the signed "difference" between the current and previous weapons.
             int differenceLeft = (activeIndex - lastIndex) % numberOfWeapons;
             int differenceRight = (lastIndex - activeIndex) % numberOfWeapons;
+
+            // % in c# isn't the modulo operation, its the remainder. adding the number of weapons brings the difference into the range we want it.
+
+            if (differenceLeft < 0)
+            {
+                differenceLeft += numberOfWeapons;
+            }
+
+            if (differenceRight < 0)
+            {
+                differenceRight += numberOfWeapons;
+            }
+
             int indexDifference = (int)Min(differenceLeft, differenceRight);
 
             int rotationDirection = 0;
