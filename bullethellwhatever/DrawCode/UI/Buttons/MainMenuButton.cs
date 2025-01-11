@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.MainFiles;
+﻿using bullethellwhatever.Abilities.Weapons;
+using bullethellwhatever.MainFiles;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
         {
             base.HandleClick();
 
-            UIManager.ClearUI();
+            PlayerWeaponManager.Initialise(player);
+            UIManager.Initialise();
             EntityManager.Clear();
             GameState.SetGameState(GameState.GameStates.TitleScreen);
             player.Position = Utilities.PlayerMenuPosition();

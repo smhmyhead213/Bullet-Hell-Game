@@ -25,6 +25,9 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             int initialWeaponIndex = 0;
 
+            WeaponSwitchCooldown = 10;
+            WeaponSwitchCooldownTimer = 0;
+
             LastWeaponIndex = initialWeaponIndex;
             Keybinds = new Dictionary<Weapon, Keys>();
 
