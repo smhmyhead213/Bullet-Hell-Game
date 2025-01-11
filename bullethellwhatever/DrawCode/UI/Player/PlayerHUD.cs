@@ -86,7 +86,22 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             float smallestAngle = Utilities.SmallestAngleTo(lastWeaponAngle, activeWeaponAngle);
 
-            WeaponHUDRotation = MathHelper.LerpPrecise(lastWeaponAngle, activeWeaponAngle, EasingFunctions.EaseOutQuad(interpolant));
+            if (smallestAngle == activeWeaponAngle - lastWeaponAngle)
+            {
+                WeaponHUDRotation = MathHelper.LerpPrecise(lastWeaponAngle, activeWeaponAngle, EasingFunctions.EaseOutQuad(interpolant));
+            }
+            else
+            {
+                // if the difference is not the optimal angle, adjust the value to lerp towards
+                if (activeWeaponAngle < lastWeaponAngle)
+                {
+                    WeaponHUDRotation = MathHelper.LerpPrecise(lastWeaponAngle, activeWeaponAngle + Tau, EasingFunctions.EaseOutQuad(interpolant));
+                }
+                else
+                {
+                    WeaponHUDRotation = MathHelper.LerpPrecise(lastWeaponAngle + Tau, activeWeaponAngle, EasingFunctions.EaseOutQuad(interpolant));
+                }
+            }
         }
         public override void Draw(SpriteBatch s)
         {
