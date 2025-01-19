@@ -1,11 +1,8 @@
-﻿sampler mainTexture : register(s0);
+﻿sampler mainTexture;
 
-texture noiseMap;
+Texture2D<float4> noiseMap : register(t1);
 
-sampler2D noiseMapSampler = sampler_state // test in future if this works
-{
-    Texture = <noiseMap>;
-};
+SamplerState noiseMapSampler : register(s0);
 
 matrix WorldViewProjection;
 float uTime;
@@ -53,7 +50,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float opacity = 1 - 2 * distanceFromCenter;
     // amplify already bright areas and diminish everywhere else
     float scrollOffset = (scrollSpeed * uTime) % 1;
-    float4 sample = tex2D(noiseMapSampler, uv + float2(scrollOffset, scrollOffset));
+    float4 sample = noiseMap.Sample(noiseMapSampler, uv + float2(scrollOffset, scrollOffset));
     // controls the threshold above which to be bright
     float lenience = 0.9;
     float strength = pow(sample + lenience, 5) - 0.2;

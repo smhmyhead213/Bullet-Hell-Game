@@ -37,7 +37,7 @@ namespace bullethellwhatever.DrawCode
 
             if (Map is not null)
             {
-                SetParameter("noiseMap", Map.Texture);
+                //SetParameter("noiseMap", Map.Texture);
                 SetParameter("scrollSpeed", Map.ScrollSpeed);
             }
         }
@@ -57,7 +57,11 @@ namespace bullethellwhatever.DrawCode
 
         public void Apply(int pass = 0)
         {
-            //_graphics.GraphicsDevice.Textures[1] = Map.Texture;
+            if (Map is not null)
+            {
+                _graphics.GraphicsDevice.Textures[1] = Map.Texture;
+            }
+
             Effect.CurrentTechnique.Passes[pass].Apply();
         }
     }
