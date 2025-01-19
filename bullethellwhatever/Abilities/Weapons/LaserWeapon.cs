@@ -24,7 +24,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public int LaserDuration;
         public int Cooldown;
         public int CooldownTimer;
-        public LaserWeapon(Player player) : base(player)
+        public LaserWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             
         }

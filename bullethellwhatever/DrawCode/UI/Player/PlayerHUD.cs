@@ -133,13 +133,14 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             //Drawing.BetterDraw(Assets["box"], iconRotationAxis, null, Color.Red, 0, Vector2.One, SpriteEffects.None, 1);
 
-            float numberOfWeapons = PlayerWeaponManager.AvailableWeapons.Length;
-
             Vector2 iconSize = Vector2.One * 0.6f;
 
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("HomingWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 0 * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("MachineWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 1 * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
-            Drawing.BetterDraw(AssetRegistry.GetTexture2D("LaserWeaponIcon"), iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, 2 * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            int numberOfWeapons = PlayerWeaponManager.AvailableWeapons.Length;
+
+            for (int i = 0; i < numberOfWeapons; i++)
+            {
+                Drawing.BetterDraw(PlayerWeaponManager.AvailableWeapons[i].IconHUD, iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, i * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+            }
         }
     }
 }

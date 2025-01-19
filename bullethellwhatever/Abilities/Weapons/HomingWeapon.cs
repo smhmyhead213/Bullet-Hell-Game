@@ -3,6 +3,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.AssetManagement;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
 using System;
@@ -16,7 +17,7 @@ namespace bullethellwhatever.Abilities.Weapons
 {
     public class HomingWeapon : Weapon
     {
-        public HomingWeapon(Player player) : base(player)
+        public HomingWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             
         }

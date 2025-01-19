@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.AssetManagement;
+using bullethellwhatever.BaseClasses;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace bullethellwhatever.Abilities.Weapons
         public int PrimaryFireCoolDown;
         public int SecondaryFireCoolDown;
         public Player Owner;
+        public Texture2D IconHUD;
         public int AITimer;
-        public Weapon(Player player)
+        public Weapon(Player player, string iconTexture)
         {
             Owner = player;
+            IconHUD = AssetRegistry.GetTexture2D(iconTexture);
         }
         public abstract void WeaponInitialise();
         public void Initialise()

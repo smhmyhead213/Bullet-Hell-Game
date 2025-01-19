@@ -9,12 +9,13 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
     public class ShotgunWeapon : Weapon
     {
-        public ShotgunWeapon(Player player) : base(player)
+        public ShotgunWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
 
         }

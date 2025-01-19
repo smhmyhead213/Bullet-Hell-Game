@@ -31,7 +31,7 @@ namespace bullethellwhatever.Abilities.Weapons
             LastWeaponIndex = initialWeaponIndex;
             Keybinds = new Dictionary<Weapon, Keys>();
 
-            AvailableWeapons = [new HomingWeapon(owner), new LaserWeapon(owner), new ShotgunWeapon(owner)];
+            AvailableWeapons = [new HomingWeapon(owner, "HomingWeaponIcon"), new LaserWeapon(owner, "LaserWeaponIcon"), new ShotgunWeapon(owner, "MachineWeaponIcon")];
             Keys[] keybinds = [Keys.D1, Keys.D2, Keys.D3];
 
             MapKeybinds(AvailableWeapons, keybinds);

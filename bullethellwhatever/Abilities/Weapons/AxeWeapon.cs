@@ -11,7 +11,7 @@ namespace bullethellwhatever.Abilities.Weapons
 {
     public class AxeWeapon : Weapon
     {
-        public AxeWeapon(Player owner) : base(owner)
+        public AxeWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             
         }
