@@ -111,6 +111,8 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void DrawUI(SpriteBatch spriteBatch)
         {
+            _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
+
             PlayerHUD.Draw(spriteBatch);
 
             foreach (UIElement element in ActiveUIElements)

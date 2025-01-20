@@ -20,8 +20,6 @@ namespace bullethellwhatever.DrawCode
     {
         public static void DrawTheGame(GameTime gameTime, SpriteBatch s)
         {
-            _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
-
             Drawing.HandleScreenShake();
 
             DialogueSystem.DrawDialogues(s);
@@ -86,6 +84,11 @@ namespace bullethellwhatever.DrawCode
             }
 
             // ------------------------------------------------------------------------------------------------------
+
+            foreach (Particle p in ParticlesToDrawWithoutShader)
+            {
+                p.Draw(_spriteBatch);
+            }
 
             foreach (Entity entity in FriendlyProjectilesToDrawWithoutShader)
             {
@@ -155,11 +158,6 @@ namespace bullethellwhatever.DrawCode
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {
                 entity.Draw(Main._spriteBatch);
-            }
-
-            foreach (Particle p in ParticlesToDrawWithoutShader)
-            {
-                p.Draw(_spriteBatch);
             }
 
             foreach (NPC npc in EntityManager.activeNPCs)

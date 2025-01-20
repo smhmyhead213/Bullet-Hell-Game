@@ -175,9 +175,8 @@ namespace bullethellwhatever.MainFiles
                     break;
             }
 
-            UIManager.DrawUI(_spriteBatch);
-
             DrawGame.DrawTheGame(gameTime, _spriteBatch);
+            UIManager.DrawUI(_spriteBatch);
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Viewport = ScreenViewport;

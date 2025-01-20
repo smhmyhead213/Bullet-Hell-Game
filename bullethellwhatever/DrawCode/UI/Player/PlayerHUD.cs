@@ -105,7 +105,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
         }
         public override void Draw(SpriteBatch s)
         {
-            Drawing.RestartSpriteBatchForShaders(s, false);
+            Drawing.RestartSpriteBatchForShaders(s, false, false);
 
             RotatedRectangle hudBox = new RotatedRectangle(0, Texture.Width, Texture.Height, Position, player);
 

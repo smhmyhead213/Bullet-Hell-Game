@@ -37,7 +37,7 @@ namespace bullethellwhatever.DrawCode
                 ScreenShakeTimer--;
             }
         }
-        public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera)
+        public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera, bool endSB = true)
         {
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);

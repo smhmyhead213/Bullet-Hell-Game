@@ -284,7 +284,7 @@ namespace bullethellwhatever.Projectiles.Base
 
                 Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); // Scale the beam up to the required width and length.
 
-                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f); 
+                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
 
                 spritebatch.Draw(Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
             }

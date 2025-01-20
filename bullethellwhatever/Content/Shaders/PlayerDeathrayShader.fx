@@ -1,6 +1,6 @@
 ﻿sampler mainTexture;
 
-SamplerState noiseMap : register(s1);
+sampler noiseMap : register(s1);
 
 matrix WorldViewProjection;
 float uTime;
@@ -41,8 +41,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
-    float2 uv = input.TextureCoordinates + dummy;
+    //float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
+    float2 uv = input.TextureCoordinates;
     
     float distanceFromCenter = abs(0.5 - uv.x);
     float opacity = 1 - 2 * distanceFromCenter;
@@ -52,15 +52,15 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     // controls the threshold above which to be bright
     float lenience = 0.9;
     float strength = pow(sample + lenience, 5) - 0.2;
-    //return sample;
-    return float4(colour, 1) * strength * opacity;
+    return sample;
+    //return float4(colour, 1) * strength * opacity;
 }
 
 Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 VertexShaderFunction();
+        //VertexShader = compile vs_4_0 MainVS();
         PixelShader = compile ps_4_0 MainPS();
         
     }
