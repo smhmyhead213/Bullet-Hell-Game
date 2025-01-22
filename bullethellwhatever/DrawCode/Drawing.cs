@@ -64,6 +64,10 @@ namespace bullethellwhatever.DrawCode
 
             _spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, finalOrigin, scale, spriteEffects, layerDepth);
         }
+        public static void BetterDraw(string texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
+        {
+            BetterDraw(AssetRegistry.GetTexture2D(texture), position, sourceRectangle, color, rotation, scale, spriteEffects, layerDepth, origin);
+        }
         public static void BetterDraw(ManagedTexture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {
             BetterDraw(texture.Asset, position, sourceRectangle, color, rotation, scale, spriteEffects, layerDepth, origin);

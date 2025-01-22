@@ -150,6 +150,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationToAdd = RotationToAdd + angle;
         }
 
+        /// <summary>
+        /// Makes this appendage point in the same direction as the previous. The upper arm will point in the same direction as the boss.
+        /// </summary>
+        public void PointForwards()
+        {
+            // fill this in later i guess
+        }
         public override void UpdateHitbox()
         {
             Vector2 centre = Vector2.Lerp(Position, CalculateEnd(), 0.5f); // centre is halfway along arm
@@ -165,7 +172,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public float CalculateFinalRotation()
         {
-            if (!((CrabBoss)Owner).StartedPhaseTwoTransition)
+            if (!((CrabBoss)Owner).StartedPhaseTwoTransition) // this is definitely going to cause problems
                 return Owner.Rotation + RotationConstant + RotationToAdd;
 
             else return RotationConstant + RotationToAdd; // if arms are detached, dont make arms rotate with body
@@ -179,6 +186,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override bool ConsideredForCameraZoom()
         {
             return false;
+        }
+
+        public float Length()
+        {
+            return Texture.Height * GetSize().Y;
         }
         public void HandleBounces()
         {

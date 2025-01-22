@@ -61,19 +61,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Dead = false;
         }
-
-        public void MoveToPoint(Vector2 point, int movementTimer, int duration)
-        {
-            Vector2 vectorToPoint = point - Position;
-            float distanceToTravel = vectorToPoint.Length();
-
-            // top 5 integration moments
-            Owner.Velocity = Utilities.SafeNormalise(vectorToPoint, Vector2.Zero) * (2f * PI * distanceToTravel / duration) * Sin(PI * movementTimer / duration);
-        }
-
         public float Length()
         {
-            return UpperArm.Texture.Height * UpperArm.GetSize().Y + LowerArm.Texture.Height * LowerArm.GetSize().Y + UpperClaw.Texture.Height * UpperClaw.GetSize().Y + LowerClaw.Texture.Height * LowerClaw.GetSize().Y;
+            return UpperArm.Length() + LowerArm.Length() + UpperClaw.Length();
         }
         public void ResetRotations()
         {

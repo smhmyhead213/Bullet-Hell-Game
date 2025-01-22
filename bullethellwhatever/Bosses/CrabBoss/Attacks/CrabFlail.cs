@@ -185,16 +185,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             int rng = Utilities.RandomInt(1, 2);
 
-            switch (rng)
+            return rng switch
             {
-                case 1:
-                    return new CrabPunch(CrabOwner);
-                case 2:
-                    return new CrabBombThrow(CrabOwner);
-            }
-
-            // idk how this would get reached but whatever
-            return new CrabPunch(CrabOwner);
+                1 => new CrabPunch(CrabOwner),
+                2 => new CrabBombThrow(CrabOwner),
+                // idk how this would get reached but whatever
+                _ => new CrabPunch(CrabOwner),
+            };
         }
     }
 }
