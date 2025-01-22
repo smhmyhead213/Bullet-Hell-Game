@@ -114,6 +114,14 @@ namespace bullethellwhatever.BaseClasses
             ActiveWeapon = weapon;
             WeaponSwitchCooldownTimer = WeaponSwitchCooldown;
         }
+
+        public void RotateBasedOnDirection()
+        {
+            float angleTo = Utilities.SmallestAngleTo(Rotation, Utilities.VectorToAngle(Velocity));
+
+            Rotation += angleTo;
+        }
+
         public void HandleKeyPresses()
         {
             var mouseState = Mouse.GetState();
@@ -227,6 +235,8 @@ namespace bullethellwhatever.BaseClasses
             PlayerWeaponManager.Update();
 
             Position = Position + Velocity;
+
+            RotateBasedOnDirection();
 
             foreach (Component component in AdditionalComponents)
             {

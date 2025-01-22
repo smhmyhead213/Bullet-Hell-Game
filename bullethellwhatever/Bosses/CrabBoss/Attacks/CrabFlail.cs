@@ -107,11 +107,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 }));
             }
 
-            // revisit movement formula and add projectile barfing
             if (AITimer > accelerateTime + chargeTime && AITimer <= accelerateTime + chargeTime + slowDownTime)
             {
                 int localTime = AITimer - (accelerateTime + chargeTime);
-                float interpolant = 1 - EasingFunctions.EaseOutExpo(localTime / (float)slowDownTime);
+                float slowDownScale = 0.7f; // control how close to a stop the boss gets
+                float interpolant = 1 - slowDownScale * EasingFunctions.EaseOutExpo(localTime / (float)slowDownTime);
 
                 Owner.Velocity = maxChargeSpeed * interpolant * Utilities.SafeNormalise(Owner.Velocity);
 
