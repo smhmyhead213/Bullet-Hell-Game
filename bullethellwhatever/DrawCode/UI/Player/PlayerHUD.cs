@@ -28,6 +28,8 @@ namespace bullethellwhatever.DrawCode.UI.Player
         }
         public void BeginRotation()
         {
+            // this code is useless at the moment 
+
             int activeIndex = PlayerWeaponManager.ActiveWeaponIndex;
             int lastIndex = PlayerWeaponManager.LastWeaponIndex;
             int numberOfWeapons = PlayerWeaponManager.AvailableWeapons.Length;
@@ -139,7 +141,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             for (int i = 0; i < numberOfWeapons; i++)
             {
-                Drawing.BetterDraw(PlayerWeaponManager.AvailableWeapons[i].IconHUD, iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, i * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
+                Drawing.BetterDraw(PlayerWeaponManager.AvailableWeapons[i].IconHUD, iconRotationAxis + Utilities.RotateVectorClockwise(drawDistanceFromCentre, -i * Tau / numberOfWeapons + WeaponHUDRotation), null, Color.White * opacity, 0, iconSize, SpriteEffects.None, 1);
             }
         }
     }
