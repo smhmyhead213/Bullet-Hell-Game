@@ -33,19 +33,26 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public bool DeathAnimation;
 
-        public CrabLeg(Vector2 position, CrabBoss owner, int legIndex)
+        public CrabLeg(Vector2 position, CrabBoss owner, int legIndex, float scale = 1)
         {
             LegParts = new CrabBossAppendage[4];
             Owner = owner;
 
-            LegParts[0] = new CrabBossAppendage(Owner, this, AppendageType.UpperArm, legIndex);
+            LegParts[0] = new CrabBossAppendage(Owner, this, AppendageType.UpperArm, legIndex, scale);
             UpperArm.SetMaxHP(50f, true);
-            LegParts[1] = new CrabBossAppendage(Owner, this, AppendageType.LowerArm, legIndex);
+            UpperArm.BehindThis = Owner;
+
+            LegParts[1] = new CrabBossAppendage(Owner, this, AppendageType.LowerArm, legIndex, scale);
             LowerArm.SetMaxHP(35f, true);
-            LegParts[2] = new CrabBossAppendage(Owner, this, AppendageType.UpperClaw, legIndex);
+            LowerArm.BehindThis = UpperArm;
+
+            LegParts[2] = new CrabBossAppendage(Owner, this, AppendageType.UpperClaw, legIndex, scale);
             UpperClaw.SetMaxHP(20f, true);
-            LegParts[3] = new CrabBossAppendage(Owner, this, AppendageType.LowerClaw, legIndex);
+            UpperClaw.BehindThis = LowerArm;
+
+            LegParts[3] = new CrabBossAppendage(Owner, this, AppendageType.LowerClaw, legIndex, scale);
             LowerClaw.SetMaxHP(20f, true);
+            LowerClaw.BehindThis = LowerArm;
 
             HorizontalFlip = false;
 
@@ -131,6 +138,59 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return UpperArm.Health + LowerArm.Health + UpperClaw.Health + LowerClaw.Health;
         }
+
+        /// <summary>
+        /// Solves IK to make the arm attempt to touch a certain point. If the point is longer than the arm's length, attempts to point the arm fully stretched in the direction of the target.
+        /// </summary>
+        /// <param name="targetPosition"></param>
+        public void TouchPoint(Vector2 targetPosition)
+        {
+            // decide how far to stretch arms. the length includes the claw but the following claculations ignore it, this will be the source of any issues where the claws lie past the target position.
+            float upperArmLength = UpperArm.Length();
+            float lowerArmLength = LowerArm.Length();
+
+            float lengthOfLeg = upperArmLength + lowerArmLength;
+
+            // decide on a target. if the target it out of reach, choose a new target in the same direction that's reachable
+            
+            Vector2 direction = Utilities.SafeNormalise(targetPosition - Position);
+
+            if (Utilities.DistanceBetweenVectors(Position, targetPosition) > lengthOfLeg)
+            {
+                // get the direction vector               
+                targetPosition = Position + lengthOfLeg * direction;
+            }
+
+            // when the floating point is imprecise!!!!!!!
+            float distance = Utilities.DistanceBetweenVectors(Position, targetPosition);
+            float frac = distance % 1;
+
+            if (frac < 0.0001 || frac > 0.999) // prevent NaN errors from imprecision
+            {
+                distance = Round(distance);
+            }
+
+            // cosine rule
+            float upperArmSquared = Pow(upperArmLength, 2);
+            float lowerArmSquared = Pow(lowerArmLength, 2);
+            float distanceSquared = Pow(distance, 2);
+
+            float upperArmAngle = Acos((upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance));
+
+            int expandedi = -Utilities.ExpandedIndex(LegIndex);
+
+            // direction of rotation should be opposite for each arm
+            Vector2 elbowPos = Position + Utilities.RotateVectorClockwise(direction * upperArmLength, expandedi * upperArmAngle);
+
+            UpperArm.PointInDirection(Utilities.VectorToAngle(elbowPos - Position));
+
+            float lowerArmRotation = Utilities.VectorToAngle(targetPosition - elbowPos);
+
+            LowerArm.PointInDirection(lowerArmRotation);
+            LowerClaw.PointInDirection(lowerArmRotation);
+            UpperClaw.PointInDirection(lowerArmRotation);
+        }
+
         public void Update()
         {
             if (Owner.LockArmPositions)

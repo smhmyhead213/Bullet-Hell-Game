@@ -31,6 +31,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Entity Owner;
 
+        public Entity BehindThis;
+
         public int LegIndex;
 
         public float RotationConstant;
@@ -38,7 +40,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float RotationToAdd;
 
         public float Gravity;
-        public CrabBossAppendage(Entity owner, CrabLeg leg, AppendageType appendageType, int legIndex)
+        public CrabBossAppendage(Entity owner, CrabLeg leg, AppendageType appendageType, int legIndex, float scale = 1f)
         {
             Owner = owner;
             Leg = leg;
@@ -71,7 +73,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Texture = AssetRegistry.GetTexture2D(texture);
-            Size = Vector2.One;
+            Size = Vector2.One * scale;
             IsHarmful = true;
             Damage = 1f;
 
@@ -151,11 +153,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
 
         /// <summary>
-        /// Makes this appendage point in the same direction as the previous. The upper arm will point in the same direction as the boss.
+        /// Makes this appendage point in the same direction as the previous offset by an angle. The upper arm will point in the same direction as the boss.
         /// </summary>
-        public void PointForwards()
+        public void PointFromForward(float angle)
         {
-            // fill this in later i guess
+            if (Type == AppendageType.UpperArm)
+            {
+                PointInDirection(BehindThis.Rotation + PI + angle); // the entity behind this is the crab body
+            }
+            else
+            {
+                PointInDirection(((CrabBossAppendage)BehindThis).RotationFromV() + angle);
+            }         
         }
         public override void UpdateHitbox()
         {

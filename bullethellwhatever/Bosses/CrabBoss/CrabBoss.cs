@@ -38,7 +38,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
-            Size = Vector2.One * 1.5f;
+
+            float scaleFactor = 1.8f;
+
+            Size = Vector2.One * scaleFactor;
             Position = Utilities.CentreWithCamera() - new Vector2(0f, GameHeight / 4f);
             MaxHP = 400f;
 
@@ -64,7 +67,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 pos = CalculateArmPostions(expandedi);
 
-                Legs[i] = new CrabLeg(pos, this, i);
+                Legs[i] = new CrabLeg(pos, this, i, scaleFactor);
 
                 ArmPositionsOnBody[i] = pos;
 
@@ -118,15 +121,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void AI()
         {
-            if (CurrentAttack is CrabPunch)
-            {
-                //Colour = Color.Pink;
-            }
-            else
-            {
-                Colour = Color.White;
-            }
-
             if (!PlayerSaidOpeningDialogue)
             {
                 PlayerSaidOpeningDialogue = true;
