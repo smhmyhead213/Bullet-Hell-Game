@@ -40,6 +40,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Texture = AssetRegistry.GetTexture2D("CrabBody");
 
             float scaleFactor = 1.8f;
+            float bodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
 
             Size = Vector2.One * scaleFactor;
             Position = Utilities.CentreWithCamera() - new Vector2(0f, GameHeight / 4f);
@@ -67,7 +68,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 pos = CalculateArmPostions(expandedi);
 
-                Legs[i] = new CrabLeg(pos, this, i, scaleFactor);
+                Legs[i] = new CrabLeg(pos, this, i, scaleFactor / bodyToArmSizeRatio);
 
                 ArmPositionsOnBody[i] = pos;
 
@@ -83,7 +84,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             }
 
-            CurrentAttack = new CrabLaser(this);
+            CurrentAttack = new CrabIntro(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
@@ -94,7 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
-            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 1.4f, Texture.Height / 2.54f), Rotation);
+            return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width * GetSize().X / 2.1f, Texture.Height * GetSize().Y / 3.6f), Rotation);
         }
         public Vector2 CalculateArmPostions(int expandedi)
         {
