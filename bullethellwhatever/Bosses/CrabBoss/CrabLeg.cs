@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Threading.Tasks;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
+using System.Diagnostics;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -161,13 +162,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 targetPosition = Position + lengthOfLeg * direction;
             }
 
-            // when the floating point is imprecise!!!!!!!
+            // the distance between the start of the arm and the target
             float distance = Utilities.DistanceBetweenVectors(Position, targetPosition);
-            float frac = distance % 1;
 
-            if (frac < 0.0001 || frac > 0.999) // prevent NaN errors from imprecision
+            if (distance > lengthOfLeg)
             {
-                distance = Round(distance);
+                distance = lengthOfLeg;
+            }
+
+            // check that triangle inequality is not violated
+
+            if (upperArmLength - lowerArmLength > distance)
+            {
+                distance = upperArmLength - lowerArmLength;
             }
 
             // cosine rule
@@ -176,6 +183,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float distanceSquared = Pow(distance, 2);
 
             float upperArmAngle = Acos((upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance));
+
+            Debug.Assert(!float.IsNaN(upperArmAngle));
 
             int expandedi = -Utilities.ExpandedIndex(LegIndex);
 
