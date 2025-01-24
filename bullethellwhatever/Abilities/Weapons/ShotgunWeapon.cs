@@ -52,7 +52,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 p.Rotation = firingAngle;
                 p.Opacity = 1f;
 
-                p.AddTrail(14);
+                //p.AddTrail(14);
             }
         }
 
@@ -68,6 +68,12 @@ namespace bullethellwhatever.Abilities.Weapons
             p.SetExtraAI(new Action(() =>
             {
                 p.Velocity *= 0.99f;
+
+                if (p.Velocity.Length() < 0.1f)
+                {
+                    p.Velocity = Vector2.Zero;
+                }
+
             }));
         }
     }
