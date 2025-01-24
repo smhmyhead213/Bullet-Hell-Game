@@ -101,6 +101,9 @@ namespace bullethellwhatever.MainFiles
 
             toRemove.Clear(); // we can just reuse this list
 
+            // check for collisions after doing smaller velocity steps
+            int steps = 7;
+
             foreach (Projectile projectile in activeProjectiles)
             {
                 for (int i = 0; i < projectile.Updates; i++)
@@ -108,8 +111,8 @@ namespace bullethellwhatever.MainFiles
                     projectile.PreUpdate();
                     projectile.AI();
                     projectile.PostUpdate();
-                    projectile.UpdateHitbox();
-                    projectile.CheckForHits();
+
+                    projectile.UpdateAndCheckHits();
                 }
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
@@ -136,8 +139,8 @@ namespace bullethellwhatever.MainFiles
                     projectile.PreUpdate();
                     projectile.AI();
                     projectile.PostUpdate();
-                    projectile.UpdateHitbox();
-                    projectile.CheckForHits();
+
+                    projectile.UpdateAndCheckHits();
                 }
 
                 foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)

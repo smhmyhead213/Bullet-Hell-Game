@@ -39,10 +39,11 @@ namespace bullethellwhatever.Abilities.Weapons
                 if (CollidedWith(reflector))
                 {
                     Damage *= 1.1f;
+                    ReflectorsHit.Add(reflector);
 
                     if (foundReflectors.Count > 1)
                     {
-                        Projectile closestReflector = EntityManager.ClosestProjectile(foundReflectors, Position, (Projectile p) => p != reflector);
+                        Projectile closestReflector = EntityManager.ClosestProjectile(foundReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
 
                         Velocity = Velocity.Length() * 1.2f * Utilities.SafeNormalise(closestReflector.Position - Position);
                     }

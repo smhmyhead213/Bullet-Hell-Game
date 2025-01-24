@@ -52,7 +52,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 p.Rotation = firingAngle;
                 p.Opacity = 1f;
 
-                //p.AddTrail(14);
+                p.AddTrail(14);
             }
         }
 

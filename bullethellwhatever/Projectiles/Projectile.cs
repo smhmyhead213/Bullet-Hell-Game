@@ -151,9 +151,6 @@ namespace bullethellwhatever.Projectiles
                 ExtraAI();
             }
 
-            // move to update to make overriding ai easier?
-            Position = Position + Velocity;
-
             AITimer++;
 
             base.PostUpdate();
@@ -185,6 +182,21 @@ namespace bullethellwhatever.Projectiles
             }
         }
 
+        /// <summary>
+        /// Updates the position of the projectile based on its velocity. This can be subdivided so that multiple collision checks can be done in one frame to prevent skipping.
+        /// </summary>
+        /// <param name="progress"></param>
+        public void UpdatePosition(float progress)
+        {
+            Position = Position + progress * Velocity;
+        }
+
+        public void UpdateAndCheckHits()
+        {
+            UpdatePosition(1f);
+            UpdateHitbox();
+            CheckForHits(); 
+        }
         public override void Die()
         {
             if (Owner is not Player) // avoid visual vomit by not doing this if player owned
