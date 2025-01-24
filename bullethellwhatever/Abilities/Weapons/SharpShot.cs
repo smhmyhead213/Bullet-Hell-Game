@@ -41,7 +41,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     Damage *= 1.1f;
                     ReflectorsHit.Add(reflector);
 
-                    if (foundReflectors.Count > 1)
+                    if (ReflectorsHit.Count < foundReflectors.Count)
                     {
                         Projectile closestReflector = EntityManager.ClosestProjectile(foundReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
 
