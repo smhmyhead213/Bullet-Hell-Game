@@ -321,6 +321,11 @@ namespace bullethellwhatever.Projectiles
             else return new Collision(Vector2.Zero, false);
         }
 
+        public virtual bool CollidedWith(Entity entity)
+        {
+            return CollisionWithEntity(entity).Collided;
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);

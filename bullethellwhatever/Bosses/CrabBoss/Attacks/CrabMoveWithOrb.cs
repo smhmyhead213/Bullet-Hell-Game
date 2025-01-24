@@ -38,7 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     Vector2 finalSize = Vector2.One * (float)projectilesFinalWidth / box.Width;
 
-                    Projectile orb = SpawnProjectile(projectileLocation, Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.White, false, false);
+                    Projectile orb = SpawnProjectile<Projectile>(projectileLocation, Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.White, false, false);
 
                     int locali = i;
 
@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         if (orb.AITimer > timeAfterOrbSpawnToStartFiringProjectiles && orb.AITimer % 10 == 0)
                         {
                             float shootAngle = Utilities.RandomAngle();
-                            Projectile p = SpawnProjectile(orb.Position, 5f * Utilities.AngleToVector(shootAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                            Projectile p = SpawnProjectile<Projectile>(orb.Position, 5f * Utilities.AngleToVector(shootAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                             p.Rotation = shootAngle;
                             p.AddTrail(20);
 

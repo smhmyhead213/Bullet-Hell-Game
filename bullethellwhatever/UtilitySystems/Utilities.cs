@@ -11,6 +11,8 @@ using System.IO;
 using System.Security.Cryptography.Xml;
 using System.Diagnostics;
 using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.Projectiles;
 
 namespace bullethellwhatever
 {

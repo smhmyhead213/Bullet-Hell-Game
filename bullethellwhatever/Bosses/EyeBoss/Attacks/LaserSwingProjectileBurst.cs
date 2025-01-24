@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 float projSpeed = 0.9f;
 
-                                Projectile p = SpawnProjectile(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
+                                Projectile p = SpawnProjectile<Projectile>(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
 
                                 p.AddTrail(50);
 

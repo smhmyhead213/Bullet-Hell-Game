@@ -22,7 +22,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public override void WeaponInitialise()
         {
             PrimaryFireCoolDownDuration = 60;
-            SecondaryFireCoolDown = 120;
+            SecondaryFireCoolDownDuration = 120;
         }
 
         public override void AI()
@@ -33,7 +33,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public override void PrimaryFire()
         {
             float spreadAngle = PI / 3;
-            int projectiles = 3; // keep this an odd number
+            int projectiles = 1; // keep this an odd number
             float angleBetween = spreadAngle / projectiles;
             float damage = 1.3f;
             float projectileSpeed = 30;
@@ -45,32 +45,12 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 float firingAngle = startingAngle + i * angleBetween;
 
-                Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
+                SharpShot p = SpawnProjectile<SharpShot>(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
 
                 p.Label = EntityLabels.SharpShot;
 
                 p.Rotation = firingAngle;
                 p.Opacity = 1f;
-
-                p.SetExtraAI(new Action(() =>
-                {
-                    foreach (Projectile other in EntityManager.activeFriendlyProjectiles)
-                    {
-                        ref float TimeWithNoTarget = ref p.ExtraData[0];
-
-                        if (other.Label == EntityLabels.SharpShotReflector)
-                        {
-                            if (p.IsCollidingWith(other))
-                            {
-                                p.InstantlyDie();
-                            }
-
-                            p.Velocity = projectileSpeed * Utilities.SafeNormalise(other.Position - p.Position);
-
-                            break;
-                        }                       
-                    }
-                }));
 
                 p.AddTrail(14);
             }
@@ -81,16 +61,13 @@ namespace bullethellwhatever.Abilities.Weapons
             float projectileSpeed = 5f;
             float damage = 0.1f;
 
-            Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, true, true);
+            Projectile p = SpawnProjectile<Projectile>(Owner.Position, projectileSpeed * Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, true, true);
 
             p.Label = EntityLabels.SharpShotReflector;
 
             p.SetExtraAI(new Action(() =>
             {
-                if (p.ExtraData[0] == 5f)
-                {
-                    p.Die();
-                }
+                p.Velocity *= 0.99f;
             }));
         }
     }

@@ -131,7 +131,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 for (int i = 0; i < 2; i++)
                 {
-                    Projectile p = SpawnProjectile(Pupil.Position, Vector2.Zero, 1f, 1, "box", Vector2.One, Pupil, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile<Projectile>(Pupil.Position, Vector2.Zero, 1f, 1, "box", Vector2.One, Pupil, true, Color.Red, true, false);
 
                     float horizontalSpeed = 15f;
                     float verticalSpeedAmplitude = 30f;

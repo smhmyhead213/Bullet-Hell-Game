@@ -11,6 +11,7 @@ using bullethellwhatever.Bosses.CrabBoss;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
+using System;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -103,7 +104,7 @@ namespace bullethellwhatever.MainFiles
             foreach (Projectile projectile in activeProjectiles)
             {
                 for (int i = 0; i < projectile.Updates; i++)
-                { 
+                {
                     projectile.PreUpdate();
                     projectile.AI();
                     projectile.PostUpdate();
@@ -214,5 +215,59 @@ namespace bullethellwhatever.MainFiles
             toSpawn.Spawn(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture.Name, toSpawn.Size, toSpawn.Health, 200, toSpawn.Colour, false, true);
         }
 
+        public static NPC ClosestNPC(Vector2 point, Predicate<NPC> predicate)
+        {
+            NPC closestNPC = new NPC(); //the target
+            float minDistance = float.MaxValue;
+
+            if (activeNPCs.Count > 0)
+            {
+                foreach (NPC npc in activeNPCs)
+                {
+                    if (predicate(npc))
+                    {
+                        float distance = (point - npc.Position).Length();
+                        if (distance < minDistance)
+                        {
+                            minDistance = distance;
+                            closestNPC = npc;
+                        }
+                    }
+                }
+
+                return closestNPC;
+            }
+
+            else return null;
+        }
+        public static Projectile ClosestProjectile(List<Projectile> projList, Vector2 point, Func<Projectile, bool> predicate)
+        {
+            Projectile closestProj = new Projectile(); //the target
+            float minDistance = float.MaxValue;
+
+            if (projList.Count > 0)
+            {
+                foreach (Projectile proj in projList)
+                {
+                    if (predicate(proj))
+                    {
+                        float distance = (point - proj.Position).Length();
+                        if (distance < minDistance)
+                        {
+                            minDistance = distance;
+                            closestProj = proj;
+                        }
+                    }
+                }
+
+                return closestProj;
+            }
+
+            else return null;
+        }
+        public static NPC ClosestTargetableNPC(Vector2 point)
+        {
+            return ClosestNPC(point, (NPC npc) => npc.TargetableByHoming && npc.Participating);
+        }
     }
 }

@@ -17,10 +17,18 @@ namespace bullethellwhatever.Projectiles
 {
     public static class CommonProjectileMethods
     {
-
         public static Projectile SpawnProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Projectile proj = new Projectile();
+
+            proj.SpawnProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+
+            return proj;
+        }
+
+        public static T SpawnProjectile<T>(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit) where T : Projectile, new()
+        {
+            T proj = new T();
 
             proj.SpawnProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
@@ -37,7 +45,7 @@ namespace bullethellwhatever.Projectiles
             for (int i = 0; i < numberOfProjectiles; i++)
             {
                 // change the texture used here once ManagedTexture is implemented
-                Projectile p = SpawnProjectile(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Size,
+                Projectile p = SpawnProjectile<Projectile>(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Size,
                     projectile.Owner, projectile.IsHarmful, projectile.Colour, projectile.ShouldRemoveOnEdgeTouch, projectile.RemoveOnHit);
 
                 p.Texture = projectile.Texture;

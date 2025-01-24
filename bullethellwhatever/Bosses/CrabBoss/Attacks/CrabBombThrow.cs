@@ -35,7 +35,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Position - player.Position) * jumpBackSpeed;
 
-                Projectile bomb = SpawnProjectile(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, false, false);
+                Projectile bomb = SpawnProjectile<Projectile>(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, Color.Red, false, false);
 
                 Action bombExplode = new Action(() =>
                 {
@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     for (int i = 0; i < numberOfProjectiles; i++)
                     {
                         float angle = Tau / numberOfProjectiles * i;
-                        Projectile p = SpawnProjectile(bomb.Position, 0.1f * Utilities.AngleToVector(angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                        Projectile p = SpawnProjectile<Projectile>(bomb.Position, 0.1f * Utilities.AngleToVector(angle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
 
                         p.AddTrail(22);
                         p.Rotation = angle;
