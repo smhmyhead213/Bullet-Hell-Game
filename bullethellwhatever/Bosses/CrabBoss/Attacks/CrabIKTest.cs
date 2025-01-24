@@ -23,7 +23,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            foreach (CrabLeg leg in CrabOwner.Legs)
+            foreach (CrabArm leg in CrabOwner.Arms)
             {
                 Vector2 targetPosition = leg.Position + 1f * (MousePositionWithCamera() - leg.Position); // change this to make bend testing easier
                 leg.TouchPoint(targetPosition);

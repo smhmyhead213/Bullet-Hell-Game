@@ -38,9 +38,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return (int)Owner.ExtraData[0];
         }
-        public CrabLeg ChosenArm()
+        public CrabArm ChosenArm()
         {
-            return Leg((int)Owner.ExtraData[0]);
+            return Arm((int)Owner.ExtraData[0]);
         }
 
         // time should be from 0 to durationTotal
@@ -49,12 +49,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float angleNextFrame = totalAngle * easing((time + 1) / (float)durationTotal);
             float angleThisFrame = totalAngle * easing(time / (float)durationTotal);
 
-            CrabOwner.Legs[index].RotateLeg(angleNextFrame - angleThisFrame);
+            CrabOwner.Arms[index].RotateLeg(angleNextFrame - angleThisFrame);
         }
         public void RotateArmD(int index, float totalAngle, int time, int durationTotal, Func<double, double> easing)
         {
             float rotationalVelocity = totalAngle * Utilities.DerivativeOfFunctionAtTime(easing, (double)time / durationTotal) * (1f / (durationTotal + 1)); // summing up derivatives so we need a dt term
-            CrabOwner.Legs[index].RotateLeg(rotationalVelocity);
+            CrabOwner.Arms[index].RotateLeg(rotationalVelocity);
         }
         public override void HandleBounces()
         {
@@ -92,9 +92,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Owner.Velocity.Y = Owner.Velocity.Y * -1f;
             }
         }
-        public CrabLeg Leg(int index)
+        public CrabArm Arm(int index)
         {
-            return CrabOwner.Legs[index];
+            return CrabOwner.Arms[index];
         }
     }
 }

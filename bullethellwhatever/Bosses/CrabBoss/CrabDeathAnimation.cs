@@ -36,11 +36,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    Leg(i).ContactDamage(false);
+                    Arm(i).ContactDamage(false);
 
-                    Leg(i).Velocity = (player.Position - Leg(i).Position) / fallApartTime;
+                    Arm(i).Velocity = (player.Position - Arm(i).Position) / fallApartTime;
 
-                    Leg(i).PointLegInDirection(Utilities.VectorToAngle(player.Position - Leg(i).Position));
+                    Arm(i).PointLegInDirection(Utilities.VectorToAngle(player.Position - Arm(i).Position));
                 }
 
                 Owner.DealDamage = false;
@@ -59,8 +59,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    Leg(i).Velocity = Leg(i).Velocity * 0.99f;
-                    Leg(i).PointLegInDirection(Utilities.VectorToAngle(player.Position - Leg(i).Position));
+                    Arm(i).Velocity = Arm(i).Velocity * 0.99f;
+                    Arm(i).PointLegInDirection(Utilities.VectorToAngle(player.Position - Arm(i).Position));
                 }
 
                 Owner.Velocity = Owner.Velocity * 0.98f;
@@ -71,11 +71,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    Leg(i).DeathAnimation = true;
-                    Leg(i).UpperArm.Velocity = Leg(i).Velocity * 0.9f;
-                    Leg(i).LowerArm.Velocity = Leg(i).Velocity;
-                    Leg(i).UpperClaw.Velocity = Leg(i).Velocity * 1.1f;
-                    Leg(i).LowerClaw.Velocity = Leg(i).Velocity * 1.2f;
+                    Arm(i).DeathAnimation = true;
+                    Arm(i).UpperArm.Velocity = Arm(i).Velocity * 0.9f;
+                    Arm(i).LowerArm.Velocity = Arm(i).Velocity;
+                    Arm(i).UpperClaw.Velocity = Arm(i).Velocity * 1.1f;
+                    Arm(i).LowerClaw.Velocity = Arm(i).Velocity * 1.2f;
                 }
 
                 Owner.RotationalVelocity = Sign(Owner.Velocity.X) * CrabOwner.SpinVelOnDeath;
@@ -85,22 +85,22 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    Leg(i).UpperArm.Velocity = Leg(i).UpperArm.Velocity + new Vector2(0, Leg(i).UpperArm.Gravity);
-                    Leg(i).UpperArm.HandleBounces();
-                    Leg(i).UpperArm.Velocity.X = Leg(i).UpperArm.Velocity.X * 0.99f;
+                    Arm(i).UpperArm.Velocity = Arm(i).UpperArm.Velocity + new Vector2(0, Arm(i).UpperArm.Gravity);
+                    Arm(i).UpperArm.HandleBounces();
+                    Arm(i).UpperArm.Velocity.X = Arm(i).UpperArm.Velocity.X * 0.99f;
 
-                    Leg(i).LowerArm.Velocity = Leg(i).LowerArm.Velocity + new Vector2(0, Leg(i).LowerArm.Gravity);
-                    Leg(i).LowerArm.HandleBounces();
-                    Leg(i).LowerClaw.Velocity.X = Leg(i).LowerClaw.Velocity.X * 0.99f;
+                    Arm(i).LowerArm.Velocity = Arm(i).LowerArm.Velocity + new Vector2(0, Arm(i).LowerArm.Gravity);
+                    Arm(i).LowerArm.HandleBounces();
+                    Arm(i).LowerClaw.Velocity.X = Arm(i).LowerClaw.Velocity.X * 0.99f;
 
 
-                    Leg(i).UpperClaw.Velocity = Leg(i).UpperClaw.Velocity + new Vector2(0, Leg(i).UpperClaw.Gravity);
-                    Leg(i).UpperClaw.HandleBounces();
-                    Leg(i).UpperClaw.Velocity.X = Leg(i).UpperClaw.Velocity.X * 0.99f;
+                    Arm(i).UpperClaw.Velocity = Arm(i).UpperClaw.Velocity + new Vector2(0, Arm(i).UpperClaw.Gravity);
+                    Arm(i).UpperClaw.HandleBounces();
+                    Arm(i).UpperClaw.Velocity.X = Arm(i).UpperClaw.Velocity.X * 0.99f;
 
-                    Leg(i).LowerClaw.Velocity = Leg(i).LowerClaw.Velocity + new Vector2(0, Leg(i).LowerClaw.Gravity);
-                    Leg(i).LowerClaw.HandleBounces();
-                    Leg(i).LowerClaw.Velocity.X = Leg(i).LowerClaw.Velocity.X * 0.99f;
+                    Arm(i).LowerClaw.Velocity = Arm(i).LowerClaw.Velocity + new Vector2(0, Arm(i).LowerClaw.Gravity);
+                    Arm(i).LowerClaw.HandleBounces();
+                    Arm(i).LowerClaw.Velocity.X = Arm(i).LowerClaw.Velocity.X * 0.99f;
                 }
 
                 Owner.Velocity = Owner.Velocity + new Vector2(0, 0.7f);
@@ -118,10 +118,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 for (int i = 0; i < 2; i++)
                 {
-                    Leg(i).UpperArm.Die();
-                    Leg(i).LowerArm.Die();
-                    Leg(i).UpperClaw.Die();
-                    Leg(i).LowerClaw.Die();
+                    Arm(i).UpperArm.Die();
+                    Arm(i).LowerArm.Die();
+                    Arm(i).UpperClaw.Die();
+                    Arm(i).LowerClaw.Die();
                 }
             }
 

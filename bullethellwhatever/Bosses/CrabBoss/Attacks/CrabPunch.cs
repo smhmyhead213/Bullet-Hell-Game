@@ -55,7 +55,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 swingTime = maxChargeTime;
                 HasSetSwingTime = 0f;
 
-                if (Utilities.DistanceBetweenVectors(Leg(0).Position, player.Position) > Utilities.DistanceBetweenVectors(Leg(1).Position, player.Position))
+                if (Utilities.DistanceBetweenVectors(Arm(0).Position, player.Position) > Utilities.DistanceBetweenVectors(Arm(1).Position, player.Position))
                 {
                     // set the chosenArm npc data slot to the number representing representing the closer arm
                     ChooseMainArm(1);

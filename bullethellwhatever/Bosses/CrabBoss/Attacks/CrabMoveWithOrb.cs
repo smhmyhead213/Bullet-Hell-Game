@@ -33,7 +33,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 {
                     int expandedi = Utilities.ExpandedIndex(i);
 
-                    Vector2 projectileLocation = Leg(i).UpperClaw.Position + projectilesFinalWidth * Utilities.AngleToVector(Leg(i).UpperClaw.RotationFromV());
+                    Vector2 projectileLocation = Arm(i).UpperClaw.Position + projectilesFinalWidth * Utilities.AngleToVector(Arm(i).UpperClaw.RotationFromV());
                     Texture2D box = AssetRegistry.GetTexture2D("box");
 
                     Vector2 finalSize = Vector2.One * (float)projectilesFinalWidth / box.Width;
@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     orb.SetExtraAI(new Action(() =>
                     {
-                        orb.Position = Leg(locali).UpperClaw.Position + projectilesFinalWidth * Utilities.AngleToVector(Leg(locali).UpperClaw.RotationFromV());
+                        orb.Position = Arm(locali).UpperClaw.Position + projectilesFinalWidth * Utilities.AngleToVector(Arm(locali).UpperClaw.RotationFromV());
 
                         float interpolant = MathHelper.Clamp(EasingFunctions.EaseInQuart(orb.AITimer / (float)openArmsTime), 0f, 1f);
                         orb.Size = Vector2.Lerp(Vector2.One, finalSize, interpolant);
@@ -93,8 +93,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 {
                     int expandedi = Utilities.ExpandedIndex(i);
 
-                    Leg(i).LowerClaw.Rotate(-expandedi * upperClawOpenAngle / openArmsTime);
-                    Leg(i).RotateLeg(-expandedi * totalAngleToOpenArms / openArmsTime);
+                    Arm(i).LowerClaw.Rotate(-expandedi * upperClawOpenAngle / openArmsTime);
+                    Arm(i).RotateLeg(-expandedi * totalAngleToOpenArms / openArmsTime);
                 }
             }           
         }

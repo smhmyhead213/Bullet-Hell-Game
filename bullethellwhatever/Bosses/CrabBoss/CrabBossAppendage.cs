@@ -27,7 +27,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         
         public Vector2 End; //where other limbs attach on
 
-        public CrabLeg Leg;
+        public CrabArm Leg;
 
         public Entity Owner;
 
@@ -40,7 +40,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float RotationToAdd;
 
         public float Gravity;
-        public CrabBossAppendage(Entity owner, CrabLeg leg, AppendageType appendageType, int legIndex, float scale = 1f)
+        public CrabBossAppendage(Entity owner, CrabArm leg, AppendageType appendageType, int legIndex, float scale = 1f)
         {
             Owner = owner;
             Leg = leg;

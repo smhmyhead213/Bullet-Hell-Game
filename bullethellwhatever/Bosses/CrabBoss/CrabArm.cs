@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
-    public class CrabLeg
+    public class CrabArm
     {
         public Vector2 Position;
         public Vector2 Velocity;
@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public bool DeathAnimation;
 
-        public CrabLeg(Vector2 position, CrabBoss owner, int legIndex, float scale = 1)
+        public CrabArm(Vector2 position, CrabBoss owner, int legIndex, float scale = 1)
         {
             LegParts = new CrabBossAppendage[4];
             Owner = owner;

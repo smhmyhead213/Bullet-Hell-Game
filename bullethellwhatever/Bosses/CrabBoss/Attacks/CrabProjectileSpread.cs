@@ -60,16 +60,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 int expandedi = -Utilities.ExpandedIndex(chosenArmInt);
 
-                CrabOwner.Legs[chosenArmInt].RotateLeg(expandedi * (angleThisFrame - anglePreviousFrame));
+                CrabOwner.Arms[chosenArmInt].RotateLeg(expandedi * (angleThisFrame - anglePreviousFrame));
 
                 int timeBetweenProjectiles = 2;
 
                 if (localTime % timeBetweenProjectiles == 0)
                 {
-                    Vector2 spawnPosition = CrabOwner.Legs[chosenArmInt].LowerClaw.Position;
+                    Vector2 spawnPosition = CrabOwner.Arms[chosenArmInt].LowerClaw.Position;
                     float projectileInitialSpeed = 5f;
                     
-                    Projectile p = SpawnProjectile(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Legs[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Arms[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
 
                     p.AddTrail(22);

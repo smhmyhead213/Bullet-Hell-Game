@@ -21,7 +21,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 {
     public class CrabBoss : Boss
     {
-        public CrabLeg[] Legs;
+        public CrabArm[] Arms;
         public Vector2[] BoosterPositions;
         public Vector2[] ArmPositionsOnBody;
         public bool BoostersActive;
@@ -56,7 +56,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LockArmPositions = true;
             PlayerSaidOpeningDialogue = false;
             
-            Legs = new CrabLeg[2];
+            Arms = new CrabArm[2];
             ArmPositionsOnBody = new Vector2[2];
             BoosterPositions = new Vector2[2];
 
@@ -68,17 +68,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 pos = CalculateArmPostions(expandedi);
 
-                Legs[i] = new CrabLeg(pos, this, i, scaleFactor / bodyToArmSizeRatio);
+                Arms[i] = new CrabArm(pos, this, i, scaleFactor / bodyToArmSizeRatio);
 
                 ArmPositionsOnBody[i] = pos;
 
                 if (i == 0)
                 {
-                    Legs[i].HorizontalFlip = true;
+                    Arms[i].HorizontalFlip = true;
                 }
 
-                Legs[i].UpperArm.RotationConstant = -expandedi * PI / 12;
-                Legs[i].LowerArm.RotationConstant = expandedi * PI / 12;
+                Arms[i].UpperArm.RotationConstant = -expandedi * PI / 12;
+                Arms[i].LowerArm.RotationConstant = expandedi * PI / 12;
                 //Legs[0].UpperClaw.RotationConstant = expandedi * PI;
                 //Legs[0].LowerClaw.RotationConstant = expandedi * PI; // fix later
 
@@ -108,7 +108,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 //int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
-                Legs[i].ResetRotations();
+                Arms[i].ResetRotations();
             }
         }
 
@@ -136,7 +136,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             base.AI();
 
-            if (Legs[0].Dead && Legs[1].Dead && !StartedPhaseTwoTransition)
+            if (Arms[0].Dead && Arms[1].Dead && !StartedPhaseTwoTransition)
             {
                 StartedPhaseTwoTransition = true;
             }
@@ -159,11 +159,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             for (int i = 0; i < 2; i++)
             {
-                Legs[i].Update();
+                Arms[i].Update();
 
                 int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
 
-                if (Legs[i] is not null)
+                if (Arms[i] is not null)
                 {
                     BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
                 }
@@ -210,7 +210,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);
             //Hitbox.DrawHitbox();
 
-            foreach (CrabLeg leg in Legs)
+            foreach (CrabArm leg in Arms)
             {
                 if (leg is not null)
                 {
