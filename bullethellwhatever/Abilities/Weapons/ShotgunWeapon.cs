@@ -47,22 +47,25 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
 
+                p.Label = EntityLabels.SharpShot;
+
                 p.Rotation = firingAngle;
                 p.Opacity = 1f;
 
                 p.SetExtraAI(new Action(() =>
                 {
-                    foreach (Projectile proj in EntityManager.activeFriendlyProjectiles)
+                    foreach (Projectile other in EntityManager.activeFriendlyProjectiles)
                     {
-                        if (proj.Label == EntityLabels.ShotgunAttractor)
+                        ref float TimeWithNoTarget = ref p.ExtraData[0];
+
+                        if (other.Label == EntityLabels.SharpShotReflector)
                         {
-                            if (p.IsCollidingWith(proj))
+                            if (p.IsCollidingWith(other))
                             {
                                 p.InstantlyDie();
-                                proj.ExtraData[0] += 1f; // count how many pellets hit the attractor
                             }
 
-                            p.Velocity = projectileSpeed * Utilities.SafeNormalise(proj.Position - p.Position);
+                            p.Velocity = projectileSpeed * Utilities.SafeNormalise(other.Position - p.Position);
 
                             break;
                         }                       
@@ -75,22 +78,12 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public override void SecondaryFire()
         {
-            // remove existing attractors
-
-            foreach (Projectile proj in EntityManager.activeFriendlyProjectiles)
-            {
-                if (proj.Label == EntityLabels.ShotgunAttractor)
-                {
-                    proj.Die();
-                }
-            }
-
             float projectileSpeed = 5f;
             float damage = 0.1f;
 
             Projectile p = SpawnProjectile(Owner.Position, projectileSpeed * Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, true, true);
 
-            p.Label = EntityLabels.ShotgunAttractor;
+            p.Label = EntityLabels.SharpShotReflector;
 
             p.SetExtraAI(new Action(() =>
             {

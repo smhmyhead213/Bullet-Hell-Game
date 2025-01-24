@@ -39,7 +39,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
 
-            float scaleFactor = 1.8f;
+            float scaleFactor = 1.5f;
             float bodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
 
             Size = Vector2.One * scaleFactor;
@@ -84,7 +84,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             }
 
-            CurrentAttack = new CrabIKTest(this);
+            CurrentAttack = new CrabIntro(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();

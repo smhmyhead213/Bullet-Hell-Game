@@ -9,6 +9,7 @@ namespace bullethellwhatever.BaseClasses.Entities
     public enum EntityLabels
     {
         None,
-        ShotgunAttractor
+        SharpShot,
+        SharpShotReflector
     }
 }

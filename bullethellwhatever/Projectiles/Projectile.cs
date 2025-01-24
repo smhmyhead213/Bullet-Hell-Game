@@ -97,10 +97,23 @@ namespace bullethellwhatever.Projectiles
         {
             CreateProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
+            Initialise();
+
             if (IsHarmful)
                 EntityManager.enemyProjectilesToAddNextFrame.Add(this);
             else EntityManager.friendlyProjectilesToAddNextFrame.Add(this);
         }
+
+        public virtual void Initialise()
+        {
+
+        }
+
+        public override void AI()
+        {
+
+        }
+
         public void HandleBounces()
         {
             if (TouchingLeft())
@@ -131,6 +144,16 @@ namespace bullethellwhatever.Projectiles
 
         public override void PostUpdate()
         {
+            // run any extra ais the projectile may have before continuing on
+
+            if (ExtraAI is not null)
+            {
+                ExtraAI();
+            }
+
+            // move to update to make overriding ai easier?
+            Position = Position + Velocity;
+
             AITimer++;
 
             base.PostUpdate();
@@ -160,16 +183,6 @@ namespace bullethellwhatever.Projectiles
                     base.Die();
                 }
             }
-        }
-        public override void AI()
-        {
-            if (ExtraAI is not null)
-            {
-                ExtraAI();
-            }
-
-            // move to update to make overriding ai easier?
-            Position = Position + Velocity;
         }
 
         public override void Die()
