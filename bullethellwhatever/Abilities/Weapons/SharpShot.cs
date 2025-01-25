@@ -45,6 +45,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
                     {
+                        // ensure that the projectile stays at a reflector instead of detecting a collision after passing it
                         Position = reflector.Position;
 
                         Bounced = true;
