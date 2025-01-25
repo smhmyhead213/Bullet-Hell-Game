@@ -45,6 +45,8 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
                     {
+                        Position = reflector.Position;
+
                         Bounced = true;
 
                         int maxBuffs = 5;
