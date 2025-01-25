@@ -70,18 +70,38 @@ namespace bullethellwhatever.Abilities.Weapons
                 SecondaryFireCoolDown--;
             }
 
+            HandleShooting();
+        }
+
+        public virtual void HandleShooting()
+        {
+            HandlePrimary();
+            HandleSecondary();
+        }
+
+        public virtual void HandlePrimary()
+        {
             if (PrimaryFiring())
             {
                 PrimaryFire();
                 PrimaryFireCoolDown = PrimaryFireCoolDownDuration;
             }
+        }
 
+        public virtual void HandleSecondary()
+        {
             if (SecondaryFiring())
             {
-                SecondaryFire();
-                SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
+                ShootSecondary();
             }
         }
+
+        public void ShootSecondary()
+        {
+            SecondaryFire();
+            SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
+        }
+
         public virtual void LeftClickHeldBehaviour()
         {
 

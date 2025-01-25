@@ -368,6 +368,24 @@ namespace bullethellwhatever
             return result * sign;
         }
 
+        /// <summary>
+        /// Lerps between start and end, returning a vector the same length as start
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="interpolant"></param>
+        /// <returns></returns>
+        public static Vector2 ConserveLengthLerp(Vector2 start, Vector2 end, float interpolant, float length = 0f)
+        {
+            if (length == 0f)
+            {
+                length = start.Length();
+            }
+
+            end = start.Length() * SafeNormalise(end);
+
+            return start.Length() * SafeNormalise(Vector2.Lerp(start, end, interpolant));
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
 
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();

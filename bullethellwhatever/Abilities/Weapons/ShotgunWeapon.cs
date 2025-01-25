@@ -10,11 +10,15 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.AssetManagement;
+using Microsoft.Xna.Framework.Graphics;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
     public class ShotgunWeapon : Weapon
     {
+        public bool DeployingReflector;
+        public Vector2 ReflectorTarget;
         public ShotgunWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
 
@@ -22,12 +26,17 @@ namespace bullethellwhatever.Abilities.Weapons
         public override void WeaponInitialise()
         {
             PrimaryFireCoolDownDuration = 60;
-            SecondaryFireCoolDownDuration = 120;
+            SecondaryFireCoolDownDuration = 5;
+            DeployingReflector = false;
+            ReflectorTarget = Vector2.Zero;
         }
 
         public override void AI()
         {
-            
+            if (DeployingReflector)
+            {
+                ReflectorTarget = MousePositionWithCamera();
+            }
         }
 
         public override void PrimaryFire()
@@ -58,23 +67,31 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public override void SecondaryFire()
         {
-            float projectileSpeed = 5f;
-            float damage = 0.1f;
-
-            Projectile p = SpawnProjectile<Projectile>(Owner.Position, projectileSpeed * Utilities.SafeNormalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, true, true);
-
-            p.Label = EntityLabels.SharpShotReflector;
-
-            p.SetExtraAI(new Action(() =>
+            if (!DeployingReflector)
             {
-                p.Velocity *= 0.99f;
+                DeployingReflector = true;
+            }
+            else
+            {
+                DeployingReflector = false;
 
-                if (p.Velocity.Length() < 0.1f)
+                Projectile p = SpawnProjectile<Projectile>(ReflectorTarget, Vector2.Zero, 0f, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, false, false);
+
+                p.Label = EntityLabels.SharpShotReflector;
+
+                p.SetExtraDraw(new Action(() =>
                 {
-                    p.Velocity = Vector2.Zero;
-                }
+                    Utilities.drawTextInDrawMethod(p.ExtraData[0].ToString(), p.Position + new Vector2(0f, 20f), _spriteBatch, font, Color.White);
+                }));
+            }
+        }
 
-            }));
+        public override void Draw(SpriteBatch s)
+        {
+            if (DeployingReflector)
+            {
+                Drawing.BetterDraw("TargetReticle", ReflectorTarget, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 0f);
+            }
         }
     }
 }
