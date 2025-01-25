@@ -61,7 +61,8 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         {
             float velocityLength = velocity.Length();
 
-            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre + 0.5f * velocity, Owner);
+            // hitbox checks apply after update, so we raycast backwards to check the space the projectile just crossed
+            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre - 0.5f * velocity, Owner);
         }
 
         public Collision IntersectsWithRaycast(RotatedRectangle other, Vector2 velocityThis)
