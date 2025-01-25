@@ -57,6 +57,27 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
             Vertices[3] = Centre + Utilities.RotateVectorClockwise(new Vector2(Width / 2f, Length / 2f), Rotation);
         }
 
+        public RotatedRectangle GenerateRaycast(Vector2 velocity)
+        {
+            float velocityLength = velocity.Length();
+
+            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre + 0.5f * velocity, Owner);
+        }
+
+        public Collision IntersectsWithRaycast(RotatedRectangle other, Vector2 velocityThis)
+        {
+            RotatedRectangle ahead = GenerateRaycast(velocityThis);
+
+            Collision aheadColl = other.Intersects(ahead);
+
+            if (aheadColl.Collided)
+            {
+                return aheadColl;
+            }
+
+            return Intersects(other);
+        }
+
         public Collision Intersects(RotatedRectangle other)
         {
             if (Utilities.DistanceBetweenVectors(Centre, other.Centre) > (DiagonalLength() + other.DiagonalLength()) / 2f)

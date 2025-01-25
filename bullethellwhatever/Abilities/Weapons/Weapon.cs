@@ -16,6 +16,10 @@ namespace bullethellwhatever.Abilities.Weapons
         public int SecondaryFireCoolDownDuration;
         public int PrimaryFireCoolDown;
         public int SecondaryFireCoolDown;
+
+        public bool PrimaryFireHoldable;
+        public bool SecondaryFireHoldable;
+
         public Player Owner;
         public Texture2D IconHUD;
         public int AITimer;
@@ -29,6 +33,9 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             PrimaryFireCoolDown = PrimaryFireCoolDownDuration;
             SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
+            PrimaryFireHoldable = true;
+            SecondaryFireHoldable = true;
+
             AITimer = 0;
             // the above allocations can be changed in weaponinit
             WeaponInitialise();
@@ -52,6 +59,11 @@ namespace bullethellwhatever.Abilities.Weapons
             if (LeftClickReleased())
             {
                 LeftClickReleasedBehaviour();
+            }
+
+            if (RightClickReleased())
+            {
+                RightClickReleasedBehaviour();
             }
         }
 
@@ -108,6 +120,11 @@ namespace bullethellwhatever.Abilities.Weapons
         }
 
         public virtual void LeftClickReleasedBehaviour()
+        {
+
+        }
+
+        public virtual void RightClickReleasedBehaviour()
         {
 
         }

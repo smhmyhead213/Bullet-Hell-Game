@@ -90,6 +90,7 @@ namespace bullethellwhatever.Projectiles
             ExtraData = new float[4];
 
             Label = EntityLabels.None;
+            UseRayCastCollision = false;
 
             SetHitbox();
         }
@@ -333,13 +334,20 @@ namespace bullethellwhatever.Projectiles
             else return new Collision(Vector2.Zero, false);
         }
 
-        public virtual bool CollidedWith(Entity entity)
-        {
-            return CollisionWithEntity(entity).Collided;
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (UseRayCastCollision)
+            {
+                float rot = Utilities.VectorToAngle(Velocity);
+
+                RotatedRectangle ahead = Hitbox.GenerateRaycast(Velocity);
+
+                foreach (Vector2 vertex in ahead.Vertices)
+                {
+                    Drawing.BetterDraw("box", vertex, null, Color.Red, rot, Vector2.One, SpriteEffects.None, 0f);
+                }
+            }
+
             base.Draw(spriteBatch);
         }
     }

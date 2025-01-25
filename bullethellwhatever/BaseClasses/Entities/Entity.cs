@@ -68,6 +68,8 @@ namespace bullethellwhatever.BaseClasses.Entities
             set;
         } // small array of floats each entity can use
 
+        public bool UseRayCastCollision;
+
         public List<Component> AdditionalComponents = new List<Component>();
         public abstract void AI();
 
@@ -287,6 +289,11 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual bool IsCollidingWith(Entity other)
         {
+            if (UseRayCastCollision)
+            {
+                return Hitbox.IntersectsWithRaycast(other.Hitbox, Velocity).Collided;
+            }
+
             return Hitbox.Intersects(other.Hitbox).Collided;
         }
 

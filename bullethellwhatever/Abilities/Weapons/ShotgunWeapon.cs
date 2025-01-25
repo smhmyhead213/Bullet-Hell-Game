@@ -29,6 +29,8 @@ namespace bullethellwhatever.Abilities.Weapons
             SecondaryFireCoolDownDuration = 5;
             DeployingReflector = false;
             ReflectorTarget = Vector2.Zero;
+
+            SecondaryFireHoldable = false;
         }
 
         public override void AI()
@@ -45,24 +47,36 @@ namespace bullethellwhatever.Abilities.Weapons
             int projectiles = 1; // keep this an odd number
             float angleBetween = spreadAngle / projectiles;
             float damage = 1.3f;
-            float projectileSpeed = 5;
+            float projectileSpeed = 30;
 
             Vector2 toMouse = MousePositionWithCamera() - Owner.Position;
-            float startingAngle = Utilities.VectorToAngle(toMouse) - (projectiles / 2) * angleBetween;
+            float startingAngle = Utilities.VectorToAngle(toMouse);
 
-            for (int i = 0; i < projectiles; i++)
+            float firingAngle = startingAngle;
+
+            SharpShot p = SpawnProjectile<SharpShot>(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
+
+            p.Label = EntityLabels.SharpShot;
+
+            p.Rotation = firingAngle;
+            p.Opacity = 1f;
+            p.UseRayCastCollision = true;
+
+            p.AddTrail(14);
+        }
+
+        public override void RightClickReleasedBehaviour()
+        {
+            DeployingReflector = false;
+
+            Projectile p = SpawnProjectile<Projectile>(ReflectorTarget, Vector2.Zero, 0f, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, false, false);
+
+            p.Label = EntityLabels.SharpShotReflector;
+
+            p.SetExtraDraw(new Action(() =>
             {
-                float firingAngle = startingAngle + i * angleBetween;
-
-                SharpShot p = SpawnProjectile<SharpShot>(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
-
-                p.Label = EntityLabels.SharpShot;
-
-                p.Rotation = firingAngle;
-                p.Opacity = 1f;
-
-                p.AddTrail(14);
-            }
+                Utilities.drawTextInDrawMethod(p.ExtraData[0].ToString(), p.Position + new Vector2(0f, 20f), _spriteBatch, font, Color.White);
+            }));
         }
 
         public override void SecondaryFire()
@@ -70,19 +84,6 @@ namespace bullethellwhatever.Abilities.Weapons
             if (!DeployingReflector)
             {
                 DeployingReflector = true;
-            }
-            else
-            {
-                DeployingReflector = false;
-
-                Projectile p = SpawnProjectile<Projectile>(ReflectorTarget, Vector2.Zero, 0f, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, false, false);
-
-                p.Label = EntityLabels.SharpShotReflector;
-
-                p.SetExtraDraw(new Action(() =>
-                {
-                    Utilities.drawTextInDrawMethod(p.ExtraData[0].ToString(), p.Position + new Vector2(0f, 20f), _spriteBatch, font, Color.White);
-                }));
             }
         }
 

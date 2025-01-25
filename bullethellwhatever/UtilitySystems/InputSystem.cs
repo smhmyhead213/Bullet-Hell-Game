@@ -17,6 +17,7 @@ namespace bullethellwhatever.UtilitySystems
         public static Dictionary<Keys, KeyData> KeyStates;
 
         public static bool WasMouseDownLastFrame;
+        public static bool WasRightClickDownLastFrame;
 
         public class KeyData
         {
@@ -46,6 +47,7 @@ namespace bullethellwhatever.UtilitySystems
         public static void UpdateInputSystem()
         {
             WasMouseDownLastFrame = IsLeftClickDown();
+            WasRightClickDownLastFrame = IsRightClickDown();
 
             foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
@@ -75,6 +77,12 @@ namespace bullethellwhatever.UtilitySystems
         {
             return WasMouseDownLastFrame && !IsLeftClickDown();
         }
+
+        public static bool RightClickReleased()
+        {
+            return WasRightClickDownLastFrame && !IsRightClickDown();
+        }
+
         public static bool IsRightClickDown()
         {
             return MouseState.RightButton == ButtonState.Pressed;

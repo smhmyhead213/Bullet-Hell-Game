@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using SharpDX.MediaFoundation;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -16,12 +17,14 @@ namespace bullethellwhatever.Abilities.Weapons
         public List<Projectile> ReflectorsHit;
         public int Reflections;
         public bool Bounced;
+        public int Bounces;
 
         public override void Initialise()
         {
             ReflectorsHit = new List<Projectile>();
             Reflections = 0;
             Bounced = false;
+            Bounces = 0;
         }
 
         public override void AI()
@@ -40,12 +43,17 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 foreach (Projectile reflector in foundReflectors)
                 {
-                    if (!ReflectorsHit.Contains(reflector) && CollidedWith(reflector))
+                    if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
                     {
                         Bounced = true;
 
-                        Damage *= 1.1f;
-                        Size *= 1.1f;
+                        int maxBuffs = 5;
+
+                        if (Bounces <= maxBuffs)
+                        {
+                            Size *= 1.1f;
+                            Damage *= 1.1f;
+                        }
 
                         ReflectorsHit.Add(reflector);
 
@@ -58,11 +66,13 @@ namespace bullethellwhatever.Abilities.Weapons
                             reflector.Die();
                         }
 
-                        if (ReflectorsHit.Count < foundReflectors.Count)
-                        {
-                            Projectile closestReflector = EntityManager.ClosestProjectile(foundReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
+                        Projectile closestReflector = EntityManager.ClosestProjectile(foundReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
 
-                            Velocity = Velocity.Length() * 1.2f * Utilities.SafeNormalise(closestReflector.Position - Position);
+                        if (closestReflector != null)
+                        {
+                            Bounces++;
+                            float speedMultiplier = 1.2f;
+                            Velocity = Velocity.Length() * speedMultiplier * Utilities.SafeNormalise(closestReflector.Position - Position);
                         }
                         else
                         {
@@ -79,9 +89,12 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 NPC target = EntityManager.ClosestTargetableNPC(Position);
 
-                Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
+                if (target != null)
+                {
+                    Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
 
-                Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.02f);
+                    Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.02f);
+                }
             }
         }
 

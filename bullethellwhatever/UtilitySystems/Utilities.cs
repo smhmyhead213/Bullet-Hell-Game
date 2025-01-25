@@ -386,8 +386,18 @@ namespace bullethellwhatever
 
             return start.Length() * SafeNormalise(Vector2.Lerp(start, end, interpolant));
         }
-        public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
 
+        public static Vector2 RandomDirection()
+        {
+            return AngleToVector(RandomAngle());
+        }
+
+        public static Color RandomColour()
+        {
+            return new Color(RandomFloat(0f, 1f), RandomFloat(0f, 1f), RandomFloat(0f, 1f));
+        }
+
+        public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)
         {
