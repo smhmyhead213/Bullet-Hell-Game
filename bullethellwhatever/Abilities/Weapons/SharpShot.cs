@@ -107,7 +107,8 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
 
-                    Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.02f);
+                    // home harder over time
+                    Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.2f + AITimer * 0.01f);
                 }
             }
         }
@@ -117,10 +118,11 @@ namespace bullethellwhatever.Abilities.Weapons
             int particles = (Bounces + 1) * 4;
             float particleSpeed = 10f;
             int particleLifetime = 30;
+            int lifetimeSpread = 15;
 
             for (int i = 0; i < particles; i++)
             {
-                CommonParticles.Spark(Position, particleSpeed, particleLifetime, Colour);
+                CommonParticles.Spark(Position, particleSpeed, particleLifetime + Utilities.RandomInt(-lifetimeSpread, lifetimeSpread), Colour);
             }
         }
         public override void UpdatePosition(float progress)

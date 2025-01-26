@@ -63,14 +63,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float2 centred = uv - float2(0.5, 0.5);
     bool colourThis = abs(2 * centred.x) + abs(centred.y) < 0.5;
 	
-    if (colourThis)
-    {
-        return float4(colour, transparency);
-    }
-    else
-    {
-        return float4(0, 0, 0, 0);
-    }
+    return float4(colour, transparency) * step(abs(2 * centred.x) + abs(centred.y), 0.5);
 }
 
 Technique Technique1
