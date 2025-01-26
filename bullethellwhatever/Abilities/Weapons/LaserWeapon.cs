@@ -1,6 +1,7 @@
 ﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.Particles;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;

@@ -13,6 +13,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode.UI.Player;
 using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.DrawCode
 {

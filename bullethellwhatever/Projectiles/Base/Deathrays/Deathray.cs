@@ -12,6 +12,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Projectiles.Base
 {

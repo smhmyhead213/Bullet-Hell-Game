@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using SharpDX.MediaFoundation;
 using System.Diagnostics;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -53,7 +54,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         // ensure that the projectile stays at a reflector instead of detecting a collision after passing it
                         //Position = reflector.Position;
 
-                        //ReflectorPosToGoTo = reflector.Position;
+                        Position = reflector.Position;
 
                         Bounced = true;
 
@@ -80,6 +81,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                         if (closestReflector != null)
                         {
+                            OnHitEffect(closestReflector.Position);
                             Bounces++;
                             float speedMultiplier = 1.2f;
                             Velocity = Velocity.Length() * speedMultiplier * Utilities.SafeNormalise(closestReflector.Position - Position);
@@ -110,15 +112,20 @@ namespace bullethellwhatever.Abilities.Weapons
             }
         }
 
+        public override void OnHitEffect(Vector2 position)
+        {
+            int particles = (Bounces + 1) * 4;
+            float particleSpeed = 10f;
+            int particleLifetime = 30;
+
+            for (int i = 0; i < particles; i++)
+            {
+                CommonParticles.Spark(Position, particleSpeed, particleLifetime, Colour);
+            }
+        }
         public override void UpdatePosition(float progress)
         {
             base.UpdatePosition(progress);
-
-            if (ReflectorPosToGoTo != Vector2.Zero)
-            {
-                Position = ReflectorPosToGoTo;
-                ReflectorPosToGoTo = Vector2.Zero;
-            }
         }
 
         public void FlyAtTarget()

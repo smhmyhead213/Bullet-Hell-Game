@@ -8,7 +8,7 @@ using bullethellwhatever.MainFiles;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
 
-namespace bullethellwhatever.DrawCode
+namespace bullethellwhatever.DrawCode.Particles
 {
     public class Particle : Entity
     {

@@ -1,5 +1,4 @@
 ﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.DrawCode;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Abilities.Weapons
 {

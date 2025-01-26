@@ -1,5 +1,4 @@
 ﻿using bullethellwhatever.BaseClasses;
-using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework.Input;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Abilities
 {

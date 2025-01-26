@@ -12,6 +12,7 @@ using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
 using System;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.MainFiles
 {

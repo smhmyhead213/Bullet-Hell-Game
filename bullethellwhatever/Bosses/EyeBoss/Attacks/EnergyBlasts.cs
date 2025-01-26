@@ -1,7 +1,6 @@
 ﻿using bullethellwhatever.Projectiles.Base;
-using bullethellwhatever.DrawCode;
 
- 
+
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Bosses.EyeBoss
 {

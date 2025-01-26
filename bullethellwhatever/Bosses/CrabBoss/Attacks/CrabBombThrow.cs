@@ -7,8 +7,8 @@ using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
 using System.Windows.Forms.Design;
-using bullethellwhatever.DrawCode;
 using System.Runtime.InteropServices;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {

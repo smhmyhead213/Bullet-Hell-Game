@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.BaseClasses.Hitboxes;
-using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.Particles;
 using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using Microsoft.Xna.Framework;

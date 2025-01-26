@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.Bosses.EyeBoss;
-using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.UtilitySystems
 {
