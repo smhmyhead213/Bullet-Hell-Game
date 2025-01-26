@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using SharpDX.MediaFoundation;
+using System.Diagnostics;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -19,9 +20,13 @@ namespace bullethellwhatever.Abilities.Weapons
         public bool Bounced;
         public int Bounces;
 
+        // when the sharp shot clips through a refelctor, it still collides but moves from past it. stores the position of the hit reflector to teleport to it after updating position.
+        public Vector2 ReflectorPosToGoTo;
+
         public override void Initialise()
         {
             ReflectorsHit = new List<Projectile>();
+            ReflectorPosToGoTo = Vector2.Zero;
             Reflections = 0;
             Bounced = false;
             Bounces = 0;
@@ -46,7 +51,9 @@ namespace bullethellwhatever.Abilities.Weapons
                     if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
                     {
                         // ensure that the projectile stays at a reflector instead of detecting a collision after passing it
-                        Position = reflector.Position;
+                        //Position = reflector.Position;
+
+                        //ReflectorPosToGoTo = reflector.Position;
 
                         Bounced = true;
 
@@ -83,6 +90,8 @@ namespace bullethellwhatever.Abilities.Weapons
                         }
 
                         Rotation = Utilities.VectorToAngle(Velocity);
+
+                        //break;
                     }
                 }
             }
@@ -98,6 +107,17 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.02f);
                 }
+            }
+        }
+
+        public override void UpdatePosition(float progress)
+        {
+            base.UpdatePosition(progress);
+
+            if (ReflectorPosToGoTo != Vector2.Zero)
+            {
+                Position = ReflectorPosToGoTo;
+                ReflectorPosToGoTo = Vector2.Zero;
             }
         }
 

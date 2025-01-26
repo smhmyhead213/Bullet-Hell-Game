@@ -187,7 +187,7 @@ namespace bullethellwhatever.Projectiles
         /// Updates the position of the projectile based on its velocity. This can be subdivided so that multiple collision checks can be done in one frame to prevent skipping.
         /// </summary>
         /// <param name="progress"></param>
-        public void UpdatePosition(float progress)
+        public virtual void UpdatePosition(float progress)
         {
             Position = Position + progress * Velocity;
         }

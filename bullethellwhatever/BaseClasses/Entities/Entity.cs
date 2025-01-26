@@ -85,7 +85,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         }
 
         /// <summary>
-        /// An update that occurs BEFORE the AI runs.
+        /// An update that occurs AfTER the AI and collision run.
         /// </summary>
         public virtual void PostUpdate()
         {
