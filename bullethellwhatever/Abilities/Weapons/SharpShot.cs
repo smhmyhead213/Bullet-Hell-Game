@@ -50,11 +50,6 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
                     {
-                        // ensure that the projectile stays at a reflector instead of detecting a collision after passing it
-                        //Position = reflector.Position;
-
-                        //Position = reflector.Position;
-
                         Bounced = true;
 
                         int maxBuffs = 5;
@@ -90,10 +85,6 @@ namespace bullethellwhatever.Abilities.Weapons
                             BounceTarget = closestReflector.Position;
 
                             Velocity *= speedMultiplier;
-                        }
-                        else
-                        {
-                            FlyRandomly();
                         }
 
                         Rotation = Utilities.VectorToAngle(Velocity);
@@ -132,12 +123,14 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void UpdatePosition(float progress)
         {
-            base.UpdatePosition(progress);
-
             // do the velocity update here. the trail updates using the previous position of the projectile, so we move the projectile to the reflector so that
             // on the next frame, the trail takes a position from the reflector, ensuring that the projectile trail goes through the reflector.
             // we do this after the velocity updates to effectively override it if need be
             // if a reflector was hit
+
+            // the problem is that on the PREVIOUS frame the sharpshot goes past the reflector
+            // since the raycast is backwards the check is only done AFTER the projectile has already moved past
+
             if (ReflectorJustHitPos != Vector2.Zero)
             {
                 Position = ReflectorJustHitPos;
@@ -147,18 +140,25 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     Vector2 direction = Utilities.SafeNormalise(BounceTarget - Position);
                     Velocity = direction * Velocity.Length();
-                   
+
                     BounceTarget = Vector2.Zero;
                 }
                 else
                 {
-
+                    // fly off randomly
+                    FlyRandomly();
                 }
             }
 
             ReflectorJustHitPos = Vector2.Zero;
+
+            base.UpdatePosition(progress);
         }
 
+        public override void PreUpdate()
+        {
+            base.PreUpdate();
+        }
         public void FlyRandomly()
         {
             // homes to target in AI
