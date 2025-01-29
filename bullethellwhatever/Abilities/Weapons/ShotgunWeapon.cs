@@ -47,7 +47,7 @@ namespace bullethellwhatever.Abilities.Weapons
             int projectiles = 1; // keep this an odd number
             float angleBetween = spreadAngle / projectiles;
             float damage = 1.3f;
-            float projectileSpeed = 30;
+            float projectileSpeed = 100;
 
             Vector2 toMouse = MousePositionWithCamera() - Owner.Position;
             float startingAngle = Utilities.VectorToAngle(toMouse);
