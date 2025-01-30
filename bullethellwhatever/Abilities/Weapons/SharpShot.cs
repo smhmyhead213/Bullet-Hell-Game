@@ -20,45 +20,60 @@ namespace bullethellwhatever.Abilities.Weapons
         public int Reflections;
         public bool Bounced;
         public int Bounces;
-        public Vector2 ReflectorJustHitPos; // prevent clipping through the reflector that was just hit
-        public Vector2 BounceTarget; // after readjusting position to reflector, the velocity should be recalculated to ensure the next reflector is hit
         public override void Initialise()
         {
             ReflectorsHit = new List<Projectile>();
             Reflections = 0;
             Bounced = false;
             Bounces = 0;
-            ReflectorJustHitPos = Vector2.Zero;
-            BounceTarget = Vector2.Zero;
         }
 
         public override void AI()
         {
-            List<Projectile> foundReflectors = new List<Projectile>();
+            // use a forwards raycast to check if we will be colliding with a reflector next frame.
+
+            bool foundReflector = false;
+
+            List<Projectile> foundAvailableReflectors = new List<Projectile>();
 
             foreach (Projectile reflect in EntityManager.activeFriendlyProjectiles)
             {
                 if (reflect.Label == EntityLabels.SharpShotReflector)
                 {
-                    foundReflectors.Add(reflect);
+                    foundAvailableReflectors.Add(reflect);
                 }
             }
 
-            if (foundReflectors.Count > 0)
+            if (foundAvailableReflectors.Count > 0)
             {
-                foreach (Projectile reflector in foundReflectors)
+                foreach (Projectile reflector in foundAvailableReflectors)
                 {
-                    if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
+                    if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector, false))
                     {
+                        foundReflector = true;
+
                         Bounced = true;
 
                         int maxBuffs = 5;
+                        float speedMultiplier = 1.2f;
+                        float damageMultiplier = 1.1f;
+                        float sizeMultiplier = 1.1f;
 
-                        if (Bounces <= maxBuffs)
+                        if (Bounces == 0)
                         {
-                            Size *= 1.1f;
-                            Damage *= 1.1f;
+                            speedMultiplier = 1.8f;
+                            damageMultiplier = 1.5f;
+                            sizeMultiplier = 1.4f;
                         }
+                        else if (Bounces > maxBuffs) // cap the number of buffs that can be gained from bouncing
+                        {
+                            speedMultiplier = 1f;
+                            damageMultiplier = 1f;
+                            sizeMultiplier = 1f;
+                        }
+
+                        Damage *= damageMultiplier;
+                        Size *= sizeMultiplier;
 
                         ReflectorsHit.Add(reflector);
 
@@ -72,16 +87,15 @@ namespace bullethellwhatever.Abilities.Weapons
                         if (reflections >= maxReflections)
                         {
                             reflector.Die();
-                        }   
-                        
-                        Projectile closestReflector = EntityManager.ClosestProjectile(foundReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
+                        }
+
+                        Projectile closestReflector = EntityManager.ClosestProjectile(foundAvailableReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
 
                         if (closestReflector != null)
                         {
                             OnHitEffect(closestReflector.Position);
                             Bounces++;
-                            float speedMultiplier = 1.2f;
-
+                            
                             Velocity = speedMultiplier * Velocity.Length() * Utilities.SafeNormalise(closestReflector.Position - Position);
                         }
                         else
@@ -107,8 +121,13 @@ namespace bullethellwhatever.Abilities.Weapons
                     Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
 
                     // home harder over time
-                    Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.2f + AITimer * 0.01f);
+                    Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.2f + AITimer * 0.03f);
                 }
+            }
+
+            if (!foundReflector)
+            {
+                base.UpdatePosition();
             }
         }
 
@@ -124,34 +143,9 @@ namespace bullethellwhatever.Abilities.Weapons
                 CommonParticles.Spark(Position, particleSpeed, particleLifetime + Utilities.RandomInt(-lifetimeSpread, lifetimeSpread), Colour);
             }
         }
-        public override void UpdatePosition(float progress)
+        public override void UpdatePosition()
         {
-            // do the velocity update here. the trail updates using the previous position of the projectile, so we move the projectile to the reflector so that
-            // on the next frame, the trail takes a position from the reflector, ensuring that the projectile trail goes through the reflector.
-            // we do this after the velocity updates to effectively override it if need be
-            // if a reflector was hit
-
-            // the problem is that on the PREVIOUS frame the sharpshot goes past the reflector
-            // since the raycast is backwards the check is only done AFTER the projectile has already moved past
-
-            //if (ReflectorJustHitPos != Vector2.Zero)
-            //{
-            //    Position = ReflectorJustHitPos;
-
-            //    // if there is a target reflector to go to
-            //    if (BounceTarget != Vector2.Zero)
-            //    {
-            //        Vector2 direction = Utilities.SafeNormalise(BounceTarget - Position);
-            //        Velocity = direction * Velocity.Length();
-
-            //        BounceTarget = Vector2.Zero;
-            //    }
-
-            //}
-
-            //ReflectorJustHitPos = Vector2.Zero;
-
-            base.UpdatePosition(progress);
+            // do nothing in here. the position is manually overriden when need be and allowed to update normally in AI().
         }
 
         public override void PreUpdate()

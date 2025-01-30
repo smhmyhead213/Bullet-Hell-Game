@@ -187,9 +187,9 @@ namespace bullethellwhatever.Projectiles
         /// Updates the position of the projectile based on its velocity. This can be subdivided so that multiple collision checks can be done in one frame to prevent skipping.
         /// </summary>
         /// <param name="progress"></param>
-        public virtual void UpdatePosition(float progress)
+        public virtual void UpdatePosition()
         {
-            Position = Position + progress * Velocity;
+            Position = Position + Velocity;
         }
 
         public void UpdateAndCheckHits()
@@ -335,17 +335,17 @@ namespace bullethellwhatever.Projectiles
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (UseRayCastCollision)
-            {
-                float rot = Utilities.VectorToAngle(Velocity);
+            //if (UseRayCastCollision)
+            //{
+            //    float rot = Utilities.VectorToAngle(Velocity);
 
-                RotatedRectangle ahead = Hitbox.GenerateRaycast(Velocity);
+            //    RotatedRectangle ahead = Hitbox.GenerateRaycast(Velocity);
 
-                foreach (Vector2 vertex in ahead.Vertices)
-                {
-                    Drawing.BetterDraw("box", vertex, null, Color.Red, rot, Vector2.One, SpriteEffects.None, 0f);
-                }
-            }
+            //    foreach (Vector2 vertex in ahead.Vertices)
+            //    {
+            //        Drawing.BetterDraw("box", vertex, null, Color.Red, rot, Vector2.One, SpriteEffects.None, 0f);
+            //    }
+            //}
 
             base.Draw(spriteBatch);
         }

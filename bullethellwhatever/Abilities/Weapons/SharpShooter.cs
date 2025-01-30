@@ -15,11 +15,11 @@ using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
-    public class ShotgunWeapon : Weapon
+    public class SharpShooter : Weapon
     {
         public bool DeployingReflector;
         public Vector2 ReflectorTarget;
-        public ShotgunWeapon(Player player, string iconTexture) : base(player, iconTexture)
+        public SharpShooter(Player player, string iconTexture) : base(player, iconTexture)
         {
 
         }
@@ -47,7 +47,7 @@ namespace bullethellwhatever.Abilities.Weapons
             int projectiles = 1; // keep this an odd number
             float angleBetween = spreadAngle / projectiles;
             float damage = 1.3f;
-            float projectileSpeed = 100;
+            float projectileSpeed = 50f;
 
             Vector2 toMouse = MousePositionWithCamera() - Owner.Position;
             float startingAngle = Utilities.VectorToAngle(toMouse);
