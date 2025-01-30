@@ -28,6 +28,7 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
             EntityManager.Clear();
             GameState.SetGameState(GameState.GameStates.TitleScreen);
             player.Position = Utilities.PlayerMenuPosition();
+            player.InputLocked = false;
         }
     }
 }

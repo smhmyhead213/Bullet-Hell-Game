@@ -14,6 +14,7 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
 using System;
 using bullethellwhatever.DrawCode.Particles;
+using System.Linq;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -219,23 +220,22 @@ namespace bullethellwhatever.MainFiles
             toSpawn.Spawn(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture.Name, toSpawn.Size, toSpawn.Health, 200, toSpawn.Colour, false, true);
         }
 
-        public static NPC ClosestNPC(Vector2 point, Predicate<NPC> predicate)
+        public static NPC ClosestNPC(List<NPC> npcList, Vector2 point, Predicate<NPC> predicate)
         {
             NPC closestNPC = new NPC(); //the target
             float minDistance = float.MaxValue;
 
-            if (activeNPCs.Count > 0)
+            List<NPC> toSearch = npcList.Where(npc => predicate(npc)).ToList();
+
+            if (toSearch.Count > 0)
             {
-                foreach (NPC npc in activeNPCs)
+                foreach (NPC npc in toSearch)
                 {
-                    if (predicate(npc))
+                    float distance = (point - npc.Position).Length();
+                    if (distance < minDistance)
                     {
-                        float distance = (point - npc.Position).Length();
-                        if (distance < minDistance)
-                        {
-                            minDistance = distance;
-                            closestNPC = npc;
-                        }
+                        minDistance = distance;
+                        closestNPC = npc;
                     }
                 }
 
@@ -249,18 +249,20 @@ namespace bullethellwhatever.MainFiles
             Projectile closestProj = new Projectile(); //the target
             float minDistance = float.MaxValue;
 
-            if (projList.Count > 0)
+            // filter by predicate 
+
+            List<Projectile> toSearch = projList.Where(p => predicate(p)).ToList();
+
+            if (toSearch.Count > 0)
             {
-                foreach (Projectile proj in projList)
+                foreach (Projectile proj in toSearch)
                 {
-                    if (predicate(proj))
+                    float distance = (point - proj.Position).Length();
+                    if (distance < minDistance)
                     {
-                        float distance = (point - proj.Position).Length();
-                        if (distance < minDistance)
-                        {
-                            minDistance = distance;
-                            closestProj = proj;
-                        }
+                        minDistance = distance;
+                        closestProj = proj;
+
                     }
                 }
 
@@ -271,7 +273,7 @@ namespace bullethellwhatever.MainFiles
         }
         public static NPC ClosestTargetableNPC(Vector2 point)
         {
-            return ClosestNPC(point, (NPC npc) => npc.TargetableByHoming && npc.Participating);
+            return ClosestNPC(activeNPCs, point, (NPC npc) => npc.TargetableByHoming && npc.Participating);
         }
     }
 }

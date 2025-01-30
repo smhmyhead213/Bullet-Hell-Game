@@ -34,19 +34,19 @@ namespace bullethellwhatever.Abilities.Weapons
 
             bool foundReflector = false;
 
-            List<Projectile> foundAvailableReflectors = new List<Projectile>();
+            List<Projectile> availableReflectors = new List<Projectile>();
 
             foreach (Projectile reflect in EntityManager.activeFriendlyProjectiles)
             {
-                if (reflect.Label == EntityLabels.SharpShotReflector)
+                if (reflect.Label == EntityLabels.SharpShotReflector && !ReflectorsHit.Contains(reflect))
                 {
-                    foundAvailableReflectors.Add(reflect);
+                    availableReflectors.Add(reflect);
                 }
             }
 
-            if (foundAvailableReflectors.Count > 0)
+            if (availableReflectors.Count > 0)
             {
-                foreach (Projectile reflector in foundAvailableReflectors)
+                foreach (Projectile reflector in availableReflectors)
                 {
                     if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector, false))
                     {
@@ -80,7 +80,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         Position = reflector.Position;
 
                         ref float reflections = ref reflector.ExtraData[0];
-                        int maxReflections = 20;
+                        int maxReflections = 3;
 
                         reflections += 1f;
 
@@ -89,7 +89,7 @@ namespace bullethellwhatever.Abilities.Weapons
                             reflector.Die();
                         }
 
-                        Projectile closestReflector = EntityManager.ClosestProjectile(foundAvailableReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
+                        Projectile closestReflector = EntityManager.ClosestProjectile(availableReflectors, Position, (Projectile p) => !ReflectorsHit.Contains(p));
 
                         if (closestReflector != null)
                         {
@@ -100,7 +100,6 @@ namespace bullethellwhatever.Abilities.Weapons
                         }
                         else
                         {
-                            // fly off randomly
                             FlyRandomly();
                         }
 
@@ -110,19 +109,19 @@ namespace bullethellwhatever.Abilities.Weapons
                     }
                 }
             }
-            else if (Bounced) // move this to be if no valid reflectors are found, not just if there are none
+
+            else
             {
-                // if there are no reflectors left and we've bounced at least once, home
-
-                NPC target = EntityManager.ClosestTargetableNPC(Position);
-
-                if (target != null)
+                if (Bounced)
                 {
-                    Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
+                    NPC target = EntityManager.ClosestTargetableNPC(Position);
 
-                    // home harder over time
-                    Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.2f + AITimer * 0.03f);
-                }
+                    if (target != null)
+                    {
+                        Home(target);
+                    }
+
+                }                
             }
 
             if (!foundReflector)
@@ -131,9 +130,18 @@ namespace bullethellwhatever.Abilities.Weapons
             }
         }
 
+        public void Home(NPC target)
+        {
+            Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
+
+            // home harder over time
+            Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.2f + AITimer * 0.03f);
+        }
+
         public override void OnHitEffect(Vector2 position)
         {
             int particles = (Bounces + 1) * 4;
+            particles = 3;
             float particleSpeed = 10f;
             int particleLifetime = 30;
             int lifetimeSpread = 15;
