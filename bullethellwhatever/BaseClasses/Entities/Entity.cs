@@ -297,6 +297,17 @@ namespace bullethellwhatever.BaseClasses.Entities
             return Hitbox.Intersects(other.Hitbox).Collided;
         }
 
+        /// <summary>
+        /// Checks if a collision happened LAST frame by going back one velocity tick and using a forwards raycast.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public virtual bool CollidedWithLastFrame(Entity other)
+        {
+            // an assumption is made here that neither the velocity of this nor the other entity has not wildly changed between this frame and the last.
+            // go back to the previous frame by subtracting velocity from the positions of both.
+
+        }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (ExtraDraw is not null)

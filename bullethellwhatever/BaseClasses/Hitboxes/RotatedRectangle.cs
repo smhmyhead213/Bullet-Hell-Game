@@ -57,17 +57,17 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
             Vertices[3] = Centre + Utilities.RotateVectorClockwise(new Vector2(Width / 2f, Length / 2f), Rotation);
         }
 
-        public RotatedRectangle GenerateRaycast(Vector2 velocity)
+        public RotatedRectangle GenerateRaycast(Vector2 velocity, bool backwards = true)
         {
             float velocityLength = velocity.Length();
-
+            int direction = backwards ? 1 : -1;
             // hitbox checks apply after update, so we raycast backwards to check the space the projectile just crossed
-            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre - 0.5f * velocity, Owner);
+            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre - direction * 0.5f * velocity, Owner);
         }
 
-        public Collision IntersectsWithRaycast(RotatedRectangle other, Vector2 velocityThis)
+        public Collision IntersectsWithRaycast(RotatedRectangle other, Vector2 velocityThis, bool backwards = true)
         {
-            RotatedRectangle ahead = GenerateRaycast(velocityThis);
+            RotatedRectangle ahead = GenerateRaycast(velocityThis, backwards);
 
             Collision aheadColl = other.Intersects(ahead);
 

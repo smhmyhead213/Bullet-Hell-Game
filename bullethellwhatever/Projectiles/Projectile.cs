@@ -194,7 +194,6 @@ namespace bullethellwhatever.Projectiles
 
         public void UpdateAndCheckHits()
         {
-            UpdatePosition(1f);
             UpdateHitbox();
             CheckForHits(); 
         }
@@ -238,7 +237,7 @@ namespace bullethellwhatever.Projectiles
 
                 if (IsHarmful && DealDamage)
                 {
-                    if (CollisionWithEntity(player).Collided && player.IFrames == 0 && !Dying)
+                    if (IsCollidingWith(player) && player.IFrames == 0 && !Dying)
                     {
                         DamagePlayer();
                         OnHitEffect(player.Position); // projectile on hit effect happens at player's position not projectile's position
@@ -253,7 +252,7 @@ namespace bullethellwhatever.Projectiles
             {
                 Collision collision = CollisionWithEntity(npc);
 
-                if (collision.Collided && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
+                if (IsCollidingWith(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
                 {
                     DealDamageTo(npc, collision);
                     OnHitToNPC(npc);

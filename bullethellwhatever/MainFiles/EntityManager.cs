@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Bosses;
 
 using bullethellwhatever.UtilitySystems.Dialogue;
 using bullethellwhatever.Projectiles.TelegraphLines;
-using System.Collections.Generic;
+using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Bosses.CrabBoss;
 using bullethellwhatever.Bosses.EyeBoss;
@@ -27,6 +28,8 @@ namespace bullethellwhatever.MainFiles
         public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
         public static List<Particle> ParticlesToRemove = new List<Particle>();
         public static List<Particle> ParticlesToAdd = new List<Particle>();
+
+        public static HashSet<Tuple<Entity, Entity>> CollisionsLastFrame = new HashSet<Tuple<Entity, Entity>>();
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && NPC.TouchingAnEdge());
@@ -107,6 +110,7 @@ namespace bullethellwhatever.MainFiles
                 for (int i = 0; i < projectile.Updates; i++)
                 {
                     projectile.PreUpdate();
+                    projectile.UpdatePosition(1f);
                     projectile.AI();
                     projectile.UpdateAndCheckHits();
                     projectile.PostUpdate();
@@ -134,7 +138,8 @@ namespace bullethellwhatever.MainFiles
                 for (int i = 0; i < projectile.Updates; i++)
                 {
                     projectile.PreUpdate();
-                    projectile.AI();
+                    projectile.UpdatePosition(1f); // updating position before AI runs allows AI to have a degree of control over position before we go to the drawer
+                    projectile.AI(); 
                     projectile.UpdateAndCheckHits();
                     projectile.PostUpdate();
                 }
