@@ -87,6 +87,10 @@ namespace bullethellwhatever.Bosses
             //Update the boss position based on its velocity.
             Position = Position + Velocity;
 
+            if (IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.T))
+            {
+                Position = MousePositionWithCamera();
+            }
 
             if (IFrames > 0)
             {

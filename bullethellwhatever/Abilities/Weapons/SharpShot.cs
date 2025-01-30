@@ -120,7 +120,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     if (target != null)
                     {
-                        this.Homing(target, 0);
+                        this.Homing(target, 0, Velocity.Length() / 2f);
                     }
                 }                
             }

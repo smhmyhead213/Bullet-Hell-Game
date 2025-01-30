@@ -17,13 +17,15 @@ namespace bullethellwhatever.Projectiles
         /// <param name="projectile"></param>
         /// <param name="target"></param>
         /// <param name="extraDataSlot"></param>
-        public static void Homing(this Projectile projectile, NPC target, int extraDataSlot)
+        public static void Homing(this Projectile projectile, NPC target, int extraDataSlot, float startSpeed = 0f)
         {
             ref float homingTime = ref projectile.ExtraData[extraDataSlot];
 
             homingTime++;
 
-            projectile.Velocity = 0.4f / projectile.Updates * Vector2.Normalize(target.Position - projectile.Position) * homingTime;
+            //projectile.Velocity = 0.4f / projectile.Updates * startSpeed * Vector2.Normalize(target.Position - projectile.Position) * homingTime;
+
+            projectile.Velocity = (homingTime + startSpeed) * Utilities.SafeNormalise(target.Position - projectile.Position);
         }
     }
 }
