@@ -120,9 +120,8 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     if (target != null)
                     {
-                        Home(target);
+                        this.Homing(target, 0);
                     }
-
                 }                
             }
 
