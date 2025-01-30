@@ -26,6 +26,8 @@ namespace bullethellwhatever.Abilities.Weapons
             Reflections = 0;
             Bounced = false;
             Bounces = 0;
+            ref float timeSpentHoming = ref ExtraData[0];
+            timeSpentHoming = 0;
         }
 
         public override void AI()
@@ -134,14 +136,17 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
 
+            ref float timeSpentHoming = ref ExtraData[0];
+
+            timeSpentHoming++;
+
             // home harder over time
-            Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.2f + AITimer * 0.03f);
+            Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.4f + (timeSpentHoming / 100f));
         }
 
         public override void OnHitEffect(Vector2 position)
         {
             int particles = (Bounces + 1) * 4;
-            particles = 3;
             float particleSpeed = 10f;
             int particleLifetime = 30;
             int lifetimeSpread = 15;
