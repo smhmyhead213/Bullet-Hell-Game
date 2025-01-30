@@ -39,7 +39,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float RotationToAdd;
 
-        public float Gravity;
         public CrabBossAppendage(Entity owner, CrabArm leg, AppendageType appendageType, int legIndex, float scale = 1f)
         {
             Owner = owner;
@@ -87,8 +86,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Velocity = Vector2.Zero;
             RotationalVelocity = 0;
-
-            Gravity = 0.7f; // for death anim
 
             Colour = Color.White;
         }
@@ -201,39 +198,43 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return Texture.Height * GetSize().Y;
         }
-        public void HandleBounces()
+        //public void HandleBounces()
+        //{
+        //    for (int i = 0; i < Hitbox.Vertices.Length; i++)
+        //    {
+        //        float vertexX = Hitbox.Vertices[i].X;
+        //        float vertexY = Hitbox.Vertices[i].Y;
+
+        //        if (vertexX < 0 && Velocity.X < 0)
+        //        {
+        //            Velocity.X = Velocity.X * -1f;
+        //            RotationalVelocity = -Sign(Velocity.X) * PI / 12;
+        //        }
+
+        //        if (vertexX > GameWidth && Velocity.X > 0)
+        //        {
+        //            Velocity.X = Velocity.X * -1f;
+        //        }
+
+        //        if (vertexY < 0 && Velocity.Y < 0)
+        //        {
+        //            Velocity.Y = Velocity.Y * -1f;
+        //        }
+
+        //        if (vertexY > GameHeight && Velocity.Y > 0)
+        //        {
+        //            Velocity.Y = Velocity.Y * -1f;
+
+        //            Velocity.Y = Velocity.Y / 10f;
+        //        }
+        //    }
+
+        //    RotationalVelocity = RotationalVelocity * 0.95f;
+        //}
+
+        public override void DeductHealth(float damage)
         {
-            for (int i = 0; i < Hitbox.Vertices.Length; i++)
-            {
-                float vertexX = Hitbox.Vertices[i].X;
-                float vertexY = Hitbox.Vertices[i].Y;
-
-                if (vertexX < 0 && Velocity.X < 0)
-                {
-                    Velocity.X = Velocity.X * -1f;
-                    RotationalVelocity = -Sign(Velocity.X) * PI / 12;
-                }
-
-                if (vertexX > GameWidth && Velocity.X > 0)
-                {
-                    Velocity.X = Velocity.X * -1f;
-                }
-
-                if (vertexY < 0 && Velocity.Y < 0)
-                {
-                    Velocity.Y = Velocity.Y * -1f;
-                }
-
-                if (vertexY > GameHeight && Velocity.Y > 0)
-                {
-                    Velocity.Y = Velocity.Y * -1f;
-
-                    Velocity.Y = Velocity.Y / 10f;
-                    Gravity = Gravity / 10f;
-                }
-            }
-
-            RotationalVelocity = RotationalVelocity * 0.95f;
+            //Leg.Owner.TakeDamage(damage);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

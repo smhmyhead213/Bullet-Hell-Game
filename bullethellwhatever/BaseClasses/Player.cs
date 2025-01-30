@@ -20,7 +20,7 @@ using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.BaseClasses
 {
-    public class Player : Entity
+    public class Player : NPC
     {
         public float DefaultMoveSpeed => 5.5f;
         public int DashCooldown;
@@ -31,7 +31,6 @@ namespace bullethellwhatever.BaseClasses
         public int DashTimer;
         public Vector2 DefaultHitbox => new Vector2(1f, 1f);
 
-        public float IFrames;
         public int WeaponSwitchCooldownTimer;
         public int WeaponSwitchCooldown;
         public float MoveSpeed;

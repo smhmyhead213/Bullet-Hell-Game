@@ -65,7 +65,7 @@ namespace bullethellwhatever.Projectiles
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
 
-            DealDamage = isHarmful;
+            ContactDamage = isHarmful;
 
             if (Updates == 0) // if we havent already set updates
             {
@@ -254,20 +254,9 @@ namespace bullethellwhatever.Projectiles
 
                 if (IsCollidingWith(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
                 {
-                    DealDamageTo(npc, collision);
-                    OnHitToNPC(npc);
+                    DealDamage(npc);
                 }
             }
-        }
-        public virtual void OnHitToNPC(NPC hitNPC)
-        {
-
-        }
-
-        public override void DealDamageTo(NPC npc, Collision collision)
-        {
-            npc.TakeDamage(collision, this);
-            HandlePierce(npc.PierceToTake);
         }
 
         public void SetOnHit(Action action)
@@ -281,15 +270,11 @@ namespace bullethellwhatever.Projectiles
                 OnHit();
         }
 
-        public override void DamagePlayer()
+        public override void DealDamage(NPC npc)
         {
             if (Damage != 0)
             {
-                player.IFrames = 20f;
-
-                player.Health = player.Health - Damage;
-
-                Drawing.ScreenShake(3, 10);
+                npc.TakeDamage(Damage);
             }
 
             HandlePierce(1);

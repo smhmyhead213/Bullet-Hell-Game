@@ -148,7 +148,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             }
         }
 
-        public override void TakeDamage(Collision collision, Projectile projectile)
+        public override void TakeDamage(Projectile projectile)
         {
             base.TakeDamage(collision, projectile);
 

@@ -18,8 +18,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public CrabBoss Owner;
 
-        public bool Dead;
-
         public int LegIndex;
 
         //public bool LockPosition;
@@ -66,8 +64,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerArm.Position = UpperArm.CalculateEnd();
             UpperClaw.Position = LowerArm.CalculateEnd();
             LowerClaw.Position = LowerArm.CalculateEnd();
-
-            Dead = false;
         }
         public float Length()
         {
@@ -91,10 +87,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public void ContactDamage(bool on)
         {
-            UpperArm.DealDamage = on;
-            LowerArm.DealDamage = on;
-            UpperClaw.DealDamage = on;
-            LowerClaw.DealDamage = on;
+            UpperArm.ContactDamage = on;
+            LowerArm.ContactDamage = on;
+            UpperClaw.ContactDamage = on;
+            LowerClaw.ContactDamage = on;
         }
         public void RotateLeg(float angle)
         {
@@ -226,11 +222,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
                 }
                 else UpperClaw.Position = LowerArm.CalculateEnd();
-
-                if (UpperArm.Health <= 0 && LowerArm.Health <= 0 && UpperClaw.Health <= 0 && LowerClaw.Health <= 0)
-                {
-                    Dead = true;
-                }
             }
         }
     }

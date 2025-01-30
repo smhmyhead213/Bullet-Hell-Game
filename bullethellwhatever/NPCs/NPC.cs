@@ -14,6 +14,8 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.Bosses;
 using bullethellwhatever.BaseClasses.Entities;
+using SharpDX.XAudio2;
+using log4net;
 
 namespace bullethellwhatever.NPCs
 {
@@ -31,6 +33,7 @@ namespace bullethellwhatever.NPCs
 
         public int PierceToTake;
 
+        public float Health;
         public float DamageReduction;
 
         public bool CanDie;
@@ -60,7 +63,7 @@ namespace bullethellwhatever.NPCs
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
 
-            DealDamage = false;
+            ContactDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
             InitialOpacity = Opacity;
@@ -142,7 +145,7 @@ namespace bullethellwhatever.NPCs
 
                         if (c.Collided && npc.IFrames == 0)
                         {
-                            DealDamageTo(npc, c);
+                            
                         }
                     }
                 }
@@ -151,12 +154,32 @@ namespace bullethellwhatever.NPCs
                 {
                     if (CollisionWithEntity(player).Collided && player.IFrames == 0)
                     {
-                        DamagePlayer();
+                        player.TakeDamage(Damage);
                     }
                 }
             }
         }
+        public virtual void Heal(float amount)
+        {
+            Health = Health + amount;
 
+            if (Health > MaxHP)
+            {
+                Health = MaxHP;
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            IFrames = MaxIFrames;
+
+            Health -= damage * (1f - DamageReduction);
+        }
+
+        public virtual void DeductHealth(float damage)
+        {
+            Health = Health - ((1 - DamageReduction) * damage);
+        }
         public void SetDR(float dr)
         {
             DamageReduction = MathHelper.Clamp(dr, 0f, 1f);
@@ -165,16 +188,7 @@ namespace bullethellwhatever.NPCs
         {
             DeleteNextFrame = true;
         }
-        public virtual void TakeDamage(Collision collision, Projectile projectile)
-        {
-            IFrames = MaxIFrames;
 
-            Health = Health - ((1 - DamageReduction) * projectile.Damage);
-
-            projectile.OnHitEffect(collision.CollisionPoint);
-
-            projectile.HandlePierce(PierceToTake);
-        }
         public virtual void DrawHPBar(SpriteBatch spriteBatch)
         {
             if (Participating)
@@ -216,7 +230,7 @@ namespace bullethellwhatever.NPCs
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
 
-            DealDamage = false;
+            ContactDamage = false;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             Opacity = 1f;
 

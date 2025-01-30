@@ -26,7 +26,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public Action ApplyExtraShaderParameters;
 
-        public bool DealDamage;
+        public bool ContactDamage;
         public bool IsHarmful;
         public int AITimer;
         public float Damage;
@@ -44,7 +44,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         public float RotationalVelocity;
 
         public bool Participating; // whether to do anything with collision
-        public float Health;
+        
         public float MaxHP;
         public bool DeleteNextFrame;
         public float Rotation
@@ -138,21 +138,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         {
             Participating = participating;
         }
-        public virtual void DealDamageTo(NPC npc, Collision collision)
-        {
-            npc.IFrames = npc.MaxIFrames;
 
-            npc.Health = npc.Health - Damage;
-        }
-
-        public virtual void DamagePlayer()
-        {
-            player.IFrames = 20f;
-
-            player.Health = player.Health - Damage;
-
-            Drawing.ScreenShake(3, 10);
-        }
         public bool TouchingBottom()
         {
             if (Position.Y + Texture.Height * GetSize().Y / 2 >= MainCamera.VisibleArea.Bottom)
@@ -228,15 +214,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         {
             ExtraDraw = action;
         }
-        public virtual void Heal(float amount)
-        {
-            Health = Health + amount;
 
-            if (Health > MaxHP)
-            {
-                Health = MaxHP;
-            }
-        }
         public virtual void ApplyShaderParameters()
         {
             // assumption made that we want to pass into the shader the colour of the entity
@@ -279,6 +257,11 @@ namespace bullethellwhatever.BaseClasses.Entities
         /// Completely removes an entity from the game, without triggering any on death behaviour.
         /// </summary>
         public abstract void Delete();
+
+        public virtual void DealDamage(NPC target)
+        {
+            target.TakeDamage(Damage);
+        }
 
         public virtual void AddTrail(int length, string shader = null)
         {

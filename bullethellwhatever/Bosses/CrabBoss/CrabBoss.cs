@@ -136,20 +136,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             base.AI();
 
-            if (Arms[0].Dead && Arms[1].Dead && !StartedPhaseTwoTransition)
-            {
-                StartedPhaseTwoTransition = true;
-            }
-
             if (StartedPhaseTwoTransition)
             {
                 SetDR(0f);
                 TargetableByHoming = true;
-            }
-            else
-            {
-                SetDR(1f);
-                TargetableByHoming = false;
             }
         }
 
