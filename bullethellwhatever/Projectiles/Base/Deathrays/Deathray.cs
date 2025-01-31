@@ -45,7 +45,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             Updates = 1;
 
-            DealDamage = isHarmful;
+            ContactDamage = isHarmful;
 
             Position = position;
             Rotation = initialRotation;
@@ -230,17 +230,6 @@ namespace bullethellwhatever.Projectiles.Base
             return new Vector2((y - Hitbox.CalculateC()) / Hitbox.CalculateGradient(), y);
         }
 
-        public override void OnHitToNPC(NPC hitNPC)
-        {
-            base.OnHitToNPC(hitNPC);
-
-            float distanceTo = Utilities.DistanceBetweenVectors(Position, hitNPC.Position);
-
-            if (hitNPC.BlockDeathrays && Length > distanceTo) // idk why i even made this im barely going to use it
-            {
-                Length = distanceTo;
-            }
-        }
         public override void OnHitEffect(Vector2 position)
         {
             if (Owner == player && AITimer % 3 == 0)

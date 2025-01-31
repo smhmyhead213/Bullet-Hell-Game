@@ -17,7 +17,7 @@ namespace bullethellwhatever.Projectiles
         /// <param name="projectile"></param>
         /// <param name="target"></param>
         /// <param name="extraDataSlot"></param>
-        public static void Homing(this Projectile projectile, NPC target, int extraDataSlot, float startSpeed = 0f)
+        public static void Homing(Projectile projectile, NPC target, int extraDataSlot, float startSpeed, float homingStrengthMultiplier)
         {
             ref float homingTime = ref projectile.ExtraData[extraDataSlot];
 
@@ -25,7 +25,7 @@ namespace bullethellwhatever.Projectiles
 
             //projectile.Velocity = 0.4f / projectile.Updates * startSpeed * Vector2.Normalize(target.Position - projectile.Position) * homingTime;
 
-            projectile.Velocity = (homingTime + startSpeed) * Utilities.SafeNormalise(target.Position - projectile.Position);
+            projectile.Velocity = (homingStrengthMultiplier * homingTime + startSpeed) * Utilities.SafeNormalise(target.Position - projectile.Position);
         }
     }
 }

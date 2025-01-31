@@ -235,11 +235,11 @@ namespace bullethellwhatever.Projectiles
                     CheckForAndHitNPCs();
                 }
 
-                if (IsHarmful && DealDamage)
+                if (IsHarmful && ContactDamage)
                 {
                     if (IsCollidingWith(player) && player.IFrames == 0 && !Dying)
                     {
-                        DamagePlayer();
+                        DealDamage(player);
                         OnHitEffect(player.Position); // projectile on hit effect happens at player's position not projectile's position
                     }
                 }

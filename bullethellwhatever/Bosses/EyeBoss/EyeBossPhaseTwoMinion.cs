@@ -150,7 +150,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public override void TakeDamage(Projectile projectile)
         {
-            base.TakeDamage(collision, projectile);
+            base.TakeDamage(projectile.Damage);
 
             foreach (ChainLink c in ChainLinks)
             {

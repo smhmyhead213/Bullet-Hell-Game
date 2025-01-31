@@ -154,7 +154,7 @@ namespace bullethellwhatever.NPCs
                 {
                     if (CollisionWithEntity(player).Collided && player.IFrames == 0)
                     {
-                        player.TakeDamage(Damage);
+                        player.DeductHealth(Damage);
                     }
                 }
             }
@@ -169,13 +169,22 @@ namespace bullethellwhatever.NPCs
             }
         }
 
-        public void TakeDamage(float damage)
+        public virtual void TakeDamage(Projectile projectile)
+        {
+            TakeDamage(projectile.Damage);
+        }
+
+        public virtual void TakeDamage(NPC npc)
+        {
+            TakeDamage(npc.Damage); 
+        }
+
+        public virtual void TakeDamage(float damage)
         {
             IFrames = MaxIFrames;
 
-            Health -= damage * (1f - DamageReduction);
+            DeductHealth(damage);
         }
-
         public virtual void DeductHealth(float damage)
         {
             Health = Health - ((1 - DamageReduction) * damage);

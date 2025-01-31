@@ -116,11 +116,13 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 if (Bounced)
                 {
+                    UseRayCastCollision = true;
+
                     NPC target = EntityManager.ClosestTargetableNPC(Position);
 
                     if (target != null)
                     {
-                        this.Homing(target, 0, Velocity.Length() / 2f);
+                        CommonProjectileAIs.Homing(this, target, 0, Velocity.Length(), 1f);
                     }
                 }                
             }
