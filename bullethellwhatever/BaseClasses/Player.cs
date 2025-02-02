@@ -365,6 +365,8 @@ namespace bullethellwhatever.BaseClasses
             {
                 component.Draw(spriteBatch);
             }
+
+            //DrawUtils.DrawLine(Position, Position + Utilities.RotateVectorClockwise(new Vector2(0f, 200f), AITimer * PI / 60), 10, Color.White);
         }
     }
 }

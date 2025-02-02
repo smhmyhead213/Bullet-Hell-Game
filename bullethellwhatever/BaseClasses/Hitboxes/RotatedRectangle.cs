@@ -179,6 +179,11 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 
             return Centre.Y - Centre.X * CalculateGradient();
         }
+
+        public void Draw(float width)
+        {
+
+        }
     }
 
     public class Collision
