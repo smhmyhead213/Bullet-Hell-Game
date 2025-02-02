@@ -126,11 +126,11 @@ namespace bullethellwhatever.DrawCode.UI
                 IndexOfSelected++; // if we are not at the last ui element, increment               
             }
 
-            while (UIElements[IndexOfSelected] is InactiveElement) // if the newly selected ui element does nothing on click (change this condition to better represent any uninteractable element)
+            while (!UIElements[IndexOfSelected].Interactable) // if the newly selected ui element does nothing on click (change this condition to better represent any uninteractable element)
             {
                 if (IndexOfSelected == UIElements.Count) // if we are at the last ui element
                 {
-                    IndexOfSelected = 0; // no ui element selected
+                    IndexOfSelected = -1; // no ui element selected
                 }
                 else
                 {

@@ -44,14 +44,15 @@ namespace bullethellwhatever.DrawCode.UI
             float yDistanceBetweenButtonsOnMainMenu = 200f;
             float timeToFadeIn = 60;
 
-            InactiveElement titleBanner = new InactiveElement("TitleBanner", 1f);
+            UIElement titleBanner = new UIElement("TitleBanner", 1f);
+            titleBanner.Interactable = false;
 
-            UIElement[] buttons = new UIElement[]
-            {
+            UIElement[] buttons =
+            [
                 new UIElement("PlayButton", 1.5f),
                 new UIElement("SettingsButton", 1.5f),
                 new UIElement("CreditsButton", 1.5f),
-            };
+            ];
 
             Action[] actions = new Action[]
             {

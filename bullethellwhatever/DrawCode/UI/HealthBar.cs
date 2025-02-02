@@ -20,12 +20,9 @@ namespace bullethellwhatever.DrawCode.UI
         public HealthBar(string texture, Vector2 size, NPC owner, Vector2 position = default, float progress = 1) : base(texture, size, position, progress)
         {
             NPCOwner = owner;
+            Interactable = false;
         }
 
-        public override bool Interactable()
-        {
-            return false;
-        }
         public override void Update()
         {
             if (NPCOwner != null)

@@ -38,12 +38,20 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public static void ManageUI()
         {
+            
             foreach (UIElement element in UIElemntsToRemoveNextFrame)
             {
                 ActiveUIElements.Remove(element);
             }
 
             UIElemntsToRemoveNextFrame.Clear();
+
+            // safety check to ensure that after menus are removed, the interactable index doesnt go over capacity
+
+            if (IndexOfInteractable > ActiveUIElements.Count - 1)
+            {
+                IndexOfInteractable = -1;
+            }
 
             foreach (UIElement element in UIElementsToAddNextFrame)
             {
@@ -96,7 +104,7 @@ namespace bullethellwhatever.DrawCode.UI
                     return; // if we get to the end of the ui elements, stop trying
                 }
             }
-            while (!ActiveUIElements[IndexOfInteractable].Interactable());
+            while (!ActiveUIElements[IndexOfInteractable].Interactable);
         }
 
         private static void MoveIndexToNextInteractable()

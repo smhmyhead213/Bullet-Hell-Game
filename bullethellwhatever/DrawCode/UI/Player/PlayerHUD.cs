@@ -20,6 +20,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
         public PlayerHUD(string texture, Vector2 size, Vector2 position) : base(texture, size, position)
         {
             ResetHUD();
+            Interactable = false;
         }
 
         public void ResetHUD()
@@ -104,11 +105,6 @@ namespace bullethellwhatever.DrawCode.UI.Player
                     WeaponHUDRotation = MathHelper.LerpPrecise(lastWeaponAngle + Tau, activeWeaponAngle, EasingFunctions.EaseOutQuad(interpolant));
                 }
             }
-        }
-
-        public override bool Interactable()
-        {
-            return false;
         }
 
         public override void Draw(SpriteBatch s)

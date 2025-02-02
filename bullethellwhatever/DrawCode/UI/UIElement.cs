@@ -32,6 +32,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public Action ExtraAI;
         public Action ClickEvent;
+
+        public bool Interactable;
         
         public string Name;
         /// <summary>
@@ -57,6 +59,8 @@ namespace bullethellwhatever.DrawCode.UI
             Opacity = 1;
 
             Name = "";
+
+            Interactable = true;
         }
 
         /// <summary>
@@ -162,10 +166,6 @@ namespace bullethellwhatever.DrawCode.UI
             }
         }
 
-        public virtual bool Interactable()
-        {
-            return true; // can be overriden in more important UI elements that dont get interacted with like the HUD
-        }
         /// <summary>
         /// Handles the pressing of Tab when this element is selected. For example, a button will simply increment the index of interactable thus passing interactibility to the next UIElement, but a menu will pass it to the next button it contains and to the next element after having exhausted all of its elements.
         /// </summary>
