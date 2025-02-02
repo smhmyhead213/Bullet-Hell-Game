@@ -13,7 +13,7 @@ namespace bullethellwhatever.DrawCode
     {
         public static void DrawLine(Vector2 start, Vector2 end, float width, Color colour)
         {
-            float direction = Utilities.VectorToAngle(end - start);
+            float direction = Utilities.VectorToAngle(end - start) + PI;
             float length = (end - start).Length();
             Texture2D tex = AssetRegistry.GetTexture2D("box");
             Drawing.BetterDraw(tex, start, null, colour, direction, new Vector2(width / tex.Width, length / tex.Height), SpriteEffects.None, 0f, new Vector2(width / 2, 0));

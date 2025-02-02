@@ -87,6 +87,20 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void IncrementIndexOfInteractable()
         {
+            do
+            {
+                MoveIndexToNextInteractable();
+
+                if (IndexOfInteractable == -1)
+                {
+                    return; // if we get to the end of the ui elements, stop trying
+                }
+            }
+            while (!ActiveUIElements[IndexOfInteractable].Interactable());
+        }
+
+        private static void MoveIndexToNextInteractable()
+        {
             IndexOfInteractable++;
 
             if (IndexOfInteractable == ActiveUIElements.Count)

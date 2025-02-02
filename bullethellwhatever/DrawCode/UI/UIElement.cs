@@ -32,7 +32,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public Action ExtraAI;
         public Action ClickEvent;
-
+        
         public string Name;
         /// <summary>
         /// Constructs a new UIElement.
@@ -161,8 +161,13 @@ namespace bullethellwhatever.DrawCode.UI
                 throw new Exception("cannot set menu position of buttons that arent in a menu. maybe you forgot to add them to the menu?");
             }
         }
+
+        public virtual bool Interactable()
+        {
+            return true; // can be overriden in more important UI elements that dont get interacted with like the HUD
+        }
         /// <summary>
-        /// Handles the pressing of Tab when this element is selected. For example, a button will simply increment the index of interactable thus passing interactibility to the next UIElement, but a menu will pass it to the next button it contains and to the next element after having exhausted all of its elements
+        /// Handles the pressing of Tab when this element is selected. For example, a button will simply increment the index of interactable thus passing interactibility to the next UIElement, but a menu will pass it to the next button it contains and to the next element after having exhausted all of its elements.
         /// </summary>
         public virtual void HandleTab()
         {

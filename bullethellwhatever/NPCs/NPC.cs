@@ -154,7 +154,7 @@ namespace bullethellwhatever.NPCs
                 {
                     if (CollisionWithEntity(player).Collided && player.IFrames == 0)
                     {
-                        player.DeductHealth(Damage);
+                        DealDamage(player);
                     }
                 }
             }

@@ -61,8 +61,9 @@ namespace bullethellwhatever.BaseClasses
             Participating = true;
 
             IFrames = 0;
+            MaxIFrames = 30;
 
-            MaxHP = 15;
+            MaxHP = 1;
 
             Health = MaxHP; // put this back to normal
             Size = DefaultHitbox;
@@ -366,7 +367,7 @@ namespace bullethellwhatever.BaseClasses
                 component.Draw(spriteBatch);
             }
 
-            //DrawUtils.DrawLine(Position, Position + Utilities.RotateVectorClockwise(new Vector2(0f, 200f), AITimer * PI / 60), 10, Color.White);
+            //Hitbox.Draw(5f);
         }
     }
 }

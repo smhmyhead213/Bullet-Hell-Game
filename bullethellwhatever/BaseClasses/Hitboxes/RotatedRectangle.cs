@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.BaseClasses.Hitboxes
 {
@@ -121,13 +122,13 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
             else return new Collision(Vector2.Zero, false);
         }
 
-        public void DrawHitbox()
-        {
-            SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[1] - Vertices[0]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[0], Vertices[1]), 2, Vertices[0], Color.White, "box", Owner, false);
-            SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[3] - Vertices[1]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[3], Vertices[1]), 2, Vertices[1], Color.White, "box", Owner, false);
-            SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[2] - Vertices[3]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[3]), 2, Vertices[3], Color.White, "box", Owner, false);
-            SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[0] - Vertices[2]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[0]), 2, Vertices[2], Color.White, "box", Owner, false);
-        }
+        //public void DrawHitbox()
+        //{
+        //    SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[1] - Vertices[0]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[0], Vertices[1]), 2, Vertices[0], Color.White, "box", Owner, false);
+        //    SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[3] - Vertices[1]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[3], Vertices[1]), 2, Vertices[1], Color.White, "box", Owner, false);
+        //    SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[2] - Vertices[3]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[3]), 2, Vertices[3], Color.White, "box", Owner, false);
+        //    SpawnTelegraphLine(Utilities.VectorToAngle(Vertices[0] - Vertices[2]), 0, 5, Utilities.DistanceBetweenVectors(Vertices[2], Vertices[0]), 2, Vertices[2], Color.White, "box", Owner, false);
+        //}
 
         public void DrawVertices(SpriteBatch s, Color colour)
         {
@@ -180,9 +181,21 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
             return Centre.Y - Centre.X * CalculateGradient();
         }
 
-        public void Draw(float width)
+        public void Draw(float width, Vector2 velocity = default, int raycastDir = 0)
         {
+            int[] order = [0, 1, 3, 2];
 
+            for (int i = 0; i < order.Length; i++)
+            {
+                int next = i < order.Length - 1 ? order[i + 1] : order[0];
+
+                DrawUtils.DrawLine(Vertices[order[i]], Vertices[next], width, Color.Gray);
+            }
+
+            if (raycastDir == 1 || raycastDir == -1)
+            {
+                GenerateRaycast(velocity, raycastDir == 1).Draw(width);
+            }
         }
     }
 

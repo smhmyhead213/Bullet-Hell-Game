@@ -109,10 +109,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public void DrawHitboxes()
         {
-            UpperArm.Hitbox.DrawHitbox();
-            LowerArm.Hitbox.DrawHitbox();
-            UpperClaw.Hitbox.DrawHitbox();
-            LowerClaw.Hitbox.DrawHitbox();
+            float width = 5f; // awful code
+            UpperArm.Hitbox.Draw(width);
+            LowerArm.Hitbox.Draw(width);
+            UpperClaw.Hitbox.Draw(width);
+            LowerClaw.Hitbox.Draw(width);
         }
 
         public void SetAllRotations(float rotation)

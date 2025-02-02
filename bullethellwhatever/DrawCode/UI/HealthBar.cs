@@ -22,6 +22,10 @@ namespace bullethellwhatever.DrawCode.UI
             NPCOwner = owner;
         }
 
+        public override bool Interactable()
+        {
+            return false;
+        }
         public override void Update()
         {
             if (NPCOwner != null)

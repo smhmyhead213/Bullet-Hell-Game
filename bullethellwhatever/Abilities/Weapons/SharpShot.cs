@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using SharpDX.MediaFoundation;
 using System.Diagnostics;
 using bullethellwhatever.DrawCode.Particles;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -172,5 +173,18 @@ namespace bullethellwhatever.Abilities.Weapons
             Vector2 direction = Utilities.AngleToVector(Utilities.RandomAngle());
             Velocity = direction * Velocity.Length() * 1.3f;
         }
+
+        public override void DealDamage(NPC npc)
+        {
+            base.DealDamage(npc);
+
+            Position = npc.Position;
+        }
+        //public override void Draw(SpriteBatch spriteBatch)
+        //{
+        //    base.Draw(spriteBatch);
+
+        //    Hitbox.Draw(5f, Velocity, -1);
+        //}
     }
 }

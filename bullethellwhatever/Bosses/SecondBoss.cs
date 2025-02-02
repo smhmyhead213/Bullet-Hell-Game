@@ -56,6 +56,8 @@ namespace bullethellwhatever.Bosses
         {
             base.Draw(spriteBatch);
 
+            Hitbox.Draw(3f);
+
             //for (int i = 0; i < Hitbox.Vertices.Length; i++)
             //{
             //    Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);

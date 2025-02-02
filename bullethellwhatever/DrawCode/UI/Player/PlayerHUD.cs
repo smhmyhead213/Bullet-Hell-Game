@@ -105,6 +105,12 @@ namespace bullethellwhatever.DrawCode.UI.Player
                 }
             }
         }
+
+        public override bool Interactable()
+        {
+            return false;
+        }
+
         public override void Draw(SpriteBatch s)
         {
             Drawing.RestartSpriteBatchForShaders(s, false, false);
