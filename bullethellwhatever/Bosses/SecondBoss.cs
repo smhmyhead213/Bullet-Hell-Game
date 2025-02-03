@@ -14,6 +14,7 @@ using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.AssetManagement;
 using SharpDX.Direct3D9;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever.Bosses
 {
@@ -51,6 +52,9 @@ namespace bullethellwhatever.Bosses
             Colour = Color.White;
 
             Texture = AssetRegistry.GetTexture2D("box");
+
+            HealthBar hp = new HealthBar("box", new Vector2(300f, 60f), this, new Vector2(GameWidth / 2, 4 * GameHeight / 5));
+            hp.Display();
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

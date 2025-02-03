@@ -117,7 +117,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 if (Bounced)
                 {
-                    UseRayCastCollision = true;
+                    UseRayCastCollision = false;
 
                     NPC target = EntityManager.ClosestTargetableNPC(Position);
 
