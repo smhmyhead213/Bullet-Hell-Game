@@ -12,6 +12,7 @@ using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.AssetManagement;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -60,7 +61,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             p.Rotation = firingAngle;
             p.Opacity = 1f;
-            p.UseRayCastCollision = true;
+            p.Raycast = new RaycastData(p.Velocity, -1);
 
             p.AddTrail(14);
         }

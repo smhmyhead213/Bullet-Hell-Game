@@ -11,6 +11,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using System.Linq;
+using SharpDX.MediaFoundation;
 
 namespace bullethellwhatever.BaseClasses.Entities
 {
@@ -68,7 +69,7 @@ namespace bullethellwhatever.BaseClasses.Entities
             set;
         } // small array of floats each entity can use
 
-        public bool UseRayCastCollision;
+        public RaycastData Raycast;
 
         public List<Component> AdditionalComponents = new List<Component>();
         public abstract void AI();
@@ -272,9 +273,9 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual bool IsCollidingWith(Entity other, bool backwardsRaycast = true)
         {
-            if (UseRayCastCollision)
+            if (Raycast is not null)
             {
-                return Hitbox.IntersectsWithRaycast(other.Hitbox, Velocity, backwardsRaycast).Collided;
+                return Hitbox.IntersectsWithRaycast(other.Hitbox, Velocity, Raycast.Direction).Collided;
             }
 
             return Hitbox.Intersects(other.Hitbox).Collided;
@@ -302,6 +303,15 @@ namespace bullethellwhatever.BaseClasses.Entities
             }
         }
 
+        public void DrawHitbox(SpriteBatch s, float width)
+        {
+            Hitbox.Draw(width);
+            
+            if (Raycast is not null)
+            {
+                Hitbox.GenerateRaycast(Raycast).Draw(width);
+            }
+        }
         public void SetHitbox()
         {
             UpdateHitbox();
@@ -309,6 +319,11 @@ namespace bullethellwhatever.BaseClasses.Entities
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
             Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position);
+
+            if (Raycast is not null)
+            {
+                Raycast.DescribingVector = Velocity;
+            }
 
             Hitbox.UpdateVertices();
         }

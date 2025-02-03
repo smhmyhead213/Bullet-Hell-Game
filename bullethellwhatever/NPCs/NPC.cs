@@ -71,7 +71,6 @@ namespace bullethellwhatever.NPCs
             ExtraData = new float[4];
 
             IsHarmful = isHarmful;
-            UseRayCastCollision = false;
 
             PrepareNPC();
         }

@@ -90,8 +90,7 @@ namespace bullethellwhatever.Projectiles
             ExtraData = new float[4];
 
             Label = EntityLabels.None;
-            UseRayCastCollision = false;
-
+            
             SetHitbox();
         }
         public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)

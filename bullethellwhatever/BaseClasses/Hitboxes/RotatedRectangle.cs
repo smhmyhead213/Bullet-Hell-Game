@@ -58,17 +58,27 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
             Vertices[3] = Centre + Utilities.RotateVectorClockwise(new Vector2(Width / 2f, Length / 2f), Rotation);
         }
 
-        public RotatedRectangle GenerateRaycast(Vector2 velocity, bool backwards = true)
+        /// <summary>
+        /// Backwards raycast by default.
+        /// </summary>
+        /// <param name="velocity"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public RotatedRectangle GenerateRaycast(Vector2 velocity, int direction = -1)
         {
             float velocityLength = velocity.Length();
-            int direction = backwards ? 1 : -1;
             // hitbox checks apply after update, so we raycast backwards to check the space the projectile just crossed
-            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre - direction * 0.5f * velocity, Owner);
+            return new RotatedRectangle(Utilities.VectorToAngle(velocity), Width, velocityLength, Centre + direction * 0.5f * velocity, Owner);
         }
 
-        public Collision IntersectsWithRaycast(RotatedRectangle other, Vector2 velocityThis, bool backwards = true)
+        public RotatedRectangle GenerateRaycast(RaycastData raycastData)
         {
-            RotatedRectangle ahead = GenerateRaycast(velocityThis, backwards);
+            return GenerateRaycast(raycastData.DescribingVector, raycastData.Direction);
+        }
+
+        public Collision IntersectsWithRaycast(RotatedRectangle other, Vector2 velocityThis, int direction = -1)
+        {
+            RotatedRectangle ahead = GenerateRaycast(velocityThis, direction);
 
             Collision aheadColl = other.Intersects(ahead);
 
@@ -190,11 +200,6 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                 int next = i < order.Length - 1 ? order[i + 1] : order[0];
 
                 DrawUtils.DrawLine(Vertices[order[i]], Vertices[next], width, Color.Gray);
-            }
-
-            if (raycastDir == 1 || raycastDir == -1)
-            {
-                GenerateRaycast(velocity, raycastDir == 1).Draw(width);
             }
         }
     }

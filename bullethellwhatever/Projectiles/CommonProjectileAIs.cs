@@ -23,9 +23,7 @@ namespace bullethellwhatever.Projectiles
 
             homingTime++;
 
-            //projectile.Velocity = 0.4f / projectile.Updates * startSpeed * Vector2.Normalize(target.Position - projectile.Position) * homingTime;
-
-            projectile.Velocity = (homingStrengthMultiplier * homingTime + startSpeed) * Utilities.SafeNormalise(target.Position - projectile.Position);
+            projectile.Velocity = 0.4f / projectile.Updates * startSpeed * Vector2.Normalize(target.Position - projectile.Position) * homingTime;
         }
     }
 }

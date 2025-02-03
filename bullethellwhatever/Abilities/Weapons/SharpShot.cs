@@ -117,7 +117,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 if (Bounced)
                 {
-                    UseRayCastCollision = false;
+                    //UseRayCastCollision = false;
 
                     NPC target = EntityManager.ClosestTargetableNPC(Position);
 
@@ -180,11 +180,12 @@ namespace bullethellwhatever.Abilities.Weapons
 
             Position = npc.Position;
         }
-        //public override void Draw(SpriteBatch spriteBatch)
-        //{
-        //    base.Draw(spriteBatch);
 
-        //    Hitbox.Draw(5f, Velocity, -1);
-        //}
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            DrawHitbox(spriteBatch, 5f);
+        }
     }
 }

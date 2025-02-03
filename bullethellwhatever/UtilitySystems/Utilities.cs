@@ -13,6 +13,8 @@ using System.Diagnostics;
 using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;
+using bullethellwhatever.BaseClasses.Hitboxes;
+using Microsoft.Xna.Framework.Media;
 
 namespace bullethellwhatever
 {
