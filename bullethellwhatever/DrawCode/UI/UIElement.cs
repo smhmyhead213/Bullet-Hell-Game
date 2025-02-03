@@ -86,17 +86,19 @@ namespace bullethellwhatever.DrawCode.UI
             Opacity = 1;
 
             Name = "";
+
+            Interactable = true;
         }
 
         public virtual void Update()
         {
-            if (ExtraAI is not null)
-                ExtraAI();
-
             if (IsInMenu)
             {
                 Position = CalculateActualPostion();
             }
+
+            if (ExtraAI is not null)
+                ExtraAI();
 
             if (IsHovered() && Owner is not null && Owner == UIManager.InteractableUIElement())
             {

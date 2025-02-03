@@ -37,8 +37,7 @@ namespace bullethellwhatever.DrawCode.UI
             PlayerHUD.Display();
         }
         public static void ManageUI()
-        {
-            
+        {          
             foreach (UIElement element in UIElemntsToRemoveNextFrame)
             {
                 ActiveUIElements.Remove(element);

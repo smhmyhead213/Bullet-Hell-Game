@@ -115,26 +115,37 @@ namespace bullethellwhatever.DrawCode.UI
             ClickBox = new RectangleButGood(TopLeft().X, TopLeft().Y, Width(), Height());
         }
 
-        public void UpdateSelectedElement()
+        public void IncrementSelected()
         {
-            if (IndexOfSelected == UIElements.Count - 1) // if we are at the last ui element
+            if (IndexOfSelected == UIElements.Count - 1)
             {
-                IndexOfSelected = 0; // no ui element selected
+                IndexOfSelected = -1;
             }
             else
             {
-                IndexOfSelected++; // if we are not at the last ui element, increment               
+                IndexOfSelected++;
+            }
+        }
+        public void UpdateSelectedElement()
+        {
+            // try to increment
+
+            int startIndex = IndexOfSelected; // track start index so if we get back to it that means theres no other selectable one
+
+            IncrementSelected();
+
+            if (IndexOfSelected == -1)
+            {
+                return;
             }
 
-            while (!UIElements[IndexOfSelected].Interactable) // if the newly selected ui element does nothing on click (change this condition to better represent any uninteractable element)
+            while (!UIElements[IndexOfSelected].Interactable)
             {
-                if (IndexOfSelected == UIElements.Count - 1) // if we are at the last ui element
+                IncrementSelected();
+
+                if (IndexOfSelected == startIndex)
                 {
-                    IndexOfSelected = -1; // no ui element selected
-                }
-                else
-                {
-                    IndexOfSelected++; // go to next ui element
+                    return; // give up.
                 }
             }
         }
