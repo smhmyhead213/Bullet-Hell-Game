@@ -54,7 +54,7 @@ namespace bullethellwhatever.DrawCode.UI
                 new UIElement("CreditsButton", 1.5f),
             ];
 
-            Action[] actions = new Action[]
+            Action[] actions =
             {
                 new Action(() => // start button action
                 {
