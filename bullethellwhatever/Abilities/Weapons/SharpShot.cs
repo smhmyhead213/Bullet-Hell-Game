@@ -117,13 +117,14 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 if (Bounced)
                 {
-                    //UseRayCastCollision = false;
+                    Raycast.Direction = 0; // use a backwards raycast now
 
                     NPC target = EntityManager.ClosestTargetableNPC(Position);
 
                     if (target != null)
                     {
-                        CommonProjectileAIs.Homing(this, target, 0, Velocity.Length(), 1f);
+                        //CommonProjectileAIs.Homing(this, target, 0, Velocity.Length(), 1f);
+                        Velocity = Velocity.Length() * Utilities.SafeNormalise(target.Position - Position);
                     }
                 }                
             }
@@ -132,18 +133,6 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 base.UpdatePosition();
             }
-        }
-
-        public void Home(NPC target)
-        {
-            Vector2 toTarget = Utilities.SafeNormalise(target.Position - Position);
-
-            ref float timeSpentHoming = ref ExtraData[0];
-
-            timeSpentHoming++;
-
-            // home harder over time
-            Velocity = Utilities.ConserveLengthLerp(Velocity, toTarget, 0.4f + (timeSpentHoming / 100f));
         }
 
         public override void OnHitEffect(Vector2 position)
