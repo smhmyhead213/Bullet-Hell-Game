@@ -27,9 +27,9 @@ namespace bullethellwhatever.DrawCode.Particles
             Velocity = velocity;
             Acceleration = acceleration;
 
-            Size = size;
+            Scale = size;
 
-            InitialSize = Size;
+            InitialSize = Scale;
 
             Rotation = rotation;
             Colour = colour;
@@ -69,7 +69,7 @@ namespace bullethellwhatever.DrawCode.Particles
 
                 if (Shrink)
                 {
-                    Size = Vector2.Lerp(InitialSize, Vector2.Zero, (float)AITimer / Lifetime);
+                    Scale = Vector2.Lerp(InitialSize, Vector2.Zero, (float)AITimer / Lifetime);
                 }
             }
 

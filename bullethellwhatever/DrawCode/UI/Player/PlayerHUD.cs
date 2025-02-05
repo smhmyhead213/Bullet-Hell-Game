@@ -111,11 +111,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
         {
             Drawing.RestartSpriteBatchForShaders(s, false, false);
 
-            RotatedRectangle hudBox = new RotatedRectangle(0, Texture.Width, Texture.Height, Position, player);
-
-            hudBox.UpdateVertices();
-
-            float opacity = player.Hitbox.Intersects(hudBox).Collided ? 0.2f : 1f;
+            float opacity = 1f;
 
             Effect hpBarShader = AssetRegistry.GetShader("PlayerHealthBarShader");
 

@@ -35,10 +35,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             Texture2D texture = AssetRegistry.GetTexture2D("box");
 
-            RotatedRectangle HPBar = new(0, Size.X, Size.Y, Position, player);
-            HPBar.UpdateVertices();
-
-            float opacity = HPBar.Intersects(player.Hitbox).Collided ? 0.2f : 1f;
+            float opacity = 1f;
 
             Vector2 size = new Vector2(Size.X / texture.Width, Size.Y / texture.Height);
 

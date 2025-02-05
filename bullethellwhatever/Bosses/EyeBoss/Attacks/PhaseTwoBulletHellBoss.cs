@@ -148,7 +148,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         progress = progress / (pupilBeAtCentreTime - startTime);
 
                         Pupil.DistanceFromEyeCentre = MathHelper.Lerp(Pupil.DistanceFromEyeCentre, 0f, progress);
-                        Pupil.Size = Vector2.Lerp(Pupil.Size, Pupil.InitialSize, progress);
+                        Pupil.Scale = Vector2.Lerp(Pupil.Scale, Pupil.InitialSize, progress);
                     }
                     if (time % 10 == 0)
                     {
@@ -169,7 +169,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     foreach (EyeBossPhaseTwoMinion minion in minions)
                     {
-                        minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Owner.Size / 2f, minion.MaxHP, 1, Color.White, false, true);
+                        minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Owner.Scale / 2f, minion.MaxHP, 1, Color.White, false, true);
                     }
                 }
 

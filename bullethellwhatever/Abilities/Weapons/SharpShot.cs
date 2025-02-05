@@ -76,7 +76,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         }
 
                         Damage *= damageMultiplier;
-                        Size *= sizeMultiplier;
+                        Scale *= sizeMultiplier;
 
                         ReflectorsHit.Add(reflector);
 
@@ -174,7 +174,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             base.Draw(spriteBatch);
 
-            DrawHitbox(spriteBatch, 5f);
+            //DrawHitbox(spriteBatch, 5f);
         }
     }
 }

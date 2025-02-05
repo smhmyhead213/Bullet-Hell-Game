@@ -28,8 +28,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
             Texture = AssetRegistry.GetTexture2D(texture);
             DistanceFromEyeCentre = distanceFromEyeCentre;
             RotationWithinEye = rotationWithinEye;
-            Size = size;
-            InitialSize = Size;
+            Scale = size;
+            InitialSize = Scale;
             TargetableByHoming = false;
         }
         public void Update(Vector2 eyeCentre)
@@ -58,16 +58,16 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public void ResetSize()
         {
-            Size = InitialSize;
+            Scale = InitialSize;
         }
 
         public void Dilate(Vector2 sizeToDilateTo, float progress)
         {
-            Size = Vector2.Lerp(InitialSize, sizeToDilateTo, progress);
+            Scale = Vector2.Lerp(InitialSize, sizeToDilateTo, progress);
         }
         public void Dilate(Vector2 initialSize, Vector2 sizeToDilateTo, float progress)
         {
-            Size = Vector2.Lerp(initialSize, sizeToDilateTo, progress);
+            Scale = Vector2.Lerp(initialSize, sizeToDilateTo, progress);
         }
         public void GoTo(float distanceFromEyeCentre, float rotation)
         {
@@ -80,7 +80,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
         }
         public void Draw()
         {
-            Drawing.BetterDraw(Texture, Position, null, Color.Black, 0, Size, SpriteEffects.None, 1);
+            Drawing.BetterDraw(Texture, Position, null, Color.Black, 0, Scale, SpriteEffects.None, 1);
         }
     }
 }

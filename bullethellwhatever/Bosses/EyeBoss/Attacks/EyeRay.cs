@@ -72,12 +72,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     ray.SetEdgeTouchEffect(new Action(() =>
                     {
-                        Particle p = new Particle();
+                        //Particle p = new Particle();
 
-                        float sizeFactor =  ray.Width / ray.InitialWidth; // get smaller as the ray thins out
+                        //float sizeFactor =  ray.Width / ray.InitialWidth; // get smaller as the ray thins out
 
-                        p.Spawn("Circle", ray.BeamEdgeTouch().CollisionPoint, Vector2.Zero, Vector2.Zero, Vector2.One * sizeFactor, 0, ray.Colour, 1, 20);
-                        p.SetShrink(true);
+                        //p.Spawn("Circle", ray.BeamEdgeTouch().CollisionPoint, Vector2.Zero, Vector2.Zero, Vector2.One * sizeFactor, 0, ray.Colour, 1, 20);
+                        //p.SetShrink(true);
                     }));
                 }));
 
@@ -93,8 +93,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 if (time > rayFireTime - eyeExpansionTime)
                 {
-                    Vector2 idealSize = Vector2.One * (rayWidth / Pupil.Texture.Width / Pupil.Size.X) / 7f; // size to encompass ray and damped down a little
-                    Pupil.Size = Vector2.LerpPrecise(idealSize, Pupil.InitialSize, (float)(rayFireTime - time) / eyeExpansionTime);
+                    Vector2 idealSize = Vector2.One * (rayWidth / Pupil.Texture.Width / Pupil.Scale.X) / 7f; // size to encompass ray and damped down a little
+                    Pupil.Scale = Vector2.LerpPrecise(idealSize, Pupil.InitialSize, (float)(rayFireTime - time) / eyeExpansionTime);
                 }
             }
 

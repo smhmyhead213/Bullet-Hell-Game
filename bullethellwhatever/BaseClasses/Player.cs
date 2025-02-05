@@ -29,7 +29,7 @@ namespace bullethellwhatever.BaseClasses
         public Dash DashAbility;
         
         public int DashTimer;
-        public Vector2 DefaultHitbox => new Vector2(1f, 1f);
+        public Vector2 DefaultHitbox => new Vector2(5f, 1f);
 
         public int WeaponSwitchCooldownTimer;
         public int WeaponSwitchCooldown;
@@ -66,7 +66,7 @@ namespace bullethellwhatever.BaseClasses
             MaxHP = 1;
 
             Health = MaxHP; // put this back to normal
-            Size = DefaultHitbox;
+            Scale = DefaultHitbox;
             ActiveWeapon = Weapons.Homing;
 
             MoveSpeed = DefaultMoveSpeed;
@@ -84,8 +84,7 @@ namespace bullethellwhatever.BaseClasses
             AdditionalComponents.Add(trail);
 
             Colour = Color.White;
-
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
+           
             SetHitbox();
 
             Restarted = false;
@@ -117,6 +116,12 @@ namespace bullethellwhatever.BaseClasses
 
         public void RotateBasedOnDirection()
         {
+            if (Velocity == Vector2.Zero)
+            {
+                Rotation = 0;
+                return;
+            }
+
             float angleTo = Utilities.SmallestAngleTo(Rotation, Utilities.VectorToAngle(Velocity));
 
             Rotation += angleTo;
@@ -176,13 +181,13 @@ namespace bullethellwhatever.BaseClasses
             if (IsKeyPressed(Keys.LeftShift))
             {
                 MoveSpeed = DefaultMoveSpeed / 2;
-                Size = DefaultHitbox / 2;
+                Scale = DefaultHitbox / 2;
 
             }
             else
             {
                 MoveSpeed = DefaultMoveSpeed;
-                Size = DefaultHitbox;
+                Scale = DefaultHitbox;
             }
 
             ControlCamera();
@@ -367,7 +372,7 @@ namespace bullethellwhatever.BaseClasses
                 component.Draw(spriteBatch);
             }
 
-            //Hitbox.Draw(5f);
+            DrawHitbox();
         }
     }
 }

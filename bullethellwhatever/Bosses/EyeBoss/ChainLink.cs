@@ -24,7 +24,6 @@ namespace bullethellwhatever.Bosses.EyeBoss
         public float Torque;
         public NPC Owner;
         public Texture2D Texture;
-        public RotatedRectangle Hitbox;
         public float Opacity;
         public int AITimer;
         public Color Colour;
@@ -69,7 +68,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
         public void UpdateHitbox()
         {
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width, Length, Position + Length / 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, Rotation), Owner);
+            // rewrite chain hitbox code with circles
         }
 
         public void SetDampingFactor(float dampingFactor)

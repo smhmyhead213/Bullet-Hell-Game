@@ -38,9 +38,9 @@ namespace bullethellwhatever.BaseClasses.Entities
         }
         public float InitialOpacity;
 
-        public Circle[] Hitbox;
+        public List<Circle> Hitbox = new List<Circle>();
 
-        public Vector2 Size;
+        public Vector2 Scale;
 
         public float RotationalVelocity;
 
@@ -104,7 +104,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual void SetSizeNoScaling(Vector2 size)
         {
-            Size = size;
+            Scale = size;
         }
 
         public virtual void SetNoiseMap(string fileName, float scrollSpeed)
@@ -118,7 +118,22 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual Vector2 GetSize() // get a size that corresponds to the current depth
         {
-            return Size;
+            return Scale;
+        }
+
+        public float Width()
+        {
+            return Scale.X * Texture.Width;
+        }
+
+        public float Height()
+        {
+            return Scale.Y * Texture.Height;
+        }
+
+        public Vector2 Dimensions()
+        {
+            return new Vector2(Width(), Height());
         }
 
         public void SetVelocity(Vector2 vel)
@@ -273,7 +288,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual bool IsCollidingWith(Entity other, bool backwardsRaycast = true)
         {
-            
+            return false;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -298,22 +313,50 @@ namespace bullethellwhatever.BaseClasses.Entities
             }
         }
 
-        //public void DrawHitbox(SpriteBatch s, float width)
-        //{
-        //    Hitbox.Draw(width);
-            
-        //    if (Raycast is not null)
-        //    {
-        //        Hitbox.GenerateRaycast(Raycast).Draw(width);
-        //    }
-        //}
+        public void DrawHitbox()
+        {
+            foreach (Circle circle in Hitbox)
+            {
+                Drawing.BetterDraw("box", circle.Centre, null, Color.Red, 0f, Vector2.One * 0.5f, SpriteEffects.None, 0f);
+            }
+        }
         public void SetHitbox()
         {
             UpdateHitbox();
         }
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
-            
+            Hitbox.Clear(); // this might be expensive
+
+            float width = Width();
+            float height = Height();
+
+            if (width == height)
+            {
+                Hitbox.Add(new Circle(Position, width / 2f));
+                return; // use one circle for things of equal width and height
+            }
+
+            else
+            {
+                if (width > height)
+                {
+                    // figure out how many circles to fit in
+                    int radius = (int)height;
+                    int numCircles = (int)width / radius;
+
+                    Vector2 startPos = Position - Utilities.RotateVectorCounterClockwise(new Vector2(width / 2 - radius), Rotation);
+
+                    for (int i = 0; i < numCircles; i++)
+                    {
+                        Hitbox.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(radius, 0), Rotation), radius));
+                    }
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 }

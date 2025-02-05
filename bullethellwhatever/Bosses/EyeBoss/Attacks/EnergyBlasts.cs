@@ -53,7 +53,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 }));
 
-                Pupil.Size = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)localTime / (burstTime - particeDuration));
+                Pupil.Scale = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)localTime / (burstTime - particeDuration));
             }
 
             int dischargeEnergyTime = 4;
@@ -61,7 +61,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (localTime > dischargeStartTime && localTime <= dischargeStartTime + dischargeEnergyTime)
             {
-                Pupil.Size = Vector2.Lerp(Pupil.InitialSize * 2f, Pupil.InitialSize, (float)(localTime - dischargeStartTime) / dischargeEnergyTime);
+                Pupil.Scale = Vector2.Lerp(Pupil.InitialSize * 2f, Pupil.InitialSize, (float)(localTime - dischargeStartTime) / dischargeEnergyTime);
             }
 
             if (localTime == burstTime)

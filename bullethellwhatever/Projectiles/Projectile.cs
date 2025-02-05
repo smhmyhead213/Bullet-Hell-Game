@@ -59,7 +59,7 @@ namespace bullethellwhatever.Projectiles
             Damage = damage;
             Colour = colour;
             DeleteNextFrame = false;
-            Size = size;
+            Scale = size;
             Owner = owner;
             IsHarmful = isHarmful;
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
@@ -77,8 +77,6 @@ namespace bullethellwhatever.Projectiles
             Dying = false;
 
             DyingTimer = 0;
-
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
 
             Participating = true;
 
@@ -249,12 +247,12 @@ namespace bullethellwhatever.Projectiles
         {
             foreach (NPC npc in EntityManager.activeNPCs)
             {
-                Collision collision = CollisionWithEntity(npc);
+                //Collision collision = CollisionWithEntity(npc);
 
-                if (IsCollidingWith(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
-                {
-                    DealDamage(npc);
-                }
+                //if (IsCollidingWith(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
+                //{
+                //    DealDamage(npc);
+                //}
             }
         }
 
@@ -307,6 +305,7 @@ namespace bullethellwhatever.Projectiles
             if (RemoveOnHit && PierceRemaining <= 0 && !Dying) // dont reset death fade out if already dying
                 Die();
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             //if (UseRayCastCollision)

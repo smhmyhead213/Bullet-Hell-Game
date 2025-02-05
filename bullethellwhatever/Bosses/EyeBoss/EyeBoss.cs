@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             //Position = Utilities.CentreOfScreen();
             Velocity = Vector2.Zero;
             Texture = AssetRegistry.GetTexture2D("Circle");
-            Size = Vector2.One * 2f;
+            Scale = Vector2.One * 2f;
 
             ChainStartPosition = new Vector2(GameWidth / 2, 0);
 
@@ -40,8 +40,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             string pupilTexture = "Circle";
 
-            Pupil = new Pupil(pupilTexture, 0, 0, Size / 4);
-            Pupil.Spawn(Position, Vector2.Zero, 0f, pupilTexture, Pupil.Size, 0, 0, Color.Black, false, false);
+            Pupil = new Pupil(pupilTexture, 0, 0, Scale / 4);
+            Pupil.Spawn(Position, Vector2.Zero, 0f, pupilTexture, Pupil.Scale, 0, 0, Color.Black, false, false);
             Pupil.SetParticipating(false);
             Pupil.IsInvincible = true;
             Pupil.TargetableByHoming = false;
@@ -103,7 +103,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 int opacityIterations = 5;
 
-                if (ChainLinks[i].Hitbox.Intersects(player.Hitbox).Collided) // if player is touching current chain
+                if (1 + 1 == 2) // if player is touching current chain (replace with new collision method
                 {
                     bool[] affectedLinks = new bool[ChainLinks.Count]; // parallel to ChainLinks
 

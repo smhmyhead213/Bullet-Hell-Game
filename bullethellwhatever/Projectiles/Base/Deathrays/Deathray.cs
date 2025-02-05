@@ -54,8 +54,6 @@ namespace bullethellwhatever.Projectiles.Base
             Length = length;
             InitialLength = Length;
 
-            Hitbox = new RotatedRectangle(Rotation, Width, Length, Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation), this);
-
             SetHitbox();
             
             Duration = duration;
@@ -142,11 +140,6 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 Die();
             }
-
-            if (BeamEdgeTouch().Collided && OnEdgeTouch is not null) // if we are touching an edge
-            {
-                OnEdgeTouch();
-            }
         }
 
         public void DrawWithShader(SpriteBatch spriteBatch)
@@ -156,10 +149,8 @@ namespace bullethellwhatever.Projectiles.Base
         public override void UpdateHitbox()
         {
             Vector2 centre = Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation);
-            
-            Hitbox.UpdateRectangle(Rotation, Width, Length, centre);
 
-            Hitbox.UpdateVertices();
+            // to do: make work with circles
         }
 
         public override void CheckForHits()
@@ -186,48 +177,6 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 OnEdgeTouch();
             }
-        }
-
-        public Collision BeamEdgeTouch()
-        {
-            Vector2 bucket = EdgeTouchPointGivenX(GameWidth);
-
-            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching right?
-            {
-                return new Collision(EdgeTouchPointGivenX(GameWidth), true);
-            }
-
-            bucket = EdgeTouchPointGivenX(0);
-
-            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // toucing left?
-            {
-                return new Collision(EdgeTouchPointGivenX(0), true);
-            }
-
-            bucket = EdgeTouchPointGivenY(0);
-
-            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching top?
-            {
-                return new Collision(EdgeTouchPointGivenY(0), true);
-            }
-
-            bucket = EdgeTouchPointGivenY(GameHeight);
-
-            if (Hitbox.IsVec2WithinMyRectangle(bucket) && Utilities.IsVectorWithinScreen(bucket)) // touching bottom?
-            {
-                return new Collision(EdgeTouchPointGivenY(GameHeight), true);
-            }
-
-            else return new Collision(Vector2.Zero, false);
-        }
-
-        public Vector2 EdgeTouchPointGivenX(float x)
-        {
-            return new Vector2(x, Hitbox.CalculateGradient() * x + Hitbox.CalculateC());
-        }
-        public Vector2 EdgeTouchPointGivenY(float y)
-        {
-            return new Vector2((y - Hitbox.CalculateC()) / Hitbox.CalculateGradient(), y);
         }
 
         public override void OnHitEffect(Vector2 position)
@@ -261,11 +210,6 @@ namespace bullethellwhatever.Projectiles.Base
 
         public override void Draw(SpriteBatch spritebatch)
         {
-            if (BeamEdgeTouch().Collided)
-            {
-                //Drawing.BetterDraw(Assets["box"], BeamEdgeTouch().CollisionPoint, null, Color.AliceBlue, 0, Vector2.One * 5f, SpriteEffects.None, 1);
-            }
-
             if (IsActive)
             {
                 ApplyShaderParameters();

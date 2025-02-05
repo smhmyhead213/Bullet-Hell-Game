@@ -33,7 +33,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             Velocity = Vector2.Zero;
             Texture = AssetRegistry.GetTexture2D("Circle");
-            Size = Vector2.One * 2f;
+            Scale = Vector2.One * 2f;
 
             MaxHP = 20;
 

@@ -46,7 +46,7 @@ namespace bullethellwhatever.Bosses
             DeathrayAngularVelocity = 180f;
             IsHarmful = true;
             Rotation = PI / 6f;
-            Size = new Vector2(3f, 3f);
+            Scale = new Vector2(3f, 3f);
             Opacity = 0.1f;
 
             Colour = Color.White;
@@ -60,7 +60,7 @@ namespace bullethellwhatever.Bosses
         {
             base.Draw(spriteBatch);
 
-            Hitbox.Draw(3f);
+            //Hitbox.Draw(3f);
 
             //for (int i = 0; i < Hitbox.Vertices.Length; i++)
             //{

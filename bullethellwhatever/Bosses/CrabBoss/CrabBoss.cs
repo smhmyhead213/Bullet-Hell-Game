@@ -42,7 +42,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float scaleFactor = 1.5f;
             float bodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
 
-            Size = Vector2.One * scaleFactor;
+            Scale = Vector2.One * scaleFactor;
             Position = Utilities.CentreWithCamera() - new Vector2(0f, GameHeight / 4f);
             MaxHP = 400f;
 

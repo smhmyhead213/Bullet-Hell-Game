@@ -57,7 +57,7 @@ namespace bullethellwhatever.NPCs
             Texture = AssetRegistry.GetTexture2D(texture);
             Colour = colour;
 
-            Size = size;
+            Scale = size;
 
             Health = MaxHealth;
             MaxHP = MaxHealth;
@@ -109,10 +109,6 @@ namespace bullethellwhatever.NPCs
 
             Rotation = Utilities.BringAngleIntoRange(Rotation);
         }
-        public virtual Collision CollisionWithEntity(Entity entity)
-        {
-            return Hitbox.Intersects(entity.Hitbox);
-        }
 
         public float HPRatio()
         {
@@ -140,21 +136,21 @@ namespace bullethellwhatever.NPCs
                 {
                     foreach (NPC npc in EntityManager.activeNPCs) // if not harmful (player allegiance), search for entities to attack
                     {
-                        Collision c = CollisionWithEntity(npc);
+                        //Collision c = CollisionWithEntity(npc);
 
-                        if (c.Collided && npc.IFrames == 0)
-                        {
+                        //if (c.Collided && npc.IFrames == 0)
+                        //{
                             
-                        }
+                        //}
                     }
                 }
 
                 if (IsHarmful)
                 {
-                    if (CollisionWithEntity(player).Collided && player.IFrames == 0)
-                    {
-                        DealDamage(player);
-                    }
+                    //if (CollisionWithEntity(player).Collided && player.IFrames == 0)
+                    //{
+                    //    DealDamage(player);
+                    //}
                 }
             }
         }
@@ -233,7 +229,7 @@ namespace bullethellwhatever.NPCs
 
             TargetableByHoming = true;
 
-            Size = size;
+            Scale = size;
             Health = MaxHealth;
             MaxHP = MaxHealth;
             PierceToTake = pierceToTake;
@@ -254,7 +250,6 @@ namespace bullethellwhatever.NPCs
 
         public virtual void PrepareNPCButDontAddToListYet()
         {
-            Hitbox = new RotatedRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position, this);
             Participating = true;
             SetHitbox();
         }

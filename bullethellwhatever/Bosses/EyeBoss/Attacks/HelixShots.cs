@@ -116,8 +116,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 float interpolant = (time - waitTime) / (float)telegraphTime;
 
-                Pupil.Size.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, interpolant); // lengthen pupil slightly
-                Pupil.Size.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.1f, interpolant); // narrow pupil
+                Pupil.Scale.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, interpolant); // lengthen pupil slightly
+                Pupil.Scale.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.1f, interpolant); // narrow pupil
             }
 
             if (time > waitTime + telegraphTime && time <= waitTime + telegraphTime + shootTime)
@@ -126,8 +126,8 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 float interpolant = (time - waitTime) / (float)telegraphTime;
 
-                Pupil.Size.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, 1f - interpolant); // thinnen pupil back
-                Pupil.Size.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.5f, 1f - interpolant); // open pupil
+                Pupil.Scale.X = MathHelper.Lerp(Pupil.InitialSize.X, Pupil.InitialSize.X * 1.3f, 1f - interpolant); // thinnen pupil back
+                Pupil.Scale.Y = MathHelper.Lerp(Pupil.InitialSize.Y, Pupil.InitialSize.X * 0.5f, 1f - interpolant); // open pupil
 
                 for (int i = 0; i < 2; i++)
                 {

@@ -45,7 +45,7 @@ namespace bullethellwhatever.Projectiles
             for (int i = 0; i < numberOfProjectiles; i++)
             {
                 // change the texture used here once ManagedTexture is implemented
-                Projectile p = SpawnProjectile<Projectile>(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Size,
+                Projectile p = SpawnProjectile<Projectile>(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Scale,
                     projectile.Owner, projectile.IsHarmful, projectile.Colour, projectile.ShouldRemoveOnEdgeTouch, projectile.RemoveOnHit);
 
                 p.Texture = projectile.Texture;

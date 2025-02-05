@@ -47,7 +47,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         orb.Position = Arm(locali).UpperClaw.Position + projectilesFinalWidth * Utilities.AngleToVector(Arm(locali).UpperClaw.RotationFromV());
 
                         float interpolant = MathHelper.Clamp(EasingFunctions.EaseInQuart(orb.AITimer / (float)openArmsTime), 0f, 1f);
-                        orb.Size = Vector2.Lerp(Vector2.One, finalSize, interpolant);
+                        orb.Scale = Vector2.Lerp(Vector2.One, finalSize, interpolant);
 
                         if (orb.AITimer > timeAfterOrbSpawnToStartFiringProjectiles && orb.AITimer % 10 == 0)
                         {

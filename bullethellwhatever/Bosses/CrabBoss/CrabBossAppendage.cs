@@ -72,7 +72,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Texture = AssetRegistry.GetTexture2D(texture);
-            Size = Vector2.One * scale;
+            Scale = Vector2.One * scale;
             IsHarmful = true;
             Damage = 1f;
 
@@ -172,9 +172,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 centre = centre - Utilities.RotateVectorClockwise(new Vector2(Texture.Width / 2f * GetSize().X, 0f), Rotation); // yeah totally sure yeah i was there yeah thats crazy man so true for real?
             }
 
-            Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, centre);
-
-            Hitbox.UpdateVertices();
+            UpdateHitbox();
         }
         public float CalculateFinalRotation()
         {

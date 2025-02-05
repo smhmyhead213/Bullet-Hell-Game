@@ -37,12 +37,12 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (time < pupilExpansionTime)
             {
-                Pupil.Size = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)time / pupilExpansionTime);
+                Pupil.Scale = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)time / pupilExpansionTime);
             }
 
             else
             {
-                Pupil.Size = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)(time - pupilExpansionTime) / (timeBetweenMeteors - pupilExpansionTime));
+                Pupil.Scale = Vector2.Lerp(Pupil.InitialSize, Pupil.InitialSize * 2f, (float)(time - pupilExpansionTime) / (timeBetweenMeteors - pupilExpansionTime));
             }
 
             if (time == 0)
