@@ -315,15 +315,17 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public void DrawHitbox()
         {
-            foreach (Circle circle in Hitbox)
+            for (int i = 0; i < Hitbox.Count; i++)
             {
-                Drawing.BetterDraw("box", circle.Centre, null, Color.Red, 0f, Vector2.One * 0.5f, SpriteEffects.None, 0f);
+                Color colour = i == 0 ? Color.DarkGreen : Color.Red;
+                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, Vector2.One * 0.5f, SpriteEffects.None, 0f);
             }
         }
         public void SetHitbox()
         {
             UpdateHitbox();
         }
+
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
             Hitbox.Clear(); // this might be expensive
@@ -343,18 +345,32 @@ namespace bullethellwhatever.BaseClasses.Entities
                 {
                     // figure out how many circles to fit in
                     int radius = (int)height;
-                    int numCircles = (int)width / radius;
+                    int numCircles = (int)width / radius - 1;
 
-                    Vector2 startPos = Position - Utilities.RotateVectorCounterClockwise(new Vector2(width / 2 - radius), Rotation);
+                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius, 0), Rotation);
 
-                    for (int i = 0; i < numCircles; i++)
+                    Hitbox.Add(new Circle(startPos, radius));
+
+                    for (int i = 1; i < numCircles; i++)
                     {
-                        Hitbox.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(radius, 0), Rotation), radius));
+                        Hitbox.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), Rotation), radius));
                     }
                 }
                 else
                 {
+                    // figure out how many circles to fit in
+                    int radius = (int)width;
+                    int numCircles = (int)height / radius - 1;
+                    float adjustedRotation = Rotation - PI / 2f;
 
+                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(height / 2 - radius, 0), adjustedRotation);
+
+                    Hitbox.Add(new Circle(startPos, radius));
+
+                    for (int i = 1; i < numCircles; i++)
+                    {
+                        Hitbox.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), adjustedRotation), radius));
+                    }
                 }
             }
         }

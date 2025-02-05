@@ -171,8 +171,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 centre = centre - Utilities.RotateVectorClockwise(new Vector2(Texture.Width / 2f * GetSize().X, 0f), Rotation); // yeah totally sure yeah i was there yeah thats crazy man so true for real?
             }
-
-            UpdateHitbox();
         }
         public float CalculateFinalRotation()
         {
