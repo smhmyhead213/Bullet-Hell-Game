@@ -38,7 +38,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         }
         public float InitialOpacity;
 
-        public RotatedRectangle Hitbox;
+        public Circle[] Hitbox;
 
         public Vector2 Size;
 
@@ -273,12 +273,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual bool IsCollidingWith(Entity other, bool backwardsRaycast = true)
         {
-            if (Raycast is not null)
-            {
-                return Hitbox.IntersectsWithRaycast(other.Hitbox, Velocity, Raycast.Direction).Collided;
-            }
-
-            return Hitbox.Intersects(other.Hitbox).Collided;
+            
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -303,29 +298,22 @@ namespace bullethellwhatever.BaseClasses.Entities
             }
         }
 
-        public void DrawHitbox(SpriteBatch s, float width)
-        {
-            Hitbox.Draw(width);
+        //public void DrawHitbox(SpriteBatch s, float width)
+        //{
+        //    Hitbox.Draw(width);
             
-            if (Raycast is not null)
-            {
-                Hitbox.GenerateRaycast(Raycast).Draw(width);
-            }
-        }
+        //    if (Raycast is not null)
+        //    {
+        //        Hitbox.GenerateRaycast(Raycast).Draw(width);
+        //    }
+        //}
         public void SetHitbox()
         {
             UpdateHitbox();
         }
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
-            Hitbox.UpdateRectangle(Rotation, Texture.Width * GetSize().X, Texture.Height * GetSize().Y, Position);
-
-            if (Raycast is not null)
-            {
-                Raycast.DescribingVector = Velocity;
-            }
-
-            Hitbox.UpdateVertices();
+            
         }
     }
 }

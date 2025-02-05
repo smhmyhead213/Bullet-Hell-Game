@@ -307,16 +307,6 @@ namespace bullethellwhatever.Projectiles
             if (RemoveOnHit && PierceRemaining <= 0 && !Dying) // dont reset death fade out if already dying
                 Die();
         }
-
-        public virtual Collision CollisionWithEntity(Entity entity)
-        {
-            Collision collision = entity.Hitbox.Intersects(Hitbox);
-
-            if (collision.Collided)
-                return collision;
-            else return new Collision(Vector2.Zero, false);
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             //if (UseRayCastCollision)
