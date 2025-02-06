@@ -318,6 +318,12 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
+        public override void TakeDamage(float damage)
+        {
+            Drawing.ScreenShake(5, 10);
+
+            base.TakeDamage(damage);
+        }
         public NPC? FurthestEnemyFromPlayer()
         {
             if (EntityManager.activeNPCs.Count == 0)
@@ -370,9 +376,7 @@ namespace bullethellwhatever.BaseClasses
             foreach (Component component in AdditionalComponents)
             {
                 component.Draw(spriteBatch);
-            }
-
-            
+            }            
         }
     }
 }

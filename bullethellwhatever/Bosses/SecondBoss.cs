@@ -76,19 +76,9 @@ namespace bullethellwhatever.Bosses
             if (Health < 0 && CanDie)
                 Die();
 
-            if (AITimer == 0)
+            if (AITimer % 60 == 0)
             {
-                //Deathray ray = new Deathray();
-
-                //ray.SetNoiseMap("CrabScrollingBeamNoise");
-
-                //TelegraphLine t = new TelegraphLine(0, 0, 0, 100, 2000, 1000, Position, Colour, "box", this, true);
-
-                //t.ChangeShader("OutlineTelegraphShader");
-
-                //ray.SpawnDeathray(Position, PI / 2f, 0f, 3000, "box", 150f, ScreenWidth, PI / 600, 0, true, Colour, "CrabScrollingBeamShader", this);
-
-                //ChangeGraphicsDeviceTexture(1, "CrabScrollingBeamNoise");
+                SpawnProjectile(Position, 10f * Utilities.SafeNormalise(player.Position - Position), 1f, 1, "box", Vector2.One, this, true, false, Color.Red, true, false);
             }
 
             Rotation = Rotation + PI / 90f;
