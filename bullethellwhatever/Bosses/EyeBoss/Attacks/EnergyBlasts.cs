@@ -107,7 +107,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         {
                             float rotation = i * Tau / projs + randomOffset;
 
-                            Projectile proj = SpawnProjectile(p.Position, 2f * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                            Projectile proj = SpawnProjectile(p.Position, 2f * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
 
                             proj.Rotation = rotation;
 
@@ -128,7 +128,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         p.Die();
                     }));
 
-                    p.SpawnProjectile(Pupil.Position, projectileSpeed * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One * 10f, Pupil, true, Color.White, true, false);
+                    p.SpawnProjectile(Pupil.Position, projectileSpeed * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One * 10f, Pupil, true, false, Color.White, true, false);
                 }
             }
         }

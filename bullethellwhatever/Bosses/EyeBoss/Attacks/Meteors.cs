@@ -63,7 +63,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     Texture2D texture = AssetRegistry.GetTexture2D("Circle");
 
-                    Projectile orb = SpawnProjectile(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, "Circle", thickness / texture.Width * Vector2.One / 2f, Owner, true, Color.White, true, false);
+                    Projectile orb = SpawnProjectile(spawnPos, Utilities.RotateVectorClockwise(-Vector2.UnitY * 66f, t.Rotation), 1f, 1, "Circle", thickness / texture.Width * Vector2.One / 2f, Owner, true, false, Color.White, true, false);
                     
                     orb.SetOnDeath(new Action(() =>
                     {
@@ -83,7 +83,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 float projSpeed = 2.5f;
 
-                                Projectile p = SpawnProjectile(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
+                                Projectile p = SpawnProjectile(orb.Position, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, false, Color.White, true, false);
 
                                 p.AddTrail(50);
 

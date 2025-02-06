@@ -41,7 +41,7 @@ namespace bullethellwhatever.DrawCode
 
             SetOpacity(0.5f);
 
-            this.SpawnProjectile(position, Vector2.Zero, 0f, 1, "box", Vector2.Zero, owner, false, Color.White, false, false);            
+            this.SpawnProjectile(position, Vector2.Zero, 0f, 1, "box", Vector2.Zero, owner, false, false, Color.White, false, false);            
         }
         public override void PostUpdate()
         {

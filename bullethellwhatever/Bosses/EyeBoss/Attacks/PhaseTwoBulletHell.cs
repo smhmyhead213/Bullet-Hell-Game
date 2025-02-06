@@ -65,13 +65,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
                         {
                             if (!Utilities.RandomChance(20))
                             {
-                                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", Vector2.One * 0.8f, Owner, true, false, Color.Red, true, false);
 
                                 p.Rotation = Utilities.VectorToAngle(p.Velocity);
                             }
                             else // healing projectile
                             {
-                                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 0f, 1, "box", Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, true);
+                                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 0f, 1, "box", Vector2.One * 0.8f, Owner, true, false, Color.LimeGreen, true, true);
 
                                 p.Rotation = Utilities.VectorToAngle(p.Velocity);
 

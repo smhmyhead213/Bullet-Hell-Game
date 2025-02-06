@@ -29,7 +29,10 @@ namespace bullethellwhatever.BaseClasses.Entities
         public Action ApplyExtraShaderParameters;
 
         public bool ContactDamage;
-        public bool IsHarmful;
+
+        public bool HarmfulToPlayer;
+        public bool HarmfulToEnemy;
+
         public int AITimer;
         public float Damage;
         public float Opacity

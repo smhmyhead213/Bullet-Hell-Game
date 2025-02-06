@@ -40,7 +40,7 @@ namespace bullethellwhatever.Abilities.Weapons
             float initialVelocity = 7f;
             float damage = 0.28f * 100f;
 
-            Projectile projectile = SpawnProjectile<Projectile>(Owner.Position, initialVelocity * Utilities.Normalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, Color.LimeGreen, true, true);
+            Projectile projectile = SpawnProjectile<Projectile>(Owner.Position, initialVelocity * Utilities.Normalise(MousePositionWithCamera() - Owner.Position), damage, 1, "box", Vector2.One, Owner, false, true, Color.LimeGreen, true, true);
 
             projectile.SetExtraData(0, 0); // extra data 0 represents how long the projectile has gone without a target
 

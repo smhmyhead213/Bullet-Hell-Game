@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 float projSpeed = 0.9f;
 
-                                Projectile p = SpawnProjectile<Projectile>(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, Color.White, true, false);
+                                Projectile p = SpawnProjectile<Projectile>(t.Origin + i * additionalDistance, projSpeed * Utilities.AngleToVector(additionalRotation - PI / 2 + (j * PI)), 1f, 1, "box", Vector2.One * 0.6f, Owner, true, false, Color.White, true, false);
 
                                 p.AddTrail(50);
 
@@ -174,7 +174,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     float yVelAmplitude = 20f;
                     float yVelocity = Utilities.RandomFloat(-yVelAmplitude, 0);
 
-                    Projectile p = SpawnProjectile(Pupil.Position, new Vector2(xVelocity, yVelocity), 1f, 1, "box", Vector2.One * 0.85f, Pupil, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile(Pupil.Position, new Vector2(xVelocity, yVelocity), 1f, 1, "box", Vector2.One * 0.85f, Pupil, true, false, Color.Red, true, false);
 
                     p.SetExtraAI(new Action(() =>
                     {

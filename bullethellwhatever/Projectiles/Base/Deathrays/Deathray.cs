@@ -62,7 +62,7 @@ namespace bullethellwhatever.Projectiles.Base
             Owner = owner;
             Colour = colour;
             IsActive = true;
-            IsHarmful = isHarmful;
+            HarmfulToPlayer = isHarmful;
             Damage = damage;
 
             if (shader != null)
@@ -100,7 +100,7 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 IsSpawned = true;
 
-                if (IsHarmful)
+                if (HarmfulToPlayer)
                 {
                     EntityManager.enemyProjectilesToAddNextFrame.Add(this);
                 }

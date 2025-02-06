@@ -111,7 +111,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 float speed = Utilities.RandomFloat(10f, 20f);
 
-                Projectile p = SpawnProjectile(Pupil.Position, speed * Utilities.RotateVectorClockwise(Vector2.UnitX, releaseAngle), 0f, 1, "Circle", Vector2.One * 0.1f, Owner, false, Color.LightBlue, false, true); ;
+                Projectile p = SpawnProjectile(Pupil.Position, speed * Utilities.RotateVectorClockwise(Vector2.UnitX, releaseAngle), 0f, 1, "Circle", Vector2.One * 0.1f, Owner, false, false, Color.LightBlue, false, true); ;
 
                 p.SetExtraAI(new Action(() =>
                 {

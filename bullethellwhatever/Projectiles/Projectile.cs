@@ -42,12 +42,12 @@ namespace bullethellwhatever.Projectiles
         {
 
         }
-        public Projectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public Projectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
-            CreateProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+            CreateProjectile(position, velocity, damage, pierce, texture, size, owner, harmfulToPlayer, harmfulToEnemy, colour, shouldRemoveOnEdgeTouch, removeOnHit);
         }
 
-        public void CreateProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public void CreateProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Texture = AssetRegistry.GetTexture2D(texture);
 
@@ -59,13 +59,17 @@ namespace bullethellwhatever.Projectiles
             Damage = damage;
             Colour = colour;
             DeleteNextFrame = false;
+
             Scale = size;
             Owner = owner;
-            IsHarmful = isHarmful;
+
+            HarmfulToPlayer = harmfulToPlayer;
+            HarmfulToEnemy = harmfulToEnemy;
+
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
 
-            ContactDamage = isHarmful;
+            ContactDamage = harmfulToEnemy;
 
             if (Updates == 0) // if we havent already set updates
             {
@@ -91,13 +95,13 @@ namespace bullethellwhatever.Projectiles
             
             SetHitbox();
         }
-        public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
-            CreateProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+            CreateProjectile(position, velocity, damage, pierce, texture, size, owner, harmfulToPlayer, harmfulToEnemy, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
             Initialise();
 
-            if (IsHarmful)
+            if (HarmfulToPlayer)
                 EntityManager.enemyProjectilesToAddNextFrame.Add(this);
             else EntityManager.friendlyProjectilesToAddNextFrame.Add(this);
         }
@@ -227,12 +231,12 @@ namespace bullethellwhatever.Projectiles
         {
             if (Participating && !Dying)
             {
-                if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
+                if (HarmfulToEnemy) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
                 {
                     CheckForAndHitNPCs();
                 }
 
-                if (IsHarmful && ContactDamage)
+                if (HarmfulToPlayer && ContactDamage)
                 {
                     if (IsCollidingWith(player) && player.IFrames == 0 && !Dying)
                     {
@@ -275,7 +279,7 @@ namespace bullethellwhatever.Projectiles
                 npc.TakeDamage(Damage);
             }
 
-            HandlePierce(1);
+            HandlePierce(npc.PierceToTake);
         }
 
         public void SetEdgeTouchEffect(Action action)

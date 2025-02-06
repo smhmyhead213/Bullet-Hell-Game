@@ -55,7 +55,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 Pupil.GoTo(distanceFromEyeCentre, pupilRotation);
                 
-                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.AngleToVector(pupilRotation), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
 
                 p.AddTrail(11);
 

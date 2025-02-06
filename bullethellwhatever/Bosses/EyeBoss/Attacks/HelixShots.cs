@@ -48,7 +48,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 if (time % 2 == 0)
                 {
-                    Projectile p = SpawnProjectile(Pupil.Position, 140f * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One * 0.8f, Pupil, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile(Pupil.Position, 140f * Utilities.AngleToVector(rotation), 1f, 1, "box", Vector2.One * 0.8f, Pupil, true, false, Color.Red, true, false);
 
                     p.SetExtraAI(new Action(() =>
                     {
@@ -131,7 +131,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                 for (int i = 0; i < 2; i++)
                 {
-                    Projectile p = SpawnProjectile<Projectile>(Pupil.Position, Vector2.Zero, 1f, 1, "box", Vector2.One, Pupil, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile<Projectile>(Pupil.Position, Vector2.Zero, 1f, 1, "box", Vector2.One, Pupil, true, false, Color.Red, true, false);
 
                     float horizontalSpeed = 15f;
                     float verticalSpeedAmplitude = 30f;

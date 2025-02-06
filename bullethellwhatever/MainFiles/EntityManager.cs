@@ -217,7 +217,7 @@ namespace bullethellwhatever.MainFiles
 
             Drawing.ScreenShakeTimer = 0;
 
-            toSpawn.Spawn(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture.Name, toSpawn.Scale, toSpawn.Health, 200, toSpawn.Colour, false, true);
+            toSpawn.Spawn(toSpawn.Position, toSpawn.Velocity, 1, toSpawn.Texture.Name, toSpawn.Scale, toSpawn.Health, 200, toSpawn.Colour, false, true, false);
         }
 
         public static NPC ClosestNPC(List<NPC> npcList, Vector2 point, Predicate<NPC> predicate)

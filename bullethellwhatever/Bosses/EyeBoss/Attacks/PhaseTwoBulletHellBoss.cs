@@ -92,7 +92,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             Vector2 spawnPos = Pupil.Position + Utilities.RotateVectorClockwise(spawnDistance * Vector2.UnitX, randomAngle);
                             Vector2 velocity = speed * Utilities.SafeNormalise(Pupil.Position - spawnPos);
 
-                            Projectile p = SpawnProjectile(spawnPos, velocity, 0f, 1, "Circle", Vector2.One * 0.1f, Owner, false, Color.LightBlue, false, true);
+                            Projectile p = SpawnProjectile(spawnPos, velocity, 0f, 1, "Circle", Vector2.One * 0.1f, Owner, false, false, Color.LightBlue, false, true);
 
                             p.SetExtraAI(new Action(() =>
                             {
@@ -169,7 +169,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                     foreach (EyeBossPhaseTwoMinion minion in minions)
                     {
-                        minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Owner.Scale / 2f, minion.MaxHP, 1, Color.White, false, true);
+                        minion.Spawn(minion.ChainStartPosition, Vector2.Zero, 1f, "Circle", Owner.Scale / 2f, minion.MaxHP, 1, Color.White, false, true, false);
                     }
                 }
 
@@ -190,13 +190,13 @@ namespace bullethellwhatever.Bosses.EyeBoss
                             {
                                 if (!Utilities.RandomChance(20))
                                 {
-                                    Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", Vector2.One * 0.8f, Owner, true, Color.Red, true, false);
+                                    Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 1f, 1, "box", Vector2.One * 0.8f, Owner, true, false, Color.Red, true, false);
 
                                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
                                 }
                                 else
                                 {
-                                    Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 0f, 1, "box", Vector2.One * 0.8f, Owner, true, Color.LimeGreen, true, true);
+                                    Projectile p = SpawnProjectile(Pupil.Position, 2f * Utilities.RotateVectorClockwise(Vector2.UnitY, i * Tau / projectilesPerRing + randomOffset), 0f, 1, "box", Vector2.One * 0.8f, Owner, true, false, Color.LimeGreen, true, true);
 
                                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
 

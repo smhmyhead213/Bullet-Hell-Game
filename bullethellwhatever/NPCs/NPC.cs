@@ -41,7 +41,7 @@ namespace bullethellwhatever.NPCs
         public BossAttack CurrentAttack;
         public BossAttack PreviousAttack;
 
-        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool isHarmful)
+        public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool harmfulToPlayer, bool harmfulToEnemy)
         {
             Updates = 1; //default
 
@@ -70,7 +70,8 @@ namespace bullethellwhatever.NPCs
 
             ExtraData = new float[4];
 
-            IsHarmful = isHarmful;
+            HarmfulToPlayer = harmfulToPlayer;
+            HarmfulToEnemy = harmfulToEnemy;
 
             PrepareNPC();
         }
@@ -132,7 +133,7 @@ namespace bullethellwhatever.NPCs
                     }
                 }
 
-                if (!IsHarmful) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
+                if (HarmfulToEnemy) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
                 {
                     foreach (NPC npc in EntityManager.activeNPCs) // if not harmful (player allegiance), search for entities to attack
                     {
@@ -145,12 +146,12 @@ namespace bullethellwhatever.NPCs
                     }
                 }
 
-                if (IsHarmful)
+                if (HarmfulToPlayer)
                 {
-                    //if (CollisionWithEntity(player).Collided && player.IFrames == 0)
-                    //{
-                    //    DealDamage(player);
-                    //}
+                    if (IsCollidingWith(player))
+                    {
+                        DealDamage(player);
+                    }
                 }
             }
         }
@@ -176,9 +177,12 @@ namespace bullethellwhatever.NPCs
 
         public virtual void TakeDamage(float damage)
         {
-            IFrames = MaxIFrames;
+            if (IFrames == 0)
+            {
+                IFrames = MaxIFrames;
 
-            DeductHealth(damage);
+                DeductHealth(damage);
+            }
         }
         public virtual void DeductHealth(float damage)
         {
@@ -239,7 +243,7 @@ namespace bullethellwhatever.NPCs
             Opacity = 1f;
 
 
-            IsHarmful = isHarmful;
+            HarmfulToPlayer = isHarmful;
         }
         public virtual void PrepareNPC()
         {

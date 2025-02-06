@@ -41,7 +41,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
             string pupilTexture = "Circle";
 
             Pupil = new Pupil(pupilTexture, 0, 0, Scale / 4);
-            Pupil.Spawn(Position, Vector2.Zero, 0f, pupilTexture, Pupil.Scale, 0, 0, Color.Black, false, false);
+            Pupil.Spawn(Position, Vector2.Zero, 0f, pupilTexture, Pupil.Scale, 0, 0, Color.Black, false, false, false);
             Pupil.SetParticipating(false);
             Pupil.IsInvincible = true;
             Pupil.TargetableByHoming = false;

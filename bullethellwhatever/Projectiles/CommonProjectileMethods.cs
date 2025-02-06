@@ -17,27 +17,27 @@ namespace bullethellwhatever.Projectiles
 {
     public static class CommonProjectileMethods
     {
-        public static Projectile SpawnProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public static Projectile SpawnProjectile(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
             Projectile proj = new Projectile();
 
-            proj.SpawnProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+            proj.SpawnProjectile(position, velocity, damage, pierce, texture, size, owner, harmfulToPlayer, harmfulToEnemy, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
             return proj;
         }
 
-        public static T SpawnProjectile<T>(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit) where T : Projectile, new()
+        public static T SpawnProjectile<T>(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit) where T : Projectile, new()
         {
             T proj = new T();
 
-            proj.SpawnProjectile(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+            proj.SpawnProjectile(position, velocity, damage, pierce, texture, size, owner, harmfulToPlayer, harmfulToEnemy, colour, shouldRemoveOnEdgeTouch, removeOnHit);
 
             return proj;
         }
 
-        public static void SpawnProjectile(this Projectile proj, Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool isHarmful, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
+        public static void SpawnProjectile(this Projectile proj, Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
         {
-            proj.Prepare(position, velocity, damage, pierce, texture, size, owner, isHarmful, colour, shouldRemoveOnEdgeTouch, removeOnHit);
+            proj.Prepare(position, velocity, damage, pierce, texture, size, owner, harmfulToPlayer, harmfulToEnemy, colour, shouldRemoveOnEdgeTouch, removeOnHit);
         }
 
         public static void RadialProjectileBurst(Projectile projectile, int numberOfProjectiles, float angleOffset, float projectileSpeed, Action extraProjectileAI = null)
@@ -46,7 +46,7 @@ namespace bullethellwhatever.Projectiles
             {
                 // change the texture used here once ManagedTexture is implemented
                 Projectile p = SpawnProjectile<Projectile>(projectile.Position, projectileSpeed * Utilities.AngleToVector(Tau / numberOfProjectiles * i + angleOffset), projectile.Damage, projectile.PierceRemaining, "box", projectile.Scale,
-                    projectile.Owner, projectile.IsHarmful, projectile.Colour, projectile.ShouldRemoveOnEdgeTouch, projectile.RemoveOnHit);
+                    projectile.Owner, projectile.HarmfulToPlayer, projectile.HarmfulToEnemy, projectile.Colour, projectile.ShouldRemoveOnEdgeTouch, projectile.RemoveOnHit);
 
                 p.Texture = projectile.Texture;
             }

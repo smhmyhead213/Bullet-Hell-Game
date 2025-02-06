@@ -55,7 +55,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             float firingAngle = startingAngle;
 
-            SharpShot p = SpawnProjectile<SharpShot>(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, Color.Yellow, true, true);
+            SharpShot p = SpawnProjectile<SharpShot>(Owner.Position, projectileSpeed * Utilities.AngleToVector(firingAngle), damage, 1, "box", Vector2.One, Owner, false, true, Color.Yellow, true, true);
 
             p.Label = EntityLabels.SharpShot;
 
@@ -70,7 +70,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             DeployingReflector = false;
 
-            Projectile p = SpawnProjectile<Projectile>(ReflectorTarget, Vector2.Zero, 0f, 1, "box", Vector2.One, Owner, false, Color.LightGoldenrodYellow, false, false);
+            Projectile p = SpawnProjectile<Projectile>(ReflectorTarget, Vector2.Zero, 0f, 1, "box", Vector2.One, Owner, false, false, Color.LightGoldenrodYellow, false, false);
 
             p.Label = EntityLabels.SharpShotReflector;
 

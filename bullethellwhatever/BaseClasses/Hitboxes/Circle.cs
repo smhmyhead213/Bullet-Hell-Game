@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace bullethellwhatever.BaseClasses.Hitboxes
 {
@@ -28,5 +29,8 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         {
             return (Centre - other.Centre).LengthSquared() < Radius + other.Radius;
         }
+        public static Circle operator *(Circle a, float b) => new Circle(a.Centre, b * a.Radius);
+        public static Circle operator /(Circle a, float b) => new Circle(a.Centre, a.Radius / b);
+
     }
 }

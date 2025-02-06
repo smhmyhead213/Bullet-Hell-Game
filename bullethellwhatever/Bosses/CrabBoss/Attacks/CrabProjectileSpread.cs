@@ -69,7 +69,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Vector2 spawnPosition = CrabOwner.Arms[chosenArmInt].LowerClaw.Position;
                     float projectileInitialSpeed = 5f;
                     
-                    Projectile p = SpawnProjectile<Projectile>(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Arms[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
+                    Projectile p = SpawnProjectile<Projectile>(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Arms[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
 
                     p.AddTrail(22);

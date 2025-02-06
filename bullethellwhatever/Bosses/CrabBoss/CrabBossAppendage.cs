@@ -73,7 +73,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Texture = AssetRegistry.GetTexture2D(texture);
             Scale = Vector2.One * scale;
-            IsHarmful = true;
+            HarmfulToPlayer = true;
             Damage = 1f;
 
             Updates = 1;

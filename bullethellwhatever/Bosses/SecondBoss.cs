@@ -44,7 +44,7 @@ namespace bullethellwhatever.Bosses
             CanDie = false;
 
             DeathrayAngularVelocity = 180f;
-            IsHarmful = true;
+            HarmfulToPlayer = true;
             Rotation = PI / 6f;
             Scale = new Vector2(6f, 6f);
             Opacity = 0.1f;
@@ -115,76 +115,7 @@ namespace bullethellwhatever.Bosses
                 CanDie = true;
             }
         }
-
-        public void Explosions(ref float AITimer, ref int AttackNumber, int numberOfProjectiles) // this needs fixed 
-        {
-            float offset = PI / 500f * AITimer;
-
-            if (AITimer % 2 == 0)
-            {
-                for (int i = 0; i < numberOfProjectiles; i++)
-                {
-                    //ExplodingProjectile explodingProjectile = new ExplodingProjectile(4, 120, -0.5f * offset, false, false, true);
-
-                    float angle = 2 * PI / numberOfProjectiles * i;
-
-                    Projectile explodingProjectile = SpawnProjectile(Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, angle + offset), Vector2.Zero), 1f, 1, "box", Vector2.One, this, true, Color.Red, false, false);
-
-                    explodingProjectile.SetExtraAI(new Action(() =>
-                    {
-                        if (explodingProjectile.AITimer == 120)
-                        {
-                            for (int i = 0; i <= numberOfProjectiles; i++)
-                            {
-                                Projectile p = SpawnProjectile(explodingProjectile.Position, 3f * Utilities.SafeNormalise(Utilities.RotateVectorClockwise(Vector2.UnitY, Tau / numberOfProjectiles * i), Vector2.Zero), 1f, 1, "box", Vector2.One, this, true, Color.Red, false, false);
-                            }
-                        }
-                    }));
-                }
-            }
-        }
         
-        public void DialogueTest(ref int AITimer, ref int AttackNumber)
-        {
-            if (AITimer == 1)
-            {              
-                DialogueSystem.Dialogue("This boss is in progress, ignore it.", 4, this, 400);
-
-                //Drawing.ScreenShake(20, 500);
-                //TelegraphLine t = new(0f, PI / 600f, 0f, 20f, 500f, 1000, Position, Color.Yellow, "box", this, true);
-                
-                //TelegraphLine t2 = new(PI, PI / 600f, 0f, 20f, 500f, 10000, Position, Color.Yellow, "box", this, true);
-                //t.ChangeShader("OutlineTelegraphShader");
-
-                //Cuboid cuboid = new Cuboid(500, 500, 500, this);
-
-                //ray = new Deathray();
-                //ray2 = new Deathray();
-
-                //ray.SpawnDeathray(new Vector2(ScreenWidth / 4 + 50f, ScreenHeight / 2), PI / 2f, 0f, 9999, "box", 30, 3000, 0, 0, true, Colour, "DeathrayShader", this);
-                //ray2.SpawnDeathray(new Vector2(ScreenWidth / 4 * 3 + 50f, ScreenHeight / 2), 0f, 0f, 9999, "box", 30, 3000, PI / 240f, 0, true, Colour, "DeathrayShader", this);
-            }
-
-            if (AITimer % 10 == 0)
-            {
-                ShockwaveRing sRing = new ShockwaveRing(20, 80, 200, 10);
-
-                //sRing.Spawn(Position, this);
-            }
-            if (AITimer == 50)
-            {
-                Projectile p = SpawnProjectile(Position, Vector2.UnitX * 10f, 1f, 1, "box", Vector2.One, this, true, Color.Red, true, false);
-                //ChargingEnemy enemy = new ChargingEnemy(60, 120);
-
-                //enemy.Spawn(Position, 7f * Vector2.UnitY, 1f, "box", Vector2.One, 3f, 1, Color.White, false, true);
-            }
-
-            if (AITimer == 60)
-            {
-                AttackUtilities.ClearProjectiles();
-            }
-        }
-
         public void EndAttack(ref float AITimer, ref int AttackNumber)
         {
             AITimer = 0; //to prevent jank with EndAttack taking a frame, allows attacks to start on 0
