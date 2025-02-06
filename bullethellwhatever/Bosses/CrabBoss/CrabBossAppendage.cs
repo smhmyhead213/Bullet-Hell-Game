@@ -189,7 +189,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void DeductHealth(float damage)
         {
-            //Leg.Owner.TakeDamage(damage);
+            Leg.Owner.TakeDamage(damage);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -216,8 +216,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
-
-            DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {

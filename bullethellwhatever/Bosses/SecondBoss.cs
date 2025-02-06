@@ -56,21 +56,7 @@ namespace bullethellwhatever.Bosses
             HealthBar hp = new HealthBar("box", new Vector2(300f, 60f), this, new Vector2(GameWidth / 2, 4 * GameHeight / 5));
             hp.Display();
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
 
-            DrawHitbox();
-
-            //Hitbox.Draw(3f);
-
-            //for (int i = 0; i < Hitbox.Vertices.Length; i++)
-            //{
-            //    Drawing.BetterDraw(Texture, Hitbox.Vertices[i], null, Color.Red, 0, Vector2.One, SpriteEffects.None, 0);
-            //    Utilities.drawTextInDrawMethod(i.ToString(), Hitbox.Vertices[i] + new Vector2(30f, 0f), spriteBatch, font, Colour);
-            //}
-            //prims.Draw();
-        }
         public override void AI()
         { 
             if (Health < 0 && CanDie)

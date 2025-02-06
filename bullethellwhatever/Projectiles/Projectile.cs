@@ -310,24 +310,5 @@ namespace bullethellwhatever.Projectiles
             if (RemoveOnHit && PierceRemaining <= 0 && !Dying) // dont reset death fade out if already dying
                 Die();
         }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            //if (UseRayCastCollision)
-            //{
-            //    float rot = Utilities.VectorToAngle(Velocity);
-
-            //    RotatedRectangle ahead = Hitbox.GenerateRaycast(Velocity);
-
-            //    foreach (Vector2 vertex in ahead.Vertices)
-            //    {
-            //        Drawing.BetterDraw("box", vertex, null, Color.Red, rot, Vector2.One, SpriteEffects.None, 0f);
-            //    }
-            //}
-
-            base.Draw(spriteBatch);
-
-            DrawHitbox();
-        }
     }
 }
