@@ -27,7 +27,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 
         public bool Intersects(Circle other)
         {
-            return (Centre - other.Centre).LengthSquared() < Radius + other.Radius;
+            return (Centre - other.Centre).LengthSquared() < Pow(Radius + other.Radius, 2f);
         }
         public static Circle operator *(Circle a, float b) => new Circle(a.Centre, b * a.Radius);
         public static Circle operator /(Circle a, float b) => new Circle(a.Centre, a.Radius / b);

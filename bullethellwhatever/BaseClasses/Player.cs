@@ -63,7 +63,7 @@ namespace bullethellwhatever.BaseClasses
             IFrames = 0;
             MaxIFrames = 30;
 
-            MaxHP = 1;
+            MaxHP = 15;
 
             Health = MaxHP; // put this back to normal
             Scale = DefaultHitbox;
