@@ -50,25 +50,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
             switch (Type)
             {
                 case AppendageType.UpperArm:
-                    {
-                        texture = "CrabUpperArm";
-                        break;
-                    }
+                {
+                    texture = "CrabUpperArm";
+                    break;
+                }
                 case AppendageType.LowerArm:
-                    {
-                        texture = "CrabLowerArm";
-                        break;
-                    }
+                {
+                    texture = "CrabLowerArm";
+                    break;
+                }
                 case AppendageType.UpperClaw:
-                    {
-                        texture = "CrabUpperClaw";
-                        break;
-                    }
+                {
+                    texture = "CrabUpperClaw";
+                    break;
+                }
                 case AppendageType.LowerClaw:
-                    {
-                        texture = "CrabLowerClaw";
-                        break;
-                    }
+                {
+                    texture = "CrabLowerClaw";
+                    break;
+                }
             }
 
             Texture = AssetRegistry.GetTexture2D(texture);
@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             //Rotation = Rotation + PI / 60f;
             //if (this is CrabBossUpperArm)
 
-            Position = Position + Velocity;
+            base.PostUpdate();
 
             if (!((CrabBoss)Owner).StartedDeathAnim)
             {
@@ -163,15 +163,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 PointInDirection(((CrabBossAppendage)BehindThis).RotationFromV() + angle);
             }         
         }
-        public override void UpdateHitbox()
-        {
-            Vector2 centre = Vector2.Lerp(Position, CalculateEnd(), 0.5f); // centre is halfway along arm
 
-            if (Type == AppendageType.UpperClaw)
-            {
-                centre = centre - Utilities.RotateVectorClockwise(new Vector2(Texture.Width / 2f * GetSize().X, 0f), Rotation); // yeah totally sure yeah i was there yeah thats crazy man so true for real?
-            }
-        }
         public float CalculateFinalRotation()
         {
             if (!((CrabBoss)Owner).StartedPhaseTwoTransition) // this is definitely going to cause problems
@@ -194,39 +186,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return Texture.Height * GetSize().Y;
         }
-        //public void HandleBounces()
-        //{
-        //    for (int i = 0; i < Hitbox.Vertices.Length; i++)
-        //    {
-        //        float vertexX = Hitbox.Vertices[i].X;
-        //        float vertexY = Hitbox.Vertices[i].Y;
-
-        //        if (vertexX < 0 && Velocity.X < 0)
-        //        {
-        //            Velocity.X = Velocity.X * -1f;
-        //            RotationalVelocity = -Sign(Velocity.X) * PI / 12;
-        //        }
-
-        //        if (vertexX > GameWidth && Velocity.X > 0)
-        //        {
-        //            Velocity.X = Velocity.X * -1f;
-        //        }
-
-        //        if (vertexY < 0 && Velocity.Y < 0)
-        //        {
-        //            Velocity.Y = Velocity.Y * -1f;
-        //        }
-
-        //        if (vertexY > GameHeight && Velocity.Y > 0)
-        //        {
-        //            Velocity.Y = Velocity.Y * -1f;
-
-        //            Velocity.Y = Velocity.Y / 10f;
-        //        }
-        //    }
-
-        //    RotationalVelocity = RotationalVelocity * 0.95f;
-        //}
 
         public override void DeductHealth(float damage)
         {
@@ -258,10 +217,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
-            Texture2D texture = AssetRegistry.GetTexture2D("box");
-
-            //spriteBatch.Draw(texture, Position, null, Color.Red, 0, new Vector2(texture.Width / 2, texture.Height / 2), Vector2.One, SpriteEffects.None, 1);
-            //Hitbox.DrawVertices(spriteBatch, Color.Red);
+            DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {

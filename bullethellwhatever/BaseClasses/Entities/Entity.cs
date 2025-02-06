@@ -351,9 +351,9 @@ namespace bullethellwhatever.BaseClasses.Entities
 
             for (int i = 0; i < Hitbox.Count; i++)
             {
-                Color colour = i == 0 ? Color.Pink : Color.Red;
+                Color colour = Color.Red;
 
-                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
+                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, size * 1.4f, SpriteEffects.None, 0f);
 
                 for (int j = 0; j < 4; j++)
                 {

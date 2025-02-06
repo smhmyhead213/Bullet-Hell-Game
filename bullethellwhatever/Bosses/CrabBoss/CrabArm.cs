@@ -220,6 +220,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     UpperClaw.Position = LowerArm.CalculateEnd();
                     UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
                 }
+
                 else UpperClaw.Position = LowerArm.CalculateEnd();
             }
         }

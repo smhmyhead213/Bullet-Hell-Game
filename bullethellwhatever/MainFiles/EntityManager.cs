@@ -84,8 +84,6 @@ namespace bullethellwhatever.MainFiles
                 {
                     npc.PreUpdate();
                     npc.AI();
-                    npc.UpdateHitbox();
-                    npc.CheckForHits();
                     npc.PostUpdate();
                 }
 
@@ -196,7 +194,7 @@ namespace bullethellwhatever.MainFiles
             }
         }
 
-        public static void SpawnBoss()
+        public static void SpawnBoss() // this is disgusting
         {
             Boss toSpawn = new Boss();
 

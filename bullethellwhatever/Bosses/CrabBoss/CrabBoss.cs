@@ -19,12 +19,11 @@ using bullethellwhatever.Bosses.CrabBoss.Attacks;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
+    
     public class CrabBoss : Boss
     {
         public CrabArm[] Arms;
-        public Vector2[] BoosterPositions;
         public Vector2[] ArmPositionsOnBody;
-        public bool BoostersActive;
         public bool LockArmPositions;
         public bool PlayerSaidOpeningDialogue;
         public bool StartedDeathAnim;
@@ -34,15 +33,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public bool StartedPhaseTwoTransition;
 
         public float SpinVelOnDeath = PI / 40;
-
+        public const float ScaleFactor = 1.5f;
+        public const float BodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
 
-            float scaleFactor = 1.5f;
-            float bodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
+            Scale = Vector2.One * ScaleFactor;
 
-            Scale = Vector2.One * scaleFactor;
             Position = Utilities.CentreWithCamera() - new Vector2(0f, GameHeight / 4f);
             MaxHP = 400f;
 
@@ -52,15 +50,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             StartedPhaseTwoTransition = false;
 
-            BoostersActive = false;
             LockArmPositions = true;
             PlayerSaidOpeningDialogue = false;
             
             Arms = new CrabArm[2];
             ArmPositionsOnBody = new Vector2[2];
-            BoosterPositions = new Vector2[2];
 
-            StartedDeathAnim = false;
+            StartedDeathAnim = false;            
+        }
+
+        public override void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool harmfulToPlayer, bool harmfulToEnemy)
+        {
+            base.Spawn(position, velocity, damage, texture, size, MaxHealth, pierceToTake, colour, shouldRemoveOnEdgeTouch, harmfulToPlayer, harmfulToEnemy);
 
             for (int i = 0; i < 2; i++)
             {
@@ -68,7 +69,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 pos = CalculateArmPostions(expandedi);
 
-                Arms[i] = new CrabArm(pos, this, i, scaleFactor / bodyToArmSizeRatio);
+                Arms[i] = new CrabArm(pos, this, i, ScaleFactor / BodyToArmSizeRatio);
 
                 ArmPositionsOnBody[i] = pos;
 
@@ -79,20 +80,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Arms[i].UpperArm.RotationConstant = -expandedi * PI / 12;
                 Arms[i].LowerArm.RotationConstant = expandedi * PI / 12;
-                //Legs[0].UpperClaw.RotationConstant = expandedi * PI;
-                //Legs[0].LowerClaw.RotationConstant = expandedi * PI; // fix later
-
             }
 
             CurrentAttack = new CrabIntro(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
-
-            //TelegraphLine t = new TelegraphLine(PI, 0, 0, 20, 2000, 9999, new Vector2(ScreenWidth / 2, 0), Color.White, "box", this, false);
-            //TelegraphLine really = new TelegraphLine(PI / 2, 0, 0, 20, 2000, 9999, new Vector2(0 , ScreenHeight / 2), Color.White, "box", this, false);
         }
-
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
             return Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width * GetSize().X / 2.1f, Texture.Height * GetSize().Y / 3.6f), Rotation);
@@ -112,10 +106,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
-        public void SetBoosters(bool on)
-        {
-            BoostersActive = on;
-        }
         public void FacePlayer()
         {
             Rotation = Utilities.VectorToAngle(Position - player.Position);
@@ -150,65 +140,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             for (int i = 0; i < 2; i++)
             {
                 Arms[i].Update();
-
-                int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
-
-                if (Arms[i] is not null)
-                {
-                    BoosterPositions[i] = Position + Utilities.RotateVectorClockwise(new Vector2(expandedi * Texture.Width / 2.1f, -Texture.Height / 4f), Rotation);
-                }
             }
         }
         public override void Die()
         {
             base.Die();
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (BoostersActive)
-            {
-                Drawing.RestartSpriteBatchForShaders(spriteBatch, true);
-
-                Effect boosterShader = AssetRegistry.GetShader("CrabRocketBoosterShader");
-                boosterShader.CurrentTechnique.Passes[0].Apply();
-
-                for (int i = 0; i < BoosterPositions.Length; i++)
-                {
-                    float width = MathHelper.Clamp(Abs(Velocity.Y) / 1f, 0f, 2.5f);
-                    float height = Velocity.Length();
-                    Texture2D texture = AssetRegistry.GetTexture2D("box");
-
-                    Vector2 size = new Vector2(width, height);
-
-                    Vector2 drawPos = BoosterPositions[i];
-                    drawPos = drawPos - Utilities.RotateVectorClockwise(new Vector2(0f, texture.Height * (0.5f * height - 0.5f)), Rotation);
-
-                    //drawPos.X = BoosterPositions[i].X + size.X;
-
-                    //spriteBatch.Draw(Assets["box"], drawPos, null, Colour, Rotation + PI, originOffset, size, SpriteEffects.None, 1);
-                    Drawing.BetterDraw(texture, drawPos, null, Colour, Rotation + PI, size, SpriteEffects.None, 1);
-                }
-
-                if (Shader is not null) //if we were already drawing stuff that had shaders
-                    Drawing.RestartSpriteBatchForShaders(spriteBatch, true);
-                else Drawing.RestartSpriteBatchForNotShaders(spriteBatch, true);
-            }
-
-            base.Draw(spriteBatch);
-
-
-            //Utilities.drawTextInDrawMethod(Main.activeProjectiles.Count.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), spriteBatch, font, Color.White);
-            //Hitbox.DrawHitbox();
-
-            foreach (CrabArm leg in Arms)
-            {
-                if (leg is not null)
-                {
-                    //leg.DrawHitboxes();
-
-                    //spriteBatch.Draw(AssetRegistry.GetTexture2D("box"), leg.PositionAtDistanceFromWrist(100f), null, Color.Red, Rotation + PI, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
-                }
-            }
         }
 
         public bool CanPerformCrabPunch()

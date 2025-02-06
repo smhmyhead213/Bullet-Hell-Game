@@ -102,6 +102,9 @@ namespace bullethellwhatever.NPCs
 
             Position = Position + Velocity;
 
+            UpdateHitbox();
+            CheckForHits();
+
             AITimer++;
 
             base.PostUpdate();
@@ -256,6 +259,12 @@ namespace bullethellwhatever.NPCs
         {
             Participating = true;
             SetHitbox();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            DrawHitbox();
         }
     }
 }
