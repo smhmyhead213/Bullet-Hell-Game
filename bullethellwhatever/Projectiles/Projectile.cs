@@ -247,12 +247,11 @@ namespace bullethellwhatever.Projectiles
         {
             foreach (NPC npc in EntityManager.activeNPCs)
             {
-                //Collision collision = CollisionWithEntity(npc);
-
-                //if (IsCollidingWith(npc) && npc.IFrames == 0 && !npc.IsInvincible && !Dying)
-                //{
-                //    DealDamage(npc);
-                //}
+                if (IsCollidingWith(npc))
+                {
+                    DealDamage(npc);
+                    OnHitEffect(npc.Position);
+                }
             }
         }
 
@@ -321,6 +320,8 @@ namespace bullethellwhatever.Projectiles
             //}
 
             base.Draw(spriteBatch);
+
+            DrawHitbox();
         }
     }
 }

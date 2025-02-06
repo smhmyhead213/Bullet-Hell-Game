@@ -60,6 +60,8 @@ namespace bullethellwhatever.Bosses
         {
             base.Draw(spriteBatch);
 
+            DrawHitbox();
+
             //Hitbox.Draw(3f);
 
             //for (int i = 0; i < Hitbox.Vertices.Length; i++)

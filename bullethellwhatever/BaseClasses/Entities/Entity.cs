@@ -288,6 +288,18 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual bool IsCollidingWith(Entity other, bool backwardsRaycast = true)
         {
+            // read it, oh O(n^2) haters, and weep.
+            foreach (Circle mine in Hitbox)
+            {
+                foreach (Circle notmine in other.Hitbox)
+                {
+                    if (mine.Intersects(notmine))
+                    {
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 
@@ -317,8 +329,13 @@ namespace bullethellwhatever.BaseClasses.Entities
         {
             for (int i = 0; i < Hitbox.Count; i++)
             {
-                Color colour = i == 0 ? Color.DarkGreen : Color.Red;
+                Color colour = i == 0 ? Color.Pink : Color.Red;
                 Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, Vector2.One * 0.25f, SpriteEffects.None, 0f);
+
+                for (int j = 0; j < 4; j++)
+                {
+                    Drawing.BetterDraw("box", Hitbox[i].Centre + Utilities.RotateVectorClockwise(new Vector2(Hitbox[i].Radius, 0), PI / 2 * j), null, colour, 0f, Vector2.One * 0.25f, SpriteEffects.None, 0f);
+                }
             }
         }
         public void SetHitbox()
