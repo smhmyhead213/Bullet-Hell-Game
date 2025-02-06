@@ -15,6 +15,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using Microsoft.Xna.Framework.Media;
+using System.Windows.Forms;
 
 namespace bullethellwhatever
 {
@@ -397,6 +398,64 @@ namespace bullethellwhatever
         public static Color RandomColour()
         {
             return new Color(RandomFloat(0f, 1f), RandomFloat(0f, 1f), RandomFloat(0f, 1f));
+        }
+
+        public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation)
+        {
+            List<Circle> output = new List<Circle>();
+
+            if (width == height)
+            {
+                output.Add(new Circle(centre, width / 2f));
+                return output; // use one circle for things of equal width and height
+            }
+
+            else
+            {
+                if (width > height)
+                {
+                    // figure out how many circles to fit in
+                    int radius = height / 2;
+                    int numCircles = width / radius - 1; // add a circle every radius
+
+                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
+
+                    int totalRadiusCovered = radius * (numCircles + 1);
+                    int leftOnEnd = (width - totalRadiusCovered) / 2;
+
+                    Vector2 startPos = centre - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius - leftOnEnd, 0), rotation);
+
+                    output.Add(new Circle(startPos, radius));
+
+                    for (int i = 1; i < numCircles; i++)
+                    {
+                        output.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), rotation), radius));
+                    }
+                }
+                else
+                {
+                    // figure out how many circles to fit in
+                    int radius = width / 2;
+                    int numCircles = height / radius - 1; // add a circle every radius
+                    float adjustedRotation = rotation - PI / 2f;
+
+                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
+
+                    int totalRadiusCovered = radius * (numCircles + 1);
+                    int leftOnEnd = (height - totalRadiusCovered) / 2;
+
+                    Vector2 startPos = centre - Utilities.RotateVectorClockwise(new Vector2(height / 2 - radius - leftOnEnd, 0), adjustedRotation);
+
+                    output.Add(new Circle(startPos, radius));
+
+                    for (int i = 1; i < numCircles; i++)
+                    {
+                        output.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), adjustedRotation), radius));
+                    }
+                }
+
+                return output;
+            }
         }
 
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);

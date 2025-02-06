@@ -245,9 +245,11 @@ namespace bullethellwhatever.Projectiles
 
         public virtual void CheckForAndHitNPCs()
         {
+            int raycastDir = Raycast is not null ? Raycast.Direction : 0;
+
             foreach (NPC npc in EntityManager.activeNPCs)
             {
-                if (IsCollidingWith(npc))
+                if (IsCollidingWith(npc, raycastDir))
                 {
                     DealDamage(npc);
                     OnHitEffect(npc.Position);

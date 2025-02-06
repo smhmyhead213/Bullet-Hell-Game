@@ -12,6 +12,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using System.Linq;
 using SharpDX.MediaFoundation;
+using SharpDX.Direct3D9;
 
 namespace bullethellwhatever.BaseClasses.Entities
 {
@@ -286,7 +287,7 @@ namespace bullethellwhatever.BaseClasses.Entities
             AdditionalComponents.Add(trail);
         }
 
-        public virtual bool IsCollidingWith(Entity other, bool backwardsRaycast = true)
+        public virtual bool IsCollidingWith(Entity other, int raycastDirection = 0)
         {
             // read it, oh O(n^2) haters, and weep.
             foreach (Circle mine in Hitbox)
@@ -296,6 +297,22 @@ namespace bullethellwhatever.BaseClasses.Entities
                     if (mine.Intersects(notmine))
                     {
                         return true;
+                    }
+                }
+            }
+
+            if (raycastDirection == 1 || raycastDirection == -1)
+            {
+                List<Circle> raycast = Utilities.FillRectWithCircles(Position + Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
+
+                foreach (Circle circle in raycast)
+                {
+                    foreach (Circle notmine in other.Hitbox)
+                    {
+                        if (circle.Intersects(notmine))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -327,14 +344,34 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public void DrawHitbox()
         {
+            Vector2 size = Scale * 0.25f;
+
             for (int i = 0; i < Hitbox.Count; i++)
             {
                 Color colour = i == 0 ? Color.Pink : Color.Red;
-                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, Vector2.One * 0.25f, SpriteEffects.None, 0f);
+
+                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
 
                 for (int j = 0; j < 4; j++)
                 {
-                    Drawing.BetterDraw("box", Hitbox[i].Centre + Utilities.RotateVectorClockwise(new Vector2(Hitbox[i].Radius, 0), PI / 2 * j), null, colour, 0f, Vector2.One * 0.25f, SpriteEffects.None, 0f);
+                    Drawing.BetterDraw("box", Hitbox[i].Centre + Utilities.RotateVectorClockwise(new Vector2(Hitbox[i].Radius, 0), PI / 2 * j), null, colour, 0f, size, SpriteEffects.None, 0f);
+                }
+            }
+
+            if (Raycast is not null)
+            {
+                List<Circle> raycast = Utilities.FillRectWithCircles(Position + Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
+
+                for (int i = 0; i < raycast.Count; i++)
+                {
+                    Color colour = i == 0 ? Color.Pink : Color.Red;
+
+                    Drawing.BetterDraw("box", raycast[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        Drawing.BetterDraw("box", raycast[i].Centre + Utilities.RotateVectorClockwise(new Vector2(raycast[i].Radius, 0), PI / 2 * j), null, colour, 0f, size, SpriteEffects.None, 0f);
+                    }
                 }
             }
         }
@@ -345,61 +382,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
-            Hitbox.Clear(); // this might be expensive
-
-            int width = (int)Width();
-            int height = (int)Height();
-
-            if (width == height)
-            {
-                Hitbox.Add(new Circle(Position, width / 2f));
-                return; // use one circle for things of equal width and height
-            }
-
-            else
-            {
-                if (width > height)
-                {
-                    // figure out how many circles to fit in
-                    int radius = height / 2;
-                    int numCircles = width / radius - 1; // add a circle every radius
-
-                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
-
-                    int totalRadiusCovered = radius * (numCircles + 1);
-                    int leftOnEnd = (width - totalRadiusCovered) / 2;
-
-                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius - leftOnEnd, 0), Rotation);
-
-                    Hitbox.Add(new Circle(startPos, radius));
-
-                    for (int i = 1; i < numCircles; i++)
-                    {
-                        Hitbox.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), Rotation), radius));
-                    }
-                }
-                else
-                {
-                    // figure out how many circles to fit in
-                    int radius = width / 2;
-                    int numCircles = height / radius - 1; // add a circle every radius
-                    float adjustedRotation = Rotation - PI / 2f;
-
-                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
-
-                    int totalRadiusCovered = radius * (numCircles + 1);
-                    int leftOnEnd = (height - totalRadiusCovered) / 2;
-
-                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(height / 2 - radius - leftOnEnd, 0), adjustedRotation);
-
-                    Hitbox.Add(new Circle(startPos, radius));
-
-                    for (int i = 1; i < numCircles; i++)
-                    {
-                        Hitbox.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), adjustedRotation), radius));
-                    }
-                }
-            }
+            Hitbox = Utilities.FillRectWithCircles(Position, (int)Width(), (int)Height(), Rotation);
         }
     }
 }

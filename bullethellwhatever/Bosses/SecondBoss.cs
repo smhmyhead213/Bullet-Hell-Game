@@ -46,7 +46,7 @@ namespace bullethellwhatever.Bosses
             DeathrayAngularVelocity = 180f;
             IsHarmful = true;
             Rotation = PI / 6f;
-            Scale = new Vector2(3f, 3f);
+            Scale = new Vector2(6f, 6f);
             Opacity = 0.1f;
 
             Colour = Color.White;
