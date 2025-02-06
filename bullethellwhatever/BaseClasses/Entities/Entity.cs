@@ -318,7 +318,7 @@ namespace bullethellwhatever.BaseClasses.Entities
             for (int i = 0; i < Hitbox.Count; i++)
             {
                 Color colour = i == 0 ? Color.DarkGreen : Color.Red;
-                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, Vector2.One * 0.5f, SpriteEffects.None, 0f);
+                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, Vector2.One * 0.25f, SpriteEffects.None, 0f);
             }
         }
         public void SetHitbox()
@@ -330,8 +330,8 @@ namespace bullethellwhatever.BaseClasses.Entities
         {
             Hitbox.Clear(); // this might be expensive
 
-            float width = Width();
-            float height = Height();
+            int width = (int)Width();
+            int height = (int)Height();
 
             if (width == height)
             {
@@ -344,10 +344,15 @@ namespace bullethellwhatever.BaseClasses.Entities
                 if (width > height)
                 {
                     // figure out how many circles to fit in
-                    int radius = (int)height;
-                    int numCircles = (int)width / radius - 1;
+                    int radius = height / 2;
+                    int numCircles = width / radius - 1; // add a circle every radius
 
-                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius, 0), Rotation);
+                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
+
+                    int totalRadiusCovered = radius * (numCircles + 1);
+                    int leftOnEnd = (width - totalRadiusCovered) / 2;
+
+                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius - leftOnEnd, 0), Rotation);
 
                     Hitbox.Add(new Circle(startPos, radius));
 
@@ -359,11 +364,16 @@ namespace bullethellwhatever.BaseClasses.Entities
                 else
                 {
                     // figure out how many circles to fit in
-                    int radius = (int)width;
-                    int numCircles = (int)height / radius - 1;
+                    int radius = width / 2;
+                    int numCircles = height / radius - 1; // add a circle every radius
                     float adjustedRotation = Rotation - PI / 2f;
 
-                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(height / 2 - radius, 0), adjustedRotation);
+                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
+
+                    int totalRadiusCovered = radius * (numCircles + 1);
+                    int leftOnEnd = (height - totalRadiusCovered) / 2;
+
+                    Vector2 startPos = Position - Utilities.RotateVectorClockwise(new Vector2(height / 2 - radius - leftOnEnd, 0), adjustedRotation);
 
                     Hitbox.Add(new Circle(startPos, radius));
 

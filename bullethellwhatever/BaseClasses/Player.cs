@@ -29,7 +29,7 @@ namespace bullethellwhatever.BaseClasses
         public Dash DashAbility;
         
         public int DashTimer;
-        public Vector2 DefaultHitbox => new Vector2(1f, 5f);
+        public Vector2 DefaultHitbox => new Vector2(4f, 7f);
 
         public int WeaponSwitchCooldownTimer;
         public int WeaponSwitchCooldown;
