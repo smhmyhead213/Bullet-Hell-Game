@@ -69,7 +69,7 @@ namespace bullethellwhatever.Projectiles
             ShouldRemoveOnEdgeTouch = shouldRemoveOnEdgeTouch;
             RemoveOnHit = removeOnHit;
 
-            ContactDamage = harmfulToEnemy;
+            ContactDamage = harmfulToPlayer;
 
             if (Updates == 0) // if we havent already set updates
             {
@@ -236,7 +236,7 @@ namespace bullethellwhatever.Projectiles
                     CheckForAndHitNPCs();
                 }
 
-                if (HarmfulToPlayer && ContactDamage)
+                if (HarmfulToPlayer && Damage != 0f)
                 {
                     if (IsCollidingWith(player) && player.IFrames == 0 && !Dying)
                     {
