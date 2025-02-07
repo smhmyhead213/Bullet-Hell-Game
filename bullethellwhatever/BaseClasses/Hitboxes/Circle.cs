@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace bullethellwhatever.BaseClasses.Hitboxes
 {
@@ -22,7 +21,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 
         public bool PointInCircle(Vector2 point)
         {
-            return (Centre - point).LengthSquared() < Radius;
+            return (Centre - point).LengthSquared() < Pow(Radius, 2f);
         }
 
         public bool Intersects(Circle other)

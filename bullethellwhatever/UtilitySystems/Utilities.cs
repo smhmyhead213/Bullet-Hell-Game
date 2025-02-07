@@ -463,6 +463,14 @@ namespace bullethellwhatever
             return SafeNormalise(to - from);
         }
 
+        public static float SinWithPeriod(float x, float period)
+        {
+            return Sin(Tau / period * x);
+        }
+        public static float CosWithPeriod(float x, float period)
+        {
+            return Cos(Tau / period * x);
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)

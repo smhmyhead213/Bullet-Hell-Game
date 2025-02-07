@@ -117,7 +117,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 if (Bounced)
                 {
-                    Raycast.Direction = 0; // use a backwards raycast now
+                    Raycast.Direction = 0; // do not use a raycast now
 
                     NPC target = EntityManager.ClosestTargetableNPC(Position);
 
