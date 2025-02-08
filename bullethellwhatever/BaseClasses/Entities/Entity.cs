@@ -85,7 +85,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         {
             foreach (Component component in AdditionalComponents)
             {
-                component.Update();
+                component.PreUpdate();
             }
         }
 
@@ -94,7 +94,10 @@ namespace bullethellwhatever.BaseClasses.Entities
         /// </summary>
         public virtual void PostUpdate()
         {
-
+            foreach (Component component in AdditionalComponents)
+            {
+                component.PostUpdate();
+            }
         }
 
         public void ClearExtraData()

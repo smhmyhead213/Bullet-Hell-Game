@@ -59,7 +59,7 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void AI()
         {
-            Trail.Update(10f, CalculateEnd(), CalculateEnd(), Color.Orange);
+            Trail.PreUpdate(10f, CalculateEnd(), Color.Green);
 
             if (LeftClickReleased() && !Swinging)
             {
@@ -108,6 +108,8 @@ namespace bullethellwhatever.Abilities.Weapons
                     }
                 }
             }
+
+            Trail.PostUpdate(CalculateEnd());
         }
 
         public override void PrimaryFire()
@@ -122,8 +124,8 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public override void Draw(SpriteBatch s)
         {
-            Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(1.5f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
             Trail.Draw(s);
+            Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(1.5f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
         }
     }
 }

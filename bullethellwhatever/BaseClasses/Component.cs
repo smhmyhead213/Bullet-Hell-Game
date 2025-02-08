@@ -13,8 +13,8 @@ namespace bullethellwhatever.BaseClasses
         public string Name;
         public Entity Owner;
         public abstract void Draw(SpriteBatch s);
-        public abstract void Update();
-
+        public abstract void PreUpdate();
+        public abstract void PostUpdate();
         public void SetName(string name)
         {
             Name = name;

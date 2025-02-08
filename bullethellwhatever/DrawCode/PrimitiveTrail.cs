@@ -74,17 +74,28 @@ namespace bullethellwhatever.DrawCode
             Colour = colour;
         }
 
-        public void Update(float width, Vector2 startPosition, Vector2 pointToAdd, Color colour)
+        public void PreUpdate(float width, Vector2 pointToAdd, Color colour)
         {
             afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, pointToAdd);
             Width = width;
-            Colour = colour;
+            Colour = colour;           
+        }
+
+        public void PostUpdate(Vector2 startPosition)
+        {
             StartPosition = startPosition;
         }
 
-        public override void Update()
+        public override void PreUpdate()
         {
             afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
+            Colour = Owner.Colour;
+            Width = Owner.Width();
+        }
+
+        public override void PostUpdate()
+        {
+            StartPosition = Owner.Position;
         }
 
         public override void Draw(SpriteBatch s)
@@ -121,7 +132,7 @@ namespace bullethellwhatever.DrawCode
                 colour = colour * fractionOfWidth * Opacity;
 
                 PrimitiveManager.MainVertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, progress));
-                PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, progress));      
+                PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, progress));
             }
 
             int numberOfTriangles = vertexCount - 2;
@@ -135,6 +146,8 @@ namespace bullethellwhatever.DrawCode
                 PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
                 PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
             }
+
+            Utilities.drawTextInDrawMethod((StartPosition - positions.Last()).Length().ToString(), player.Position + new Vector2(50f, 0f), s, font, Color.White);
 
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, Shader);
 

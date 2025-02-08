@@ -75,7 +75,10 @@ namespace bullethellwhatever.MainFiles
         {
             List<TelegraphLine> toRemove = new List<TelegraphLine>();
 
+            player.PreUpdate();
             player.AI();
+            player.PostUpdate();
+
             player.UpdateHitbox();
 
             foreach (NPC npc in activeNPCs)

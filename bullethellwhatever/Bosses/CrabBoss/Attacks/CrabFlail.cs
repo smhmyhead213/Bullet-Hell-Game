@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 float projAngle = Utilities.RandomAngle();
                 Projectile p = SpawnProjectile<Projectile>(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
-                p.AddTrail(22);
+                p.AddTrail(23);
                 p.Rotation = projAngle;
 
                 p.SetExtraAI(new Action(() =>

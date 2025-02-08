@@ -77,9 +77,9 @@ namespace bullethellwhatever.BaseClasses
 
             ShouldRemoveOnEdgeTouch = false;
 
-            PrimitiveTrail trail = new PrimitiveTrail(this, 10);
+            PrimitiveTrail trail = new PrimitiveTrail(this, 15);
             trail.SetName("PlayerTrail");
-            trail.Opacity = EasingFunctions.EaseParabolic(0.9f); // a bug lead to me finding this nice number
+            trail.Opacity = EasingFunctions.EaseParabolic(0.9f) + 0.2f;
 
             AdditionalComponents.Add(trail);
 
@@ -213,6 +213,7 @@ namespace bullethellwhatever.BaseClasses
         {
             // add something if the player will ever be deleted
         }
+
         public override void AI() //cooldowns and iframes and stuff are handled here
         {
             AITimer++;
@@ -239,14 +240,9 @@ namespace bullethellwhatever.BaseClasses
 
             PlayerWeaponManager.Update();
 
-            Position = Position + Velocity;
+            //Position = Position + Velocity;
 
             RotateBasedOnDirection();
-
-            foreach (Component component in AdditionalComponents)
-            {
-                component.Update();
-            }
 
             if (Health > 0)
             {
