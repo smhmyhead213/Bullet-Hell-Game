@@ -25,9 +25,9 @@ namespace bullethellwhatever.Abilities.Weapons
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
 
-        public float SwingDuration => 100;
+        public float SwingDuration => 40;
         public float WindUpDuration => 20;
-        public float SpinDuration => 100;
+        public float SpinDuration => 20;
 
         public SwordSwingStages SwingStage;
 
@@ -43,8 +43,8 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void WeaponInitialise()
         {
-            WeaponRotation = 0;
-            SwingStage = SwordSwingStages.Prepare;
+            WeaponRotation = SwingAngle / 2;
+            SwingStage = SwordSwingStages.Swing;
             AITimer = 0;
             Swinging = false;
         }
@@ -59,30 +59,32 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void AI()
         {
-            Trail.PreUpdate(10f, CalculateEnd(), Color.Green);
+            Trail.PreUpdate(10f, CalculateEnd(), Color.Orange);
 
             if (LeftClickReleased() && !Swinging)
             {
                 Swinging = true;
                 AITimer = 0;
+                WeaponRotation = SwingAngle / 2f;
+                SwingStage = SwordSwingStages.Swing;
             }
 
             if (Swinging)
             {
                 // swing through
-                if (SwingStage == SwordSwingStages.Prepare)
-                {
-                    float interpolant = EasingFunctions.Linear(MathHelper.Clamp(AITimer, 0, WindUpDuration) / (float)WindUpDuration);
+                //if (SwingStage == SwordSwingStages.Prepare)
+                //{
+                //    float interpolant = EasingFunctions.Linear(MathHelper.Clamp(AITimer, 0, WindUpDuration) / (float)WindUpDuration);
 
-                    WeaponRotation = interpolant * SwingAngle / 2;
+                //    WeaponRotation = interpolant * SwingAngle / 2;
 
-                    if (AITimer == WindUpDuration)
-                    {
-                        SwingStage = SwordSwingStages.Swing;
-                        AITimer = 0;
-                    }
-                }
-                else if (SwingStage == SwordSwingStages.Swing)
+                //    if (AITimer == WindUpDuration)
+                //    {
+                //        SwingStage = SwordSwingStages.Swing;
+                //        AITimer = 0;
+                //    }
+                //}
+                if (SwingStage == SwordSwingStages.Swing)
                 {
                     float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SwingDuration) / (float)SwingDuration);
 
@@ -102,7 +104,6 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     if (AITimer == SpinDuration)
                     {
-                        SwingStage = SwordSwingStages.Prepare;
                         AITimer = 0;
                         Swinging = false;
                     }
@@ -124,8 +125,11 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public override void Draw(SpriteBatch s)
         {
-            Trail.Draw(s);
-            Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(1.5f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
+            if (Swinging)
+            {
+                Trail.Draw(s);
+                Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(Width / 10f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
+            }
         }
     }
 }

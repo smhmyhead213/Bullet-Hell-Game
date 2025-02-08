@@ -23,7 +23,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public static int WeaponSwitchCooldownTimer = 0;
         public static void Initialise(Player owner)
         {
-            int initialWeaponIndex = 2;
+            int initialWeaponIndex = 0;
 
             WeaponSwitchCooldown = 10;
             WeaponSwitchCooldownTimer = 0;

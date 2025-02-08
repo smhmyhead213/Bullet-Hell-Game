@@ -147,7 +147,7 @@ namespace bullethellwhatever.DrawCode
                 PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
             }
 
-            Utilities.drawTextInDrawMethod((StartPosition - positions.Last()).Length().ToString(), player.Position + new Vector2(50f, 0f), s, font, Color.White);
+            //Utilities.drawTextInDrawMethod((StartPosition - positions.Last()).Length().ToString(), player.Position + new Vector2(50f, 0f), s, font, Color.White);
 
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, Shader);
 
