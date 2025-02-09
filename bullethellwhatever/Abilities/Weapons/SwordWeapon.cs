@@ -71,19 +71,6 @@ namespace bullethellwhatever.Abilities.Weapons
 
             if (Swinging)
             {
-                // swing through
-                //if (SwingStage == SwordSwingStages.Prepare)
-                //{
-                //    float interpolant = EasingFunctions.Linear(MathHelper.Clamp(AITimer, 0, WindUpDuration) / (float)WindUpDuration);
-
-                //    WeaponRotation = interpolant * SwingAngle / 2;
-
-                //    if (AITimer == WindUpDuration)
-                //    {
-                //        SwingStage = SwordSwingStages.Swing;
-                //        AITimer = 0;
-                //    }
-                //}
                 if (SwingStage == SwordSwingStages.Swing)
                 {
                     float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SwingDuration) / (float)SwingDuration);
