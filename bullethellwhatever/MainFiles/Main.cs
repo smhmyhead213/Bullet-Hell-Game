@@ -140,6 +140,8 @@ namespace bullethellwhatever.MainFiles
 
             if (MainInstance.IsActive)
             {
+                // call me Odie the way i bark at that garfeild
+
                 GameStateHandler.HandleGame();
                 UIManager.ManageUI();
 

@@ -137,6 +137,8 @@ namespace bullethellwhatever.MainFiles
 
             foreach (Projectile projectile in activeFriendlyProjectiles)
             {
+                // Oswald didnt do it. fart...
+
                 for (int i = 0; i < projectile.Updates; i++)
                 {
                     projectile.PreUpdate();
