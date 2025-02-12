@@ -80,8 +80,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Arms[i].HorizontalFlip = true;
                 }
 
-                Arms[i].UpperArm.RotationConstant = -expandedi * PI / 12;
-                Arms[i].LowerArm.RotationConstant = expandedi * PI / 12;
+                Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 0.9f));
 
                 ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd();
             }

@@ -290,7 +290,7 @@ namespace bullethellwhatever.BaseClasses
                 MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);
 
                 float minZoom = 1f;
-                float maxZoom = 2f;
+                float maxZoom = 1.5f;
 
                 NPC furthest = FurthestEnemyFromPlayer();
 

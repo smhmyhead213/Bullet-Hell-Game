@@ -65,9 +65,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Position = LowerArm.CalculateEnd();
             LowerClaw.Position = LowerArm.CalculateEnd();
         }
+
+        /// <summary>
+        /// The IK solver does not deal with the claws. The wrist length should be used in situations where the IK solver is.
+        /// </summary>
+        /// <returns></returns>
+        public float WristLength()
+        {
+            return UpperArm.Length() + LowerArm.Length();
+        }
         public float Length()
         {
-            return UpperArm.Length() + LowerArm.Length() + UpperClaw.Length();
+             return WristLength() + UpperClaw.Length();
         }
         public void ResetRotations()
         {
@@ -204,6 +213,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
+        public void LerpToRestPosition(float interpolant)
+        {
+            TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant));
+        }
+        public Vector2 RestPositionEnd()
+        {
+            return Owner.ArmRestingEnds[LegIndex];
+        }
         public void Update()
         {
             if (Owner.LockArmPositions)

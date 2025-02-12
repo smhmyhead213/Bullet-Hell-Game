@@ -24,25 +24,31 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            //foreach (CrabArm leg in CrabOwner.Arms)
-            //{
-            //    Vector2 targetPosition = leg.Position + 1f * (MousePositionWithCamera() - leg.Position); // change this to make bend testing easier
-            //    leg.TouchPoint(targetPosition);
-            //}
-
             int pullBackArmTime = 90;
+            int punchSwingTime = 5;
+            float armLength = Arm(0).WristLength();
 
             if (AITimer < pullBackArmTime)
             {
                 // move arm in rough circle around its start
 
+                float holdOutDistEnd = armLength * 0.7f;
                 float interpolant = EasingFunctions.EaseOutExpo((float)AITimer / pullBackArmTime);
-                float armLength = Arm(0).Length();
-                float holdOutDistance = MathHelper.Lerp(armLength, armLength / 2, interpolant);
+                float holdOutDistance = MathHelper.Lerp(armLength, holdOutDistEnd, interpolant);
                 Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(0) - Arm(0).Position);
-                Vector2 targetPosition = Arm(0).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 3);
+                Vector2 targetPosition = Arm(0).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 2);
 
-                Arm(0).TouchPoint(Vector2.Lerp(CrabOwner.ArmRestingEnds[0], targetPosition, interpolant), false);
+                Arm(0).TouchPoint(Vector2.Lerp(CrabOwner.ArmRestingEnds[0], targetPosition, interpolant), true);
+            }
+
+            if (AITimer > pullBackArmTime && AITimer <= pullBackArmTime + punchSwingTime)
+            {
+                int localTime = AITimer - pullBackArmTime;
+                Vector2 punchTarget = Arm(0).RestPositionEnd() + new Vector2(0f, -10f);
+                float interpolant = (float)localTime / punchSwingTime;
+
+                //Arm(0).TouchPoint(Vector2.Lerp(Arm(0).WristPosition(), punchTarget, interpolant), true);
+                Arm(0).LerpToRestPosition(interpolant);
             }
         }
 
@@ -53,7 +59,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void ExtraDraw(SpriteBatch s)
         {
-            //Drawing.BetterDraw("box", TargetPosition(), null, Color.Red, 0f, Vector2.One, SpriteEffects.None, 1f);
+            foreach (CrabArm arm in CrabOwner.Arms)
+            {
+                Drawing.BetterDraw("box", arm.RestPositionEnd(), null, Color.Red, 0f, Vector2.One, SpriteEffects.None, 1f);
+            }
         }
     }
 }
