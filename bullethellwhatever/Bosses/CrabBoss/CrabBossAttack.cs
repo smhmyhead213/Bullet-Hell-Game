@@ -92,6 +92,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Owner.Velocity.Y = Owner.Velocity.Y * -1f;
             }
         }
+
+        public Vector2 RestingPosition(int armIndex)
+        {
+            return CrabOwner.ArmRestingEnds[armIndex];
+        }
         public CrabArm Arm(int index)
         {
             return CrabOwner.Arms[index];

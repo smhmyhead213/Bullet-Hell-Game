@@ -144,7 +144,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         /// Solves IK to make the arm attempt to touch a certain point. If the point is longer than the arm's length, attempts to point the arm fully stretched in the direction of the target.
         /// </summary>
         /// <param name="targetPosition"></param>
-        public void TouchPoint(Vector2 targetPosition)
+        public void TouchPoint(Vector2 targetPosition, bool pointClaw = true)
         {
             // decide how far to stretch arms. the length includes the claw but the following claculations ignore it, this will be the source of any issues where the claws lie past the target position.
             float upperArmLength = UpperArm.Length();
@@ -196,8 +196,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float lowerArmRotation = Utilities.VectorToAngle(targetPosition - elbowPos);
 
             LowerArm.PointInDirection(lowerArmRotation);
-            LowerClaw.PointInDirection(lowerArmRotation);
-            UpperClaw.PointInDirection(lowerArmRotation);
+
+            if (pointClaw)
+            {
+                LowerClaw.PointInDirection(lowerArmRotation);
+                UpperClaw.PointInDirection(lowerArmRotation);
+            }
         }
 
         public void Update()

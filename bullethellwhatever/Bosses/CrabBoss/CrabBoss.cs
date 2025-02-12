@@ -56,6 +56,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             
             Arms = new CrabArm[2];
             ArmPositionsOnBody = new Vector2[2];
+            ArmRestingEnds = new Vector2[2];
 
             StartedDeathAnim = false;            
         }
