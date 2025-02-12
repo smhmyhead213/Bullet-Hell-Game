@@ -24,6 +24,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabArm[] Arms;
         public Vector2[] ArmPositionsOnBody;
+        public Vector2[] ArmRestingEnds;
         public bool LockArmPositions;
         public bool PlayerSaidOpeningDialogue;
         public bool StartedDeathAnim;
@@ -80,9 +81,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Arms[i].UpperArm.RotationConstant = -expandedi * PI / 12;
                 Arms[i].LowerArm.RotationConstant = expandedi * PI / 12;
+
+                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd();
             }
 
-            CurrentAttack = new CrabIntro(this);
+            CurrentAttack = new CrabLaserPunches(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();

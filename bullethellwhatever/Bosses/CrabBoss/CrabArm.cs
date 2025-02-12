@@ -121,6 +121,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 appendage.Rotation = rotation;
             }
         }
+
+        public Vector2 WristPosition()
+        {
+            return LowerArm.CalculateEnd();
+        }
         public Vector2 PositionAtDistanceFromWrist(float distance)
         {
             return LowerArm.CalculateEnd() + (Utilities.AngleToVector(LowerArm.RotationFromV()) * distance);
