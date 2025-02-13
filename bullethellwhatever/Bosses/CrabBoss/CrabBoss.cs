@@ -26,7 +26,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public Vector2[] ArmPositionsOnBody;
         public Vector2[] ArmRestingEnds;
         public bool LockArmPositions;
-        public bool PlayerSaidOpeningDialogue;
         public bool StartedDeathAnim;
 
         public int Phase; // flag for if arms are detached yet
@@ -35,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float SpinVelOnDeath = PI / 40;
         public const float ScaleFactor = 1.5f;
-        public const float BodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
+        public const float BodyToArmSizeRatio = 0.5f; // adjust to change body/arm proportions
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
@@ -52,8 +51,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             StartedPhaseTwoTransition = false;
 
             LockArmPositions = true;
-            PlayerSaidOpeningDialogue = false;
-            
+
             Arms = new CrabArm[2];
             ArmPositionsOnBody = new Vector2[2];
             ArmRestingEnds = new Vector2[2];
@@ -82,7 +80,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 0.9f));
 
-                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd();
+                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - Position;
             }
 
             CurrentAttack = new CrabLaserPunches(this);
@@ -115,13 +113,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void AI()
         {
-            if (!PlayerSaidOpeningDialogue)
-            {
-                PlayerSaidOpeningDialogue = true;
-                //player.dialogueSystem.Dialogue("That body seems to be impervious to damage... Maybe I should try to take out the arms first?", 2, 300);
-            }
-            //Rotation = Rotation + PI / 90f;
-
             if (Health <= 0 && StartedDeathAnim == false)
             {
                 StartedDeathAnim = true;

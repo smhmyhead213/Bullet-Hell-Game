@@ -219,7 +219,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public Vector2 RestPositionEnd()
         {
-            return Owner.ArmRestingEnds[LegIndex];
+            return Owner.ArmRestingEnds[LegIndex] + Owner.Position;
         }
         public void Update()
         {

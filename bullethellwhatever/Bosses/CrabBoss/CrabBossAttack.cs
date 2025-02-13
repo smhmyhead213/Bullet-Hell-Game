@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Vector2 RestingPosition(int armIndex)
         {
-            return CrabOwner.ArmRestingEnds[armIndex];
+            return CrabOwner.Position + CrabOwner.ArmRestingEnds[armIndex];
         }
         public CrabArm Arm(int index)
         {

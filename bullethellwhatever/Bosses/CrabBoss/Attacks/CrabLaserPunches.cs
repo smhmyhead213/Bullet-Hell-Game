@@ -38,7 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(0) - Arm(0).Position);
                 Vector2 targetPosition = Arm(0).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 2);
 
-                Arm(0).TouchPoint(Vector2.Lerp(CrabOwner.ArmRestingEnds[0], targetPosition, interpolant), true);
+                Arm(0).TouchPoint(Vector2.Lerp(RestingPosition(0), targetPosition, interpolant), true);
             }
 
             if (AITimer > pullBackArmTime && AITimer <= pullBackArmTime + punchSwingTime)
@@ -59,9 +59,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void ExtraDraw(SpriteBatch s)
         {
-            foreach (CrabArm arm in CrabOwner.Arms)
+            for (int i = 0; i < 2; i++)
             {
-                Drawing.BetterDraw("box", arm.RestPositionEnd(), null, Color.Red, 0f, Vector2.One, SpriteEffects.None, 1f);
+                Drawing.BetterDraw("box", RestingPosition(i), null, Color.Red, 0f, Vector2.One, SpriteEffects.None, 1f);
             }
         }
     }
