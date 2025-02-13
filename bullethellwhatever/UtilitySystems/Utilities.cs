@@ -174,6 +174,18 @@ namespace bullethellwhatever
 
             return false;
         }
+
+        /// <summary>
+        /// Rotates a vector clockwise.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="angle"></param>
+        /// <returns></returns>
+        public static Vector2 Rotate(this Vector2 vector, float angle)
+        {
+            return RotateVectorClockwise(vector, angle);
+        }
+
         public static Vector2 RotateVectorClockwise(Vector2 input, float angle) //angle counterclockwise
         {
             //for insight as to how this works, check https://discord.com/channels/770381661098606612/770382926545813515/1089248352073433168

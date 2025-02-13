@@ -118,7 +118,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 IsInvincible = false;
             }
         }
-        
+
+        public override void UpdateHitbox()
+        {
+            Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
+            Hitbox = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+        }
         public virtual void SetMaxHP(float maxHP, bool setHP)
         {
             MaxHP = maxHP;
@@ -217,7 +222,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
-            //DrawHitbox();
+            DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {

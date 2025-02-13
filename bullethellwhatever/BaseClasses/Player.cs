@@ -372,7 +372,9 @@ namespace bullethellwhatever.BaseClasses
             foreach (Component component in AdditionalComponents)
             {
                 component.Draw(spriteBatch);
-            }            
+            }
+
+            //DrawHitbox();
         }
     }
 }

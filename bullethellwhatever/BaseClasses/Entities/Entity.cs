@@ -349,37 +349,34 @@ namespace bullethellwhatever.BaseClasses.Entities
         }
 
         public void DrawHitbox()
-        {
-            Vector2 size = Scale * 0.25f;
+        { 
+            Texture2D circle = AssetRegistry.GetTexture2D("Circle");
 
             for (int i = 0; i < Hitbox.Count; i++)
             {
-                Color colour = Color.Red;
-
-                Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, size * 1.4f, SpriteEffects.None, 0f);
-
-                for (int j = 0; j < 4; j++)
-                {
-                    Drawing.BetterDraw("box", Hitbox[i].Centre + Utilities.RotateVectorClockwise(new Vector2(Hitbox[i].Radius, 0), PI / 2 * j), null, colour, 0f, size, SpriteEffects.None, 0f);
-                }
+                Color colour = Color.Red * 0.5f;
+                Vector2 size = Hitbox[i].Radius / circle.Width * 2f * Vector2.One;
+                //Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, size * 1.4f, SpriteEffects.None, 0f);
+                Drawing.BetterDraw(circle, Hitbox[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
+                
             }
 
-            if (Raycast is not null)
-            {
-                List<Circle> raycast = Utilities.FillRectWithCircles(Position + Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
+            //if (Raycast is not null)
+            //{
+            //    List<Circle> raycast = Utilities.FillRectWithCircles(Position + Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
 
-                for (int i = 0; i < raycast.Count; i++)
-                {
-                    Color colour = i == 0 ? Color.Pink : Color.Red;
+            //    for (int i = 0; i < raycast.Count; i++)
+            //    {
+            //        Color colour = i == 0 ? Color.Pink : Color.Red;
 
-                    Drawing.BetterDraw("box", raycast[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
+            //        Drawing.BetterDraw("box", raycast[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
 
-                    for (int j = 0; j < 4; j++)
-                    {
-                        Drawing.BetterDraw("box", raycast[i].Centre + Utilities.RotateVectorClockwise(new Vector2(raycast[i].Radius, 0), PI / 2 * j), null, colour, 0f, size, SpriteEffects.None, 0f);
-                    }
-                }
-            }
+            //        for (int j = 0; j < 4; j++)
+            //        {
+            //            Drawing.BetterDraw("box", raycast[i].Centre + Utilities.RotateVectorClockwise(new Vector2(raycast[i].Radius, 0), PI / 2 * j), null, colour, 0f, size, SpriteEffects.None, 0f);
+            //        }
+            //    }
+            //}
         }
         public void SetHitbox()
         {
