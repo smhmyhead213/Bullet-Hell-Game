@@ -216,6 +216,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
+
+            //DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {
