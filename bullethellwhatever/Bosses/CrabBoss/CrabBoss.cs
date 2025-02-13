@@ -78,7 +78,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Arms[i].HorizontalFlip = true;
                 }
 
-                Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 0.9f));
+                Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 1f));
 
                 ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - Position;
             }
@@ -141,6 +141,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             base.Die();
         }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            DrawHitbox();
+        }
         public bool CanPerformCrabPunch()
         {
             return Utilities.DistanceBetweenVectors(player.Position, Position) > 500;

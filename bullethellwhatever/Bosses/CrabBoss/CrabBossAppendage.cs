@@ -11,6 +11,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
+using Microsoft.Xna.Framework.Media;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -121,8 +122,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void UpdateHitbox()
         {
-            Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-            Hitbox = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+            if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
+            {
+                Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
+                Hitbox = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+            }
+            else if (Type == AppendageType.UpperClaw)
+            {
+                Vector2 upperPartCentre = Position + new Vector2(0f, Height()).Rotate(Rotation);
+                Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
+            }
+            else if (Type == AppendageType.LowerClaw)
+            {
+                Hitbox.Clear();
+            }
         }
         public virtual void SetMaxHP(float maxHP, bool setHP)
         {
@@ -198,31 +211,47 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (LegIndex == 1)
+            {
+                return; // explodes pancakes with mind
+            }
+
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
             SpriteEffects spriteEffect = SpriteEffects.None;
 
+            if (Type == AppendageType.LowerClaw)
+            {
+                return;
+            }
             if (Type == AppendageType.UpperClaw)
             {
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            if (LegIndex == 0)
-            {
-                if (Type == AppendageType.UpperClaw)
-                {
-                    originOffset = new Vector2(Texture.Width, 0);
-                }
-                else
-                {
-                    originOffset = new Vector2(Texture.Width / 2, 0f);
-                }
+            //if (LegIndex == 0)
+            //{
+            //    if (Type == AppendageType.UpperClaw)
+            //    {
+            //        originOffset = new Vector2(Texture.Width, 0);
+            //    }
+            //    else
+            //    {
+            //        originOffset = new Vector2(Texture.Width / 2, 0f);
+            //    }
 
-                spriteEffect = SpriteEffects.FlipHorizontally;
-            }
+            //    spriteEffect = SpriteEffects.FlipHorizontally;
+            //}
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
-            DrawHitbox();
+            if (Type == AppendageType.UpperClaw)
+            {
+                Color colour = LegIndex == 0 ? Color.Red : Color.Blue;
+                Drawing.DrawBox(Position, colour, 1f);
+                Drawing.DrawBox(((CrabBossAppendage)BehindThis).CalculateEnd(), colour, 2f);
+            }
+
+            //DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {

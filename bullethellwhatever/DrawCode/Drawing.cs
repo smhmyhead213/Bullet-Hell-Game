@@ -88,6 +88,12 @@ namespace bullethellwhatever.DrawCode
             }
         }
 
+        public static void DrawBox(Vector2 centre, Color colour, float scaleFactor)
+        {
+            // the box texture is 10x10. the scale factor explodes if this changes
+             Drawing.BetterDraw("box", centre, null, colour, 0f, Vector2.One * scaleFactor, SpriteEffects.None, 0f);
+        }
+
         public static void StopScreenShake()
         {
             ScreenShakeTimer = 0;
