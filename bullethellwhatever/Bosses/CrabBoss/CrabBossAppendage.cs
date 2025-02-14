@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Entity BehindThis;
 
-        public int LegIndex;
+        public int ArmIndex;
 
         public float RotationConstant;
 
@@ -82,7 +82,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PierceToTake = 20;
 
             PrepareNPC();
-            LegIndex = legIndex;
+            ArmIndex = legIndex;
             //Rotation = Rotation + PI / 2;
 
             Velocity = Vector2.Zero;
@@ -120,23 +120,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
-        public override void UpdateHitbox()
-        {
-            if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
-            {
-                Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                Hitbox = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
-            }
-            else if (Type == AppendageType.UpperClaw)
-            {
-                Vector2 upperPartCentre = Position + new Vector2(0f, Height()).Rotate(Rotation);
-                Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
-            }
-            else if (Type == AppendageType.LowerClaw)
-            {
-                Hitbox.Clear();
-            }
-        }
         public virtual void SetMaxHP(float maxHP, bool setHP)
         {
             MaxHP = maxHP;
@@ -209,49 +192,49 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Leg.Owner.TakeDamage(damage);
         }
+
+        public override void UpdateHitbox()
+        {
+            if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
+            {
+                Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
+                Hitbox = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+            }
+            else if (Type == AppendageType.UpperClaw)
+            {
+                int expandedi = -Utilities.ExpandedIndex(ArmIndex);
+
+                Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
+                Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
+            }
+            else
+            {
+                Hitbox.Clear();
+            }
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (LegIndex == 1)
-            {
-                return; // explodes pancakes with mind
-            }
-
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
             SpriteEffects spriteEffect = SpriteEffects.None;
 
-            if (Type == AppendageType.LowerClaw)
-            {
-                return;
-            }
             if (Type == AppendageType.UpperClaw)
             {
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            //if (LegIndex == 0)
-            //{
-            //    if (Type == AppendageType.UpperClaw)
-            //    {
-            //        originOffset = new Vector2(Texture.Width, 0);
-            //    }
-            //    else
-            //    {
-            //        originOffset = new Vector2(Texture.Width / 2, 0f);
-            //    }
+            if (ArmIndex == 0)
+            {
+                if (Type == AppendageType.UpperClaw)
+                {
+                    originOffset = new Vector2(0, 0);
+                }
 
-            //    spriteEffect = SpriteEffects.FlipHorizontally;
-            //}
+                spriteEffect = SpriteEffects.FlipHorizontally;
+            }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
-            if (Type == AppendageType.UpperClaw)
-            {
-                Color colour = LegIndex == 0 ? Color.Red : Color.Blue;
-                Drawing.DrawBox(Position, colour, 1f);
-                Drawing.DrawBox(((CrabBossAppendage)BehindThis).CalculateEnd(), colour, 2f);
-            }
-
-            //DrawHitbox();
+            DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {

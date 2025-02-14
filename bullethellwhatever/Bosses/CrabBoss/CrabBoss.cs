@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float SpinVelOnDeath = PI / 40;
         public const float ScaleFactor = 1.5f;
-        public const float BodyToArmSizeRatio = 0.5f; // adjust to change body/arm proportions
+        public const float BodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");

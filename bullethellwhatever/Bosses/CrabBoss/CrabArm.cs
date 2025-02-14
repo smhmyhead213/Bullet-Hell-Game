@@ -60,10 +60,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             DeathAnimation = false;
 
             Position = position;
-            UpperArm.Position = Position;
-            LowerArm.Position = UpperArm.CalculateEnd();
-            UpperClaw.Position = LowerArm.CalculateEnd();
-            LowerClaw.Position = LowerArm.CalculateEnd();
+
+            UpdateAppendages();
         }
 
         /// <summary>
@@ -221,6 +219,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return Owner.ArmRestingEnds[LegIndex] + Owner.Position;
         }
+        public void UpdateAppendages()
+        {
+            UpperArm.Position = Position;
+
+            LowerArm.Position = UpperArm.CalculateEnd();
+
+            if (LegIndex == 0) // leg 0 requires claws to be inverted
+            {
+                LowerClaw.Position = LowerArm.CalculateEnd() + 0f * new Vector2(LowerClaw.Width(), 0f).Rotate(LowerArm.Rotation);
+
+                UpperClaw.Position = LowerArm.CalculateEnd() + 0f * new Vector2(UpperClaw.Width(), 0f).Rotate(LowerArm.Rotation);
+            }
+            else
+            {
+                LowerClaw.Position = LowerArm.CalculateEnd();
+
+                UpperClaw.Position = LowerArm.CalculateEnd();
+            }
+        }
         public void Update()
         {
             if (Owner.LockArmPositions)
@@ -233,22 +250,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             
             Position = Position + Velocity;
 
-            if (!DeathAnimation)
-            {
-                UpperArm.Position = Position;
-
-                LowerArm.Position = UpperArm.CalculateEnd();
-
-                LowerClaw.Position = LowerArm.CalculateEnd();
-
-                if (UpperClaw.LegIndex == 0)
-                {
-                    UpperClaw.Position = LowerArm.CalculateEnd();
-                    UpperClaw.Position = UpperClaw.Position + Utilities.RotateVectorClockwise(new Vector2(UpperClaw.Texture.Width * 1f * UpperClaw.GetSize().X, 0f), UpperClaw.Rotation);
-                }
-
-                else UpperClaw.Position = LowerArm.CalculateEnd();
-            }
+            UpdateAppendages();
         }
     }
 }
