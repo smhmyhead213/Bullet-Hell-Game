@@ -207,9 +207,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
                 Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
             }
-            else
+            else // lower claw
             {
-                Hitbox.Clear();
+                int expandedi = -Utilities.ExpandedIndex(ArmIndex);
+
+                Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
+                Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
             }
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -234,7 +237,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
 
-            DrawHitbox();
+            if (Type != AppendageType.UpperClaw)
+            {
+                DrawHitbox();
+            }
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {

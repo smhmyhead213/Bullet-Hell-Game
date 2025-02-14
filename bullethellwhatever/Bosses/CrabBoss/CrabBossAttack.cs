@@ -101,5 +101,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return CrabOwner.Arms[index];
         }
+
+        public CrabArm[] Arms()
+        {
+            return CrabOwner.Arms;
+        }
     }
 }

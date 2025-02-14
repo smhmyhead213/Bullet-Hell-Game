@@ -20,9 +20,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            //Owner.Position.X += 3f;
-            //MainCamera.SetCameraPosition(Owner.Position);
-            //MainCamera.SetZoom(1f + AITimer / 400f);
+            //foreach (CrabArm arm in CrabOwner.Arms)
+            //{
+            //    arm.UpperArm.Rotate(PI / 180f);
+            //}
         }
     }
 }
