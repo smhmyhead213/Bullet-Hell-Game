@@ -209,9 +209,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
             else // lower claw
             {
-                int expandedi = -Utilities.ExpandedIndex(ArmIndex);
-
-                Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
+                Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
                 Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
             }
         }
@@ -236,11 +234,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
-
-            if (Type != AppendageType.UpperClaw)
-            {
-                DrawHitbox();
-            }
+            DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)
         {
