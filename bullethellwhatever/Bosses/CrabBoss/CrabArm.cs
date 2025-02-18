@@ -222,21 +222,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void UpdateAppendages()
         {
             UpperArm.Position = Position;
+            UpperArm.Rotation = UpperArm.CalculateFinalRotation();
 
             LowerArm.Position = UpperArm.CalculateEnd();
+            LowerArm.Rotation = LowerArm.CalculateFinalRotation();
 
-            if (LegIndex == 0) // leg 0 requires claws to be inverted
-            {
-                LowerClaw.Position = LowerArm.CalculateEnd() + 0f * new Vector2(LowerClaw.Width(), 0f).Rotate(LowerArm.Rotation);
+            LowerClaw.Position = LowerArm.CalculateEnd();
+            LowerClaw.Rotation = LowerClaw.CalculateFinalRotation();
 
-                UpperClaw.Position = LowerArm.CalculateEnd() + 0f * new Vector2(UpperClaw.Width(), 0f).Rotate(LowerArm.Rotation);
-            }
-            else
-            {
-                LowerClaw.Position = LowerArm.CalculateEnd();
-
-                UpperClaw.Position = LowerArm.CalculateEnd();
-            }
+            UpperClaw.Position = LowerArm.CalculateEnd();
+            UpperClaw.Rotation = UpperClaw.CalculateFinalRotation();
         }
         public void Update()
         {

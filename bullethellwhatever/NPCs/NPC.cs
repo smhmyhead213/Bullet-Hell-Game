@@ -109,8 +109,7 @@ namespace bullethellwhatever.NPCs
 
             base.PostUpdate();
 
-            Rotation = Rotation + RotationalVelocity;
-
+            Rotation += RotationalVelocity;
             Rotation = Utilities.BringAngleIntoRange(Rotation);
         }
 

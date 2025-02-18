@@ -25,8 +25,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
     public class CrabBossAppendage : NPC
     {
         public AppendageType Type;
-        
-        public Vector2 End; //where other limbs attach on
 
         public CrabArm Leg;
 
@@ -98,12 +96,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             base.PostUpdate();
 
-            if (!((CrabBoss)Owner).StartedDeathAnim)
-            {
-                Rotation = CalculateFinalRotation();
-            }
+            //Rotation = CalculateFinalRotation();
 
-            Rotation = Rotation + RotationalVelocity;
+            Rotation = Rotation + RotationalVelocity; // this might be already done in postupdate, consider removing
 
             //End = CalculateEnd();
 
@@ -234,6 +229,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
+            //Drawing.DrawBox(CalculateEnd(), Color.Red, 0.5f);
+            //Drawing.DrawBox(Position, Color.Blue, 0.5f);
             DrawHitbox();
         }
         public override void DrawHPBar(SpriteBatch spriteBatch)

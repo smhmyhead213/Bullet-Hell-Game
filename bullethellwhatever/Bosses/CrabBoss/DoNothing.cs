@@ -20,10 +20,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            foreach (CrabArm arm in CrabOwner.Arms)
+            if (AITimer == 0)
             {
-                arm.LowerArm.Rotate(PI / 180f);
+                Arm(0).RotateLeg(PI / 2);
+                Arm(1).RotateLeg(-PI / 2);
             }
+
+
+            Owner.Rotation += Tau / 10;
         }
     }
 }
