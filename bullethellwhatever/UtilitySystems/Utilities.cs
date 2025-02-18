@@ -483,6 +483,11 @@ namespace bullethellwhatever
         {
             return Cos(Tau / period * x);
         }
+
+        public static float ToAngle(this Vector2 vec)
+        {
+            return VectorToAngle(vec);
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)

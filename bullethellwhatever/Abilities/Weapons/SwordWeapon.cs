@@ -24,13 +24,13 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
-
         public float SwingDuration => 40;
         public float WindUpDuration => 20;
         public float SpinDuration => 20;
 
         public SwordSwingStages SwingStage;
 
+        public float SwingDirection; // direction to mouse
         public float Width => 15;
         public float Length => 60;
 
@@ -67,6 +67,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 AITimer = 0;
                 WeaponRotation = SwingAngle / 2f;
                 SwingStage = SwordSwingStages.Swing;
+                SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
             }
 
             if (Swinging)
@@ -95,6 +96,8 @@ namespace bullethellwhatever.Abilities.Weapons
                         Swinging = false;
                     }
                 }
+
+                WeaponRotation += SwingDirection; // face mouse
             }
 
             Trail.PostUpdate(CalculateEnd());
