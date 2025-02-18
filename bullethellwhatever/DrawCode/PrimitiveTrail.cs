@@ -74,9 +74,14 @@ namespace bullethellwhatever.DrawCode
             Colour = colour;
         }
 
+        public void AddPoint(Vector2 point)
+        {
+            afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, point);
+        }
+
         public void PreUpdate(float width, Vector2 pointToAdd, Color colour)
         {
-            afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, pointToAdd);
+            AddPoint(pointToAdd);
             Width = width;
             Colour = colour;           
         }
