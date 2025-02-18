@@ -116,6 +116,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 Trail.Draw(s);
                 Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(Width / 10f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
+                Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
             }
         }
     }
