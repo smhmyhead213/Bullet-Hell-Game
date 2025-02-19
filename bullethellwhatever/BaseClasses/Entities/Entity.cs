@@ -357,8 +357,7 @@ namespace bullethellwhatever.BaseClasses.Entities
                 Color colour = Color.Red * 0.5f;
                 Vector2 size = Hitbox[i].Radius / circle.Width * 2f * Vector2.One;
                 //Drawing.BetterDraw("box", Hitbox[i].Centre, null, colour, 0f, size * 1.4f, SpriteEffects.None, 0f);
-                Drawing.BetterDraw(circle, Hitbox[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);
-                
+                Drawing.BetterDraw(circle, Hitbox[i].Centre, null, colour, 0f, size, SpriteEffects.None, 0f);              
             }
 
             //if (Raycast is not null)

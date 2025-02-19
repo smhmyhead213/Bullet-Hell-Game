@@ -1,11 +1,16 @@
 ﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.MainFiles;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -23,6 +28,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public Player Owner;
         public Texture2D IconHUD;
         public int AITimer;
+
+        public List<Circle> Hitbox;
         public Weapon(Player player, string iconTexture)
         {
             Owner = player;
@@ -35,7 +42,7 @@ namespace bullethellwhatever.Abilities.Weapons
             SecondaryFireCoolDown = SecondaryFireCoolDownDuration;
             PrimaryFireHoldable = true;
             SecondaryFireHoldable = true;
-
+            Hitbox = new List<Circle>();
             AITimer = 0;
             // the above allocations can be changed in weaponinit
             WeaponInitialise();
@@ -65,8 +72,29 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 RightClickReleasedBehaviour();
             }
+
+            UpdateHitbox();
         }
 
+        public void CheckAndHitEnemies()
+        {
+            foreach (NPC npc in EntityManager.activeNPCs)
+            {
+                if (!npc.IsInvincible && npc.Participating)
+                {
+                    foreach (Circle circle in Hitbox)
+                    {
+                        foreach (Circle other in npc.Hitbox)
+                        {
+                            if (circle.Intersects(other))
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Handles the basic primary fire and secondary fire cooldowns. Override to disable these.
         /// </summary>
@@ -150,7 +178,24 @@ namespace bullethellwhatever.Abilities.Weapons
         {
 
         }
+
+        public virtual void UpdateHitbox()
+        {
+
+        }
+
+        public void DrawHitbox()
+        {
+            Drawing.DrawCircles(Hitbox, Color.Red, 0.5f);
+        }
+
+        public virtual void OnHit()
+        {
+
+        }
+
         public abstract void PrimaryFire();
+
         public abstract void SecondaryFire();
         public abstract void AI();
     }

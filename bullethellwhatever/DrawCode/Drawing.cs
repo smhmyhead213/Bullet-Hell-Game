@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using bullethellwhatever.UtilitySystems.Dialogue;
@@ -11,6 +12,8 @@ using bullethellwhatever.MainFiles;
 using bullethellwhatever.AssetManagement;
 using System.Runtime.CompilerServices;
 using bullethellwhatever.BaseClasses.Entities;
+using System.Windows.Forms;
+using bullethellwhatever.BaseClasses.Hitboxes;
 namespace bullethellwhatever.DrawCode
 {
     public static class Drawing
@@ -94,6 +97,21 @@ namespace bullethellwhatever.DrawCode
              Drawing.BetterDraw("box", centre, null, colour, 0f, Vector2.One * scaleFactor, SpriteEffects.None, 0f);
         }
 
+        public static void DrawCircle(Vector2 position, float radius, Color colour, float opacity = 1f)
+        {
+            Texture2D circle = AssetRegistry.GetTexture2D("Circle");
+
+            Vector2 size = radius / circle.Width * 2f * Vector2.One;
+            Drawing.BetterDraw(circle, position, null, colour * opacity, 0f, size, SpriteEffects.None, 0f);
+        }
+
+        public static void DrawCircles(List<Circle> circles, Color colour, float opacity = 1f)
+        {
+            foreach (Circle circle in circles)
+            {
+                DrawCircle(circle.Centre, circle.Radius, colour * opacity);
+            }
+        }
         public static void StopScreenShake()
         {
             ScreenShakeTimer = 0;

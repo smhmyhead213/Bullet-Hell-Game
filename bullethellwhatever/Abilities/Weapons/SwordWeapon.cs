@@ -85,6 +85,8 @@ namespace bullethellwhatever.Abilities.Weapons
                 }
                 else if (SwingStage == SwordSwingStages.Spin)
                 {
+                    //PastEnds.Add(CalculateEnd());
+
                     float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
 
                     WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, interpolant);
@@ -112,13 +114,22 @@ namespace bullethellwhatever.Abilities.Weapons
 
         }
 
+        public override void UpdateHitbox()
+        {
+            if (Swinging)
+            {
+                Hitbox = Utilities.FillRectWithCircles(Owner.Position + 0.5f * (CalculateEnd() - Owner.Position), (int)Width, (int)Length, WeaponRotation);
+            }
+        }
+
         public override void Draw(SpriteBatch s)
         {
             if (Swinging)
             {
                 Trail.Draw(s);
                 Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(Width / 10f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
-                Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
+                //Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
+                DrawHitbox();
             }
         }
     }
