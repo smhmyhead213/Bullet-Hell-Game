@@ -117,7 +117,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 if (Bounced)
                 {
-                    Raycast.Direction = 0; // do not use a raycast now
+                    Raycast.Direction = -1; // do not use a raycast now
 
                     NPC target = EntityManager.ClosestTargetableNPC(Position);
 
@@ -174,7 +174,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             base.Draw(spriteBatch);
 
-            //DrawHitbox(spriteBatch, 5f);
+            DrawHitbox();
         }
     }
 }
