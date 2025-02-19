@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.MainFiles;
+using bullethellwhatever.BaseClasses.Entities;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -30,6 +31,9 @@ namespace bullethellwhatever.Abilities.Weapons
         public int AITimer;
 
         public List<Circle> Hitbox;
+
+        public List<Entity> HitEnemies; // hold enemies hit to prevent multihits, not used by all weapons, managed in weapons update manually
+
         public Weapon(Player player, string iconTexture)
         {
             Owner = player;
@@ -43,6 +47,8 @@ namespace bullethellwhatever.Abilities.Weapons
             PrimaryFireHoldable = true;
             SecondaryFireHoldable = true;
             Hitbox = new List<Circle>();
+            HitEnemies = new List<Entity>();
+
             AITimer = 0;
             // the above allocations can be changed in weaponinit
             WeaponInitialise();
@@ -74,22 +80,33 @@ namespace bullethellwhatever.Abilities.Weapons
             }
 
             UpdateHitbox();
+            CheckAndHitEnemies();
         }
 
         public void CheckAndHitEnemies()
         {
             foreach (NPC npc in EntityManager.activeNPCs)
             {
-                if (!npc.IsInvincible && npc.Participating)
+                if (!npc.IsInvincible && npc.Participating && !HitEnemies.Contains(npc))
                 {
                     foreach (Circle circle in Hitbox)
                     {
+                        bool hitFound = false;
+
                         foreach (Circle other in npc.Hitbox)
-                        {
+                        {                          
                             if (circle.Intersects(other))
                             {
+                                OnHit(npc);
 
+                                hitFound = true;
+                                break;
                             }
+                        }
+
+                        if (hitFound)
+                        {
+                            break;
                         }
                     }
                 }
@@ -189,7 +206,16 @@ namespace bullethellwhatever.Abilities.Weapons
             Drawing.DrawCircles(Hitbox, Color.Red, 0.5f);
         }
 
-        public virtual void OnHit()
+        public void DealDamage(NPC npc, float damage)
+        {
+            npc.TakeDamage(damage);
+        }
+
+        /// <summary>
+        /// Code to execute when the weapon itself hits an enemy. For projectiles fired, put the logic in the projectile's on hit instead.
+        /// </summary>
+        /// <param name="npc"></param>
+        public virtual void OnHit(NPC npc)
         {
 
         }

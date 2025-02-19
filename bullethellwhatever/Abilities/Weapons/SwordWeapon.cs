@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.NPCs;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -20,8 +21,6 @@ namespace bullethellwhatever.Abilities.Weapons
     }
     public class SwordWeapon : Weapon
     {
-        public List<Entity> HitEnemies; // hold enemies hit to prevent multihits
-
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
         public float SwingDuration => 40;
@@ -67,6 +66,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 WeaponRotation = SwingAngle / 2f;
                 SwingStage = SwordSwingStages.Swing;
                 SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
+                HitEnemies.Clear();
             }
 
             if (Swinging)
@@ -81,6 +81,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         SwingStage = SwordSwingStages.Spin;
                         AITimer = 0;
+                        HitEnemies.Clear();
                     }
                 }
                 else if (SwingStage == SwordSwingStages.Spin)
@@ -95,6 +96,8 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         AITimer = 0;
                         Swinging = false;
+                        HitEnemies.Clear();
+                        Hitbox.Clear();
                     }
                 }
 
@@ -114,6 +117,15 @@ namespace bullethellwhatever.Abilities.Weapons
 
         }
 
+        public override void OnHit(NPC npc)
+        {
+            // to do: centralised damage system
+
+            DealDamage(npc, 5f);
+            HitEnemies.Add(npc);
+
+            Drawing.ScreenShake(10, 3);
+        }
         public override void UpdateHitbox()
         {
             if (Swinging)
