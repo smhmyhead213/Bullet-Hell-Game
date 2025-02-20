@@ -58,7 +58,7 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public Vector2 CalculateEnd(float angle)
         {
-            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), WeaponRotation);
+            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), angle);
         }
         public override void AI()
         {

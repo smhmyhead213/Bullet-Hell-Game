@@ -120,7 +120,7 @@ namespace bullethellwhatever.DrawCode
 
             for (int i = 0; i < positions.Length; i++)
             {
-                float progress = (i + 1) / (float)positions.Length;
+                float progress = i / (float)positions.Length;
                 float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
                 int startingIndex = (i + 1) * 2;
