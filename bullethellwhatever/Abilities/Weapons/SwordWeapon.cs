@@ -62,7 +62,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public override void AI()
         {
             Trail.PreUpdate(10f, CalculateEnd(), Color.Orange);
-
+            
             if (LeftClickReleased() && !Swinging)
             {
                 Swinging = true;
