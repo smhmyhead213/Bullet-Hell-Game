@@ -91,7 +91,7 @@ namespace bullethellwhatever.DrawCode
 
         public override void PreUpdate()
         {
-            afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
+            //afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
             Colour = Owner.Colour;
             Width = Owner.Width();
         }
