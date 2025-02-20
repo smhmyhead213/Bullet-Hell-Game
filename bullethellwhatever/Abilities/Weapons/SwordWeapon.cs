@@ -10,6 +10,7 @@ using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.NPCs;
+using System.Windows.Forms;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -24,7 +25,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
         public float SwingDuration => 40;
-        public float SpinDuration => 200;
+        public float SpinDuration => 30;
 
         public SwordSwingStages SwingStage;
 
@@ -55,9 +56,9 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), WeaponRotation);
         }
-        public Vector2 CalculateEnd(float rotation)
+        public Vector2 CalculateEnd(float angle)
         {
-            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), rotation);
+            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), WeaponRotation);
         }
         public override void AI()
         {
@@ -90,19 +91,20 @@ namespace bullethellwhatever.Abilities.Weapons
                 }
                 else if (SwingStage == SwordSwingStages.Spin)
                 {
-                    //PastEnds.Add(CalculateEnd());
+                    int additionalTrailPoints = 9;
 
-                    float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
-
-                    float rotAtStartOfFrame = WeaponRotation;
-                    int additionalTrailPoints = 3;
-
-                    WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, interpolant);
-
-                    for (int i = 1; i < additionalTrailPoints + 1; i++)
+                    for (int i = 0; i < additionalTrailPoints; i++)
                     {
-                        float lerpedAngle = MathHelper.Lerp(rotAtStartOfFrame.WithinTau(), WeaponRotation.WithinTau(), i / (float)additionalTrailPoints);
-                        //Trail.AddPoint(CalculateEnd(lerpedAngle));
+                        float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
+                        float prevInterpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer - 1, 0, SpinDuration) / (float)SpinDuration);
+
+                        // how bro feel after lerping lerps
+
+                        float toUse = MathHelper.Lerp(prevInterpolant, interpolant, (float)i / additionalTrailPoints);
+
+                        WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, toUse);
+
+                        Trail.AddPoint(CalculateEnd(WeaponRotation + SwingDirection));
                     }
 
                     // since the expo easing does a large leap rotation and kinda messes up the trail, add additional trail points

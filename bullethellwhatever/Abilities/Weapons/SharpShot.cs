@@ -174,7 +174,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             base.Draw(spriteBatch);
 
-            DrawHitbox();
+            //DrawHitbox();
         }
     }
 }
