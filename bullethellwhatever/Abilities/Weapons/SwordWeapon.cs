@@ -90,19 +90,20 @@ namespace bullethellwhatever.Abilities.Weapons
                 }
                 else if (SwingStage == SwordSwingStages.Spin)
                 {
-                    //PastEnds.Add(CalculateEnd());
+                    int additionalTrailPoints = 9;
 
-                    float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
-
-                    float rotAtStartOfFrame = WeaponRotation;
-                    int additionalTrailPoints = 3;
-
-                    WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, interpolant);
-
-                    for (int i = 1; i < additionalTrailPoints + 1; i++)
+                    for (int i = 0; i < additionalTrailPoints; i++)
                     {
-                        float lerpedAngle = MathHelper.Lerp(rotAtStartOfFrame.WithinTau(), WeaponRotation.WithinTau(), i / (float)additionalTrailPoints);
-                        //Trail.AddPoint(CalculateEnd(lerpedAngle));
+                        float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
+                        float prevInterpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer - 1, 0, SpinDuration) / (float)SpinDuration);
+                        
+                        // how bro feel after lerping lerps
+
+                        float toUse = MathHelper.Lerp(prevInterpolant, interpolant, (float)i / additionalTrailPoints);
+
+                        Trail.AddPoint(CalculateEnd());
+
+                        WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, toUse);
                     }
 
                     // since the expo easing does a large leap rotation and kinda messes up the trail, add additional trail points
