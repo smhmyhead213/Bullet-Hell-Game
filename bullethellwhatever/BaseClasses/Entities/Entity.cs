@@ -348,6 +348,33 @@ namespace bullethellwhatever.BaseClasses.Entities
             }
         }
 
+        public List<T> GetComponents<T>()
+        {        
+            List<T> output = new List<T>();
+
+            foreach (Component comp in AdditionalComponents)
+            {
+                if (comp is T component)
+                {
+                    output.Add(component);
+                }
+            }
+
+            return output;
+        }
+
+        public T GetComponent<T>()
+        {
+            foreach (Component comp in AdditionalComponents)
+            {
+                if (comp is T component)
+                {
+                    return component;
+                }
+            }
+
+            return default(T);
+        }
         public void DrawHitbox()
         { 
             Texture2D circle = AssetRegistry.GetTexture2D("Circle");

@@ -96,18 +96,7 @@ namespace bullethellwhatever.BaseClasses
         #endregion
 
         #region AI
-        public PrimitiveTrail? GetTrail()
-        {
-            foreach (Component comp in AdditionalComponents)
-            {
-                if (comp.Name == "PlayerTrail")
-                {
-                    return (PrimitiveTrail)comp;
-                }
-            }
 
-            return null; // if this is hit we're in trouble
-        }
         public void SwitchWeapon(Weapons weapon)
         {
             ActiveWeapon = weapon;

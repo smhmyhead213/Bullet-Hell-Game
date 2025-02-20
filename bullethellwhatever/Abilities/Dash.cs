@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.Abilities
 {
@@ -28,7 +29,7 @@ namespace bullethellwhatever.Abilities
                 Owner.MoveSpeed = Owner.MoveSpeed * 4f;
                 // make trail fade in and out
                 float interpolant = (float)Timer / Duration;
-                Owner.GetTrail().Opacity = EasingFunctions.EaseParabolic(interpolant) + 0.2f;
+                Owner.GetComponent<PrimitiveTrail>().Opacity = EasingFunctions.EaseParabolic(interpolant) + 0.2f;
 
                 float particleAngleVariance = PI / 6;
                 float rotation = Utilities.VectorToAngle(Owner.Velocity) + PI + Utilities.RandomAngle(-particleAngleVariance, particleAngleVariance);
