@@ -24,7 +24,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
         public float SwingDuration => 40;
-        public float SpinDuration => 20;
+        public float SpinDuration => 200;
 
         public SwordSwingStages SwingStage;
 
@@ -54,6 +54,10 @@ namespace bullethellwhatever.Abilities.Weapons
         public Vector2 CalculateEnd()
         {
             return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), WeaponRotation);
+        }
+        public Vector2 CalculateEnd(float rotation)
+        {
+            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), rotation);
         }
         public override void AI()
         {
@@ -90,8 +94,18 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
 
+                    float rotAtStartOfFrame = WeaponRotation;
+                    int additionalTrailPoints = 3;
+
                     WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, interpolant);
 
+                    for (int i = 1; i < additionalTrailPoints + 1; i++)
+                    {
+                        float lerpedAngle = MathHelper.Lerp(rotAtStartOfFrame.WithinTau(), WeaponRotation.WithinTau(), i / (float)additionalTrailPoints);
+                        //Trail.AddPoint(CalculateEnd(lerpedAngle));
+                    }
+
+                    // since the expo easing does a large leap rotation and kinda messes up the trail, add additional trail points
                     if (AITimer == SpinDuration)
                     {
                         AITimer = 0;

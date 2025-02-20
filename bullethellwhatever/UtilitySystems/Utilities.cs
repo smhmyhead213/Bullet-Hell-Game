@@ -470,6 +470,10 @@ namespace bullethellwhatever
             }
         }
 
+        public static float WithinTau(this float angle)
+        {
+            return BringAngleIntoRange(angle);
+        }
         public static Vector2 DirectionTo(this Vector2 from, Vector2 to)
         {
             return SafeNormalise(to - from);
