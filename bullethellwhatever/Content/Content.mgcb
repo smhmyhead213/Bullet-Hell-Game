@@ -584,6 +584,18 @@
 #begin Sounds/Master.strings.bank
 /copy:Sounds/Master.strings.bank
 
+#begin SwordWeapon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SwordWeapon.png
+
 #begin TargetReticle.png
 /importer:TextureImporter
 /processor:TextureProcessor

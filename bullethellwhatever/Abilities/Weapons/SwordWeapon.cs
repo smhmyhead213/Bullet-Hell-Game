@@ -155,7 +155,7 @@ namespace bullethellwhatever.Abilities.Weapons
             if (Swinging)
             {
                 Trail.Draw(s);
-                Drawing.BetterDraw("box", Owner.Position, null, Color.Orange, WeaponRotation + PI, new Vector2(Width / 10f, Length / 10f), SpriteEffects.None, 0f, new Vector2(5f, 0f));
+                Drawing.BetterDraw("SwordWeapon", Owner.Position, null, Color.Orange, WeaponRotation + PI, Vector2.One, SpriteEffects.None, 0f, new Vector2(5f, 0f));
                 //Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
                 //DrawHitbox();
             }
