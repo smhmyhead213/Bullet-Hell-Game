@@ -24,7 +24,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
         public float SwingDuration => 40;
-        public float SpinDuration => 200;
+        public float SpinDuration => 20;
 
         public SwordSwingStages SwingStage;
 
