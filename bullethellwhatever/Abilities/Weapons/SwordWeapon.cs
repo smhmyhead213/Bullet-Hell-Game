@@ -54,7 +54,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public Vector2 CalculateEnd()
         {
-            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), WeaponRotation);
+            return CalculateEnd(WeaponRotation);
         }
         public Vector2 CalculateEnd(float angle)
         {
@@ -62,7 +62,7 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void AI()
         {
-            Trail.PreUpdate(10f, CalculateEnd(), Color.Orange);
+            Trail.PreUpdate(3f, CalculateEnd(), Color.Orange);
             
             if (LeftClickReleased() && !Swinging)
             {
@@ -155,7 +155,7 @@ namespace bullethellwhatever.Abilities.Weapons
             if (Swinging)
             {
                 Trail.Draw(s);
-                Drawing.BetterDraw("SwordWeapon", Owner.Position, null, Color.Orange, WeaponRotation + PI, Vector2.One, SpriteEffects.None, 0f, new Vector2(5f, 0f));
+                Drawing.BetterDraw("SwordWeapon", Owner.Position, null, Color.Orange, WeaponRotation + PI / 2, Vector2.One, SpriteEffects.None, 0f, new Vector2(Length, Width / 2));
                 //Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
                 //DrawHitbox();
             }

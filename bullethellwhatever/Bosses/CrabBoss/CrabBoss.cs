@@ -141,12 +141,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             base.Die();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-
-            DrawHitbox();
-        }
         public bool CanPerformCrabPunch()
         {
             return Utilities.DistanceBetweenVectors(player.Position, Position) > 500;
