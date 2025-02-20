@@ -25,7 +25,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float WeaponRotation;
         public float SwingAngle => 2 * PI / 3;
         public float SwingDuration => 40;
-        public float SpinDuration => 30;
+        public float SpinDuration => 20;
 
         public SwordSwingStages SwingStage;
 
@@ -63,7 +63,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public override void AI()
         {
             Trail.PreUpdate(10f, CalculateEnd(), Color.Orange);
-
+            
             if (LeftClickReleased() && !Swinging)
             {
                 Swinging = true;
@@ -97,7 +97,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
                         float prevInterpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer - 1, 0, SpinDuration) / (float)SpinDuration);
-
+                        
                         // how bro feel after lerping lerps
 
                         float toUse = MathHelper.Lerp(prevInterpolant, interpolant, (float)i / additionalTrailPoints);

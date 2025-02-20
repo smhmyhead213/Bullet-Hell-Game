@@ -20,7 +20,7 @@ namespace bullethellwhatever.DrawCode
         public Effect Shader;
         public float Opacity;
         public float Width;
-        public Vector2 StartPosition;
+
         public Color Colour;
         public PrimitiveTrail(Entity owner, int length, string shader = null)
         {
@@ -37,7 +37,7 @@ namespace bullethellwhatever.DrawCode
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
             Width = Owner.GetSize().X * Owner.Texture.Width;
-            StartPosition = Owner.Position;
+
             Colour = Owner.Colour;
         }
 
@@ -55,18 +55,17 @@ namespace bullethellwhatever.DrawCode
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
             Width = width;
-            StartPosition = startPos;
+
             Colour = colour;
         }
 
+        public override void PostUpdate()
+        {
+            AddPoint(Owner.Position);
+        }
         public void SetWidth(float width)
         {
             Width = width;
-        }
-
-        public void SetPosition(Vector2 position)
-        {
-            StartPosition = position;
         }
 
         public void SetColour(Color colour)
@@ -80,33 +79,27 @@ namespace bullethellwhatever.DrawCode
         }
 
         public void PreUpdate(float width, Vector2 pointToAdd, Color colour)
-        {
-            AddPoint(pointToAdd);
+        {            
             Width = width;
-            Colour = colour;           
+            Colour = colour;          
         }
 
-        public void PostUpdate(Vector2 startPosition)
+        public void PostUpdate(Vector2 point)
         {
-            StartPosition = startPosition;
+            AddPoint(point);
         }
 
         public override void PreUpdate()
         {
-            afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
+            //afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
             Colour = Owner.Colour;
             Width = Owner.Width();
-        }
-
-        public override void PostUpdate()
-        {
-            StartPosition = Owner.Position;
         }
 
         public override void Draw(SpriteBatch s)
         {
             float width = Width;
-            Vector2 startPosition = StartPosition;
+
             Color colour = Colour;
 
             Vector2[] positions = afterimagesPositions.Where(position => position != Vector2.Zero).ToArray();
@@ -116,6 +109,8 @@ namespace bullethellwhatever.DrawCode
             {
                 return;
             }
+
+            Vector2 startPosition = positions[0];
 
             int vertexCount = 2 * (positions.Length + 1);
             Vector2 toNext = Utilities.SafeNormalise(positions[0] - startPosition);
