@@ -101,9 +101,9 @@ namespace bullethellwhatever.Abilities.Weapons
 
                         float toUse = MathHelper.Lerp(prevInterpolant, interpolant, (float)i / additionalTrailPoints);
 
-                        Trail.AddPoint(CalculateEnd());
-
                         WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, toUse);
+
+                        Trail.AddPoint(CalculateEnd(WeaponRotation + SwingDirection));
                     }
 
                     // since the expo easing does a large leap rotation and kinda messes up the trail, add additional trail points

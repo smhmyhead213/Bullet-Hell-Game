@@ -104,13 +104,13 @@ namespace bullethellwhatever.DrawCode
 
             Vector2[] positions = afterimagesPositions.Where(position => position != Vector2.Zero).ToArray();
 
-            Vector2 startPosition = positions[0];
-
             // explodes pancakes with mind
             if (positions.Length == 0)
             {
                 return;
             }
+
+            Vector2 startPosition = positions[0];
 
             int vertexCount = 2 * (positions.Length + 1);
             Vector2 toNext = Utilities.SafeNormalise(positions[0] - startPosition);
