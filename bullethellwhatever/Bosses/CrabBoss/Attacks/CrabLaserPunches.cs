@@ -24,6 +24,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
+            //return;
+
             int pullBackArmTime = 90;
             int punchSwingTime = 5;
             float armLength = Arm(0).WristLength();
@@ -38,7 +40,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(0) - Arm(0).Position);
                 Vector2 targetPosition = Arm(0).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 2);
 
-                Arm(0).TouchPoint(Vector2.Lerp(RestingPosition(0), targetPosition, interpolant), true);
+                //Arm(0).TouchPoint(Vector2.Lerp(RestingPosition(0), targetPosition, interpolant), true);
+                RotateArm(0, PI / 2, AITimer, pullBackArmTime, EasingFunctions.EaseOutExpo);
             }
 
             if (AITimer > pullBackArmTime && AITimer <= pullBackArmTime + punchSwingTime)
