@@ -11,6 +11,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.NPCs;
 using System.Windows.Forms;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -30,8 +31,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public SwordSwingStages SwingStage;
 
         public float SwingDirection; // direction to mouse
-        public float Width => 15;
-        public float Length => 60;
+        public float Width => 22.5f;
+        public float Length => 90;
 
         public bool Swinging;
 
@@ -154,8 +155,14 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             if (Swinging)
             {
+                Texture2D texture = AssetRegistry.GetTexture2D("SwordWeapon");
                 Trail.Draw(s);
-                Drawing.BetterDraw("SwordWeapon", Owner.Position, null, Color.Orange, WeaponRotation + PI / 2, Vector2.One, SpriteEffects.None, 0f, new Vector2(Length, Width / 2));
+                //swap height and width when scaling because sprite is sideways
+                float xscale = Width / texture.Height;
+                float yscale = Length / texture.Width;
+                //xscale = 1;
+                //yscale = 1;
+                Drawing.BetterDraw(texture, Owner.Position, null, Color.Orange, WeaponRotation + PI / 2, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Length / yscale, Width / xscale / 2));
                 //Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
                 //DrawHitbox();
             }
