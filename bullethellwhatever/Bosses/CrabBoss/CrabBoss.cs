@@ -81,7 +81,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 0.6f));
 
                 // store a vector from the arm start position to its end
-                ArmRestingEnds[i] = Arms[i].UpperArm.CalculateEnd() - pos;
+                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - pos;
             }
 
             CurrentAttack = new CrabLaserPunches(this);
