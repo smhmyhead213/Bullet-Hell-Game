@@ -32,7 +32,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public float SwingDirection; // direction to mouse
         public float Width => 22.5f;
-        public float Length => 90;
+        public float Length => 90f;
 
         public bool Swinging;
 
@@ -59,7 +59,7 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public Vector2 CalculateEnd(float angle)
         {
-            return Owner.Position - 0.9f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), angle);
+            return Owner.Position - 0.92f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), angle);
         }
         public override void AI()
         {
@@ -158,11 +158,11 @@ namespace bullethellwhatever.Abilities.Weapons
                 Texture2D texture = AssetRegistry.GetTexture2D("SwordWeapon");
                 Trail.Draw(s);
                 //swap height and width when scaling because sprite is sideways
-                float xscale = Width / texture.Height;
-                float yscale = Length / texture.Width;
+                float xscale = Width / texture.Width;
+                float yscale = Length / texture.Height;
                 //xscale = 1;
                 //yscale = 1;
-                Drawing.BetterDraw(texture, Owner.Position, null, Color.Orange, WeaponRotation + PI / 2, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Length / yscale, Width / xscale / 2));
+                Drawing.BetterDraw(texture, Owner.Position, null, Color.Orange, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
                 //Drawing.DrawBox(CalculateEnd(), Color.Green, 1f);
                 //DrawHitbox();
             }
