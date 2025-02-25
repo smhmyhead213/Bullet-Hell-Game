@@ -58,39 +58,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void HandleBounces()
         {
-            if (Owner.TouchingLeft())
-            {
-                if (Owner.Velocity.X < 0)
-                {
-                    Owner.Velocity.X = Owner.Velocity.X * -1;
-                    if (CrabOwner.StartedDeathAnim)
-                        Owner.RotationalVelocity = CrabOwner.SpinVelOnDeath;
-                }
-            }
-
-            if (Owner.TouchingRight())
-            {
-                if (Owner.Velocity.X > 0)
-                {
-                    Owner.Velocity.X = Owner.Velocity.X * -1;
-                    if (CrabOwner.StartedDeathAnim)
-                        Owner.RotationalVelocity = CrabOwner.SpinVelOnDeath;
-                }
-
-            }
-
-            if (Owner.TouchingTop())
-            {
-                if (Owner.Velocity.Y < 0)
-                    Owner.Velocity.Y = Owner.Velocity.Y * -1f;
-
-            }
-
-            if (Owner.TouchingBottom())
-            {
-                if (Owner.Velocity.Y > 0)
-                    Owner.Velocity.Y = Owner.Velocity.Y * -1f;
-            }
+            
         }
 
         public Vector2 RestingPosition(int armIndex)

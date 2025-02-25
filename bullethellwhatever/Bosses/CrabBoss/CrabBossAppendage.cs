@@ -162,10 +162,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float CalculateFinalRotation()
         {
-            if (!((CrabBoss)Owner).StartedPhaseTwoTransition) // this is definitely going to cause problems
-                return Owner.Rotation + RotationConstant + RotationToAdd;
-
-            else return RotationConstant + RotationToAdd; // if arms are detached, dont make arms rotate with body
+            return Owner.Rotation + RotationConstant + RotationToAdd;
         }
 
         public void PointInDirection(float angle)

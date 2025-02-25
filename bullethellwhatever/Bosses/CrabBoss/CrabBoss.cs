@@ -25,14 +25,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public CrabArm[] Arms;
         public Vector2[] ArmPositionsOnBody;
         public Vector2[] ArmRestingEnds;
-        public bool LockArmPositions;
-        public bool StartedDeathAnim;
+
 
         public int Phase; // flag for if arms are detached yet
 
-        public bool StartedPhaseTwoTransition;
-
-        public float SpinVelOnDeath = PI / 40;
         public const float ScaleFactor = 1.5f;
         public const float BodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
         public CrabBoss()
@@ -48,15 +44,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
             
             Phase = 1;
 
-            StartedPhaseTwoTransition = false;
-
-            LockArmPositions = true;
-
             Arms = new CrabArm[2];
             ArmPositionsOnBody = new Vector2[2];
             ArmRestingEnds = new Vector2[2];
-
-            StartedDeathAnim = false;            
         }
 
         public override void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool harmfulToPlayer, bool harmfulToEnemy)
@@ -78,13 +68,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Arms[i].HorizontalFlip = true;
                 }
 
-                Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 0.6f));
+                Arms[i].TouchPoint(pos + new Vector2(0f, Arms[i].WristLength() * 1f));
 
                 // store a vector from the arm start position to its end
-                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - pos;
+                ArmRestingEnds[i] = Arms[i].WristPosition() - pos;
             }
 
-            CurrentAttack = new CrabLaserPunches(this);
+            CurrentAttack = new CrabIntro(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
@@ -111,21 +101,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void FacePlayer()
         {
             Rotation = Utilities.VectorToAngle(Position - player.Position);
-        }
-        public override void AI()
-        {
-            if (Health <= 0 && StartedDeathAnim == false)
-            {
-                StartedDeathAnim = true;
-            }
-
-            base.AI();
-
-            if (StartedPhaseTwoTransition)
-            {
-                SetDR(0f);
-                TargetableByHoming = true;
-            }
         }
 
         public override void PostUpdate()
