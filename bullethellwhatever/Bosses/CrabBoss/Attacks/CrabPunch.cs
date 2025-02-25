@@ -152,36 +152,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             else
                 return new CrabPunchToProjectileSpreadTransition(CrabOwner);
         }
-
-        public override void ExtraDraw(SpriteBatch s)
-        {
-            //bool npcHasShader = Owner.Shader is not null;
-
-            //if (!npcHasShader)
-            //{
-            //    Drawing.RestartSpriteBatchForShaders(s, true);
-            //}
-
-            //Effect circleShader = AssetRegistry.GetShader("CircleOutlineShader");
-
-            //circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
-            //circleShader.Parameters["uTime"]?.SetValue(Owner.AITimer);
-            //circleShader.Parameters["radius"]?.SetValue(0.5f);
-            //circleShader.ApplyRandomNoise();
-
-            //circleShader.CurrentTechnique.Passes[0].Apply();
-
-            //Texture2D texture = AssetRegistry.GetTexture2D("box");
-
-            //Drawing.BetterDraw(texture, Owner.Position, null, Color.White, 0, Vector2.One * 300f / texture.Width * 2f, SpriteEffects.None, 1);
-
-            //if (!npcHasShader)
-            //{
-            //    Drawing.RestartSpriteBatchForNotShaders(s, true);
-            //}
-            //Utilities.drawTextInDrawMethod("attacking", player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
-            //Utilities.drawTextInDrawMethod(ExtraData[1].ToString(), player.Position + new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
-        }
     }
 
     public class CrabPunchToNeutralTransition : CrabBossAttack
@@ -204,16 +174,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 float interpolant = AITimer / (float)armRotateBackToNeutralTime;
 
-                Vector2 toPlayer = player.Position - Owner.Position;
-                float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+                //Vector2 toPlayer = player.Position - Owner.Position;
+                //float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
-                float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
+                //float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
 
-                Owner.Rotation += 0.2f * rotationToPlayer;
+                //Owner.Rotation += 0.2f * rotationToPlayer;
 
-                // i think this is the problem?
+                //RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
 
-                RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
+                ChosenArm().LerpToRestPosition(interpolant);
             }
 
             if (AITimer == armRotateBackToNeutralTime)

@@ -68,14 +68,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Arms[i].HorizontalFlip = true;
                 }
 
-                Vector2 wristRestingOffset = new Vector2(0f, Arms[i].WristLength() * 0.6f);
+                Vector2 wristRestingOffset = new Vector2(0f, Arms[i].WristLength() * 0.9f);
                 Arms[i].TouchPoint(pos + wristRestingOffset);
 
                 // store a vector from the arm start position to its end
                 ArmRestingEnds[i] = wristRestingOffset;
             }
 
-            CurrentAttack = new CrabLaserPunches(this);
+            CurrentAttack = new CrabIntro(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
