@@ -137,7 +137,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual Vector2 CalculateEnd()
         {
-            return Position + new Vector2(-Sin(Rotation), Cos(Rotation)) * Texture.Height * GetSize().Y;
+            return Position + new Vector2(-Sin(CalculateFinalRotation()), Cos(CalculateFinalRotation())) * Texture.Height * GetSize().Y;
         }
 
         public void Rotate(float angle)
@@ -226,7 +226,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
-            //Drawing.DrawBox(CalculateEnd(), Color.Red, 0.5f);
+            Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
             //Drawing.DrawBox(Position, Color.Blue, 0.5f);
             //DrawHitbox();
         }

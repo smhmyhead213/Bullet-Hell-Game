@@ -68,11 +68,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Arms[i].HorizontalFlip = true;
                 }
 
-                Vector2 wristRestingOffset = new Vector2(0f, Arms[i].WristLength() * 0.9f);
+                Vector2 wristRestingOffset = new Vector2(0f, Arms[i].WristLength() * 0.95f);
                 Arms[i].TouchPoint(pos + wristRestingOffset);
 
                 // store a vector from the arm start position to its end
-                ArmRestingEnds[i] = wristRestingOffset;
+                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - pos;
             }
 
             CurrentAttack = new CrabIntro(this);

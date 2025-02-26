@@ -97,7 +97,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (AITimer == slowDownTime + swingTime + bufferTimeAfterSwing)
             {
                 End();
-                CrabOwner.ResetArmRotations();
+
+                foreach (CrabArm arm in CrabOwner.Arms)
+                {
+                    // to do : smooth this out
+                    arm.LerpToRestPosition(1f);
+                }
             }
 
             HandleBounces();

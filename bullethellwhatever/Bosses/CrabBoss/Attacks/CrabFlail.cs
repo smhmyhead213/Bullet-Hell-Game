@@ -175,9 +175,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             for (int i = 0; i < 2; i++)
             {
-                int expandedi = Utilities.ExpandedIndex(i);
+                //int expandedi = Utilities.ExpandedIndex(i);
 
-                RotateArm(i, expandedi * holdOutArmsAngle, AITimer, decelTime, EasingFunctions.EaseOutBack);
+                //RotateArm(i, expandedi * holdOutArmsAngle, AITimer, decelTime, EasingFunctions.EaseOutBack);
+
+                Arm(i).LerpToRestPosition(EasingFunctions.EaseOutBack(AITimer / (float)decelTime));
             }
         }
 

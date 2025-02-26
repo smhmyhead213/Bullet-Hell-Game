@@ -181,7 +181,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             if (AITimer < duration)
             {
-                RotateArm(ChosenArmIndex(), -expandedi * difference, AITimer, duration, EasingFunctions.EaseOutQuad);
+                //RotateArm(ChosenArmIndex(), -expandedi * difference, AITimer, duration, EasingFunctions.EaseOutQuad);
+                ChosenArm().LerpToRestPosition(EasingFunctions.EaseOutQuad(AITimer / (float)duration));
             }
             if (AITimer == duration)
             {
