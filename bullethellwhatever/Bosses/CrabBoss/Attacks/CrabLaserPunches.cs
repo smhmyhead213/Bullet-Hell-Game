@@ -28,44 +28,50 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int pullBackArmTime = 90;
             int punchSwingTime = 5;
+            int resetTime = 30;
+
+            int totalPunchTime = pullBackArmTime + punchSwingTime;
+
             float armLength = Arm(0).WristLength();
+            int armZeroTimer = AITimer;
+            int armOneTimer = AITimer - 30;
+            float pullBackAngle = PI / 4;
 
-            if (AITimer < pullBackArmTime)
+            for (int i = 0; i < 2; i++)
             {
-                // move arm in rough circle around its start
+                // decide which timer to use
+                int usedTimer = i == 0 ? armZeroTimer : armOneTimer;
 
-                float holdOutDistEnd = armLength * 0.7f;
-                float interpolant = EasingFunctions.EaseOutExpo((float)AITimer / pullBackArmTime);
-                float holdOutDistance = MathHelper.Lerp(armLength, holdOutDistEnd, interpolant);
-                Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(0) - Arm(0).Position);
-                Vector2 targetPosition = Arm(0).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 2);
+                int expandedi = Utilities.ExpandedIndex(i);
 
-                //Arm(0).TouchPoint(Vector2.Lerp(RestingPosition(0), targetPosition, interpolant), true);
-                RotateArm(0, PI / 2, AITimer, pullBackArmTime, EasingFunctions.EaseOutExpo);
-            }
+                if (usedTimer < pullBackArmTime && usedTimer >= 0)
+                {
+                    // move arm in rough circle around its start
 
-            if (AITimer > pullBackArmTime && AITimer <= pullBackArmTime + punchSwingTime)
-            {
-                int localTime = AITimer - pullBackArmTime;
-                Vector2 punchTarget = Arm(0).RestPositionEnd() + new Vector2(0f, -10f);
-                float interpolant = (float)localTime / punchSwingTime;
+                    float holdOutDistEnd = armLength * 0.7f;
+                    float interpolant = EasingFunctions.EaseOutExpo((float)usedTimer / pullBackArmTime);
+                    float holdOutDistance = MathHelper.Lerp(armLength, holdOutDistEnd, interpolant);
+                    Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(i) - Arm(i).Position);
+                    Vector2 targetPosition = Arm(i).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 2);
 
-                //Arm(0).TouchPoint(Vector2.Lerp(Arm(0).WristPosition(), punchTarget, interpolant), true);
-                Arm(0).LerpToRestPosition(interpolant);
+                    //Arm(0).TouchPoint(Vector2.Lerp(RestingPosition(0), targetPosition, interpolant), true);
+                    RotateArm(i, -expandedi * pullBackAngle, usedTimer, pullBackArmTime, EasingFunctions.EaseOutExpo);
+                }
+
+                if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
+                {
+                    int localTime = usedTimer - pullBackArmTime;
+                    Vector2 punchTarget = Arm(i).Position + new Vector2(0f, Arm(i).WristLength()).Rotate(Owner.Rotation);
+                    float interpolant = (float)localTime / punchSwingTime;
+
+                    Arm(i).LerpToPoint(punchTarget, interpolant);
+                }
             }
         }
 
         public override BossAttack PickNextAttack()
         {
             return new CrabFlail(CrabOwner, 0);
-        }
-
-        public override void ExtraDraw(SpriteBatch s)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                Drawing.BetterDraw("box", RestingPosition(i), null, Color.Red, 0f, Vector2.One, SpriteEffects.None, 1f);
-            }
         }
     }
 }

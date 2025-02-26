@@ -215,6 +215,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant));
         }
+        public void LerpToPoint(Vector2 point, float interpolant)
+        {
+            TouchPoint(Vector2.LerpPrecise(WristPosition(), point, interpolant));
+        }
         public Vector2 RestPositionEnd()
         {
             return Position + Owner.ArmRestingEnds[LegIndex].Rotate(Owner.Rotation);

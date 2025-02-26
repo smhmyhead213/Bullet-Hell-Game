@@ -35,8 +35,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int accelerateTime = 25;
             int maxChargeTime = 36;
 
-            float angleToPullBackArm = PI / 3f;
-            float angleToSwingThrough = PI / 3f + PI / 2f;
+            float angleToPullBackArm = PI / 2f;
+            float angleToSwingThrough = angleToPullBackArm + PI / 4f;
             float topChargeSpeed = 35f;
 
             Vector2 toPlayer = player.Position - Owner.Position;
@@ -107,8 +107,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int localTime = AITimer - (int)swingTime;
 
-                //easeoutexpo
                 RotateArm(ChosenArmIndex(), -expandedi * angleToSwingThrough, localTime, swingDuration, EasingFunctions.EaseOutExpo);
+                ChosenArm().LowerArm.Rotate(-expandedi * angleToSwingThrough / 2f / swingDuration);
             }
 
             if (AITimer < swingTime)
