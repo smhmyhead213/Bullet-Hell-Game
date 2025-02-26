@@ -145,6 +145,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationToAdd = RotationToAdd + angle;
         }
 
+        public void LerpRotation(float startAngle, float endAngle, float interpolant)
+        {
+            RotationToAdd = MathHelper.Lerp(startAngle, endAngle, interpolant);
+        }
+
+
         /// <summary>
         /// Makes this appendage point in the same direction as the previous offset by an angle. The upper arm will point in the same direction as the boss.
         /// </summary>
@@ -226,7 +232,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
-            Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
+            //Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
             //Drawing.DrawBox(Position, Color.Blue, 0.5f);
             //DrawHitbox();
         }

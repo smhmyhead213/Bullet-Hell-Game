@@ -211,13 +211,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
-        public void LerpToRestPosition(float interpolant)
+        public void LerpToRestPosition(float interpolant, bool pointClaws = true)
         {
-            TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant));
+            TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant), pointClaws);
         }
-        public void LerpToPoint(Vector2 point, float interpolant)
+        public void LerpToPoint(Vector2 point, float interpolant, bool pointClaws = true)
         {
-            TouchPoint(Vector2.LerpPrecise(WristPosition(), point, interpolant));
+            TouchPoint(Vector2.LerpPrecise(WristPosition(), point, interpolant), pointClaws);
         }
         public Vector2 RestPositionEnd()
         {

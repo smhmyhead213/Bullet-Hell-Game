@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.DrawCode;
 using Microsoft.VisualBasic.Logging;
 using System.Security.Policy;
+using SharpDX.Direct2D1;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -26,21 +27,21 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 90;
-            int punchSwingTime = 5;
+            int pullBackArmTime = 50;
+            int punchSwingTime = 3;
             int resetTime = 30;
 
-            int totalPunchTime = pullBackArmTime + punchSwingTime;
+            int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
 
             float armLength = Arm(0).WristLength();
             int armZeroTimer = AITimer;
-            int armOneTimer = AITimer - 30;
-            float pullBackAngle = PI / 4;
+            int armOneTimer = AITimer - (totalPunchTime / 2);
+            float pullBackAngle = PI / 2.4f;
 
             for (int i = 0; i < 2; i++)
             {
                 // decide which timer to use
-                int usedTimer = i == 0 ? armZeroTimer : armOneTimer;
+                int usedTimer = (i == 0 ? armZeroTimer : armOneTimer) % totalPunchTime;
 
                 int expandedi = Utilities.ExpandedIndex(i);
 
@@ -48,14 +49,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 {
                     // move arm in rough circle around its start
 
-                    float holdOutDistEnd = armLength * 0.7f;
+                    float holdOutDistEnd = armLength * 0.5f;
                     float interpolant = EasingFunctions.EaseOutExpo((float)usedTimer / pullBackArmTime);
                     float holdOutDistance = MathHelper.Lerp(armLength, holdOutDistEnd, interpolant);
                     Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(i) - Arm(i).Position);
-                    Vector2 targetPosition = Arm(i).Position + Utilities.RotateVectorClockwise(rootToEnd, PI / 2);
+                    float armRotation = MathHelper.Lerp(0f, pullBackAngle, interpolant);
+                    Vector2 targetPosition = Arm(i).Position + rootToEnd.Rotate(-expandedi * armRotation);
 
-                    //Arm(0).TouchPoint(Vector2.Lerp(RestingPosition(0), targetPosition, interpolant), true);
-                    RotateArm(i, -expandedi * pullBackAngle, usedTimer, pullBackArmTime, EasingFunctions.EaseOutExpo);
+                    Arm(i).TouchPoint(targetPosition, false);
+
+                    // open up the claw to shoot laser at player
+                    Arm(i).LowerClaw.LerpRotation(0f, -expandedi * PI / 2, interpolant);
                 }
 
                 if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
@@ -64,7 +68,19 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Vector2 punchTarget = Arm(i).Position + new Vector2(0f, Arm(i).WristLength()).Rotate(Owner.Rotation);
                     float interpolant = (float)localTime / punchSwingTime;
 
-                    Arm(i).LerpToPoint(punchTarget, interpolant);
+                    Arm(i).LerpToPoint(punchTarget, interpolant, false);
+                }
+
+                if (usedTimer > pullBackArmTime + punchSwingTime && usedTimer <= pullBackArmTime + punchSwingTime + resetTime)
+                {
+                    int localTime = usedTimer - (pullBackArmTime + punchSwingTime);
+                    float interpolant = (float)localTime / resetTime;
+
+                    int clawCloseTime = 6; // close the claws faster than the arm resets and MAKE SURE THIS IS LESS THAN RESETTIME
+                    float clawCloseInterpolant = MathHelper.Clamp((float)localTime / clawCloseTime, 0f, 1f);
+
+                    Arm(i).LerpToRestPosition(interpolant, false);
+                    Arm(i).LowerClaw.LerpRotation(-expandedi * PI / 2, 0f, EasingFunctions.EaseOutExpo(clawCloseInterpolant));
                 }
             }
         }
