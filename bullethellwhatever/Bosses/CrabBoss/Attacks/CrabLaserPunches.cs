@@ -28,8 +28,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 50;
-            int punchSwingTime = 3;
+            int pullBackArmTime = 30;
+            int punchSwingTime = 8;
             int resetTime = 30;
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
@@ -39,6 +39,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int armOneTimer = AITimer - (totalPunchTime / 2);
             float pullBackAngle = PI / 2.4f;
             float sidestepInitialSpeed = 15f;
+            ref float sidestepDir = ref ExtraData[1];
 
             for (int i = 0; i < 2; i++)
             {
@@ -49,7 +50,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 if (usedTimer == 0)
                 {
-                    Owner.Velocity = sidestepInitialSpeed * Utilities.RandomSign() * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
+                    sidestepDir = Utilities.RandomSign();
+                    Owner.Velocity = sidestepInitialSpeed * sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
                 }
 
                 if (usedTimer < pullBackArmTime && usedTimer >= 0)
@@ -71,7 +73,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     CrabOwner.FacePlayer();
 
-                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(progress));
+                    Owner.Velocity = sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector() * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(1f - progress));
                 }
 
                 if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
@@ -94,7 +96,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     if (usedTimer == pullBackArmTime + punchSwingTime + 1)
                     {
                         float angle = Utilities.AngleToPlayerFrom(Arm(i).WristPosition());
-                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), angle, 1f, rayDuration, "box", Arm(i).UpperArm.Width() * 2, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
+                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), angle, 1f, rayDuration, "box", Arm(i).UpperArm.Width() * 2, GameWidth, 0f, false, false, Color.Red, "DeathrayShader2", Owner);
                         d.ThinOut = true;
 
                         int locali = i;
@@ -102,6 +104,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         d.SetExtraAI(new Action(() =>
                         {
                             d.Position = Arm(locali).WristPosition();
+
+                            if (d.AITimer > 4)
+                            {
+                                //d.HarmfulToPlayer = true;
+                            }
                         }));
                     }
 

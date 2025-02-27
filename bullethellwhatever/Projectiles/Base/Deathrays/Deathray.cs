@@ -134,7 +134,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (ThinOut && AITimer > Duration - fadeOutTime)
             {
-                Width = MathHelper.Lerp(0, Width, (float)(Duration - AITimer) / fadeOutTime);
+                Width = MathHelper.Lerp(0, Width, MathHelper.Clamp((float)(Duration - AITimer) / fadeOutTime, 0f, 1f));
             }
 
             if (DieAfterDuration && AITimer == Duration)
