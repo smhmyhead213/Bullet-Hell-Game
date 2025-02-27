@@ -104,7 +104,7 @@ namespace bullethellwhatever.MainFiles
                 {
                     projectile.PreUpdate();
                     projectile.UpdatePosition(); // updating position before AI runs allows AI to have a degree of control over position before we go to the drawer
-                    projectile.AI(); 
+                    projectile.AI();
                     projectile.UpdateAndCheckHits();
                     projectile.PostUpdate();
                 }

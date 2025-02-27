@@ -174,12 +174,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 float interpolant = AITimer / (float)armRotateBackToNeutralTime;
 
-                //Vector2 toPlayer = player.Position - Owner.Position;
-                //float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+                Vector2 toPlayer = player.Position - Owner.Position;
+                float angleToPlayer = Utilities.VectorToAngle(toPlayer);
 
-                //float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
+                float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
 
-                //Owner.Rotation += 0.2f * rotationToPlayer;
+                Owner.Rotation += 0.2f * rotationToPlayer;
 
                 //RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
 

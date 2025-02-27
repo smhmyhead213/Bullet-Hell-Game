@@ -36,6 +36,7 @@ namespace bullethellwhatever.DrawCode
             Owner = owner;
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
+            //AddPoint(owner.Position);
             Width = Owner.GetSize().X * Owner.Texture.Width;
 
             Colour = Owner.Colour;
@@ -54,14 +55,10 @@ namespace bullethellwhatever.DrawCode
 
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
+            //AddPoint(startPos);
             Width = width;
 
             Colour = colour;
-        }
-
-        public override void PostUpdate()
-        {
-            AddPoint(Owner.Position);
         }
         public void SetWidth(float width)
         {
@@ -84,6 +81,10 @@ namespace bullethellwhatever.DrawCode
             Colour = colour;
         }
 
+        public override void PostUpdate()
+        {
+            AddPoint(Owner.Position);
+        }
         public void PostUpdate(Vector2 point)
         {
             AddPoint(point);
@@ -91,7 +92,7 @@ namespace bullethellwhatever.DrawCode
 
         public override void PreUpdate()
         {
-            //afterimagesPositions = Utilities.moveArrayElementsUpAndAddToStart(afterimagesPositions, Owner.Position);
+            //AddPoint(Owner.Position);
             Colour = Owner.Colour;
             Width = Owner.Width();
         }
@@ -112,7 +113,7 @@ namespace bullethellwhatever.DrawCode
 
             Vector2 startPosition = positions[0];
 
-            int vertexCount = 2 * (positions.Length + 1);
+            int vertexCount = 2 * (positions.Length + 1); //
             Vector2 toNext = Utilities.SafeNormalise(positions[0] - startPosition);
 
             PrimitiveManager.MainVertices[0] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, 0f));
@@ -123,7 +124,7 @@ namespace bullethellwhatever.DrawCode
                 float progress = i / (float)positions.Length;
                 float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
-                int startingIndex = (i + 1) * 2;
+                int startingIndex = (i + 1) * 2; // 
 
                 // the last position gets multiplied by zero anyway so it can be whatever
 

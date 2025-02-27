@@ -291,7 +291,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         public virtual void AddTrail(int length, string shader = null)
         {
             PrimitiveTrail trail = new PrimitiveTrail(this, length, shader);
-
+            trail.AddPoint(Position); // this might warrant changing
             AdditionalComponents.Add(trail);
         }
 
