@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
+using bullethellwhatever.Projectiles.Base;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.DrawCode;
@@ -30,7 +31,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int pullBackArmTime = 50;
             int punchSwingTime = 3;
             int resetTime = 30;
-
+            int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
 
             float armLength = Arm(0).WristLength();
@@ -74,13 +75,24 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (usedTimer > pullBackArmTime + punchSwingTime && usedTimer <= pullBackArmTime + punchSwingTime + resetTime)
                 {
                     int localTime = usedTimer - (pullBackArmTime + punchSwingTime);
+                    int rayDuration = resetTime - delayAfterPunchToCloseClaw;
+
                     float interpolant = (float)localTime / resetTime;
-
-                    int clawCloseTime = 6; // close the claws faster than the arm resets and MAKE SURE THIS IS LESS THAN RESETTIME
-                    float clawCloseInterpolant = MathHelper.Clamp((float)localTime / clawCloseTime, 0f, 1f);
-
                     Arm(i).LerpToRestPosition(interpolant, false);
-                    Arm(i).LowerClaw.LerpRotation(-expandedi * PI / 2, 0f, EasingFunctions.EaseOutExpo(clawCloseInterpolant));
+                    
+                    if (usedTimer == pullBackArmTime + punchSwingTime + 1)
+                    {
+                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), Arm(i).UpperArm.RotationFromV(), 1f, rayDuration, "box", Arm(i).UpperArm.Width(), GameWidth, 0f, true, Color.Red, "DeathrayShader2", Owner);
+                    }
+
+                    if (usedTimer > pullBackArmTime + punchSwingTime + delayAfterPunchToCloseClaw)
+                    {
+                        int localerTime = localTime - delayAfterPunchToCloseClaw;
+                        int clawCloseTime = 6; // close the claws faster than the arm resets and MAKE SURE THIS IS LESS THAN RESETTIME
+                        float clawCloseInterpolant = MathHelper.Clamp((float)localerTime / clawCloseTime, 0f, 1f);
+
+                        Arm(i).LowerClaw.LerpRotation(-expandedi * PI / 2, 0f, EasingFunctions.EaseOutExpo(clawCloseInterpolant));
+                    }
                 }
             }
         }

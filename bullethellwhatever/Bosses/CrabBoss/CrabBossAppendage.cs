@@ -193,6 +193,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override void UpdateHitbox()
         {
+            // to do: make this update the boss's hitbox instead to prevent pierce multihitting
+
             if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
             {
                 Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
