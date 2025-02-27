@@ -96,7 +96,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 {
                     ray.SetStayWithOwner(true);
                     ray.SetThinOut(true);
-                    ray.SpawnDeathray(t.Origin, t.Rotation, 1f, shootTime, "box", t.Width, t.Length, 0, true, Color.White, "DeathrayShader2", Pupil);
+                    ray.SpawnDeathray(t.Origin, t.Rotation, 1f, shootTime, "box", t.Width, t.Length, 0, true, false, Color.White, "DeathrayShader2", Pupil);
                 }));
             }
 

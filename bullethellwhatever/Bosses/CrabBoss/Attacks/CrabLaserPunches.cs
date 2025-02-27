@@ -61,6 +61,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     // open up the claw to shoot laser at player
                     Arm(i).LowerClaw.LerpRotation(0f, -expandedi * PI / 2, interpolant);
+
+                    CrabOwner.FacePlayer();
                 }
 
                 if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
@@ -82,13 +84,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     
                     if (usedTimer == pullBackArmTime + punchSwingTime + 1)
                     {
-                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), Arm(i).UpperArm.RotationFromV(), 1f, rayDuration, "box", Arm(i).UpperArm.Width(), GameWidth, 0f, true, Color.Red, "DeathrayShader2", Owner);
+                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), Arm(i).UpperArm.RotationFromV(), 1f, rayDuration, "box", Arm(i).UpperArm.Width(), GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
+                        d.ThinOut = true;
                     }
 
                     if (usedTimer > pullBackArmTime + punchSwingTime + delayAfterPunchToCloseClaw)
                     {
                         int localerTime = localTime - delayAfterPunchToCloseClaw;
-                        int clawCloseTime = 6; // close the claws faster than the arm resets and MAKE SURE THIS IS LESS THAN RESETTIME
+                        int clawCloseTime = 15; // close the claws faster than the arm resets and MAKE SURE THIS IS LESS THAN RESETTIME
                         float clawCloseInterpolant = MathHelper.Clamp((float)localerTime / clawCloseTime, 0f, 1f);
 
                         Arm(i).LowerClaw.LerpRotation(-expandedi * PI / 2, 0f, EasingFunctions.EaseOutExpo(clawCloseInterpolant));

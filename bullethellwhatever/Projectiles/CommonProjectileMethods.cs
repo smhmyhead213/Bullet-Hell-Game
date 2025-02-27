@@ -52,11 +52,11 @@ namespace bullethellwhatever.Projectiles
             }
         }
         public static Deathray SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner)
+            float length, float angularVelocity, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, string? shader, Entity owner)
         {
             Deathray ray = new Deathray();
 
-            ray.CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, isHarmful, colour, shader, owner);
+            ray.CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, harmfulToPlayer, harmfulToEnemy, colour, shader, owner);
 
             ray.AddDeathrayToActiveProjectiles();
 

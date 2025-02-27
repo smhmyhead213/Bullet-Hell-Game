@@ -220,7 +220,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                                     t.SetOnDeath(new Action(() =>
                                     {
-                                        Deathray ray = SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, true, Color.Gold, "DeathrayShader", Pupil);
+                                        Deathray ray = SpawnDeathray(t.Origin, t.Rotation, 1f, 45, "box", t.Width, t.Length, 0, true, false, Color.Gold, "DeathrayShader", Pupil);
                                         ray.SetStayWithOwner(true);
                                     }));
                                 }

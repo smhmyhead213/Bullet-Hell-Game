@@ -31,21 +31,21 @@ namespace bullethellwhatever.Projectiles.Base
         public bool StayWithOwner;
 
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner)
+            float length, float angularVelocity, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, string? shader, Entity owner)
         {
-            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, isHarmful, colour, shader, owner);
+            CreateDeathray(position, initialRotation, damage, duration, texture, width, length, angularVelocity, harmfulToPlayer, harmfulToEnemy, colour, shader, owner);
 
             AddDeathrayToActiveProjectiles();
         }
 
         public virtual Deathray CreateDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
-            float length, float angularVelocity, bool isHarmful, Color colour, string? shader, Entity owner)
+            float length, float angularVelocity, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, string? shader, Entity owner)
         {
             DieAfterDuration = true;
 
             Updates = 1;
 
-            ContactDamage = isHarmful;
+            ContactDamage = harmfulToPlayer;
 
             Position = position;
             Rotation = initialRotation;
@@ -62,7 +62,8 @@ namespace bullethellwhatever.Projectiles.Base
             Owner = owner;
             Colour = colour;
             IsActive = true;
-            HarmfulToPlayer = isHarmful;
+            HarmfulToPlayer = harmfulToPlayer;
+            HarmfulToEnemy = harmfulToEnemy;
             Damage = damage;
 
             if (shader != null)

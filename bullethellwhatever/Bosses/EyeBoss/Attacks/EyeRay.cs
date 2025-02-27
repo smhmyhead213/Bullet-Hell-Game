@@ -62,7 +62,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                     float width = telegraphLine.Width;
                     float length = telegraphLine.Length; // use local values to pass these by value
 
-                    ray = SpawnDeathray(telegraphLine.Origin, telegraphLine.Rotation, 1f, rayDuration, "box", width, length, beamRotationalVelocity, true, Color.White, "DeathrayShader2", Pupil);
+                    ray = SpawnDeathray(telegraphLine.Origin, telegraphLine.Rotation, 1f, rayDuration, "box", width, length, beamRotationalVelocity, true, false, Color.White, "DeathrayShader2", Pupil);
 
                     ray.SetThinOut(true);
 
@@ -132,7 +132,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
                         t.SetOnDeath(new Action(() =>
                         {
-                            Deathray ray = SpawnDeathray(t.Origin, t.Rotation, 1f, rayRingDuration, "box", t.Width, t.Length, 0, true, Color.Gold, "DeathrayShader2", t.Owner);
+                            Deathray ray = SpawnDeathray(t.Origin, t.Rotation, 1f, rayRingDuration, "box", t.Width, t.Length, 0, true, false, Color.Gold, "DeathrayShader2", t.Owner);
 
                             ray.SetStayWithOwner(t.StayWithOwner);
                             ray.SetThinOut(true);

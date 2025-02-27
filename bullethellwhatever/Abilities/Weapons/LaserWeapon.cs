@@ -144,7 +144,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 float damage = 0.1f;
 
-                Deathray d = SpawnDeathray(Owner.Position, Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position), damage, LaserDuration, "box", 30, 2000, 0, false, Color.LightSkyBlue, "PlayerDeathrayShader", Owner);
+                Deathray d = SpawnDeathray(Owner.Position, Utilities.VectorToAngle(MousePositionWithCamera() - Owner.Position), damage, LaserDuration, "box", 30, 2000, 0, false, true, Color.LightSkyBlue, "PlayerDeathrayShader", Owner);
 
                 d.SetThinOut(true);
 
