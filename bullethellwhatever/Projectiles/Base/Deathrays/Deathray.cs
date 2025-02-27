@@ -152,6 +152,15 @@ namespace bullethellwhatever.Projectiles.Base
             Vector2 centre = Position - Utilities.RotateVectorClockwise(new Vector2(0f, Length / 2f), Rotation);
 
             // to do: make work with circles
+
+            if (Width >= 1f)
+            {
+                Hitbox = Utilities.FillRectWithCircles(centre, (int)Width, (int)Length, Rotation);
+            }
+            else
+            {
+                Hitbox.Clear();
+            }
         }
 
         public override void CheckForHits()
