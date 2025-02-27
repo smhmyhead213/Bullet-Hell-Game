@@ -24,22 +24,18 @@ namespace bullethellwhatever.MainFiles
         public static List<NPC> activeNPCs = new List<NPC>();
         public static List<NPC> activeFriendlyNPCs = new List<NPC>();
         public static List<Projectile> activeProjectiles = new List<Projectile>();
-        public static List<Projectile> activeFriendlyProjectiles = new List<Projectile>();
-        public static List<Projectile> enemyProjectilesToAddNextFrame = new List<Projectile>();
-        public static List<Projectile> friendlyProjectilesToAddNextFrame = new List<Projectile>();
+        public static List<Projectile> projectilesToAdd = new List<Projectile>();
         public static List<Particle> ParticlesToRemove = new List<Particle>();
         public static List<Particle> ParticlesToAdd = new List<Particle>();
 
-        //public static HashSet<Tuple<Entity, Entity>> CollisionsLastFrame = new HashSet<Tuple<Entity, Entity>>();
         public static void RemoveEntities()
         {
             activeNPCs.RemoveAll(NPC => NPC.ShouldRemoveOnEdgeTouch && NPC.TouchingAnEdge());
             activeNPCs.RemoveAll(NPC => NPC.DeleteNextFrame);
 
             activeProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
-            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval);
-            activeFriendlyProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval && projectile.AITimer > 5);
-            activeFriendlyProjectiles.RemoveAll(projectile => projectile.DeleteNextFrame);
+            //activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval);
+            activeProjectiles.RemoveAll(projectile => projectile.ShouldRemoveOnEdgeTouch && projectile.TouchingAnEdge() && projectile.TimeOutsidePlayArea > projectile.MercyTimeBeforeRemoval && projectile.AITimer > 5);
         }
 
         public static void AddEntitiesNextFrame()
@@ -47,14 +43,9 @@ namespace bullethellwhatever.MainFiles
             foreach (NPC npc in NPCsToAddNextFrame)
                 activeNPCs.Add(npc);
 
-            foreach (Projectile projectile in enemyProjectilesToAddNextFrame)
+            foreach (Projectile projectile in projectilesToAdd)
             {
                 activeProjectiles.Add(projectile);
-            }
-
-            foreach (Projectile projectile in friendlyProjectilesToAddNextFrame)
-            {
-                activeFriendlyProjectiles.Add(projectile);
             }
 
             foreach (Particle p in ParticlesToAdd)
@@ -62,9 +53,7 @@ namespace bullethellwhatever.MainFiles
                 activeParticles.Add(p);
             }
 
-            enemyProjectilesToAddNextFrame.Clear();
-
-            friendlyProjectilesToAddNextFrame.Clear();
+            projectilesToAdd.Clear();
 
             ParticlesToAdd.Clear();
 
@@ -108,34 +97,6 @@ namespace bullethellwhatever.MainFiles
             toRemove.Clear(); // we can just reuse this list
 
             foreach (Projectile projectile in activeProjectiles)
-            {
-                for (int i = 0; i < projectile.Updates; i++)
-                {
-                    projectile.PreUpdate();
-                    projectile.UpdatePosition();
-                    projectile.AI();
-                    projectile.UpdateAndCheckHits();
-                    projectile.PostUpdate();
-                }
-
-                foreach (TelegraphLine telegraphLine in projectile.activeTelegraphs)
-                {
-                    telegraphLine.AI();
-                    if (telegraphLine.DeleteNextFrame)
-                    {
-                        toRemove.Add(telegraphLine);
-                    }
-                }
-
-                foreach (TelegraphLine t in toRemove)
-                {
-                    projectile.activeTelegraphs.Remove(t);
-                }
-            }
-
-            toRemove.Clear();
-
-            foreach (Projectile projectile in activeFriendlyProjectiles)
             {
                 // Oswald didnt do it. fart...
 
@@ -184,11 +145,6 @@ namespace bullethellwhatever.MainFiles
         public static void Clear()
         {
             foreach (Projectile p in activeProjectiles)
-            {
-                p.Delete();
-            }
-
-            foreach (Projectile p in activeFriendlyProjectiles)
             {
                 p.Delete();
             }

@@ -30,8 +30,6 @@ namespace bullethellwhatever.DrawCode
 
             List<Entity> ProjectilestoDrawWithoutShader = new List<Entity>();          
             List<Entity> ProjectilestoDrawWithShader = new List<Entity>();
-            List<Entity> FriendlyProjectilesToDrawWithShader = new List<Entity>();
-            List<Entity> FriendlyProjectilesToDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithoutShader = new List<Entity>();
             List<Entity> NPCstoDrawWithShader = new List<Entity>();
 
@@ -65,15 +63,6 @@ namespace bullethellwhatever.DrawCode
                 else NPCstoDrawWithoutShader.Add(npc);
             }
 
-            foreach (Projectile projectile in EntityManager.activeFriendlyProjectiles)
-            {
-                if (projectile.Shader is not null)
-                {
-                    FriendlyProjectilesToDrawWithShader.Add(projectile);
-                }
-                else FriendlyProjectilesToDrawWithoutShader.Add(projectile);
-            }
-
             foreach (Particle p in activeParticles)
             {
                 if (p.Shader is not null)
@@ -91,20 +80,6 @@ namespace bullethellwhatever.DrawCode
                 p.Draw(_spriteBatch);
             }
 
-            foreach (Entity entity in FriendlyProjectilesToDrawWithoutShader)
-            {
-                entity.Draw(s);
-            }
-
-            Drawing.RestartSpriteBatchForShaders(s, true);
-
-            foreach (Entity entity in FriendlyProjectilesToDrawWithShader)
-            {
-                entity.Draw(s);
-            }
-
-            Drawing.RestartSpriteBatchForNotShaders(s, true);
-
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {
                     entity.Draw(_spriteBatch);
@@ -121,7 +96,6 @@ namespace bullethellwhatever.DrawCode
                     t.Draw(Main._spriteBatch);
                 }
             }
-
 
             foreach (Entity entity in ProjectilestoDrawWithoutShader)
             {

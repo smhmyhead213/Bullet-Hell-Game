@@ -39,9 +39,9 @@ namespace bullethellwhatever.Abilities.Weapons
 
             List<Projectile> availableReflectors = new List<Projectile>();
 
-            foreach (Projectile reflect in EntityManager.activeFriendlyProjectiles)
+            foreach (Projectile reflect in EntityManager.activeProjectiles)
             {
-                if (reflect.Label == EntityLabels.SharpShotReflector && !ReflectorsHit.Contains(reflect))
+                if (reflect.Friendly && reflect.Label == EntityLabels.SharpShotReflector && !ReflectorsHit.Contains(reflect))
                 {
                     availableReflectors.Add(reflect);
                 }

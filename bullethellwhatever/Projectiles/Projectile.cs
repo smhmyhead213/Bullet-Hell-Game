@@ -92,7 +92,10 @@ namespace bullethellwhatever.Projectiles
             ExtraData = new float[4];
 
             Label = EntityLabels.None;
-            
+
+            // if it doesnt damage the player, mark it friendly. this can be manually changed.
+            Friendly = !harmfulToPlayer;
+
             SetHitbox();
         }
         public void Prepare(Vector2 position, Vector2 velocity, float damage, int pierce, string texture, Vector2 size, Entity owner, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, bool shouldRemoveOnEdgeTouch, bool removeOnHit)
@@ -101,9 +104,7 @@ namespace bullethellwhatever.Projectiles
 
             Initialise();
 
-            if (HarmfulToPlayer)
-                EntityManager.enemyProjectilesToAddNextFrame.Add(this);
-            else EntityManager.friendlyProjectilesToAddNextFrame.Add(this);
+            EntityManager.projectilesToAdd.Add(this);
         }
 
         public virtual void Initialise()

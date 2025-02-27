@@ -66,7 +66,7 @@ namespace bullethellwhatever.Bosses
 
             if (AITimer % 60 == 0)
             {
-                //SpawnProjectile(Position, 10f * Utilities.SafeNormalise(player.Position - Position), 1f, 1, "box", Vector2.One, this, true, false, Color.Red, true, false);
+                SpawnProjectile(Position, 10f * Utilities.SafeNormalise(player.Position - Position), 1f, 1, "box", Vector2.One, this, true, false, Color.Red, true, false);
             }
 
             Rotation = Rotation + PI / 90f;

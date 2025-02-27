@@ -70,9 +70,9 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 TargetableByHoming = false;
                 IsInvincible = true;
 
-                foreach (Projectile p in EntityManager.activeFriendlyProjectiles)
+                foreach (Projectile p in EntityManager.activeProjectiles)
                 {
-                    if (Utilities.DistanceBetweenVectors(p.Position, Position) < VulnerabilityRadius && p is not Deathray) // if the projectile is within the ring
+                    if (p.Friendly && Utilities.DistanceBetweenVectors(p.Position, Position) < VulnerabilityRadius && p is not Deathray) // if the projectile is within the ring
                     {
                         p.InstantlyDie();
                         p.OnHitEffect(p.Position);

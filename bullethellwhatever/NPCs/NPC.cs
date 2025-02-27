@@ -73,6 +73,8 @@ namespace bullethellwhatever.NPCs
             HarmfulToPlayer = harmfulToPlayer;
             HarmfulToEnemy = harmfulToEnemy;
 
+            Friendly = !harmfulToPlayer;
+
             PrepareNPC();
         }
 

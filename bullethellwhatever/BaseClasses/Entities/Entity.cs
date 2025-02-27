@@ -30,6 +30,8 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public bool ContactDamage;
 
+        public bool Friendly;
+
         public bool HarmfulToPlayer;
         public bool HarmfulToEnemy;
 

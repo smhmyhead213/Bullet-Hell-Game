@@ -25,7 +25,6 @@ namespace bullethellwhatever
         {
             EntityManager.activeNPCs.Clear();
             EntityManager.activeProjectiles.Clear();
-            EntityManager.activeFriendlyProjectiles.Clear();
         }
         /// <summary>
         /// Returns -1 if index is 0 and 1 if index is 1.
@@ -431,7 +430,8 @@ namespace bullethellwhatever
                 if (width > height)
                 {
                     // figure out how many circles to fit in
-                    int radius = height / 2;
+                    // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
+                    int radius = height >= 2 ? height / 2 : 1;
                     int numCircles = width / radius - 1; // add a circle every radius
 
                     // try to figure out how much would be left on the end, and try to split it evenly between both sides
@@ -451,7 +451,7 @@ namespace bullethellwhatever
                 else
                 {
                     // figure out how many circles to fit in
-                    int radius = width / 2;
+                    int radius = width >= 2 ? width / 2 : 1;
                     int numCircles = height / radius - 1; // add a circle every radius
                     float adjustedRotation = rotation - PI / 2f;
 

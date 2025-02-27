@@ -105,9 +105,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         {
                             d.Position = Arm(locali).WristPosition();
 
-                            if (d.AITimer > 4)
+                            if (d.AITimer > 2)
                             {
-                                //d.HarmfulToPlayer = true;
+                                d.HarmfulToPlayer = true;
                             }
                         }));
                     }

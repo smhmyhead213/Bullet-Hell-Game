@@ -76,6 +76,7 @@ namespace bullethellwhatever.Projectiles.Base
             ThinOut = false;
 
             Participating = true;
+            Friendly = !harmfulToPlayer;
 
             return this;
         }
@@ -101,11 +102,7 @@ namespace bullethellwhatever.Projectiles.Base
             {
                 IsSpawned = true;
 
-                if (HarmfulToPlayer)
-                {
-                    EntityManager.enemyProjectilesToAddNextFrame.Add(this);
-                }
-                else EntityManager.friendlyProjectilesToAddNextFrame.Add(this);
+                EntityManager.projectilesToAdd.Add(this);
             }
         }
         public override void AI()
@@ -153,7 +150,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             // to do: make work with circles
 
-            if (Width >= 1f)
+            if (Width >= 2f)
             {
                 Hitbox = Utilities.FillRectWithCircles(centre, (int)Width, (int)Length, Rotation);
             }

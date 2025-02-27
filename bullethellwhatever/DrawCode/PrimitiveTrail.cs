@@ -81,7 +81,7 @@ namespace bullethellwhatever.DrawCode
         public void PreUpdate(float width, Vector2 pointToAdd, Color colour)
         {            
             Width = width;
-            Colour = colour;          
+            Colour = colour;
         }
 
         public void PostUpdate(Vector2 point)
