@@ -221,6 +221,10 @@ namespace bullethellwhatever
         {
             return RandomInt(1, oneIn) == 1;
         }
+        public static int RandomSign()
+        {
+            return RandomInt(-10, 10) > 0 ? 1 : -1;
+        }
         public static float RandomAngle()
         {
             return RandomFloat(0, Tau);
@@ -492,6 +496,11 @@ namespace bullethellwhatever
         {
             return VectorToAngle(vec);
         }
+        public static Vector2 ToVector(this float angle)
+        {
+            return AngleToVector(angle);
+        }
+
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)

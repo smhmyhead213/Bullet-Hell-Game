@@ -38,6 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int armZeroTimer = AITimer;
             int armOneTimer = AITimer - (totalPunchTime / 2);
             float pullBackAngle = PI / 2.4f;
+            float sidestepInitialSpeed = 15f;
 
             for (int i = 0; i < 2; i++)
             {
@@ -46,12 +47,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 int expandedi = Utilities.ExpandedIndex(i);
 
+                if (usedTimer == 0)
+                {
+                    Owner.Velocity = sidestepInitialSpeed * Utilities.RandomSign() * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
+                }
+
                 if (usedTimer < pullBackArmTime && usedTimer >= 0)
                 {
                     // move arm in rough circle around its start
 
                     float holdOutDistEnd = armLength * 0.5f;
-                    float interpolant = EasingFunctions.EaseOutExpo((float)usedTimer / pullBackArmTime);
+                    float progress = (float)usedTimer / pullBackArmTime;
+                    float interpolant = EasingFunctions.EaseOutExpo(progress);
                     float holdOutDistance = MathHelper.Lerp(armLength, holdOutDistEnd, interpolant);
                     Vector2 rootToEnd = holdOutDistance * Utilities.SafeNormalise(RestingPosition(i) - Arm(i).Position);
                     float armRotation = MathHelper.Lerp(0f, pullBackAngle, interpolant);
@@ -63,6 +70,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Arm(i).LowerClaw.LerpRotation(0f, -expandedi * PI / 2, interpolant);
 
                     CrabOwner.FacePlayer();
+
+                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(progress));
                 }
 
                 if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
@@ -84,8 +93,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     
                     if (usedTimer == pullBackArmTime + punchSwingTime + 1)
                     {
-                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), Arm(i).UpperArm.RotationFromV(), 1f, rayDuration, "box", Arm(i).UpperArm.Width(), GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
+                        float angle = Utilities.AngleToPlayerFrom(Arm(i).WristPosition());
+                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), angle, 1f, rayDuration, "box", Arm(i).UpperArm.Width() * 2, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
                         d.ThinOut = true;
+
+                        int locali = i;
+
+                        d.SetExtraAI(new Action(() =>
+                        {
+                            d.Position = Arm(locali).WristPosition();
+                        }));
                     }
 
                     if (usedTimer > pullBackArmTime + punchSwingTime + delayAfterPunchToCloseClaw)
