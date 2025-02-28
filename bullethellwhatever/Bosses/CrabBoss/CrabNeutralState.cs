@@ -23,6 +23,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             // all attack logic goes here
 
+            // gap close
+
+            if (Owner.Position.Distance(player.Position) > 1000)
+            {
+                return new CrabPunch(CrabOwner);
+            }
+
             int rng = Utilities.RandomInt(1, 4);
 
             return rng switch

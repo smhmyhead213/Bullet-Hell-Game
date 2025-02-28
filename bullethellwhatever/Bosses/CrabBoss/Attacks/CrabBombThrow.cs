@@ -37,7 +37,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 Projectile bomb = SpawnProjectile<Projectile>(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, false, false);
 
-                bomb.AddTrail(7);
+                bomb.AddTrail(16);
 
                 Action bombExplode = new Action(() =>
                 {

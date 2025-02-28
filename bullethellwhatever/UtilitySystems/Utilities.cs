@@ -478,6 +478,11 @@ namespace bullethellwhatever
         {
             return BringAngleIntoRange(angle);
         }
+
+        public static float Distance(this Vector2 v1, Vector2 v2)
+        {
+            return Utilities.DistanceBetweenVectors(v1, v2);
+        }
         public static Vector2 ToPlayer(this Vector2 position)
         {
             return player.Position - position;
