@@ -115,38 +115,41 @@ namespace bullethellwhatever.DrawCode
         }
         public void Draw()
         {
-            bool wasDrawingShaders = Drawing.DrawingShaders;
-            bool shouldSwitchToShaderDrawing = !wasDrawingShaders && Shader is not null;
-
-            if (shouldSwitchToShaderDrawing)
+            if (IndiceCount != 0)
             {
-                Drawing.RestartSpriteBatchForShaders(_spriteBatch, true);
-            }
+                bool wasDrawingShaders = Drawing.DrawingShaders;
+                bool shouldSwitchToShaderDrawing = !wasDrawingShaders && Shader is not null;
 
-            PrimitiveManager.GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
+                if (shouldSwitchToShaderDrawing)
+                {
+                    Drawing.RestartSpriteBatchForShaders(_spriteBatch, true);
+                }
 
-            PrimitiveManager.GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
-            PrimitiveManager.GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
+                PrimitiveManager.GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
 
-            PrimitiveManager.BasicEffect.TextureEnabled = Shader is not null;
+                PrimitiveManager.GraphicsDevice.RasterizerState = PrimitiveManager.RasteriserState;
+                PrimitiveManager.GraphicsDevice.Indices = PrimitiveManager.IndexBuffer;
 
-            // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
+                PrimitiveManager.BasicEffect.TextureEnabled = Shader is not null;
 
-            PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(MainCamera.ShaderMatrix());
+                // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
 
-            PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
-            
-            if (Shader is not null)
-            {
-                Shader.CurrentTechnique.Passes[0].Apply();
-            }
+                PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(MainCamera.ShaderMatrix());
 
-            // dont ask what the division by 3 is. i dont know. it doesnt work otherwise.
-            PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount / 3);
+                PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
 
-            if (shouldSwitchToShaderDrawing)
-            {
-                Drawing.RestartSpriteBatchForNotShaders(_spriteBatch, true);
+                if (Shader is not null)
+                {
+                    Shader.CurrentTechnique.Passes[0].Apply();
+                }
+
+                // dont ask what the division by 3 is. i dont know. it doesnt work otherwise.
+                PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount / 3);
+
+                if (shouldSwitchToShaderDrawing)
+                {
+                    Drawing.RestartSpriteBatchForNotShaders(_spriteBatch, true);
+                }
             }
         }
     }

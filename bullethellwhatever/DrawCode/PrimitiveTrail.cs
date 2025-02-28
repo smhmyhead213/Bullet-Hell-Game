@@ -113,18 +113,18 @@ namespace bullethellwhatever.DrawCode
 
             Vector2 startPosition = positions[0];
 
-            int vertexCount = 2 * (positions.Length + 1); //
+            int vertexCount = 2 * (positions.Length); //
             Vector2 toNext = Utilities.SafeNormalise(positions[0] - startPosition);
 
-            PrimitiveManager.MainVertices[0] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, 0f));
-            PrimitiveManager.MainVertices[1] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, 0f));
+            //PrimitiveManager.MainVertices[0] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, 0f));
+            //PrimitiveManager.MainVertices[1] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, 0f));
 
             for (int i = 0; i < positions.Length; i++)
             {
                 float progress = i / (float)positions.Length;
                 float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
-                int startingIndex = (i + 1) * 2; // 
+                int startingIndex = (i) * 2; // 
 
                 // the last position gets multiplied by zero anyway so it can be whatever
 
