@@ -28,13 +28,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 10;
-            int punchSwingTime = 4;
-            int resetTime = 10;
+            int pullBackArmTime = 30;
+            int punchSwingTime = 7;
+            int resetTime = 27;
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
             int attackDuration = 200;
             int endAttackTime = 20;
+            float homingStrength = 0.05f;
 
             float armLength = Arm(0).WristLength();
             int armZeroTimer = AITimer;
@@ -112,7 +113,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         p.SetExtraAI(new Action(() =>
                         {
                             p.ExponentialAccelerate(1.1f);
-                            p.Velocity = Utilities.ConserveLengthLerp(p.Velocity, p.Position.ToPlayer(), 0.1f);
+                            p.Velocity = Utilities.ConserveLengthLerp(p.Velocity, p.Position.ToPlayer(), homingStrength);
                             p.Rotation = p.Velocity.ToAngle();
                         }));
 
@@ -161,7 +162,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new NeutralToCrabFlailChargeTransition(CrabOwner);
+            return new CrabNeutralState(CrabOwner);
         }
     }
 }

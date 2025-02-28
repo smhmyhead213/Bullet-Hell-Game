@@ -185,15 +185,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            int rng = Utilities.RandomInt(1, 2);
-
-            return rng switch
-            {
-                1 => new CrabPunch(CrabOwner),
-                2 => new CrabBombThrow(CrabOwner),
-                // idk how this would get reached but whatever
-                _ => new CrabPunch(CrabOwner),
-            };
+            return new CrabNeutralState(CrabOwner);
         }
     }
 }

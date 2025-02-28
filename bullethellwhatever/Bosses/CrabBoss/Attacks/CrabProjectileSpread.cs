@@ -110,7 +110,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunch(CrabOwner);
+            return new CrabNeutralState(CrabOwner);
         }
     }
 }

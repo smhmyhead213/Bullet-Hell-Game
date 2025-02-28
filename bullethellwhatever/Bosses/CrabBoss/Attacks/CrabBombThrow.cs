@@ -37,13 +37,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 Projectile bomb = SpawnProjectile<Projectile>(ChosenArm().PositionAtDistanceFromWrist(20), Vector2.Zero, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, false, false);
 
+                bomb.AddTrail(7);
+
                 Action bombExplode = new Action(() =>
                 {
                     int numberOfProjectiles = 26;
 
                     for (int i = 0; i < numberOfProjectiles; i++)
                     {
-                        float angle = Tau / numberOfProjectiles * i;
+                        float angle = Tau / numberOfProjectiles * i + bomb.Velocity.ToAngle();
                         Projectile p = SpawnProjectile<Projectile>(bomb.Position, 0.1f * Utilities.AngleToVector(angle), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
 
                         p.AddTrail(22);
@@ -191,8 +193,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override BossAttack PickNextAttack()
         {
-            // we always leap away before this attack so we're usually far enough for a charge
-            return new CrabPunch(CrabOwner);
+            return new CrabNeutralState(CrabOwner);
         }
     }
 }

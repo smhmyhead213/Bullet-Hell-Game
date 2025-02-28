@@ -197,7 +197,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
                 return new CrabPunch(CrabOwner);
             else if (nextAttack == 2)
-                return new CrabBombThrow(CrabOwner);
+                return new CrabNeutralState(CrabOwner);
             else
                 return new NeutralToCrabFlailChargeTransition(CrabOwner);
         }
