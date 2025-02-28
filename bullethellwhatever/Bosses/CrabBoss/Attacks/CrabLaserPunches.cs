@@ -34,6 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
             int attackDuration = 200;
+            int endAttackTime = 20;
 
             float armLength = Arm(0).WristLength();
             int armZeroTimer = AITimer;
@@ -45,7 +46,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             for (int i = 0; i < 2; i++)
             {
                 // decide which timer to use
-                int usedTimer = (i == 0 ? armZeroTimer : armOneTimer) % totalPunchTime;
+                int usedTimer = (i == 0 ? armZeroTimer : armOneTimer);
+
+                // only loop if we are still to continue attacking
+
+                if (AITimer < attackDuration)
+                {
+                    usedTimer = usedTimer % totalPunchTime;
+                }
 
                 int expandedi = Utilities.ExpandedIndex(i);
 
@@ -133,12 +141,27 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         Arm(i).LowerClaw.LerpRotation(-expandedi * PI / 2, 0f, EasingFunctions.EaseOutExpo(clawCloseInterpolant));
                     }
                 }
+
+                if (usedTimer > attackDuration)
+                {
+                    Arm(i).LerpToRestPosition(0.1f);
+                }
+            }
+
+            if (AITimer >= attackDuration)
+            {
+                Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * 0.5f;
+            }
+
+            if (AITimer == attackDuration + endAttackTime)
+            {
+                End();
             }
         }
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabFlail(CrabOwner, 0);
+            return new NeutralToCrabFlailChargeTransition(CrabOwner);
         }
     }
 }
