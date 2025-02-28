@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
             int attackDuration = 200;
-            int endAttackTime = 20;
+            int endAttackTime = 40;
             float homingStrength = 0.05f;
 
             float armLength = Arm(0).WristLength();
