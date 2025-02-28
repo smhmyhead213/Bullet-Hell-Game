@@ -478,6 +478,10 @@ namespace bullethellwhatever
         {
             return BringAngleIntoRange(angle);
         }
+        public static Vector2 ToPlayer(this Vector2 position)
+        {
+            return player.Position - position;
+        }
         public static Vector2 DirectionTo(this Vector2 from, Vector2 to)
         {
             return SafeNormalise(to - from);

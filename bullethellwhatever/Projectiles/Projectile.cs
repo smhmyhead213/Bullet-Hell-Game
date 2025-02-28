@@ -232,7 +232,7 @@ namespace bullethellwhatever.Projectiles
         {
             if (Participating && !Dying)
             {
-                if (HarmfulToEnemy) // If you want the player able to spawn NPCs, make a friendlyNPCs list and check through that if the projectile is harmful.
+                if (HarmfulToEnemy)
                 {
                     CheckForAndHitNPCs();
                 }

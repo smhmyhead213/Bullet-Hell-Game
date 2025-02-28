@@ -22,14 +22,14 @@ namespace bullethellwhatever.Projectiles.Base
         public float InitialLength;
         public float Width;
         public float InitialWidth;
-        public bool ThinOut;
+        private bool ThinOut;
         public float AngularVelocity;
         public bool IsActive;
         public bool IsSpawned;
         public int Duration;
         public bool DieAfterDuration;
         public bool StayWithOwner;
-
+        public int FadeOutTime;
         public virtual void SpawnDeathray(Vector2 position, float initialRotation, float damage, int duration, string texture, float width,
             float length, float angularVelocity, bool harmfulToPlayer, bool harmfulToEnemy, Color colour, string? shader, Entity owner)
         {
@@ -77,6 +77,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             Participating = true;
             Friendly = !harmfulToPlayer;
+            FadeOutTime = 0;
 
             return this;
         }
@@ -127,11 +128,9 @@ namespace bullethellwhatever.Projectiles.Base
                 Position = Owner.Position;
             }
 
-            int fadeOutTime = 20;
-
-            if (ThinOut && AITimer > Duration - fadeOutTime)
+            if (ThinOut && AITimer > Duration - FadeOutTime)
             {
-                Width = MathHelper.Lerp(0, Width, MathHelper.Clamp((float)(Duration - AITimer) / fadeOutTime, 0f, 1f));
+                Width = MathHelper.Lerp(0, Width, MathHelper.Clamp((float)(Duration - AITimer) / FadeOutTime, 0f, 1f));
             }
 
             if (DieAfterDuration && AITimer == Duration)
@@ -210,9 +209,10 @@ namespace bullethellwhatever.Projectiles.Base
         {
             DeleteNextFrame = true;
         }
-        public virtual void SetThinOut(bool thinOut)
+        public virtual void SetThinOut(bool thinOut, int fadeOutTime = 20)
         {
             ThinOut = thinOut;
+            FadeOutTime = fadeOutTime;
         }
 
         public override void Draw(SpriteBatch spritebatch)

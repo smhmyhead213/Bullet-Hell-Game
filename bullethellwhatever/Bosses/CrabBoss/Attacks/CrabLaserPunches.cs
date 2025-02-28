@@ -28,11 +28,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 30;
-            int punchSwingTime = 8;
-            int resetTime = 30;
+            int pullBackArmTime = 10;
+            int punchSwingTime = 4;
+            int resetTime = 10;
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
+            int attackDuration = 200;
 
             float armLength = Arm(0).WristLength();
             int armZeroTimer = AITimer;
@@ -92,24 +93,35 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     float interpolant = (float)localTime / resetTime;
                     Arm(i).LerpToRestPosition(interpolant, false);
-                    
+
                     if (usedTimer == pullBackArmTime + punchSwingTime + 1)
                     {
+                        float projectileSpeed = 5f;
                         float angle = Utilities.AngleToPlayerFrom(Arm(i).WristPosition());
-                        Deathray d = SpawnDeathray(Arm(i).WristPosition(), angle, 1f, rayDuration, "box", Arm(i).UpperArm.Width() * 2, GameWidth, 0f, false, false, Color.Red, "DeathrayShader2", Owner);
-                        d.ThinOut = true;
+                        Projectile p = SpawnProjectile(Arm(i).WristPosition(), angle.ToVector() * projectileSpeed, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
+                        p.AddTrail(14);
 
-                        int locali = i;
-
-                        d.SetExtraAI(new Action(() =>
+                        p.SetExtraAI(new Action(() =>
                         {
-                            d.Position = Arm(locali).WristPosition();
-
-                            if (d.AITimer > 2)
-                            {
-                                d.HarmfulToPlayer = true;
-                            }
+                            p.ExponentialAccelerate(1.1f);
+                            p.Velocity = Utilities.ConserveLengthLerp(p.Velocity, p.Position.ToPlayer(), 0.1f);
+                            p.Rotation = p.Velocity.ToAngle();
                         }));
+
+                        //Deathray d = SpawnDeathray(Arm(i).WristPosition(), angle, 1f, rayDuration, "box", Arm(i).UpperArm.Width(), GameWidth, 0f, false, false, Color.Red, "DeathrayShader2", Owner);
+                        //d.SetThinOut(true, 5);
+
+                        //int locali = i;
+
+                        //d.SetExtraAI(new Action(() =>
+                        //{
+                        //    d.Position = Arm(locali).WristPosition();
+
+                        //    if (d.AITimer > 3)
+                        //    {
+                        //        d.HarmfulToPlayer = true;
+                        //    }
+                        //}));
                     }
 
                     if (usedTimer > pullBackArmTime + punchSwingTime + delayAfterPunchToCloseClaw)
