@@ -16,10 +16,10 @@ using SharpDX.Direct2D1;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
-    public class CrabLaserPunches : CrabBossAttack
+    public class CrabProjectilePunches : CrabBossAttack
     {
 
-        public CrabLaserPunches(CrabBoss owner) : base(owner)
+        public CrabProjectilePunches(CrabBoss owner) : base(owner)
         {
 
         }
