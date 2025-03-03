@@ -192,34 +192,29 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Leg.Owner.TakeDamage(damage);
         }
 
-        public override void UpdateHitbox()
+        public List<Circle> LimbHitbox()
         {
-            // to do: make this update the boss's hitbox instead to prevent pierce multihitting
-
-            List<Circle> toAdd = new List<Circle>();
-
             if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
             {
                 Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                toAdd = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+                return Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
             }
             else if (Type == AppendageType.UpperClaw)
             {
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                toAdd = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
+                return Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
             }
             else // lower claw
             {
                 Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                toAdd = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
+                return Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
             }
-
-            foreach (Circle circle in toAdd)
-            {
-                Owner.Hitbox.Add(circle);
-            }
+        }
+        public override void UpdateHitbox()
+        {
+            // do nothing here: logic is handled in LimbHitbox and added to the crabboss manually
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
