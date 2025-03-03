@@ -67,7 +67,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 if (localTime % timeBetweenProjectiles == 0)
                 {
                     Vector2 spawnPosition = CrabOwner.Arms[chosenArmInt].LowerClaw.Position;
-                    float projectileInitialSpeed = 5f;
+                    float projectileInitialSpeed = 3f;
                     
                     Projectile p = SpawnProjectile<Projectile>(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Arms[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
@@ -78,18 +78,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     p.SetExtraAI(new Action(() =>
                     {
-                        if (p.AITimer < projectileSlowTime)
-                        {  
-                            p.Velocity *= 0.98f;
-                        }
-                        else if (p.AITimer == projectileSlowTime)
-                        {
-                            p.Velocity += 5f * Utilities.SafeNormalise(p.Velocity);
-                        }
-                        else
-                        {
-                            p.Velocity *= 1.05f;
-                        }
+                        p.ExponentialAccelerate(1.05f);
+                        //if (p.AITimer < projectileSlowTime)
+                        //{
+                        //    p.Velocity *= 0.98f;
+                        //}
+                        //else if (p.AITimer == projectileSlowTime)
+                        //{
+                        //    p.Velocity += 5f * Utilities.SafeNormalise(p.Velocity);
+                        //}
+                        //else
+                        //{
+                        //    p.Velocity *= 1.05f;
+                        //}
                     }));
                 }
             }

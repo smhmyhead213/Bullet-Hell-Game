@@ -117,21 +117,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                             p.Velocity = Utilities.ConserveLengthLerp(p.Velocity, p.Position.ToPlayer(), homingStrength);
                             p.Rotation = p.Velocity.ToAngle();
                         }));
-
-                        //Deathray d = SpawnDeathray(Arm(i).WristPosition(), angle, 1f, rayDuration, "box", Arm(i).UpperArm.Width(), GameWidth, 0f, false, false, Color.Red, "DeathrayShader2", Owner);
-                        //d.SetThinOut(true, 5);
-
-                        //int locali = i;
-
-                        //d.SetExtraAI(new Action(() =>
-                        //{
-                        //    d.Position = Arm(locali).WristPosition();
-
-                        //    if (d.AITimer > 3)
-                        //    {
-                        //        d.HarmfulToPlayer = true;
-                        //    }
-                        //}));
                     }
 
                     if (usedTimer > pullBackArmTime + punchSwingTime + delayAfterPunchToCloseClaw)

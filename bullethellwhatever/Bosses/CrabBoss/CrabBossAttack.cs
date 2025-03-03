@@ -56,6 +56,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float rotationalVelocity = totalAngle * Utilities.DerivativeOfFunctionAtTime(easing, (double)time / durationTotal) * (1f / (durationTotal + 1)); // summing up derivatives so we need a dt term
             CrabOwner.Arms[index].RotateLeg(rotationalVelocity);
         }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabNeutralState(CrabOwner);
+        }
         public override void HandleBounces()
         {
             
