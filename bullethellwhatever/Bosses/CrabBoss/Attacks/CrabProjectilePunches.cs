@@ -109,6 +109,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         float angle = Utilities.AngleToPlayerFrom(Arm(i).WristPosition());
                         Projectile p = SpawnProjectile(Arm(i).WristPosition(), angle.ToVector() * projectileSpeed, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
                         p.AddTrail(14);
+                        p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.Velocity, -1);
 
                         p.SetExtraAI(new Action(() =>
                         {

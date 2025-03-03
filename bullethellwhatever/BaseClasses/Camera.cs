@@ -20,6 +20,9 @@ namespace bullethellwhatever.BaseClasses
         public Matrix4x4 Matrix;
 
         private float screenShakeOffset;
+        private float cameraRotation;
+        private float cameraScale;
+
         private Microsoft.Xna.Framework.Vector2 position;
         public float ScreenShakeOffset
         {
@@ -34,9 +37,31 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
-        public float CameraRotation;
+        public float CameraRotation
+        {
+            get
+            {
+                return cameraRotation;
+            }
+            set
+            {
+                cameraRotation = value;
+                UpdateMatrices();
+            }
+        }
 
-        public float CameraScale;
+        public float CameraScale
+        {
+            get
+            {
+                return cameraScale;
+            }
+            set
+            {
+                cameraScale = value;
+                UpdateMatrices();
+            }
+        }
 
         public Rectangle VisibleArea;
 
