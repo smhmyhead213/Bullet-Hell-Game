@@ -113,7 +113,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 IsInvincible = false;
             }
 
-            RotationToAdd = Utilities.BringAngleIntoRange(RotationToAdd);
+            RotationToAdd = Utilities.ClosestToZero(RotationToAdd);
         }
 
         public virtual void SetMaxHP(float maxHP, bool setHP)
@@ -151,6 +151,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationToAdd = MathHelper.Lerp(startAngle, endAngle, interpolant);
         }
 
+        public void LerpToZero(float interpolant)
+        {
+            LerpRotation(RotationToAdd, 0f, interpolant);
+        }
 
         /// <summary>
         /// Makes this appendage point in the same direction as the previous offset by an angle. The upper arm will point in the same direction as the boss.

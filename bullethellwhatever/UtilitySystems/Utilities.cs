@@ -344,6 +344,23 @@ namespace bullethellwhatever
         }
 
         /// <summary>
+        /// Converts an angle to an equivalent angle as close to zero as possible
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <returns></returns>
+        public static float ClosestToZero(float angle)
+        {
+            float newAngle = BringAngleIntoRange(angle);
+
+            if (Abs(newAngle) < Abs(newAngle - Tau))
+            {
+                return newAngle;
+            }
+            else return newAngle - Tau;
+        }
+
+        /// <summary>
+        /// <summary>
         /// Takes an angle and returns an equivalent angle between 0 and 2PI.
         /// </summary>
         /// <param name="angle"></param>
@@ -363,7 +380,6 @@ namespace bullethellwhatever
             return angle;
         }
 
-        /// <summary>
         /// Returns the smallest angle clockwise between two angles as one clockwise from the vertical.
         /// </summary>
         /// <param name="start"></param>
@@ -481,7 +497,7 @@ namespace bullethellwhatever
 
         public static float Distance(this Vector2 v1, Vector2 v2)
         {
-            return Utilities.DistanceBetweenVectors(v1, v2);
+            return DistanceBetweenVectors(v1, v2);
         }
         public static Vector2 ToPlayer(this Vector2 position)
         {

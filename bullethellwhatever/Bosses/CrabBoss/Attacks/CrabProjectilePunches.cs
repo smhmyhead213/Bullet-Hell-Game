@@ -131,8 +131,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 if (usedTimer > attackDuration)
                 {
-                    Arm(i).LerpToRestPosition(0.1f);
-                    Arm(i).LowerClaw.LerpRotation(Arm(i).LowerClaw.CalculateFinalRotation(), 0f, 0.5f);
+                    Arm(i).LerpArmToRest(1f);
                 }
             }
 

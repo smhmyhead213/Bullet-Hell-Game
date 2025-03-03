@@ -30,7 +30,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 return new CrabPunch(CrabOwner);
             }
 
-            int rng = Utilities.RandomInt(1, 4);
+            int rng = Utilities.RandomInt(1, 5);
 
             return rng switch
             {
@@ -38,6 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 2 => new CrabBombThrow(CrabOwner),
                 3 => new NeutralToCrabFlailChargeTransition(CrabOwner),
                 4 => new CrabProjectilePunches(CrabOwner),
+                5 => new CrabSpray(CrabOwner),
                 // idk how this would get reached but whatever
                 _ => new CrabPunch(CrabOwner),
             };

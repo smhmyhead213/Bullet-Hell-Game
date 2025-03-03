@@ -223,6 +223,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return Position + Owner.ArmRestingEnds[LegIndex].Rotate(Owner.Rotation);
         }
+
+        public void LerpArmToRest(float progress)
+        {
+            LerpToRestPosition(progress, true);
+        }
         public void UpdateAppendages()
         {
             UpperArm.Position = Position;
