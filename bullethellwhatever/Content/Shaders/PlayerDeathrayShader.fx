@@ -1,8 +1,28 @@
-﻿sampler mainTexture;
+﻿// I suppose this is to ensure compatability using preprocessor commands.
+#if OPENGL
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
+#else
+#define VS_SHADERMODEL vs_4_0
+#define PS_SHADERMODEL ps_4_0
+#endif
 
-sampler noiseMap : register(s1);
+float4x4 view_projection;
 
-matrix WorldViewProjection;
+sampler TextureSampler : register(s0);
+
+// Only way it would correctly assign and read this.
+Texture2D NoiseTexture;
+sampler TextureSampler2 : register(s1)
+{
+    Texture = (NoiseTexture);
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+
 float uTime;
 float3 colour;
 float scrollSpeed;
@@ -30,12 +50,9 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    float4 pos = mul(input.Position, WorldViewProjection);
-    output.Position = pos;
-    
+    output.Position = mul(input.Position, view_projection);
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
-
     return output;
 }
 
@@ -44,15 +61,24 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
     float2 uv = input.TextureCoordinates;
     
-    float distanceFromCenter = abs(0.5 - uv.x);
-    float opacity = 1 - 2 * distanceFromCenter;
-    // amplify already bright areas and diminish everywhere else
-    float scrollOffset = (scrollSpeed * uTime) % 1;
-    float4 sample = tex2D(noiseMap, uv + float2(scrollOffset, scrollOffset));
-    // controls the threshold above which to be bright
-    float lenience = 0.9;
-    float strength = pow(sample + lenience, 5) - 0.2;
+    // sample to avoid compiling out
+    float4 baseColor = tex2D(TextureSampler, uv).rgba;
+    float dummy = baseColor.r * 0.001;
+    float scrollOffset = (scrollSpeed * uTime) % 1+ dummy;
+    float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
+    
     return sample;
+    
+    //float distanceFromCenter = abs(0.5 - uv.x) + dummy;
+    
+    //float opacity = 1 - 2 * distanceFromCenter;
+    //// amplify already bright areas and diminish everywhere else
+    //float scrollOffset = (scrollSpeed * uTime) % 1;
+    //float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
+    //// controls the threshold above which to be bright
+    //float lenience = 0.9;
+    //float strength = pow(sample + lenience, 5) - 0.2;
+    //return sample;
     //return float4(colour, 1) * strength * opacity;
 }
 
