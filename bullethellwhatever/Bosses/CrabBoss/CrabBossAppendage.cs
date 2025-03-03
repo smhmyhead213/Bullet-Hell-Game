@@ -35,8 +35,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public int ArmIndex;
 
-        public float RotationConstant;
-
         public float RotationToAdd;
 
         public CrabBossAppendage(Entity owner, CrabArm leg, AppendageType appendageType, int legIndex, float scale = 1f)
@@ -114,6 +112,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 TargetableByHoming = true;
                 IsInvincible = false;
             }
+
+            RotationToAdd = Utilities.BringAngleIntoRange(RotationToAdd);
         }
 
         public virtual void SetMaxHP(float maxHP, bool setHP)
@@ -127,7 +127,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual float RotationFromV() // rotation from vertical
         {
-            float output = RotationConstant + PI + Rotation;
+            float output = PI + Rotation;
             
             while (output > Tau)
             {
@@ -169,7 +169,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float CalculateFinalRotation()
         {
-            return Owner.Rotation + RotationConstant + RotationToAdd;
+            return Owner.Rotation + RotationToAdd;
         }
 
         public void PointInDirection(float angle)
