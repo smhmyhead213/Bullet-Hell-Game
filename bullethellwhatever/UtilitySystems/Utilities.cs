@@ -509,7 +509,13 @@ namespace bullethellwhatever
         {
             return AngleToVector(angle);
         }
-
+        public static void Add<T>(this List<T> addTo, List<T> toAdd)
+        {
+            foreach (T item in toAdd)
+            {
+                addTo.Add(item);
+            }
+        }
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)

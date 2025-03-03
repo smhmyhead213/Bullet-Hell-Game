@@ -26,7 +26,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public Vector2[] ArmPositionsOnBody;
         public Vector2[] ArmRestingEnds;
 
-
         public int Phase; // flag for if arms are detached yet
 
         public const float ScaleFactor = 1.5f;
@@ -89,6 +88,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             return Position + CalculateArmPostionsRelativeToCentre(expandedi);
         }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            DrawHitbox();
+        }
         public void ResetArmRotations()
         {
             for (int i = 0; i < 2; i++)

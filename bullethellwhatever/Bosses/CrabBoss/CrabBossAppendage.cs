@@ -12,6 +12,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
 using Microsoft.Xna.Framework.Media;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -195,22 +196,29 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             // to do: make this update the boss's hitbox instead to prevent pierce multihitting
 
+            List<Circle> toAdd = new List<Circle>();
+
             if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
             {
                 Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                Hitbox = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+                toAdd = Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
             }
             else if (Type == AppendageType.UpperClaw)
             {
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
+                toAdd = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
             }
             else // lower claw
             {
                 Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                Hitbox = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
+                toAdd = Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
+            }
+
+            foreach (Circle circle in toAdd)
+            {
+                Owner.Hitbox.Add(circle);
             }
         }
         public override void Draw(SpriteBatch spriteBatch)
