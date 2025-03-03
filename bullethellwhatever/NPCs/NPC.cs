@@ -104,6 +104,8 @@ namespace bullethellwhatever.NPCs
 
             Position = Position + Velocity;
 
+            PerformAdjustments();
+
             UpdateHitbox();
             CheckForHits();
 

@@ -124,14 +124,23 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Rotation = Utilities.VectorToAngle(Position - player.Position);
         }
 
-        public override void PostUpdate()
+        public override void PerformAdjustments()
         {
+            base.PerformAdjustments();
+
             for (int i = 0; i < 2; i++)
             {
-                Arms[i].Update();
+                Arms[i].UpdatePositions();
             }
 
-            base.PostUpdate();
+            for (int i = 0; i < 2; i++)
+            {
+                Arms[i].UpdateAppendages();
+            }
+        }
+        public override void PostUpdate()
+        {
+            base.PostUpdate();            
         }
         public override void Die()
         {

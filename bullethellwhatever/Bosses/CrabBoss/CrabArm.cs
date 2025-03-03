@@ -237,11 +237,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperClaw.Position = LowerArm.CalculateEnd();
             UpperClaw.Rotation = UpperClaw.CalculateFinalRotation();
         }
-        public void Update()
+
+        public void UpdatePositions()
         {
             int expandedi = LegIndex * 2 - 1;
             Position = Owner.CalculateArmPostions(expandedi);
-            UpdateAppendages();
         }
     }
 }

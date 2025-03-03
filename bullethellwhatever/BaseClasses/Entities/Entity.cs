@@ -365,6 +365,13 @@ namespace bullethellwhatever.BaseClasses.Entities
             return output;
         }
 
+        /// <summary>
+        /// Called in PostUpdate after velocity is applied but before hitbox checks. Override to perform any additional entity adjustments needed that account for velocity that impact the hitbox.
+        /// </summary>
+        public virtual void PerformAdjustments()
+        {
+
+        }
         public T GetComponent<T>()
         {
             foreach (Component comp in AdditionalComponents)

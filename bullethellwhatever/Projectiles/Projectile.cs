@@ -196,6 +196,7 @@ namespace bullethellwhatever.Projectiles
 
         public void UpdateAndCheckHits()
         {
+            PerformAdjustments();
             UpdateHitbox();
             CheckForHits(); 
         }
