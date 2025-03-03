@@ -135,9 +135,6 @@ namespace bullethellwhatever.MainFiles
 
             AssetRegistry.Update();
 
-            // to do: move this to a new camera Update method if something else needs updated as well
-            MainCamera.UpdateVisibleArea();
-
             if (MainInstance.IsActive)
             {
                 // call me Odie the way i bark at that garfeild
@@ -153,6 +150,9 @@ namespace bullethellwhatever.MainFiles
                 if (musicSystem.ActiveSong is not null)
                     MediaPlayer.Pause();
             }
+
+            // to do: move this to a new camera Update method if something else needs updated as well
+            MainCamera.UpdateVisibleArea();
 
             DialogueSystem.Update();
 

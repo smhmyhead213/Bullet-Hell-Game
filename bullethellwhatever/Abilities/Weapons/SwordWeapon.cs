@@ -39,7 +39,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public PrimitiveTrail Trail;
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
-            Trail = new PrimitiveTrail(50, Owner.Width(), Owner.Position, Color.Orange);
+            Trail = new PrimitiveTrail(50, Owner.Width(), Color.Orange);
         }
         public override void WeaponInitialise()
         {

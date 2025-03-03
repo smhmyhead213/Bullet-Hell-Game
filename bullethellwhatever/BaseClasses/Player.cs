@@ -17,6 +17,7 @@ using bullethellwhatever.AssetManagement;
 using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Abilities.Weapons;
 using bullethellwhatever.BaseClasses.Entities;
+using System.Collections.Generic;
 
 namespace bullethellwhatever.BaseClasses
 {
@@ -294,11 +295,11 @@ namespace bullethellwhatever.BaseClasses
                         scaleFactor = 1f / maxZoom;
                     }
 
-                    MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f);
+                    MainCamera.SetZoom(MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f), Utilities.CentreOfScreen());
                 }
                 else
                 {
-                    MainCamera.CameraScale = MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f);
+                    MainCamera.SetZoom(MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f), Utilities.CentreOfScreen());
                 }
             }
         }
@@ -362,8 +363,6 @@ namespace bullethellwhatever.BaseClasses
             {
                 component.Draw(spriteBatch);
             }
-
-            //DrawHitbox();
         }
     }
 }

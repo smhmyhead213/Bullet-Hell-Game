@@ -85,7 +85,6 @@ namespace bullethellwhatever.BaseClasses
         }
         public void UpdateVisibleArea()
         {
-            //Position = new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight);
             // try again later
             Microsoft.Xna.Framework.Vector2 centre = Position;
             Microsoft.Xna.Framework.Vector2 topLeft = centre - (Utilities.CentreOfScreen() / CameraScale);
@@ -95,12 +94,6 @@ namespace bullethellwhatever.BaseClasses
         public void UpdateMatrices()
         {
             // The camera translation has positive X and Y directions as right and down respectively.
-
-            //CameraRotation = PI / 12;
-            //Position = new Microsoft.Xna.Framework.Vector2(-600, 0);
-
-            //SetCameraPosition(Utilities.CentreOfScreen() + new Microsoft.Xna.Framework.Vector2(100f, 0));
-            //SetZoom(1f, Utilities.CentreOfScreen() * 1.5f);
 
             RotationMatrix = Matrix4x4.CreateRotationZ(CameraRotation);
 

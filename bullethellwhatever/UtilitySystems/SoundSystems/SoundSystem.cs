@@ -102,7 +102,7 @@ namespace bullethellwhatever.UtilitySystems.SoundSystems
         public static void PlaySound(string soundName)
         {
             // load in the bank with all the sounds in it
-            LoadBank("Content/Sounds/bullethellgamesounds.bank");
+            LoadBank("Content/Sounds/testbank.bank");
             // attempt to get the event containing the sound and output the event description
             ThrowIfNotOK(FMODStudioSystem.getEvent("event:/" + soundName, out EventDescription _event));
             // create an instance of the event description

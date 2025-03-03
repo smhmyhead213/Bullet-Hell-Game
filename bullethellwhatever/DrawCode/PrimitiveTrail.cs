@@ -42,7 +42,7 @@ namespace bullethellwhatever.DrawCode
             Colour = Owner.Colour;
         }
 
-        public PrimitiveTrail(int length, float width, Vector2 startPos, Color colour, string shader = null)
+        public PrimitiveTrail(int length, float width, Color colour, string shader = null)
         {
             if (shader is not null)
             {
