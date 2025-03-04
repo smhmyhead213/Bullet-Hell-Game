@@ -48,7 +48,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     int localTime = AITimer - chargeUpTime - waitTime;
                     float interpolant = localTime / (float)flickOutTime;
 
-                    Arm(i).LowerArm.LerpRotation(Arm(i).LowerArm.RotationToAdd, Arm(i).UpperArm.RotationToAdd * 0.5f, interpolant);
+                    Arm(i).LowerArm.LerpRotation(Arm(i).LowerArm.RotationToAdd, Arm(i).UpperArm.RotationToAdd * 0.5f, EasingFunctions.EaseOutExpo(interpolant));
                     Arm(i).UpperClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
                     Arm(i).LowerClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
                 }

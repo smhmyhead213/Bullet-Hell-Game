@@ -20,14 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            if (AITimer == 0)
-            {
-                Arm(0).RotateLeg(PI / 2);
-                Arm(1).RotateLeg(-PI / 2);
-            }
-
-
-            Owner.Rotation += Tau / 10;
+            Owner.Velocity = Vector2.Zero;
         }
     }
 }

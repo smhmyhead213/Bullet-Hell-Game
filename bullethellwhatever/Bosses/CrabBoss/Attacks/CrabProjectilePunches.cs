@@ -34,12 +34,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
             int attackDuration = 200;
-            int endAttackTime = 40;
             float homingStrength = 0.05f;
 
             float armLength = Arm(0).WristLength();
-            int armZeroTimer = AITimer;
-            int armOneTimer = AITimer - (totalPunchTime / 2);
+            int[] armInitialTimes = [0, -(totalPunchTime / 2)];
+
+            int armZeroTimer = AITimer + armInitialTimes[0];
+            int armOneTimer = AITimer + armInitialTimes[1];
+
             float pullBackAngle = PI / 2.4f;
             float sidestepInitialSpeed = 15f;
             ref float sidestepDir = ref ExtraData[1];
@@ -48,12 +50,27 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 // decide which timer to use
                 int usedTimer = (i == 0 ? armZeroTimer : armOneTimer);
+                int punchStopTime = attackDuration - totalPunchTime; // time after which we should stop punching
 
-                // only loop if we are still to continue attacking
+                // calculate whether or not we are in the "wind down" portion of this arms movement
+                int availablePunchTime = attackDuration + armInitialTimes[i];
+                int punchesAvailable = availablePunchTime / totalPunchTime;
+                int timeLastPunchEnds = -armInitialTimes[i] + punchesAvailable * totalPunchTime;
+                
+                // try to make a parallel to aitimer for this to conserve time til end
+                int timeToSpendWindingDown = attackDuration - timeLastPunchEnds;
 
-                if (AITimer < attackDuration)
+                // dont start another punch if we dont have time
+                if (usedTimer < timeLastPunchEnds)
                 {
                     usedTimer = usedTimer % totalPunchTime;
+                }
+                else
+                {
+                    int localTime = usedTimer - timeLastPunchEnds;
+                    float interpolant = localTime / (float)timeToSpendWindingDown;
+                    Debug.Assert(i == 0);
+                    Arm(i).LerpArmToRest(interpolant);
                 }
 
                 int expandedi = Utilities.ExpandedIndex(i);
@@ -128,14 +145,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         Arm(i).LowerClaw.LerpRotation(-expandedi * PI / 2, 0f, EasingFunctions.EaseOutExpo(clawCloseInterpolant));
                     }
                 }
-
-                if (usedTimer > attackDuration)
-                {
-                    Arm(i).LerpArmToRest(1f);
-                }
             }
 
-            if (AITimer == attackDuration + endAttackTime)
+            if (AITimer == attackDuration)
             {
                 End();
             }
@@ -143,7 +155,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabNeutralState(CrabOwner);
+            return new DoNothing(CrabOwner);
         }
     }
 }
