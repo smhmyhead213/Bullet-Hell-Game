@@ -59,13 +59,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 {
                     int localTime = AITimer - timeHere;
                     float interpolant = EasingFunctions.EaseParabolic(localTime / (float)sprayTime);
-                    float angleVariance = PI / 4;
+                    float angleVariance = PI / 3 * interpolant;
                     float centreAngle = Arm(i).LowerArm.RotationFromV();
                     float projectileSpeed = (interpolant + 0.2f) * 30f;
+                    float projectileScale = 3.3f;
+
                     Vector2 direction = Utilities.RandomFloat(-angleVariance, angleVariance).ToVector().Rotate(centreAngle);
 
-                    Projectile p = SpawnProjectile(Arm(i).WristPosition(), projectileSpeed * direction, 1f, 1, "box", Vector2.One * 0.6f, Owner, true, false, Color.Red, true, false);
+                    Projectile p = SpawnProjectile(Arm(i).WristPosition(), projectileSpeed * direction, 1f, 1, "box", Vector2.One * projectileScale, Owner, true, false, Color.Red, true, false);
                     p.AddTrail(14);
+                    p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.Velocity, -1);
                     p.SetExtraAI(new Action(() =>
                     {
                         p.Rotation = p.Velocity.ToAngle();

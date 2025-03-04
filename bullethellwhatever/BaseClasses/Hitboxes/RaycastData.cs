@@ -19,7 +19,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         /// <param name="direction"></param>
         public RaycastData(Vector2 describingVector, int direction)
         {
-            DescribingVector = describingVector;
+            DescribingVector = describingVector; // does setting this once work for variable velocity?
             Direction = direction;
         }
     }
