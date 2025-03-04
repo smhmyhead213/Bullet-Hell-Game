@@ -1,14 +1,31 @@
-﻿sampler mainTexture : register(s0);
+﻿// ensure compatability using preprocessor commands.
+#if OPENGL
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
+#else
+#define VS_SHADERMODEL vs_4_0
+#define PS_SHADERMODEL ps_4_0
+#endif
 
-texture noiseMap;
-sampler noiseMapSampler : register(s1);
+float4x4 view_projection;
 
-matrix worldViewProjection;
+sampler TextureSampler : register(s0);
+
+// we need samplers for both the main texture and noise texture to prevent the compiler getting trigger happy
+Texture2D NoiseTexture;
+sampler TextureSampler2 : register(s1)
+{
+    Texture = (NoiseTexture);
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = wrap;
+};
 
 float uTime;
-float transparency;
-float scrollSpeed;
 float3 colour;
+float scrollSpeed;
 
 struct VertexShaderInput
 {
@@ -30,36 +47,47 @@ struct VertexShaderOutput
     // over the triangle, and provided as input to your pixel shader.
 };
 
-VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
+VertexShaderOutput MainVS(in VertexShaderInput input)
 {
-    
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    float4 pos = mul(input.Position, worldViewProjection);
-    output.Position = pos;
-    
+    output.Position = mul(input.Position, view_projection);
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
-
     return output;
 }
 
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
-{   
-    //mainTexture needs to be used to occupy register 0
+float4 MainPS(VertexShaderOutput input) : COLOR
+{
+        
+    // sample to avoid compiling out
+    float2 uv = input.TextureCoordinates;
+    float4 baseColor = tex2D(TextureSampler, uv).rgba;
+    float dummy = baseColor.r * 0.001;
+
+    float scrollOffset = (scrollSpeed * uTime) % 1 + dummy;
+    float4 samp = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
     
-    float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
+    return samp;
     
-    float2 uv = input.TextureCoordinates + dummy;
+    //float distanceFromCenter = abs(0.5 - uv.x) + dummy;
     
-    return float4(1, 1, 1, 1);
+    //float opacity = 1 - 2 * distanceFromCenter;
+    //// amplify already bright areas and diminish everywhere else
+    //float scrollOffset = (scrollSpeed * uTime) % 1;
+    //float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
+    //// controls the threshold above which to be bright
+    //float lenience = 0.9;
+    //float strength = pow(sample + lenience, 5) - 0.2;
+    //return sample;
+    //return float4(colour, 1) * strength * opacity;
 }
 
 Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 VertexShaderFunction();
-        PixelShader = compile ps_4_0 PixelShaderFunction();
+        //VertexShader = compile vs_4_0 MainVS();
+        PixelShader = compile ps_4_0 MainPS();
         
     }
 }

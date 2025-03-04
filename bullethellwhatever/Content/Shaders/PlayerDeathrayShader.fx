@@ -1,4 +1,4 @@
-﻿// I suppose this is to ensure compatability using preprocessor commands.
+﻿// ensure compatability using preprocessor commands.
 #if OPENGL
 #define VS_SHADERMODEL vs_3_0
 #define PS_SHADERMODEL ps_3_0
@@ -11,7 +11,7 @@ float4x4 view_projection;
 
 sampler TextureSampler : register(s0);
 
-// Only way it would correctly assign and read this.
+// we need samplers for both the main texture and noise texture to prevent the compiler getting trigger happy
 Texture2D NoiseTexture;
 sampler TextureSampler2 : register(s1)
 {
@@ -58,16 +58,16 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    //float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
-    float2 uv = input.TextureCoordinates;
-    
+        
     // sample to avoid compiling out
+    float2 uv = input.TextureCoordinates;
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
-    float scrollOffset = (scrollSpeed * uTime) % 1+ dummy;
-    float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
+
+    float scrollOffset = (scrollSpeed * uTime) % 1 + dummy;
+    float4 samp = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
     
-    return sample;
+    return samp;
     
     //float distanceFromCenter = abs(0.5 - uv.x) + dummy;
     
