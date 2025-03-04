@@ -21,7 +21,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             int chargeUpTime = 70;
             int waitTime = 30;
-            int flickOutTime = 10;
+            int flickOutTime = 3;
             int sprayTime = 120;
             int windDownTime = 30;
 
@@ -60,19 +60,24 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     int localTime = AITimer - timeHere;
                     float interpolant = EasingFunctions.EaseParabolic(localTime / (float)sprayTime);
                     float angleVariance = PI / 3 * interpolant;
+                    float sizeVariance = 0.3f;
                     float centreAngle = Arm(i).LowerArm.RotationFromV();
-                    float projectileSpeed = (interpolant + 0.2f) * 30f;
-                    float projectileScale = 3.3f;
+                    float projectileSpeed = (interpolant + 0.2f) * 10f;
+                    float projectileScale = 1f + Utilities.RandomFloat(-sizeVariance, sizeVariance);
 
                     Vector2 direction = Utilities.RandomFloat(-angleVariance, angleVariance).ToVector().Rotate(centreAngle);
 
                     Projectile p = SpawnProjectile(Arm(i).WristPosition(), projectileSpeed * direction, 1f, 1, "box", Vector2.One * projectileScale, Owner, true, false, Color.Red, true, false);
                     p.AddTrail(14);
                     p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.GetVelocity, -1);
+                    float acceleration = Utilities.RandomFloat(1.05f, 1.25f);
+
                     p.SetExtraAI(new Action(() =>
                     {
                         p.Rotation = p.Velocity.ToAngle();
-                        p.ExponentialAccelerate(1.1f);
+                        p.ExponentialAccelerate(acceleration);
+                        p.LightHomeToPlayer(0.01f);
+                        
                     }));
                 }
 

@@ -78,5 +78,10 @@ namespace bullethellwhatever.Projectiles
         {
             projectile.Velocity *= acceleration;
         }
+
+        public static void LightHomeToPlayer(this Projectile projectile, float homingStrength)
+        {
+            projectile.Velocity = Utilities.ConserveLengthLerp(projectile.Velocity, projectile.Position.ToPlayer(), homingStrength);
+        }
     }
 }
