@@ -68,7 +68,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     Projectile p = SpawnProjectile(Arm(i).WristPosition(), projectileSpeed * direction, 1f, 1, "box", Vector2.One * projectileScale, Owner, true, false, Color.Red, true, false);
                     p.AddTrail(14);
-                    p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.Velocity, -1);
+                    p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.GetVelocity, -1);
                     p.SetExtraAI(new Action(() =>
                     {
                         p.Rotation = p.Velocity.ToAngle();

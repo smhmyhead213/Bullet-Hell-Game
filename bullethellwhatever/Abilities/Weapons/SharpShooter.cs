@@ -61,7 +61,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             p.Rotation = firingAngle;
             p.Opacity = 1f;
-            p.Raycast = new RaycastData(p.Velocity, 1);
+            p.Raycast = new RaycastData(p.GetVelocity, 1); // raycast forward
 
             p.AddTrail(14);
         }

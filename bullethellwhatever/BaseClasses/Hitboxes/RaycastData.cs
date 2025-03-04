@@ -9,7 +9,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 {
     public class RaycastData
     {
-        public Vector2 DescribingVector;
+        public Func<Vector2> DescribingVector;
         public int Direction;
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         /// </summary>
         /// <param name="describingVector"></param>
         /// <param name="direction"></param>
-        public RaycastData(Vector2 describingVector, int direction)
+        public RaycastData(Func<Vector2> describingVector, int direction)
         {
             DescribingVector = describingVector; // does setting this once work for variable velocity?
             Direction = direction;

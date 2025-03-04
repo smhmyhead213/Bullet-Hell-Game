@@ -125,6 +125,11 @@ namespace bullethellwhatever.BaseClasses.Entities
             ExtraData[index] = value;
         }
 
+        public Vector2 GetVelocity()
+        {
+            return Velocity;
+        }
+
         public virtual Vector2 GetSize() // get a size that corresponds to the current depth
         {
             return Scale;
@@ -311,7 +316,8 @@ namespace bullethellwhatever.BaseClasses.Entities
 
             if (raycastDirection == 1 || raycastDirection == -1)
             {
-                List<Circle> raycast = Utilities.FillRectWithCircles(Position + Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
+                Vector2 describingVec = Raycast.DescribingVector();
+                List<Circle> raycast = Utilities.FillRectWithCircles(Position + describingVec / 2f, (int)Width(), (int)describingVec.Length(), Utilities.VectorToAngle(describingVec));
 
                 foreach (Circle circle in raycast)
                 {
