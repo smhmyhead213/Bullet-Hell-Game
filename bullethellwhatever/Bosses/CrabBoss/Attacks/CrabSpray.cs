@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.UtilitySystems;
 using FMOD.Studio;
@@ -108,11 +109,31 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             // try to make prim cones to show danger zone
             base.ExtraDraw(s);
+
+            List<Vector2> conePoints = GenerateConePrimPoints(Arm(0).WristPosition(), Arm(0).LowerArm.RotationFromV(), PI / 2, 400);
+
+            foreach (Vector2 point in conePoints)
+            {
+                Drawing.DrawBox(point, Color.Red, 1f);
+            }
         }
 
-        public List<Vector2> GenerateConePrimPoints(float angleSubtended, float length)
+        public List<Vector2> GenerateConePrimPoints(Vector2 startPoint, float rotation, float angleSubtended, float length, int points = 20)
         {
-            
+            List<Vector2> output = new List<Vector2>();
+
+            for (int i = 0; i < points; i++) // not including points here might make it not reach max length
+            {
+                float progress = i / (float)points;
+                float currentLength = length * progress;
+                // calculate the half-width of the cone at this point
+                float halfWidth = currentLength * Tan(angleSubtended / 2);
+
+                output.Add(startPoint + new Vector2(halfWidth, currentLength).Rotate(rotation));
+                output.Add(startPoint + new Vector2(-halfWidth, currentLength).Rotate(rotation));
+            }
+
+            return output;
         }
         public override BossAttack PickNextAttack()
         {

@@ -127,14 +127,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual float RotationFromV() // rotation from vertical
         {
-            float output = PI + Rotation;
+            return Utilities.ClosestToZero(Owner.Rotation + PI + RotationToAdd);
+            //float output = PI + Rotation;
             
-            while (output > Tau)
-            {
-                output = output - Tau;
-            }
+            //while (output > Tau)
+            //{
+            //    output = output - Tau;
+            //}
 
-            return output;
+            //return output;
         }
         public virtual Vector2 CalculateEnd()
         {
