@@ -198,9 +198,5 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             Pupil.ResetSize();
         }
-        public override void ExtraDraw(SpriteBatch s)
-        {
-            //Utilities.drawTextInDrawMethod(aitimer.ToString(), new Vector2(ScreenWidth / 4f * 3f, ScreenHeight / 4f * 3f), s, font, Color.White);
-        }
     }
 }

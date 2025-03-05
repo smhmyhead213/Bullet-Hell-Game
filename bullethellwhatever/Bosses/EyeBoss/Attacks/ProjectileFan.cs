@@ -75,10 +75,5 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 Pupil.RotationWithinEye = MathHelper.Lerp(Pupil.RotationWithinEye, Utilities.AngleToPlayerFrom(Pupil.Position), (float)localTime / shootSlowDownTime);
             }
         }
-
-        public override void ExtraDraw(SpriteBatch s)
-        {
-
-        }
     }
 }

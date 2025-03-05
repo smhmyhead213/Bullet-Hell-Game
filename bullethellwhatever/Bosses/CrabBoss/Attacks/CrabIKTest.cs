@@ -34,10 +34,5 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             return new CrabFlail(CrabOwner, 0);
         }
-
-        public override void ExtraDraw(SpriteBatch s)
-        {
-
-        }
     }
 }

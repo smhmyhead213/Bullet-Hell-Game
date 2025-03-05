@@ -158,9 +158,5 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             Pupil.ResetSize();
         }
-        public override void ExtraDraw(SpriteBatch s)
-        {
-
-        }
     }
 }

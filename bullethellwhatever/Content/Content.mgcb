@@ -431,6 +431,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/CircleOutlineShader.fx
 
+#begin Shaders/CrabConeShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/CrabConeShader.fx
+
 #begin Shaders/CrabRocketBoosterShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

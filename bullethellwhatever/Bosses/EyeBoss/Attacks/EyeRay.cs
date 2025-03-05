@@ -141,10 +141,5 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 }
             }
         }
-
-        public override void ExtraDraw(SpriteBatch s)
-        {
-
-        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.UtilitySystems;
@@ -15,19 +16,24 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
     public class CrabSpray : CrabBossAttack
     {
+        public const int chargeUpTime = 70;
+        public const int waitTime = 30;
+        public const int flickOutTime = 3;
+        public const int sprayTime = 120;
+        public const int windDownTime = 30;
+        public int projectileReleaseTime => chargeUpTime + flickOutTime + waitTime + flickOutTime;
         public CrabSpray(CrabBoss owner) : base(owner)
         {
 
         }
 
+        public override bool SelectionCondition()
+        {
+            return Owner.DistanceFromPlayer() < 800f;
+        }
+
         public override void Execute(int AITimer)
         {
-            int chargeUpTime = 70;
-            int waitTime = 30;
-            int flickOutTime = 3;
-            int sprayTime = 120;
-            int windDownTime = 30;
-
             float holdOutAngle = PI / 12f;
             float finalHoldAngle = PI / 2f;
             float armLength = Arm(0).WristLength();
@@ -35,6 +41,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             for (int i = 0; i < 2; i++)
             {
                 int expandedi = Utilities.ExpandedIndex(i);
+
                 CrabOwner.FacePlayer();
 
                 if (AITimer < chargeUpTime)
@@ -105,15 +112,47 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             }
         }
 
-        public override void ExtraDraw(SpriteBatch s)
+        public override void ExtraDraw(SpriteBatch s, int AITimer)
         {
             // try to make prim cones to show danger zone
-            base.ExtraDraw(s);
+            base.ExtraDraw(s, AITimer);
 
-            DrawCone(Arm(0).WristPosition(), Arm(0).LowerArm.RotationFromV(), PI / 2, 400);
+            //foreach (Vector2 point in GenerateConePrimPoints(Arm(0).WristPosition(), Arm(0).LowerArm.RotationFromV(), PI / 2, 400))
+            //{
+            //    Drawing.DrawBox(point, Color.Red, 1f);
+            //}
+
+            Color colour = Color.Red;
+
+            Shader coneShader = new("CrabConeShader", Color.Red);
+            
+            if (AITimer < projectileReleaseTime)
+            {
+                float opacity = 1f;
+                int fadeInTime = 15;
+                int fadeOutTime = 3;
+
+                if (AITimer < fadeInTime)
+                {
+                    opacity = AITimer / (float)fadeInTime;
+                }
+
+                if (AITimer > projectileReleaseTime - fadeOutTime)
+                {
+                    opacity = EasingFunctions.EaseOutExpo((projectileReleaseTime - AITimer) / (float)fadeInTime);
+                }
+
+                coneShader.SetParameter("colour", colour);
+                coneShader.SetParameter("opacity", opacity);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), PI / 2, 400, colour * opacity, coneShader);
+                }
+            }
         }
 
-        public void DrawCone(Vector2 startPoint, float rotation, float angleSubtended, float length, int points = 20)
+        public void DrawCone(Vector2 startPoint, float rotation, float angleSubtended, float length, Color colour, Shader shader, int points = 20)
         {
             List<Vector2> inpPoints = GenerateConePrimPoints(startPoint, rotation, angleSubtended, length, points);
             int vertexCount = inpPoints.Count;
@@ -124,15 +163,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 return;
             }
 
-            Color colour = Color.Red;
-
             for (int i = 0; i < vertexCount; i += 2)
             {
-                int startingIndex = i * 2;
-                float progress = i / points; // this might be wrong
+                int startingIndex = i;
+                float progress = i / (float)points; // this might be wrong
+                Color colToUse = colour * (1f - progress);
 
-                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colour, new Vector2(0f, progress));
-                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i], colour, new Vector2(0f, progress));
+                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colToUse, new Vector2(0f, progress));
+                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i + 1], colToUse, new Vector2(1f, progress));
             }
 
             int numberOfTriangles = vertexCount - 2;
@@ -147,10 +185,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
             }
 
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, "OutlineTelegraphShader");
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader.Effect);
 
             primSet.Draw();
         }
+
         public List<Vector2> GenerateConePrimPoints(Vector2 startPoint, float rotation, float angleSubtended, float length, int points = 20)
         {
             List<Vector2> output = new List<Vector2>();

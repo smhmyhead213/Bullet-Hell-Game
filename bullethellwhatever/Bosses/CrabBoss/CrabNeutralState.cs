@@ -19,6 +19,37 @@ namespace bullethellwhatever.Bosses.CrabBoss
             End();
         }
 
+        public BossAttack PickAttack(int repetitions = 0)
+        {
+            if (repetitions > 5)
+            {
+                return new CrabPunch(CrabOwner);
+            }
+            else
+            {
+                int rng = Utilities.RandomInt(1, 5);
+
+                BossAttack chosen = rng switch
+                {
+                    1 => new CrabPunch(CrabOwner),
+                    2 => new CrabBombThrow(CrabOwner),
+                    3 => new NeutralToCrabFlailChargeTransition(CrabOwner),
+                    4 => new CrabProjectilePunches(CrabOwner),
+                    5 => new CrabSpray(CrabOwner),
+                    // idk how this would get reached but whatever
+                    _ => new CrabPunch(CrabOwner),
+                };
+
+                if (chosen.SelectionCondition())
+                {
+                    return chosen;
+                }
+                else
+                {
+                    return PickAttack(repetitions + 1);
+                }
+            }
+        }
         public override BossAttack PickNextAttack()
         {
             // all attack logic goes here
@@ -30,18 +61,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 return new CrabPunch(CrabOwner);
             }
 
-            int rng = Utilities.RandomInt(1, 5);
-
-            return rng switch
-            {
-                1 => new CrabPunch(CrabOwner),
-                2 => new CrabBombThrow(CrabOwner),
-                3 => new NeutralToCrabFlailChargeTransition(CrabOwner),
-                4 => new CrabProjectilePunches(CrabOwner),
-                5 => new CrabSpray(CrabOwner),
-                // idk how this would get reached but whatever
-                _ => new CrabPunch(CrabOwner),
-            };
+            return PickAttack();
         }
     }
 }

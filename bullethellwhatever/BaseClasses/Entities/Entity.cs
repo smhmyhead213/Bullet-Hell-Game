@@ -380,6 +380,12 @@ namespace bullethellwhatever.BaseClasses.Entities
         {
 
         }
+
+        public float DistanceFromPlayer()
+        {
+            return Utilities.DistanceBetweenVectors(Position, player.Position);
+        }
+
         public T GetComponent<T>()
         {
             foreach (Component comp in AdditionalComponents)

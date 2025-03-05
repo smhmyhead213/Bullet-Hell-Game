@@ -20,7 +20,7 @@ namespace bullethellwhatever.BaseClasses
             base.Draw(spriteBatch);
 
             if (CurrentAttack is not null)
-                CurrentAttack.ExtraDraw(spriteBatch);
+                CurrentAttack.ExtraDraw(spriteBatch, AITimer);
         }
 
         public override void AI()

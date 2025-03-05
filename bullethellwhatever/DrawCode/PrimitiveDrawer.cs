@@ -92,9 +92,10 @@ namespace bullethellwhatever.DrawCode
         public PrimitiveSet(int verticesCount, int indicesCount, Effect shader = null)
         {
             Shader = shader;
+
             PrepareBuffers(verticesCount, indicesCount);
         }
-        public PrimitiveSet(int verticesCount, int indicesCount, string? shader = null)
+        public PrimitiveSet(int verticesCount, int indicesCount, string? shader)
         {
             if (shader is not null)
             {

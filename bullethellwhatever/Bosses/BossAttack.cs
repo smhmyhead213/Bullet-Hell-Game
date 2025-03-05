@@ -40,7 +40,7 @@ namespace bullethellwhatever.Bosses
 
         }
 
-        public virtual void ExtraDraw(SpriteBatch s)
+        public virtual void ExtraDraw(SpriteBatch s, int AITimer)
         {
 
         }
@@ -68,6 +68,10 @@ namespace bullethellwhatever.Bosses
 
         }
 
+        public virtual bool SelectionCondition()
+        {
+            return true;
+        }
 
         public virtual void HandleBounces()
         {

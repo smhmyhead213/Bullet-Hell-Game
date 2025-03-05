@@ -201,15 +201,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             else
                 return new NeutralToCrabFlailChargeTransition(CrabOwner);
         }
-        public override void ExtraDraw(SpriteBatch s)
-        {
-            //Utilities.drawTextInDrawMethod("boss rotation " + (Owner.Rotation + PI).ToString(), player.Position - new Vector2(0f, 50f), _spriteBatch, font, Color.White, 2);
-
-            //Vector2 toPlayer = player.Position - Owner.Position;
-            //float angleToPlayer = Utilities.VectorToAngle(toPlayer);
-
-            //Utilities.drawTextInDrawMethod("angle to player " + angleToPlayer.ToString(), player.Position - new Vector2(0f, 100f), _spriteBatch, font, Color.White, 2);
-        }
     }
 
     public class CrabPunchToProjectileSpreadTransition : CrabBossAttack
