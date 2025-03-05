@@ -74,9 +74,15 @@ namespace bullethellwhatever.Projectiles
             Vector2 velocity = speed * Utilities.RotateVectorClockwise(-Vector2.UnitY, rotation);
             p.Spawn("box", position, velocity, -velocity / 2f / lifetime, Vector2.One * 0.45f, rotation, colour, 1f, 20);
         }
-        public static void ExponentialAccelerate(this Projectile projectile, float acceleration)
+        public static void ExponentialAccelerate(this Projectile projectile, float acceleration, float speedCap = 1000f)
         {
             projectile.Velocity *= acceleration;
+
+            // this speed cap might cause issues
+            if (projectile.Velocity.Length() > speedCap)
+            {
+                projectile.Velocity = projectile.Velocity.SetLength(speedCap);
+            }
         }
 
         public static void LightHomeToPlayer(this Projectile projectile, float homingStrength)

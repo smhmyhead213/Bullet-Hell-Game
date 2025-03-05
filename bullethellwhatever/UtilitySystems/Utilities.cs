@@ -525,6 +525,12 @@ namespace bullethellwhatever
         {
             return AngleToVector(angle);
         }
+
+        public static Vector2 SetLength(this Vector2 vector, float length)
+        {
+            return SafeNormalise(vector) * length;
+        }
+
         public static void Add<T>(this List<T> addTo, List<T> toAdd)
         {
             foreach (T item in toAdd)

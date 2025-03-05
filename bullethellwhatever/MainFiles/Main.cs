@@ -3,6 +3,7 @@ global using static bullethellwhatever.UtilitySystems.InputSystem;
 global using static bullethellwhatever.MainFiles.GameInfoMethods;
 global using static bullethellwhatever.Projectiles.CommonProjectileMethods;
 global using static bullethellwhatever.UtilitySystems.ScreenManager;
+global using static System.Diagnostics.Debug;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

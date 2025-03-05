@@ -11,8 +11,6 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using System.Linq;
-using SharpDX.MediaFoundation;
-using SharpDX.Direct3D9;
 
 namespace bullethellwhatever.BaseClasses.Entities
 {
@@ -300,7 +298,7 @@ namespace bullethellwhatever.BaseClasses.Entities
             AdditionalComponents.Add(trail);
         }
 
-        public virtual bool IsCollidingWith(Entity other, int raycastDirection = 0)
+        public virtual bool IsCollidingWith(Entity other)
         {
             // read it, oh O(n^2) haters, and weep.
             foreach (Circle mine in Hitbox)
@@ -314,10 +312,14 @@ namespace bullethellwhatever.BaseClasses.Entities
                 }
             }
 
-            if (raycastDirection == 1 || raycastDirection == -1)
+            if (Raycast is not null && (Raycast.Direction == 1 || Raycast.Direction == -1))
             {
                 Vector2 describingVec = Raycast.DescribingVector();
-                List<Circle> raycast = Utilities.FillRectWithCircles(Position + describingVec / 2f, (int)Width(), (int)describingVec.Length(), Utilities.VectorToAngle(describingVec));
+                int dir = Raycast.Direction;
+
+                List<Circle> raycast = Utilities.FillRectWithCircles(Position + dir * describingVec / 2f, (int)Width(), (int)describingVec.Length(), Utilities.VectorToAngle(describingVec));
+
+                //Assert(describingVec.Length() < 1000f);
 
                 foreach (Circle circle in raycast)
                 {

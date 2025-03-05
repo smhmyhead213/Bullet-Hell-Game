@@ -51,7 +51,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 foreach (Projectile reflector in availableReflectors)
                 {
-                    if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector, 1))
+                    if (!ReflectorsHit.Contains(reflector) && IsCollidingWith(reflector))
                     {
                         foundReflector = true;
 
