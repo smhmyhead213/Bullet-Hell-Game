@@ -151,6 +151,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationToAdd = MathHelper.Lerp(startAngle, endAngle, interpolant);
         }
 
+        public void LerpTo(float endAngle, float interpolant)
+        {
+            RotationToAdd = MathHelper.Lerp(RotationToAdd, endAngle, interpolant);
+        }
         public void LerpToZero(float interpolant)
         {
             LerpRotation(RotationToAdd, 0f, interpolant);

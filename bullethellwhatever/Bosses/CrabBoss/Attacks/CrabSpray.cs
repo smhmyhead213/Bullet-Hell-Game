@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.UtilitySystems;
+using FMOD.Studio;
 using log4net.Util;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -25,7 +27,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int sprayTime = 120;
             int windDownTime = 30;
 
-            float holdOutAngle = PI / 6f;
+            float holdOutAngle = PI / 12f;
+            float finalHoldAngle = PI / 2f;
             float armLength = Arm(0).WristLength();
 
             for (int i = 0; i < 2; i++)
@@ -48,9 +51,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     int localTime = AITimer - chargeUpTime - waitTime;
                     float interpolant = localTime / (float)flickOutTime;
 
-                    Arm(i).LowerArm.LerpRotation(Arm(i).LowerArm.RotationToAdd, Arm(i).UpperArm.RotationToAdd * 0.5f, EasingFunctions.EaseOutExpo(interpolant));
-                    Arm(i).UpperClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
-                    Arm(i).LowerClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
+                    //Arm(i).LowerArm.LerpRotation(Arm(i).LowerArm.RotationToAdd, Arm(i).UpperArm.RotationToAdd * 0.5f, EasingFunctions.EaseOutExpo(interpolant));
+                    //Arm(i).UpperClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
+                    //Arm(i).LowerClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
                 }
 
                 int timeHere = chargeUpTime + flickOutTime + waitTime;
@@ -58,8 +61,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer >= timeHere && AITimer < timeHere + sprayTime)
                 {
                     int localTime = AITimer - timeHere;
-                    float interpolant = EasingFunctions.EaseParabolic(localTime / (float)sprayTime);
-                    float angleVariance = PI / 3 * interpolant;
+                    float progress = localTime / (float)sprayTime;
+                    float interpolant = EasingFunctions.EaseParabolic(progress);
+                    float angleVariance = PI / 4 * interpolant;
                     float sizeVariance = 0.3f;
                     float centreAngle = Arm(i).LowerArm.RotationFromV();
                     float projectileSpeed = (interpolant + 0.2f) * 10f;
@@ -79,13 +83,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         p.LightHomeToPlayer(0.01f);
                         
                     }));
+
+                    float armInterpolant = EasingFunctions.EaseOutElastic(progress);
+                    Arm(i).UpperArm.LerpTo(-expandedi * finalHoldAngle, armInterpolant);
+                    Arm(i).LowerClaw.LerpTo(-expandedi * PI / 2f, armInterpolant);
+                    Arm(i).LowerArm.LerpTo(0, armInterpolant);
                 }
 
                 if (AITimer >= timeHere + sprayTime && AITimer < timeHere + sprayTime + windDownTime)
                 {
                     int localTime = AITimer - (timeHere + sprayTime);
 
-                    Arm(i).LerpArmToRest(localTime / (float)sprayTime);
+                    Arm(i).LerpArmToRest(localTime / (float)windDownTime);
                 }
 
                 if (AITimer == timeHere + sprayTime + windDownTime)
@@ -93,6 +102,21 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     End();
                 }
             }
+        }
+
+        public override void ExtraDraw(SpriteBatch s)
+        {
+            // try to make prim cones to show danger zone
+            base.ExtraDraw(s);
+        }
+
+        public List<Vector2> GenerateConePrimPoints(float angleSubtended, float length)
+        {
+            
+        }
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabSpray(CrabOwner);
         }
     }
 }

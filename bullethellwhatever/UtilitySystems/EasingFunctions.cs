@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace bullethellwhatever.UtilitySystems
 {
@@ -67,6 +68,15 @@ namespace bullethellwhatever.UtilitySystems
             return 1 + c3 * Pow(progress - 1, 3) + c1 * Pow(progress - 1, 2);
         }
 
+        public static float EaseInOutBack(float progress)
+        {
+            float c1 = 1.70158f;
+            float c2 = c1 * 1.525f;
+
+            return progress < 0.5
+              ? (Pow(2 * progress, 2) * ((c2 + 1) * 2 * progress - c2)) / 2
+              : (Pow(2 * progress - 2, 2) * ((c2 + 1) * (progress * 2 - 2) + c2) + 2) / 2;
+        }
         public static float EaseInOutCirc(float progress)
         {
             return progress < 0.5 ? (1 - Sqrt(1 - Pow(2 * progress, 2))) / 2 : (Sqrt(1 - Pow(-2 * progress + 2, 2)) + 1) / 2;
