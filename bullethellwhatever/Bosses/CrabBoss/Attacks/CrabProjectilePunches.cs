@@ -57,9 +57,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 int punchesAvailable = availablePunchTime / totalPunchTime;
                 int timeLastPunchEnds = -armInitialTimes[i] + punchesAvailable * totalPunchTime;
                 
-                // try to make a parallel to aitimer for this to conserve time til end
-                int timeToSpendWindingDown = attackDuration - timeLastPunchEnds;
-
+                // figure out how long we have until the attack fully ends, if we dont have time
+                int timeToSpendWindingDown = attackDuration - timeLastPunchEnds + armInitialTimes[i];
                 // dont start another punch if we dont have time
                 if (usedTimer < timeLastPunchEnds)
                 {
@@ -69,7 +68,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 {
                     int localTime = usedTimer - timeLastPunchEnds;
                     float interpolant = localTime / (float)timeToSpendWindingDown;
-                    Debug.Assert(i == 0);
+                    //Debug.Assert(i == 0);
                     Arm(i).LerpArmToRest(interpolant);
                 }
 
@@ -151,11 +150,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 End();
             }
-        }
-
-        public override BossAttack PickNextAttack()
-        {
-            return new DoNothing(CrabOwner);
         }
     }
 }
