@@ -110,14 +110,47 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             // try to make prim cones to show danger zone
             base.ExtraDraw(s);
 
-            List<Vector2> conePoints = GenerateConePrimPoints(Arm(0).WristPosition(), Arm(0).LowerArm.RotationFromV(), PI / 2, 400);
-
-            foreach (Vector2 point in conePoints)
-            {
-                Drawing.DrawBox(point, Color.Red, 1f);
-            }
+            DrawCone(Arm(0).WristPosition(), Arm(0).LowerArm.RotationFromV(), PI / 2, 400);
         }
 
+        public void DrawCone(Vector2 startPoint, float rotation, float angleSubtended, float length, int points = 20)
+        {
+            List<Vector2> inpPoints = GenerateConePrimPoints(startPoint, rotation, angleSubtended, length, points);
+            int vertexCount = inpPoints.Count;
+
+            if (vertexCount == 0)
+            {
+                // explodes pancake with mind
+                return;
+            }
+
+            Color colour = Color.Red;
+
+            for (int i = 0; i < vertexCount; i += 2)
+            {
+                int startingIndex = i * 2;
+                float progress = i / points; // this might be wrong
+
+                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colour, new Vector2(0f, progress));
+                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i], colour, new Vector2(0f, progress));
+            }
+
+            int numberOfTriangles = vertexCount - 2;
+
+            int indexCount = numberOfTriangles * 3;
+
+            for (int i = 0; i < numberOfTriangles; i++)
+            {
+                int startingIndex = i * 3;
+                PrimitiveManager.MainIndices[startingIndex] = (short)i;
+                PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
+                PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
+            }
+
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, "OutlineTelegraphShader");
+
+            primSet.Draw();
+        }
         public List<Vector2> GenerateConePrimPoints(Vector2 startPoint, float rotation, float angleSubtended, float length, int points = 20)
         {
             List<Vector2> output = new List<Vector2>();
@@ -129,8 +162,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 // calculate the half-width of the cone at this point
                 float halfWidth = currentLength * Tan(angleSubtended / 2);
 
-                output.Add(startPoint + new Vector2(halfWidth, currentLength).Rotate(rotation));
-                output.Add(startPoint + new Vector2(-halfWidth, currentLength).Rotate(rotation));
+                output.Add(startPoint + new Vector2(halfWidth, currentLength).Rotate(rotation + PI));
+                output.Add(startPoint + new Vector2(-halfWidth, currentLength).Rotate(rotation + PI));
             }
 
             return output;

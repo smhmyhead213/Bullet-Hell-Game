@@ -11,6 +11,8 @@ using System.DirectoryServices.ActiveDirectory;
 using bullethellwhatever.Projectiles;
 using System.ComponentModel.Design.Serialization;
 using bullethellwhatever.AssetManagement;
+using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -48,6 +50,10 @@ namespace bullethellwhatever.DrawCode
             VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), MaxVertices, BufferUsage.WriteOnly);
 
             IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), MaxIndices, BufferUsage.WriteOnly);
+        }
+        public static void AddPoint(int index, Vector2 point, Color colour, Vector2 texCoord)
+        {
+            MainVertices[index] = CreateVertex(point, colour, texCoord);
         }
 
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
