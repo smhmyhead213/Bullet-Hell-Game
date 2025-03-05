@@ -16,6 +16,7 @@ using bullethellwhatever.DrawCode.UI;
 
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.Bosses.CrabBoss.Attacks;
+using System.Diagnostics;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -74,7 +75,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - pos;
             }
 
-            CurrentAttack = new CrabSpray(this);
+            CurrentAttack = new CrabIntro(this);
 
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
@@ -119,7 +120,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public void FacePlayer()
         {
-            Rotation = Utilities.VectorToAngle(Position - player.Position);
+            Rotation = Utilities.VectorToAngle(Position - player.Position);            
         }
 
         public override void PerformAdjustments()

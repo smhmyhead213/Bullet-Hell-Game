@@ -18,10 +18,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
     {
         public const int chargeUpTime = 70;
         public const int waitTime = 30;
-        public const int flickOutTime = 3;
         public const int sprayTime = 120;
         public const int windDownTime = 30;
-        public int projectileReleaseTime => chargeUpTime + flickOutTime + waitTime + flickOutTime;
+        public float maxSprayAngle => PI / 4f;
+        public int projectileReleaseTime => chargeUpTime + waitTime;
         public CrabSpray(CrabBoss owner) : base(owner)
         {
 
@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override bool SelectionCondition()
         {
-            return Owner.DistanceFromPlayer() < 800f;
+            return Owner.DistanceFromPlayer() < 600f;
         }
 
         public override void Execute(int AITimer)
@@ -37,6 +37,22 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             float holdOutAngle = PI / 12f;
             float finalHoldAngle = PI / 2f;
             float armLength = Arm(0).WristLength();
+
+            int slowDownTime = 10;
+
+            if (AITimer < slowDownTime)
+            {
+                if (Owner.Velocity.Length() < 0.01f)
+                {
+                    Owner.Velocity = Vector2.Zero;
+                }
+
+                float interpolant = 1f - EasingFunctions.EaseOutExpo(AITimer / (float)slowDownTime);
+
+                Vector2 velocity = Owner.Velocity;
+                Owner.Velocity = velocity.SetLength(velocity.Length() * interpolant);
+                Assert(!float.IsNaN(Owner.Velocity.Length()));
+            }
 
             for (int i = 0; i < 2; i++)
             {
@@ -54,24 +70,21 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Arm(i).TouchPoint(Arm(i).Position + new Vector2(0, usedLength).Rotate(usedAngle * -expandedi).Rotate(Owner.Rotation));
                 }
 
-                if (AITimer >= chargeUpTime + waitTime && AITimer < chargeUpTime + flickOutTime + waitTime)
-                {
-                    int localTime = AITimer - chargeUpTime - waitTime;
-                    float interpolant = localTime / (float)flickOutTime;
-
-                    //Arm(i).LowerArm.LerpRotation(Arm(i).LowerArm.RotationToAdd, Arm(i).UpperArm.RotationToAdd * 0.5f, EasingFunctions.EaseOutExpo(interpolant));
-                    //Arm(i).UpperClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
-                    //Arm(i).LowerClaw.RotationToAdd = Arm(i).LowerArm.RotationToAdd;
-                }
-
-                int timeHere = chargeUpTime + flickOutTime + waitTime;
+                int timeHere = chargeUpTime + waitTime;
 
                 if (AITimer >= timeHere && AITimer < timeHere + sprayTime)
                 {
                     int localTime = AITimer - timeHere;
                     float progress = localTime / (float)sprayTime;
+
+
+                    float armInterpolant = EasingFunctions.EaseOutElastic(progress);
+                    Arm(i).UpperArm.LerpTo(-expandedi * finalHoldAngle, armInterpolant);
+                    Arm(i).LowerClaw.LerpTo(-expandedi * PI / 2f, armInterpolant);
+                    Arm(i).LowerArm.LerpTo(0, armInterpolant);
+
                     float interpolant = EasingFunctions.EaseParabolic(progress);
-                    float angleVariance = PI / 4 * interpolant;
+                    float angleVariance = maxSprayAngle * interpolant;
                     float sizeVariance = 0.3f;
                     float centreAngle = Arm(i).LowerArm.RotationFromV();
                     float projectileSpeed = (interpolant + 0.2f) * 10f;
@@ -82,20 +95,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Projectile p = SpawnProjectile(Arm(i).WristPosition(), projectileSpeed * direction, 1f, 1, "box", Vector2.One * projectileScale, Owner, true, false, Color.Red, true, false);
                     p.AddTrail(14);
                     p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.GetVelocity, -1);
+
                     float acceleration = Utilities.RandomFloat(1.05f, 1.25f);
+                    float homingStrength = 0f;
 
                     p.SetExtraAI(new Action(() =>
                     {
                         p.Rotation = p.Velocity.ToAngle();
                         p.ExponentialAccelerate(acceleration);
-                        p.LightHomeToPlayer(0.01f);
+                        p.LightHomeToPlayer(homingStrength);
                         
                     }));
-
-                    float armInterpolant = EasingFunctions.EaseOutElastic(progress);
-                    Arm(i).UpperArm.LerpTo(-expandedi * finalHoldAngle, armInterpolant);
-                    Arm(i).LowerClaw.LerpTo(-expandedi * PI / 2f, armInterpolant);
-                    Arm(i).LowerArm.LerpTo(0, armInterpolant);
                 }
 
                 if (AITimer >= timeHere + sprayTime && AITimer < timeHere + sprayTime + windDownTime)
@@ -147,7 +157,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 for (int i = 0; i < 2; i++)
                 {
-                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), PI / 2, 400, colour * opacity, coneShader);
+                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), maxSprayAngle, 800, colour * opacity, coneShader);
                 }
             }
         }
@@ -207,9 +217,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             return output;
         }
-        public override BossAttack PickNextAttack()
-        {
-            return new CrabSpray(CrabOwner);
-        }
+        //public override BossAttack PickNextAttack()
+        //{
+        //    return new CrabSpray(CrabOwner);
+        //}
     }
 }
