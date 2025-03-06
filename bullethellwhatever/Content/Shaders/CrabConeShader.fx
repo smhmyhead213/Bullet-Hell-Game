@@ -80,7 +80,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
         return lerp(white, midColour, (1 - uv.x) * 10) * finalOpacity;
     }
     
-    return samp + (midColour * finalOpacity);
+    return (samp + midColour) * finalOpacity;
 }
 
 Technique Technique1
