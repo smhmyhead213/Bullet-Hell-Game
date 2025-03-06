@@ -140,7 +140,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 float opacity = 1f;
                 int fadeInTime = 15;
-                int fadeOutTime = 3;
+                int fadeOutTime = 8;
 
                 if (AITimer < fadeInTime)
                 {
@@ -153,11 +153,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 }
 
                 coneShader.SetParameter("colour", colour);
-                coneShader.SetParameter("opacity", opacity);
+                coneShader.SetParameter("opacity", 1f);
+                coneShader.SetNoiseMap("CrabScrollingBeamNoise", 1f);
 
                 for (int i = 0; i < 2; i++)
                 {
-                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), maxSprayAngle, 800, colour * opacity, coneShader);
+                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), opacity * maxSprayAngle, 800, colour * opacity, coneShader);
                 }
             }
         }
@@ -217,9 +218,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             return output;
         }
-        //public override BossAttack PickNextAttack()
-        //{
-        //    return new CrabSpray(CrabOwner);
-        //}
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabSpray(CrabOwner);
+        }
     }
 }

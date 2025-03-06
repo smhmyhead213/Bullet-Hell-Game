@@ -146,7 +146,7 @@ namespace bullethellwhatever.DrawCode
                 PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
 
                 if (Shader is not null)
-                {
+                {                    
                     Shader.CurrentTechnique.Passes[0].Apply();
                 }
 

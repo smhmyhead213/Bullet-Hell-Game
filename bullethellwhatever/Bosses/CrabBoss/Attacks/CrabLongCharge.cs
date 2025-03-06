@@ -8,17 +8,21 @@ using System.Threading.Tasks;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
-    public class CrabFlit : CrabBossAttack
+    public class CrabLongCharge : CrabBossAttack
     {
-        public CrabFlit(CrabBoss owner) : base(owner)
+        public CrabLongCharge(CrabBoss owner) : base(owner)
         {
 
         }
         public override void Execute(int AITimer)
         {
-            
+            int spinUpTime = 60;
         }
 
+        public override bool SelectionCondition()
+        {
+            return Owner.DistanceFromPlayer() > 1200f;
+        }
         public override BossAttack PickNextAttack()
         {
             int nextAttack = Utilities.RandomInt(1, 3);
