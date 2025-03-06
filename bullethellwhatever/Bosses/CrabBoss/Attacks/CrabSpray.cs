@@ -218,9 +218,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             return output;
         }
-        public override BossAttack PickNextAttack()
-        {
-            return new CrabSpray(CrabOwner);
-        }
+        //public override BossAttack PickNextAttack()
+        //{
+        //    return new CrabSpray(CrabOwner);
+        //}
     }
 }

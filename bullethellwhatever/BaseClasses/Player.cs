@@ -82,7 +82,7 @@ namespace bullethellwhatever.BaseClasses
             trail.SetName("PlayerTrail");
             trail.Opacity = EasingFunctions.EaseParabolic(0.9f) + 0.2f;
 
-            //AdditionalComponents.Add(trail);
+            AdditionalComponents.Add(trail);
 
             Colour = Color.White;
            
