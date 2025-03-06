@@ -147,7 +147,6 @@ namespace bullethellwhatever.DrawCode
 
                 if (Shader is not null)
                 {   
-                    Shader.
                     Shader.CurrentTechnique.Passes[0].Apply();
                 }
 

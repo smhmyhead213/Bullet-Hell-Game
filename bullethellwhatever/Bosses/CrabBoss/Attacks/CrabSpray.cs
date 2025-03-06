@@ -154,7 +154,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 coneShader.SetParameter("colour", colour);
                 coneShader.SetParameter("opacity", 1f);
-                coneShader.SetNoiseMap("CrabScrollingBeamNoise", 1f);
+                coneShader.SetNoiseMap("DangerTexture", 1f);
 
                 for (int i = 0; i < 2; i++)
                 {

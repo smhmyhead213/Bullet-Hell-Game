@@ -69,9 +69,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 white = float4(1, 1.0 - dummy, 1, 1);
     float4 black = float4(0, 0, 0, 1);
     float4 midColour = float4(colour.x, colour.y, colour.z, 1) * 0.6f;
-    //float finalOpacity = (1.0 - uv.y) * opacity;
-    float finalOpacity = opacity;
-    
+    float finalOpacity = (1.0 - uv.y) * opacity;
+
     if (uv.x < 0.1)
     {
         return lerp(white, midColour, uv.x * 10) * finalOpacity;
@@ -81,8 +80,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
         return lerp(white, midColour, (1 - uv.x) * 10) * finalOpacity;
     }
     
-    //return samp + (midColour * finalOpacity);
-    return samp;
+    return samp + (midColour * finalOpacity);
 }
 
 Technique Technique1

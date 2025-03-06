@@ -24,6 +24,8 @@ namespace bullethellwhatever.DrawCode
         public void SetNoiseMap(string filename, float scrollSpeed)
         {
             Map = new NoiseMap(AssetRegistry.GetTexture2D(filename), scrollSpeed);
+            SetParameter("NoiseTexture", Map.Texture);
+            SetParameter("scrollSpeed", Map.ScrollSpeed);
         }
         public void SetColour(Color colour)
         {
