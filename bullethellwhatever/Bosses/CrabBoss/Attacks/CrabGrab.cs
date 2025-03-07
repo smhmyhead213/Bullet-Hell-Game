@@ -20,22 +20,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int expandedi = Utilities.ExpandedIndex(1);
 
             int pullBackArmTime = 45;
+            int waitTime = 30;
+
             int swingTime = 30;
             float pullBackAngle = -expandedi * PI / 2f;
-            float finalSwingAngle = -expandedi * -PI / 6f;
+            float finalSwingAngle = -expandedi * -PI / 18f;
             
             float initialarmLength = Arm(0).WristLength(); // kinda hacky but this gives the original non enlarged length
             float armLength = Arm(1).WristLength();
-
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    Arm(i).RotateLeg(-expandedi * PI / 180);
-            //}
-
-            //return;
-
-            Arm(1).TouchPoint(MousePositionWithCamera());
-            return;
 
             if (AITimer < pullBackArmTime)
             {
@@ -43,37 +35,34 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 float distToPlayer = Arm(1).Position.Distance(player.Position);
                 float scaleFactor = distToPlayer / initialarmLength;
+                float fractionOfLengthHoldNearBody = 0.3f;
 
                 //Arm(1).SetScale(scaleFactor);
 
-                float interpolant = AITimer / (float)pullBackArmTime;
+                float interpolant = EasingFunctions.EaseOutExpo(AITimer / (float)pullBackArmTime);
 
-                Arm(1).LowerClaw.LerpRotation(0f, -expandedi * PI / 4f, interpolant);
-                //Arm(1).UpperClaw.LerpRotation(0f, -expandedi * PI / 4, interpolant);
+                Arm(1).LerpToPoint(Arm(1).Position + new Vector2(0f, armLength * fractionOfLengthHoldNearBody).Rotate(pullBackAngle), interpolant, true);
 
-                Arm(1).LerpToPoint(Arm(1).Position + new Vector2(0f, armLength).Rotate(pullBackAngle), interpolant, false);
+                Arm(1).LowerClaw.LerpRotation(0f, -expandedi * PI / 2f, interpolant);
+                //Arm(1).UpperClaw.LerpRotation(0f, -expandedi * -PI / 2, interpolant);
+
             }
 
-            if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + swingTime)
+            if (AITimer >= pullBackArmTime + waitTime && AITimer < pullBackArmTime + swingTime + waitTime)
             {
-                int localTime = AITimer - pullBackArmTime;
-                float interpolant = EasingFunctions.EaseOutExpo(localTime / (float)swingTime);
-                float finalArmLength = 0.9f * armLength;
+                int localTime = AITimer - (pullBackArmTime + waitTime);
+                float interpolant = EasingFunctions.Linear(localTime / (float)swingTime);
+                float finalArmLength = armLength;
                 float armLengthNow = MathHelper.Lerp(armLength, finalArmLength, interpolant);
                 Vector2 finalPoint = Arm(1).Position + new Vector2(0f, armLengthNow).Rotate(finalSwingAngle);
 
-                Arm(1).LerpToRestPosition(interpolant);
-
-                //Arm(1).LerpToPoint(finalPoint, interpolant);
+                Arm(1).LerpToPoint(finalPoint, interpolant, false);
+                Arm(1).LowerClaw.LerpToZero(interpolant);
 
                 //Arm(1).LerpRotation(pullBackAngle, finalSwingAngle, interpolant);
             }
         }
 
-        public override void ExtraDraw(SpriteBatch s, int AITimer)
-        {
-            
-        }
         public override bool SelectionCondition()
         {
             return Owner.DistanceFromPlayer() > 1200f;

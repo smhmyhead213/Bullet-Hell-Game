@@ -150,7 +150,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public void LerpToZero(float interpolant)
         {
-            LerpRotation(RotationToAdd, 0f, interpolant);
+            LerpRotation(Utilities.ClosestToZero(RotationToAdd), 0f, interpolant);
         }
 
         /// <summary>
