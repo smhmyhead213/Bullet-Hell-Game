@@ -189,7 +189,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float lowerArmSquared = Pow(lowerArmLength, 2);
             float distanceSquared = Pow(distance, 2);
 
-            float upperArmAngle = Acos((upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance));
+            float withinAcos = (upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance);
+            float upperArmAngle = withinAcos < 1.0001f && withinAcos >= 1f ? 0 : Acos(withinAcos); // prevent NaN for exactly 1 and imprecisions
 
             Debug.Assert(!float.IsNaN(upperArmAngle));
 
@@ -211,6 +212,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
+        public void SetScale(float scale)
+        {
+            foreach (CrabBossAppendage append in ArmParts)
+            {
+                append.Scale = new Vector2(scale);
+            }
+        }
+        public void LerpRotation(float startAngle, float endAngle, float interpolant)
+        {
+            foreach (CrabBossAppendage append in ArmParts)
+            {
+                append.LerpRotation(startAngle, endAngle, interpolant);
+            }
+        }
         public void LerpToRestPosition(float interpolant, bool pointClaws = true)
         {
             TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant), pointClaws);

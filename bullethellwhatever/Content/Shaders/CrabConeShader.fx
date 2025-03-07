@@ -27,6 +27,7 @@ float uTime;
 float3 colour;
 float scrollSpeed;
 float opacity;
+float maxWidth;
 
 struct VertexShaderInput
 {
@@ -66,11 +67,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
     float4 samp = NoiseTexture.Sample(TextureSampler2, uv);
 
-    float4 white = float4(1, 1.0 - dummy, 1, 1);
-    float4 black = float4(0, 0, 0, 1);
-    float4 midColour = float4(colour.x, colour.y, colour.z, 1) * 0.6f;
+    float4 white = float4(1, 1.0 - dummy, 1, 0);
+    float4 black = float4(0, 0, 0, 0);
+    float4 midColour = float4(colour.x, colour.y, colour.z, 0) * 0.6f;
     float finalOpacity = (1.0 - uv.y) * opacity;
-
+    float maxWidthFrac = maxWidth * uv.y;
+    
     if (uv.x < 0.1)
     {
         return lerp(white, midColour, uv.x * 10) * finalOpacity;

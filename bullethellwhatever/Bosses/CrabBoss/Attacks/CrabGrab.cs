@@ -17,22 +17,40 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override void Execute(int AITimer)
         {
-            int pullBackArmTime = 60;
-            int swingTime = 30;
-            float pullBackAngle = PI / 2f;
-            float swingThroughAngle = 2 * PI / 3f;
-            
-            float armLength = Arm(0).WristLength();
             int expandedi = Utilities.ExpandedIndex(1);
+
+            int pullBackArmTime = 180;
+            int swingTime = 30;
+            float pullBackAngle = -expandedi * PI / 2f;
+            float finalSwingAngle = -expandedi * -PI / 6f;
+            
+            float initialarmLength = Arm(0).WristLength(); // kinda hacky but this gives the original non enlarged length
+            float armLength = Arm(1).WristLength();
 
             if (AITimer < pullBackArmTime)
             {
+                // calculate the size the arm must be to reach the player
+
+                float distToPlayer = Arm(1).Position.Distance(player.Position);
+                float scaleFactor = distToPlayer / initialarmLength;
+
+                Arm(1).SetScale(scaleFactor);
+
                 float interpolant = AITimer / (float)pullBackArmTime;
-                Arm(1).LerpToPoint(Arm(1).Position + new Vector2(0f, armLength).Rotate(-expandedi * pullBackAngle), interpolant);
+                Arm(1).LerpToPoint(Arm(1).Position + new Vector2(0f, armLength).Rotate(pullBackAngle), interpolant);
+                Arm(1).UpperClaw.LerpRotation(0f, -expandedi * PI / 2, interpolant);
             }
             if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + swingTime)
             {
                 int localTime = AITimer - pullBackArmTime;
+                float interpolant = EasingFunctions.EaseOutExpo(localTime / (float)swingTime);
+                float finalArmLength = 0.9f * armLength;
+                float armLengthNow = MathHelper.Lerp(armLength, finalArmLength, interpolant);
+                Vector2 finalPoint = Arm(1).Position + new Vector2(0f, armLengthNow).Rotate(finalSwingAngle);
+
+                Arm(1).LerpToPoint(finalPoint, interpolant);
+
+                //Arm(1).LerpRotation(pullBackAngle, finalSwingAngle, interpolant);
             }
         }
 

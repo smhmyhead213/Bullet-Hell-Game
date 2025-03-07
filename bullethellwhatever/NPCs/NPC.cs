@@ -114,7 +114,7 @@ namespace bullethellwhatever.NPCs
             base.PostUpdate();
 
             Rotation += RotationalVelocity;
-            Rotation = Utilities.BringAngleIntoRange(Rotation);
+            Rotation = Utilities.ClosestToZero(Rotation);
         }
 
         public float HPRatio()

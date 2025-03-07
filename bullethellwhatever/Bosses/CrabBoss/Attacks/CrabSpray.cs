@@ -132,6 +132,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             //    Drawing.DrawBox(point, Color.Red, 1f);
             //}
 
+            float length = 800;
+
             Color colour = Color.Red;
 
             Shader coneShader = new("CrabConeShader", Color.Red);
@@ -155,10 +157,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 coneShader.SetParameter("colour", colour);
                 coneShader.SetParameter("opacity", 1f);
                 coneShader.SetNoiseMap("DangerTexture", 1f);
+                
+                float currentAngle = opacity * maxSprayAngle;
+                float maxWidth = 2f * length * Tan(currentAngle / 2);
+
+                coneShader.SetParameter("maxWidth", maxWidth);
+
+                int points = 20;
 
                 for (int i = 0; i < 2; i++)
                 {
-                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), opacity * maxSprayAngle, 800, colour * opacity, coneShader);
+                    DrawCone(Arm(i).WristPosition(), Arm(i).LowerArm.RotationFromV(), currentAngle, length, colour * opacity, coneShader, points);
                 }
             }
         }
