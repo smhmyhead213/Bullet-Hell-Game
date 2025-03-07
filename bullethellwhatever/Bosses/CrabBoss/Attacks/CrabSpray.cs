@@ -35,7 +35,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public override void Execute(int AITimer)
         {
             float holdOutAngle = PI / 12f;
-            float finalHoldAngle = PI / 2f;
+            float finalHoldAngle = PI / 3f;
             float armLength = Arm(0).WristLength();
 
             int slowDownTime = 10;
@@ -57,13 +57,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             for (int i = 0; i < 2; i++)
             {
                 int expandedi = Utilities.ExpandedIndex(i);
+                float initialScale = 1f;
+                float finalScale = 1.5f;
 
                 CrabOwner.FacePlayer();
 
                 if (AITimer < chargeUpTime)
                 {                  
                     float interpolant = AITimer / (float)chargeUpTime;
-                    float finalLength = armLength * 0.7f;
+
+                    Arm(i).SetScale(MathHelper.Lerp(initialScale, finalScale, interpolant));
+
+                    float finalLength = armLength * 0.88f;
                     float usedLength = MathHelper.Lerp(armLength, finalLength, interpolant);
                     float usedAngle = MathHelper.Lerp(0f, holdOutAngle, interpolant);
 
@@ -77,11 +82,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     int localTime = AITimer - timeHere;
                     float progress = localTime / (float)sprayTime;
 
-
-                    float armInterpolant = EasingFunctions.EaseOutElastic(progress);
+                    float armInterpolant = EasingFunctions.Linear(progress);
                     Arm(i).UpperArm.LerpTo(-expandedi * finalHoldAngle, armInterpolant);
+                    Arm(i).LowerArm.LerpTo(-expandedi * - PI / 2, armInterpolant);
                     Arm(i).LowerClaw.LerpTo(-expandedi * PI / 2f, armInterpolant);
-                    Arm(i).LowerArm.LerpTo(0, armInterpolant);
+                    //Arm(i).LowerArm.LerpTo(0, armInterpolant);
 
                     float interpolant = EasingFunctions.EaseParabolic(progress);
                     float angleVariance = maxSprayAngle * interpolant;
@@ -104,14 +109,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         p.Rotation = p.Velocity.ToAngle();
                         p.ExponentialAccelerate(acceleration);
                         p.LightHomeToPlayer(homingStrength);
-                        
+
                     }));
                 }
 
                 if (AITimer >= timeHere + sprayTime && AITimer < timeHere + sprayTime + windDownTime)
                 {
                     int localTime = AITimer - (timeHere + sprayTime);
-
+                    Arm(i).SetScale(MathHelper.Lerp(finalScale, initialScale, localTime / (float)windDownTime));
                     Arm(i).LerpArmToRest(localTime / (float)windDownTime);
                 }
 
@@ -137,8 +142,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             Color colour = Color.Red;
 
             Shader coneShader = new("CrabConeShader", Color.Red);
-            
-            if (AITimer < projectileReleaseTime)
+
+            int lingerTime = 20;
+            int endTime = projectileReleaseTime + lingerTime;
+
+            if (AITimer < endTime)
             {
                 float opacity = 1f;
                 int fadeInTime = 15;
@@ -149,9 +157,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     opacity = AITimer / (float)fadeInTime;
                 }
 
-                if (AITimer > projectileReleaseTime - fadeOutTime)
+                if (AITimer > endTime - fadeOutTime)
                 {
-                    opacity = EasingFunctions.EaseOutExpo((projectileReleaseTime - AITimer) / (float)fadeInTime);
+                    opacity = EasingFunctions.EaseOutExpo((endTime - AITimer) / (float)fadeInTime);
                 }
 
                 coneShader.SetParameter("colour", colour);
@@ -227,9 +235,5 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             return output;
         }
-        //public override BossAttack PickNextAttack()
-        //{
-        //    return new CrabSpray(CrabOwner);
-        //}
     }
 }

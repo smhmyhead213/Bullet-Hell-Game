@@ -104,6 +104,9 @@ namespace bullethellwhatever.NPCs
 
             Position = Position + Velocity;
 
+            Rotation += RotationalVelocity;
+            Rotation = Utilities.ClosestToZero(Rotation);
+
             PerformAdjustments();
 
             UpdateHitbox();
@@ -112,9 +115,6 @@ namespace bullethellwhatever.NPCs
             AITimer++;
 
             base.PostUpdate();
-
-            Rotation += RotationalVelocity;
-            Rotation = Utilities.ClosestToZero(Rotation);
         }
 
         public float HPRatio()
