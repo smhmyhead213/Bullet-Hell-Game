@@ -19,7 +19,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             int expandedi = Utilities.ExpandedIndex(1);
 
-            int pullBackArmTime = 180;
+            int pullBackArmTime = 45;
             int swingTime = 30;
             float pullBackAngle = -expandedi * PI / 2f;
             float finalSwingAngle = -expandedi * -PI / 6f;
@@ -37,8 +37,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Arm(1).SetScale(scaleFactor);
 
                 float interpolant = AITimer / (float)pullBackArmTime;
-                Arm(1).LerpToPoint(Arm(1).Position + new Vector2(0f, armLength).Rotate(pullBackAngle), interpolant);
-                Arm(1).UpperClaw.LerpRotation(0f, -expandedi * PI / 2, interpolant);
+
+                Arm(1).LerpToPoint(Arm(1).Position + new Vector2(0f, armLength).Rotate(pullBackAngle), interpolant, true);
+
+                //Arm(1).LowerClaw.LerpRotation(0f, -expandedi * 3f * PI / 4f, interpolant);
+                //Arm(1).UpperClaw.LerpRotation(0f, -expandedi * PI / 2, interpolant);
             }
             if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + swingTime)
             {
