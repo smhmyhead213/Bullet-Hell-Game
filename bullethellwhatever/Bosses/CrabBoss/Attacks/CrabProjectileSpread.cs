@@ -34,6 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             ref float initialRotation = ref ExtraData[1];
             ref float chosenArm = ref Owner.ExtraData[0];
             int chosenArmInt = (int)chosenArm;
+            int expandedi = Utilities.ExpandedIndex(ChosenArmIndex());
 
             CrabOwner.FacePlayer();
 
@@ -52,16 +53,27 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Owner.Velocity -= Utilities.SafeNormalise(Owner.Velocity) * initialSpeed / (float)slowDownTime;
             }
 
-            if (AITimer > slowDownTime && AITimer < slowDownTime + swingTime)
+            if (AITimer < slowDownTime)
+            {
+                float interpolant = AITimer / (float)slowDownTime;
+                ChosenArm().UpperArm.LerpTo(-expandedi * -PI / 2f, interpolant);
+                ChosenArm().LowerArm.LerpTo(0, interpolant);
+            }
+
+            if (AITimer >= slowDownTime && AITimer < slowDownTime + swingTime)
             {                
                 int localTime = AITimer - slowDownTime;
+                float armLength = ChosenArm().Length();
+                float interpolant = localTime / (float)swingTime;
 
-                float anglePreviousFrame = angleToSwingThrough * EasingFunctions.Linear((localTime - 1) / (float)swingTime);
-                float angleThisFrame = angleToSwingThrough * EasingFunctions.Linear(localTime / (float)swingTime);
+                //float anglePreviousFrame = angleToSwingThrough * EasingFunctions.Linear((localTime - 1) / (float)swingTime);
+                //float angleThisFrame = angleToSwingThrough * EasingFunctions.Linear(localTime / (float)swingTime);
 
-                int expandedi = -Utilities.ExpandedIndex(chosenArmInt);
+                //int expandedi = -Utilities.ExpandedIndex(chosenArmInt);
 
-                CrabOwner.Arms[chosenArmInt].RotateLeg(expandedi * (angleThisFrame - anglePreviousFrame));
+                //CrabOwner.Arms[chosenArmInt].RotateLeg(expandedi * (angleThisFrame - anglePreviousFrame));
+
+                ChosenArm().LerpRotation(-expandedi * -PI / 2, -expandedi * PI / 2, interpolant);
 
                 int timeBetweenProjectiles = 2;
 

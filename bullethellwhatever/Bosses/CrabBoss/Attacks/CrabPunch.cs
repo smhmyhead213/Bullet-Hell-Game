@@ -146,6 +146,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
+            return new CrabPunchToProjectileSpreadTransition(CrabOwner);
+
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 || nextAttack == 2)
                 return new CrabPunchToNeutralTransition(CrabOwner);

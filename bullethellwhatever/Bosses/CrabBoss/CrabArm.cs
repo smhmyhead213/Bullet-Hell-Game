@@ -221,11 +221,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public void LerpRotation(float startAngle, float endAngle, float interpolant)
         {
-            foreach (CrabBossAppendage append in ArmParts)
-            {
-                append.LerpRotation(startAngle, endAngle, interpolant);
-            }
+            UpperArm.LerpRotation(startAngle, endAngle, interpolant);
         }
+
         public void LerpToRestPosition(float interpolant, bool pointClaws = true)
         {
             TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant), pointClaws);
