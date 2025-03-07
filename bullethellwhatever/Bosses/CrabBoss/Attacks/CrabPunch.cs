@@ -142,10 +142,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 End();
             }
+
+            Owner.Velocity = Vector2.Zero;
+            Owner.Rotation = 0f;
         }
 
         public override BossAttack PickNextAttack()
         {
+            return new CrabPunchToProjectileSpreadTransition(CrabOwner);
+
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 || nextAttack == 2)
                 return new CrabPunchToNeutralTransition(CrabOwner);

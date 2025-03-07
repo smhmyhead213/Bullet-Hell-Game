@@ -99,11 +99,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 End();
 
-                foreach (CrabArm arm in CrabOwner.Arms)
-                {
-                    // to do : smooth this out
-                    arm.LerpToRestPosition(1f);
-                }
+                //foreach (CrabArm arm in CrabOwner.Arms)
+                //{
+                //    arm.LerpToRestPosition(1f);
+                //}
+
+                Arm(0).LerpToRestPosition(1f);
             }
 
             HandleBounces();
@@ -111,7 +112,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabNeutralState(CrabOwner);
+            return new DoNothing(CrabOwner);
         }
     }
 }

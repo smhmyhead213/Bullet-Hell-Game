@@ -34,6 +34,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             //return;
 
+            Arm(1).TouchPoint(MousePositionWithCamera());
+            return;
+
             if (AITimer < pullBackArmTime)
             {
                 // calculate the size the arm must be to reach the player
@@ -58,6 +61,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float finalArmLength = 0.9f * armLength;
                 float armLengthNow = MathHelper.Lerp(armLength, finalArmLength, interpolant);
                 Vector2 finalPoint = Arm(1).Position + new Vector2(0f, armLengthNow).Rotate(finalSwingAngle);
+
+                Arm(1).LerpToRestPosition(interpolant);
 
                 //Arm(1).LerpToPoint(finalPoint, interpolant);
 
