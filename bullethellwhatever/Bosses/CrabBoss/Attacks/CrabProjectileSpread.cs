@@ -28,6 +28,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             int slowDownTime = 3;
             int swingTime = 15;
             int bufferTimeAfterSwing = 12;
+            int resetTime = 10;
 
             ref float initialSpeed = ref ExtraData[0];
             ref float initialRotation = ref ExtraData[1];
@@ -74,8 +75,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                     p.AddTrail(22);
 
-                    int projectileSlowTime = 26;
-
                     p.SetExtraAI(new Action(() =>
                     {
                         p.ExponentialAccelerate(1.05f);
@@ -95,24 +94,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (AITimer == slowDownTime + swingTime + bufferTimeAfterSwing)
+            if (AITimer >= slowDownTime + swingTime + bufferTimeAfterSwing && AITimer < slowDownTime + swingTime + bufferTimeAfterSwing + resetTime)
+            {
+                int localTime = AITimer - (slowDownTime + swingTime + bufferTimeAfterSwing);
+                float interpolant = localTime / (float)resetTime;
+
+                ChosenArm().LerpToRestPosition(interpolant);
+            }
+            if (AITimer == slowDownTime + swingTime + bufferTimeAfterSwing + resetTime)
             {
                 End();
-
-                //foreach (CrabArm arm in CrabOwner.Arms)
-                //{
-                //    arm.LerpToRestPosition(1f);
-                //}
-
-                Arm(0).LerpToRestPosition(1f);
             }
 
             HandleBounces();
-        }
-
-        public override BossAttack PickNextAttack()
-        {
-            return new DoNothing(CrabOwner);
         }
     }
 }
