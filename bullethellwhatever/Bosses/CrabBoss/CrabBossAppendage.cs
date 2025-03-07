@@ -178,14 +178,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float CalculateFinalRotation()
         {
-            float output = Owner.Rotation + RotationToAdd;
-
-            return output;
-
-            if (Type == AppendageType.UpperClaw || Type == AppendageType.LowerClaw)
-            {
-
-            }
+            return BehindThis.Rotation + RotationToAdd;
         }
 
         public void PointInDirection(float angle)

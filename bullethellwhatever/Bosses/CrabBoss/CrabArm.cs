@@ -87,9 +87,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void PointLegInDirection(float angle)
         {
             UpperArm.Rotate(-UpperArm.Rotation + angle + PI);
-            LowerArm.Rotate(-LowerArm.Rotation + angle + PI);
-            UpperClaw.Rotate(-UpperClaw.Rotation + angle + PI);
-            LowerClaw.Rotate(-LowerClaw.Rotation + angle + PI);
+            //LowerArm.Rotate(-LowerArm.Rotation + angle + PI);
+            //UpperClaw.Rotate(-UpperClaw.Rotation + angle + PI);
+            //LowerClaw.Rotate(-LowerClaw.Rotation + angle + PI);
         }
         public void ContactDamage(bool on)
         {
@@ -101,9 +101,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void RotateLeg(float angle)
         {
             UpperArm.Rotate(angle);
-            LowerArm.Rotate(angle);
-            UpperClaw.Rotate(angle);
-            LowerClaw.Rotate(angle);
+            //LowerArm.Rotate(angle);
+            //UpperClaw.Rotate(angle);
+            //LowerClaw.Rotate(angle);
         }
 
         public void SetAllSizes(Vector2 size)
