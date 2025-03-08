@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override bool SelectionCondition()
         {
-            return Owner.DistanceFromPlayer() < 600f;
+            return Owner.DistanceFromPlayer() < 900f;
         }
 
         public override void Execute(int AITimer)
@@ -58,7 +58,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 int expandedi = Utilities.ExpandedIndex(i);
                 float initialScale = 1f;
-                float finalScale = 1.5f;
+                float finalScale = 1.3f;
 
                 CrabOwner.FacePlayer();
 
@@ -84,7 +84,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     float armInterpolant = EasingFunctions.Linear(progress);
                     Arm(i).UpperArm.LerpTo(-expandedi * finalHoldAngle, armInterpolant);
-                    Arm(i).LowerArm.LerpTo(-expandedi * - PI / 2, armInterpolant);
+                    //Arm(i).LowerArm.LerpTo(-expandedi * - PI / 2, armInterpolant);
                     Arm(i).LowerClaw.LerpTo(-expandedi * PI / 2f, armInterpolant);
                     //Arm(i).LowerArm.LerpTo(0, armInterpolant);
 

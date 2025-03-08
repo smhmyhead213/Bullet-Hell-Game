@@ -213,6 +213,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 return Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
             }
         }
+
+        public override bool IsCollidingWith(Entity other)
+        {
+            return other.Hitbox.CollidingWith(LimbHitbox());
+        }
         public override void UpdateHitbox()
         {
             // do nothing here: logic is handled in LimbHitbox and added to the crabboss manually

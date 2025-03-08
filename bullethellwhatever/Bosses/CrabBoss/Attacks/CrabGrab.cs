@@ -21,8 +21,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int pullBackArmTime = 45;
             int waitTime = 30;
+            int clawCloseTime = 10;
 
-            int swingTime = 30;
+            int swingTime = 15;
             float pullBackAngle = -expandedi * PI / 2f;
             float finalSwingAngle = -expandedi * -PI / 18f;
             
@@ -35,9 +36,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 float distToPlayer = Arm(1).Position.Distance(player.Position);
                 float scaleFactor = distToPlayer / initialarmLength;
-                float fractionOfLengthHoldNearBody = 0.3f;
+                float fractionOfLengthHoldNearBody = 0.9f;
 
-                //Arm(1).SetScale(scaleFactor);
+                Arm(1).SetScale(scaleFactor);
 
                 float interpolant = EasingFunctions.EaseOutExpo(AITimer / (float)pullBackArmTime);
 
@@ -51,15 +52,26 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             if (AITimer >= pullBackArmTime + waitTime && AITimer < pullBackArmTime + swingTime + waitTime)
             {
                 int localTime = AITimer - (pullBackArmTime + waitTime);
-                float interpolant = EasingFunctions.Linear(localTime / (float)swingTime);
+                float progress = localTime / (float)swingTime;
+                float interpolant = EasingFunctions.EaseOutExpo(progress);
                 float finalArmLength = armLength;
                 float armLengthNow = MathHelper.Lerp(armLength, finalArmLength, interpolant);
-                Vector2 finalPoint = Arm(1).Position + new Vector2(0f, armLengthNow).Rotate(finalSwingAngle);
+                float armScale = Arm(1).UpperArm.GetSize().X;
+                Vector2 finalPoint = player.Position;
 
-                Arm(1).LerpToPoint(finalPoint, interpolant, false);
-                Arm(1).LowerClaw.LerpToZero(interpolant);
+                Arm(1).UpperArm.LerpRotation(-expandedi * PI / 2, 0f, interpolant);
+                Arm(1).LowerClaw.LerpToZero(progress);
 
-                //Arm(1).LerpRotation(pullBackAngle, finalSwingAngle, interpolant);
+                // make a new flag for grabbed later
+                if (Arm(1).LowerClaw.IsCollidingWith(player) || Arm(1).LowerClaw.IsCollidingWith(player) && !player.InputLocked)
+                {
+                    player.LockMovement();
+                }
+
+                if (player.InputLocked)
+                {
+                    player.Position = Arm(1).PositionAtDistanceFromWrist(50f * armScale);
+                }
             }
         }
 
@@ -69,11 +81,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override BossAttack PickNextAttack()
         {
-            int nextAttack = Utilities.RandomInt(1, 3);
-            if (nextAttack == 1 || nextAttack == 2)
-                return new CrabPunchToNeutralTransition(CrabOwner);
-            else
-                return new CrabPunchToProjectileSpreadTransition(CrabOwner);
+            return new CrabGrab(CrabOwner);
         }
     }
 }

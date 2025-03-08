@@ -538,6 +538,23 @@ namespace bullethellwhatever
                 addTo.Add(item);
             }
         }
+
+        public static bool CollidingWith(this List<Circle> me, List<Circle> other)
+        {
+            foreach (Circle mine in me)
+            {
+                foreach (Circle notmine in other)
+                {
+                    if (mine.Intersects(notmine))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)
