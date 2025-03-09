@@ -259,6 +259,8 @@ namespace bullethellwhatever.BaseClasses
             Utilities.InitialiseGame();
 
             UI.CreateAfterBossMenu();
+
+            UnlockMovement();
         }
         public void FullHeal()
         {

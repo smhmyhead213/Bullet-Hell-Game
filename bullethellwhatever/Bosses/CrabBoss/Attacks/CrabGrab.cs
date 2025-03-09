@@ -49,10 +49,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             }
 
-            if (AITimer >= pullBackArmTime + waitTime && AITimer < pullBackArmTime + swingTime + waitTime)
+            // && AITimer < pullBackArmTime + swingTime + waitTime
+
+            if (AITimer >= pullBackArmTime + waitTime)
             {
                 int localTime = AITimer - (pullBackArmTime + waitTime);
-                float progress = localTime / (float)swingTime;
+                float progress = MathHelper.Clamp(localTime / (float)swingTime, 0f, 1f);
                 float interpolant = EasingFunctions.EaseOutExpo(progress);
                 float finalArmLength = armLength;
                 float armLengthNow = MathHelper.Lerp(armLength, finalArmLength, interpolant);
@@ -61,6 +63,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 Arm(1).UpperArm.LerpRotation(-expandedi * PI / 2, 0f, interpolant);
                 Arm(1).LowerClaw.LerpToZero(progress);
+                Arm(1).LowerClaw.ContactDamage = false;
+                Arm(1).UpperClaw.ContactDamage = false;
+                //Arm(1).LowerArm.ContactDamage = false;
 
                 // make a new flag for grabbed later
                 if (Arm(1).LowerClaw.IsCollidingWith(player) || Arm(1).LowerClaw.IsCollidingWith(player) && !player.InputLocked)
@@ -70,7 +75,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 if (player.InputLocked)
                 {
-                    player.Position = Arm(1).PositionAtDistanceFromWrist(50f * armScale);
+                    player.Position = Arm(1).WristOffsetBy(new Vector2(15f * armScale, -15f * armScale));
                 }
             }
         }

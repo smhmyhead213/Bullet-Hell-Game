@@ -154,7 +154,7 @@ namespace bullethellwhatever.NPCs
 
                 if (HarmfulToPlayer)
                 {
-                    if (IsCollidingWith(player))
+                    if (IsCollidingWith(player) && ContactDamage)
                     {
                         DealDamage(player);
                     }
