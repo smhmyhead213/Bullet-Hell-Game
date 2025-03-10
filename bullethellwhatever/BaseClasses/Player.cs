@@ -180,9 +180,7 @@ namespace bullethellwhatever.BaseClasses
                 Scale = DefaultHitbox;
             }
 
-            ControlCamera();
-
-            if (DashCooldown > 0)
+            if (DashCooldown > 0) // are these cooldowsn still used?
                 DashCooldown--;
 
             if (DashTimer > 0)
@@ -227,6 +225,8 @@ namespace bullethellwhatever.BaseClasses
             {
                 HandleKeyPresses();
             }
+
+            ControlCamera();
 
             PlayerWeaponManager.Update();
 

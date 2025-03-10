@@ -1,19 +1,14 @@
 ﻿using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
     public class CrabGrab : CrabBossAttack
     {
+        public bool GrabbedPlayer;
         public CrabGrab(CrabBoss owner) : base(owner)
         {
-
+            GrabbedPlayer = false;
         }
         public override void Execute(int AITimer)
         {
@@ -49,9 +44,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             }
 
-            // && AITimer < pullBackArmTime + swingTime + waitTime
-
-            if (AITimer >= pullBackArmTime + waitTime)
+            if (AITimer >= pullBackArmTime + waitTime && AITimer < pullBackArmTime + swingTime + waitTime)
             {
                 int localTime = AITimer - (pullBackArmTime + waitTime);
                 float progress = MathHelper.Clamp(localTime / (float)swingTime, 0f, 1f);
@@ -71,22 +64,29 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (Arm(1).LowerClaw.IsCollidingWith(player) || Arm(1).LowerClaw.IsCollidingWith(player) && !player.InputLocked)
                 {
                     player.LockMovement();
+                    GrabbedPlayer = true;
                 }
 
-                if (player.InputLocked)
+                if (GrabbedPlayer)
                 {
                     player.Position = Arm(1).WristOffsetBy(new Vector2(15f * armScale, -15f * armScale));
                 }
             }
-        }
 
+            if (AITimer == pullBackArmTime + swingTime + waitTime)
+            {
+                End();
+            }
+        }
         public override bool SelectionCondition()
         {
-            return Owner.DistanceFromPlayer() > 1200f;
+            return true;
         }
         public override BossAttack PickNextAttack()
         {
-            return new CrabGrab(CrabOwner);
+            if (GrabbedPlayer)
+                return new CrabGrab(CrabOwner);
+            else return new CrabGrab(CrabOwner);
         }
     }
 }
