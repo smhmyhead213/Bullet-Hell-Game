@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using bullethellwhatever.BaseClasses.Entities;
 using System.Windows.Forms;
 using bullethellwhatever.BaseClasses.Hitboxes;
+
 namespace bullethellwhatever.DrawCode
 {
     public static class Drawing
@@ -40,7 +41,7 @@ namespace bullethellwhatever.DrawCode
                 ScreenShakeTimer--;
             }
         }
-        public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera, bool endSB = true)
+        public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera)
         {
             s.End();
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
@@ -58,6 +59,20 @@ namespace bullethellwhatever.DrawCode
             DrawingShaders = false;
         }
 
+        public static void EnterShaderMode(SpriteBatch s)
+        {
+            if (!DrawingShaders)
+            {
+                RestartSpriteBatchForShaders(s, true);
+            }
+        }
+        public static void ExitShaderMode(SpriteBatch s)
+        {
+            if (DrawingShaders)
+            {
+                RestartSpriteBatchForNotShaders(s, true);
+            }
+        }
 
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {

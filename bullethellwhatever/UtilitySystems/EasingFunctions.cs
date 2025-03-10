@@ -1,7 +1,9 @@
-﻿using System;
+﻿using bullethellwhatever.Bosses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -11,6 +13,41 @@ namespace bullethellwhatever.UtilitySystems
     public static class EasingFunctions
     {
         // functions use the same name as on easings.net, add easings as you use them
+
+        /// <summary>
+        /// Takes any number of easing functions (must be 0 - 1), end values and progress values and joins them into one long easing curve. The progress values are the values of x at which the endValues occur.
+        /// Returns a linear easing if the lengths of provided lists do not match.
+        /// The first and last elements of progressValues should be 0 and 1.
+        /// </summary>
+        /// <param name="easingCurves"></param>
+        /// <param name="endValues"></param>
+        /// <param name="progressValues"></param>
+        /// <returns></returns>
+        public static Func<float, float> JoinedCurves(Func<float, float>[] easingCurves, float[] endValues, float[] progressValues, float start = 0)
+        {
+            if (!(easingCurves.Length == endValues.Length && endValues.Length == progressValues.Length))
+            {
+                return Linear;
+            }
+            
+            List<Func<float, float>> output = new List<Func<float, float>>();
+
+            for (int i = 0; i < easingCurves.Length; i++)
+            {
+                float startVal = i == 0 ? start : endValues[i - 1];
+                float endVal = endValues[i];
+
+                Func<float, float> section = x => startVal + easingCurves[i](x) * endValues[i];
+                output.Add(section);
+            }
+
+            return x =>
+            {
+                int index = Utilities.IndexValueIsAtInList(x, progressValues.ToList());
+                float localTime = x - progressValues[index];
+                return output[index](localTime);
+            };
+        }
 
         public static float Linear(float progress)
         {

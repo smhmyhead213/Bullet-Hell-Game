@@ -17,7 +17,7 @@ namespace bullethellwhatever.DrawCode.Particles
         public Vector2 InitialSize;
         public bool Shrink;
         public bool FadeOut;
-        public void Spawn(string texture, Vector2 position, Vector2 velocity, Vector2 acceleration, Vector2 size, float rotation, Color colour, float opacity, int lifetime)
+        public void Spawn(string texture, Vector2 position, Vector2 velocity, Vector2 acceleration, Vector2 scale, float rotation, Color colour, float opacity, int lifetime)
         {
             Texture = AssetRegistry.GetTexture2D(texture);
 
@@ -27,7 +27,7 @@ namespace bullethellwhatever.DrawCode.Particles
             Velocity = velocity;
             Acceleration = acceleration;
 
-            Scale = size;
+            Scale = scale;
 
             InitialSize = Scale;
 

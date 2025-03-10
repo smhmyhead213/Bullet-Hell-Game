@@ -109,7 +109,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
         public override void Draw(SpriteBatch s)
         {
-            Drawing.RestartSpriteBatchForShaders(s, false, false);
+            Drawing.RestartSpriteBatchForShaders(s, false);
 
             float opacity = 1f;
 

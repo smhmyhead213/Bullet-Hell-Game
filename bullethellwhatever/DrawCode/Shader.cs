@@ -66,16 +66,14 @@ namespace bullethellwhatever.DrawCode
                 //int width = _graphics.GraphicsDevice.Viewport.Width;
                 //int height = _graphics.GraphicsDevice.Viewport.Height;
                 //Matrix projection = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
+
+                // probably move this out of the if?
                 Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
 
-                // Note that, Monogame has a habit of optimising shader code when compiling. This includes removing parameters that are defined but not read.
-                // If it says it doesn't exist when it should, that's likely the culprit. This also involves the stupid registers, so just do it this way.
-
-                // Noise Texture. Yes this is dumb. No there is not a single parameter called that in our shader.
-                // Youll noticce that it is the sampler plus the texture as the parameter name. I had to figure
-                // this out by looking at the parameters storedon the shader object, and seeing there was one called that.
                 Effect.Parameters["NoiseTexture"].SetValue(Map.Texture);
             }
+
+            Effect.Parameters["colour"].SetValue(Colour.ToVector3());
 
             Effect.CurrentTechnique.Passes[pass].Apply();
         }

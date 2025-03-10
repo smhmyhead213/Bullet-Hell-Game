@@ -539,6 +539,12 @@
 /processorParam:TextureFormat=Color
 /build:Shaders/FireNoise2.png
 
+#begin Shaders/GlowShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/GlowShader.fx
+
 #begin Shaders/LightningNoise.png
 /importer:TextureImporter
 /processor:TextureProcessor

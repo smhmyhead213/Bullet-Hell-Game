@@ -16,6 +16,7 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.BaseClasses.Hitboxes;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace bullethellwhatever
 {
@@ -537,6 +538,26 @@ namespace bullethellwhatever
             {
                 addTo.Add(item);
             }
+        }
+
+        /// <summary>
+        /// Assumes list is sorted.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static int IndexValueIsAtInList(float value, List<float> list)
+        {
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                if (value > list[i] && value < list[i + 1])
+                { 
+                    return i;
+                }
+            }
+
+            return list.Count - 1;
         }
 
         public static bool CollidingWith(this List<Circle> me, List<Circle> other)

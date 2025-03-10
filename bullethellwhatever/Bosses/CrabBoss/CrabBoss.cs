@@ -31,6 +31,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public const float ScaleFactor = 1.5f;
         public const float BodyToArmSizeRatio = 1.5f; // adjust to change body/arm proportions
+
+        public const int GrabbingArm = 1;
+        public const int GrabPunishArm = 0;
+
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
