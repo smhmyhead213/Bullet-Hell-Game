@@ -56,6 +56,11 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     return output;
 }
 
+float easeInExpo(float x)
+{
+    return x == 0 ? 0 : pow(2, 10 * x - 10);
+}
+
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 uv = input.TextureCoordinates;
@@ -63,28 +68,29 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float dummy = baseColor.r * 0.001;
     uv = input.TextureCoordinates + dummy;
     
-    float deathrayPulsationRate = 1.0;
-    float sineOscillation = sin(uTime / deathrayPulsationRate - 12 * uv.y);
-    float distanceFromCentre = abs(uv.x - 0.5);
+    float centreX = 0.5;
+    float halfWidth = 0.32;
+    float4 backColour = float4(1, 0, 0, 1);
+    float4 beamColour = float4(1, 1, 1, 1);
     
-    // Calculate the opacity of the point using an exponential function to make the opacity decrease drastically.
-    // A sine is used to vary the exponent to produce a pulsing effect.
-
-    float opacity = pow(1 - distanceFromCentre, sineOscillation);
-    
-    // Adjust red and white values to achieve the desired effect.
-    
-        //float red =  7. * pow(4., uv.x);
-        //float white = 1. - pow(5. * sin(uv.x) + 15., abs(uv.x - 0.5));
-        
-    float colourAmount = 2.5 - distanceFromCentre;
-    float white = 0.15 * sineOscillation + 0.8 - distanceFromCentre * 2.;
-
-    float2 noiseCoord = uv + float2(0, uTime * scrollSpeed);
+    float distFromCentre = abs(uv.x - centreX);
+    float opacityInterpolant = easeInExpo(2 * distFromCentre);
+    float opacity = lerp(1, 0, opacityInterpolant);
     float scrollOffset = (scrollSpeed * uTime) % 1 + dummy;
-    float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(0, scrollOffset));
-    float4 final = float4(lerp(white, colourAmount, colour.r), lerp(white, colourAmount, colour.g), lerp(white, colourAmount, colour.b), 1) + sample;
-    return final * opacity;
+    float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
+    float4 outColour = float4(0, 0, 0, 0);
+    
+    if (distFromCentre < halfWidth)
+    {
+        float interpolant = distFromCentre / halfWidth;
+        outColour = lerp(beamColour, backColour, interpolant);
+    }
+    else
+    {
+        outColour = backColour;
+    }
+    
+    return outColour * opacity + sample;
 }
 
 Technique Technique1

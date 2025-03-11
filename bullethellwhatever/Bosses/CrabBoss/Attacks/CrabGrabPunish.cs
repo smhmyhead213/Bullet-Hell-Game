@@ -15,6 +15,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
     public class CrabGrabPunish : CrabBossAttack
     {
         public const int ChargeUpTime = 60;
+        public const int RayDuration = 90;
         public CrabGrabPunish(CrabBoss owner) : base(owner)
         {
 
@@ -26,7 +27,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int moveToPositionTime = 20;
             int expandedi = Utilities.ExpandedIndex(0);
-            int rayDuration = 30;
+            
             int restTimeAfterBlast = 40;
 
             if (AITimer < moveToPositionTime)
@@ -72,7 +73,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 Vector2 wristPos = Arm(armIndex).WristPosition();
                 float angleToPlayer = wristPos.AngleToPlayer();
-                Deathray d = SpawnDeathray(wristPos, angleToPlayer, 0.3f, rayDuration, "box", 40f, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
+                float rayWidth = 60f;
+                float totalRayDamage = 1f;
+                float rayDamage = totalRayDamage / (player.MaxIFrames * RayDuration);
+
+                Deathray d = SpawnDeathray(wristPos, angleToPlayer, rayDamage, RayDuration, "box", rayWidth, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
                 d.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
                 d.SetThinOut(true);
             }
@@ -80,19 +85,22 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void ExtraDraw(SpriteBatch s, int AITimer)
         {
-            if (AITimer < ChargeUpTime)
+            int flashDuration = ChargeUpTime + RayDuration;
+            float maxRadius = 130f;
+
+            if (AITimer < flashDuration)
             {
-                float progress = AITimer / (float)ChargeUpTime;
+                float progress = AITimer / (float)flashDuration;
 
                 //Func<float, float> easing = EasingFunctions.JoinedCurves([EasingFunctions.EaseInQuart, EasingFunctions.EaseOutExpo], [] )
                 float opacity = EasingFunctions.Linear(progress);
-
+                float radius = maxRadius * EasingFunctions.EaseOutQuad(progress);
                 Drawing.EnterShaderMode(s);
 
                 Shader shader = new Shader("GlowShader", Color.White * opacity);
                 shader.Apply();
 
-                Drawing.DrawCircle(Arm(CrabBoss.GrabPunishArm).WristPosition(), 60f, Color.White);
+                Drawing.DrawCircle(Arm(CrabBoss.GrabPunishArm).WristPosition(), radius, Color.White);
 
                 Drawing.ExitShaderMode(s);
             }
