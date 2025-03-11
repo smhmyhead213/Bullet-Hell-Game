@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.Projectiles.Base;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,6 +26,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int moveToPositionTime = 20;
             int expandedi = Utilities.ExpandedIndex(0);
+            int rayDuration = 30;
+            int restTimeAfterBlast = 40;
 
             if (AITimer < moveToPositionTime)
             {
@@ -64,6 +67,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 p.Spawn("box", spawnPos, velocity, Vector2.Zero, Vector2.One * scale, velocity.ToAngle(), Color.White, 1f, particleLifeTime);
                 p.FadeOut = false;
             }
+
+            if (AITimer == ChargeUpTime)
+            {
+                Vector2 wristPos = Arm(armIndex).WristPosition();
+                float angleToPlayer = wristPos.AngleToPlayer();
+                Deathray d = SpawnDeathray(wristPos, angleToPlayer, 0.3f, rayDuration, "box", 40f, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
+                d.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
+                d.SetThinOut(true);
+            }
         }
 
         public override void ExtraDraw(SpriteBatch s, int AITimer)
@@ -72,7 +84,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 float progress = AITimer / (float)ChargeUpTime;
 
-                Func<float, float> easing = EasingFunctions.JoinedCurves([EasingFunctions.EaseInQuart, EasingFunctions.EaseOutExpo], [] )
+                //Func<float, float> easing = EasingFunctions.JoinedCurves([EasingFunctions.EaseInQuart, EasingFunctions.EaseOutExpo], [] )
                 float opacity = EasingFunctions.Linear(progress);
 
                 Drawing.EnterShaderMode(s);

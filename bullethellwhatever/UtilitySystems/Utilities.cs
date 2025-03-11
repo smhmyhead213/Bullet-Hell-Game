@@ -500,6 +500,11 @@ namespace bullethellwhatever
         {
             return DistanceBetweenVectors(v1, v2);
         }
+
+        public static float AngleToPlayer(this Vector2 position)
+        {
+            return position.ToPlayer().ToAngle();
+        }
         public static Vector2 ToPlayer(this Vector2 position)
         {
             return player.Position - position;
