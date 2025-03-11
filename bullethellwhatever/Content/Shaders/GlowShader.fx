@@ -62,8 +62,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
-{
-        
+{        
     // sample to avoid compiling out
     float2 uv = input.TextureCoordinates;
     float2 centre = float2(0.5, 0.5);
@@ -72,18 +71,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float interpolant = easeOutQuart(progress);
     float opacity = lerp(1, 0, interpolant);
     return float4(colour, 1) * opacity;
-    
-    //float distanceFromCenter = abs(0.5 - uv.x) + dummy;
-    
-    //float opacity = 1 - 2 * distanceFromCenter;
-    //// amplify already bright areas and diminish everywhere else
-    //float scrollOffset = (scrollSpeed * uTime) % 1;
-    //float4 sample = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
-    //// controls the threshold above which to be bright
-    //float lenience = 0.9;
-    //float strength = pow(sample + lenience, 5) - 0.2;
-    //return sample;
-    //return float4(colour, 1) * strength * opacity;
 }
 
 Technique Technique1

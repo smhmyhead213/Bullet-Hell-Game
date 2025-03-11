@@ -119,6 +119,8 @@ namespace bullethellwhatever.BaseClasses
 
         public void HandleKeyPresses()
         {
+            Velocity = Vector2.Zero;
+
             var mouseState = Mouse.GetState();
 
             bool upPressed = IsKeyPressed(Keys.W);
@@ -218,8 +220,6 @@ namespace bullethellwhatever.BaseClasses
                 EntityManager.Clear();
                 EntityManager.SpawnBoss();
             }
-
-            Velocity = Vector2.Zero;
 
             if (!InputLocked)
             {

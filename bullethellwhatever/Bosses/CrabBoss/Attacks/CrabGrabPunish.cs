@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public const int ChargeUpTime = 60;
         public const int RayDuration = 90;
         public const int DelayTimeBeforePunish = 20;
+        public const int ThrowAwayTime = 50;
+        public const int ResetTime = 20;
         public CrabGrabPunish(CrabBoss owner) : base(owner)
         {
 
@@ -83,6 +86,43 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Deathray d = SpawnDeathray(wristPos, angleToPlayer, rayDamage, RayDuration, "box", rayWidth, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
                 d.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
                 d.SetThinOut(true);
+            }
+
+            if (AITimer > ChargeUpTime + DelayTimeBeforePunish + RayDuration && AITimer <= ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime)
+            {
+                int localTime = AITimer - (ChargeUpTime + DelayTimeBeforePunish + RayDuration);
+                float progress = localTime / (float)ThrowAwayTime;
+                float interpolant = EasingFunctions.EaseOutExpo(progress);
+                Arm(CrabBoss.GrabbingArm).LerpRotation(Arm(CrabBoss.GrabbingArm).UpperArm.RotationToAdd, expandedi * PI / 2, interpolant);
+
+                int throwTime = ThrowAwayTime / 10;
+
+                if (localTime >= throwTime)
+                {
+                    float maxThrowSpeed = 20f;
+                    float throwProgress = (localTime - throwTime) / (float)(ThrowAwayTime - throwTime);
+                    float throwSpeedInterpolant = EasingFunctions.EaseOutExpo(1f - throwProgress);
+                    player.Velocity = Utilities.SafeNormalise(Owner.Position.ToPlayer()) * maxThrowSpeed * throwSpeedInterpolant;
+                }
+            }
+
+            if (AITimer == ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime)
+            {
+                player.UnlockMovement();
+            }
+
+            if (AITimer > ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime && AITimer <= ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime + ResetTime)
+            {
+                int localTime = AITimer - (ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime);
+                float progress = localTime / (float)ResetTime;
+                float interpolant = progress;
+
+                foreach (CrabArm arm in CrabOwner.Arms)
+                {
+                    arm.LerpArmToRest(interpolant);
+                    float scale = MathHelper.Lerp(arm.UpperArm.Scale.X, 1f, interpolant);
+                    arm.SetScale(scale);
+                }
             }
         }
 
