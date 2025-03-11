@@ -16,6 +16,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
     {
         public const int ChargeUpTime = 60;
         public const int RayDuration = 90;
+        public const int DelayTimeBeforePunish = 20;
         public CrabGrabPunish(CrabBoss owner) : base(owner)
         {
 
@@ -30,9 +31,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             
             int restTimeAfterBlast = 40;
 
-            if (AITimer < moveToPositionTime)
+            if (AITimer > DelayTimeBeforePunish && AITimer < moveToPositionTime + DelayTimeBeforePunish)
             {
-                float progress = AITimer / (float)moveToPositionTime;
+                int localTime = AITimer - DelayTimeBeforePunish;
+                float progress = localTime / (float)(moveToPositionTime);
                 float distanceFromBodyToHold = 40f;
                 Vector2 rootToTarget = player.Position - Arm(0).Position;
                 float distanceRootToTarget = rootToTarget.Length();
@@ -42,9 +44,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Arm(armIndex).LerpToPoint(target, progress);
             }
 
-            if (AITimer < ChargeUpTime)
+            if (AITimer > DelayTimeBeforePunish && AITimer < ChargeUpTime + DelayTimeBeforePunish)
             {
-                float progress = AITimer / (float)ChargeUpTime;
+                int localTime = AITimer - DelayTimeBeforePunish;
+                float progress = localTime / (float)ChargeUpTime;
                 int particleLifeTime = 20;
                 float particleInitialSpeed = 5f;
                 float spawnDistance = particleLifeTime * particleInitialSpeed;
@@ -69,13 +72,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 p.FadeOut = false;
             }
 
-            if (AITimer == ChargeUpTime)
+            if (AITimer == ChargeUpTime + DelayTimeBeforePunish)
             {
                 Vector2 wristPos = Arm(armIndex).WristPosition();
                 float angleToPlayer = wristPos.AngleToPlayer();
                 float rayWidth = 60f;
                 float totalRayDamage = 1f;
-                float rayDamage = totalRayDamage / (player.MaxIFrames * RayDuration);
+                float rayDamage = totalRayDamage / (RayDuration / player.MaxIFrames); // always do the same amount of damage regardless of iframes
 
                 Deathray d = SpawnDeathray(wristPos, angleToPlayer, rayDamage, RayDuration, "box", rayWidth, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
                 d.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
@@ -85,7 +88,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void ExtraDraw(SpriteBatch s, int AITimer)
         {
-            int flashDuration = ChargeUpTime + RayDuration;
+            int flashDuration = ChargeUpTime + RayDuration + DelayTimeBeforePunish;
             float maxRadius = 130f;
 
             if (AITimer < flashDuration)
