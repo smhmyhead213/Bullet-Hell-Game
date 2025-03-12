@@ -95,7 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float interpolant = EasingFunctions.EaseOutExpo(progress);
                 Arm(CrabBoss.GrabbingArm).LerpRotation(Arm(CrabBoss.GrabbingArm).UpperArm.RotationToAdd, expandedi * PI / 2, interpolant);
 
-                int throwTime = ThrowAwayTime / 10;
+                int throwTime = ThrowAwayTime / 20;
 
                 if (localTime >= throwTime)
                 {
