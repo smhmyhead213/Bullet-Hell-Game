@@ -21,7 +21,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             if (AITimer == 20)
             {
-                ShockwaveRing shockwave = new ShockwaveRing(0f, 90f, 200, 30);
+                ShockwaveRing shockwave = new ShockwaveRing(200f, 0, 20000, 30);
+                shockwave.ScrollSpeed = 0.04f;
                 shockwave.Spawn(Owner.Position, Owner, Color.White);
             }
         }

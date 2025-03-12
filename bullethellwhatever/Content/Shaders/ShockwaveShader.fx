@@ -59,20 +59,33 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     // sample to avoid compiling out
-    float2 dummy = NoiseTexture.Sample(TextureSampler, 0.3) * 0.001f;
+    //float2 dummy = NoiseTexture.Sample(TextureSampler, 0.3) * 0.001f;
 
-    float2 uv = input.TextureCoordinates + dummy;
-
+    //float2 uv = input.TextureCoordinates + dummy;
+    
+    float2 uv = input.TextureCoordinates;
+    float4 baseColor = tex2D(TextureSampler, uv).rgba;
+    uv = uv + baseColor.r * 0.001f;
+    
+    float inCircleMultiplier = 1.0;
+    
     float2 centre = float2(0.5, 0.5); // define the centre of the shader
 
+    float maxDist = 0.5f; // dont display anything further than this from cnetre of texture
     float distanceFromCentre = sqrt(pow(uv.x - centre.x, 2.) + pow(uv.y - centre.y, 2.)); // calculate how far we are from the centre
 
+    if (distanceFromCentre > maxDist)
+    {
+        inCircleMultiplier = 0;
+    }
+    
     float4 col = float4(colour, 0);
 
-    float4 sample = NoiseTexture.Sample(NoiseSampler, uv) + (col * 0.001f);
+    float scrollOffset = (scrollSpeed * uTime) % 1;
+    float4 sample = NoiseTexture.Sample(NoiseSampler, uv + float2(0, scrollOffset));
     float opacity = distanceFromCentre * 2; // 0 -1 range
 
-    return sample * opacity;
+    return sample * opacity * inCircleMultiplier;
 }
 
 Technique Technique1
