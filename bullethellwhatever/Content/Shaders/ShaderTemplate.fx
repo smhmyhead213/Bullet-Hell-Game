@@ -13,7 +13,7 @@ sampler TextureSampler : register(s0);
 
 // we need samplers for both the main texture and noise texture to prevent the compiler getting trigger happy
 Texture2D NoiseTexture;
-sampler TextureSampler2 : register(s1)
+sampler NoiseSampler : register(s1)
 {
     Texture = (NoiseTexture);
     magfilter = LINEAR;
@@ -64,7 +64,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float dummy = baseColor.r * 0.001;
 
     float scrollOffset = (scrollSpeed * uTime) % 1 + dummy;
-    float4 samp = NoiseTexture.Sample(TextureSampler2, uv + float2(scrollOffset, scrollOffset));
+    float4 samp = NoiseTexture.Sample(NoiseSampler, uv + float2(scrollOffset, scrollOffset));
     
     return samp;
 }

@@ -64,11 +64,13 @@ namespace bullethellwhatever.DrawCode
         {
             Shader.SetParameter("radius", 0.5f);
 
-            ApplyRandomNoise();
+            //ApplyRandomNoise();
+
+            Shader.SetNoiseMap("RandomNoise", 0.0f);
 
             Shader.Apply();
 
-            Texture2D texture = AssetRegistry.GetTexture2D("box");
+            Texture2D texture = AssetRegistry.GetTexture2D("Circle");
 
             Drawing.BetterDraw(texture, Position, null, Color.White, Rotation, Vector2.One * Radius / texture.Width * 2f, SpriteEffects.None, 1);
         }

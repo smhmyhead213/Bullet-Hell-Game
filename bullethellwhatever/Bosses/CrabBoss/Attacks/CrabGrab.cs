@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             if (GrabbedPlayer)
                 return new CrabGrabPunish(CrabOwner);
-            else return new CrabGrab(CrabOwner);
+            else return new CrabGrabMiss(CrabOwner);
         }
     }
 }

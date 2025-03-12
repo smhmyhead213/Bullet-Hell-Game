@@ -1,25 +1,31 @@
-﻿sampler mainTexture : register(s0);
-texture randomNoiseMap;
+﻿// ensure compatability using preprocessor commands.
+#if OPENGL
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
+#else
+#define VS_SHADERMODEL vs_4_0
+#define PS_SHADERMODEL ps_4_0
+#endif
 
-sampler2D randomNoiseSampler = sampler_state
+float4x4 view_projection;
+
+sampler TextureSampler : register(s0);
+
+// we need samplers for both the main texture and noise texture to prevent the compiler getting trigger happy
+Texture2D NoiseTexture;
+sampler NoiseSampler : register(s1)
 {
-    Texture = <randomNoiseMap>;
+    Texture = (NoiseTexture);
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = wrap;
 };
-
-texture noiseMap;
-sampler2D noiseMapSampler = sampler_state // test in future if this works
-{
-    Texture = <noiseMap>;
-};
-
-matrix worldViewProjection;
 
 float uTime;
-int duration;
-int direction; // 1 or -1
 float3 colour;
-float radius;
-//float timeToStartFadingOut = duration / 10f * 9f;
+float scrollSpeed;
 
 struct VertexShaderInput
 {
@@ -41,65 +47,40 @@ struct VertexShaderOutput
     // over the triangle, and provided as input to your pixel shader.
 };
 
-VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
+VertexShaderOutput MainVS(in VertexShaderInput input)
 {
-    
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    float4 pos = mul(input.Position, worldViewProjection);
-    output.Position = pos;
-    
+    output.Position = mul(input.Position, view_projection);
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
-
     return output;
 }
 
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
-    
+    // sample to avoid compiling out
+    float2 dummy = NoiseTexture.Sample(TextureSampler, 0.3) * 0.001f;
+
     float2 uv = input.TextureCoordinates + dummy;
 
     float2 centre = float2(0.5, 0.5); // define the centre of the shader
-    
+
     float distanceFromCentre = sqrt(pow(uv.x - centre.x, 2.) + pow(uv.y - centre.y, 2.)); // calculate how far we are from the centre
-    
-    float colourAmount;
-    
-    float randomness = tex2D(randomNoiseSampler, uv).r;
-    
-    if (distanceFromCentre != 0.)
-    {
-        // decreasing the subtract number makes outline thicker
-        // offset distance slightly for white outline
-        float coefficient = 20.0; // increasing this makes fade out faster
-        float subtract = coefficient / 2.0;
 
-        colourAmount = pow(2., coefficient * distanceFromCentre - subtract);
-        colourAmount = colourAmount - colourAmount * 0.75 * randomness; // subtract a small amount for randomness
-        
-        float distanceFromEdge = radius - distanceFromCentre;
-        colourAmount = colourAmount + pow(0.006 / distanceFromEdge, 2);
-    }
+    float4 col = float4(colour, 0);
 
-    float3 col;
+    float4 sample = NoiseTexture.Sample(NoiseSampler, uv) + (col * 0.001f);
+    float opacity = distanceFromCentre * 2; // 0 -1 range
 
-    if (distanceFromCentre > radius)
-    {
-        col = float3(0, 0, 0);
-    }
-    else
-        col = colourAmount * colour;
-    // Output to screen
-    return float4(col, 0);
+    return sample * opacity;
 }
 
 Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 VertexShaderFunction();
-        PixelShader = compile ps_4_0 PixelShaderFunction();
+        //VertexShader = compile vs_4_0 MainVS();
+        PixelShader = compile ps_4_0 MainPS();
         
     }
 }
