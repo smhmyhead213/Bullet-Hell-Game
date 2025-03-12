@@ -73,7 +73,7 @@ namespace bullethellwhatever.DrawCode
                 Effect.Parameters["NoiseTexture"].SetValue(Map.Texture);
             }
 
-            Effect.Parameters["colour"].SetValue(Colour.ToVector3());
+            Effect.Parameters["colour"]?.SetValue(Colour.ToVector3());
 
             Effect.CurrentTechnique.Passes[pass].Apply();
         }

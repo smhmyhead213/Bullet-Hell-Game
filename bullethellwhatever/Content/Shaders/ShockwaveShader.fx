@@ -47,6 +47,11 @@ struct VertexShaderOutput
     // over the triangle, and provided as input to your pixel shader.
 };
 
+float easeInExpo(float x)
+{
+    return x == 0 ? 0 : pow(2, 10 * x - 10);
+}
+
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
@@ -80,10 +85,11 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     }
     
     float4 col = float4(colour, 0);
-
-    float scrollOffset = (scrollSpeed * uTime) % 1;
-    float4 sample = NoiseTexture.Sample(NoiseSampler, uv + float2(0, scrollOffset));
-    float opacity = distanceFromCentre * 2; // 0 -1 range
+    float2 centreToUV = uv - centre;
+    
+    float scrollOffset = (scrollSpeed * distanceFromCentre * uTime) % 1;
+    float4 sample = NoiseTexture.Sample(NoiseSampler, centreToUV);
+    float opacity = easeInExpo(easeInExpo(distanceFromCentre * 2)); // 0 - 1 range
 
     return sample * opacity * inCircleMultiplier;
 }
