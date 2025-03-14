@@ -50,7 +50,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 // decide which timer to use
                 int usedTimer = (i == 0 ? armZeroTimer : armOneTimer);
-                int punchStopTime = attackDuration - totalPunchTime; // time after which we should stop punching
+                int punchStopTime = attackDuration - totalPunchTime; // time after which we should stop punching (i think ths line is unused)
 
                 // calculate whether or not we are in the "wind down" portion of this arms movement
                 int availablePunchTime = attackDuration + armInitialTimes[i];

@@ -23,8 +23,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int screamDuration = 60;
             int waitTimeAfterScream = 20;
 
-            int rapidPunchesDuration = 40;
-            int rapidPunchTime = 6;
+            int rapidPunchesDuration = 90;
+            int rapidPunchPullBackTime = 4;
+            int rapidPunchSwingTime = 6;
+            int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime;
 
 
             int screamEndTime = screamTime + screamDuration + waitTimeAfterScream;
@@ -58,7 +60,50 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             if (AITimer >= screamEndTime && AITimer < screamEndTime + rapidPunchesDuration)
             {
-                //int armZeroTimer =
+                int armDesync = rapidPunchTime / 2;
+                int localTime = AITimer - screamEndTime;
+
+                for (int i = 0; i < 2; i++)
+                {
+                    int lagBehind = i == 0 ? 0 : - armDesync;
+                    int armTimer = localTime + lagBehind;
+
+                    //int punchStopTime = attackDuration - totalPunchTime; // time after which we should stop punching
+
+                    // calculate whether or not we are in the "wind down" portion of this arms movement
+                    int availablePunchTime = rapidPunchesDuration + lagBehind;
+                    int punchesAvailable = availablePunchTime / rapidPunchTime;
+                    int timeLastPunchEnds = punchesAvailable * rapidPunchTime; // -armInitialTimes[i] + 
+
+                    // figure out how long we have until the attack fully ends, if we dont have time
+                    int timeToSpendWindingDown = rapidPunchesDuration - timeLastPunchEnds; //+ armInitialTimes[i];
+                                                                                     // dont start another punch if we dont have time
+                    if (armTimer < timeLastPunchEnds)
+                    {
+                        armTimer = armTimer % rapidPunchTime;
+                    }
+                    else
+                    {
+                        int resetTimer = armTimer - timeLastPunchEnds;
+                        float interpolant = resetTimer / (float)timeToSpendWindingDown;
+                        //Debug.Assert(i == 0);
+                        Arm(i).LerpArmToRest(interpolant);
+                    }
+
+                    if (armTimer < rapidPunchPullBackTime)
+                    {
+                        float interpolant = armTimer / (float)rapidPunchPullBackTime;
+                        Vector2 targetPosition = Arm(i).Position + (Arm(i).RestPositionEnd() - Arm(i).Position) * 0.6f;
+                        Arm(i).LerpToPoint(targetPosition, interpolant);
+                    }
+
+                    if (armTimer >= rapidPunchPullBackTime && AITimer < rapidPunchPullBackTime + rapidPunchSwingTime)
+                    {
+                        int localSwingThroughTime = armTimer - rapidPunchPullBackTime;
+                        float interpolant = localSwingThroughTime / (float)rapidPunchSwingTime;
+                        Arm(i).LerpToRestPosition(interpolant);
+                    }
+                }
             }
         }
     }
