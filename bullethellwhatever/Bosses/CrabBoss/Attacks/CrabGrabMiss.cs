@@ -24,8 +24,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int waitTimeAfterScream = 20;
 
             int rapidPunchesDuration = 90;
-            int rapidPunchPullBackTime = 4;
-            int rapidPunchSwingTime = 6;
+            int rapidPunchPullBackTime = 20;
+            int rapidPunchSwingTime = 10;
             int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime;
 
 
@@ -38,7 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer % screamPeriod == 0)
                 {
                     Drawing.ScreenShake(7, screamPeriod);
-                    ShockwaveRing shockwave = new ShockwaveRing(0f, 130f, 4, 2);
+                    ShockwaveRing shockwave = new ShockwaveRing(0f, 120f, 4, 2);
                     shockwave.ScrollSpeed = 0.04f;
                     shockwave.Spawn(Owner.Position + new Vector2(0f, 20f), Owner, Color.Gray);
                 }
