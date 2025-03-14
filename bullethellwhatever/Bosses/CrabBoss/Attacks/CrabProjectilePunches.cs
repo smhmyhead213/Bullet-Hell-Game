@@ -28,9 +28,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 30;
-            int punchSwingTime = 7;
-            int resetTime = 27;
+            int pullBackArmTime = 30; // 30
+            int punchSwingTime = 7; // 7
+            int resetTime = 27; // 27
             int delayAfterPunchToCloseClaw = 20; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
             int attackDuration = 200;
@@ -55,10 +55,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 // calculate whether or not we are in the "wind down" portion of this arms movement
                 int availablePunchTime = attackDuration + armInitialTimes[i];
                 int punchesAvailable = availablePunchTime / totalPunchTime;
-                int timeLastPunchEnds = -armInitialTimes[i] + punchesAvailable * totalPunchTime;
-                
+                int timeLastPunchEnds = punchesAvailable * totalPunchTime; // -armInitialTimes[i] + 
+
                 // figure out how long we have until the attack fully ends, if we dont have time
-                int timeToSpendWindingDown = attackDuration - timeLastPunchEnds + armInitialTimes[i];
+                int timeToSpendWindingDown = attackDuration - timeLastPunchEnds; //+ armInitialTimes[i];
                 // dont start another punch if we dont have time
                 if (usedTimer < timeLastPunchEnds)
                 {
@@ -150,6 +150,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 End();
             }
+
+            Owner.Velocity = Vector2.Zero;
+            Owner.Rotation = 0f;
+        }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabProjectilePunches(CrabOwner);
         }
     }
 }

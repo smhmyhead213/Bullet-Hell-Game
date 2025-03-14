@@ -26,6 +26,7 @@ sampler NoiseSampler : register(s1)
 float uTime;
 float3 colour;
 float scrollSpeed;
+float baseOpacity;
 
 struct VertexShaderInput
 {
@@ -94,7 +95,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 sample = NoiseTexture.Sample(NoiseSampler, centreToUV);
     
 
-    return sample * opacity * inCircleMultiplier;
+    return sample * baseOpacity * opacity * inCircleMultiplier;
 }
 
 Technique Technique1

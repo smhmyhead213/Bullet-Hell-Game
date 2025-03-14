@@ -21,6 +21,7 @@ namespace bullethellwhatever.DrawCode
         public float ExpansionRate;
         public int FadeOutTime;
         public float ScrollSpeed;
+        
         public ShockwaveRing(float radius, float expansionRate, int lifeTime, int fadeOutTime)
         {
             Radius = radius;
@@ -67,6 +68,7 @@ namespace bullethellwhatever.DrawCode
         {
             Shader.SetParameter("radius", 0.5f);
             Shader.SetParameter("uTime", AITimer);
+            Shader.SetParameter("baseOpacity", Opacity);
 
             //ApplyRandomNoise();
 
