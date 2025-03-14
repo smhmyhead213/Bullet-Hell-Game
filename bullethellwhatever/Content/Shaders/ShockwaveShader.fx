@@ -95,7 +95,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 sample = NoiseTexture.Sample(NoiseSampler, centreToUV);
     
 
-    return sample * baseOpacity * opacity * inCircleMultiplier;
+    return (sample * col) * baseOpacity * opacity * inCircleMultiplier;
 }
 
 Technique Technique1
