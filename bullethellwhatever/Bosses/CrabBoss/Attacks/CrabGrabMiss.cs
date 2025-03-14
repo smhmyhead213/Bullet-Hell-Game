@@ -7,6 +7,11 @@ using bullethellwhatever.Bosses;
 using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework;
 using bullethellwhatever.BaseClasses;
+using System.Diagnostics;
+using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.Projectiles;
+using Microsoft.Xna.Framework.Graphics;
+using bullethellwhatever.AssetManagement;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -24,9 +29,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int waitTimeAfterScream = 20;
 
             int rapidPunchesDuration = 90;
-            int rapidPunchPullBackTime = 20;
-            int rapidPunchSwingTime = 10;
-            int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime;
+            int rapidPunchPullBackTime = 8;
+            int rapidPunchSwingTime = 4;
+            int pauseTimeAfterRapidPunch = 5;
+            int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime + pauseTimeAfterRapidPunch;
 
 
             int screamEndTime = screamTime + screamDuration + waitTimeAfterScream;
@@ -49,11 +55,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 int localTime = AITimer - (screamTime + screamDuration);
                 float progress = localTime / (float)waitTimeAfterScream;
                 float interpolant = progress;
+                float finalArmScale = 1.2f; // size to have arms at for punches
 
                 foreach (CrabArm arm in CrabOwner.Arms)
                 {
                     arm.LerpArmToRest(interpolant);
-                    float scale = MathHelper.Lerp(arm.UpperArm.Scale.X, 1f, interpolant);
+                    float scale = MathHelper.Lerp(arm.UpperArm.Scale.X, finalArmScale, interpolant);
                     arm.SetScale(scale);
                 }
             }
@@ -65,6 +72,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 for (int i = 0; i < 2; i++)
                 {
+                    int expandedi = Utilities.ExpandedIndex(i);
                     int lagBehind = i == 0 ? 0 : - armDesync;
                     int armTimer = localTime + lagBehind;
 
@@ -90,18 +98,56 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         Arm(i).LerpArmToRest(interpolant);
                     }
 
-                    if (armTimer < rapidPunchPullBackTime)
+                    if (armTimer >= 0)
                     {
-                        float interpolant = armTimer / (float)rapidPunchPullBackTime;
-                        Vector2 targetPosition = Arm(i).Position + (Arm(i).RestPositionEnd() - Arm(i).Position) * 0.6f;
-                        Arm(i).LerpToPoint(targetPosition, interpolant);
-                    }
+                        //Assert(i == 0);
 
-                    if (armTimer >= rapidPunchPullBackTime && AITimer < rapidPunchPullBackTime + rapidPunchSwingTime)
-                    {
-                        int localSwingThroughTime = armTimer - rapidPunchPullBackTime;
-                        float interpolant = localSwingThroughTime / (float)rapidPunchSwingTime;
-                        Arm(i).LerpToRestPosition(interpolant);
+                        if (armTimer < rapidPunchPullBackTime)
+                        {
+                            float interpolant = EasingFunctions.Linear(armTimer / (float)rapidPunchPullBackTime);
+                            float pullArmInFrac = 0.4f;
+                            Vector2 targetPosition = Arm(i).Position + new Vector2(0f, Arm(i).Length()).Rotate(-expandedi * -PI / 18) * pullArmInFrac;
+                            Arm(i).LerpToPoint(targetPosition, interpolant);
+                        }
+
+                        if (armTimer >= rapidPunchPullBackTime && armTimer <= rapidPunchPullBackTime + rapidPunchSwingTime)
+                        {
+                            int localSwingThroughTime = armTimer - rapidPunchPullBackTime;
+                            float interpolant = EasingFunctions.EaseOutExpo(localSwingThroughTime / (float)rapidPunchSwingTime);
+                            float holdOutDistFraction = 0.95f;
+                            Vector2 targetPosition = Arm(i).Position + new Vector2(0f, Arm(i).Length()).Rotate(Owner.Rotation) * holdOutDistFraction;
+                            Arm(i).LerpToPoint(targetPosition, interpolant);
+                        }
+
+                        // spawn explosion at end of punch
+
+                        if (armTimer == rapidPunchPullBackTime + rapidPunchSwingTime)
+                        {                
+                            string textureName = "Circle";
+                            Texture2D texture = AssetRegistry.GetTexture2D(textureName);
+                            float radius = 150f;
+                            float explosionScale = radius / texture.Width;
+                            int explosionLifetime = 12;
+                            Vector2 spawnPosition = Arm(i).PositionAtDistanceFromWrist(20f);
+                            Projectile p = SpawnProjectile(spawnPosition, Vector2.Zero, 1f, 1, textureName, Vector2.One * explosionScale, Owner, true, false, Color.Red, false, false);
+                            
+                            int locali = i;
+
+                            p.SetExtraAI(new Action(() =>
+                            {
+                                p.Position = Arm(locali).PositionAtDistanceFromWrist(20f);
+
+                                if (p.AITimer == explosionLifetime)
+                                {
+                                    p.InstantlyDie();
+                                }
+                            }));
+                        }
+
+                        //if (armTimer >= rapidPunchPullBackTime + rapidPunchSwingTime && armTimer < rapidPunchTime)
+                        //{
+
+                        //}
                     }
                 }
             }
