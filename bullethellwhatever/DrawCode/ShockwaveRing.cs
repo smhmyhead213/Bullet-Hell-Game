@@ -40,6 +40,7 @@ namespace bullethellwhatever.DrawCode
             Colour = colour;
 
             SetShader("ShockwaveShader");
+            Shader.SetColour(Colour);
 
             SetOpacity(0.5f);
 

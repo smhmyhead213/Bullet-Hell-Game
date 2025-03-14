@@ -20,7 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public override void Execute(int AITimer)
         {
             int screamTime = 20;
-            int screamDuration = 30;
+            int screamDuration = 60;
             int waitTimeAfterScream = 20;
 
             int rapidPunchesDuration = 40;
@@ -29,11 +29,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int screamEndTime = screamTime + screamDuration + waitTimeAfterScream;
 
-            if (AITimer == screamTime)
+            if (AITimer >= screamTime && AITimer < screamTime + screamDuration)
             {
-                ShockwaveRing shockwave = new ShockwaveRing(200f, 0, 20000, 30);
-                shockwave.ScrollSpeed = 0.04f;
-                shockwave.Spawn(Owner.Position, Owner, Color.White);
+                int screamPeriod = 8;
+
+                if (AITimer % screamPeriod == 0)
+                {
+                    ShockwaveRing shockwave = new ShockwaveRing(0f, 100f, 8, 3);
+                    shockwave.ScrollSpeed = 0.04f;
+                    shockwave.Spawn(Owner.Position, Owner, Color.Gray);
+                }
             }
 
             if (AITimer >= screamTime + screamDuration && AITimer < screamEndTime)
@@ -52,7 +57,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             if (AITimer >= screamEndTime && AITimer < screamEndTime + rapidPunchesDuration)
             {
-                int armZeroTimer =
+                //int armZeroTimer =
             }
         }
     }

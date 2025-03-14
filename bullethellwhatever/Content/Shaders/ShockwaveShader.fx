@@ -86,10 +86,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float4 col = float4(colour, 0);
     float2 centreToUV = uv - centre;
-    
+    float mostOpaqueRadius = 0.3; // make it fade out slightly towards the edges by setting a max opacity slightly inwards
+    float distFromMostOpaque = abs(distanceFromCentre - mostOpaqueRadius);
+    float opacityInterpolant = 1.0 - (distFromMostOpaque / mostOpaqueRadius);
+    float opacity = lerp(0.0, 1.0, easeInExpo(opacityInterpolant)); // 0 - 1 range
     float scrollOffset = (scrollSpeed * distanceFromCentre * uTime) % 1;
     float4 sample = NoiseTexture.Sample(NoiseSampler, centreToUV);
-    float opacity = easeInExpo(easeInExpo(distanceFromCentre * 2)); // 0 - 1 range
+    
 
     return sample * opacity * inCircleMultiplier;
 }
