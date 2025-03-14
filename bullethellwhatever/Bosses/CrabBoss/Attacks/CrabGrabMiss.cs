@@ -35,7 +35,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 if (AITimer % screamPeriod == 0)
                 {
-                    ShockwaveRing shockwave = new ShockwaveRing(0f, 100f, 8, 3);
+                    Drawing.ScreenShake(7, screamPeriod);
+                    ShockwaveRing shockwave = new ShockwaveRing(0f, 130f, 4, 2);
                     shockwave.ScrollSpeed = 0.04f;
                     shockwave.Spawn(Owner.Position, Owner, Color.Gray);
                 }
