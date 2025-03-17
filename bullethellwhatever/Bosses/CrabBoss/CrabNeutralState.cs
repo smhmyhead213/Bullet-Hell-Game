@@ -27,7 +27,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
             else
             {
-                int rng = Utilities.RandomInt(1, 6);
+                int rng = Utilities.RandomInt(1, 7);
 
                 BossAttack chosen = rng switch
                 {
@@ -35,6 +35,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     2 => new CrabBombThrow(CrabOwner),
                     3 => new NeutralToCrabFlailChargeTransition(CrabOwner),
                     4 => new CrabProjectilePunches(CrabOwner),
+                    5 => new CrabGrab(CrabOwner),
                     > 5 => new CrabSpray(CrabOwner),
                     // idk how this would get reached but whatever
                     _ => new CrabPunch(CrabOwner),
