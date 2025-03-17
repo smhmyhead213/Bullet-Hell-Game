@@ -26,6 +26,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             float initialarmLength = Arm(CrabBoss.GrabPunishArm).WristLength(); // kinda hacky but this gives the original non enlarged length
             float armLength = Arm(armIndex).WristLength();
 
+            // face player
+
+            if (AITimer == 0)
+            {
+                CrabOwner.FacePlayer();
+            }
+
             if (AITimer < pullBackArmTime)
             {
                 // calculate the size the arm must be to reach the player

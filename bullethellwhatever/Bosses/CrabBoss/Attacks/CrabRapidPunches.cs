@@ -71,8 +71,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     else
                     {
                         int resetTimer = armTimer - timeLastPunchEnds;
-                        float interpolant = resetTimer / (float)timeToSpendWindingDown;
-                        //Debug.Assert(i == 0);
+                        float interpolant = (resetTimer + 1) / (float)timeToSpendWindingDown;
+                        //Assert(i == 1); 
                         Arm(i).LerpArmToRest(interpolant);
                     }
 

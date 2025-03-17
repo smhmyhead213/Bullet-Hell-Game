@@ -59,8 +59,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 // figure out how long we have until the attack fully ends, if we dont have time
                 int timeToSpendWindingDown = attackDuration - timeLastPunchEnds; //+ armInitialTimes[i];
+                bool windingDown = usedTimer < timeLastPunchEnds;
                 // dont start another punch if we dont have time
-                if (usedTimer < timeLastPunchEnds)
+                if (!windingDown)
                 {
                     usedTimer = usedTimer % totalPunchTime;
                 }
@@ -69,12 +70,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     int localTime = usedTimer - timeLastPunchEnds;
                     float interpolant = localTime / (float)timeToSpendWindingDown;
                     //Debug.Assert(i == 0);
+                    Owner.Velocity *= 0.8f;
                     Arm(i).LerpArmToRest(interpolant);
                 }
 
                 int expandedi = Utilities.ExpandedIndex(i);
 
-                if (usedTimer == 0)
+                if (usedTimer == 0 && !windingDown)
                 {
                     sidestepDir = Utilities.RandomSign();
                     Owner.Velocity = sidestepInitialSpeed * sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
@@ -99,7 +101,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     CrabOwner.FacePlayer();
 
-                    Owner.Velocity = sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector() * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(1f - progress));
+                    if (!windingDown)
+                        Owner.Velocity = sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector() * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(1f - progress));
                 }
 
                 if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
