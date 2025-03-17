@@ -539,6 +539,12 @@
 /processorParam:TextureFormat=Color
 /build:Shaders/FireNoise2.png
 
+#begin Shaders/FirePunchShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/FirePunchShader.fx
+
 #begin Shaders/GlowShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

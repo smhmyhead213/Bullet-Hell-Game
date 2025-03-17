@@ -509,6 +509,11 @@ namespace bullethellwhatever
         {
             return player.Position - position;
         }
+
+        public static Vector2 DirectionToPlayer(this Vector2 position)
+        {
+            return SafeNormalise(position.ToPlayer());
+        }
         public static Vector2 DirectionTo(this Vector2 from, Vector2 to)
         {
             return SafeNormalise(to - from);

@@ -264,9 +264,10 @@ namespace bullethellwhatever.BaseClasses.Entities
         }
 
 
-        public virtual void SetShader(string filename)
+        public virtual Shader SetShader(string filename)
         {
             Shader = new Shader(filename, Color.White);
+            return Shader;
         }
 
         public virtual void Die()

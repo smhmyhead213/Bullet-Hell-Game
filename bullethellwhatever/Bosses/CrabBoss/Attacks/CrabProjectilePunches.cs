@@ -150,9 +150,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 End();
             }
-
-            Owner.Velocity = Vector2.Zero;
-            Owner.Rotation = 0f;
         }
 
         public override BossAttack PickNextAttack()
