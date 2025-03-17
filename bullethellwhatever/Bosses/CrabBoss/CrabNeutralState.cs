@@ -29,6 +29,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 int rng = Utilities.RandomInt(1, 100);
 
+                if (Utilities.RandomInt(1, 6) > 2)
+                {
+                    return new CrabGrab(CrabOwner);
+                }
+
                 BossAttack chosen = rng switch
                 {
                     < 5 => new CrabGrab(CrabOwner),

@@ -109,6 +109,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             if (AITimer == ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime)
             {
                 player.UnlockMovement();
+                Owner.ContactDamage = true;
             }
 
             if (AITimer > ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime && AITimer <= ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime + ResetTime)
@@ -123,6 +124,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     float scale = MathHelper.Lerp(arm.UpperArm.Scale.X, 1f, interpolant);
                     arm.SetScale(scale);
                 }
+            }
+
+            if (AITimer == ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime + ResetTime)
+            {
+                End();
             }
         }
 

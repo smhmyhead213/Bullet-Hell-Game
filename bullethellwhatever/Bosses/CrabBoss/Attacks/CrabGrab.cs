@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
+using System.Transactions;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -20,7 +21,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int clawCloseTime = 10;
 
             int swingTime = 15;
-            float pullBackAngle = -expandedi * PI / 2f;
+            float pullBackAngle = -expandedi * 3 * PI / 4;
             float finalSwingAngle = -expandedi * -PI / 18f;
             
             float initialarmLength = Arm(CrabBoss.GrabPunishArm).WristLength(); // kinda hacky but this gives the original non enlarged length
@@ -38,22 +39,26 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 // calculate the size the arm must be to reach the player
 
                 float distToPlayer = Arm(armIndex).Position.Distance(player.Position);
-                float scaleFactor = distToPlayer / initialarmLength;
+                float maxScale = 5f;
+                float fractionOfFullLength = AITimer / (float)pullBackArmTime;
+                float scaleFactor = MathHelper.Clamp(distToPlayer / initialarmLength * fractionOfFullLength, 1f, maxScale);
                 float fractionOfLengthHoldNearBody = 0.9f;
 
                 Arm(armIndex).SetScale(scaleFactor);
 
                 float interpolant = EasingFunctions.EaseOutExpo(AITimer / (float)pullBackArmTime);
 
-                Arm(armIndex).LerpToPoint(Arm(armIndex).Position + new Vector2(0f, armLength * fractionOfLengthHoldNearBody).Rotate(pullBackAngle), interpolant, true);
+                Arm(armIndex).LerpToPoint(Arm(armIndex).Position + new Vector2(0f, armLength * fractionOfLengthHoldNearBody).Rotate(Owner.Rotation + PI - pullBackAngle), interpolant, true);
 
                 Arm(armIndex).LowerClaw.LerpRotation(0f, -expandedi * PI / 2f, interpolant);
                 //Arm(1).UpperClaw.LerpRotation(0f, -expandedi * -PI / 2, interpolant);
 
+                Owner.Velocity = Owner.Velocity * MathHelper.Lerp(1f, 0f, interpolant);
             }
 
             if (AITimer >= pullBackArmTime + waitTime && AITimer < pullBackArmTime + swingTime + waitTime)
             {
+                Owner.ContactDamage = false;
                 int localTime = AITimer - (pullBackArmTime + waitTime);
                 float progress = MathHelper.Clamp(localTime / (float)swingTime, 0f, 1f);
                 float interpolant = EasingFunctions.EaseOutExpo(progress);
@@ -72,6 +77,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (Arm(armIndex).LowerClaw.IsCollidingWith(player) || Arm(armIndex).LowerClaw.IsCollidingWith(player) && !player.InputLocked)
                 {
                     player.LockMovement();
+                    player.Velocity = Vector2.Zero;
                     GrabbedPlayer = true;
                 }
 

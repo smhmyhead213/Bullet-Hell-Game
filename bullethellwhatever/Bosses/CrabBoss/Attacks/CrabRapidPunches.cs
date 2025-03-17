@@ -23,25 +23,25 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int rapidPunchesDuration = 90;
             int rapidPunchPullBackTime = 8;
             int rapidPunchSwingTime = 4;
-            int pauseTimeAfterRapidPunch = 5;
+            int pauseTimeAfterRapidPunch = 2;
             int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime + pauseTimeAfterRapidPunch;
 
             if (AITimer >= 0 && AITimer < rapidPunchesDuration)
             {
                 int dashDuration = rapidPunchesDuration;
-                float initialDashSpeed = 25f;
+                float initialDashSpeed = 15f;
                 // lunge at player
                 if (AITimer == 0)
                 {
                     Owner.Velocity = 5f * Owner.Position.DirectionToPlayer();
                 }
 
-                if (AITimer > 0 && AITimer <= 0 + dashDuration)
+                if (AITimer <= dashDuration)
                 {
                     float localDashTime = AITimer;
-                    float interpolant = EasingFunctions.Linear(localDashTime / (float)dashDuration);
+                    float interpolant = EasingFunctions.EaseOutExpo(localDashTime / (float)dashDuration);
 
-                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
+                    Owner.Velocity = Utilities.ConserveLengthLerp(Utilities.SafeNormalise(Owner.Velocity), -Owner.Velocity.DirectionToPlayer(), interpolant) * MathHelper.Lerp(initialDashSpeed, initialDashSpeed / 5f, interpolant);
                     Owner.Rotation = Owner.Velocity.ToAngle() + PI;
                 }
 
@@ -63,8 +63,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     // figure out how long we have until the attack fully ends, if we dont have time
                     int timeToSpendWindingDown = rapidPunchesDuration - timeLastPunchEnds; //+ armInitialTimes[i];
-                                                                                           // dont start another punch if we dont have time
-                    if (armTimer < timeLastPunchEnds)
+                    bool windingDown = armTimer >= timeLastPunchEnds;
+
+                    if (!windingDown)
                     {
                         armTimer = armTimer % rapidPunchTime;
                     }
@@ -72,11 +73,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     {
                         int resetTimer = armTimer - timeLastPunchEnds;
                         float interpolant = (resetTimer + 1) / (float)timeToSpendWindingDown;
-                        //Assert(i == 1); 
-                        Arm(i).LerpArmToRest(interpolant);
+                        //Assert(interpolant < 0.99f); 
+                        //Arm(i).LerpArmToRest(interpolant);
                     }
 
-                    if (armTimer >= 0)
+                    if (armTimer >= 0 && !windingDown)
                     {
                         //Assert(i == 0);
 
@@ -101,26 +102,42 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                         if (armTimer == rapidPunchPullBackTime + rapidPunchSwingTime)
                         {
-                            string textureName = "Circle";
-                            Texture2D texture = AssetRegistry.GetTexture2D(textureName);
-                            float radius = 150f;
-                            float explosionScale = radius / texture.Width;
-                            int explosionLifetime = 12;
-                            Vector2 spawnPosition = Arm(i).PositionAtDistanceFromWrist(20f);
-                            Projectile p = SpawnProjectile(spawnPosition, Vector2.Zero, 1f, 1, textureName, Vector2.One * explosionScale, Owner, true, false, Color.Red, false, false);
-                            p.SetShader("FirePunchShader").SetNoiseMap("FireNoise2", 0f);
-
-                            int locali = i;
-
+                            int projectiles = 3;
+                            float spread = PI / 8;
+                            Vector2 spawnPos = Arm(i).WristPosition();
+                            int onEachSide = projectiles / 2;
+                            float initialSpeed = 30f;
+                            Projectile p = SpawnProjectile(spawnPos, Arm(i).LowerArm.RotationFromV().ToVector() * initialSpeed, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
+                            p.AddTrail(14);
+                            p.Raycast = new BaseClasses.Hitboxes.RaycastData(p.GetVelocity, 1);
                             p.SetExtraAI(new Action(() =>
                             {
-                                p.Position = Arm(locali).PositionAtDistanceFromWrist(20f);
-
-                                if (p.AITimer == explosionLifetime)
-                                {
-                                    p.InstantlyDie();
-                                }
+                                p.Rotation = p.Velocity.ToAngle();
+                                p.ExponentialAccelerate(1.1f);
                             }));
+
+                            for (int j = 1; j < onEachSide + 1; j++)
+                            {
+                                // this sucks
+                                float angle = j / (float)onEachSide * spread / 2;
+                                Projectile shotgun = SpawnProjectile(spawnPos, Arm(i).LowerArm.RotationFromV().ToVector().Rotate(angle) * initialSpeed, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
+                                shotgun.AddTrail(14);
+                                shotgun.Raycast = new BaseClasses.Hitboxes.RaycastData(shotgun.GetVelocity, 1);
+                                shotgun.SetExtraAI(new Action(() =>
+                                {
+                                    shotgun.Rotation = shotgun.Velocity.ToAngle();
+                                    shotgun.ExponentialAccelerate(1.1f);
+                                }));
+
+                                Projectile shotgun2 = SpawnProjectile(spawnPos, Arm(i).LowerArm.RotationFromV().ToVector().Rotate(-angle) * initialSpeed, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
+                                shotgun2.AddTrail(14);
+                                shotgun2.Raycast = new BaseClasses.Hitboxes.RaycastData(shotgun2.GetVelocity, 1);
+                                shotgun2.SetExtraAI(new Action(() =>
+                                {
+                                    shotgun2.Rotation = shotgun2.Velocity.ToAngle();
+                                    shotgun2.ExponentialAccelerate(1.1f);
+                                }));
+                            }                            
                         }
                     }
                 }

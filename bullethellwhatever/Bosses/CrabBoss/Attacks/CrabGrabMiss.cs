@@ -30,6 +30,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             int screamEndTime = screamTime + screamDuration + waitTimeAfterScream;
 
+            if (AITimer == 0)
+            {
+                Owner.ContactDamage = true;
+            }
+
             if (AITimer >= screamTime && AITimer < screamTime + screamDuration)
             {
                 int screamPeriod = 8;
