@@ -72,14 +72,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     Arms[i].HorizontalFlip = true;
                 }
 
-                Vector2 wristRestingOffset = new Vector2(0f, Arms[i].WristLength() * 0.95f);
-                Arms[i].TouchPoint(pos + wristRestingOffset);
+                float wristLength = Arms[i].WristLength();
+                Vector2 wristRestingOffset = new Vector2(0f, wristLength * 0.95f);
+                Arms[i].TouchPoint(pos + wristRestingOffset, false);
 
                 // store a vector from the arm start position to its end
-                ArmRestingEnds[i] = Arms[i].LowerArm.CalculateEnd() - pos;
+                Vector2 lowerArmEnd = Arms[i].LowerArm.CalculateEnd();
+                ArmRestingEnds[i] = lowerArmEnd - pos;
             }
 
-            CurrentAttack = new CrabGrab(this);
+            CurrentAttack = new CrabIntro(this);
             ContactDamage = true;
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
@@ -112,10 +114,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             base.Draw(spriteBatch);
 
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    Drawing.DrawBox(Arms[i].RestPositionEnd(), Color.Red, 1f);
-            //}
+            for (int i = 0; i < 2; i++)
+            {
+                Drawing.DrawBox(Arms[i].RestPositionEnd(), Color.Red, 1f);
+                Drawing.DrawBox(Arms[i].LowerArm.CalculateEnd(), Color.Green, 1f);
+            }
 
             //Utilities.drawTextInDrawMethod(Arms[0].LowerArm.RotationFromV().ToString(), Position + new Vector2(0f, 200f), spriteBatch, font, Color.White);
         }

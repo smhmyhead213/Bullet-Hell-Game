@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabPunch(CrabOwner);
+            return new DoNothing(CrabOwner);
         }
     }
 }

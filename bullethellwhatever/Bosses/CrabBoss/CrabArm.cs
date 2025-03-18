@@ -197,7 +197,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             float withinAcos = (upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance);
             float upperArmAngle = withinAcos < 1.0001f && withinAcos >= 1f ? 0 : Acos(withinAcos); // prevent NaN for exactly 1 and imprecisions
 
-            Debug.Assert(!float.IsNaN(upperArmAngle));
+            Assert(!float.IsNaN(upperArmAngle));
 
             int expandedi = -Utilities.ExpandedIndex(LegIndex);
 
@@ -208,6 +208,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             float lowerArmRotation = Utilities.VectorToAngle(targetPosition - elbowPos);
 
+            // the arm seems to be touching the correct point before executing this line, but afterwards seems to be slightly off
             LowerArm.PointInDirection(lowerArmRotation);
 
             if (pointClaw)
