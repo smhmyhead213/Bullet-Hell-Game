@@ -166,6 +166,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             // decide on a target. if the target it out of reach, choose a new target in the same direction that's reachable
             
+            // an inaccuracy arises from the subtraction taking place here
             Vector2 direction = Utilities.SafeNormalise(targetPosition - Position);
 
             if (Utilities.DistanceBetweenVectors(Position, targetPosition) > lengthOfLeg)
