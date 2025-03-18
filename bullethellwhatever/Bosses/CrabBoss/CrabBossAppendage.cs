@@ -243,7 +243,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
-            Utilities.drawTextInDrawMethod(CalculateFinalRotation().ToString(), Position + new Vector2(50f, 0f), spriteBatch, font, Color.White, 1f);
+            //Utilities.drawTextInDrawMethod(CalculateFinalRotation().ToString(), Position + new Vector2(50f, 0f), spriteBatch, font, Color.White, 1f);
             //Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
             //Drawing.DrawBox(Position, Color.Blue, 0.5f);
             //DrawHitbox();

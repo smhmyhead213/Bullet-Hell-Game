@@ -71,6 +71,11 @@ namespace bullethellwhatever.UtilitySystems
         {
             return Math.Pow(progress, 5);
         }
+
+        public static float easeInExpo(float progress)
+        {
+            return progress == 0 ? 0 : Pow(2, 10 * progress - 10);
+        }
         public static float EaseOutExpo(float progress)
         {
             return 1 - Pow(2, -10 * progress);

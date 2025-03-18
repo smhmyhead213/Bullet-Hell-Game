@@ -116,8 +116,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             for (int i = 0; i < 2; i++)
             {
-                Drawing.DrawBox(Arms[i].RestPositionEnd(), Color.Red, 1f);
-                Drawing.DrawBox(Arms[i].LowerArm.CalculateEnd(), Color.Green, 1f);
+                //Drawing.DrawBox(Arms[i].RestPositionEnd(), Color.Red, 1f);
+                //Drawing.DrawBox(Arms[i].LowerArm.CalculateEnd(), Color.Green, 1f);
             }
 
             //Utilities.drawTextInDrawMethod(Arms[0].LowerArm.RotationFromV().ToString(), Position + new Vector2(0f, 200f), spriteBatch, font, Color.White);

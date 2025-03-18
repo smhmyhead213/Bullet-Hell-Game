@@ -20,7 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override void Execute(int AITimer)
         {
-            int rapidPunchesDuration = 90;
+            int rapidPunchesDuration = 45;
             int rapidPunchPullBackTime = 8;
             int rapidPunchSwingTime = 4;
             int pauseTimeAfterRapidPunch = 2;
@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             if (AITimer >= 0 && AITimer < rapidPunchesDuration)
             {
                 int dashDuration = rapidPunchesDuration;
-                float initialDashSpeed = 15f;
+                float initialDashSpeed = 20f;
                 // lunge at player
                 if (AITimer == 0)
                 {
@@ -39,9 +39,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer <= dashDuration)
                 {
                     float localDashTime = AITimer;
-                    float interpolant = EasingFunctions.EaseOutExpo(localDashTime / (float)dashDuration);
+                    float interpolant = EasingFunctions.easeInExpo(localDashTime / (float)dashDuration);
 
-                    Owner.Velocity = Utilities.ConserveLengthLerp(Utilities.SafeNormalise(Owner.Velocity), -Owner.Velocity.DirectionToPlayer(), interpolant) * MathHelper.Lerp(initialDashSpeed, initialDashSpeed / 5f, interpolant);
+                    Owner.Velocity = Utilities.ConserveLengthLerp(Utilities.SafeNormalise(Owner.Velocity), Owner.Position.DirectionToPlayer(), interpolant) * MathHelper.Lerp(initialDashSpeed, initialDashSpeed / 5f, interpolant);
                     Owner.Rotation = Owner.Velocity.ToAngle() + PI;
                 }
 
