@@ -19,7 +19,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            int spinUpTime = 40;
+            int spinUpTime = 20;
             float spinAngularAccel = PI / 180;
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
             float holdOutArmsAngle = PI / 2;
@@ -68,9 +68,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public override void Execute(int AITimer)
         {            
             // TO DO: adjust these values
-            int accelerateTime = 7; // 10
-            int slowDownTime = 6; //30
-            int chargeTime = 25; // 20
+            int accelerateTime = 10; // 10
+            int slowDownTime = 30; //30
+            int chargeTime = 20; // 20
 
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
             Owner.Rotation += angularVelocity;

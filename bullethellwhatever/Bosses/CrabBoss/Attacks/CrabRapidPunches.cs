@@ -41,7 +41,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     float localDashTime = AITimer;
                     float interpolant = EasingFunctions.easeInExpo(localDashTime / (float)dashDuration);
 
-                    Owner.Velocity = Utilities.ConserveLengthLerp(Utilities.SafeNormalise(Owner.Velocity), Owner.Position.DirectionToPlayer(), interpolant) * MathHelper.Lerp(initialDashSpeed, initialDashSpeed / 5f, interpolant);
+                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, initialDashSpeed / 5f, interpolant);
                     Owner.Rotation = Owner.Velocity.ToAngle() + PI;
                 }
 

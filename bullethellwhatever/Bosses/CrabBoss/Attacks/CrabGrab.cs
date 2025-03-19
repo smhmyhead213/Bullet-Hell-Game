@@ -20,7 +20,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int waitTime = 30;
             int clawCloseTime = 10;
 
-            int swingTime = 15;
+            int swingTime = 5;
             float pullBackAngle = -expandedi * 3 * PI / 4;
             float finalSwingAngle = -expandedi * -PI / 18f;
             
@@ -39,7 +39,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 // calculate the size the arm must be to reach the player
 
                 float distToPlayer = Arm(armIndex).Position.Distance(player.Position);
-                float maxScale = 5f;
+                float maxScale = 8f;
                 float fractionOfFullLength = AITimer / (float)pullBackArmTime;
                 float scaleFactor = MathHelper.Clamp(distToPlayer / initialarmLength * fractionOfFullLength, 1f, maxScale);
                 float fractionOfLengthHoldNearBody = 0.9f;
@@ -54,6 +54,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 //Arm(1).UpperClaw.LerpRotation(0f, -expandedi * -PI / 2, interpolant);
 
                 Owner.Velocity = Owner.Velocity * MathHelper.Lerp(1f, 0f, interpolant);
+
+                Vector2 toPlayer = Owner.Position - player.Position;
+                float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+                Owner.Rotation = Utilities.LerpRotation(Owner.Rotation, angleToPlayer, interpolant);
             }
 
             if (AITimer >= pullBackArmTime + waitTime && AITimer < pullBackArmTime + swingTime + waitTime)
@@ -94,7 +98,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override bool SelectionCondition()
         {
-            return true;
+            return Owner.Position.Distance(player.Position) < 1000f;
         }
         public override BossAttack PickNextAttack()
         {

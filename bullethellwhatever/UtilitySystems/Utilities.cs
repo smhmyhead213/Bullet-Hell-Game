@@ -545,6 +545,7 @@ namespace bullethellwhatever
 
         public static float LerpRotation(float startAngle, float endAngle, float interpolant)
         {
+            endAngle = Utilities.ClosestToZero(endAngle);
             float endAngleMinusTwoPi = endAngle - Tau;
 
             float angleToUse;

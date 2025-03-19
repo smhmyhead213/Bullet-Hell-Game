@@ -19,40 +19,53 @@ namespace bullethellwhatever.Bosses.CrabBoss
             End();
         }
 
-        public BossAttack PickAttack(int repetitions = 0)
+        public BossAttack PickAttack()
         {
-            if (repetitions > 5)
+            List<CrabBossAttack> attacks =
+                [new CrabGrab(CrabOwner),
+                    new CrabPunch(CrabOwner),
+                    new CrabProjectilePunches(CrabOwner),
+                    new NeutralToCrabFlailChargeTransition(CrabOwner),
+                    new CrabBombThrow(CrabOwner),
+                    new CrabSpray(CrabOwner)];
+
+            List<float> probabilities =
+                [0.2f, // big chance for grab atatck if player is close
+                    0.2f,
+                    0.15f,
+                    0.22f,
+                    0.23f,
+                    0.15f];
+
+            float totalProbability = probabilities.Sum();
+            probabilities = probabilities.Select(p => p / totalProbability).ToList(); // normalise probabilities
+
+            int rerolls = 0;
+            int maxRerolls = 5;
+
+            while (rerolls < maxRerolls)
             {
-                return new CrabPunch(CrabOwner);
-            }
-            else
-            {
-                int rng = Utilities.RandomInt(1, 100);
+                float runningTotal = 0f;
+                float rng = Utilities.RandomFloat(0f, 1f);
 
-                //if (Utilities.RandomInt(1, 6) > 2)
-                //{
-                //    return new CrabGrab(CrabOwner);
-                //}
-
-                BossAttack chosen = rng switch
+                for (int i = 0; i < probabilities.Count; i++)
                 {
-                    < 5 => new CrabGrab(CrabOwner),
-                    < 25 => new CrabPunch(CrabOwner),
-                    < 40 => new CrabProjectilePunches(CrabOwner),
-                    < 62 => new NeutralToCrabFlailChargeTransition(CrabOwner),
-                    <= 85 => new CrabBombThrow(CrabOwner),
-                    > 85 => new CrabSpray(CrabOwner),
-                };
-
-                if (chosen.SelectionCondition())
-                {
-                    return chosen;
-                }
-                else
-                {
-                    return PickAttack(repetitions + 1);
+                    if (rng <= probabilities[i])
+                    {
+                        if (attacks[i].SelectionCondition())
+                        {
+                            return attacks[i];
+                        }
+                        else
+                        {
+                            rerolls++;
+                            runningTotal += probabilities[i];
+                        }
+                    }
                 }
             }
+
+            return new CrabPunch(CrabOwner);
         }
         public override BossAttack PickNextAttack()
         {

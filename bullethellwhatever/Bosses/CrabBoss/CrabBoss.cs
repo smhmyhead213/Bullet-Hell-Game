@@ -158,6 +158,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Die()
         {
             base.Die();
+
+            foreach (CrabArm arm in Arms)
+            {
+                foreach (CrabBossAppendage crabBossAppendage in arm.ArmParts)
+                {
+                   crabBossAppendage.Die();
+                }
+            }
         }
 
         public bool CanPerformCrabPunch()
