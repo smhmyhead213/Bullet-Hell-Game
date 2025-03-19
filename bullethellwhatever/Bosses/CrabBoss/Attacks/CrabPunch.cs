@@ -224,24 +224,27 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 toPlayer = Owner.Position - player.Position;
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
-                float angleToPlayerMinusTwoPi = angleToPlayer - Tau;
-
-                float angleToUse;
-
-               // determine which direction to turn towards to minimise turn angle
-                if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
-                {
-                    angleToUse = angleToPlayer;
-                }
-                else
-                {
-                    angleToUse = angleToPlayerMinusTwoPi;
-                };
-
-                Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
-
-                //Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
+                Owner.Rotation = Utilities.LerpRotation(Owner.Rotation, angleToPlayer, interpolant);
             }
+
+            //    float angleToPlayerMinusTwoPi = angleToPlayer - Tau;
+
+            //    float angleToUse;
+
+            //   // determine which direction to turn towards to minimise turn angle
+            //    if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
+            //    {
+            //        angleToUse = angleToPlayer;
+            //    }
+            //    else
+            //    {
+            //        angleToUse = angleToPlayerMinusTwoPi;
+            //    };
+
+            //    Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
+
+            //    //Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
+            //}
 
             if (AITimer == armRotateBackToNeutralTime)
             {

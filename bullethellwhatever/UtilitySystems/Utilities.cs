@@ -17,6 +17,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Forms;
 using System.Windows.Markup;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever
 {
@@ -542,6 +543,24 @@ namespace bullethellwhatever
             return SafeNormalise(vector) * length;
         }
 
+        public static float LerpRotation(float startAngle, float endAngle, float interpolant)
+        {
+            float endAngleMinusTwoPi = endAngle - Tau;
+
+            float angleToUse;
+
+            // determine which direction to turn towards to minimise turn angle
+            if (Abs(startAngle - endAngle) < Abs(startAngle - endAngleMinusTwoPi))
+            {
+                angleToUse = endAngle;
+            }
+            else
+            {
+                angleToUse = endAngleMinusTwoPi;
+            }
+
+            return MathHelper.Lerp(startAngle, angleToUse, interpolant);
+        }
         public static void Add<T>(this List<T> addTo, List<T> toAdd)
         {
             foreach (T item in toAdd)

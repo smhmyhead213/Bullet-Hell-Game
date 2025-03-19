@@ -19,7 +19,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
-            int spinUpTime = 20;
+            int spinUpTime = 40;
             float spinAngularAccel = PI / 180;
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
             float holdOutArmsAngle = PI / 2;
@@ -51,22 +51,26 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabFlail(CrabOwner, 0);
+            int maxRepetitions = Utilities.RandomInt(4, 6);
+            return new CrabFlail(CrabOwner, 0, maxRepetitions);
         }
     }
     public class CrabFlail : CrabBossAttack
     {
         public int Repetitions;
-        public CrabFlail(CrabBoss owner, int repetitions) : base(owner)
+        public int MaxRepetitions;
+        public CrabFlail(CrabBoss owner, int repetitions, int maxRepetitions) : base(owner)
         {
             Repetitions = repetitions;
+            MaxRepetitions = maxRepetitions;
         }
 
         public override void Execute(int AITimer)
         {            
-            int accelerateTime = 10;
-            int slowDownTime = 30;
-            int chargeTime = 20;
+            // TO DO: adjust these values
+            int accelerateTime = 7; // 10
+            int slowDownTime = 6; //30
+            int chargeTime = 25; // 20
 
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
             Owner.Rotation += angularVelocity;
@@ -133,11 +137,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            int rng = Utilities.RandomInt(5, 10);
-
-            if (rng < 10 - Repetitions)
+            if (Repetitions < MaxRepetitions)
             {
-                return new CrabFlail(CrabOwner, Repetitions + 1);
+                return new CrabFlail(CrabOwner, Repetitions + 1, MaxRepetitions);
             }
             else
             {

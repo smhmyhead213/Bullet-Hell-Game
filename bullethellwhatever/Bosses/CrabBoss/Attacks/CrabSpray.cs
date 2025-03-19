@@ -37,6 +37,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             float holdOutAngle = PI / 12f;
             float finalHoldAngle = PI / 3f;
             float armLength = Arm(0).WristLength();
+            float moveTowardsPlayerSpeed = 2.7f;
 
             int slowDownTime = 10;
 
@@ -79,6 +80,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 if (AITimer >= timeHere && AITimer < timeHere + sprayTime)
                 {
+                    // idea: have the boss move slowly towards the player here to force them to move back instead of doing nothing
+
+                    Owner.Velocity = moveTowardsPlayerSpeed * Owner.Position.DirectionToPlayer();
+
                     int localTime = AITimer - timeHere;
                     float progress = localTime / (float)sprayTime;
 
@@ -116,8 +121,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer >= timeHere + sprayTime && AITimer < timeHere + sprayTime + windDownTime)
                 {
                     int localTime = AITimer - (timeHere + sprayTime);
-                    Arm(i).SetScale(MathHelper.Lerp(finalScale, initialScale, localTime / (float)windDownTime));
+                    float progress = localTime / (float)windDownTime;
+                    Arm(i).SetScale(MathHelper.Lerp(finalScale, initialScale, progress));
                     Arm(i).LerpArmToRest(localTime / (float)windDownTime);
+                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(moveTowardsPlayerSpeed, 0f, progress);
                 }
 
                 if (AITimer == timeHere + sprayTime + windDownTime)

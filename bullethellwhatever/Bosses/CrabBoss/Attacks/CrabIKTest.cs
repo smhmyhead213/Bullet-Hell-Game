@@ -30,9 +30,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             }
         }
 
-        public override BossAttack PickNextAttack()
-        {
-            return new CrabFlail(CrabOwner, 0);
-        }
+        //public override BossAttack PickNextAttack()
+        //{
+        //    return new CrabFlail(CrabOwner, 0);
+        //}
     }
 }

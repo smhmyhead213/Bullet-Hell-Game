@@ -71,7 +71,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabRapidPunches(CrabOwner, 0);
+            return new CrabRapidPunches(CrabOwner, 1);
         }
     }
 }

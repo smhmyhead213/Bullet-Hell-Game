@@ -152,7 +152,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public override BossAttack PickNextAttack()
         {
             if (Repetition == 3)
+            {
+                //return new DoNothing(CrabOwner);
                 return base.PickNextAttack();
+            }
             else return new CrabRapidPunches(CrabOwner, Repetition + 1);
         }
     }
