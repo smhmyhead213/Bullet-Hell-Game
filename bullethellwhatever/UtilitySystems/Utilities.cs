@@ -543,6 +543,10 @@ namespace bullethellwhatever
             return AngleToVector(angle);
         }
 
+        public static Vector2 LerpLength(this Vector2 vector, float startLength, float endLength, float interpolant)
+        {
+            return SafeNormalise(vector) * MathHelper.Lerp(startLength, endLength, interpolant);
+        }
         public static Vector2 SetLength(this Vector2 vector, float length)
         {
             return SafeNormalise(vector) * length;

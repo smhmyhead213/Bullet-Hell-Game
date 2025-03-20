@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.Particles;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.UtilitySystems;
@@ -26,25 +27,25 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int rapidPunchSwingTime = 4;
             int pauseTimeAfterRapidPunch = 2;
             int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime + pauseTimeAfterRapidPunch;
+            int restTime = 30;
+            float initialDashSpeed = 35f;
 
-            if (AITimer >= 0 && AITimer < rapidPunchesDuration)
+            if (AITimer >= 0 && AITimer <= rapidPunchesDuration)
             {
                 int dashDuration = rapidPunchesDuration;
-                float initialDashSpeed = 20f;
-                // lunge at player
+                float negligibleSpeed = 0.01f; // make sure the speed is never zero but is basically zero
                 if (AITimer == 0)
                 {
-                    Owner.Velocity = 5f * Owner.Position.DirectionToPlayer();
+                    Owner.Velocity = negligibleSpeed * Owner.Position.DirectionToPlayer(); // set direction but dont move yet
                 }
 
                 if (AITimer <= dashDuration)
                 {
                     float localDashTime = AITimer;
-                    float interpolant = EasingFunctions.EaseInExpo(localDashTime / (float)dashDuration);
+                    float interpolant = EasingFunctions.EaseOutExpo(localDashTime / (float)dashDuration);
                     float trackingStrength = 0.03f;
+                    Owner.Velocity = MathHelper.Lerp(negligibleSpeed, initialDashSpeed, interpolant) * Utilities.SafeNormalise(Owner.Velocity);
                     Owner.Home(player.Position, trackingStrength);
-                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
-                    Owner.Velocity = Vector2.Zero;
                     Owner.Rotation = Owner.Velocity.ToAngle() + PI;
                 }
 
@@ -94,7 +95,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                         if (armTimer >= rapidPunchPullBackTime && armTimer <= rapidPunchPullBackTime + rapidPunchSwingTime)
                         {
-                            Vector2 lastFramePosition = Arm(i).WristPosition();
 
                             int localSwingThroughTime = armTimer - rapidPunchPullBackTime;
                             float progress = localSwingThroughTime / (float)rapidPunchSwingTime;
@@ -105,17 +105,23 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                             Vector2 targetPosition = Arm(i).Position + new Vector2(expandedi * xOffset, Arm(i).Length()).Rotate(Owner.Rotation) * holdOutDistFraction;
                             Arm(i).LerpToPoint(targetPosition, interpolant);
 
-                            Vector2 thisFramePosition = Arm(i).WristPosition();
-                            Vector2 wristVelocityDirection = lastFramePosition.DirectionTo(thisFramePosition);
+                            Vector2 wristVelocityDirection = (Owner.Rotation + PI).ToVector();
 
                             Particle p = new Particle();
-                            float particleSpeed = Utilities.RandomFloat(5f, 10f); // could make this scale on the velocity mayhaps
+                            float particleSpeed = Utilities.RandomFloat(25f, 38f); // could make this scale on the velocity mayhaps
                             float angleVariance = PI / 9f;
                             float velocityAngle = Utilities.RandomAngle(angleVariance);
-                            p.Spawn("box", thisFramePosition, particleSpeed * wristVelocityDirection.Rotate(angleVariance), Vector2.Zero, Vector2.One * 0.4f, 0f, Color.Red, 0.5f, 40);
+                            int particleLifetime = 16;
+                            float initialOpacity = 1f;
+                            p.Spawn("box", Arm(i).WristPosition(), particleSpeed * wristVelocityDirection.Rotate(velocityAngle), Vector2.Zero, Vector2.One * 0.4f, 0f, Color.Red, initialOpacity, particleLifetime);
                             p.AddTrail(14);
                             p.SetExtraAI(new Action(() =>
                             {
+                                float interpolant = p.AITimer / (float)particleLifetime;
+                                float opacity = MathHelper.Lerp(initialOpacity, 0f, interpolant);
+                                p.Opacity = opacity;
+                                p.GetComponent<PrimitiveTrail>().Opacity = opacity;
+                                p.Velocity = p.Velocity.SetLength(MathHelper.Lerp(particleSpeed, 0, interpolant));
                                 p.Rotation = p.Velocity.ToAngle();
                             }));
                         }
@@ -125,7 +131,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         if (armTimer == rapidPunchPullBackTime + rapidPunchSwingTime)
                         {
                             int projectiles = 3;
-                            float spread = PI / 8;
+                            float spread = PI / 16;
                             Vector2 spawnPos = Arm(i).WristPosition();
                             int onEachSide = projectiles / 2;
                             float initialSpeed = 30f;
@@ -165,8 +171,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 }
             }
 
-            if (AITimer == rapidPunchesDuration)
+            if (AITimer > rapidPunchesDuration && AITimer <= rapidPunchesDuration + restTime)
             {
+                int localTime = AITimer - rapidPunchesDuration;
+                float interpolant = localTime / (float)restTime;
+                Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
+            }
+
+            if (AITimer == rapidPunchesDuration + restTime)
+            {
+                // to do: make boss turn around to player here
                 End();
             }
         }
