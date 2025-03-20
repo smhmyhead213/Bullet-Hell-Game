@@ -29,10 +29,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             // face player
 
-            if (AITimer == 0)
-            {
-                CrabOwner.FacePlayer();
-            }
+            //if (AITimer == 0)
+            //{
+            //    CrabOwner.FacePlayer();
+            //}
 
             if (AITimer < pullBackArmTime)
             {

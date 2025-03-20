@@ -174,7 +174,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             if (AITimer > rapidPunchesDuration && AITimer <= rapidPunchesDuration + restTime)
             {
                 int localTime = AITimer - rapidPunchesDuration;
-                float interpolant = localTime / (float)restTime;
+                // maybe move this to the accelerate part?
+                float interpolant = EasingFunctions.EaseInQuad(localTime / (float)restTime);
+                CrabOwner.LerpToFacePlayer(interpolant);
+                Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector();
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
             }
 

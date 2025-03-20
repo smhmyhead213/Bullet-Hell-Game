@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -96,6 +97,10 @@ namespace bullethellwhatever.UtilitySystems
         public static double EaseOutExpo(double progress)
         {
             return 1 - Math.Pow(2, -10 * progress);
+        }
+        public static float EaseInQuad(float progress)
+        {
+            return progress * progress;
         }
         public static float EaseOutQuad(float progress)
         {
