@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.DrawCode.Particles;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
@@ -39,9 +40,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer <= dashDuration)
                 {
                     float localDashTime = AITimer;
-                    float interpolant = EasingFunctions.easeInExpo(localDashTime / (float)dashDuration);
-
-                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, initialDashSpeed / 5f, interpolant);
+                    float interpolant = EasingFunctions.EaseInExpo(localDashTime / (float)dashDuration);
+                    float trackingStrength = 0.03f;
+                    Owner.Home(player.Position, trackingStrength);
+                    Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
+                    Owner.Velocity = Vector2.Zero;
                     Owner.Rotation = Owner.Velocity.ToAngle() + PI;
                 }
 
@@ -91,11 +94,30 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                         if (armTimer >= rapidPunchPullBackTime && armTimer <= rapidPunchPullBackTime + rapidPunchSwingTime)
                         {
+                            Vector2 lastFramePosition = Arm(i).WristPosition();
+
                             int localSwingThroughTime = armTimer - rapidPunchPullBackTime;
-                            float interpolant = EasingFunctions.EaseOutExpo(localSwingThroughTime / (float)rapidPunchSwingTime);
+                            float progress = localSwingThroughTime / (float)rapidPunchSwingTime;
+                            float interpolant = EasingFunctions.EaseOutExpo(progress);
                             float holdOutDistFraction = 0.95f;
-                            Vector2 targetPosition = Arm(i).Position + new Vector2(0f, Arm(i).Length()).Rotate(Owner.Rotation) * holdOutDistFraction;
+                            float maxXOffset = 20f;
+                            float xOffset = maxXOffset * EasingFunctions.EaseInOutSin(progress);
+                            Vector2 targetPosition = Arm(i).Position + new Vector2(expandedi * xOffset, Arm(i).Length()).Rotate(Owner.Rotation) * holdOutDistFraction;
                             Arm(i).LerpToPoint(targetPosition, interpolant);
+
+                            Vector2 thisFramePosition = Arm(i).WristPosition();
+                            Vector2 wristVelocityDirection = lastFramePosition.DirectionTo(thisFramePosition);
+
+                            Particle p = new Particle();
+                            float particleSpeed = Utilities.RandomFloat(5f, 10f); // could make this scale on the velocity mayhaps
+                            float angleVariance = PI / 9f;
+                            float velocityAngle = Utilities.RandomAngle(angleVariance);
+                            p.Spawn("box", thisFramePosition, particleSpeed * wristVelocityDirection.Rotate(angleVariance), Vector2.Zero, Vector2.One * 0.4f, 0f, Color.Red, 0.5f, 40);
+                            p.AddTrail(14);
+                            p.SetExtraAI(new Action(() =>
+                            {
+                                p.Rotation = p.Velocity.ToAngle();
+                            }));
                         }
 
                         // spawn explosion at end of punch

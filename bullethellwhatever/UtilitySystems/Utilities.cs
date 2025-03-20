@@ -230,6 +230,11 @@ namespace bullethellwhatever
         {
             return RandomFloat(0, Tau);
         }
+
+        public static float RandomAngle(float variance)
+        {
+            return RandomFloat(-variance, variance);
+        }
         public static float RandomAngle(float min, float max)
         {
             return RandomFloat(min, max);
@@ -543,9 +548,19 @@ namespace bullethellwhatever
             return SafeNormalise(vector) * length;
         }
 
+        public static float Sin01(float theta)
+        {
+            // f(0) = 0.5
+            return (Sin(theta) + 1f) / 2f;
+        }
+        public static float Cos01(float theta)
+        {
+            // f(0) = 1
+            return (Cos(theta) + 1f) / 2f;
+        }
         public static float LerpRotation(float startAngle, float endAngle, float interpolant)
         {
-            endAngle = Utilities.ClosestToZero(endAngle);
+            endAngle = ClosestToZero(endAngle);
             float endAngleMinusTwoPi = endAngle - Tau;
 
             float angleToUse;

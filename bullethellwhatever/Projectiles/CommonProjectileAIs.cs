@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.MainFiles;
+﻿using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.MainFiles;
 using bullethellwhatever.NPCs;
 using Microsoft.Xna.Framework;
 using System;
@@ -11,19 +12,9 @@ namespace bullethellwhatever.Projectiles
 {
     public static class CommonProjectileAIs
     {
-        /// <summary>
-        /// Ensure that the used extra data slot is unused and 0 to avoid issues.
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="target"></param>
-        /// <param name="extraDataSlot"></param>
-        public static void Homing(Projectile projectile, NPC target, int extraDataSlot, float startSpeed, float homingStrengthMultiplier)
+        public static void Home(this Entity entity, Vector2 target, float homingStrength)
         {
-            ref float homingTime = ref projectile.ExtraData[extraDataSlot];
-
-            homingTime++;
-
-            projectile.Velocity = 0.4f / projectile.Updates * startSpeed * Vector2.Normalize(target.Position - projectile.Position) * homingTime;
+            entity.Velocity = Utilities.ConserveLengthLerp(entity.Velocity, entity.Position.DirectionTo(target), homingStrength);
         }
     }
 }

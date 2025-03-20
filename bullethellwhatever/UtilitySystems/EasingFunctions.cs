@@ -72,7 +72,20 @@ namespace bullethellwhatever.UtilitySystems
             return Math.Pow(progress, 5);
         }
 
-        public static float easeInExpo(float progress)
+        public static float EaseInSin(float progress)
+        {
+            progress *= PI; // map range to 0 - PI
+            progress -= PI / 2; // map range to -PI / 2 -> PI / 2
+            return Utilities.Sin01(progress);
+        }
+
+        public static float EaseInOutSin(float progress)
+        {
+            progress *= Tau; // map range to 0 - 2pi
+            progress -= PI / 2; // map range to -PI / 2 -? 3PI / 2
+            return Utilities.Sin01(progress);
+        }
+        public static float EaseInExpo(float progress)
         {
             return progress == 0 ? 0 : Pow(2, 10 * progress - 10);
         }
