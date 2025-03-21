@@ -562,6 +562,16 @@ namespace bullethellwhatever
             // f(0) = 1
             return (Cos(theta) + 1f) / 2f;
         }
+        /// <summary>
+        /// Returns the sign of the rotation required to rotate from startAngle to endAngle.
+        /// </summary>
+        /// <param name="startAngle"></param>
+        /// <param name="endAngle"></param>
+        /// <returns></returns>
+        public static int RotationDirection(float startAngle, float endAngle)
+        {
+            return Sign(SmallestAngleTo(startAngle, endAngle));
+        }
         public static float LerpRotation(float startAngle, float endAngle, float interpolant)
         {
             endAngle = ClosestToZero(endAngle);

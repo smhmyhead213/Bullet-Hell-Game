@@ -57,13 +57,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             for (int i = 0; i < 2; i++)
             {
+                bool telegraphing = AITimer < chargeUpTime;
+
                 int expandedi = Utilities.ExpandedIndex(i);
+
+                float trackingStrength = telegraphing ? 0.03f : 0.0075f;
+                CrabOwner.LerpToFacePlayer(trackingStrength);
+
                 float initialScale = 1f;
                 float finalScale = 1.3f;
 
-                CrabOwner.FacePlayer();
-
-                if (AITimer < chargeUpTime)
+                if (telegraphing)
                 {                  
                     float interpolant = AITimer / (float)chargeUpTime;
 
