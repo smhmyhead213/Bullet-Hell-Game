@@ -16,9 +16,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
     public class CrabRapidPunches : CrabBossAttack
     {
         public int Repetition;
+        public bool FullTurnAroundAtEnd;
         public CrabRapidPunches(CrabBoss owner, int repetitions) : base(owner)
         {
             Repetition = repetitions;
+            FullTurnAroundAtEnd = Utilities.RandomBool();
         }
         public override void Execute(int AITimer)
         {
@@ -42,8 +44,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer <= dashDuration)
                 {
                     float localDashTime = AITimer;
+
                     float interpolant = EasingFunctions.EaseOutExpo(localDashTime / (float)dashDuration);
                     float trackingStrength = 0.03f;
+
                     Owner.Velocity = MathHelper.Lerp(negligibleSpeed, initialDashSpeed, interpolant) * Utilities.SafeNormalise(Owner.Velocity);
                     Owner.Home(player.Position, trackingStrength);
                     Owner.Rotation = Owner.Velocity.ToAngle() + PI;
@@ -175,9 +179,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 int localTime = AITimer - rapidPunchesDuration;
                 // maybe move this to the accelerate part?
-                float interpolant = EasingFunctions.EaseInQuad(localTime / (float)restTime);
+                float interpolant = EasingFunctions.EaseInQuart(localTime / (float)restTime);
                 CrabOwner.LerpToFacePlayer(interpolant);
-                Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector();
+
+                if (FullTurnAroundAtEnd)
+                    Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector(); // rotate velocity
+
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
             }
 

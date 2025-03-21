@@ -160,7 +160,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int decelTime = 30;
             
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved
-            float holdOutArmsAngle = PI / 2;
 
             // subtract pi from the boss rotation since the boss faces towards its rotation
             float rotationToPlayer = Utilities.SmallestAngleTo(Owner.Rotation + PI, Utilities.AngleToPlayerFrom(Owner.Position));
@@ -169,12 +168,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             Owner.Rotation += angularVelocity;
 
-            if (AITimer == decelTime)
-            {
-                CrabOwner.ResetArmRotations();
-                End();
-            }
-
             for (int i = 0; i < 2; i++)
             {
                 //int expandedi = Utilities.ExpandedIndex(i);
@@ -182,6 +175,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 //RotateArm(i, expandedi * holdOutArmsAngle, AITimer, decelTime, EasingFunctions.EaseOutBack);
 
                 Arm(i).LerpToRestPosition(EasingFunctions.EaseOutBack(AITimer / (float)decelTime));
+            }
+
+            if (AITimer == decelTime)
+            {
+                //CrabOwner.ResetArmRotations();
+                End();
             }
         }
 

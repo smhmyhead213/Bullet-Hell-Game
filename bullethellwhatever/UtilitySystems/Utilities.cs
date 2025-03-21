@@ -433,6 +433,10 @@ namespace bullethellwhatever
             return AngleToVector(RandomAngle());
         }
 
+        public static bool RandomBool()
+        {
+            return RandomInt(1, 100) % 2 == 0;
+        }
         public static Color RandomColour()
         {
             return new Color(RandomFloat(0f, 1f), RandomFloat(0f, 1f), RandomFloat(0f, 1f));
