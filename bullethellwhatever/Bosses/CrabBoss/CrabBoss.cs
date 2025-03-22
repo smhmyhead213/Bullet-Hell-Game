@@ -35,6 +35,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public const int GrabbingArm = 1;
         public const int GrabPunishArm = 0;
 
+        public override float Rotation
+        { 
+            get => base.Rotation;
+            set { 
+                base.Rotation = value;
+                PerformAdjustments();
+            }
+        }
         public CrabBoss()
         {
             Texture = AssetRegistry.GetTexture2D("CrabBody");
@@ -141,6 +149,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void FacePlayer()
         {
             Rotation = Utilities.VectorToAngle(Position - player.Position);            
+        }
+
+        public void Rotate(float angle)
+        {
+            Rotation += angle;
+            PerformAdjustments(); // update arms immediately
         }
 
         public override void PerformAdjustments()

@@ -7,6 +7,8 @@ using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.Projectiles;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using bullethellwhatever.DrawCode;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -14,13 +16,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
     {
         public NeutralToCrabFlailChargeTransition(CrabBoss owner) : base(owner)
         {
-
+            
         }
 
         public override void Execute(int AITimer)
         {
             int spinUpTime = 20;
-            float spinAngularAccel = PI / 180;
+            float spinAngularAccel = PI / 90;
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
             float holdOutArmsAngle = PI / 2;
 
@@ -59,14 +61,22 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
     {
         public int Repetitions;
         public int MaxRepetitions;
+        public PrimitiveTrail[] Trails;
         public CrabFlail(CrabBoss owner, int repetitions, int maxRepetitions) : base(owner)
         {
             Repetitions = repetitions;
             MaxRepetitions = maxRepetitions;
+            Trails = new PrimitiveTrail[2];
+
+            for (int i = 0; i < Trails.Length; i++)
+            {
+                Trails[i] = new PrimitiveTrail(25, 11, Color.White);
+                Trails[i].Opacity = 0f;
+            }
         }
 
         public override void Execute(int AITimer)
-        {            
+        {
             // TO DO: adjust these values
             int accelerateTime = 10; // 10
             int slowDownTime = 30; //30
@@ -74,9 +84,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
             Owner.Rotation += angularVelocity;
-
-            // to do: make camera pan logartihmically to boss
-            //MainCamera.Position = Owner.Position;
 
             float maxChargeSpeed = 30f;
 
@@ -91,6 +98,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float interpolant = EasingFunctions.EaseOutExpo(localTime / (float)accelerateTime);
                 
                 Owner.Velocity = maxChargeSpeed * interpolant * Utilities.SafeNormalise(Owner.Velocity);
+
+                for (int i = 0; i < Trails.Length; i++)
+                {
+                    Trails[i].Opacity = interpolant;
+                }
             }
 
             float projSpeed = 10f;
@@ -119,12 +131,23 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 Owner.Velocity = maxChargeSpeed * interpolant * Utilities.SafeNormalise(Owner.Velocity);
 
-                float projAngle = Utilities.RandomAngle();                
+                float projAngle = Utilities.RandomAngle();
+
+                for (int i = 0; i < Trails.Length; i++)
+                {
+                    float opacityInterpolant = 1 - EasingFunctions.Linear(localTime / (float)slowDownTime);
+                    Trails[i].Opacity = opacityInterpolant;
+                }
 
                 // spawn projectiles when spinning down
                 //Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 //p.AddTrail(22);
                 //p.Rotation = projAngle;
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                Trails[i].PostUpdate(Arm(i).WristPosition());
             }
 
             int waitTimeBeforeAttackEnd = 10;
@@ -135,6 +158,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             }
         }
 
+        public override void ExtraDraw(SpriteBatch s, int AITimer)
+        {
+            foreach (PrimitiveTrail trail in Trails)
+            {
+                trail.Draw(s);
+            }
+        }
         public override BossAttack PickNextAttack()
         {
             if (Repetitions < MaxRepetitions)

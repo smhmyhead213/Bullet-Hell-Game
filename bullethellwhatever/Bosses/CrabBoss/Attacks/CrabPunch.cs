@@ -3,6 +3,7 @@ using bullethellwhatever.BaseClasses;
 using bullethellwhatever.Bosses.CrabBoss.Attacks;
 using bullethellwhatever.Bosses.EyeBoss;
 using bullethellwhatever.DrawCode;
+using bullethellwhatever.DrawCode.Particles;
 using bullethellwhatever.Projectiles;
 
 using bullethellwhatever.Projectiles.TelegraphLines;
@@ -32,6 +33,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
+            int startSpawningParticlesTime = 5;
             int accelerateTime = 25;
             int maxChargeTime = 36;
 
@@ -96,6 +98,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (AITimer > pullBackArmTime && HasSetSwingTime == 0 && AITimer < maxChargeTime) // if the arm is fully pulled back and a swing time hasnt been chosen, the boss can choose when to punch
             {
+                // if we havent swung yet, speed up
+                float acceleration = 0.6f;
+                Owner.Velocity = Owner.Velocity.SetLength(Owner.Velocity.Length() + acceleration);
+
+                // spawn long dash particles 
+
                 if (Utilities.DistanceBetweenEntities(player, Owner) < swingProximity)
                 {
                     HasSetSwingTime = 1f;
@@ -142,12 +150,22 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 End();
             }
+
+            // spawn particles
+            if (AITimer > startSpawningParticlesTime)
+            {
+                float angleVariation = PI / 9f;
+                float rotation = Owner.Velocity.ToAngle() + Utilities.RandomAngle(angleVariation);
+                Vector2 spawnPos = Owner.Position + new Vector2(Owner.Width() * Utilities.RandomFloat(-0.5f, 0.5f), 0f).Rotate(rotation);
+                Particle p = new Particle();
+                p.Spawn("box", spawnPos, Owner.Velocity * -0.1f, Vector2.Zero, new Vector2(0.25f, 8f), rotation, Color.White, 0.4f, 60);
+            }
         }
 
         public override BossAttack PickNextAttack()
         {
             int nextAttack = Utilities.RandomInt(1, 5);
-            if (nextAttack == 1 || nextAttack == 2)
+            if (nextAttack == 1 || nextAttack == 2 || true)
                 return new CrabPunchToNeutralTransition(CrabOwner);
             else
                 return new CrabPunchToProjectileSpreadTransition(CrabOwner);
@@ -193,6 +211,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override BossAttack PickNextAttack()
         {
+            return new CrabPunch(CrabOwner);
+
             int nextAttack = Utilities.RandomInt(1, 3);
             if (nextAttack == 1 && CrabOwner.CanPerformCrabPunch())
                 return new CrabPunch(CrabOwner);
@@ -226,25 +246,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 float angleToPlayer = Utilities.VectorToAngle(toPlayer);
                 Owner.Rotation = Utilities.LerpRotation(Owner.Rotation, angleToPlayer, interpolant);
             }
-
-            //    float angleToPlayerMinusTwoPi = angleToPlayer - Tau;
-
-            //    float angleToUse;
-
-            //   // determine which direction to turn towards to minimise turn angle
-            //    if (Abs(Owner.Rotation - angleToPlayer) < Abs(Owner.Rotation - angleToPlayerMinusTwoPi))
-            //    {
-            //        angleToUse = angleToPlayer;
-            //    }
-            //    else
-            //    {
-            //        angleToUse = angleToPlayerMinusTwoPi;
-            //    };
-
-            //    Owner.Rotation = MathHelper.Lerp(Owner.Rotation, angleToUse, interpolant);
-
-            //    //Leg((int)chosenArm).RotateLeg(expandedi * totalSwingAngle / armRotateBackToNeutralTime);
-            //}
 
             if (AITimer == armRotateBackToNeutralTime)
             {

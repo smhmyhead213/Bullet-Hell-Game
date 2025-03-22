@@ -52,7 +52,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         
         public float MaxHP;
         public bool DeleteNextFrame;
-        public float Rotation
+        public virtual float Rotation // virtual because things need to update immediately when rotation is set
         {
             get;
             set;
