@@ -140,11 +140,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
-        public void LerpToFacePlayer(float interpolant)
+        public void LerpToFacePlayer(float rotateFraction = 0.2f)
         {
-            Vector2 toPlayer = Position - player.Position;
+            Vector2 toPlayer = player.Position - Position;
             float angleToPlayer = Utilities.VectorToAngle(toPlayer);
-            Rotation = Utilities.LerpRotation(Rotation, angleToPlayer, interpolant);
+
+            float rotationToPlayer = Utilities.SmallestAngleTo(Rotation + PI, Utilities.AngleToPlayerFrom(Position));
+
+            Rotation += rotateFraction * rotationToPlayer;
+
+            //Vector2 toPlayer = Position - player.Position;
+            //float angleToPlayer = Utilities.VectorToAngle(toPlayer);
+            //Rotation = Utilities.LerpRotation(Rotation, angleToPlayer, interpolant);
         }
         public void FacePlayer()
         {

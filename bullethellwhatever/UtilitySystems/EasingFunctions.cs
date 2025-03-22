@@ -80,6 +80,11 @@ namespace bullethellwhatever.UtilitySystems
             return Utilities.Sin01(progress);
         }
 
+        public static float EaseInCirc(float progress)
+        {
+            return 1 - Sqrt(1f - Pow(progress, 2));
+        }
+
         public static float EaseInOutSin(float progress)
         {
             progress *= Tau; // map range to 0 - 2pi

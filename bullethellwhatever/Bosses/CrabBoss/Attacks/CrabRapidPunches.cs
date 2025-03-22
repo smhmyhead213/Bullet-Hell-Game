@@ -180,7 +180,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 int localTime = AITimer - rapidPunchesDuration;
                 // maybe move this to the accelerate part?
                 float interpolant = EasingFunctions.EaseInQuart(localTime / (float)restTime);
-                CrabOwner.LerpToFacePlayer(interpolant);
+                CrabOwner.LerpToFacePlayer(); // interpolant
 
                 if (FullTurnAroundAtEnd)
                     Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector(); // rotate velocity

@@ -82,8 +82,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int slowDownTime = 30; //30
             int chargeTime = 20; // 20
 
+            int rotateSteps = 3; // rotate in steps to make trail smoother
+
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
-            Owner.Rotation += angularVelocity;
+
+            for (int i = 0; i < rotateSteps; i++)
+            {
+                Owner.Rotation += angularVelocity / rotateSteps;
+                for (int arm = 0; arm < 2; arm++)
+                {
+                    Trails[arm].PostUpdate(Arm(arm).WristPosition());
+                }
+            }
 
             float maxChargeSpeed = 30f;
 
@@ -143,11 +153,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 //Projectile p = SpawnProjectile(Owner.Position, projSpeed * Utilities.AngleToVector(projAngle), 1f, 1, "box", Vector2.One, Owner, true, Color.Red, true, false);
                 //p.AddTrail(22);
                 //p.Rotation = projAngle;
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
-                Trails[i].PostUpdate(Arm(i).WristPosition());
             }
 
             int waitTimeBeforeAttackEnd = 10;
