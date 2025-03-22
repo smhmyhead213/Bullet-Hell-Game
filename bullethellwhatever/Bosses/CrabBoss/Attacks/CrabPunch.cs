@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void Execute(int AITimer)
         {
             int pullBackArmTime = 20;
-            int swingDuration = 10;
+            int swingDuration = 5;
 
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
@@ -87,11 +87,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (AITimer < pullBackArmTime)
+            if (AITimer <= pullBackArmTime)
             {
                 // figure out what angle to swing through this frame.
                 // easeoutquad
-                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseOutQuad);
+                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseInQuad);
             }
 
             float swingProximity = 300f;
@@ -137,11 +137,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 initialSpeed = Owner.Velocity.Length();
             }
 
-            if (AITimer > swingTime + timeToDecelAfterSwing && AITimer <= swingTime + swingDuration + timeToDecelAfterSwing)
+            if (AITimer > swingTime + timeToDecelAfterSwing && AITimer <= swingTime + decelerateTime + timeToDecelAfterSwing)
             {
                 float localTime = AITimer - swingTime - timeToDecelAfterSwing;
 
-                float speedInterpolant = (float)localTime / decelerateTime;
+                float speedInterpolant = EasingFunctions.EaseInQuad((float)localTime / decelerateTime);
 
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialSpeed, 0, speedInterpolant);
             }
@@ -152,13 +152,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
 
             // spawn particles
-            if (AITimer > startSpawningParticlesTime)
+            if (AITimer > startSpawningParticlesTime && AITimer < swingTime)
             {
-                float angleVariation = PI / 9f;
+                float angleVariation = 0f * PI / 36f;
                 float rotation = Owner.Velocity.ToAngle() + Utilities.RandomAngle(angleVariation);
                 Vector2 spawnPos = Owner.Position + new Vector2(Owner.Width() * Utilities.RandomFloat(-0.5f, 0.5f), 0f).Rotate(rotation);
                 Particle p = new Particle();
-                p.Spawn("box", spawnPos, Owner.Velocity * -0.1f, Vector2.Zero, new Vector2(0.25f, 8f), rotation, Color.White, 0.4f, 60);
+                float scaleLength = Owner.Velocity.Length() / 4f;
+                p.Spawn("box", spawnPos, Vector2.Zero, Vector2.Zero, new Vector2(0.25f, scaleLength), rotation, Color.White, 1f, 6);
             }
         }
 
