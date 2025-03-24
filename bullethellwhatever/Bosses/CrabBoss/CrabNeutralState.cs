@@ -31,7 +31,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             List<float> probabilities =
                 [0.03f, // big chance for grab atatck if player is close
-                    0.2f,
+                    0.14f,
                     0.15f,
                     0.22f,
                     0.23f,

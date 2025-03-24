@@ -24,6 +24,7 @@ namespace bullethellwhatever.BaseClasses
     public class Player : NPC
     {
         public float DefaultMoveSpeed => 5.5f;
+        public int DashCooldownDuration => 20;
         public int DashCooldown;
         public int DashDuration => 10;
 
@@ -50,7 +51,7 @@ namespace bullethellwhatever.BaseClasses
         #region Spawning
         public Player(string texture)
         {
-            DashAbility = new Dash(DashDuration, 40, Keys.Space, this);
+            DashAbility = new Dash(DashDuration, DashCooldownDuration, Keys.Space, this);
             Texture = AssetRegistry.GetTexture2D(texture);
             InputLocked = false;
         }

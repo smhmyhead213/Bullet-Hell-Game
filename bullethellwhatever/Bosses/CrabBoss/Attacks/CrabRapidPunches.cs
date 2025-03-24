@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.AssetManagement;
@@ -31,6 +32,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int rapidPunchTime = rapidPunchPullBackTime + rapidPunchSwingTime + pauseTimeAfterRapidPunch;
             int restTime = 30;
             float initialDashSpeed = 35f;
+            float minDistanceForTurnAround = 1500f;
 
             if (AITimer >= 0 && AITimer <= rapidPunchesDuration)
             {
@@ -182,7 +184,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float interpolant = EasingFunctions.EaseInQuart(localTime / (float)restTime);
                 CrabOwner.LerpToFacePlayer(); // interpolant
 
-                if (FullTurnAroundAtEnd)
+                float distanceFromPlayer = Owner.Position.Distance(player.Position);
+                if (FullTurnAroundAtEnd && distanceFromPlayer > minDistanceForTurnAround); // dont do the turn around if close to player
                     Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector(); // rotate velocity
 
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);

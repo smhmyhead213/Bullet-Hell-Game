@@ -28,18 +28,21 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            int pullBackArmTime = 20;
+            int pullBackArmTime = 10; // 20
             int swingDuration = 5;
 
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
             int startSpawningParticlesTime = 5;
-            int accelerateTime = 25;
-            int maxChargeTime = 36;
+            int accelerateTime = 10; // 25
+            int maxChargeTime = 15; // 36
 
             float angleToPullBackArm = PI / 2f;
             float angleToSwingThrough = angleToPullBackArm + PI / 4f;
-            float topChargeSpeed = 35f;
+            float topChargeSpeed = 65f; // 35
+
+            int timeToDecelAfterSwing = 10; // 12
+            int decelerateTime = 4; // 18
 
             Vector2 toPlayer = player.Position - Owner.Position;
             float angleToPlayer = Utilities.VectorToAngle(toPlayer);
@@ -132,9 +135,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 //float interpolant = (AITimer - swingTime) / swingDuration;
                 //CrabOwner.LerpToFacePlayer(0.6f);
             }
-
-            int timeToDecelAfterSwing = 12;
-            int decelerateTime = 18;
 
             if (AITimer == swingTime + timeToDecelAfterSwing)
             {
