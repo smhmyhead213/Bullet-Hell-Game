@@ -73,14 +73,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             int expandedi = -Utilities.ExpandedIndex(ChosenArmIndex());
 
-            if (AITimer < accelerateTime)
+            if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + accelerateTime)
             {
-                float trackingCompletionRatio = AITimer / (float)accelerateTime;
+                int localTime = AITimer - pullBackArmTime;
+                float trackingCompletionRatio = localTime / (float)accelerateTime;
                 float differenceBetweenTopAndInitialChargeSpeed = topChargeSpeed - initialSpeed;
 
                 float chargeSpeed = MathHelper.Lerp(initialSpeed, topChargeSpeed, EasingFunctions.EaseInOutQuart(trackingCompletionRatio));
 
-                if (AITimer < chargeTrackingTime)
+                if (localTime < chargeTrackingTime)
                 {
                     Owner.Velocity = chargeSpeed * Utilities.SafeNormalise(toPlayer);
                 }
@@ -166,6 +167,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 float scaleLength = Owner.Velocity.Length() / 4f;
                 p.Spawn("box", spawnPos, Vector2.Zero, Vector2.Zero, new Vector2(0.25f, scaleLength), rotation, Color.White, 1f, 6);
             }
+
+            Assert(!float.IsNaN(Owner.Rotation));
         }
 
         public override BossAttack PickNextAttack()
