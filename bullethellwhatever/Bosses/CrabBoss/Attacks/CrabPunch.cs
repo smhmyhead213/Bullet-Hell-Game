@@ -28,18 +28,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            int pullBackArmTime = 10; // 20
+            int pullBackArmTime = 30; // 20
             int swingDuration = 5;
 
             ref float swingTime = ref ExtraData[1]; // the farthest point in the attack the swing can happen. will be set to a smaller number if the boss is close to the player.
             int chargeTrackingTime = 5;
             int startSpawningParticlesTime = 5;
             int accelerateTime = 10; // 25
-            int maxChargeTime = 15; // 36
+            int maxChargeTime = 36; // 36
 
             float angleToPullBackArm = PI / 2f;
             float angleToSwingThrough = angleToPullBackArm + PI / 4f;
-            float topChargeSpeed = 65f; // 35
+            float topChargeSpeed = 50f; // 35
 
             int timeToDecelAfterSwing = 10; // 12
             int decelerateTime = 4; // 18
@@ -73,6 +73,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             int expandedi = -Utilities.ExpandedIndex(ChosenArmIndex());
 
+            if (AITimer <= pullBackArmTime)
+            {
+                // figure out what angle to swing through this frame.
+                // easeoutquad
+                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseInQuad);
+            }
+
             if (AITimer >= pullBackArmTime && AITimer < pullBackArmTime + accelerateTime)
             {
                 int localTime = AITimer - pullBackArmTime;
@@ -91,22 +98,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (AITimer <= pullBackArmTime)
-            {
-                // figure out what angle to swing through this frame.
-                // easeoutquad
-                RotateArm(ChosenArmIndex(), expandedi * angleToPullBackArm, AITimer, pullBackArmTime, EasingFunctions.EaseInQuad);
-            }
-
             float swingProximity = 300f;
 
-            if (AITimer > pullBackArmTime && HasSetSwingTime == 0 && AITimer < maxChargeTime) // if the arm is fully pulled back and a swing time hasnt been chosen, the boss can choose when to punch
+            bool checkingForSwing = AITimer > pullBackArmTime && HasSetSwingTime == 0 && AITimer < pullBackArmTime + maxChargeTime;
+            //bool swingEnd = AITimer == pullBackArmTime + maxChargeTime && HasSetSwingTime == 0;
+
+            if (checkingForSwing) // if the arm is fully pulled back and a swing time hasnt been chosen, the boss can choose when to punch
             {
                 // if we havent swung yet, speed up
                 float acceleration = 0.6f;
                 Owner.Velocity = Owner.Velocity.SetLength(Owner.Velocity.Length() + acceleration);
-
-                // spawn long dash particles 
 
                 if (Utilities.DistanceBetweenEntities(player, Owner) < swingProximity)
                 {

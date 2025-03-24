@@ -185,7 +185,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 CrabOwner.LerpToFacePlayer(); // interpolant
 
                 float distanceFromPlayer = Owner.Position.Distance(player.Position);
-                if (FullTurnAroundAtEnd && distanceFromPlayer > minDistanceForTurnAround); // dont do the turn around if close to player
+                if (FullTurnAroundAtEnd && distanceFromPlayer > minDistanceForTurnAround) // dont do the turn around if close to player
                     Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector(); // rotate velocity
 
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
