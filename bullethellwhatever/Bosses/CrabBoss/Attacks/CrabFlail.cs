@@ -116,23 +116,29 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     }
                 }));
 
+                int particles = 5;
+
                 for (int i = 0; i < 2; i++)
                 {
-                    Particle particle = new Particle();
-
-                    Vector2 spawnPos = Arm(i).WristPosition();
-                    Vector2 velocityDirection = -Utilities.ExpandedIndex(i) * Owner.Rotation.ToVector();
-                    float particleSpeed = Utilities.RandomFloat(26f, 34f);
-                    Vector2 velocity = velocityDirection * particleSpeed;
-                    int lifetime = 30;
-
-                    particle.Spawn("box", spawnPos, velocity, -velocity / lifetime, Vector2.One * 0.4f, Owner.Rotation, Color.Orange, 0.8f, lifetime);
-                    particle.AddTrail(10);
-
-                    particle.SetExtraAI(new Action(() =>
+                    for (int partic = 0; partic < particles; partic++)
                     {
-                        particle.GetComponent<PrimitiveTrail>().Opacity = particle.Opacity;
-                    }));
+                        Particle particle = new Particle();
+
+                        Vector2 spawnPos = Arm(i).WristPosition();
+                        Vector2 velocityDirection = -Utilities.ExpandedIndex(i) * Owner.Rotation.ToVector();
+                        float particleSpeed = Utilities.RandomFloat(2.6f, 3.4f) * 4f; // 26, 34
+                        float angleVariance = Utilities.RandomAngle(PI / 50f);
+                        Vector2 velocity = velocityDirection.Rotate(angleVariance) * particleSpeed;
+                        int lifetime = 30;
+
+                        particle.Spawn("box", spawnPos, velocity, -velocity / lifetime, Vector2.One * 0.4f, Owner.Rotation, Color.Orange, 0.8f, lifetime);
+                        particle.AddTrail(10);
+
+                        particle.SetExtraAI(new Action(() =>
+                        {
+                            particle.GetComponent<PrimitiveTrail>().Opacity = particle.Opacity;
+                        }));
+                    }
                 }
             }
 
