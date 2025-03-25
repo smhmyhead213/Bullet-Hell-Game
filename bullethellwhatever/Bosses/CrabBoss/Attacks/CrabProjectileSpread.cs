@@ -106,12 +106,12 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
 
-            if (AITimer >= slowDownTime + swingTime + bufferTimeAfterSwing && AITimer < slowDownTime + swingTime + bufferTimeAfterSwing + resetTime)
+            if (AITimer >= slowDownTime + swingTime + bufferTimeAfterSwing && AITimer <= slowDownTime + swingTime + bufferTimeAfterSwing + resetTime)
             {
                 int localTime = AITimer - (slowDownTime + swingTime + bufferTimeAfterSwing);
                 float interpolant = localTime / (float)resetTime;
 
-                ChosenArm().LerpToRestPosition(interpolant);
+                ChosenArm().LerpToRestPosition(interpolant, true, true);
             }
             if (AITimer == slowDownTime + swingTime + bufferTimeAfterSwing + resetTime)
             {

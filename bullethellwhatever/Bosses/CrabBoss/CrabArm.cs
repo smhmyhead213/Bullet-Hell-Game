@@ -231,8 +231,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperArm.LerpRotation(startAngle, endAngle, interpolant);
         }
 
-        public void LerpToRestPosition(float interpolant, bool pointClaws = true)
+        public void LerpToRestPosition(float interpolant, bool pointClaws = true, bool breakpoint = false)
         {
+            if (breakpoint)
+            {
+                Assert(false);
+            }
+
             TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant), pointClaws);
         }
         public void LerpToPoint(Vector2 point, float interpolant, bool pointClaws = true)

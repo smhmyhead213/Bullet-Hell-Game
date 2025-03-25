@@ -25,7 +25,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
     {
         public CrabArm[] Arms;
         public Vector2[] ArmPositionsOnBody;
-        public Vector2[] ArmRestingEnds;
+        public Vector2[] ArmRestingEnds
+        {
+            get;
+            set;
+        }
 
         public int Phase; // flag for if arms are detached yet
 
@@ -89,7 +93,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ArmRestingEnds[i] = lowerArmEnd - pos;
             }
 
-            CurrentAttack = new CrabIntro(this);
+            CurrentAttack = new CrabGrab(this);
             ContactDamage = true;
             HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
             hpBar.Display();
@@ -130,6 +134,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             //Utilities.drawTextInDrawMethod(Arms[0].LowerArm.RotationFromV().ToString(), Position + new Vector2(0f, 200f), spriteBatch, font, Color.White);
         }
+
+        public override void AI()
+        {
+            base.AI();
+            Velocity = Vector2.Zero;
+            Rotation = 0f;
+        }
+
         public void ResetArmRotations()
         {
             for (int i = 0; i < 2; i++)

@@ -181,7 +181,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             float difference = throwAngle - pullBackArmAngle;
 
-            if (AITimer < duration)
+            if (AITimer <= duration)
             {
                 //RotateArm(ChosenArmIndex(), -expandedi * difference, AITimer, duration, EasingFunctions.EaseOutQuad);
                 ChosenArm().LerpToRestPosition(EasingFunctions.EaseOutQuad(AITimer / (float)duration));

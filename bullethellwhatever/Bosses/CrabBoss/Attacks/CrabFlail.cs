@@ -131,13 +131,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         Vector2 velocity = velocityDirection.Rotate(angleVariance) * particleSpeed;
                         int lifetime = 30;
 
-                        particle.Spawn("box", spawnPos, velocity, -velocity / lifetime, Vector2.One * 0.4f, Owner.Rotation, Color.Orange, 0.8f, lifetime);
-                        particle.AddTrail(10);
+                        //particle.Spawn("box", spawnPos, velocity, -velocity / lifetime, Vector2.One * 0.4f, Owner.Rotation, Color.Orange, 0.8f, lifetime);
+                        //particle.AddTrail(10);
 
-                        particle.SetExtraAI(new Action(() =>
-                        {
-                            particle.GetComponent<PrimitiveTrail>().Opacity = particle.Opacity;
-                        }));
+                        //particle.SetExtraAI(new Action(() =>
+                        //{
+                        //    particle.GetComponent<PrimitiveTrail>().Opacity = particle.Opacity;
+                        //}));
+
+                        particle = CommonParticles.Spark(spawnPos, particleSpeed, lifetime, Color.Orange);
                     }
                 }
             }

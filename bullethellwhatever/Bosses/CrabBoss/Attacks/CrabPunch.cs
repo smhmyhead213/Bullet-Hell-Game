@@ -203,7 +203,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             // this always occurs after the crab punch so the owners extradata[0] will still be the chosen arm
             int expandedi = Utilities.ExpandedIndex(ChosenArmIndex());
 
-            if (AITimer < armRotateBackToNeutralTime)
+            if (AITimer <= armRotateBackToNeutralTime)
             {
                 float interpolant = AITimer / (float)armRotateBackToNeutralTime;
 
@@ -218,7 +218,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
 
-                ChosenArm().LerpToRestPosition(EasingFunctions.EaseOutQuad(interpolant));
+                ChosenArm().LerpToRestPosition(EasingFunctions.EaseOutQuad(interpolant), true, true);
             }
 
             if (AITimer == armRotateBackToNeutralTime)
