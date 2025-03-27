@@ -28,10 +28,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 30; // 30
+            int pullBackArmTime = 15; // 30
             int punchSwingTime = 7; // 7
-            int resetTime = 27; // 27
-            int delayAfterPunchToCloseClaw = 20; // should be less than reset time
+            int resetTime = 13; // 27
+            int delayAfterPunchToCloseClaw = 10; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
             int attackDuration = 200;
             float homingStrength = 0.05f;
@@ -44,8 +44,25 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             float pullBackAngle = PI / 2.4f;
             float sidestepInitialSpeed = 15f;
+            int sidestepPeriod = totalPunchTime * 2;
+
             ref float sidestepDir = ref ExtraData[1];
 
+            // ----- sidestep behaviour -----
+
+            int sideStepTimer = AITimer % sidestepPeriod;
+
+            if (sideStepTimer == 0)
+            {
+                Owner.Velocity = sidestepInitialSpeed * sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
+            }
+            else
+            {
+                float progress = sideStepTimer / (float)sidestepPeriod;
+                Owner.Velocity = sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector() * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(1f - progress));
+            }
+
+            // ----- arm behaviour -----
             for (int i = 0; i < 2; i++)
             {
                 // decide which timer to use
@@ -71,7 +88,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     
                     //Debug.Assert(i == 0);
 
-                    if (i == 1)
+                    if (i == 1) // only do this on one arm
                     {
                         Owner.Velocity = Owner.Velocity * MathHelper.Lerp(1f, 0f, interpolant);
                     }
@@ -84,7 +101,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (usedTimer == 0)
                 {
                     sidestepDir = Utilities.RandomSign();
-                    Owner.Velocity = sidestepInitialSpeed * sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
+                    //Owner.Velocity = sidestepInitialSpeed * sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector();
                 }
 
                 if (usedTimer < pullBackArmTime && usedTimer >= 0)
@@ -106,7 +123,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     CrabOwner.FacePlayer();
 
-                    Owner.Velocity = sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector() * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(1f - progress));
+                    //Owner.Velocity = sidestepDir * (Utilities.AngleToPlayerFrom(Owner.Position) + PI / 2).ToVector() * MathHelper.Lerp(sidestepInitialSpeed, 0f, EasingFunctions.EaseOutQuad(1f - progress));
                 }
 
                 if (usedTimer > pullBackArmTime && usedTimer <= pullBackArmTime + punchSwingTime)
