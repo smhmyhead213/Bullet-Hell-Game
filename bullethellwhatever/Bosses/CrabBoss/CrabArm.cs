@@ -219,6 +219,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             }
         }
 
+        public float Scale()
+        {
+            return UpperArm.Scale.X; // to do: make scale a float
+        }
         public void SetScale(float scale)
         {
             foreach (CrabBossAppendage append in ArmParts)
@@ -233,10 +237,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public void LerpToRestPosition(float interpolant, bool pointClaws = true, bool breakpoint = false)
         {
-            if (breakpoint)
-            {
-                Assert(false);
-            }
+            //if (breakpoint)
+            //{
+            //    Assert(false);
+            //}
 
             TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant), pointClaws);
         }
@@ -246,7 +250,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public Vector2 RestPositionEnd()
         {
-            return Position + Owner.ArmRestingEnds[LegIndex].Rotate(Owner.Rotation);
+            return Position + Scale() * Owner.ArmRestingEnds[LegIndex].Rotate(Owner.Rotation);
         }
 
         public void LerpArmToRest(float progress)

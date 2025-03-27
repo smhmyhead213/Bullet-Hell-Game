@@ -35,7 +35,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public int ArmIndex;
 
-        public float RotationToAdd;
+        private float rotationToAdd;
+
+        public float RotationToAdd
+        {
+            get => rotationToAdd;
+            set
+            {
+                rotationToAdd = value;
+                Leg.UpdateAppendages();
+            }
+        }
 
         public CrabBossAppendage(Entity owner, CrabArm leg, AppendageType appendageType, int legIndex, float scale = 1f)
         {
