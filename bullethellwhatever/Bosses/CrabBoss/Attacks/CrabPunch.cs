@@ -39,7 +39,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             float angleToPullBackArm = PI / 2f;
             float angleToSwingThrough = angleToPullBackArm + PI / 4f;
-            float initialChargeSpeed = 6f;
+            float initialChargeSpeed = 9f;
             float topChargeSpeed = 50f; // 35
 
             int timeToDecelAfterSwing = 10; // 12

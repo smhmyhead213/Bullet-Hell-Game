@@ -138,8 +138,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void AI()
         {
             base.AI();
-            Velocity = Vector2.Zero;
-            Rotation = 0f;
+            //Velocity = Vector2.Zero;
+            //Rotation = 0f;
         }
 
         public void ResetArmRotations()

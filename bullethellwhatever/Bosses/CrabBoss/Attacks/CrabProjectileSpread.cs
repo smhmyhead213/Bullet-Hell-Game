@@ -23,12 +23,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void Execute(int AITimer)
         {
-            float angleToSwingThrough = PI;
-
             int slowDownTime = 3;
-            int swingTime = 15;
-            int bufferTimeAfterSwing = 12;
-            int resetTime = 10;
+            int swingTime = 6; // 15
+            int bufferTimeAfterSwing = 20; // 12
+            int resetTime = 7;
 
             ref float initialSpeed = ref ExtraData[0];
             ref float initialRotation = ref ExtraData[1];
@@ -60,28 +58,24 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ChosenArm().LowerArm.LerpTo(0, interpolant);
             }
 
-            if (AITimer >= slowDownTime && AITimer < slowDownTime + swingTime)
+            if (AITimer >= slowDownTime && AITimer <= slowDownTime + swingTime)
             {                
                 int localTime = AITimer - slowDownTime;
                 float armLength = ChosenArm().Length();
-                float interpolant = localTime / (float)swingTime;
 
-                //float anglePreviousFrame = angleToSwingThrough * EasingFunctions.Linear((localTime - 1) / (float)swingTime);
-                //float angleThisFrame = angleToSwingThrough * EasingFunctions.Linear(localTime / (float)swingTime);
+                int projectilesPerFrame = 2;
 
-                //int expandedi = -Utilities.ExpandedIndex(chosenArmInt);
-
-                //CrabOwner.Arms[chosenArmInt].RotateLeg(expandedi * (angleThisFrame - anglePreviousFrame));
-
-                ChosenArm().LerpRotation(-expandedi * -PI / 2, -expandedi * PI / 2, interpolant);
-
-                int timeBetweenProjectiles = 2;
-
-                if (localTime % timeBetweenProjectiles == 0)
+                for (int i = 0; i < projectilesPerFrame; i++)
                 {
+                    float additionalProgress = i / (float)projectilesPerFrame;
+
+                    float interpolant = EasingFunctions.Linear((localTime + additionalProgress) / swingTime); // this is linearly eased on purpose to keep projectiles even
+
+                    ChosenArm().LerpRotation(-expandedi * -PI / 2, -expandedi * PI / 2, interpolant);
+
                     Vector2 spawnPosition = CrabOwner.Arms[chosenArmInt].LowerClaw.Position;
                     float projectileInitialSpeed = 3f;
-                    
+
                     Projectile p = SpawnProjectile<Projectile>(spawnPosition, projectileInitialSpeed * Utilities.AngleToVector(CrabOwner.Arms[chosenArmInt].UpperArm.RotationFromV()), 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
                     p.Rotation = Utilities.VectorToAngle(p.Velocity);
 
@@ -90,18 +84,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     p.SetExtraAI(new Action(() =>
                     {
                         p.ExponentialAccelerate(1.05f);
-                        //if (p.AITimer < projectileSlowTime)
-                        //{
-                        //    p.Velocity *= 0.98f;
-                        //}
-                        //else if (p.AITimer == projectileSlowTime)
-                        //{
-                        //    p.Velocity += 5f * Utilities.SafeNormalise(p.Velocity);
-                        //}
-                        //else
-                        //{
-                        //    p.Velocity *= 1.05f;
-                        //}
                     }));
                 }
             }
