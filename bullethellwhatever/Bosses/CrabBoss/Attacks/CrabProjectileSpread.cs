@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             int slowDownTime = 3;
             int swingTime = 6; // 15
-            int bufferTimeAfterSwing = 5; // 12
+            int bufferTimeAfterSwing = 12; // 12
             int resetTime = 7;
 
             ref float initialSpeed = ref ExtraData[0];
