@@ -82,6 +82,7 @@ namespace bullethellwhatever.BaseClasses
             PrimitiveTrail trail = new PrimitiveTrail(this, 15);
             trail.SetName("PlayerTrail");
             trail.Opacity = EasingFunctions.EaseParabolic(0.9f) + 0.2f;
+            trail.AccountForOwnerOpacity = true;
 
             AdditionalComponents.Add(trail);
 
@@ -356,7 +357,7 @@ namespace bullethellwhatever.BaseClasses
 
             PlayerWeaponManager.ActiveWeapon.Draw(spriteBatch);
 
-            Opacity = 4f * (1f / (IFrames + 1f)); //to indicate iframes
+            Opacity = 1f / (IFrames + 1f); //to indicate iframes
 
             //Draw the player, accounting for immunity frame transparency.
 

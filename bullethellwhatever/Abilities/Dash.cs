@@ -23,7 +23,7 @@ namespace bullethellwhatever.Abilities
             CooldownTime = cooldown;
         }  
         public override void Execute()
-        {        
+        {               
             if (IsExecuting)
             {
                 Owner.MoveSpeed = Owner.MoveSpeed * 4f;

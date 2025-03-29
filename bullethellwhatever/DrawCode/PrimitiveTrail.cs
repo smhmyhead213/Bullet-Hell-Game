@@ -20,7 +20,7 @@ namespace bullethellwhatever.DrawCode
         public Effect Shader;
         public float Opacity;
         public float Width;
-
+        public bool AccountForOwnerOpacity;
         public Color Colour;
         public PrimitiveTrail(Entity owner, int length, string shader = null)
         {
@@ -36,10 +36,10 @@ namespace bullethellwhatever.DrawCode
             Owner = owner;
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
-            //AddPoint(owner.Position);
             Width = Owner.GetSize().X * Owner.Texture.Width;
 
             Colour = Owner.Colour;
+            AccountForOwnerOpacity = false;
         }
 
         public PrimitiveTrail(int length, float width, Color colour, string shader = null)
@@ -55,10 +55,9 @@ namespace bullethellwhatever.DrawCode
 
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
-            //AddPoint(startPos);
             Width = width;
-
             Colour = colour;
+            AccountForOwnerOpacity = false;
         }
         public void SetWidth(float width)
         {
@@ -125,12 +124,13 @@ namespace bullethellwhatever.DrawCode
                 float fractionOfWidth = 1f - progress;
                 float widthToUse = width * fractionOfWidth;
                 int startingIndex = (i) * 2; // 
+                float ownerOpacity = Owner is not null && AccountForOwnerOpacity ? Owner.Opacity : 1f;
 
                 // the last position gets multiplied by zero anyway so it can be whatever
 
                 toNext = i == positions.Length - 1 ? Vector2.One : Utilities.SafeNormalise(positions[i + 1] - positions[i]);
 
-                colour = colour * fractionOfWidth * Opacity;
+                colour = colour * fractionOfWidth * Opacity * ownerOpacity;
 
                 PrimitiveManager.MainVertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, progress));
                 PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, progress));
