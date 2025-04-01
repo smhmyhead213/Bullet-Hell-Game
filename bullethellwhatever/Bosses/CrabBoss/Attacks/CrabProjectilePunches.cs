@@ -145,7 +145,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     if (usedTimer == pullBackArmTime + punchSwingTime + 1)
                     {
-                        float projectileSpeed = 5f;
+                        float projectileSpeed = 15f;
                         float angle = Utilities.AngleToPlayerFrom(Arm(i).WristPosition());
                         Projectile p = SpawnProjectile(Arm(i).WristPosition(), angle.ToVector() * projectileSpeed, 1f, 1, "box", Vector2.One, Owner, true, false, Color.Red, true, false);
                         p.AddTrail(14);

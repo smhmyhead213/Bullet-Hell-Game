@@ -200,7 +200,7 @@ namespace bullethellwhatever.BaseClasses
         public Matrix4x4 ShaderMatrix()
         {
             Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
-            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-(cameraPos.X + ScreenShakeOffset) / GameWidth * 2, (cameraPos.Y + ScreenShakeOffset) / GameHeight * 2, 0));
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPos.X / GameWidth * 2, cameraPos.Y / GameHeight * 2, 0));
 
             // we need to transform in vertex coords, the coordinates that the primitives use.
             Microsoft.Xna.Framework.Vector2 vertexOrigin = Utilities.GameCoordsToVertexCoords(Origin);
