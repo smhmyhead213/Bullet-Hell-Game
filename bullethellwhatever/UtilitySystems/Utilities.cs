@@ -203,6 +203,16 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
+        /// <summary>
+        /// Returns a random float between -absMax and absMax
+        /// </summary>
+        /// <param name="absMax"></param>
+        /// <returns></returns>
+        public static float RandomFloat(float absMax)
+        {
+            return RandomFloat(-absMax, absMax);
+        }
+
         public static float RandomFloat(float min, float max)
         {
             Random rng = new Random();

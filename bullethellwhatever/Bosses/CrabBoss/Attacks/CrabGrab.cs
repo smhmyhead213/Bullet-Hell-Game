@@ -68,7 +68,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float interpolant = EasingFunctions.EaseOutExpo(progress);
                 float finalArmLength = armLength;
                 float armLengthNow = MathHelper.Lerp(armLength, finalArmLength, interpolant);
-                float armScale = Arm(armIndex).UpperArm.GetSize().X;
+                
                 Vector2 finalPoint = player.Position;
 
                 Arm(armIndex).UpperArm.LerpRotation(-expandedi * PI / 2, 0f, interpolant);
@@ -87,7 +87,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 if (GrabbedPlayer)
                 {
-                    player.Position = Arm(armIndex).WristOffsetBy(new Vector2(15f * armScale, -15f * armScale));
+                    player.Position = PlayerPositionInGrab(armIndex);
                 }
             }
 

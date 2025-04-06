@@ -64,7 +64,11 @@ namespace bullethellwhatever.UtilitySystems
             else return Pow(2, -10 * progress) * Sin((progress * 10 - 0.75f) * c4) + 1;
         }
 
-        public static float EaseInQuint(float progress)
+        public static float EaseOutCubic(float progress)
+        {
+            return 1 - Pow(1 - progress, 3);
+        }
+    public static float EaseInQuint(float progress)
         {
             return Pow(progress, 5);
         }

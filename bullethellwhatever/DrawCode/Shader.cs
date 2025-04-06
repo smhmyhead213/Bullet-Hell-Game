@@ -61,8 +61,6 @@ namespace bullethellwhatever.DrawCode
         {
             if (Map is not null)
             {
-                // Set shader params.
-                // Matrix thingy, IDT its automatic with the sb one? Doesn't hurt idt. Do a ? so it doesn't crash if it cant be found.
                 //int width = _graphics.GraphicsDevice.Viewport.Width;
                 //int height = _graphics.GraphicsDevice.Viewport.Height;
                 //Matrix projection = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
@@ -70,7 +68,7 @@ namespace bullethellwhatever.DrawCode
                 // probably move this out of the if?
                 Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
 
-                Effect.Parameters["NoiseTexture"].SetValue(Map.Texture);
+                Effect.Parameters["NoiseTexture"]?.SetValue(Map.Texture);
             }
 
             Effect.Parameters["colour"]?.SetValue(Colour.ToVector3());

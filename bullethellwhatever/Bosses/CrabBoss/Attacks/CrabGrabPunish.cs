@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.DrawCode;
@@ -33,12 +34,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             int expandedi = Utilities.ExpandedIndex(0);
             
             int restTimeAfterBlast = 40;
+            float distanceFromBodyToHold = 40f;
 
             if (AITimer > DelayTimeBeforePunish && AITimer < moveToPositionTime + DelayTimeBeforePunish)
             {
                 int localTime = AITimer - DelayTimeBeforePunish;
                 float progress = localTime / (float)(moveToPositionTime);
-                float distanceFromBodyToHold = 40f;
                 Vector2 rootToTarget = player.Position - Arm(0).Position;
                 float distanceRootToTarget = rootToTarget.Length();
                 float theta = Acos(distanceFromBodyToHold / distanceRootToTarget);
@@ -79,14 +80,85 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 Vector2 wristPos = Arm(armIndex).WristPosition();
                 float angleToPlayer = wristPos.AngleToPlayer();
-                float rayWidth = 60f;
+                float initialRayWidth = 200f;
+                float rayThinTime = 10;
+                float regularRayWidth = 60f;
+                float rayPopOutMaxWidth = 90f;
                 float totalRayDamage = 1f;
                 float rayDamage = totalRayDamage / (RayDuration / player.MaxIFrames); // always do the same amount of damage regardless of iframes
 
-                Deathray d = SpawnDeathray(wristPos, angleToPlayer, rayDamage, RayDuration, "box", rayWidth, GameWidth, 0f, true, false, Color.Red, "DeathrayShader2", Owner);
+                Deathray d = SpawnDeathray(wristPos, angleToPlayer, rayDamage, RayDuration, "box", initialRayWidth, GameWidth, 0f, true, false, Color.Red, "CrabGrabPunishLaser", Owner);
                 d.SetNoiseMap("CrabScrollingBeamNoise", -0.06f);
+                d.Shader.SetParameter("oscillationVariance", 0.6f);
                 d.SetThinOut(true);
+                d.Shader.SetParameter("opacity", 1f);
+
+                d.SetExtraAI(new Action(() =>
+                {
+                    float progress = MathHelper.Clamp(d.AITimer / rayThinTime, 0f, 1f);
+                    float interpolant = EasingFunctions.EaseOutExpo(progress);
+                    d.Position = Arm(armIndex).WristPosition();
+                    d.Width = MathHelper.Lerp(initialRayWidth, regularRayWidth, interpolant);
+
+                    int fadeOutTime = 25;
+
+                    if (d.AITimer >= RayDuration - fadeOutTime)
+                    {
+                        int localTime = RayDuration - d.AITimer;
+                        float opacityProgress = EasingFunctions.EaseOutExpo((float)localTime / fadeOutTime);
+                        float opacityInterpolant = opacityProgress;
+                        d.Width = MathHelper.Lerp(regularRayWidth, 0f, 1f - opacityProgress);
+                        //d.Shader.SetParameter("opacity", opacityInterpolant);
+                    }
+                    
+                    //d.Rotation = Arm(armIndex).LowerArm.RotationFromV();
+                }));
             }
+
+            if (AITimer > ChargeUpTime + DelayTimeBeforePunish && AITimer <= ChargeUpTime + DelayTimeBeforePunish + RayDuration)
+            {
+                int localTime = AITimer - (ChargeUpTime + DelayTimeBeforePunish);
+                float progress = localTime / (float)(RayDuration);
+
+                Vector2 rootToTarget = player.Position - Arm(0).Position;
+                float distanceRootToTarget = rootToTarget.Length();
+                float theta = Acos(distanceFromBodyToHold / distanceRootToTarget);
+                Vector2 target = Arm(armIndex).Position + rootToTarget.Rotate(-expandedi * theta).SetLength(distanceFromBodyToHold);
+
+                // push slightly away from player
+
+                float pushAwayDistance = 10f;
+
+                target -= Arm(armIndex).WristPosition().DirectionToPlayer() * (progress * pushAwayDistance);
+
+                Arm(armIndex).LerpToPoint(target, progress);
+
+                int particlesPerFrame = 1;
+
+                for (int i = 0; i < particlesPerFrame; i++)
+                {
+                    Particle p = new Particle();
+                    float baseSpeed = 18f;
+                    float particleSpeed = baseSpeed + Utilities.RandomFloat(baseSpeed / 10f);
+                    float angleVariance = PI;
+                    Vector2 velocity = particleSpeed * Arm(armIndex).WristPosition().DirectionToPlayer().Rotate(Utilities.RandomAngle(angleVariance));
+                    int lifetime = 20;
+                    p.Spawn("box", Arm(armIndex).WristPosition(), velocity, Vector2.Zero, Vector2.One * 0.5f, velocity.ToAngle(), Color.Red, 1f, lifetime);
+
+                    p.SetExtraAI(new Action(() =>
+                    {
+                        float progress = p.AITimer / (float)p.Lifetime;
+                        p.Velocity = p.Velocity.SetLength(particleSpeed * EasingFunctions.EaseOutCubic(1f - progress));
+                    }));
+                }
+            }
+
+            //if (AITimer < ChargeUpTime + DelayTimeBeforePunish + RayDuration)
+            //{
+            //    // something funny happens if you swap the following two lines
+            //    player.Position = PlayerPositionInGrab(CrabBoss.GrabbingArm);
+            //    CrabOwner.LerpToFacePlayer();                
+            //}
 
             if (AITimer > ChargeUpTime + DelayTimeBeforePunish + RayDuration && AITimer <= ChargeUpTime + DelayTimeBeforePunish + RayDuration + ThrowAwayTime)
             {

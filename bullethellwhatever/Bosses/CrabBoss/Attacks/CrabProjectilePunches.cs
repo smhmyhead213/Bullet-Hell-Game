@@ -28,8 +28,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             //return;
 
-            int pullBackArmTime = 15; // 30
-            int punchSwingTime = 7; // 7
+            int pullBackArmTime = 19; // 30
+            int punchSwingTime = 3; // 7
             int resetTime = 13; // 27
             int delayAfterPunchToCloseClaw = 10; // should be less than reset time
             int totalPunchTime = pullBackArmTime + punchSwingTime + resetTime;
