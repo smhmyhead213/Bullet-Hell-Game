@@ -19,14 +19,17 @@ namespace bullethellwhatever.Abilities.Weapons
     {
         Prepare,
         Swing,
-        Spin
     }
     public class SwordWeapon : Weapon
     {
         public float WeaponRotation;
-        public float SwingAngle => 2 * PI / 3;
-        public float SwingDuration => 40;
-        public float SpinDuration => 20;
+
+        public float PullBackAngle => -4 * PI / 5;
+        public float SwingAngle => -PullBackAngle * 2;
+
+        public int SwingDuration => 10;
+        public int ChargeDuration => 30;
+        public int ChargeTimer = 0;
 
         public SwordSwingStages SwingStage;
 
@@ -43,8 +46,8 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void WeaponInitialise()
         {
-            WeaponRotation = SwingAngle / 2;
-            SwingStage = SwordSwingStages.Swing;
+            WeaponRotation = 0f;
+            SwingStage = SwordSwingStages.Prepare;
             AITimer = 0;
             Swinging = false;
         }
@@ -61,65 +64,61 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             return Owner.Position - 0.92f * Utilities.RotateVectorClockwise(new Vector2(0f, Length), angle);
         }
+
+        public void Reset()
+        {
+            AITimer = 0;
+            WeaponRotation = 0f;
+            ChargeTimer = 0;
+            SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
+            HitEnemies.Clear();
+            Swinging = false;
+            SwingStage = SwordSwingStages.Prepare;
+        }
         public override void AI()
         {
             Trail.PreUpdate(3f, CalculateEnd(), Color.Orange);
-            
-            if (LeftClickReleased() && !Swinging)
-            {
-                Swinging = true;
-                AITimer = 0;
-                WeaponRotation = SwingAngle / 2f;
-                SwingStage = SwordSwingStages.Swing;
-                SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
-                HitEnemies.Clear();
-            }
 
-            if (Swinging)
+            if (SwingStage == SwordSwingStages.Prepare)
             {
-                if (SwingStage == SwordSwingStages.Swing)
+                if (IsLeftClickDown() || true)
                 {
-                    float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SwingDuration) / (float)SwingDuration);
-
-                    WeaponRotation = MathHelper.Lerp(SwingAngle / 2, -SwingAngle / 2, interpolant);
-
-                    if (AITimer == SwingDuration)
-                    {
-                        SwingStage = SwordSwingStages.Spin;
-                        AITimer = 0;
-                        HitEnemies.Clear();
-                    }
+                    ChargeTimer++;
+                    Swinging = true;
                 }
-                else if (SwingStage == SwordSwingStages.Spin)
+                else
                 {
-                    int additionalTrailPoints = 9;
-
-                    for (int i = 0; i < additionalTrailPoints; i++)
-                    {
-                        float interpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer, 0, SpinDuration) / (float)SpinDuration);
-                        float prevInterpolant = EasingFunctions.EaseOutExpo(MathHelper.Clamp(AITimer - 1, 0, SpinDuration) / (float)SpinDuration);
-                        
-                        // how bro feel after lerping lerps
-
-                        float toUse = MathHelper.Lerp(prevInterpolant, interpolant, (float)i / additionalTrailPoints);
-
-                        WeaponRotation = MathHelper.Lerp(-SwingAngle / 2, Tau, toUse);
-
-                        Trail.AddPoint(CalculateEnd(WeaponRotation + SwingDirection));
-                    }
-
-                    // since the expo easing does a large leap rotation and kinda messes up the trail, add additional trail points
-                    if (AITimer == SpinDuration)
-                    {
-                        AITimer = 0;
-                        Swinging = false;
-                        HitEnemies.Clear();
-                        Hitbox.Clear();
-                    }
+                    Swinging = false;
                 }
 
-                WeaponRotation += SwingDirection; // face mouse
+                //if (ChargeTimer >= 0 && !IsLeftClickDown())
+                //{
+                //    ChargeTimer = 0;
+                //    Swinging = false;
+                //}
+
+                if (Charged())
+                {
+                    SwingStage = SwordSwingStages.Swing;
+                    ChargeTimer = 0;
+                    AITimer = 0;
+                }
+
+                float interpolant = EasingFunctions.EaseOutCubic((float)ChargeTimer / ChargeDuration);
+                WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
             }
+
+            else if (SwingStage == SwordSwingStages.Swing)
+            {
+                WeaponRotation = MathHelper.Lerp(PullBackAngle, SwingAngle, EasingFunctions.EaseOutExpo((float)AITimer / SwingDuration));
+
+                if (AITimer == SwingDuration + 1)
+                {
+                    Reset();
+                }
+            }
+
+            WeaponRotation += SwingDirection; // face mouse
 
             Trail.PostUpdate(CalculateEnd());
         }
@@ -134,6 +133,10 @@ namespace bullethellwhatever.Abilities.Weapons
 
         }
 
+        public bool Charged()
+        {
+            return ChargeTimer == ChargeDuration;
+        }
         public override void OnHit(NPC npc)
         {
             // to do: centralised damage system

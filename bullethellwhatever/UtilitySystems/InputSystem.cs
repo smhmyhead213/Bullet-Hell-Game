@@ -95,7 +95,10 @@ namespace bullethellwhatever.UtilitySystems
         {
             return KeyStates[key].WasDownLastFrame;
         }
-
+        public static bool LeftClickDownButNotLastFrame()
+        {
+            return IsLeftClickDown() && !WasMouseDownLastFrame;
+        }
         public static bool IsKeyPressedAndWasntLastFrame(Keys key)
         {
             return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
