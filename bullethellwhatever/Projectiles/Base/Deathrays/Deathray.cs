@@ -13,6 +13,7 @@ using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.DrawCode.Particles;
+using SharpDX.DXGI;
 
 namespace bullethellwhatever.Projectiles.Base
 {
@@ -20,7 +21,8 @@ namespace bullethellwhatever.Projectiles.Base
     {    
         public float Length;
         public float InitialLength;
-        public float Width;
+        public float HitboxWidth;
+        public Func<float, float, float> WidthFunction; // a function that returns a visual width as a function of y and time both normalised between 0 and 1
         public float InitialWidth;
         private bool ThinOut;
         public float AngularVelocity;
@@ -50,7 +52,7 @@ namespace bullethellwhatever.Projectiles.Base
             Position = position;
             Rotation = initialRotation;
 
-            Width = width;
+            HitboxWidth = width;
             Length = length;
             InitialLength = Length;
 
@@ -72,7 +74,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             RemoveOnHit = false;
 
-            InitialWidth = Width;
+            InitialWidth = HitboxWidth;
             ThinOut = false;
 
             Participating = true;
@@ -130,7 +132,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (ThinOut && AITimer > Duration - FadeOutTime)
             {
-                Width = MathHelper.Lerp(0, Width, MathHelper.Clamp((float)(Duration - AITimer) / FadeOutTime, 0f, 1f));
+                HitboxWidth = MathHelper.Lerp(0, HitboxWidth, MathHelper.Clamp((float)(Duration - AITimer) / FadeOutTime, 0f, 1f));
             }
 
             if (DieAfterDuration && AITimer == Duration)
@@ -149,9 +151,9 @@ namespace bullethellwhatever.Projectiles.Base
 
             // to do: make work with circles
 
-            if (Width >= 2f)
+            if (HitboxWidth >= 2f)
             {
-                Hitbox = Utilities.FillRectWithCircles(centre, (int)Width, (int)Length, Rotation);
+                Hitbox = Utilities.FillRectWithCircles(centre, (int)HitboxWidth, (int)Length, Rotation);
             }
             else
             {
@@ -215,6 +217,15 @@ namespace bullethellwhatever.Projectiles.Base
             FadeOutTime = fadeOutTime;
         }
 
+        public float LifeTimeRatio()
+        {
+            return (float)AITimer / Duration;
+        }
+
+        public float WidthNowAt(float y)
+        {
+            return WidthFunction is not null ? WidthFunction(y, LifeTimeRatio()) : HitboxWidth;
+        }
         public List<Vector2> GenerateVertices(int points = 30)
         {
             List<Vector2> vertices = new List<Vector2>();
@@ -223,8 +234,9 @@ namespace bullethellwhatever.Projectiles.Base
 
             for (int i = 0; i < points + 1; i++) // + 1 so we include end point, this might be a little odd though and cause issues so be cautious
             {
-                Vector2 centrePoints = Position + ((float)i / points) * Length * rotationVec;
-                float widthHere = Width; // change to use width function of y and t
+                float y_progress = (float)i / (points);
+                Vector2 centrePoints = Position + (float)i / points * Length * rotationVec;
+                float widthHere = WidthNowAt(y_progress);
                 vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(PI / 2));
                 vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(-PI / 2));
             }
@@ -235,21 +247,6 @@ namespace bullethellwhatever.Projectiles.Base
         {
             if (IsActive)
             {
-                //ApplyShaderParameters();
-
-                //Shader.Apply();
-
-                //Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); // Scale the beam up to the required width and length.
-
-                //Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
-
-                //spritebatch.Draw(Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
-
-                //foreach (Vector2 point in GenerateVertices())
-                //{
-                //    Drawing.DrawBox(point, Colour, 1f);
-                //}
-
                 List<Vector2> vertices = GenerateVertices();
                 int vertexCount = vertices.Count;
 
@@ -273,7 +270,7 @@ namespace bullethellwhatever.Projectiles.Base
                     PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
                 }
 
-                PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount);
+                PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, Shader.Effect);
 
                 primSet.Draw();
             }

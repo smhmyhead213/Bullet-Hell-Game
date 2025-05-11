@@ -98,7 +98,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     float progress = MathHelper.Clamp(d.AITimer / rayThinTime, 0f, 1f);
                     float interpolant = EasingFunctions.EaseOutExpo(progress);
                     d.Position = Arm(armIndex).WristPosition();
-                    d.Width = MathHelper.Lerp(initialRayWidth, regularRayWidth, interpolant);
+                    d.HitboxWidth = MathHelper.Lerp(initialRayWidth, regularRayWidth, interpolant);
 
                     int fadeOutTime = 25;
 
@@ -107,12 +107,22 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         int localTime = RayDuration - d.AITimer;
                         float opacityProgress = EasingFunctions.EaseOutExpo((float)localTime / fadeOutTime);
                         float opacityInterpolant = opacityProgress;
-                        d.Width = MathHelper.Lerp(regularRayWidth, 0f, 1f - opacityProgress);
+                        d.HitboxWidth = MathHelper.Lerp(regularRayWidth, 0f, 1f - opacityProgress);
                         //d.Shader.SetParameter("opacity", opacityInterpolant);
                     }
                     
                     //d.Rotation = Arm(armIndex).LowerArm.RotationFromV();
                 }));
+
+                float oscillationsDownLaser = 5;
+                float oscillationAmp = 0.15f;
+                float waveSpeed = 50f;
+
+                d.WidthFunction = (y, t) => {     
+                    
+                    float pinchFactor = MathHelper.Clamp(y * 10, 0f, 1f);
+                    return pinchFactor * d.HitboxWidth; // * (1 + oscillationAmp * Sin(oscillationsDownLaser * Tau * y - waveSpeed * t));
+                };
             }
 
             if (AITimer > ChargeUpTime + DelayTimeBeforePunish && AITimer <= ChargeUpTime + DelayTimeBeforePunish + RayDuration)
