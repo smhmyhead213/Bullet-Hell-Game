@@ -86,6 +86,8 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void AI()
         {
+            return;
+
             if (SwingStage == SwordSwingStages.Prepare)
             {
                 if (IsLeftClickDown() || true)
@@ -122,7 +124,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 for (int i = 0; i < extraTrailPoints; i++)
                 {
                     float extraInterpolant = i / (float)extraTrailPoints;
-                    WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseOutExpo((AITimer + extraInterpolant) / SwingDuration));
+                    WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration));
                     Vector2 toSwordEnd = CalculateEnd(WeaponRotation + SwingDirection) - Owner.Position;
                     Vector2 point = Owner.Position + toSwordEnd.SetLength(Length - TrailOffsetFromSwordTip);
                     TrailPoints.Add(point);

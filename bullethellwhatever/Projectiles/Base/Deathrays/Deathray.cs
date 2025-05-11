@@ -215,19 +215,40 @@ namespace bullethellwhatever.Projectiles.Base
             FadeOutTime = fadeOutTime;
         }
 
+        public List<Vector2> GenerateVertices(int points = 30)
+        {
+            List<Vector2> vertices = new List<Vector2>();
+
+            Vector2 rotationVec = Rotation.ToVector();
+
+            for (int i = 0; i < points + 1; i++) // + 1 so we include end point, this might be a little odd though and cause issues so be cautious
+            {
+                Vector2 centrePoints = Position + ((float)i / points) * Length * rotationVec;
+                float widthHere = Width; // change to use width function of y and t
+                vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(PI / 2));
+                vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(-PI / 2));
+            }
+
+            return vertices;
+        }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
-            {
-                ApplyShaderParameters();
+            {               
+                //ApplyShaderParameters();
 
-                Shader.Apply();
+                //Shader.Apply();
 
-                Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); // Scale the beam up to the required width and length.
+                //Vector2 size = new Vector2(Width / Texture.Width, Length / Texture.Height); // Scale the beam up to the required width and length.
 
-                Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
+                //Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
 
-                spritebatch.Draw(Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+                //spritebatch.Draw(Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
+
+                foreach (Vector2 point in GenerateVertices())
+                {
+                    Drawing.DrawBox(point, Colour, 1f);
+                }
             }
         }
     }

@@ -76,6 +76,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 beamColour = float4(1, 1, 1, 1);
     
     float oscillationFactor = 1 + (sin(uTime / 10.0 + uv.y) * oscillationVariance);
+    oscillationFactor = 1;
     
     float distFromCentre = abs(uv.x - centreX) * oscillationFactor; // trick it into thinking its further from the centre
     float opacityInterpolant = clamp(easeInExpo(2 * distFromCentre), 0.0, 1.0);
