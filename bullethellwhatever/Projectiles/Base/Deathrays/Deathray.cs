@@ -234,7 +234,7 @@ namespace bullethellwhatever.Projectiles.Base
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
-            {               
+            {
                 //ApplyShaderParameters();
 
                 //Shader.Apply();
@@ -245,10 +245,37 @@ namespace bullethellwhatever.Projectiles.Base
 
                 //spritebatch.Draw(Texture, Position, null, Colour, PI + Rotation, originOffset, size, SpriteEffects.None, 0);
 
-                foreach (Vector2 point in GenerateVertices())
+                //foreach (Vector2 point in GenerateVertices())
+                //{
+                //    Drawing.DrawBox(point, Colour, 1f);
+                //}
+
+                List<Vector2> vertices = GenerateVertices();
+                int vertexCount = vertices.Count;
+
+                for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
                 {
-                    Drawing.DrawBox(point, Colour, 1f);
+                    int startIndex = i * 2;
+                    float progress = i / (vertexCount / 2);
+                    PrimitiveManager.MainVertices[startIndex] = PrimitiveManager.CreateVertex(vertices[startIndex], Colour, new Vector2(0f, progress));
+                    PrimitiveManager.MainVertices[startIndex + 1] = PrimitiveManager.CreateVertex(vertices[startIndex + 1], Colour, new Vector2(1f, progress));
                 }
+
+                int numberOfTriangles = vertexCount - 2;
+
+                int indexCount = numberOfTriangles * 3;
+
+                for (int i = 0; i < numberOfTriangles; i++)
+                {
+                    int startingIndex = i * 3;
+                    PrimitiveManager.MainIndices[startingIndex] = (short)i;
+                    PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
+                    PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
+                }
+
+                PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount);
+
+                primSet.Draw();
             }
         }
     }
