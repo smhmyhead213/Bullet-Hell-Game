@@ -121,7 +121,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 d.WidthFunction = (y, t) => {     
                     
                     float pinchFactor = MathHelper.Clamp(y * 10, 0f, 1f);
-                    return pinchFactor * d.HitboxWidth; // * (1 + oscillationAmp * Sin(oscillationsDownLaser * Tau * y - waveSpeed * t));
+                    return EasingFunctions.Linear(pinchFactor) * d.HitboxWidth; // * (1 + oscillationAmp * Sin(oscillationsDownLaser * Tau * y - waveSpeed * t));
                 };
             }
 

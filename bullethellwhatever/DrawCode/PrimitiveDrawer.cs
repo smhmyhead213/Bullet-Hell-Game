@@ -146,7 +146,8 @@ namespace bullethellwhatever.DrawCode
                 PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
 
                 if (Shader is not null)
-                {   
+                {
+                    Shader.Parameters["view_projection"].SetValue(MainCamera.ShaderMatrix());
                     Shader.CurrentTechnique.Passes[0].Apply();
                 }
 

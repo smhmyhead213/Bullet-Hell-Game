@@ -102,7 +102,7 @@ Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 MainVS();
+        VertexShader = compile vs_4_0 MainVS();
         PixelShader = compile ps_4_0 MainPS();
         
     }
