@@ -229,17 +229,28 @@ namespace bullethellwhatever.Projectiles.Base
         public List<Vector2> GenerateVertices(int points = 30)
         {
             List<Vector2> vertices = new List<Vector2>();
+            List<Vector2> beamPoints = new List<Vector2>();
 
             Vector2 rotationVec = Rotation.ToVector();
-
-            for (int i = 0; i < points + 1; i++) // + 1 so we include end point, this might be a little odd though and cause issues so be cautious
+            float segmentLength = Length / points;
+            // generate n + 1 points along beam so both start and end are included
+            
+            for (int i = 0; i < points + 1; i++)
             {
-                float y_progress = (float)i / (points);
-                Vector2 centrePoints = Position + (float)i / points * Length * rotationVec;
-                float widthHere = WidthNowAt(y_progress);
-                vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(PI / 2));
-                vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(-PI / 2));
+                float progress = (float)i / points;
+                beamPoints.Add(Position + i * segmentLength * rotationVec);
             }
+
+            return PrimitiveManager.GenerateStripVertices(beamPoints, (y) => WidthNowAt(y));
+
+            //for (int i = 0; i < points + 1; i++) // + 1 so we include end point, this might be a little odd though and cause issues so be cautious
+            //{
+            //    float y_progress = (float)i / (points);
+            //    Vector2 centrePoints = Position + (float)i / points * Length * rotationVec;
+            //    float widthHere = WidthNowAt(y_progress);
+            //    vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(PI / 2));
+            //    vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(-PI / 2));
+            //}
 
             return vertices;
         }
@@ -248,31 +259,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (IsActive)
             {
                 List<Vector2> vertices = GenerateVertices();
-                int vertexCount = vertices.Count;
-
-                for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
-                {
-                    int startIndex = i * 2;
-                    float progress = i / (vertexCount / 2);
-                    PrimitiveManager.MainVertices[startIndex] = PrimitiveManager.CreateVertex(vertices[startIndex], Colour, new Vector2(0f, progress));
-                    PrimitiveManager.MainVertices[startIndex + 1] = PrimitiveManager.CreateVertex(vertices[startIndex + 1], Colour, new Vector2(1f, progress));
-                }
-
-                int numberOfTriangles = vertexCount - 2;
-
-                int indexCount = numberOfTriangles * 3;
-
-                for (int i = 0; i < numberOfTriangles; i++)
-                {
-                    int startingIndex = i * 3;
-                    PrimitiveManager.MainIndices[startingIndex] = (short)i;
-                    PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
-                    PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
-                }
-
-                PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, Shader.Effect);
-
-                primSet.Draw();
+                PrimitiveManager.DrawVertexStrip(vertices, Colour, Shader);
             }
         }
     }

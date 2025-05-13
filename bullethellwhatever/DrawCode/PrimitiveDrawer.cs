@@ -83,6 +83,60 @@ namespace bullethellwhatever.DrawCode
         {
             return new VertexPositionColorTexture(GameCoordsToVertexCoords(coords), colour, texCoords);
         }
+
+        public static List<Vector2> GenerateStripVertices(List<Vector2> points, Func<float, float> widthFunction)
+        {
+            if (points.Count < 2)
+            {
+                throw new Exception("Cannot make a primitive strip with less than two points.");
+            }
+
+            List<Vector2> vertices = new List<Vector2>();
+            Vector2 toNext = points[1] - points[0];
+            vertices.Add(points[0] + widthFunction(0) / 2 * toNext.Rotate(PI / 2));
+            vertices.Add(points[0] + widthFunction(0) / 2 * toNext.Rotate(-PI / 2));
+
+            for (int i = 1; i < points.Count; i++)
+            {
+                float y_progress = (float)i / (points.Count);
+                Vector2 centrePoint = points[i];
+                float widthHere = widthFunction(y_progress);
+                Vector2 fromPrevToMe = Utilities.SafeNormalise(points[i] - points[i - 1]);
+                vertices.Add(centrePoint + widthHere / 2 * fromPrevToMe.Rotate(PI / 2));
+                vertices.Add(centrePoint + widthHere / 2 * fromPrevToMe.Rotate(-PI / 2));
+            }
+
+            return vertices;
+        }
+
+        public static void DrawVertexStrip(List<Vector2> vertices, Color colour, Shader shader)
+        {
+            int vertexCount = vertices.Count;
+
+            for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
+            {
+                int startIndex = i * 2;
+                float progress = i / (vertexCount / 2);
+                PrimitiveManager.MainVertices[startIndex] = PrimitiveManager.CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
+                PrimitiveManager.MainVertices[startIndex + 1] = PrimitiveManager.CreateVertex(vertices[startIndex + 1], colour, new Vector2(1f, progress));
+            }
+
+            int numberOfTriangles = vertexCount - 2;
+
+            int indexCount = numberOfTriangles * 3;
+
+            for (int i = 0; i < numberOfTriangles; i++)
+            {
+                int startingIndex = i * 3;
+                PrimitiveManager.MainIndices[startingIndex] = (short)i;
+                PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
+                PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
+            }
+
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader.Effect);
+
+            primSet.Draw();
+        }
     }
     public class PrimitiveSet
     {
