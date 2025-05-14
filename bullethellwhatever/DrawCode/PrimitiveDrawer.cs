@@ -94,7 +94,7 @@ namespace bullethellwhatever.DrawCode
             Vector2[] vertices = new Vector2[points.Length * 2];
             int index = 0;
 
-            Vector2 toNext = points[1] - points[0];
+            Vector2 toNext = Utilities.SafeNormalise(points[1] - points[0]);
             vertices[index++] = points[0] + widthFunction(0) / 2 * toNext.Rotate(PI / 2);
             vertices[index++] = points[0] + widthFunction(0) / 2 * toNext.Rotate(-PI / 2);
 
@@ -119,8 +119,8 @@ namespace bullethellwhatever.DrawCode
             {
                 int startIndex = i * 2;
                 float progress = i / (vertexCount / 2);
-                PrimitiveManager.MainVertices[startIndex] = PrimitiveManager.CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
-                PrimitiveManager.MainVertices[startIndex + 1] = PrimitiveManager.CreateVertex(vertices[startIndex + 1], colour, new Vector2(1f, progress));
+                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
+                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour, new Vector2(1f, progress));
             }
 
             int numberOfTriangles = vertexCount - 2;
@@ -130,22 +130,22 @@ namespace bullethellwhatever.DrawCode
             for (int i = 0; i < numberOfTriangles; i++)
             {
                 int startingIndex = i * 3;
-                PrimitiveManager.MainIndices[startingIndex] = (short)i;
-                PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
-                PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
+                MainIndices[startingIndex] = (short)i;
+                MainIndices[startingIndex + 1] = (short)(i + 1);
+                MainIndices[startingIndex + 2] = (short)(i + 2);
             }
 
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader.Effect);
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
 
             primSet.Draw();
         }
     }
     public class PrimitiveSet
     {
-        public Effect Shader;
+        public Shader Shader;
 
         public int IndiceCount;
-        public PrimitiveSet(int verticesCount, int indicesCount, Effect shader = null)
+        public PrimitiveSet(int verticesCount, int indicesCount, Shader shader = null)
         {
             Shader = shader;
 
@@ -155,7 +155,7 @@ namespace bullethellwhatever.DrawCode
         {
             if (shader is not null)
             {
-                Shader = AssetRegistry.GetShader(shader);
+                Shader = new Shader(shader, Color.Gray); // treating gray as a debug colour to see if the actual colour is passed through
             }
             else
             {
@@ -203,8 +203,8 @@ namespace bullethellwhatever.DrawCode
 
                 if (Shader is not null)
                 {
-                    Shader.Parameters["view_projection"]?.SetValue(MainCamera.ShaderMatrix());
-                    Shader.CurrentTechnique.Passes[0].Apply();
+                    Shader.SetParameter("view_projection", MainCamera.ShaderMatrix());
+                    Shader.Apply();
                 }
 
                 // dont ask what the division by 3 is. i dont know. it doesnt work otherwise.

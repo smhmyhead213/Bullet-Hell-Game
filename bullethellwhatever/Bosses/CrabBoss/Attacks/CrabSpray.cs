@@ -224,7 +224,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
             }
 
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader.Effect);
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
 
             primSet.Draw();
         }

@@ -56,7 +56,10 @@ namespace bullethellwhatever.DrawCode
         {
             Effect.Parameters[name]?.SetValue(texture);
         }
-
+        public void SetParameter(string name, System.Numerics.Matrix4x4 matrix)
+        {
+            Effect.Parameters[name]?.SetValue(matrix);
+        }
         public void Apply(int pass = 0)
         {
             if (Map is not null)

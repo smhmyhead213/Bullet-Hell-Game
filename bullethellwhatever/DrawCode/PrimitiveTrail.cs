@@ -17,7 +17,7 @@ namespace bullethellwhatever.DrawCode
     {
         public Vector2[] afterimagesPositions;
         public PrimitiveSet PrimitiveSet;
-        public Effect Shader;
+        public Shader Shader;
         public float Opacity;
         public float Width;
         public bool AccountForOwnerOpacity;
@@ -26,7 +26,7 @@ namespace bullethellwhatever.DrawCode
         {
             if (shader is not null)
             {
-                Shader = AssetRegistry.GetShader(shader);
+                Shader = new Shader(shader, Color.White);
             }
             else
             {
@@ -42,11 +42,12 @@ namespace bullethellwhatever.DrawCode
             AccountForOwnerOpacity = false;
         }
 
+        // unused, consider removing if you rememeber why you added it in the first place
         public PrimitiveTrail(int length, float width, Color colour, string shader = null)
         {
             if (shader is not null)
             {
-                Shader = AssetRegistry.GetShader(shader);
+                Shader = new Shader(shader, Color.White);
             }
             else
             {
