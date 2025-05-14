@@ -53,6 +53,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
     output.Position = mul(input.Position, view_projection);
+    //output.Position = input.Position;
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
     return output;

@@ -203,7 +203,8 @@ namespace bullethellwhatever.DrawCode
 
                 if (Shader is not null)
                 {
-                    Shader.SetParameter("view_projection", MainCamera.ShaderMatrix());
+                    System.Numerics.Matrix4x4 matrix = MainCamera.ShaderMatrix();
+                    Shader.SetParameter("view_projection", matrix);
                     Shader.Apply();
                 }
 
