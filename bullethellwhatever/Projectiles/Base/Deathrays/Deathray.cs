@@ -226,10 +226,10 @@ namespace bullethellwhatever.Projectiles.Base
         {
             return WidthFunction is not null ? WidthFunction(y, LifeTimeRatio()) : HitboxWidth;
         }
-        public List<Vector2> GenerateVertices(int points = 30)
+        public Vector2[] GenerateVertices(int points = 30)
         {
-            List<Vector2> vertices = new List<Vector2>();
-            List<Vector2> beamPoints = new List<Vector2>();
+            Vector2[] beamPoints = new Vector2[points + 1];
+            int index = 0;
 
             Vector2 rotationVec = Rotation.ToVector();
             float segmentLength = Length / points;
@@ -238,27 +238,16 @@ namespace bullethellwhatever.Projectiles.Base
             for (int i = 0; i < points + 1; i++)
             {
                 float progress = (float)i / points;
-                beamPoints.Add(Position + i * segmentLength * rotationVec);
+                beamPoints[index++] = Position + i * segmentLength * rotationVec;
             }
 
             return PrimitiveManager.GenerateStripVertices(beamPoints, (y) => WidthNowAt(y));
-
-            //for (int i = 0; i < points + 1; i++) // + 1 so we include end point, this might be a little odd though and cause issues so be cautious
-            //{
-            //    float y_progress = (float)i / (points);
-            //    Vector2 centrePoints = Position + (float)i / points * Length * rotationVec;
-            //    float widthHere = WidthNowAt(y_progress);
-            //    vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(PI / 2));
-            //    vertices.Add(centrePoints + widthHere / 2 * rotationVec.Rotate(-PI / 2));
-            //}
-
-            return vertices;
         }
         public override void Draw(SpriteBatch spritebatch)
         {
             if (IsActive)
             {
-                List<Vector2> vertices = GenerateVertices();
+                Vector2[] vertices = GenerateVertices();
                 PrimitiveManager.DrawVertexStrip(vertices, Colour, Shader);
             }
         }

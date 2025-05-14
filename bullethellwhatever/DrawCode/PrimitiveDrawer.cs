@@ -84,34 +84,36 @@ namespace bullethellwhatever.DrawCode
             return new VertexPositionColorTexture(GameCoordsToVertexCoords(coords), colour, texCoords);
         }
 
-        public static List<Vector2> GenerateStripVertices(List<Vector2> points, Func<float, float> widthFunction)
+        public static Vector2[] GenerateStripVertices(Vector2[] points, Func<float, float> widthFunction)
         {
-            if (points.Count < 2)
+            if (points.Length < 2)
             {
                 throw new Exception("Cannot make a primitive strip with less than two points.");
             }
 
-            List<Vector2> vertices = new List<Vector2>();
-            Vector2 toNext = points[1] - points[0];
-            vertices.Add(points[0] + widthFunction(0) / 2 * toNext.Rotate(PI / 2));
-            vertices.Add(points[0] + widthFunction(0) / 2 * toNext.Rotate(-PI / 2));
+            Vector2[] vertices = new Vector2[points.Length * 2];
+            int index = 0;
 
-            for (int i = 1; i < points.Count; i++)
+            Vector2 toNext = points[1] - points[0];
+            vertices[index++] = points[0] + widthFunction(0) / 2 * toNext.Rotate(PI / 2);
+            vertices[index++] = points[0] + widthFunction(0) / 2 * toNext.Rotate(-PI / 2);
+
+            for (int i = 1; i < points.Length; i++)
             {
-                float y_progress = (float)i / (points.Count);
+                float y_progress = (float)i / points.Length;
                 Vector2 centrePoint = points[i];
                 float widthHere = widthFunction(y_progress);
                 Vector2 fromPrevToMe = Utilities.SafeNormalise(points[i] - points[i - 1]);
-                vertices.Add(centrePoint + widthHere / 2 * fromPrevToMe.Rotate(PI / 2));
-                vertices.Add(centrePoint + widthHere / 2 * fromPrevToMe.Rotate(-PI / 2));
+                vertices[index++] = centrePoint + widthHere / 2 * fromPrevToMe.Rotate(PI / 2);
+                vertices[index++] = centrePoint + widthHere / 2 * fromPrevToMe.Rotate(-PI / 2);
             }
 
             return vertices;
         }
 
-        public static void DrawVertexStrip(List<Vector2> vertices, Color colour, Shader shader)
+        public static void DrawVertexStrip(Vector2[] vertices, Color colour, Shader shader)
         {
-            int vertexCount = vertices.Count;
+            int vertexCount = vertices.Length;
 
             for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
             {
@@ -201,7 +203,7 @@ namespace bullethellwhatever.DrawCode
 
                 if (Shader is not null)
                 {
-                    Shader.Parameters["view_projection"].SetValue(MainCamera.ShaderMatrix());
+                    Shader.Parameters["view_projection"]?.SetValue(MainCamera.ShaderMatrix());
                     Shader.CurrentTechnique.Passes[0].Apply();
                 }
 
