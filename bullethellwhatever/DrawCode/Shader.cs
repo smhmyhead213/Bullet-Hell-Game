@@ -69,10 +69,12 @@ namespace bullethellwhatever.DrawCode
                 //Matrix projection = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
 
                 // probably move this out of the if?
-                Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
+                //Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
 
                 Effect.Parameters["NoiseTexture"]?.SetValue(Map.Texture);
             }
+
+            Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
 
             Effect.Parameters["colour"]?.SetValue(Colour.ToVector3());
 

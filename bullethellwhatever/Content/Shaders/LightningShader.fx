@@ -51,11 +51,11 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     //mainTexture needs to be used to occupy register 0
     
     //float2 dummy = tex2D(mainTexture, 0.3) * 0.001f;
-    
+
     float2 uv = input.TextureCoordinates;
-    
+
     float distanceFromCenterX = abs(0.5 - uv.x);
-    float whiteAmount = 0.8f - pow(distanceFromCenterX, 2.0);
+    float whiteAmount = 0.4f - pow(distanceFromCenterX, 2.0);
     float3 white = float3(whiteAmount, whiteAmount, whiteAmount);
     float opacity = pow(1 - distanceFromCenterX, 5);
     return float4(colour + white, 1) * opacity + 0.0f * tex2D(noiseSampler, uv);

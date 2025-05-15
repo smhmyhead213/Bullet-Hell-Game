@@ -85,55 +85,13 @@ namespace bullethellwhatever.Abilities.Weapons
         public void CreateLightningPrims()
         {
             float lightningThickness = 10f;
+            Vector2[] vertices = PrimitiveManager.GenerateStripVertices(CreateLightningPoints(), (y) => MathHelper.Lerp(lightningThickness, 0f, y));
             Shader shader = new Shader("LightningShader", Color.LightSkyBlue);
             shader.SetParameter("colour", Color.LightSkyBlue);
             shader.SetParameter("noiseMap", AssetRegistry.GetTexture2D("CrabScrollingBeamNoise"));
-            Vector2[] vertices = PrimitiveManager.GenerateStripVertices(CreateLightningPoints(), (y) => MathHelper.Lerp(lightningThickness, 0f, y));
             PrimitiveManager.DrawVertexStrip(vertices, Color.LightSkyBlue, shader);
 
             return;
-
-            //Vector2[] lightningBasePoints = CreateLightningPoints();
-
-            //for (int i = 0; i < lightningBasePoints.Length - 1; i++)
-            //{                
-            //    float progress = (i + 1) / (float)lightningBasePoints.Length;
-            //    float thickness = MathHelper.Lerp(lightningThickness, 0f, progress);
-
-            //    // calculate the angle from one lightning point to the next.
-            //    float angleToNext = Utilities.VectorToAngle(lightningBasePoints[i + 1] - lightningBasePoints[i]);
-            //    // use this to make two points on either side of each lightning point that are perpendicular to the angle between the lightning points
-            //    float distBetweenBasePointAndVertex = thickness / 2f;
-
-            //    Vector2 vertex1 = lightningBasePoints[i] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext + PI / 2);
-            //    Vector2 vertex2 = lightningBasePoints[i] + distBetweenBasePointAndVertex * Utilities.AngleToVector(angleToNext - PI / 2);
-
-            //    int startingIndex = i * 2;
-
-            //    PrimitiveManager.MainVertices[startingIndex] = PrimitiveManager.CreateVertex(vertex1, Color.LightSkyBlue, new Vector2(0f , 0f));
-            //    PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(vertex2, Color.LightSkyBlue, new Vector2(1f, 0f));
-            //}
-
-            ////now we assign the indice buffer
-
-            //int numberOfTriangles = 2 * (lightningBasePoints.Length - 1) - 2;
-            //int vertexCount = (lightningBasePoints.Length - 1) * 2;
-            //int indexCount = numberOfTriangles * 3;
-
-            //for (int i = 0; i < numberOfTriangles; i++)
-            //{
-            //    int startingIndex = i * 3;
-            //    PrimitiveManager.MainIndices[startingIndex] = (short)i;
-            //    PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
-            //    PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
-            //}
-
-            //Effect shader = AssetRegistry.GetShader("LightningShader");
-            //shader.Parameters["colour"]?.SetValue(new Vector3(0f, 0.59f, 1f));
-            //shader.Parameters["noiseMap"]?.SetValue(AssetRegistry.GetTexture2D("CrabScrollingBeamNoise"));
-            //PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
-
-            //primSet.Draw();
         }
         public override void AI()
         {
