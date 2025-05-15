@@ -65,8 +65,7 @@ Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 VertexShaderFunction();
-        PixelShader = compile ps_4_0 PixelShaderFunction();
-        
+        VertexShader = compile vs_4_0 VertexShaderFunction();
+        PixelShader = compile ps_4_0 PixelShaderFunction();        
     }
 }
