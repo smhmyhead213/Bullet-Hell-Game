@@ -17,7 +17,13 @@ namespace bullethellwhatever.BaseClasses
     {
         public Viewport Viewport;
 
-        public Matrix4x4 Matrix;
+        public Matrix4x4 Matrix
+        {
+            get
+            {
+                return TranslationMatrix;
+            }
+        }
 
         private float screenShakeOffset;
         private float cameraRotation;
@@ -128,7 +134,8 @@ namespace bullethellwhatever.BaseClasses
 
             RotationMatrix = CalculateRotationMatrix();
 
-            Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
+            // UNCOMMEMNT THIS
+            //Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
         }
 
         private Matrix4x4 CalculateTranslationMatrix()
@@ -199,6 +206,13 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 ShaderMatrix()
         {
+            // https://learnopengl.com/Getting-Started/Coordinate-Systems
+
+            Matrix4x4 chungus = Matrix4x4.Identity;
+            Matrix4x4.Invert(TranslationMatrix, out chungus);
+
+            return chungus;
+
             Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPos.X / GameWidth * 2, cameraPos.Y / GameHeight * 2, 0));
 

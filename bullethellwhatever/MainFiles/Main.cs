@@ -167,6 +167,7 @@ namespace bullethellwhatever.MainFiles
             Drawing.Timer++;
 
             _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
+            //_spriteBatch.Begin(transformMatrix: System.Numerics.Matrix4x4.Identity);
 
             GraphicsDevice.SetRenderTarget(MainRT);
 

@@ -204,7 +204,7 @@ namespace bullethellwhatever.DrawCode
                 if (Shader is not null)
                 {
                     System.Numerics.Matrix4x4 matrix = System.Numerics.Matrix4x4.Identity;
-                    Shader.SetParameter("view_projection", matrix);
+                    Shader.SetParameter("worldViewProjection", matrix);
                     Shader.Apply();
                 }
 
