@@ -209,9 +209,15 @@ namespace bullethellwhatever.BaseClasses
             // https://learnopengl.com/Getting-Started/Coordinate-Systems
 
             Matrix4x4 chungus = Matrix4x4.Identity;
-            Matrix4x4.Invert(TranslationMatrix, out chungus);
 
-            return chungus;
+            // consider the camera moving upwards and to the right by half the screeb width and height respectively. note that the vertex coorindates obey 
+            // the typical cartesian coordinate system - 0,0 centre of screen with positive directions being up and right. the considered movement would add 1 to both
+            // x and y of the vertex coordinates. we should therefore apply a transform proportional to the changes in camera position.
+
+            Microsoft.Xna.Framework.Vector2 offsetFromZero = Position - Utilities.CentreOfScreen();
+            Matrix4x4 vertexTranslation = Matrix4x4.CreateTranslation(offsetFromZero.X / GameWidth, offsetFromZero.Y / GameHeight, 0);
+
+            return vertexTranslation;
 
             Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPos.X / GameWidth * 2, cameraPos.Y / GameHeight * 2, 0));
