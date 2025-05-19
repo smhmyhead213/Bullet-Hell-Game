@@ -69,6 +69,23 @@ namespace bullethellwhatever.DrawCode
             return squishXY * negateY * recentre;
         }
 
+        public static System.Numerics.Matrix4x4 FourByFourGameToVertex()
+        {
+            Vector2 screenCentre = Utilities.CentreOfScreen();
+            System.Numerics.Matrix4x4 recentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-screenCentre.X, -screenCentre.Y, 0));
+            System.Numerics.Matrix4x4 negateY = System.Numerics.Matrix4x4.CreateReflection(new System.Numerics.Plane(new System.Numerics.Vector3(0, 1, 0), 0));
+            System.Numerics.Matrix4x4 squishXY = new System.Numerics.Matrix4x4(1f / screenCentre.X, 0, 0, 0, 0, 1f / screenCentre.Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            return squishXY * negateY * recentre;
+        }
+
+        public static System.Numerics.Matrix4x4 FourByFourVertexToGame()
+        {
+            Vector2 screenCentre = Utilities.CentreOfScreen();
+            System.Numerics.Matrix4x4 unsquishXY = new System.Numerics.Matrix4x4(screenCentre.X, 0, 0, 0, 0, screenCentre.Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            System.Numerics.Matrix4x4 negateY = System.Numerics.Matrix4x4.CreateReflection(new System.Numerics.Plane(new System.Numerics.Vector3(0, 1, 0), 0));
+            System.Numerics.Matrix4x4 uncentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(screenCentre.X, screenCentre.Y, 0));
+            return uncentre * negateY * unsquishXY;
+        }
         public static Vector3 OldGameCoordsToVertexCoords(Vector2 coords)
         {
             // move 0,0 to centre of screen
@@ -216,13 +233,13 @@ namespace bullethellwhatever.DrawCode
 
                 // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
 
-                PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(MainCamera.ShaderMatrix());
+                //PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(System.Numerics.Matrix4x4.Identity);
 
                 PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
 
                 if (Shader is not null)
                 {
-                    System.Numerics.Matrix4x4 matrix = System.Numerics.Matrix4x4.Identity;
+                    System.Numerics.Matrix4x4 matrix = MainCamera.ShaderMatrix();
                     Shader.SetParameter("worldViewProjection", matrix);
                     Shader.Apply();
                 }
