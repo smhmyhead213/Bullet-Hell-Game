@@ -56,7 +56,20 @@ namespace bullethellwhatever.DrawCode
             MainVertices[index] = CreateVertex(point, colour, texCoord);
         }
 
-        public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
+        public static SharpDX.Matrix3x3 GameCoordsToVertexCoordsMatrix()
+        {
+            Vector2 screenCentre = Utilities.CentreOfScreen();
+            // move 0,0 to centre of screen
+            SharpDX.Matrix3x3 recentre = new SharpDX.Matrix3x3(1, 0, -screenCentre.X, 0, 1, -screenCentre.Y, 0, 0, 1);
+            // move negative y direction to bottom
+            SharpDX.Matrix3x3 negateY = new SharpDX.Matrix3x3(1, 0, 0, 0, -1, 0, 0, 0, 1);
+            // squish x and y coordinates to -1 to 1 range
+            SharpDX.Matrix3x3 squishXY = new SharpDX.Matrix3x3(1f / screenCentre.X, 0, 0, 0, 1f / screenCentre.Y, 0, 0, 0, 0);
+
+            return squishXY * negateY * recentre;
+        }
+
+        public static Vector3 OldGameCoordsToVertexCoords(Vector2 coords)
         {
             // move 0,0 to centre of screen
             coords = coords - Utilities.CentreOfScreen();
@@ -67,6 +80,12 @@ namespace bullethellwhatever.DrawCode
             coords.Y /= Utilities.CentreOfScreen().Y;
 
             return new Vector3(coords.X, coords.Y, 0);
+        }
+
+        public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
+        {
+            Vector3 output =  new Vector3(coords.X, coords.Y, 1).Transfom(GameCoordsToVertexCoordsMatrix());
+            return output;
         }
         public static Vector2 VertexCoordsToGameCoords(Vector2 coords)
         {

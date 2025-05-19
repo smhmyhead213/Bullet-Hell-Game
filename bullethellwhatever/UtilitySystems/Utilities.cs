@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using bullethellwhatever.UtilitySystems;
+using bullethellwhatever.Bosses.CrabBoss;
 
 namespace bullethellwhatever
 {
@@ -633,6 +634,16 @@ namespace bullethellwhatever
             return list.Count - 1;
         }
 
+        public static Vector3 Transfom(this Vector3 vec, SharpDX.Matrix3x3 matrix)
+        {
+            Vector3 output = new Vector3(0, 0, 0);
+
+            output.X = vec.X * matrix.M11 + vec.Y * matrix.M12 + vec.Z * matrix.M13;
+            output.Y = vec.X * matrix.M21 + vec.Y * matrix.M22 + vec.Z * matrix.M23;
+            output.Z = vec.X * matrix.M31 + vec.Y * matrix.M32 + vec.Z * matrix.M33;
+
+            return output;
+        }
         public static bool CollidingWith(this List<Circle> me, List<Circle> other)
         {
             foreach (Circle mine in me)
