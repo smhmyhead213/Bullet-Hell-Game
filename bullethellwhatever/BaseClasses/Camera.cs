@@ -18,13 +18,7 @@ namespace bullethellwhatever.BaseClasses
     {
         public Viewport Viewport;
 
-        public Matrix4x4 Matrix
-        {
-            get
-            {
-                return TranslationMatrix;
-            }
-        }
+        public Matrix4x4 Matrix;
 
         private float screenShakeOffset;
         private float cameraRotation;
@@ -135,8 +129,7 @@ namespace bullethellwhatever.BaseClasses
 
             RotationMatrix = CalculateRotationMatrix();
 
-            // UNCOMMEMNT THIS
-            //Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
+            Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
         }
 
         private Matrix4x4 CalculateTranslationMatrix()
