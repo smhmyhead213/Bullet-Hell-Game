@@ -129,7 +129,8 @@ namespace bullethellwhatever.BaseClasses
 
             RotationMatrix = CalculateRotationMatrix();
 
-            Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
+            // UNCOMMENT ------------------------------------------------
+            Matrix = TranslationMatrix;// * RotationMatrix * ZoomMatrix;
         }
 
         private Matrix4x4 CalculateTranslationMatrix()
