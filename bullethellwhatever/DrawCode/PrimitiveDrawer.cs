@@ -64,7 +64,7 @@ namespace bullethellwhatever.DrawCode
             // move negative y direction to bottom
             SharpDX.Matrix3x3 negateY = new SharpDX.Matrix3x3(1, 0, 0, 0, -1, 0, 0, 0, 1);
             // squish x and y coordinates to -1 to 1 range
-            SharpDX.Matrix3x3 squishXY = new SharpDX.Matrix3x3(1f / screenCentre.X, 0, 0, 0, 1f / screenCentre.Y, 0, 0, 0, 0);
+            SharpDX.Matrix3x3 squishXY = new SharpDX.Matrix3x3(1f / screenCentre.X, 0, 0, 0, 1f / screenCentre.Y, 0, 0, 0, 1);
 
             return squishXY * negateY * recentre;
         }
@@ -72,7 +72,8 @@ namespace bullethellwhatever.DrawCode
         public static System.Numerics.Matrix4x4 FourByFourGameToVertex()
         {
             Vector2 screenCentre = Utilities.CentreOfScreen();
-            System.Numerics.Matrix4x4 recentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-screenCentre.X, -screenCentre.Y, 0));
+            //System.Numerics.Matrix4x4 recentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-screenCentre.X, -screenCentre.Y, 0));
+            System.Numerics.Matrix4x4 recentre = new System.Numerics.Matrix4x4(1, 0, 0, -screenCentre.X, 0, 1, 0, -screenCentre.Y, 0, 0, 1, 0, 0, 0, 0, 1);
             System.Numerics.Matrix4x4 negateY = System.Numerics.Matrix4x4.CreateReflection(new System.Numerics.Plane(new System.Numerics.Vector3(0, 1, 0), 0));
             System.Numerics.Matrix4x4 squishXY = new System.Numerics.Matrix4x4(1f / screenCentre.X, 0, 0, 0, 0, 1f / screenCentre.Y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
             return squishXY * negateY * recentre;
@@ -154,7 +155,7 @@ namespace bullethellwhatever.DrawCode
             for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
             {
                 int startIndex = i * 2;
-                float progress = i / (vertexCount / 2);
+                float progress = (float)i / (vertexCount / 2);
                 MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
                 MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour, new Vector2(1f, progress));
             }
@@ -240,6 +241,23 @@ namespace bullethellwhatever.DrawCode
                 if (Shader is not null)
                 {
                     System.Numerics.Matrix4x4 matrix = MainCamera.ShaderMatrix();
+
+                    List<Vector4> testoutput = new List<Vector4>();
+
+                    for (int i = 0; i < PrimitiveManager.MainVertices.Count(); i++)
+                    {
+                        Vector3 point = PrimitiveManager.MainVertices[i].Position;
+
+                        if (point.X == 0 && point.Y == 0)
+                        {
+                            break;
+                        }
+
+                        Vector4 test = new Vector4(point.X, point.Y, point.Z, 1);
+                        Vector4 transformed = Vector4.Transform(point, matrix);
+                        testoutput.Add(transformed);
+                    }
+
                     Shader.SetParameter("worldViewProjection", matrix);
                     Shader.Apply();
                 }
