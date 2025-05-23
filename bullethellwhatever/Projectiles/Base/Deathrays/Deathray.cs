@@ -248,7 +248,7 @@ namespace bullethellwhatever.Projectiles.Base
             if (IsActive)
             {
                 Vector2[] vertices = GenerateVertices();
-                PrimitiveManager.DrawVertexStrip(vertices, Colour, Shader);
+                PrimitiveManager.DrawVertexStrip(vertices, Colour, Shader, (progress) => 1f);
             }
         }
     }

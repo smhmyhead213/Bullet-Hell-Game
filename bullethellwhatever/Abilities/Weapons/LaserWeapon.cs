@@ -89,7 +89,7 @@ namespace bullethellwhatever.Abilities.Weapons
             Shader shader = new Shader("LightningShader", Color.LightSkyBlue);
             shader.SetParameter("colour", Color.LightSkyBlue);
             shader.SetParameter("noiseMap", AssetRegistry.GetTexture2D("CrabScrollingBeamNoise"));
-            PrimitiveManager.DrawVertexStrip(vertices, Color.LightSkyBlue, shader);
+            PrimitiveManager.DrawVertexStrip(vertices, Color.LightSkyBlue, shader, (progress) => 1f);
 
             return;
         }

@@ -97,12 +97,12 @@ namespace bullethellwhatever.DrawCode
             Width = Owner.Width();
         }
 
+        public Vector2[] GenerateVertices(Vector2[] positions)
+        {
+            return PrimitiveManager.GenerateStripVertices(positions, (progress) => Width * (1f - progress));
+        }
         public override void Draw(SpriteBatch s)
         {
-            float width = Width;
-
-            Color colour = Colour;
-
             Vector2[] positions = afterimagesPositions.Where(position => position != Vector2.Zero).ToArray();
 
             // explodes pancakes with mind
@@ -111,49 +111,8 @@ namespace bullethellwhatever.DrawCode
                 return;
             }
 
-            Vector2 startPosition = positions[0];
-
-            int vertexCount = 2 * (positions.Length); //
-            Vector2 toNext = Utilities.SafeNormalise(positions[0] - startPosition);
-
-            //PrimitiveManager.MainVertices[0] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, 0f));
-            //PrimitiveManager.MainVertices[1] = PrimitiveManager.CreateVertex(startPosition + width / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, 0f));
-
-            for (int i = 0; i < positions.Length; i++)
-            {
-                float progress = i / (float)positions.Length;
-                float fractionOfWidth = 1f - progress;
-                float widthToUse = width * fractionOfWidth;
-                int startingIndex = (i) * 2; // 
-                float ownerOpacity = Owner is not null && AccountForOwnerOpacity ? Owner.Opacity : 1f;
-
-                // the last position gets multiplied by zero anyway so it can be whatever
-
-                toNext = i == positions.Length - 1 ? Vector2.One : Utilities.SafeNormalise(positions[i + 1] - positions[i]);
-
-                colour = colour * fractionOfWidth * Opacity * ownerOpacity;
-
-                PrimitiveManager.MainVertices[startingIndex] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorClockwise(toNext, PI / 2f), colour, new Vector2(0f, progress));
-                PrimitiveManager.MainVertices[startingIndex + 1] = PrimitiveManager.CreateVertex(positions[i] + widthToUse / 2f * Utilities.RotateVectorCounterClockwise(toNext, PI / 2f), colour, new Vector2(1f, progress));
-            }
-
-            int numberOfTriangles = vertexCount - 2;
-
-            int indexCount = numberOfTriangles * 3;
-
-            for (int i = 0; i < numberOfTriangles; i++)
-            {
-                int startingIndex = i * 3;
-                PrimitiveManager.MainIndices[startingIndex] = (short)i;
-                PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
-                PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
-            }
-
-            //Utilities.drawTextInDrawMethod((StartPosition - positions.Last()).Length().ToString(), player.Position + new Vector2(50f, 0f), s, font, Color.White);
-
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, Shader);
-
-            primSet.Draw();
+            Vector2[] vertices = GenerateVertices(positions);
+            PrimitiveManager.DrawVertexStrip(vertices, Colour, Shader, (progress) => Opacity * (1f - progress));
         }
     }
 }

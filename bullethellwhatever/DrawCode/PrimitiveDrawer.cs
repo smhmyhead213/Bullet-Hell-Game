@@ -138,11 +138,13 @@ namespace bullethellwhatever.DrawCode
             return new VertexPositionColorTexture(GameCoordsToVertexCoords(coords), colour, texCoords);
         }
 
+        // width function takes a progress ratio from 0-1 and returns an absolute width
         public static Vector2[] GenerateStripVertices(Vector2[] points, Func<float, float> widthFunction)
         {
             if (points.Length < 2)
             {
-                throw new Exception("Cannot make a primitive strip with less than two points.");
+                return Array.Empty<Vector2>();
+                //throw new Exception("Cannot make a primitive strip with less than two points.");
             }
 
             Vector2[] vertices = new Vector2[points.Length * 2];
@@ -165,16 +167,18 @@ namespace bullethellwhatever.DrawCode
             return vertices;
         }
 
-        public static void DrawVertexStrip(Vector2[] vertices, Color colour, Shader shader)
+        public static void DrawVertexStrip(Vector2[] vertices, Color colour, Shader shader, Func<float, float> opacity)
         {
             int vertexCount = vertices.Length;
+
+            if (vertexCount == 0) return;
 
             for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
             {
                 int startIndex = i * 2;
                 float progress = (float)i / (vertexCount / 2);
-                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
-                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour, new Vector2(1f, progress));
+                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour * opacity(progress), new Vector2(0f, progress));
+                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour * opacity(progress), new Vector2(1f, progress));
             }
 
             int numberOfTriangles = vertexCount - 2;
@@ -249,34 +253,19 @@ namespace bullethellwhatever.DrawCode
 
                 PrimitiveManager.BasicEffect.TextureEnabled = Shader is not null;
 
-                // WHY DO THE HEAVY LIFTING MYSELF WHEN BASIC EFFECT CAN DO IT FOR ME
-
-                //PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(System.Numerics.Matrix4x4.Identity);
-
                 PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
+
+                System.Numerics.Matrix4x4 matrix = MainCamera.ShaderMatrix();
 
                 if (Shader is not null)
                 {
-                    System.Numerics.Matrix4x4 matrix = MainCamera.ShaderMatrix();
-
-                    List<Vector4> testoutput = new List<Vector4>();
-
-                    for (int i = 0; i < PrimitiveManager.MainVertices.Count(); i++)
-                    {
-                        Vector3 point = PrimitiveManager.MainVertices[i].Position;
-
-                        if (point.X == 0 && point.Y == 0)
-                        {
-                            break;
-                        }
-
-                        Vector4 test = new Vector4(point.X, point.Y, point.Z, 1);
-                        Vector4 transformed = Vector4.Transform(point, matrix);
-                        testoutput.Add(transformed);
-                    }
-
                     Shader.SetParameter("worldViewProjection", matrix);
                     Shader.Apply();
+                }
+                else
+                {
+                    PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(matrix);
+                    PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
                 }
 
                 // dont ask what the division by 3 is. i dont know. it doesnt work otherwise.
@@ -286,6 +275,27 @@ namespace bullethellwhatever.DrawCode
                 {
                     Drawing.RestartSpriteBatchForNotShaders(_spriteBatch, true);
                 }
+            }
+        }
+
+        public void TestTransform()
+        {
+            System.Numerics.Matrix4x4 matrix = MainCamera.ShaderMatrix();
+
+            List<Vector4> testoutput = new List<Vector4>();
+
+            for (int i = 0; i < PrimitiveManager.MainVertices.Count(); i++)
+            {
+                Vector3 point = PrimitiveManager.MainVertices[i].Position;
+
+                if (point.X == 0 && point.Y == 0)
+                {
+                    break;
+                }
+
+                Vector4 test = new Vector4(point.X, point.Y, point.Z, 1);
+                Vector4 transformed = Vector4.Transform(point, matrix);
+                testoutput.Add(transformed);
             }
         }
     }
