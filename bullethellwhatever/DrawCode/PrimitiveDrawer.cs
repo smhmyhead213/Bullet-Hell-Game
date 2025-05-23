@@ -13,6 +13,7 @@ using System.ComponentModel.Design.Serialization;
 using bullethellwhatever.AssetManagement;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -72,20 +73,36 @@ namespace bullethellwhatever.DrawCode
         public static System.Numerics.Matrix4x4 FourByFourGameToVertex()
         {
             Vector2 screenCentre = Utilities.CentreOfScreen();
-            //System.Numerics.Matrix4x4 recentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-screenCentre.X, -screenCentre.Y, 0));
-            System.Numerics.Matrix4x4 recentre = new System.Numerics.Matrix4x4(1, 0, 0, -screenCentre.X, 0, 1, 0, -screenCentre.Y, 0, 0, 1, 0, 0, 0, 0, 1);
+            //System.Numerics.Matrix4x4 recentre = new System.Numerics.Matrix4x4(1, 0, 0, -screenCentre.X, 0, 1, 0, -screenCentre.Y, 0, 0, 1, 0, 0, 0, 0, 1);
+            System.Numerics.Matrix4x4 recentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-screenCentre.X, -screenCentre.Y, 0));
             System.Numerics.Matrix4x4 negateY = System.Numerics.Matrix4x4.CreateReflection(new System.Numerics.Plane(new System.Numerics.Vector3(0, 1, 0), 0));
             System.Numerics.Matrix4x4 squishXY = new System.Numerics.Matrix4x4(1f / screenCentre.X, 0, 0, 0, 0, 1f / screenCentre.Y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-            return squishXY * negateY * recentre;
+
+            // order reversed here because Vector4x4.Transform uses a row vector instead of a column vector for no reason
+            System.Numerics.Matrix4x4 final = recentre * negateY * squishXY;
+            return final;
         }
 
         public static System.Numerics.Matrix4x4 FourByFourVertexToGame()
         {
             Vector2 screenCentre = Utilities.CentreOfScreen();
-            System.Numerics.Matrix4x4 unsquishXY = new System.Numerics.Matrix4x4(screenCentre.X, 0, 0, 0, 0, screenCentre.Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            System.Numerics.Matrix4x4 unsquishXY = new System.Numerics.Matrix4x4(screenCentre.X, 0, 0, 0, 0, screenCentre.Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); // ???????????
             System.Numerics.Matrix4x4 negateY = System.Numerics.Matrix4x4.CreateReflection(new System.Numerics.Plane(new System.Numerics.Vector3(0, 1, 0), 0));
             System.Numerics.Matrix4x4 uncentre = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(screenCentre.X, screenCentre.Y, 0));
             return uncentre * negateY * unsquishXY;
+        }
+
+        public static Vector2 ToVertexCoords(Vector2 world)
+        {
+            System.Numerics.Matrix4x4 transformMatrix = FourByFourGameToVertex();
+            Vector4 infour = Vector4.Transform(new Vector4(world.X, world.Y, 1, 1), transformMatrix);
+            return new Vector2(infour.X, infour.Y);
+        }
+        public static System.Numerics.Vector3 ToVertexCoordsThree(Vector2 world)
+        {
+            System.Numerics.Matrix4x4 transformMatrix = FourByFourGameToVertex();
+            Vector4 infour = Vector4.Transform(new Vector4(world.X, world.Y, 0, 1), transformMatrix);
+            return new System.Numerics.Vector3(infour.X, infour.Y, 1);
         }
         public static Vector3 OldGameCoordsToVertexCoords(Vector2 coords)
         {

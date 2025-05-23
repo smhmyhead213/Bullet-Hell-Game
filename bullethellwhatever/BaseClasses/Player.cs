@@ -228,7 +228,7 @@ namespace bullethellwhatever.BaseClasses
                 HandleKeyPresses();
             }
 
-            ControlCamera();
+            //ControlCamera();
 
             PlayerWeaponManager.Update();
 
@@ -246,6 +246,18 @@ namespace bullethellwhatever.BaseClasses
             else
             {
                 Die();
+            }
+
+            MainCamera.SetZoom(MainCamera.CameraScale, Utilities.CentreOfScreen() + new Vector2(200f, 200f));
+
+            if (IsKeyPressed(Keys.O))
+            {
+                MainCamera.ZoomBy(0.05f);
+            }
+
+            else if (IsKeyPressed(Keys.P))
+            {
+                MainCamera.ZoomBy(-0.05f);
             }
         }
         #endregion
@@ -288,6 +300,8 @@ namespace bullethellwhatever.BaseClasses
 
                 NPC furthest = FurthestEnemyFromPlayer();
 
+                Vector2 zoomPos = Utilities.CentreOfScreen() + new Vector2(200f, 200f);
+
                 if (furthest is not null)
                 {
                     float distance = Utilities.DistanceBetweenVectors(Position, furthest.Position);
@@ -299,11 +313,11 @@ namespace bullethellwhatever.BaseClasses
                         scaleFactor = 1f / maxZoom;
                     }
 
-                    MainCamera.SetZoom(MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f), Utilities.CentreOfScreen());
+                    MainCamera.SetZoom(MathHelper.Lerp(MainCamera.CameraScale, scaleFactor, 0.1f), zoomPos);
                 }
                 else
                 {
-                    MainCamera.SetZoom(MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f), Utilities.CentreOfScreen());
+                    MainCamera.SetZoom(MathHelper.Lerp(MainCamera.CameraScale, minZoom, 0.1f), zoomPos);
                 }
             }
         }

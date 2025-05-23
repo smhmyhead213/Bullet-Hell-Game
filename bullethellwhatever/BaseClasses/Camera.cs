@@ -130,7 +130,8 @@ namespace bullethellwhatever.BaseClasses
             RotationMatrix = CalculateRotationMatrix();
 
             // UNCOMMENT ------------------------------------------------
-            Matrix = TranslationMatrix;// * RotationMatrix * ZoomMatrix;
+            //Matrix = TranslationMatrix;// * RotationMatrix * ZoomMatrix;
+            Matrix = TranslationMatrix * ZoomMatrix;
         }
 
         private Matrix4x4 CalculateTranslationMatrix()
@@ -175,7 +176,13 @@ namespace bullethellwhatever.BaseClasses
             CameraRotation = radians;
             UpdateMatrices();
         }
-        public void SetZoom(float zoomFactor, Microsoft.Xna.Framework.Vector2 focusPoint) // make sure this takes in a draw coordinate and not a world coordinate, otherwise anomalies may appear
+
+        public void ZoomBy(float extraZoom)
+        {
+            CameraScale += extraZoom;
+        }
+
+        public void SetZoom(float zoomFactor, Microsoft.Xna.Framework.Vector2 focusPoint) // make sure this takes in a draw coordinate and not a world coordinate, otherwise anomalies may appear (?)
         {
             CameraScale = zoomFactor;
 
@@ -199,12 +206,20 @@ namespace bullethellwhatever.BaseClasses
             UpdateMatrices();
         }
 
+
         public Matrix4x4 ShaderMatrix()
         {
-            Microsoft.Xna.Framework.Vector4 cameraPositionVertexFour = Microsoft.Xna.Framework.Vector4.Transform(new Microsoft.Xna.Framework.Vector4(Position.X, Position.Y, 1, 1), PrimitiveManager.FourByFourGameToVertex());
-            Microsoft.Xna.Framework.Vector2 cameraPositionVertex = new Microsoft.Xna.Framework.Vector2(cameraPositionVertexFour.X, cameraPositionVertexFour.Y);
-            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X + 1f, -cameraPositionVertex.Y - 1f, 0));
-            return translation;
+            //Microsoft.Xna.Framework.Vector4 cameraPositionVertexFour = Microsoft.Xna.Framework.Vector4.Transform(new Microsoft.Xna.Framework.Vector4(Position.X, Position.Y, 1, 1), PrimitiveManager.FourByFourGameToVertex());
+            //Microsoft.Xna.Framework.Vector2 cameraPositionVertex = new Microsoft.Xna.Framework.Vector2(cameraPositionVertexFour.X, cameraPositionVertexFour.Y);
+
+            System.Numerics.Vector3 cameraPositionVertex = PrimitiveManager.ToVertexCoordsThree(Position);
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X, -cameraPositionVertex.Y, 0));
+            System.Numerics.Vector3 originPositionVertex = PrimitiveManager.ToVertexCoordsThree(Origin);
+            Matrix4x4 gothere = Matrix4x4.CreateTranslation(-originPositionVertex);
+            Matrix4x4 zoom = new Matrix4x4(CameraScale, 0, 0, 0, 0, CameraScale, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); // mess not with the z coordinate. if we change the z-coord too much, everything vanishes. my guess is near-far plane shenanigans?
+            Matrix4x4 goback = Matrix4x4.CreateTranslation(originPositionVertex);
+            Matrix4x4 zoomMatrix = goback * zoom * gothere;
+            return translation * zoomMatrix;
 
             // https://learnopengl.com/Getting-Started/Coordinate-Systems
 

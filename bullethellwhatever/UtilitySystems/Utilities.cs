@@ -660,6 +660,7 @@ namespace bullethellwhatever
             return false;
         }
 
+        //public static System.Numerics.Vector4 Transform
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)
