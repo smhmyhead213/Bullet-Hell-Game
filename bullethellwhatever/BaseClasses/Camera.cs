@@ -201,7 +201,9 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 ShaderMatrix()
         {
-            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(0, 0, 0));
+            Microsoft.Xna.Framework.Vector4 cameraPositionVertexFour = Microsoft.Xna.Framework.Vector4.Transform(new Microsoft.Xna.Framework.Vector4(Position.X, Position.Y, 1, 1), PrimitiveManager.FourByFourGameToVertex());
+            Microsoft.Xna.Framework.Vector2 cameraPositionVertex = new Microsoft.Xna.Framework.Vector2(cameraPositionVertexFour.X, cameraPositionVertexFour.Y);
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X + 1f, -cameraPositionVertex.Y - 1f, 0));
             return translation;
 
             // https://learnopengl.com/Getting-Started/Coordinate-Systems
