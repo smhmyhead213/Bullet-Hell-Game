@@ -21,6 +21,7 @@ namespace bullethellwhatever.BaseClasses
         public Matrix4x4 Matrix;
 
         private float screenShakeOffset;
+        private float screenShakeRotationOffset;
         private float cameraRotation;
         private float cameraScale;
 
@@ -38,6 +39,18 @@ namespace bullethellwhatever.BaseClasses
             }
         }
 
+        public float ScreenShakeRotationOffset
+        {
+            get
+            {
+                return screenShakeRotationOffset;
+            }
+            set
+            {
+                screenShakeRotationOffset = value;
+                UpdateMatrices();
+            }
+        }
         public float CameraRotation
         {
             get
@@ -155,6 +168,7 @@ namespace bullethellwhatever.BaseClasses
             // rotating currently rotates around 0,0.
             // we can move the camera over the rotation axis, do the rotation and translate back.
 
+            RotationMatrix = Matrix4x4.CreateRotationZ(CameraRotation + ScreenShakeRotationOffset);
             System.Numerics.Vector3 rotationAxisVector = new(RotationAxis.X, RotationAxis.Y, 0);
             Matrix4x4 axisTransform = Matrix4x4.CreateTranslation(rotationAxisVector);
             Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
@@ -208,9 +222,6 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 ShaderMatrix()
         {
-            //Microsoft.Xna.Framework.Vector4 cameraPositionVertexFour = Microsoft.Xna.Framework.Vector4.Transform(new Microsoft.Xna.Framework.Vector4(Position.X, Position.Y, 1, 1), PrimitiveManager.FourByFourGameToVertex());
-            //Microsoft.Xna.Framework.Vector2 cameraPositionVertex = new Microsoft.Xna.Framework.Vector2(cameraPositionVertexFour.X, cameraPositionVertexFour.Y);
-
             System.Numerics.Vector3 cameraPositionVertex = PrimitiveManager.ToVertexCoordsThree(Position);
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X, -cameraPositionVertex.Y, 0));
 
@@ -225,44 +236,6 @@ namespace bullethellwhatever.BaseClasses
             return rotation * translation * zoomMatrix;
 
             // https://learnopengl.com/Getting-Started/Coordinate-Systems
-
-            // the idea is to apply the same transformation that the camera applies to the vertex coordinates.
-            // in order to this, we start at world vertex space, move to regular world space, apply the camera transform, go back to vertex space and we're done.
-
-            //Matrix4x4 vertexConversion = PrimitiveManager.FourByFourGameToVertex();
-            //Matrix4x4 invertVertexMatrix = Matrix4x4.Identity;
-            //bool invertedSuccessfully = Matrix4x4.Invert(vertexConversion, out invertVertexMatrix);
-
-            //return vertexConversion * Matrix * invertVertexMatrix;
-
-            //Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
-            //Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPos.X / GameWidth * 2, cameraPos.Y / GameHeight * 2, 0));
-
-            //// we need to transform in vertex coords, the coordinates that the primitives use.
-            //Microsoft.Xna.Framework.Vector2 vertexOrigin = Utilities.GameCoordsToVertexCoords(Origin);
-
-            //System.Numerics.Vector3 originVector = new(vertexOrigin.X, vertexOrigin.Y, 0);
-
-            //Matrix4x4 originTransform = Matrix4x4.CreateTranslation(-originVector);
-            //Matrix4x4 moveBackFromCorner = Matrix4x4.CreateTranslation(originVector);
-            //Matrix4x4 overallZoomMatrix = moveBackFromCorner * Matrix4x4.CreateScale(CameraScale) * originTransform;
-
-            //// rotating currently rotates around 0,0.
-            //// we can move the camera over the rotation axis, do the rotation and translate back.
-            //// we need to transform in vertex coords, the coordinates that the primitives use.
-
-            //Microsoft.Xna.Framework.Vector2 vertexAxisOfRotation = Utilities.GameCoordsToVertexCoords(RotationAxis);
-
-            //// TO DO: MAKE PRIMITVES WORK WITH CAMERA ROTATION
-            //// rotating currently rotates around 0,0.
-            //// we can move the camera over the rotation axis, do the rotation and translate back.
-
-            //System.Numerics.Vector3 rotationAxisVector = new(vertexAxisOfRotation.X, vertexAxisOfRotation.Y, 0);
-            //Matrix4x4 axisTransform = Matrix4x4.CreateTranslation(rotationAxisVector);
-            //Matrix4x4 moveBackFromAxis = Matrix4x4.CreateTranslation(-rotationAxisVector);
-            //Matrix4x4 overallRotateMatrix = moveBackFromAxis * Matrix4x4.CreateRotationZ(CameraRotation) * axisTransform;
-
-            //return translation * overallZoomMatrix;
         }
         public void Reset()
         {

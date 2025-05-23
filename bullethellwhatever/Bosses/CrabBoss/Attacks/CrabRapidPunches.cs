@@ -120,7 +120,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                             int particleLifetime = 16;
                             float initialOpacity = 1f;
                             p.Spawn("box", Arm(i).WristPosition(), particleSpeed * wristVelocityDirection.Rotate(velocityAngle), Vector2.Zero, Vector2.One * 0.4f, 0f, Color.Red, initialOpacity, particleLifetime);
-                            p.AddTrail(14);
+                            p.AddTrail(8);
                             p.SetExtraAI(new Action(() =>
                             {
                                 float interpolant = p.AITimer / (float)particleLifetime;

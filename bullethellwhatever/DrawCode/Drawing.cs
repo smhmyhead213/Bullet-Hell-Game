@@ -22,6 +22,7 @@ namespace bullethellwhatever.DrawCode
         public static bool AreButtonsDrawn;
 
         public static float ScreenShakeMagnitude;
+        public static float ScreenShakeRotationMagnitude;
         public static int ScreenShakeTimer;
         public static bool IsScreenShaking => ScreenShakeTimer > 0;
         public static int Timer;
@@ -97,11 +98,12 @@ namespace bullethellwhatever.DrawCode
                 telegraphLine.Draw(_spriteBatch);
             }
         }
-        public static void ScreenShake(int magnitude, int duration)
+        public static void ScreenShake(int magnitude, int duration, float rotationMag = 0f)
         {
             if (magnitude >= ScreenShakeMagnitude) //always apply strongest screen shake
             { 
                 ScreenShakeMagnitude = magnitude;
+                ScreenShakeRotationMagnitude = rotationMag;
                 ScreenShakeTimer = duration;
             }
         }
@@ -131,13 +133,16 @@ namespace bullethellwhatever.DrawCode
         {
             ScreenShakeTimer = 0;
             ScreenShakeMagnitude = 0;
+            ScreenShakeRotationMagnitude = 0;
             MainCamera.ScreenShakeOffset = 0f;
+            MainCamera.ScreenShakeRotationOffset = 0f;
         }
         public static void HandleScreenShake() //under the hood screen shaking
         {
             if (!Utilities.ImportantMenusPresent() && MainInstance.IsActive && IsScreenShaking) 
             {
                 MainCamera.ScreenShakeOffset = Utilities.RandomFloat(-ScreenShakeMagnitude, ScreenShakeMagnitude);
+                MainCamera.ScreenShakeRotationOffset = Utilities.RandomAngle(ScreenShakeRotationMagnitude);
             }
             
             if (!IsScreenShaking)
