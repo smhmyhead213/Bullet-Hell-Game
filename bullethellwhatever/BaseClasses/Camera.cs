@@ -220,7 +220,8 @@ namespace bullethellwhatever.BaseClasses
             Matrix4x4 goback = Matrix4x4.CreateTranslation(originPositionVertex);
             Matrix4x4 zoomMatrix = goback * zoom * gothere;
 
-            Matrix4x4 rotation = Matrix4x4.CreateRotationZ(CameraRotation);
+            float aspectRatio = Utilities.AspectRatio();
+            Matrix4x4 rotation = Utilities.ScaleMatrix(aspectRatio, 1) * Matrix4x4.CreateRotationZ(-CameraRotation) * Utilities.ScaleMatrix(1 / aspectRatio, 1);
             return rotation * translation * zoomMatrix;
 
             // https://learnopengl.com/Getting-Started/Coordinate-Systems

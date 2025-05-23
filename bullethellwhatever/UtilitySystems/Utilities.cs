@@ -661,6 +661,16 @@ namespace bullethellwhatever
         }
 
         //public static System.Numerics.Vector4 Transform
+        public static System.Numerics.Matrix4x4 ScaleMatrix(float xscale, float yscale)
+        {
+            return new System.Numerics.Matrix4x4(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        public static float AspectRatio()
+        {
+            return (float)GameWidth / GameHeight;
+        }
+
         public static Vector2 CentreOfScreen() =>  new Vector2(GameWidth / 2, GameHeight / 2);
         public static Vector2 CentreWithCamera() => CentreOfScreen() + MainCamera.VisibleArea.TopLeft();
         public static void ApplyRandomNoise(this Effect shader)

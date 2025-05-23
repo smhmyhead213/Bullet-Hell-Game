@@ -228,7 +228,7 @@ namespace bullethellwhatever.BaseClasses
                 HandleKeyPresses();
             }
 
-            //ControlCamera();
+            ControlCamera();
 
             PlayerWeaponManager.Update();
 
@@ -246,28 +246,6 @@ namespace bullethellwhatever.BaseClasses
             else
             {
                 Die();
-            }
-
-            MainCamera.SetZoom(MainCamera.CameraScale, Utilities.CentreOfScreen() + new Vector2(200f, 200f));
-
-            if (IsKeyPressed(Keys.O))
-            {
-                MainCamera.ZoomBy(0.05f);
-            }
-
-            if (IsKeyPressed(Keys.P))
-            {
-                MainCamera.ZoomBy(-0.05f);
-            }
-
-            if (IsKeyPressed(Keys.L))
-            {
-                MainCamera.CameraRotation += PI / 120;
-            }
-
-            if (IsKeyPressed(Keys.H))
-            {
-                MainCamera.CameraRotation = 0;
             }
         }
         #endregion

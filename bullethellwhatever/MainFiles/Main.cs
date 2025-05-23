@@ -190,10 +190,6 @@ namespace bullethellwhatever.MainFiles
 
             _spriteBatch.Draw(MainRT, Vector2.Zero, Color.White);
 
-            Utilities.drawTextInDrawMethod(MainCamera.CameraScale.ToString(), Utilities.CentreOfScreen(), _spriteBatch, font, Color.White);
-            Utilities.drawTextInDrawMethod(MainCamera.Origin.X.ToString(), Utilities.CentreOfScreen() + new Vector2(0f, 100f), _spriteBatch, font, Color.White);
-            Utilities.drawTextInDrawMethod(MainCamera.Origin.Y.ToString(), Utilities.CentreOfScreen() + new Vector2(0f, 200f), _spriteBatch, font, Color.White);
-
             _spriteBatch.End();
 
             // 6 and a half months later and this default comment is still there
