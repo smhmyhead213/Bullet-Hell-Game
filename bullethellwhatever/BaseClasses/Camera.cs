@@ -130,8 +130,7 @@ namespace bullethellwhatever.BaseClasses
             RotationMatrix = CalculateRotationMatrix();
 
             // UNCOMMENT ------------------------------------------------
-            //Matrix = TranslationMatrix;// * RotationMatrix * ZoomMatrix;
-            Matrix = TranslationMatrix * ZoomMatrix;
+            Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
         }
 
         private Matrix4x4 CalculateTranslationMatrix()
@@ -214,12 +213,15 @@ namespace bullethellwhatever.BaseClasses
 
             System.Numerics.Vector3 cameraPositionVertex = PrimitiveManager.ToVertexCoordsThree(Position);
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X, -cameraPositionVertex.Y, 0));
+
             System.Numerics.Vector3 originPositionVertex = PrimitiveManager.ToVertexCoordsThree(Origin);
             Matrix4x4 gothere = Matrix4x4.CreateTranslation(-originPositionVertex);
             Matrix4x4 zoom = new Matrix4x4(CameraScale, 0, 0, 0, 0, CameraScale, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); // mess not with the z coordinate. if we change the z-coord too much, everything vanishes. my guess is near-far plane shenanigans?
             Matrix4x4 goback = Matrix4x4.CreateTranslation(originPositionVertex);
             Matrix4x4 zoomMatrix = goback * zoom * gothere;
-            return translation * zoomMatrix;
+
+            Matrix4x4 rotation = Matrix4x4.CreateRotationZ(CameraRotation);
+            return rotation * translation * zoomMatrix;
 
             // https://learnopengl.com/Getting-Started/Coordinate-Systems
 

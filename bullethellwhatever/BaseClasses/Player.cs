@@ -255,9 +255,19 @@ namespace bullethellwhatever.BaseClasses
                 MainCamera.ZoomBy(0.05f);
             }
 
-            else if (IsKeyPressed(Keys.P))
+            if (IsKeyPressed(Keys.P))
             {
                 MainCamera.ZoomBy(-0.05f);
+            }
+
+            if (IsKeyPressed(Keys.L))
+            {
+                MainCamera.CameraRotation += PI / 120;
+            }
+
+            if (IsKeyPressed(Keys.H))
+            {
+                MainCamera.CameraRotation = 0;
             }
         }
         #endregion
