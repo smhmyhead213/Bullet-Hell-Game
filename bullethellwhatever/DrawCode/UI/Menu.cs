@@ -19,9 +19,9 @@ namespace bullethellwhatever.DrawCode.UI
 
         public int TimeSinceLastDrag;
 
-        public Dictionary<int, float> RowHeights;
+        public Dictionary<int, List<UIElement>> Rows;
 
-        public float Margin;
+        public float Margin; // consider changing these to vector2s to allow different x and y paddings
         public float Padding;
         public int IndexOfSelected
         {
@@ -63,12 +63,98 @@ namespace bullethellwhatever.DrawCode.UI
         {
             Margin = margin;
             Padding = padding;
-            RowHeights = new Dictionary<int, float>();
+            Rows = new Dictionary<int, List<UIElement>>();
         }
 
-        public void AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling)
+        public bool RowExists(int row)
         {
+            return Rows.ContainsKey(row);
+        }
 
+        public void AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling = true)
+        {
+            // check if there's already stuff in this row - if not, initialise list
+
+            if (!RowExists(row))
+            {
+                Rows.Add(row, new List<UIElement>());
+            }
+            else
+            {
+                Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
+            }
+
+            float currentRowLength = RowLength(row); // this already includes the padding on the right of the previous element
+            float currentRowHeight = RowHeight(row); // already includes padding on the top of the row above this
+                                                     
+            uiElement.PositionInMenu = new Vector2(currentRowLength + uiElement.Size.X / 2, currentRowHeight + uiElement.Size.Y / 2);
+        }
+
+        /// <summary>
+        /// Returns the length from the left-hand side of the menu to the very right hand side of the selected row, including the padding on the right-most element
+        /// </summary>
+        public float RowLength(int row)
+        {
+            if (!RowExists(row))
+            {
+                return Margin;
+            }
+
+            float rightMostElementPosition = 0; // not sure if each row will be ordered, so do a quick find max
+            float rightMostElementWidth = 0;
+
+            foreach (UIElement uiElement in Rows[row])
+            {
+                if (uiElement.PositionInMenu.X > rightMostElementPosition)
+                {
+                    rightMostElementPosition = uiElement.PositionInMenu.X;
+                    rightMostElementWidth = uiElement.Size.X;
+                }
+            }
+
+            return rightMostElementPosition + (rightMostElementWidth / 2) + Padding;
+        }
+
+        /// <summary>
+        /// Returns the top-most Y co-ordinate encompassed by the given row, including the padding at the bottom.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public float RowHeight(int row)
+        {
+            if (!RowExists(row))
+            {
+                return Margin;
+            }
+
+            if (row == 1)
+            {
+                return Margin;
+            }
+            else
+            {
+                return RowHeight(row - 1) + MaxHeightInRow(row - 1) + Padding; // unironic recursion application
+            }
+        }
+
+        public float MaxHeightInRow(int row)
+        {
+            if (!RowExists(row))
+            {
+                return 0;
+            }
+
+            float maxHeight = 0;
+
+            foreach (UIElement uIElement in Rows[row])
+            {
+                if (uIElement.Size.Y > maxHeight)
+                {
+                    maxHeight = uIElement.Size.Y;
+                }
+            }
+
+            return maxHeight;
         }
         public void SetImportant(bool important)
         {
