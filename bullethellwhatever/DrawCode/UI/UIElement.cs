@@ -117,7 +117,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual bool CanBeClicked()
         {
-            return IsClicked() && !WasMouseDownLastFrame;
+            return IsClicked();// && !WasMouseDownLastFrame;
         }
         public virtual Vector2 CalculateActualPostion()
         {
@@ -147,7 +147,8 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public bool IsClicked()
         {
-            return IsHovered() && IsLeftClickDown() && !WasMouseDownLastFrame;
+            //return IsHovered() && IsLeftClickDown() && !WasMouseDownLastFrame;
+            return IsHovered() && LeftClickReleased();
         }
 
         public void AddToMenu(Menu menu)

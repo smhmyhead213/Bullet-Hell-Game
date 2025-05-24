@@ -88,7 +88,7 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 TimeSinceLastDrag++;
 
-                if ((ClickBox.Contains(MousePosition) || TimeSinceLastDrag < 10) && IsLeftClickDown())
+                if ((ClickBox.Contains(MousePosition) || TimeSinceLastDrag < 10) && !HoveringOverAnyUI() && IsLeftClickDown())
                 {
                     TimeSinceLastDrag = 0;
 
@@ -110,6 +110,18 @@ namespace bullethellwhatever.DrawCode.UI
             }
         }
 
+        public bool HoveringOverAnyUI()
+        {
+            foreach (UIElement uIElement in UIElements)
+            {
+                if (uIElement.IsHovered())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         public void UpdateClickBox()
         {
             ClickBox = new RectangleButGood(TopLeft().X, TopLeft().Y, Width(), Height());
