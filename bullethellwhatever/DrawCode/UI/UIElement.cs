@@ -117,7 +117,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual bool CanBeClicked()
         {
-            return IsClicked();// && !WasMouseDownLastFrame;
+            return Clicked();// && !WasMouseDownLastFrame;
         }
         public virtual Vector2 CalculateActualPostion()
         {
@@ -145,7 +145,7 @@ namespace bullethellwhatever.DrawCode.UI
         {
             return ClickBox.Contains(MousePosition);
         }
-        public bool IsClicked()
+        public bool Clicked()
         {
             //return IsHovered() && IsLeftClickDown() && !WasMouseDownLastFrame;
             return IsHovered() && LeftClickReleased();

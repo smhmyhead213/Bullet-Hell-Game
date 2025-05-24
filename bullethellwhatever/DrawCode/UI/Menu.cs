@@ -19,6 +19,10 @@ namespace bullethellwhatever.DrawCode.UI
 
         public int TimeSinceLastDrag;
 
+        public Dictionary<int, float> RowHeights;
+
+        public float Margin;
+        public float Padding;
         public int IndexOfSelected
         {
             get;
@@ -53,6 +57,18 @@ namespace bullethellwhatever.DrawCode.UI
             UIManager.ResetAllSelections();
 
             UpdateClickBox();
+        }
+
+        public void StartMenuBuilder(float margin, float padding)
+        {
+            Margin = margin;
+            Padding = padding;
+            RowHeights = new Dictionary<int, float>();
+        }
+
+        public void AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling)
+        {
+
         }
         public void SetImportant(bool important)
         {

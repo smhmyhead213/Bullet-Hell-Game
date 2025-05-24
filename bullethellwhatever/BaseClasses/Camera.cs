@@ -146,6 +146,10 @@ namespace bullethellwhatever.BaseClasses
             Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
         }
 
+        public Microsoft.Xna.Framework.Vector2 CameraPositionWithScreenShake()
+        {
+            return new Microsoft.Xna.Framework.Vector2(Position.X + ScreenShakeOffset, Position.Y + ScreenShakeOffset);
+        }
         private Matrix4x4 CalculateTranslationMatrix()
         {
             Microsoft.Xna.Framework.Vector2 cameraPos = Position - new Microsoft.Xna.Framework.Vector2(GameWidth / 2, GameHeight / 2);
@@ -222,7 +226,7 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 ShaderMatrix()
         {
-            System.Numerics.Vector3 cameraPositionVertex = PrimitiveManager.ToVertexCoordsThree(Position);
+            System.Numerics.Vector3 cameraPositionVertex = PrimitiveManager.ToVertexCoordsThree(CameraPositionWithScreenShake());
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X, -cameraPositionVertex.Y, 0));
 
             System.Numerics.Vector3 originPositionVertex = PrimitiveManager.ToVertexCoordsThree(Origin);
