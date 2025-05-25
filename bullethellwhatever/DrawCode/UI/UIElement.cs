@@ -156,6 +156,7 @@ namespace bullethellwhatever.DrawCode.UI
             Owner = menu;
             menu.AddUIElement(this);
         }
+
         public void SetPositionInMenu(Vector2 pos)
         {
             if (Owner is not null)

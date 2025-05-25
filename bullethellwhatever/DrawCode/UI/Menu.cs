@@ -20,6 +20,7 @@ namespace bullethellwhatever.DrawCode.UI
         public int TimeSinceLastDrag;
 
         public Dictionary<int, List<UIElement>> Rows;
+        public int CurrentRow;
 
         public float Margin; // consider changing these to vector2s to allow different x and y paddings
         public float Padding;
@@ -64,11 +65,17 @@ namespace bullethellwhatever.DrawCode.UI
             Margin = margin;
             Padding = padding;
             Rows = new Dictionary<int, List<UIElement>>();
+            CurrentRow = 1;
         }
 
         public bool RowExists(int row)
         {
             return Rows.ContainsKey(row);
+        }
+
+        public void AddUIElementAuto(UIElement uiElement)
+        {
+            AddUIElementToRow(uiElement, CurrentRow);
         }
 
         public void AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling = true)
@@ -79,15 +86,15 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 Rows.Add(row, new List<UIElement>());
             }
-            else
-            {
-                Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
-            }
+
+            Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
 
             float currentRowLength = RowLength(row); // this already includes the padding on the right of the previous element
             float currentRowHeight = RowHeight(row); // already includes padding on the top of the row above this
                                                      
             uiElement.PositionInMenu = new Vector2(currentRowLength + uiElement.Size.X / 2, currentRowHeight + uiElement.Size.Y / 2);
+
+            uiElement.AddToMenu(this);
         }
 
         /// <summary>
@@ -156,6 +163,12 @@ namespace bullethellwhatever.DrawCode.UI
 
             return maxHeight;
         }
+
+        public void MoveToNextRow()
+        {
+            CurrentRow++;
+        }
+
         public void SetImportant(bool important)
         {
             Important = important;

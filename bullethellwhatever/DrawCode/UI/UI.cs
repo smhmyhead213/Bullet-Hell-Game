@@ -16,6 +16,7 @@ using bullethellwhatever.UtilitySystems.Dialogue;
 using SharpDX.DirectWrite;
 using log4net.Core;
 using bullethellwhatever.DrawCode.UI.Player;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -223,6 +224,20 @@ namespace bullethellwhatever.DrawCode.UI
             Menu settingsMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             settingsMenu.SetOpacity(0f);
+
+            settingsMenu.StartMenuBuilder(50, 40);
+
+            UIElement test = new UIElement("SettingsButton", 1f);
+            UIElement test2 = new UIElement("SettingsButton", 1f);
+            UIElement test3 = new UIElement("SettingsButton", 1f);
+
+            settingsMenu.AddUIElementAuto(test);
+            settingsMenu.AddUIElementAuto(test2);
+            settingsMenu.MoveToNextRow();
+            settingsMenu.AddUIElementAuto(test3);
+
+            settingsMenu.Display();
+            return;
 
             BackButton backButton = new BackButton("Back", new Vector2(150, 60));
 
