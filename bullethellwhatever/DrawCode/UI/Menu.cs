@@ -24,6 +24,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public float Margin; // consider changing these to vector2s to allow different x and y paddings
         public float Padding;
+        public bool BuildingMode;
+
         public int IndexOfSelected
         {
             get;
@@ -39,6 +41,7 @@ namespace bullethellwhatever.DrawCode.UI
             UIElements = new List<UIElement>();
 
             Name = "";
+            BuildingMode = false;
 
             PrepareMenu();
         }
@@ -66,11 +69,22 @@ namespace bullethellwhatever.DrawCode.UI
             Padding = padding;
             Rows = new Dictionary<int, List<UIElement>>();
             CurrentRow = 1;
+            BuildingMode = true;
         }
 
         public bool RowExists(int row)
         {
             return Rows.ContainsKey(row);
+        }
+
+        public bool RowEmpty(int row)
+        {
+            if (!RowExists(row))
+            {
+                return false;
+            }
+
+            return Rows[row].Count == 0;
         }
 
         public void AddUIElementAuto(UIElement uiElement)
@@ -80,6 +94,10 @@ namespace bullethellwhatever.DrawCode.UI
 
         public void AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling = true)
         {
+            if (!BuildingMode)
+            {
+                throw new Exception("Cannot use menu building without calling StartMenuBuilder first.");
+            }
             // check if there's already stuff in this row - if not, initialise list
 
             if (!RowExists(row))
@@ -87,14 +105,32 @@ namespace bullethellwhatever.DrawCode.UI
                 Rows.Add(row, new List<UIElement>());
             }
 
-            Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
-
             float currentRowLength = RowLength(row); // this already includes the padding on the right of the previous element
             float currentRowHeight = RowHeight(row); // already includes padding on the top of the row above this
-                                                     
-            uiElement.PositionInMenu = new Vector2(currentRowLength + uiElement.Size.X / 2, currentRowHeight + uiElement.Size.Y / 2);
+            
+            // check if we actually have space to put the UI element in this row, taking into account the margin on the right side as well
+            float availableHorizontalSpace = Width() - currentRowLength - Margin;
+            float availableVerticalSpace = Height() - currentRowHeight - Margin;
+            bool horizontalSpaceAvailable = availableHorizontalSpace >= uiElement.Size.X;
+            bool verticalSpaceAvailable = availableVerticalSpace >= uiElement.Size.Y;
 
-            uiElement.AddToMenu(this);
+            if (horizontalSpaceAvailable && verticalSpaceAvailable)
+            {
+                uiElement.PositionInMenu = new Vector2(currentRowLength + uiElement.Size.X / 2, currentRowHeight + uiElement.Size.Y / 2);
+
+                uiElement.AddToMenu(this);
+                Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
+            }
+            else if (!horizontalSpaceAvailable && verticalSpaceAvailable)
+            {
+                MoveToNextRow(); // try and see if theres space on the next row
+                
+                AddUIElementToRow(uiElement, row + 1, strictRowFilling);
+            }
+            else // if theres no vertical space then we've reached the bottom and there isnt anything we can do, so just dont bother (add a log write here when you implement it)
+            {
+                return;
+            }
         }
 
         /// <summary>
@@ -102,7 +138,7 @@ namespace bullethellwhatever.DrawCode.UI
         /// </summary>
         public float RowLength(int row)
         {
-            if (!RowExists(row))
+            if (!RowExists(row) || RowEmpty(row))
             {
                 return Margin;
             }

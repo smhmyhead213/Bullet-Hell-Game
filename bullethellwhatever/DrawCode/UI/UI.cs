@@ -221,22 +221,25 @@ namespace bullethellwhatever.DrawCode.UI
         {
             ResetCameraForMenus();
 
-            Menu settingsMenu = new Menu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
+            float menuWidth = 300f;
+            float buttonHeight = 1000f;
 
-            settingsMenu.SetOpacity(0f);
+            Menu settingsMenu = new Menu("MenuBG", new Vector2(menuWidth, GameHeight), Utilities.CentreOfScreen());
 
-            settingsMenu.StartMenuBuilder(50, 40);
+            settingsMenu.SetOpacity(1f);
 
-            UIElement test = new UIElement("SettingsButton", 1f);
-            UIElement test2 = new UIElement("SettingsButton", 1f);
-            UIElement test3 = new UIElement("SettingsButton", 1f);
+            settingsMenu.StartMenuBuilder(0, 20);
+
+            UIElement test = new UIElement("SettingsButton", new Vector2(menuWidth, buttonHeight));
+            UIElement test2 = new UIElement("SettingsButton", new Vector2(menuWidth, buttonHeight));
+            UIElement test3 = new UIElement("SettingsButton", new Vector2(menuWidth, buttonHeight));
 
             settingsMenu.AddUIElementAuto(test);
             settingsMenu.AddUIElementAuto(test2);
-            settingsMenu.MoveToNextRow();
             settingsMenu.AddUIElementAuto(test3);
 
             settingsMenu.Display();
+
             return;
 
             BackButton backButton = new BackButton("Back", new Vector2(150, 60));
