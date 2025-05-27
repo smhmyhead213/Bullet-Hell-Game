@@ -123,6 +123,8 @@ namespace bullethellwhatever.MainFiles
 
             MainRT = new RenderTarget2D(GraphicsDevice, GameWidth, GameHeight);
 
+            //Mouse.SetCursor(MouseCursor.No);
+
             base.Initialize();
         }
 
@@ -166,7 +168,8 @@ namespace bullethellwhatever.MainFiles
         {
             Drawing.Timer++;
 
-            _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
+            _spriteBatch.Begin();
+            //_spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
             //_spriteBatch.Begin(transformMatrix: System.Numerics.Matrix4x4.Identity);
 
             GraphicsDevice.SetRenderTarget(MainRT);
@@ -189,6 +192,8 @@ namespace bullethellwhatever.MainFiles
             _spriteBatch.Begin(transformMatrix: ScreenMatrix);
 
             _spriteBatch.Draw(MainRT, Vector2.Zero, Color.White);
+
+            //Drawing.DrawBox(Mouse.GetState().Position.ToVector2(), Color.Red, 1f);
 
             _spriteBatch.End();
 

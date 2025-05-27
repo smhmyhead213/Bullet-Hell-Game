@@ -25,7 +25,7 @@ namespace bullethellwhatever.DrawCode.UI
         public float Margin; // consider changing these to vector2s to allow different x and y paddings
         public float Padding;
         public bool BuildingMode;
-
+        public bool HeldByMouse;
         public int IndexOfSelected
         {
             get;
@@ -42,6 +42,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             Name = "";
             BuildingMode = false;
+            HeldByMouse = false;
 
             PrepareMenu();
         }
@@ -257,12 +258,18 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (Draggable)
             {
-                TimeSinceLastDrag++;
-
-                if ((ClickBox.Contains(MousePosition) || TimeSinceLastDrag < 10) && !HoveringOverAnyUI() && IsLeftClickDown())
+                if (!IsLeftClickDown() || LeftClickReleased())
                 {
-                    TimeSinceLastDrag = 0;
+                    HeldByMouse = false;
+                }
 
+                if (ClickBox.Contains(MousePosition) && IsLeftClickDown() && !HoveringOverAnyUI())
+                {
+                    HeldByMouse = true;
+                }
+
+                if (HeldByMouse)
+                {
                     // calculate the mouses relative position within the menu
 
                     Vector2 mouseRelativePosition = MousePosition - TopLeft();
@@ -374,6 +381,8 @@ namespace bullethellwhatever.DrawCode.UI
         public Vector2 TopLeft() => Position - RelativeCentreOfMenu();
         public override void Draw(SpriteBatch s)
         {
+            //Colour = HeldByMouse ? Color.Red : Color.Green;
+
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
 
             foreach (UIElement uiElement in UIElements)
