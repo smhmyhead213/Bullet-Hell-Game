@@ -87,12 +87,36 @@ namespace bullethellwhatever.DrawCode.UI
             return Rows[row].Count == 0;
         }
 
-        public void AddUIElementAuto(UIElement uiElement)
+        public bool HorizontalSpaceAvailableFor(int row, float requestedWidth)
         {
-            AddUIElementToRow(uiElement, CurrentRow);
+            float currentRowLength = RowLength(row); // this already includes the padding on the right of the previous element
+            float availableHorizontalSpace = Width() - currentRowLength - Margin;
+            return availableHorizontalSpace >= requestedWidth;
         }
 
-        public void AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling = true)
+        public bool HorizontalSpaceAvailableFor(int row, UIElement uiToAdd)
+        {
+            return HorizontalSpaceAvailableFor(row, uiToAdd.Size.X);
+        }
+
+        public virtual bool VerticalSpaceAvailableFor(int row, float requestedHeight)
+        {
+            float currentRowHeight = RowHeight(row); // already includes padding on the top of the row above this
+            float availableVerticalSpace = Height() - currentRowHeight - Margin;
+            return availableVerticalSpace >= requestedHeight;
+        }
+
+        public bool VerticalSpaceAvailableFor(int row, UIElement uiToAdd)
+        {
+            return VerticalSpaceAvailableFor(row, uiToAdd.Size.Y);
+        }
+
+        public bool AddUIElementAuto(UIElement uiElement)
+        {
+            return AddUIElementToRow(uiElement, CurrentRow);
+        }
+
+        public bool AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling = true)
         {
             if (!BuildingMode)
             {
@@ -105,31 +129,27 @@ namespace bullethellwhatever.DrawCode.UI
                 Rows.Add(row, new List<UIElement>());
             }
 
-            float currentRowLength = RowLength(row); // this already includes the padding on the right of the previous element
-            float currentRowHeight = RowHeight(row); // already includes padding on the top of the row above this
-            
-            // check if we actually have space to put the UI element in this row, taking into account the margin on the right side as well
-            float availableHorizontalSpace = Width() - currentRowLength - Margin;
-            float availableVerticalSpace = Height() - currentRowHeight - Margin;
-            bool horizontalSpaceAvailable = availableHorizontalSpace >= uiElement.Size.X;
-            bool verticalSpaceAvailable = availableVerticalSpace >= uiElement.Size.Y;
+            bool horizontalSpaceAvailable = HorizontalSpaceAvailableFor(row, uiElement);
+            bool verticalSpaceAvailable = VerticalSpaceAvailableFor(row, uiElement);
 
             if (horizontalSpaceAvailable && verticalSpaceAvailable)
             {
-                uiElement.PositionInMenu = new Vector2(currentRowLength + uiElement.Size.X / 2, currentRowHeight + uiElement.Size.Y / 2);
+                uiElement.PositionInMenu = new Vector2(RowLength(row) + uiElement.Size.X / 2, RowHeight(row) + uiElement.Size.Y / 2);
 
                 uiElement.AddToMenu(this);
                 Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
+
+                return true;
             }
             else if (!horizontalSpaceAvailable && verticalSpaceAvailable)
             {
                 MoveToNextRow(); // try and see if theres space on the next row
                 
-                AddUIElementToRow(uiElement, row + 1, strictRowFilling);
+                return AddUIElementToRow(uiElement, row + 1, strictRowFilling);
             }
             else // if theres no vertical space then we've reached the bottom and there isnt anything we can do, so just dont bother (add a log write here when you implement it)
             {
-                return;
+                return false;
             }
         }
 

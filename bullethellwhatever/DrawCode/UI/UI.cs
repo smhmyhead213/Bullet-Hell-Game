@@ -17,6 +17,7 @@ using SharpDX.DirectWrite;
 using log4net.Core;
 using bullethellwhatever.DrawCode.UI.Player;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using bullethellwhatever.DrawCode.UI.SpecialUIElements;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -221,23 +222,28 @@ namespace bullethellwhatever.DrawCode.UI
         {
             ResetCameraForMenus();
 
-            float menuWidth = 300f;
-            float buttonHeight = 1000f;
+            float buttonWidth = 250f;
+            float buttonHeight = 100f;
 
-            Menu settingsMenu = new Menu("MenuBG", new Vector2(menuWidth, GameHeight), Utilities.CentreOfScreen());
+            float menuWidth = buttonWidth + 20f;
+            float menuHeight = GameHeight / 3;
+
+            ScrollingButtonColumn settingsMenu = new ScrollingButtonColumn("MenuBG", new Vector2(menuWidth, menuHeight), Utilities.CentreOfScreen());
 
             settingsMenu.SetOpacity(1f);
 
-            settingsMenu.StartMenuBuilder(0, 20);
+            settingsMenu.StartMenuBuilder(0, 0);
 
-            UIElement test = new UIElement("SettingsButton", new Vector2(menuWidth, buttonHeight));
-            UIElement test2 = new UIElement("SettingsButton", new Vector2(menuWidth, buttonHeight));
-            UIElement test3 = new UIElement("SettingsButton", new Vector2(menuWidth, buttonHeight));
+            int buttonsToAdd = 20;
 
-            settingsMenu.AddUIElementAuto(test);
-            settingsMenu.AddUIElementAuto(test2);
-            settingsMenu.AddUIElementAuto(test3);
+            for (int i = 0; i < buttonsToAdd; i++)
+            {
+                UIElement test = new UIElement("SettingsButton", new Vector2(buttonWidth, buttonHeight));
+                test.Interactable = false;
+                settingsMenu.AddUIElementAuto(test);
+            }
 
+            settingsMenu.Draggable = true;
             settingsMenu.Display();
 
             return;

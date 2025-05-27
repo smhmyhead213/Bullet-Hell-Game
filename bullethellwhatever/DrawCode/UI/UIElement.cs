@@ -204,6 +204,11 @@ namespace bullethellwhatever.DrawCode.UI
 
         public bool IsSelected()
         {
+            //if (!Interactable)
+            //{
+            //    return false;
+            //}
+
             if (ClickBox.Contains(MousePosition))
             {
                 return true;
