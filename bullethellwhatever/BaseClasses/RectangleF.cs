@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace bullethellwhatever.BaseClasses
 {
-    public struct RectangleButGood
+    public struct RectangleF
     {
         public float X;
         public float Y;
@@ -23,7 +23,7 @@ namespace bullethellwhatever.BaseClasses
 
         public float Bottom => Y + Height;
 
-        public RectangleButGood(float x, float y, float width, float height)
+        public RectangleF(float x, float y, float width, float height)
         {
             X = x;
             Y = y;
@@ -31,7 +31,7 @@ namespace bullethellwhatever.BaseClasses
             Height = height;
         }
 
-        public bool Intersects(RectangleButGood value)
+        public bool Intersects(RectangleF value)
         {
             if (value.Left < Right && Left < value.Right && value.Top < Bottom)
             {

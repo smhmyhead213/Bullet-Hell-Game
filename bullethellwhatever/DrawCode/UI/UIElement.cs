@@ -28,7 +28,7 @@ namespace bullethellwhatever.DrawCode.UI
         public int AITimer;
         public bool IsInMenu => Owner is not null;
         
-        public RectangleButGood ClickBox;
+        public RectangleF ClickBox;
 
         public Action ExtraAI;
         public Action ClickEvent;
@@ -97,6 +97,8 @@ namespace bullethellwhatever.DrawCode.UI
                 Position = CalculateActualPostion();
             }
 
+            AI();
+
             if (ExtraAI is not null)
                 ExtraAI();
 
@@ -117,7 +119,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual bool CanBeClicked()
         {
-            return Clicked();// && !WasMouseDownLastFrame;
+            return Clicked() && Interactable;// && !WasMouseDownLastFrame;
         }
         public virtual Vector2 CalculateActualPostion()
         {
@@ -227,6 +229,17 @@ namespace bullethellwhatever.DrawCode.UI
             return false;
             
         }
+
+        public RectangleF BoundingBox()
+        {
+            return new RectangleF(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);
+        }
+
+        public virtual void AI()
+        {
+
+        }
+
         public virtual Color ColourIfSelected()
         {
             return IsSelected() ? Color.Red : Colour; // in the future make the colour more red, not just red

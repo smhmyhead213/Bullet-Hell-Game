@@ -18,6 +18,8 @@ using log4net.Core;
 using bullethellwhatever.DrawCode.UI.Player;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using bullethellwhatever.DrawCode.UI.SpecialUIElements;
+using bullethellwhatever.UtilitySystems.SoundSystems;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -228,7 +230,7 @@ namespace bullethellwhatever.DrawCode.UI
             float menuWidth = buttonWidth + 20f;
             float menuHeight = GameHeight / 3;
 
-            ScrollingButtonColumn settingsMenu = new ScrollingButtonColumn("MenuBG", new Vector2(menuWidth, menuHeight), Utilities.CentreOfScreen());
+            ScrollingButtonColumn settingsMenu = new ScrollingButtonColumn("MenuBG", new Vector2(menuWidth, menuHeight), Utilities.CentreOfScreen(), 5f);
 
             settingsMenu.SetOpacity(1f);
 
@@ -236,10 +238,21 @@ namespace bullethellwhatever.DrawCode.UI
 
             int buttonsToAdd = 20;
 
+            Action clickEvent = new Action(() =>
+            {
+                int sparks = 30;
+
+                for (int i = 0; i < sparks; i++)
+                {
+                    CommonParticles.Spark(MousePositionWithCamera(), 40f, 60, Color.Orange);
+                }
+            });
+
             for (int i = 0; i < buttonsToAdd; i++)
             {
                 UIElement test = new UIElement("SettingsButton", new Vector2(buttonWidth, buttonHeight));
                 test.Interactable = false;
+                test.SetClickEvent(clickEvent);
                 settingsMenu.AddUIElementAuto(test);
             }
 

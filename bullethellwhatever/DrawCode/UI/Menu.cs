@@ -17,8 +17,6 @@ namespace bullethellwhatever.DrawCode.UI
 
         public bool Draggable;
 
-        public int TimeSinceLastDrag;
-
         public Dictionary<int, List<UIElement>> Rows;
         public int CurrentRow;
 
@@ -54,8 +52,6 @@ namespace bullethellwhatever.DrawCode.UI
              
             Important = false;
             Draggable = false;
-
-            TimeSinceLastDrag = 0;
 
             IndexOfSelected = -1;
 
@@ -280,6 +276,13 @@ namespace bullethellwhatever.DrawCode.UI
                 }
             }
 
+            //if (ExtraAI is not null)
+            //{
+            //    ExtraAI();
+            //}
+
+            AI();
+
             UpdateClickBox();
 
             foreach (UIElement uIElement in UIElements)
@@ -302,7 +305,7 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public void UpdateClickBox()
         {
-            ClickBox = new RectangleButGood(TopLeft().X, TopLeft().Y, Width(), Height());
+            ClickBox = new RectangleF(TopLeft().X, TopLeft().Y, Width(), Height());
         }
 
         public void IncrementSelected()
