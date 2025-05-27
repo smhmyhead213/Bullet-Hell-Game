@@ -75,6 +75,11 @@ namespace bullethellwhatever.DrawCode
             }
         }
 
+        public static RenderTarget2D CreateRTWithPreferredDefaults(int width, int height)
+        {
+            return new RenderTarget2D(MainInstance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+        }
+
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {
             //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.

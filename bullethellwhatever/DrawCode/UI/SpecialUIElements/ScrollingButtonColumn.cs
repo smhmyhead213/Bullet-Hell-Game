@@ -14,7 +14,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
     public class ScrollingButtonColumn : Menu
     {
         public float ScrollSpeed;
-        
+        public RenderTarget2D MenuRenderTarget;
         public ScrollingButtonColumn(string texture, Vector2 size, Vector2 position, float scrollSpeed) : base(texture, size, position)
         {
             ScrollSpeed = scrollSpeed;
@@ -51,10 +51,18 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             }
         }
 
+        public override void Display()
+        {
+            base.Display();
+
+            MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)CalculateTotalHeight());
+        }
         public override void Draw(SpriteBatch s)
         {
-            //MainInstance.GraphicsDevice.SetRenderTarget()
+            MainInstance.GraphicsDevice.SetRenderTarget(MenuRenderTarget);
             base.Draw(s);
+            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
+            _spriteBatch.Draw(MenuRenderTarget, Position, Color.White);
         }
     }
 }

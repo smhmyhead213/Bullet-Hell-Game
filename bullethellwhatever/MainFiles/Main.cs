@@ -121,7 +121,7 @@ namespace bullethellwhatever.MainFiles
             _graphics.DeviceReset += GraphicsManager_DeviceReset;
             _graphics.DeviceCreated += GraphicsManager_DeviceCreated;
 
-            MainRT = new RenderTarget2D(GraphicsDevice, GameWidth, GameHeight);
+            MainRT = Drawing.CreateRTWithPreferredDefaults(GameWidth, GameHeight);
 
             //Mouse.SetCursor(MouseCursor.No);
 

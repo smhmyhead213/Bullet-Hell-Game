@@ -222,6 +222,19 @@ namespace bullethellwhatever.DrawCode.UI
             CurrentRow++;
         }
 
+        public float CalculateTotalHeight()
+        {
+            // find the row height of the lowest row
+
+            float total = 0;
+
+            foreach (KeyValuePair<int, List<UIElement>> row in Rows)
+            {
+                total += MaxHeightInRow(row.Key);
+            }
+
+            return total;
+        }
         public void SetImportant(bool important)
         {
             Important = important;
