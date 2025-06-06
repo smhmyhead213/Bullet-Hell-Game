@@ -236,7 +236,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             settingsMenu.StartMenuBuilder(0, 0);
 
-            int buttonsToAdd = 20;
+            int buttonsToAdd = 10;
 
             Action clickEvent = new Action(() =>
             {

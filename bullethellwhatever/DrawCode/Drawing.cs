@@ -75,9 +75,9 @@ namespace bullethellwhatever.DrawCode
             }
         }
 
-        public static RenderTarget2D CreateRTWithPreferredDefaults(int width, int height)
+        public static RenderTarget2D CreateRTWithPreferredDefaults(float width, float height)
         {
-            return new RenderTarget2D(MainInstance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            return new RenderTarget2D(MainInstance.GraphicsDevice, (int)width, (int)height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
         }
 
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
@@ -115,8 +115,7 @@ namespace bullethellwhatever.DrawCode
 
         public static void DrawBox(Vector2 centre, Color colour, float scaleFactor)
         {
-            // the box texture is 10x10. the scale factor explodes if this changes
-             Drawing.BetterDraw("box", centre, null, colour, 0f, Vector2.One * scaleFactor, SpriteEffects.None, 0f);
+            BetterDraw("box", centre, null, colour, 0f, Vector2.One * scaleFactor, SpriteEffects.None, 0f);
         }
 
         public static void DrawCircle(Vector2 position, float radius, Color colour, float opacity = 1f)
