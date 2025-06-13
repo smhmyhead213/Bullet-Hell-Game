@@ -82,7 +82,7 @@ namespace bullethellwhatever.DrawCode
 
         public static void BetterDraw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, SpriteEffects spriteEffects, float layerDepth, Vector2? origin = null)
         {
-            //This method exists so that one does not have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
+            //This method exists so that you don't have to repeat the same paraemters for stuff like origin offsets and screenshake offset.
 
             Vector2 finalOrigin = origin is null ? new Vector2(texture.Width / 2, texture.Height / 2) : origin.Value;
             

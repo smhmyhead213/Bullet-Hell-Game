@@ -63,13 +63,6 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             MainInstance.GraphicsDevice.SetRenderTarget(MenuRenderTarget);
 
-            //base.Draw(s);
-
-            //Drawing.DrawBox(Vector2.Zero, Color.Red, 1f);
-            //Drawing.DrawBox(new Vector2(0f, Height()), Color.Red, 1f);
-            //Drawing.DrawBox(new Vector2(Width(), 0f), Color.Red, 1f);
-            //Drawing.DrawBox(new Vector2(Width(), Height()), Color.Red, 1f);
-
             Texture2D box = AssetRegistry.GetTexture2D("box");
             Vector2 origin = new Vector2(box.Width, box.Height) / 2f;
             s.Draw(box, Vector2.Zero, null, Color.Red, 0f, origin, Vector2.One, SpriteEffects.None, 0f);
