@@ -187,6 +187,12 @@ namespace bullethellwhatever.MainFiles
             DrawGame.DrawTheGame(gameTime, _spriteBatch);
             UIManager.DrawUI(_spriteBatch);
 
+            _spriteBatch.Begin();
+
+            Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
+            Drawing.DrawBox(MainCamera.VisibleArea.BottomRight(), Color.Red, 5f);
+
+            _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Viewport = ScreenViewport;

@@ -152,8 +152,8 @@ namespace bullethellwhatever.BaseClasses
         {
             // only with translation for now, add zoom later possibly
 
-            Microsoft.Xna.Framework.Vector2 topLeft = Position - Utilities.CentreOfScreen();
-            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, GameWidth, GameHeight);           
+            Microsoft.Xna.Framework.Vector2 topLeft = Position - CameraScale * Utilities.CentreOfScreen();
+            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)(GameWidth * cameraScale), (int)(GameHeight * cameraScale));           
         }
 
         public void UpdateMatrices()
