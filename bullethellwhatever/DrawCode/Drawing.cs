@@ -112,6 +112,11 @@ namespace bullethellwhatever.DrawCode
                 ScreenShakeTimer = duration;
             }
         }
+        
+        public static void DrawTextureDimensions(SpriteBatch s, Texture2D texture, Vector2 dimensions, Vector2 position)
+        {
+            s.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, new Vector2(dimensions.X / texture.Width, dimensions.Y / texture.Height), SpriteEffects.None, 0f);
+        }
 
         public static void DrawBox(Vector2 centre, Color colour, float scaleFactor)
         {

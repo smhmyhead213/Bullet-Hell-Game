@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using bullethellwhatever.MainFiles;
 using SharpDX.Direct3D9;
 using bullethellwhatever.AssetManagement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 {
@@ -77,7 +78,16 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             s.Begin();
 
             //Drawing.BetterDraw(MenuRenderTarget, Utilities.CentreOfScreen(), null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
-            s.Draw(MenuRenderTarget, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.White, 0f, new Vector2(MenuRenderTarget.Width, MenuRenderTarget.Height) / 2, Vector2.One, SpriteEffects.None, 1f);
+
+            Vector2 origin2 = new Vector2(MenuRenderTarget.Width / 2, MenuRenderTarget.Height / 2);
+            origin2 = Vector2.Zero;
+            Vector2 scale = new Vector2(1f / MenuRenderTarget.Width * 960f, 1f / MenuRenderTarget.Height * 540f);
+
+            s.Draw(MenuRenderTarget, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, origin2, scale, SpriteEffects.None, 1f);
+            Drawing.DrawTextureDimensions(s, box, new Vector2(MenuRenderTarget.Width, MenuRenderTarget.Height), Utilities.CentreOfScreen());
+            //s.Draw(box, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, origin2, Vector2.One, SpriteEffects.None, 1f);
+
+            //s.Draw(box, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, new Vector2(box.Width, box.Height) / 2, Vector2.One, SpriteEffects.None, 1f);
         }
     }
 }
