@@ -76,7 +76,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             p.SetExtraDraw(new Action(() =>
             {
-                Utilities.drawTextInDrawMethod(p.ExtraData[0].ToString(), p.Position + new Vector2(0f, 20f), _spriteBatch, font, Color.White);
+                Drawing.DrawText(p.ExtraData[0].ToString(), p.Position + new Vector2(0f, 20f), _spriteBatch, font, Color.White, Vector2.One);
             }));
         }
 

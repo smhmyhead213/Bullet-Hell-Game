@@ -226,17 +226,20 @@ namespace bullethellwhatever.DrawCode.UI
 
             float buttonWidth = 250f;
             float buttonHeight = 100f;
+            float marginX = 20f;
+            float marginY = 50f;
 
-            float menuWidth = buttonWidth + 20f;
+            float menuWidth = buttonWidth + 2 * marginX;
+
             float menuHeight = GameHeight / 3;
 
             ScrollingButtonColumn settingsMenu = new ScrollingButtonColumn("MenuBG", new Vector2(menuWidth, menuHeight), Utilities.CentreOfScreen(), 5f);
 
             settingsMenu.SetOpacity(1f);
 
-            settingsMenu.StartMenuBuilder(0, 0);
+            settingsMenu.StartMenuBuilder(marginX, marginY, 0);
 
-            int buttonsToAdd = 10;
+            int buttonsToAdd = 9;
 
             Action clickEvent = new Action(() =>
             {
@@ -250,7 +253,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             for (int i = 0; i < buttonsToAdd; i++)
             {
-                UIElement test = new UIElement("SettingsButton", new Vector2(buttonWidth, buttonHeight));
+                TextButton test = new TextButton("test", 20, 20, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
                 test.Interactable = false;
                 test.SetClickEvent(clickEvent);
                 settingsMenu.AddUIElementAuto(test);

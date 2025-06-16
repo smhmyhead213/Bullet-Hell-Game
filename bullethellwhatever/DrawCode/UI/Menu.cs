@@ -20,7 +20,9 @@ namespace bullethellwhatever.DrawCode.UI
         public Dictionary<int, List<UIElement>> Rows;
         public int CurrentRow;
 
-        public float Margin; // consider changing these to vector2s to allow different x and y paddings
+        public float MarginX;
+        public float MarginY;
+
         public float Padding;
         public bool BuildingMode;
         public bool HeldByMouse;
@@ -60,9 +62,11 @@ namespace bullethellwhatever.DrawCode.UI
             UpdateClickBox();
         }
 
-        public void StartMenuBuilder(float margin, float padding)
+        public void StartMenuBuilder(float marginX, float marginY, float padding)
         {
-            Margin = margin;
+            MarginX = marginX;
+            MarginY = marginY;
+
             Padding = padding;
             Rows = new Dictionary<int, List<UIElement>>();
             CurrentRow = 1;
@@ -87,7 +91,7 @@ namespace bullethellwhatever.DrawCode.UI
         public bool HorizontalSpaceAvailableFor(int row, float requestedWidth)
         {
             float currentRowLength = RowLength(row); // this already includes the padding on the right of the previous element
-            float availableHorizontalSpace = Width() - currentRowLength - Margin;
+            float availableHorizontalSpace = Width() - currentRowLength - MarginX;
             return availableHorizontalSpace >= requestedWidth;
         }
 
@@ -99,7 +103,7 @@ namespace bullethellwhatever.DrawCode.UI
         public virtual bool VerticalSpaceAvailableFor(int row, float requestedHeight)
         {
             float currentRowHeight = RowHeight(row); // already includes padding on the top of the row above this
-            float availableVerticalSpace = Height() - currentRowHeight - Margin;
+            float availableVerticalSpace = Height() - currentRowHeight - MarginY;
             return availableVerticalSpace >= requestedHeight;
         }
 
@@ -124,6 +128,11 @@ namespace bullethellwhatever.DrawCode.UI
             if (!RowExists(row))
             {
                 Rows.Add(row, new List<UIElement>());
+            }
+
+            if (uiElement.Size.X > Width() - 2 * MarginX)
+            {
+                return false;
             }
 
             bool horizontalSpaceAvailable = HorizontalSpaceAvailableFor(row, uiElement);
@@ -157,7 +166,7 @@ namespace bullethellwhatever.DrawCode.UI
         {
             if (!RowExists(row) || RowEmpty(row))
             {
-                return Margin;
+                return MarginX;
             }
 
             float rightMostElementPosition = 0; // not sure if each row will be ordered, so do a quick find max
@@ -184,12 +193,12 @@ namespace bullethellwhatever.DrawCode.UI
         {
             if (!RowExists(row))
             {
-                return Margin;
+                return MarginY;
             }
 
             if (row == 1)
             {
-                return Margin;
+                return MarginY;
             }
             else
             {

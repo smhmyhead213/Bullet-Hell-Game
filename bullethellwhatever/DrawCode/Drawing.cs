@@ -75,6 +75,11 @@ namespace bullethellwhatever.DrawCode
             }
         }
 
+        public static void DrawText(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour, Vector2 scale)
+        {
+            _spriteBatch.DrawString(font, stringg, position, colour, 0f, Vector2.Zero, scale, SpriteEffects.None, 0); // fix later
+        }
+
         public static RenderTarget2D CreateRTWithPreferredDefaults(float width, float height)
         {
             return new RenderTarget2D(MainInstance.GraphicsDevice, (int)width, (int)height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);

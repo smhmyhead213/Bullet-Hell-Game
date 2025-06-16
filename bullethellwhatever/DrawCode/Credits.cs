@@ -31,7 +31,7 @@ namespace bullethellwhatever.DrawCode
                 
                 if (CreditPositions[i].Y > 0f && CreditPositions[i].Y < GameHeight) // the use of preferredbackbufferheight might cause resolution independence problems
                 {
-                    Utilities.drawTextInDrawMethod(Credit[i], CreditPositions[i], spriteBatch, font, Color.White);
+                    Drawing.DrawText(Credit[i], CreditPositions[i], spriteBatch, font, Color.White, Vector2.One);
                 }
             }          
         }

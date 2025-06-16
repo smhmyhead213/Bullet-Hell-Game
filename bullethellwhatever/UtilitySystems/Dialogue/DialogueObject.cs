@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.DrawCode;
 
 namespace bullethellwhatever.UtilitySystems.Dialogue
 {
@@ -88,7 +89,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Utilities.drawTextInDrawMethod(Text, Position, spriteBatch, font, Color.White, Size);
+            Drawing.DrawText(Text, Position, spriteBatch, font, Color.White, new Vector2(Size));
         }
     }
 }

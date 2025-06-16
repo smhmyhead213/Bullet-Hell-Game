@@ -245,7 +245,7 @@ namespace bullethellwhatever.DrawCode.UI
             return IsSelected() ? Color.Red : Colour; // in the future make the colour more red, not just red
         }
 
-        public void DrawAtPosition(SpriteBatch s, Vector2 position)
+        public virtual void DrawAtPosition(SpriteBatch s, Vector2 position)
         {
             Color colour = ColourIfSelected();
 

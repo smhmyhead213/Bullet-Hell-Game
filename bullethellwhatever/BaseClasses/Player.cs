@@ -359,7 +359,7 @@ namespace bullethellwhatever.BaseClasses
             if (IsKeyPressed(Keys.K))
             {
                 for (int i = 0; i < EntityManager.activeProjectiles.Count; i++)
-                    Utilities.drawTextInDrawMethod(EntityManager.activeProjectiles[i].ToString() + " " + EntityManager.activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + EntityManager.activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(GameWidth / 3, GameHeight / 3 + 10 * i), spriteBatch, font, Colour); ;
+                    Drawing.DrawText(EntityManager.activeProjectiles[i].ToString() + " " + EntityManager.activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + EntityManager.activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(GameWidth / 3, GameHeight / 3 + 10 * i), spriteBatch, font, Colour, Vector2.One);
             }
 
             PlayerWeaponManager.ActiveWeapon.Draw(spriteBatch);

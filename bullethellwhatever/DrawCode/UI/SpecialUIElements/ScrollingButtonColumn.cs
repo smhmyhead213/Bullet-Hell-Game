@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using bullethellwhatever.MainFiles;
-using SharpDX.Direct3D9;
 using bullethellwhatever.AssetManagement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.IO;
@@ -71,7 +70,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             base.Display();
             Size.Y = CalculateTotalHeight();
-            MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
+
+            if (Size.Y > 0)
+                MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
         }
         public override void Draw(SpriteBatch s)
         {
@@ -79,7 +80,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             MainInstance.GraphicsDevice.SetRenderTarget(MenuRenderTarget);
 
-            s.Begin(); // this is UI so dont use camera
+            s.Begin(samplerState: SamplerState.PointWrap); // this is UI so dont use camera
 
             MainInstance.GraphicsDevice.Clear(Color.Black);
 

@@ -93,7 +93,7 @@ namespace bullethellwhatever.MainFiles
 
             SoundSystem.SetUpFMOD();
 
-            font = Content.Load<SpriteFont>("font");
+            font = Content.Load<SpriteFont>("pixellaria");
         }
 
         protected override void Initialize()
