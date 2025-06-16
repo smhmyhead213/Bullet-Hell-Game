@@ -20,6 +20,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using bullethellwhatever.DrawCode.UI.SpecialUIElements;
 using bullethellwhatever.UtilitySystems.SoundSystems;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -224,41 +225,9 @@ namespace bullethellwhatever.DrawCode.UI
         {
             ResetCameraForMenus();
 
-            float buttonWidth = 250f;
-            float buttonHeight = 100f;
-            float marginX = 20f;
-            float marginY = 50f;
+            SettingsMenu settingsMenu = new SettingsMenu("MenuBG", new Vector2(GameWidth * 0.6f, GameHeight * 0.6f), Utilities.CentreOfScreen());
 
-            float menuWidth = buttonWidth + 2 * marginX;
-
-            float menuHeight = GameHeight / 3;
-
-            ScrollingButtonColumn settingsMenu = new ScrollingButtonColumn("MenuBG", new Vector2(menuWidth, menuHeight), Utilities.CentreOfScreen(), 5f);
-
-            settingsMenu.SetOpacity(1f);
-
-            settingsMenu.StartMenuBuilder(marginX, marginY, 0);
-
-            int buttonsToAdd = 9;
-
-            Action clickEvent = new Action(() =>
-            {
-                int sparks = 30;
-
-                for (int i = 0; i < sparks; i++)
-                {
-                    CommonParticles.Spark(MousePositionWithCamera(), 40f, 60, Color.Orange);
-                }
-            });
-
-            for (int i = 0; i < buttonsToAdd; i++)
-            {
-                TextButton test = new TextButton("test", 20, 20, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
-                test.Interactable = false;
-                test.SetClickEvent(clickEvent);
-                settingsMenu.AddUIElementAuto(test);
-            }
-
+            settingsMenu.Construct();
             settingsMenu.Draggable = true;
             settingsMenu.Display();
 

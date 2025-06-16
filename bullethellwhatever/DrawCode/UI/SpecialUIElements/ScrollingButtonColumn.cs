@@ -16,10 +16,13 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
     public class ScrollingButtonColumn : Menu
     {
         public float ScrollSpeed;
+        public float ScrollAmount;
         public RenderTarget2D MenuRenderTarget;
+        public float TotalButtonHeight;
         public ScrollingButtonColumn(string texture, Vector2 size, Vector2 position, float scrollSpeed) : base(texture, size, position)
         {
             ScrollSpeed = scrollSpeed;
+            ScrollAmount = 0;
         }
 
         public override bool VerticalSpaceAvailableFor(int row, float requestedHeight)
@@ -52,12 +55,18 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             if (IsKeyPressed(Keys.W))
             {
-                ScrollBy(ScrollSpeed);
+                // figure out if we are less than 1SS from the bottom
+                float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - ScrollAmount - Height());
+                ScrollBy(scrollDistance);
+                ScrollAmount += scrollDistance;                
             }
             
             if (IsKeyPressed(Keys.S))
             {
-                ScrollBy(-ScrollSpeed);
+                // figure out if we are less than 1SS from the top
+                float scrollDistance = Min(ScrollSpeed, ScrollAmount);
+                ScrollBy(-scrollDistance);
+                ScrollAmount -= scrollDistance;
             }
 
             foreach (UIElement uIElement in UIElements)
@@ -69,7 +78,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public override void Display()
         {
             base.Display();
-            Size.Y = CalculateTotalHeight();
+            //Size.Y = CalculateTotalHeight();
 
             if (Size.Y > 0)
                 MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
@@ -99,6 +108,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             s.Begin();
 
             Drawing.BetterDraw(MenuRenderTarget, Position, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
+            Drawing.DrawText(ScrollAmount.ToString(), TopLeft() - new Vector2(200f), s, font, Color.White, Vector2.One);
         }
     }
 }
