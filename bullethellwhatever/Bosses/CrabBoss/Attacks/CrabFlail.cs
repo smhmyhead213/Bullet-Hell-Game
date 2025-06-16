@@ -24,7 +24,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             if (AITimer == 0)
             {
-                MainCamera.LockCamera(false);
+                MainCamera.Unlock();
             }
 
             int spinUpTime = 20;
@@ -201,17 +201,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             for (int i = 0; i < 2; i++)
             {
-                //int expandedi = Utilities.ExpandedIndex(i);
-
-                //RotateArm(i, expandedi * holdOutArmsAngle, AITimer, decelTime, EasingFunctions.EaseOutBack);
-
                 Arm(i).LerpToRestPosition(EasingFunctions.EaseOutBack(AITimer / (float)decelTime));
             }
 
             if (AITimer == decelTime)
             {
-                //CrabOwner.ResetArmRotations();
-                MainCamera.LockCamera(true);
+                MainCamera.LockCameraMovement();
                 End();
             }
         }

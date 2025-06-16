@@ -29,7 +29,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             if (AITimer == 0)
             {
-                MainCamera.LockCamera(true);
+                MainCamera.LockCameraMovement();
                 //player.LockMovement();
                 Owner.Position = Utilities.CentreWithCamera() - new Vector2(distanceToLeftOfPlayer, distanceAbovePlayer);
                 Owner.Velocity = Vector2.UnitX * distanceToLeftOfPlayer / (float)moveInDuration;

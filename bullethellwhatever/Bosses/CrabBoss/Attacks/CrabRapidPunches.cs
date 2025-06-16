@@ -34,6 +34,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             float initialDashSpeed = 35f;
             float minDistanceForTurnAround = 1500f;
 
+            if (AITimer == 0)
+            {
+                MainCamera.Unlock();
+            }
+
             if (AITimer >= 0 && AITimer <= rapidPunchesDuration)
             {
                 int dashDuration = rapidPunchesDuration;
@@ -203,8 +208,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             if (Repetition == 3)
             {
                 //return new DoNothing(CrabOwner);
+                MainCamera.LockCameraMovement();
                 return base.PickNextAttack();
             }
+
             else return new CrabRapidPunches(CrabOwner, Repetition + 1);
         }
     }

@@ -79,7 +79,8 @@ namespace bullethellwhatever.BaseClasses
 
         public Rectangle VisibleArea;
 
-        public bool Locked;
+        public bool TranslationLocked;
+        public bool ZoomLocked;
         /// <summary>
         /// The position of the camera in <b>world co-ordinates</b>.
         /// </summary>
@@ -115,13 +116,38 @@ namespace bullethellwhatever.BaseClasses
         {
             Reset();
             UpdateMatrices();
-            Locked = false;
+            TranslationLocked = false;
+            ZoomLocked = false;
         }
 
-        public void LockCamera(bool locked = true)
+        public void Lock(bool locked = true)
         {
-            Locked = locked;
+            LockCameraMovement(locked);
+            LockCameraZoom(locked);
         }
+
+        public void Unlock()
+        {
+            LockCameraMovement(false);
+            LockCameraZoom(false);
+        }
+        public void LockCameraMovement(bool locked = true)
+        {
+            TranslationLocked = locked;
+        }
+        public void UnlockCameraMovement()
+        {
+            TranslationLocked = false;
+        }
+        public void LockCameraZoom(bool locked = true)
+        {
+            ZoomLocked = locked;
+        }
+        public void UnlockCameraZoom()
+        {
+            ZoomLocked = false;
+        }
+
         public void UpdateVisibleArea()
         {
             // only with translation for now, add zoom later possibly

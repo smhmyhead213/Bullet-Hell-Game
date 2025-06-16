@@ -279,10 +279,13 @@ namespace bullethellwhatever.BaseClasses
         }
         public void ControlCamera()
         {
-            if (!MainCamera.Locked)
+            if (!MainCamera.TranslationLocked)
             {
-                MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);
+                MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);               
+            }
 
+            if (!MainCamera.ZoomLocked)
+            {
                 float minZoom = 1f;
                 float maxZoom = 1.5f;
 
@@ -292,6 +295,8 @@ namespace bullethellwhatever.BaseClasses
 
                 if (furthest is not null)
                 {
+                    //zoomPos = Position + (furthest.Position - Position) / 2f;
+
                     float distance = Utilities.DistanceBetweenVectors(Position, furthest.Position);
 
                     float scaleFactor = Min(minZoom, (GameHeight / 2) / distance);
