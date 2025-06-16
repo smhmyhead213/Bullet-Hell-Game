@@ -78,7 +78,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             MainInstance.GraphicsDevice.SetRenderTarget(MenuRenderTarget);
 
-            
+            MainInstance.GraphicsDevice.Clear(Color.CornflowerBlue);
+
             Texture2D box = AssetRegistry.GetTexture2D("box");
             Vector2 origin = new Vector2(box.Width, box.Height) / 2f;
             s.Draw(box, Vector2.Zero, null, Color.Red, 0f, origin, Vector2.One, SpriteEffects.None, 0f);
