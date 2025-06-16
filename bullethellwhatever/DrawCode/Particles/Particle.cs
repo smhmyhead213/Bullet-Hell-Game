@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.MainFiles;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace bullethellwhatever.DrawCode.Particles
 {
@@ -93,5 +94,10 @@ namespace bullethellwhatever.DrawCode.Particles
         {
             Die();
         }
+
+        //public override void Draw(SpriteBatch spriteBatch)
+        //{
+        //    base.Draw(spriteBatch);
+        //}
     }
 }

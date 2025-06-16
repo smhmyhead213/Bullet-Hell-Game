@@ -41,7 +41,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 Owner.Velocity = Vector2.Zero;
                 Owner.RotationalVelocity = 0;
                 //player.UnlockMovement();
-                MainCamera.LockCamera(false);
+                //MainCamera.LockCamera(false);
             }
 
             if (AITimer == moveInDuration + waitTimeAfterStopping)

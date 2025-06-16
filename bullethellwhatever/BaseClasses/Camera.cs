@@ -118,16 +118,16 @@ namespace bullethellwhatever.BaseClasses
             Locked = false;
         }
 
-        public void LockCamera(bool locked)
+        public void LockCamera(bool locked = true)
         {
             Locked = locked;
         }
         public void UpdateVisibleArea()
         {
-            // try again later
-            Microsoft.Xna.Framework.Vector2 centre = Position;
-            Microsoft.Xna.Framework.Vector2 topLeft = centre - (Utilities.CentreOfScreen() / CameraScale);
-            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)(GameWidth / CameraScale), (int)(GameHeight / CameraScale));
+            // only with translation for now, add zoom later possibly
+
+            Microsoft.Xna.Framework.Vector2 topLeft = Position - Utilities.CentreOfScreen();
+            VisibleArea = new Rectangle((int)topLeft.X, (int)topLeft.Y, GameWidth, GameHeight);           
         }
 
         public void UpdateMatrices()
@@ -141,10 +141,9 @@ namespace bullethellwhatever.BaseClasses
             ZoomMatrix = CalculateScaleMatrix();
 
             RotationMatrix = CalculateRotationMatrix();
-
-            // UNCOMMENT ------------------------------------------------
-            //Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
-            Matrix = Matrix4x4.Identity;
+         
+            Matrix = TranslationMatrix * RotationMatrix * ZoomMatrix;
+            //Matrix = Matrix4x4.Identity;
         }
 
         public Microsoft.Xna.Framework.Vector2 CameraPositionWithScreenShake()
@@ -227,7 +226,7 @@ namespace bullethellwhatever.BaseClasses
 
         public Matrix4x4 ShaderMatrix()
         {
-            return Matrix4x4.Identity;
+            //return Matrix4x4.Identity;
 
             System.Numerics.Vector3 cameraPositionVertex = PrimitiveManager.ToVertexCoordsThree(CameraPositionWithScreenShake());
             Matrix4x4 translation = Matrix4x4.CreateTranslation(new System.Numerics.Vector3(-cameraPositionVertex.X, -cameraPositionVertex.Y, 0));

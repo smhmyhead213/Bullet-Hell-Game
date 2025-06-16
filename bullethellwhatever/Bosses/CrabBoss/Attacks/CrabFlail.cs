@@ -22,6 +22,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override void Execute(int AITimer)
         {
+            if (AITimer == 0)
+            {
+                MainCamera.LockCamera(false);
+            }
+
             int spinUpTime = 20;
             float spinAngularAccel = PI / 90;
             ref float angularVelocity = ref Owner.ExtraData[1]; // index 0 is reserved 
@@ -206,6 +211,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             if (AITimer == decelTime)
             {
                 //CrabOwner.ResetArmRotations();
+                MainCamera.LockCamera(true);
                 End();
             }
         }

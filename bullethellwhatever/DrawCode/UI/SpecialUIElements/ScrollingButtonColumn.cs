@@ -10,6 +10,7 @@ using bullethellwhatever.MainFiles;
 using SharpDX.Direct3D9;
 using bullethellwhatever.AssetManagement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
 
 namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 {
@@ -34,7 +35,20 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 uIElement.PositionInMenu -= new Vector2(0f, height);
             }
         }
-       
+
+        public override void Update()
+        {
+            base.Update();
+
+            //if (AITimer == 30)
+            //{
+            //    //File.Create("test.jpg");
+            //    Stream stream = File.OpenWrite("test.jpg");
+            //    //string place = Path.GetFullPath("test.jpg");
+            //    MenuRenderTarget.SaveAsJpeg(stream, MenuRenderTarget.Width, MenuRenderTarget.Height);
+            //}
+        }
+
         public override void AI()
         {
             if (IsKeyPressed(Keys.W))
@@ -84,7 +98,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             Vector2 scale = new Vector2(1f / MenuRenderTarget.Width * 960f, 1f / MenuRenderTarget.Height * 540f);
 
             s.Draw(MenuRenderTarget, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, origin2, scale, SpriteEffects.None, 1f);
-            Drawing.DrawTextureDimensions(s, box, new Vector2(MenuRenderTarget.Width, MenuRenderTarget.Height), Utilities.CentreOfScreen());
+            
+            //Drawing.DrawTextureDimensions(s, box, new Vector2(MenuRenderTarget.Width, MenuRenderTarget.Height), Utilities.CentreOfScreen());
             //s.Draw(box, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, origin2, Vector2.One, SpriteEffects.None, 1f);
 
             //s.Draw(box, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, new Vector2(box.Width, box.Height) / 2, Vector2.One, SpriteEffects.None, 1f);

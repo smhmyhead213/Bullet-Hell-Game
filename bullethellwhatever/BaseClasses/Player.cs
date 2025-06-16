@@ -145,7 +145,7 @@ namespace bullethellwhatever.BaseClasses
                 Velocity.Y = Velocity.Y + MoveSpeed;
             }
 
-            if (downPressed && TouchingBottom())
+            if (TouchingBottom() && downPressed)
             {
                 Position.Y = MainCamera.VisibleArea.Bottom + GameHeight - (Texture.Height / 2f * GetSize().Y);
             }
@@ -288,7 +288,7 @@ namespace bullethellwhatever.BaseClasses
 
                 NPC furthest = FurthestEnemyFromPlayer();
 
-                Vector2 zoomPos = Utilities.CentreOfScreen() + new Vector2(200f, 200f);
+                Vector2 zoomPos = Utilities.CentreOfScreen();
 
                 if (furthest is not null)
                 {

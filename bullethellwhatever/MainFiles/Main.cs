@@ -59,7 +59,6 @@ namespace bullethellwhatever.MainFiles
         public static SoundEffectInstance musicInstance;
 
         public static RenderTarget2D MainRT;
-        public static RenderTarget2D NewRT;
 
         public static Player player;
 
@@ -124,7 +123,6 @@ namespace bullethellwhatever.MainFiles
             _graphics.DeviceCreated += GraphicsManager_DeviceCreated;
 
             MainRT = Drawing.CreateRTWithPreferredDefaults(GameWidth, GameHeight);
-            NewRT = Drawing.CreateRTWithPreferredDefaults(GameWidth / 2, GameHeight / 2);
             //Mouse.SetCursor(MouseCursor.No);
 
             base.Initialize();
@@ -166,29 +164,6 @@ namespace bullethellwhatever.MainFiles
             base.Update(gameTime);
         }
 
-        public void TempRTTest()
-        {
-            _spriteBatch.Begin();
-
-            GraphicsDevice.SetRenderTarget(NewRT);
-
-            Drawing.DrawBox(Vector2.Zero, Color.Red, 1f);
-            Drawing.DrawBox(new Vector2(NewRT.Width, 0), Color.Red, 1f);
-            Drawing.DrawBox(new Vector2(0, NewRT.Height), Color.Red, 1f);
-            Drawing.DrawBox(new Vector2(NewRT.Width, NewRT.Height), Color.Red, 1f);
-
-            GraphicsDevice.SetRenderTarget(MainRT);
-
-            _spriteBatch.Draw(NewRT, new Vector2(100, 100), null, Color.White, 0f, Vector2.Zero, Vector2.One * 0.3f, SpriteEffects.None, 1f);
-
-            GraphicsDevice.SetRenderTarget(null);
-
-            _spriteBatch.Draw(MainRT, Vector2.Zero, Color.White);
-
-            _spriteBatch.End();
-
-            GraphicsDevice.SetRenderTarget(MainRT);
-        }
         protected override void Draw(GameTime gameTime)
         {
             Drawing.Timer++;
@@ -200,7 +175,7 @@ namespace bullethellwhatever.MainFiles
             GraphicsDevice.SetRenderTarget(MainRT);
             GraphicsDevice.Clear(Color.Black);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
 
             switch (GameState.State)
             {
