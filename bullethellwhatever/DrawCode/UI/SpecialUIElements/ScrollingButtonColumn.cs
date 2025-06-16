@@ -71,8 +71,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             base.Display();
             Size.Y = CalculateTotalHeight();
-            //MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
-            MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults(GameWidth / 2, GameHeight / 2);
+            MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
         }
         public override void Draw(SpriteBatch s)
         {
@@ -84,31 +83,21 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             MainInstance.GraphicsDevice.Clear(Color.Black);
 
-            Texture2D box = AssetRegistry.GetTexture2D("box");
-            Vector2 origin = new Vector2(box.Width, box.Height) / 2f;
-            s.Draw(box, Vector2.Zero, null, Color.Red, 0f, origin, Vector2.One, SpriteEffects.None, 0f);
-            s.Draw(box, new Vector2(0f, MenuRenderTarget.Height), null, Color.Red, 0f, origin, Vector2.One, SpriteEffects.None, 0f);
-            s.Draw(box, new Vector2(MenuRenderTarget.Width, 0f), null, Color.Red, 0f, origin, Vector2.One, SpriteEffects.None, 0f);
-            s.Draw(box, new Vector2(MenuRenderTarget.Width, MenuRenderTarget.Height), null, Color.Red, 0f, origin, Vector2.One, SpriteEffects.None, 0f);
+            // cant just use positions to draw as we are drawing to a render target
+            Drawing.BetterDraw(Texture, new Vector2(Size.X, Size.Y) / 2f, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+
+            foreach (UIElement uiIElement in UIElements)
+            {
+                uiIElement.DrawAtPosition(s, uiIElement.PositionInMenu);
+            }
 
             s.End();
-         
+
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
 
             s.Begin();
 
-            //Drawing.BetterDraw(MenuRenderTarget, Utilities.CentreOfScreen(), null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
-
-            Vector2 origin2 = new Vector2(MenuRenderTarget.Width / 2, MenuRenderTarget.Height / 2);
-            origin2 = Vector2.Zero;
-            Vector2 scale = new Vector2(1f / MenuRenderTarget.Width * 960f, 1f / MenuRenderTarget.Height * 540f);
-
-            s.Draw(MenuRenderTarget, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, origin2, scale, SpriteEffects.None, 1f);
-            
-            //Drawing.DrawTextureDimensions(s, box, new Vector2(MenuRenderTarget.Width, MenuRenderTarget.Height), Utilities.CentreOfScreen());
-            //s.Draw(box, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, origin2, Vector2.One, SpriteEffects.None, 1f);
-
-            //s.Draw(box, new Vector2(GameWidth / 2f, GameHeight / 2f), null, Color.Red, 0f, new Vector2(box.Width, box.Height) / 2, Vector2.One, SpriteEffects.None, 1f);
+            Drawing.BetterDraw(MenuRenderTarget, Position, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
         }
     }
 }

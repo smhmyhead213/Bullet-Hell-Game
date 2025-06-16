@@ -244,11 +244,16 @@ namespace bullethellwhatever.DrawCode.UI
         {
             return IsSelected() ? Color.Red : Colour; // in the future make the colour more red, not just red
         }
-        public virtual void Draw(SpriteBatch s)
+
+        public void DrawAtPosition(SpriteBatch s, Vector2 position)
         {
             Color colour = ColourIfSelected();
-            
-            Drawing.BetterDraw(Texture, Position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+
+            Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+        }
+        public virtual void Draw(SpriteBatch s)
+        {
+            DrawAtPosition(s, Position);
         }
     }
 }
