@@ -76,9 +76,13 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         }
         public override void Draw(SpriteBatch s)
         {
+            s.End();
+
             MainInstance.GraphicsDevice.SetRenderTarget(MenuRenderTarget);
 
-            MainInstance.GraphicsDevice.Clear(Color.CornflowerBlue);
+            s.Begin(); // this is UI so dont use camera
+
+            MainInstance.GraphicsDevice.Clear(Color.Black);
 
             Texture2D box = AssetRegistry.GetTexture2D("box");
             Vector2 origin = new Vector2(box.Width, box.Height) / 2f;
