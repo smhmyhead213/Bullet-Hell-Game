@@ -404,6 +404,16 @@ namespace bullethellwhatever.DrawCode.UI
         public Vector2 RelativeCentreOfMenu() => new Vector2(Width(), Height()) / 2f;
 
         public Vector2 TopLeft() => Position - RelativeCentreOfMenu();
+
+        /// <summary>
+        /// Returns a Rectangle that excludes the margins of the menu.
+        /// </summary>
+        /// <returns></returns>
+        public RectangleF InsideBoundingBox()
+        {
+            Vector2 topLeft = TopLeft();
+            return new RectangleF(topLeft.X + MarginX, topLeft.Y + MarginY, Width() - 2 * MarginX, Height() - 2 * MarginY);
+        }
         public override void Draw(SpriteBatch s)
         {
             //Colour = HeldByMouse ? Color.Red : Color.Green;

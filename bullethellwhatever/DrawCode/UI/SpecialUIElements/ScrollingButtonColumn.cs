@@ -71,7 +71,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             foreach (UIElement uIElement in UIElements)
             {
-                uIElement.Interactable = uIElement.BoundingBox().Intersects(BoundingBox());
+                uIElement.Interactable = uIElement.BoundingBox().Intersects(InsideBoundingBox());
             }
         }
 
