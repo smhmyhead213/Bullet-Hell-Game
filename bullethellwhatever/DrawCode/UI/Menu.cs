@@ -117,6 +117,14 @@ namespace bullethellwhatever.DrawCode.UI
             return AddUIElementToRow(uiElement, CurrentRow);
         }
 
+        /// <summary>
+        /// Adds a UIElement to the RIGHT side of a row. Does not (for now) support adding elements anywhere else in the row.
+        /// </summary>
+        /// <param name="uiElement"></param>
+        /// <param name="row"></param>
+        /// <param name="strictRowFilling"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool AddUIElementToRow(UIElement uiElement, int row, bool strictRowFilling = true)
         {
             if (!BuildingMode)
@@ -143,8 +151,10 @@ namespace bullethellwhatever.DrawCode.UI
                 uiElement.PositionInMenu = new Vector2(RowLength(row) + uiElement.Size.X / 2, RowHeight(row) + uiElement.Size.Y / 2);
 
                 uiElement.AddToMenu(this);
+                uiElement.Position = uiElement.CalculateActualPostion();
                 Rows[row].Add(uiElement); // make sure any changes i make after this to the ui element are copied here - should be fine because its a ref
 
+                // for future: if you decide to support adding stuff in between other stuff, make sure a sort is done to keep stuff in order by X position
                 return true;
             }
             else if (!horizontalSpaceAvailable && verticalSpaceAvailable)

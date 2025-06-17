@@ -189,8 +189,8 @@ namespace bullethellwhatever.MainFiles
 
             _spriteBatch.Begin();
 
-            Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
-            Drawing.DrawBox(MainCamera.VisibleArea.BottomRight(), Color.Red, 5f);
+            //Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
+            //Drawing.DrawBox(MainCamera.VisibleArea.BottomRight(), Color.Red, 5f);
 
             _spriteBatch.End();
 

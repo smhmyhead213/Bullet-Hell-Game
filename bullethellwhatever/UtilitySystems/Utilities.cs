@@ -639,7 +639,38 @@ namespace bullethellwhatever
             return false;
         }
 
-        //public static System.Numerics.Vector4 Transform
+        public static float LongestStringByPixelLength(string[] strings, SpriteFont font)
+        {
+            float max = font.MeasureString(strings[0]).X;
+
+            for (int i = 1; i < strings.Length; i++)
+            {
+                float length = font.MeasureString(strings[i]).X;
+
+                if (length > max)
+                {
+                    max = length;
+                }
+            }
+
+            return max;
+        }
+        public static float TallestStringByPixelLength(string[] strings, SpriteFont font)
+        {
+            float max = font.MeasureString(strings[0]).Y;
+
+            for (int i = 1; i < strings.Length; i++)
+            {
+                float length = font.MeasureString(strings[i]).Y;
+
+                if (length > max)
+                {
+                    max = length;
+                }
+            }
+
+            return max;
+        }
         public static System.Numerics.Matrix4x4 ScaleMatrix(float xscale, float yscale)
         {
             return new System.Numerics.Matrix4x4(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);

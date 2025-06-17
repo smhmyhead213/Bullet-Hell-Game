@@ -18,48 +18,90 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
         public void Construct()
         {
-            float buttonWidth = 250f;
-            float buttonHeight = 100f;
-            float marginX = 0f;
-            float marginY = 0f;
+            MarginX = 30f;
+            MarginY = 30f;
 
-            float menuWidth = buttonWidth + 2 * marginX;
+            CreateColumns();
 
-            MarginY = 50f;
-            float menuHeight = Height() - 2 * MarginY;
+            //float menuWidth = buttonWidth + 2 * marginX;
 
-            ScrollingButtonColumn sidebar = new ScrollingButtonColumn("box", new Vector2(menuWidth, menuHeight), Vector2.Zero, 5f);
+            //MarginY = 50f;
+            //float menuHeight = Height() - 2 * MarginY;
 
-            sidebar.SetOpacity(1f);
+            
 
-            sidebar.StartMenuBuilder(marginX, marginY, 0);
+            //sidebar.SetOpacity(1f);
 
-            Action clickEvent = new Action(() =>
+            //sidebar.StartMenuBuilder(marginX, marginY, 0);
+
+            //string[] words = "this is good news. we can finally be bees. this isn't your world, but we can be bees. this is good news. you can be a bee. you'll live like a bee. a pet. a pet? a pet, mark. this is good news. you'll live for 30 years. this is insane!".Split(" ");
+
+            //for (int i = 0; i < words.Length; i++)
+            //{
+            //    TextButton test = new TextButton(words[i], 20, 20, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
+            //    test.Interactable = false;
+            //    sidebar.AddUIElementAuto(test);
+            //}
+
+            //sidebar.TotalButtonHeight = sidebar.CalculateTotalHeight(); // no plans to add more buttons after creation of menu for now. if this is done, this may need to be updated on button add
+
+            //float sidebarIndentFromLeft = 50f;
+            
+            //sidebar.PositionInMenu = new Vector2(sidebar.Width() / 2f + sidebarIndentFromLeft, Height() / 2f);
+            //AddUIElement(sidebar);
+            //sidebar.Display();
+        }
+
+        public void CreateColumns()
+        {
+            float sectionColumnWidth = GameWidth * 0.45f; // the width of the column containing the shortcut button to each section
+            float optionsColumnWidth = Width() - 2 * MarginX - sectionColumnWidth; // the width of the column containing the actual settings
+            
+            float headingHeight = 200f;
+            float sectionColumnMarginX = 10f;
+            float sectionColumnPaddingY = 10f;
+            float sectionButtonsTextMarginX = 20f;
+            float sectionButtonsTextMarginY = 20f;
+
+            float textScale = 8f;
+
+            TextButton settingsHeading = new TextButton("box", "SETTINGS", 20f, 10f, new Vector2(sectionColumnWidth - 2 * sectionColumnMarginX, headingHeight), Vector2.Zero);
+            settingsHeading.Interactable = false;
+            
+            string[] sections = ["AUDIO", "CONTROLS", "DISPLAY", "MISC"];
+
+            float longestStringLength = Utilities.LongestStringByPixelLength(sections, font);
+            float tallestStringHeight = Utilities.TallestStringByPixelLength(sections, font);
+            //float buttonWidth = sectionColumnWidth * 0.5f;
+            float buttonWidth = longestStringLength * textScale + 2 * sectionButtonsTextMarginX;
+            float buttonHeight = tallestStringHeight * textScale + 2 * sectionButtonsTextMarginX;
+
+            Menu sidebar = new Menu("box", new Vector2(sectionColumnWidth, headingHeight + buttonHeight * sections.Length + 2 * sectionColumnPaddingY), Vector2.Zero);
+            sidebar.StartMenuBuilder(sectionColumnMarginX, sectionColumnPaddingY, 0f);
+            bool addedHeading = sidebar.AddUIElementAuto(settingsHeading);
+
+            float leftHandEmptySpace = sectionColumnWidth - buttonWidth - 2 * sectionColumnMarginX - 1; // subtract one because of floating point imprecision when theres exactly enough space
+
+            for (int i = 0; i < sections.Length; i++)
             {
-                int sparks = 30;
+                EmptySpace emptySpaceLeft = new EmptySpace(new Vector2(leftHandEmptySpace, buttonHeight), Vector2.Zero);
 
-                for (int i = 0; i < sparks; i++)
-                {
-                    CommonParticles.Spark(MousePositionWithCamera(), 40f, 60, Color.Orange);
-                }
-            });
+                sidebar.AddUIElementAuto(emptySpaceLeft);
 
-            string[] words = "this is good news. we can finally be bees. this isn't your world, but we can be bees. this is good news. you can be a bee. you'll live like a bee. a pet. a pet? a pet, mark. this is good news. you'll live for 30 years. this is insane!".Split(" ");
+                TextButton sectionButton = new TextButton("ButtonBlankRound", sections[i], sectionButtonsTextMarginX, sectionButtonsTextMarginY, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
 
-            for (int i = 0; i < words.Length; i++)
-            {
-                TextButton test = new TextButton(words[i], 20, 20, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
-                test.Interactable = false;
-                test.SetClickEvent(clickEvent);
-                sidebar.AddUIElementAuto(test);
+                sectionButton.ScaleTextToFit = false;
+                sectionButton.TextScale = new Vector2(textScale);
+                sectionButton.Colour = Color.White;
+                sectionButton.TextMarginX = sectionButtonsTextMarginX;
+                sectionButton.CentreTextVertically();
+                sectionButton.RightAlignText();
+
+                sidebar.AddUIElementAuto(sectionButton);
             }
 
-            sidebar.TotalButtonHeight = sidebar.CalculateTotalHeight(); // no plans to add more buttons after creation of menu for now. if this is done, this may need to be updated on button add
-
-            float sidebarIndentFromLeft = 50f;
-            
-            sidebar.PositionInMenu = new Vector2(sidebar.Width() / 2f + sidebarIndentFromLeft, Height() / 2f);
-            AddUIElement(sidebar);
+            StartMenuBuilder(MarginX, MarginY, 0f);
+            AddUIElementAuto(sidebar);
             sidebar.Display();
         }
     }

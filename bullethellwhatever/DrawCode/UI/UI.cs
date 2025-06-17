@@ -225,10 +225,9 @@ namespace bullethellwhatever.DrawCode.UI
         {
             ResetCameraForMenus();
 
-            SettingsMenu settingsMenu = new SettingsMenu("MenuBG", new Vector2(GameWidth * 0.6f, GameHeight * 0.6f), Utilities.CentreOfScreen());
+            SettingsMenu settingsMenu = new SettingsMenu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
 
             settingsMenu.Construct();
-            settingsMenu.Draggable = true;
             settingsMenu.Display();
 
             return;

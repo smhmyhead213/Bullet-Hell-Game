@@ -16,7 +16,9 @@ namespace bullethellwhatever.DrawCode.UI
     public class UIElement
     {
         public Vector2 PositionInMenu; // position relative to menu its contained in
-        public Vector2 Position; // actual position in game
+        public Vector2 Position;
+
+        // actual position in game
         public Vector2 InitialSize;
         public Vector2 Size;
         public Texture2D Texture;
@@ -242,7 +244,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual Color ColourIfSelected()
         {
-            return IsSelected() ? Color.Red : Colour; // in the future make the colour more red, not just red
+            return IsSelected() && Interactable ? Color.Red : Colour; // in the future make the colour more red, not just red
         }
 
         public virtual void DrawAtPosition(SpriteBatch s, Vector2 position)
