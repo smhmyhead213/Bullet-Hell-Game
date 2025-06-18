@@ -279,12 +279,12 @@ namespace bullethellwhatever.BaseClasses
         }
         public void ControlCamera()
         {
-            if (!MainCamera.TranslationLocked)
+            if (!MainCamera.TranslationLocked || true)
             {
                 MainCamera.Position = Vector2.LerpPrecise(MainCamera.Position, player.Position, 0.03f);               
             }
 
-            if (!MainCamera.ZoomLocked)
+            if (!MainCamera.ZoomLocked || true)
             {
                 float minZoom = 1f;
                 float maxZoom = 1.5f;
