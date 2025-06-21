@@ -237,14 +237,24 @@ namespace bullethellwhatever.DrawCode.UI
             return new RectangleF(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);
         }
 
+        public virtual Color HoveredColour()
+        {
+            return Color.Red;
+        }
+
         public virtual void AI()
         {
 
         }
 
+        public bool InteractableAndHovered()
+        {
+            return IsSelected() && Interactable;
+        }
+
         public virtual Color ColourIfSelected()
         {
-            return IsSelected() && Interactable ? Color.Red : Colour; // in the future make the colour more red, not just red
+            return InteractableAndHovered() ? HoveredColour() : Colour; // in the future make the colour more red, not just red
         }
 
         public virtual void DrawAtPosition(SpriteBatch s, Vector2 position)

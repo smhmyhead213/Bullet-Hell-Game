@@ -14,6 +14,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
     public class TextButton : UIElement
     {
         public string Text;
+        public Color TextColour;
+        public Color HoveredTextColour;
+
         public float TextHorizontalPaddingLeft;
         public float TextVerticalPaddingTop;
         public float TextMarginX;
@@ -37,6 +40,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             TextHorizontalPaddingLeft = horizontalPadding;
             TextVerticalPaddingTop = verticalPadding;
             Colour = Color.Black;
+            TextColour = Color.White;
+            HoveredTextColour = Color.Black;
             Size = size;
             Position = position;
             TextScale = Vector2.One;
@@ -49,6 +54,13 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             DrawAtPosition(s, Position);
         }
+
+        public override Color HoveredColour()
+        {
+            //return Color.AliceBlue;
+            return new Color(255, 255, 254);
+        }
+
         public void RightAlignText()
         {
             TextHorizontalPaddingLeft = Size.X - 2 * TextMarginX - TextSize().X;
@@ -79,6 +91,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public override void DrawAtPosition(SpriteBatch s, Vector2 position)
         {
             Color colour = ColourIfSelected();
+            Color textColour = InteractableAndHovered() ? HoveredTextColour : TextColour;
+
             Vector2 topLeft = new Vector2(position.X - Size.X / 2, position.Y - Size.Y / 2);
 
             Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
@@ -97,7 +111,11 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 scale = new Vector2(Min(widthScale, heightScale));
             }
 
-            Drawing.DrawText(Text, topLeft + new Vector2(TextMarginX + TextHorizontalPaddingLeft, TextMarginY + TextVerticalPaddingTop), s, font, Color.White, scale);
+            // for some reason when the font is drawn it draws ever so slightly below where its told to, 5 added to combat this
+            Vector2 pos = topLeft + new Vector2(TextMarginX + TextHorizontalPaddingLeft, TextMarginY + TextVerticalPaddingTop + 6f);
+            //pos = topLeft + new Vector2(TextMarginX + TextHorizontalPaddingLeft, 0);
+
+            Drawing.DrawText(Text, pos, s, font, textColour, scale);
         }
     }
 }

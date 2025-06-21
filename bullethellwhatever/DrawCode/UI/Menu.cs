@@ -236,6 +236,10 @@ namespace bullethellwhatever.DrawCode.UI
             return maxHeight;
         }
 
+        public float AvailableWidth()
+        {
+            return Width() - 2 * MarginX;
+        }
         public void MoveToNextRow()
         {
             CurrentRow++;

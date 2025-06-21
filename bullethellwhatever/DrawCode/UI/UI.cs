@@ -225,7 +225,9 @@ namespace bullethellwhatever.DrawCode.UI
         {
             ResetCameraForMenus();
 
-            SettingsMenu settingsMenu = new SettingsMenu("box", new Vector2(GameWidth, GameHeight), Utilities.CentreOfScreen());
+            // make the menu super tall so we can add stuff freely
+            Vector2 size = new Vector2(GameWidth, GameHeight * 2);
+            SettingsMenu settingsMenu = new SettingsMenu("box", new Vector2(GameWidth, GameHeight * 2), size / 2);
 
             settingsMenu.Construct();
             settingsMenu.Display();

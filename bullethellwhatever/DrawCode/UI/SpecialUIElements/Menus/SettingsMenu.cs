@@ -54,7 +54,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
         public void CreateColumns()
         {
-            float sectionColumnWidth = GameWidth * 0.45f; // the width of the column containing the shortcut button to each section
+            float sectionColumnWidth = GameWidth * 0.35f; // the width of the column containing the shortcut button to each section
             float optionsColumnWidth = Width() - 2 * MarginX - sectionColumnWidth; // the width of the column containing the actual settings
             
             float headingHeight = 200f;
@@ -63,7 +63,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             float sectionButtonsTextMarginX = 20f;
             float sectionButtonsTextMarginY = 20f;
 
-            float textScale = 8f;
+            float textScale = 4f;
 
             TextButton settingsHeading = new TextButton("box", "SETTINGS", 20f, 10f, new Vector2(sectionColumnWidth - 2 * sectionColumnMarginX, headingHeight), Vector2.Zero);
             settingsHeading.Interactable = false;
@@ -76,11 +76,15 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             float buttonWidth = longestStringLength * textScale + 2 * sectionButtonsTextMarginX;
             float buttonHeight = tallestStringHeight * textScale + 2 * sectionButtonsTextMarginX;
 
-            Menu sidebar = new Menu("box", new Vector2(sectionColumnWidth, headingHeight + buttonHeight * sections.Length + 2 * sectionColumnPaddingY), Vector2.Zero);
+            float sidebarHeight = headingHeight + buttonHeight * sections.Length + 2 * sectionColumnPaddingY;
+            sidebarHeight = GameHeight;
+
+            Menu sidebar = new Menu("box", new Vector2(sectionColumnWidth, sidebarHeight), Vector2.Zero);
             sidebar.StartMenuBuilder(sectionColumnMarginX, sectionColumnPaddingY, 0f);
             bool addedHeading = sidebar.AddUIElementAuto(settingsHeading);
 
             float leftHandEmptySpace = sectionColumnWidth - buttonWidth - 2 * sectionColumnMarginX - 1; // subtract one because of floating point imprecision when theres exactly enough space
+            float paddingBetweenButtons = 40f;
 
             for (int i = 0; i < sections.Length; i++)
             {
@@ -98,6 +102,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
                 sectionButton.RightAlignText();
 
                 sidebar.AddUIElementAuto(sectionButton);
+
+                EmptySpace padding = new EmptySpace(new Vector2(sidebar.AvailableWidth(), paddingBetweenButtons), Vector2.Zero);
+                sidebar.AddUIElementAuto(padding);
             }
 
             StartMenuBuilder(MarginX, MarginY, 0f);
