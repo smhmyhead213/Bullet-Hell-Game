@@ -109,7 +109,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             StartMenuBuilder(MarginX, MarginY, 0f);
             AddUIElementAuto(sidebar);
-            sidebar.Display();
+            //sidebar.Display();
         }
     }
 }
