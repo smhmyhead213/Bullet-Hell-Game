@@ -112,7 +112,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (IndexOfInteractable == ActiveUIElements.Count)
             {
-                IndexOfInteractable = -1;
+                IndexOfInteractable = 0;
             }
         }
 

@@ -344,15 +344,22 @@ namespace bullethellwhatever.DrawCode.UI
             ClickBox = new RectangleF(TopLeft().X, TopLeft().Y, Width(), Height());
         }
 
-        public void IncrementSelected()
+        /// <summary>
+        /// Returns true if we are still in this menu, and false if we're moving on
+        /// </summary>
+        /// <returns></returns>
+        public bool IncrementSelected()
         {
             if (IndexOfSelected == UIElements.Count - 1)
             {
                 IndexOfSelected = -1;
+                UIManager.IncrementIndexOfInteractable();
+                return true;
             }
             else
             {
                 IndexOfSelected++;
+                return false;
             }
         }
         public void UpdateSelectedElement()
@@ -361,13 +368,19 @@ namespace bullethellwhatever.DrawCode.UI
 
             int startIndex = IndexOfSelected; // track start index so if we get back to it that means theres no other selectable one
 
-            IncrementSelected();
+            bool stayingInThisMenu = IncrementSelected();
+
+            //if (!stayingInThisMenu)
+            //{
+            //    return;
+            //}
 
             if (IndexOfSelected == -1)
             {
                 return;
             }
 
+            // ensure that the next uielement is actually interactable
             while (!UIElements[IndexOfSelected].Interactable)
             {
                 IncrementSelected();
