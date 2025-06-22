@@ -122,21 +122,21 @@ namespace bullethellwhatever.DrawCode.UI
 
             titleMenu.Display();
 
-            UIElement isolated = new UIElement("PlayButton", new Vector2(100f), new Vector2(GameWidth / 6f, GameHeight / 2f));
-            isolated.Display();
+            //UIElement isolated = new UIElement("PlayButton", new Vector2(100f), new Vector2(GameWidth / 6f, GameHeight / 2f));
+            //isolated.Display();
 
-            Menu testMenu = new Menu("MenuBG", new Vector2(500f, 400f), Utilities.CentreOfScreen());
-            testMenu.StartMenuBuilder(0f, 0f, 0f);
+            //Menu testMenu = new Menu("MenuBG", new Vector2(500f, 400f), Utilities.CentreOfScreen());
+            //testMenu.StartMenuBuilder(0f, 0f, 0f);
 
-            int tests = 3;
+            //int tests = 3;
 
-            for (int i = 0; i <= tests; i++) 
-            {
-                UIElement testington = new UIElement("MenuBG", new Vector2(100f));
-                testMenu.AddUIElementAuto(testington);
-            }
+            //for (int i = 0; i <= tests; i++) 
+            //{
+            //    UIElement testington = new UIElement("MenuBG", new Vector2(100f));
+            //    testMenu.AddUIElementAuto(testington);
+            //}
 
-            testMenu.Display();
+            //testMenu.Display();
         }
 
         public static void CreateBossSelectMenu()
