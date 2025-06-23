@@ -240,6 +240,12 @@ namespace bullethellwhatever.DrawCode.UI
         {
             return Width() - 2 * MarginX;
         }
+
+        public float AvailableHeight()
+        {
+            return Height() - 2 * MarginY;
+        }
+
         public void MoveToNextRow()
         {
             CurrentRow++;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.DrawCode.Particles;
@@ -128,12 +129,34 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             float settingsMenuMarginX = 30f;
             float settingsMenuMarginY = 30f;
 
-            mainSettingsColumn.StartMenuBuilder(settingsMenuMarginX, settingsMenuMarginY, 0f);
+            int testButtons = 10;
 
-            //ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(mainSettingsColumn.Width() - 2 * settingsMenuMarginX, 300f), Vector2.Zero, 5f);
-            
-            Slider testSlider = new Slider("box", new Vector2(mainSettingsColumn.Width() - 2 * settingsMenuMarginX, 300f), Vector2.Zero, 0f, 100f, 30f);
-            mainSettingsColumn.AddUIElementAuto(testSlider);
+            mainSettingsColumn.StartMenuBuilder(settingsMenuMarginX, settingsMenuMarginY, 0f);
+            float availableWidth = mainSettingsColumn.AvailableWidth();
+
+            ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(availableWidth, GameHeight), Vector2.Zero, 5f);
+            settingsScrollColumn.StartMenuBuilder(0f, 0f, 0f);
+
+            for (int i = 0; i < testButtons; i++)
+            {
+                TextButton tester = new TextButton("SKIBIDI", 30f, 10f, new Vector2(availableWidth, 300f), Vector2.Zero);
+                tester.ScaleTextToFit = true;
+                bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
+            }
+
+            Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
+
+            settingsScrollColumn.AddUIElementAuto(testSlider);
+
+            for (int i = 0; i < testButtons; i++)
+            {
+                TextButton tester = new TextButton("SKIBIDI", 30f, 10f, new Vector2(availableWidth, 300f), Vector2.Zero);
+                tester.ScaleTextToFit = true;
+                settingsScrollColumn.AddUIElementAuto(tester);
+            }
+
+            bool finishedProperly = mainSettingsColumn.AddUIElementAuto(settingsScrollColumn);
+            settingsScrollColumn.Display();
         }
 
         public override void Draw(SpriteBatch s)

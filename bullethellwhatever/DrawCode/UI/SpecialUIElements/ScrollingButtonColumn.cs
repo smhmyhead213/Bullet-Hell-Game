@@ -105,10 +105,10 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
 
-            s.Begin();
+            s.Begin(samplerState: SamplerState.PointWrap);
 
             Drawing.BetterDraw(MenuRenderTarget, Position, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
-            Drawing.DrawText(ScrollAmount.ToString(), TopLeft() - new Vector2(200f), s, font, Color.White, Vector2.One);
+            //Drawing.DrawText(ScrollAmount.ToString(), TopLeft() - new Vector2(200f), s, font, Color.White, Vector2.One);
         }
     }
 }

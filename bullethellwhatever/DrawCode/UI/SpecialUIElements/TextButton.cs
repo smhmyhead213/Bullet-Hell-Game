@@ -101,14 +101,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             if (IsHovered() && Interactable)
             {
-                Drawing.RestartSB(s, true, false);
+                Drawing.RestartSB(s, true, false, false);
 
                 BGShader.SetColour(Color.White);
                 BGShader.Apply();
 
                 Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
 
-                Drawing.RestartSB(s, false, false);
+                Drawing.RestartSB(s, false, false, false);
             }
 
             Vector2 scale = TextScale;
