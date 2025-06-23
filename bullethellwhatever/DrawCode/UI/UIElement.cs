@@ -104,7 +104,7 @@ namespace bullethellwhatever.DrawCode.UI
             if (ExtraAI is not null)
                 ExtraAI();
 
-            if (IsHovered() && Owner is not null && Owner == UIManager.InteractableUIElement())
+            if (this is not Menu && IsHovered() && Owner is not null && Owner == UIManager.InteractableUIElement())
             {
                 Owner.IndexOfSelected = -1; // if a button is hovered over, abort tab navigation
             }

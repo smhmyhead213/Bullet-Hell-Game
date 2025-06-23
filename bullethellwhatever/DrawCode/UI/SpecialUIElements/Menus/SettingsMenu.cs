@@ -111,5 +111,12 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             AddUIElementAuto(sidebar);
             //sidebar.Display();
         }
+
+        public override void Draw(SpriteBatch s)
+        {
+            base.Draw(s);
+
+            Drawing.DrawText("Interactable Index = " + IndexOfSelected.ToString(), Utilities.CentreOfScreen(), s, font, Color.White, Vector2.One);
+        }
     }
 }

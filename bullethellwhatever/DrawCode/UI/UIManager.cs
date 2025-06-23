@@ -54,8 +54,19 @@ namespace bullethellwhatever.DrawCode.UI
 
             foreach (UIElement element in UIElementsToAddNextFrame)
             {
-                if (element is Menu)
+                if (element is Menu) // if we add a menu, give it selection priority
                 {
+                    if (ActiveUIElements.Count != 0 && IndexOfInteractable != -1) // dont try to take selection priority when there is nothing to take from or if nothing is focused
+                    {
+                        if (ActiveUIElements[IndexOfInteractable] is Menu currentMenu) // if we were focused on a menu, unfocus on its focused element
+                        {
+                            Menu focusedDeepMenu = DeepestFocusedMenu(currentMenu);
+
+                            if (focusedDeepMenu is not null)
+                                focusedDeepMenu.IndexOfSelected = -1; // unfocus
+                        }
+                    }
+
                     IndexOfInteractable = ActiveUIElements.Count; // immediately give interaction priority to menus immediately when they spawn
                 }
 
@@ -141,8 +152,32 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Draw(spriteBatch);
             }
 
-            Drawing.DrawText("Interactable Index = " + IndexOfInteractable.ToString(), new Vector2(GameWidth / 2, GameHeight / 1.5f), spriteBatch, font, Color.White, Vector2.One);
+            Drawing.DrawText("Main Interactable Index = " + IndexOfInteractable.ToString(), new Vector2(GameWidth / 2, GameHeight / 1.5f), spriteBatch, font, Color.White, Vector2.One);
             _spriteBatch.End();
+        }
+
+        public static UIElement Focused()
+        {
+            return ActiveUIElements[IndexOfInteractable];
+        }
+
+        public static Menu? DeepestFocusedMenu(Menu menu)
+        {
+            if (menu.IndexOfSelected == -1)
+            {
+                return menu;
+            }
+
+            UIElement focusedInMenu = menu.UIElements[menu.IndexOfSelected];
+
+            if (focusedInMenu is Menu innerMenu)
+            {
+                return DeepestFocusedMenu(innerMenu);
+            }
+            else
+            {
+                return menu;
+            }
         }
 
         public static void ClearMenus()

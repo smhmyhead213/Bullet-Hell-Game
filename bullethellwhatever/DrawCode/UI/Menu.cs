@@ -458,8 +458,7 @@ namespace bullethellwhatever.DrawCode.UI
         {
             //Colour = HeldByMouse ? Color.Red : Color.Green;
 
-            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
-            Drawing.DrawText("Interactable Index = " + IndexOfSelected.ToString(), Position + new Vector2(100f, 100f), s, font, Color.White, Vector2.One);
+            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size           
 
             foreach (UIElement uiElement in UIElements)
             {
