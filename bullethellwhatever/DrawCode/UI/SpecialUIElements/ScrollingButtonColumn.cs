@@ -82,6 +82,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             if (Size.Y > 0)
                 MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
+
+            TotalButtonHeight = CalculateTotalHeight();
         }
         public override void Draw(SpriteBatch s)
         {

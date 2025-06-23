@@ -182,6 +182,11 @@ namespace bullethellwhatever
                             input.X * MathF.Sin(2 * MathF.PI - angle) + input.Y * MathF.Cos(2 * MathF.PI - angle)); //perform rotation
         }
 
+        public static float AbsMin(float x, float y)
+        {
+            return Min(Abs(x), Abs(y));
+        }
+
         /// <summary>
         /// Returns a random float between -absMax and absMax
         /// </summary>
