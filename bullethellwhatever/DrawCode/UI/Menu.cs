@@ -281,7 +281,8 @@ namespace bullethellwhatever.DrawCode.UI
 
         public override void Display()
         {
-            UIManager.UIElementsToAddNextFrame.Add(this);
+            if (Owner is null)
+                UIManager.UIElementsToAddNextFrame.Add(this);
         }
 
         public override void Remove()
@@ -363,7 +364,15 @@ namespace bullethellwhatever.DrawCode.UI
                 // if this isn't a deathly important menu (such as the pause menu), surrender control to the next uielement.
                 if (!Important)
                 {
-                    UIManager.IncrementIndexOfInteractable();
+                    if (Owner is not null)
+                    {
+                        Owner.IncrementSelected();
+                    }
+                    else
+                    {
+                        IncrementSelected();
+                    }
+
                     return true;
                 }
 

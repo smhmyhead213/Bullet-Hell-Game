@@ -35,7 +35,11 @@ namespace bullethellwhatever.DrawCode.UI
         public Action ExtraAI;
         public Action ClickEvent;
 
-        public bool Interactable;
+        public bool Interactable
+        {
+            get;
+            set;
+        }
         
         public string Name;
         /// <summary>
