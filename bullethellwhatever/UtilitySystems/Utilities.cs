@@ -52,8 +52,7 @@ namespace bullethellwhatever
         }
         public static float InverseLerp(float lower, float upper, float delta)
         {
-            float output = upper - lower;
-            output = delta / output;
+            float output = (delta - lower) / (upper - lower);
             return MathHelper.Clamp(output, 0f, 1f);
         }
         public static Vector2 Normalise(Vector2 vectorToNormalise)

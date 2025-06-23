@@ -117,14 +117,30 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             StartMenuBuilder(MarginX, MarginY, 0f);
             AddUIElementAuto(sidebar);
-            //sidebar.Display();
+
+            // -- LEFT SIDEBAR END --
+            // -- RIGHT SETTINGS STUFF BEGIN --
+
+            Menu mainSettingsColumn = new Menu("MenuBG", new Vector2(optionsColumnWidth, Height() - 2 * MarginY), Vector2.Zero);
+
+            // use the automatic adder to add the settings column, then move it up
+            bool addedSettingsColumn = AddUIElementAuto(mainSettingsColumn);
+            float settingsMenuMarginX = 30f;
+            float settingsMenuMarginY = 30f;
+
+            mainSettingsColumn.StartMenuBuilder(settingsMenuMarginX, settingsMenuMarginY, 0f);
+
+            //ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(mainSettingsColumn.Width() - 2 * settingsMenuMarginX, 300f), Vector2.Zero, 5f);
+            
+            Slider testSlider = new Slider("box", new Vector2(mainSettingsColumn.Width() - 2 * settingsMenuMarginX, 300f), Vector2.Zero, 0f, 100f, 30f);
+            mainSettingsColumn.AddUIElementAuto(testSlider);
         }
 
         public override void Draw(SpriteBatch s)
         {
             base.Draw(s);
 
-            Drawing.DrawText("Interactable Index = " + IndexOfSelected.ToString(), Utilities.CentreOfScreen(), s, font, Color.White, Vector2.One);
+            //Drawing.DrawText("Interactable Index = " + IndexOfSelected.ToString(), Utilities.CentreOfScreen(), s, font, Color.White, Vector2.One);
         }
     }
 }

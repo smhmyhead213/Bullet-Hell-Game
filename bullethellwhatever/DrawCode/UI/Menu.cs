@@ -443,7 +443,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public Vector2 RelativeCentreOfMenu() => new Vector2(Width(), Height()) / 2f;
 
-        public Vector2 TopLeft() => Position - RelativeCentreOfMenu();
+        public override Vector2 TopLeft() => Position - RelativeCentreOfMenu();
 
         /// <summary>
         /// Returns a Rectangle that excludes the margins of the menu.

@@ -152,7 +152,7 @@ namespace bullethellwhatever.DrawCode.UI
                 element.Draw(spriteBatch);
             }
 
-            Drawing.DrawText("Main Interactable Index = " + IndexOfInteractable.ToString(), new Vector2(GameWidth / 2, GameHeight / 1.5f), spriteBatch, font, Color.White, Vector2.One);
+            //Drawing.DrawText("Main Interactable Index = " + IndexOfInteractable.ToString(), new Vector2(GameWidth / 2, GameHeight / 1.5f), spriteBatch, font, Color.White, Vector2.One);
             _spriteBatch.End();
         }
 

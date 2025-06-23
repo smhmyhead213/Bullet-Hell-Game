@@ -114,11 +114,15 @@ namespace bullethellwhatever.DrawCode.UI
                 HandleClick();
             }
 
-            ClickBox = new(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);
+            ClickBox = CalculateClickbox();
 
             AITimer++;
         }
 
+        public virtual RectangleF CalculateClickbox()
+        {
+            return new(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);
+        }
         public virtual bool CanBeClicked()
         {
             return Clicked() && Interactable;// && !WasMouseDownLastFrame;
@@ -250,6 +254,11 @@ namespace bullethellwhatever.DrawCode.UI
         public virtual void AI()
         {
 
+        }
+
+        public virtual Vector2 TopLeft()
+        {
+            return Position - Size / 2f;
         }
 
         public bool InteractableAndHovered()
