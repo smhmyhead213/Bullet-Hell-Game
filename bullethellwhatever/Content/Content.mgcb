@@ -522,6 +522,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/CircleOutlineShader.fx
 
+#begin Shaders/ColourShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ColourShader.fx
+
 #begin Shaders/CrabConeShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

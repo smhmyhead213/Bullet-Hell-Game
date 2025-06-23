@@ -117,7 +117,7 @@ namespace bullethellwhatever.Projectiles.TelegraphLines
         }
         public void Draw(SpriteBatch spritebatch)
         {
-            Effect lineShader = AssetRegistry.GetShader(LineShader);
+            Effect lineShader = AssetRegistry.GetEffect(LineShader);
 
             lineShader.Parameters["uTime"]?.SetValue(TimeAlive);
             lineShader.Parameters["AngularVelocity"]?.SetValue(RotationalVelocity);

@@ -9,6 +9,8 @@ using FMOD.Studio;
 using FMOD;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using bullethellwhatever.DrawCode;
+using Microsoft.Xna.Framework;
 
 namespace bullethellwhatever.AssetManagement
 {
@@ -87,7 +89,7 @@ namespace bullethellwhatever.AssetManagement
         //    }
         //}
 
-        public static Effect GetShader(string fileName)
+        public static Effect GetEffect(string fileName)
         {
             string path = FileNameMap[fileName];
 
@@ -104,6 +106,11 @@ namespace bullethellwhatever.AssetManagement
                 return shader;
             }
         }
+        public static Shader GetShader(string fileName)
+        {
+            return new Shader(fileName, Color.White);
+        }
+
         public static ManagedBank GetBank(string fileName)
         {
             string path = FileNameMap[fileName];

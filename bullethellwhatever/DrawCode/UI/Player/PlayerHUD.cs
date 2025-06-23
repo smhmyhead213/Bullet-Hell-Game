@@ -113,7 +113,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             float opacity = 1f;
 
-            Effect hpBarShader = AssetRegistry.GetShader("PlayerHealthBarShader");
+            Effect hpBarShader = AssetRegistry.GetEffect("PlayerHealthBarShader");
 
             hpBarShader.Parameters["hpRatio"]?.SetValue(player.Health / player.MaxHP);
 

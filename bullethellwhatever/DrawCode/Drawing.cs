@@ -60,6 +60,22 @@ namespace bullethellwhatever.DrawCode
             DrawingShaders = false;
         }
 
+        public static void RestartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
+        {
+            s.End();
+
+            if (returnToMainRT)
+                MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
+
+            SpriteSortMode SBsortMode = shaderDrawing ? SpriteSortMode.Immediate : SpriteSortMode.Deferred;
+
+            DrawingShaders = shaderDrawing;
+
+            System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
+
+            s.Begin(sortMode: SBsortMode, samplerState: SamplerState.PointWrap, transformMatrix: transform);
+        }
+
         public static void EnterShaderMode(SpriteBatch s)
         {
             if (!DrawingShaders)

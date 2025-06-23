@@ -169,7 +169,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
                 Drawing.RestartSpriteBatchForShaders(spriteBatch, true);
             }
 
-            Effect circleShader = AssetRegistry.GetShader("CircleOutlineShader");
+            Effect circleShader = AssetRegistry.GetEffect("CircleOutlineShader");
 
             circleShader.Parameters["colour"]?.SetValue(Color.White.ToVector3());
             circleShader.Parameters["uTime"]?.SetValue(AITimer);

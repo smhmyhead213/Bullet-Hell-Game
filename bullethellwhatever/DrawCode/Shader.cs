@@ -17,7 +17,7 @@ namespace bullethellwhatever.DrawCode
         public NoiseMap Map;
         public Shader(string filename, Color colour)
         { 
-            Effect = AssetRegistry.GetShader(filename);
+            Effect = AssetRegistry.GetEffect(filename);
             Colour = colour;
         }
 

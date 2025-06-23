@@ -24,6 +24,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public bool ScaleTextToFit;
         public Vector2 TextScale;
 
+        public Shader BGShader;
+        
         public TextButton(string text, float horizontalPadding, float verticalPadding, Vector2 size, Vector2 position) : base("box", size, position)
         {
             Prepare(text, horizontalPadding, verticalPadding, size, position);
@@ -48,6 +50,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             TextMarginX = 0f;
             TextMarginY = 0f;
             ScaleTextToFit = true;
+
+            BGShader = AssetRegistry.GetShader("ColourShader");
         }
 
         public override void Draw(SpriteBatch s)
@@ -95,7 +99,17 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             Vector2 topLeft = new Vector2(position.X - Size.X / 2, position.Y - Size.Y / 2);
 
-            Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+            if (IsHovered() && Interactable)
+            {
+                Drawing.RestartSB(s, true, false);
+
+                BGShader.SetColour(Color.White);
+                BGShader.Apply();
+
+                Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+
+                Drawing.RestartSB(s, false, false);
+            }
 
             Vector2 scale = TextScale;
 
