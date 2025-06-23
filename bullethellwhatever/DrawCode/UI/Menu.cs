@@ -353,8 +353,15 @@ namespace bullethellwhatever.DrawCode.UI
             if (IndexOfSelected == UIElements.Count - 1)
             {
                 IndexOfSelected = -1;
-                UIManager.IncrementIndexOfInteractable();
-                return true;
+
+                // if this isn't a deathly important menu (such as the pause menu), surrender control to the next uielement.
+                if (!Important)
+                {
+                    UIManager.IncrementIndexOfInteractable();
+                    return true;
+                }
+
+                return false;
             }
             else
             {
