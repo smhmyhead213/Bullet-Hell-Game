@@ -179,7 +179,12 @@ namespace bullethellwhatever.DrawCode.UI
         /// </summary>
         public virtual void HandleTab()
         {
-            UIManager.IncrementIndexOfInteractable();
+            if (Owner is null)
+                UIManager.IncrementIndexOfInteractable();
+            else
+            {
+                Owner.UpdateSelectedElement();
+            }
         }
 
         /// <summary>

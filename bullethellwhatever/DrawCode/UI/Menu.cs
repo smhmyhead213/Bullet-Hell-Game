@@ -381,7 +381,7 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
             // ensure that the next uielement is actually interactable
-            while (!UIElements[IndexOfSelected].Interactable)
+            while (IndexOfSelected != -1 && !UIElements[IndexOfSelected].Interactable)
             {
                 IncrementSelected();
 
@@ -401,8 +401,14 @@ namespace bullethellwhatever.DrawCode.UI
         }
         public override void HandleTab()
         {
-            UpdateSelectedElement();
+            if (IndexOfSelected != -1)
+                UIElements[IndexOfSelected].HandleTab();
+            else
+            {
+                UpdateSelectedElement();
+            }
         }
+
         public UIElement? GetSelectedElement()
         {
             if (IndexOfSelected >= 0)
@@ -446,6 +452,7 @@ namespace bullethellwhatever.DrawCode.UI
             //Colour = HeldByMouse ? Color.Red : Color.Green;
 
             Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
+            Drawing.DrawText("Interactable Index = " + IndexOfSelected.ToString(), Position + new Vector2(100f, 100f), s, font, Color.White, Vector2.One);
 
             foreach (UIElement uiElement in UIElements)
             {
