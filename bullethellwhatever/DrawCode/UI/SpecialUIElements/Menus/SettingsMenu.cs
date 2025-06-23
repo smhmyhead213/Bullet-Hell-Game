@@ -65,6 +65,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             float textScale = 4f;
 
+            int floatInTime = 30;
+
             TextButton settingsHeading = new TextButton("box", "SETTINGS", 20f, 10f, new Vector2(sectionColumnWidth - 2 * sectionColumnMarginX, headingHeight), Vector2.Zero);
             settingsHeading.Interactable = false;
             
@@ -100,6 +102,12 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
                 sectionButton.TextMarginX = sectionButtonsTextMarginX;
                 sectionButton.CentreTextVertically();
                 sectionButton.RightAlignText();
+
+                sectionButton.SetExtraAI(new Action(() =>
+                {
+                    Vector2 objectivePosition = sectionButton.CalculateActualPostion();
+                    //sectionButton.Position = objectivePosition + new Vector2(100f * Sin(sectionButton.AITimer / 10f), 0f);
+                }));
 
                 sidebar.AddUIElementAuto(sectionButton);
 
