@@ -345,7 +345,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void CreatePauseMenu()
         {
-            UIManager.ResetAllSelections();
+            //UIManager.ResetAllSelections();
 
             Menu pauseMenu = new Menu("MenuBG", new Vector2(GameWidth / 3, GameHeight / 6), Utilities.CentreOfScreen());
 

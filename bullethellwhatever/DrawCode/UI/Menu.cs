@@ -57,7 +57,7 @@ namespace bullethellwhatever.DrawCode.UI
 
             IndexOfSelected = -1;
 
-            UIManager.ResetAllSelections();
+            //UIManager.ResetAllSelections();
 
             UpdateClickBox();
         }
