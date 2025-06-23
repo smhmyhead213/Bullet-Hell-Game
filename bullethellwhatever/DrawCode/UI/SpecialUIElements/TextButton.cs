@@ -99,7 +99,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             Vector2 topLeft = new Vector2(position.X - Size.X / 2, position.Y - Size.Y / 2);
 
-            if (IsHovered() && Interactable)
+            if (IsSelected() && Interactable)
             {
                 Drawing.RestartSB(s, true, false, false);
 
