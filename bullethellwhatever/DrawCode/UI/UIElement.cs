@@ -241,6 +241,11 @@ namespace bullethellwhatever.DrawCode.UI
             
         }
 
+        public bool IsFocusedElement()
+        {
+            return this == UIManager.InteractableUIElement();
+        }
+
         public RectangleF BoundingBox()
         {
             return new RectangleF(Position.X - Size.X / 2f, Position.Y - Size.Y / 2f, Size.X, Size.Y);

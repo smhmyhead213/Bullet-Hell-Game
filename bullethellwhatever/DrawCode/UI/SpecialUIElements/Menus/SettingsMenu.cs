@@ -129,32 +129,26 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             float settingsMenuMarginX = 30f;
             float settingsMenuMarginY = 30f;
 
-            int testButtons = 10;
-
             mainSettingsColumn.StartMenuBuilder(settingsMenuMarginX, settingsMenuMarginY, 0f);
             float availableWidth = mainSettingsColumn.AvailableWidth();
 
             ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(availableWidth, GameHeight), Vector2.Zero, 5f);
             settingsScrollColumn.StartMenuBuilder(0f, 0f, 0f);
 
-            for (int i = 0; i < testButtons; i++)
+            string[] attributes = ["skibidi", "rizz", "gyatt", "ohio", "sigma", "huzz", "locked in"];
+
+            for (int i = 0; i < attributes.Length; i++)
             {
-                TextButton tester = new TextButton("SKIBIDI", 30f, 10f, new Vector2(availableWidth, 300f), Vector2.Zero);
-                tester.ScaleTextToFit = true;
+                int locali = i;
+                Slider tester = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 50f);
+                tester.SliderText = (float val) => $"{attributes[locali]}: {Round(val, 0)}";
                 bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
             }
 
-            Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
+            //Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
 
-            settingsScrollColumn.AddUIElementAuto(testSlider);
-
-            for (int i = 0; i < testButtons; i++)
-            {
-                TextButton tester = new TextButton("SKIBIDI", 30f, 10f, new Vector2(availableWidth, 300f), Vector2.Zero);
-                tester.ScaleTextToFit = true;
-                settingsScrollColumn.AddUIElementAuto(tester);
-            }
-
+            //settingsScrollColumn.AddUIElementAuto(testSlider);
+           
             bool finishedProperly = mainSettingsColumn.AddUIElementAuto(settingsScrollColumn);
             settingsScrollColumn.Display();
         }

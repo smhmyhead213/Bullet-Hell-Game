@@ -78,7 +78,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public override void DrawAtPosition(SpriteBatch s, Vector2 position)
         {
             Color colour = Colour;
-            Color sliderlineColour = Color.White;
+            Color sliderlineColour = IsFocusedElement() ? Color.Red : Color.White;
             Color grabberColour = Color.White;
 
             Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
