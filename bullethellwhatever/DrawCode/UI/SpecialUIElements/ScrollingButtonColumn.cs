@@ -72,7 +72,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             foreach (UIElement uIElement in UIElements)
             {
                 // this is why some elements in scrolling menu are uninteractable
-                uIElement.Interactable = uIElement.BoundingBox().Intersects(InsideBoundingBox());
+                uIElement.InteractabilityCondition = () => uIElement.BoundingBox().Intersects(InsideBoundingBox());
             }
         }
 

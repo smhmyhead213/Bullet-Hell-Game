@@ -34,7 +34,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public Action ExtraAI;
         public Action ClickEvent;
-
+        public Func<bool> InteractabilityCondition;
         public bool Interactable
         {
             get;
@@ -67,6 +67,8 @@ namespace bullethellwhatever.DrawCode.UI
             Name = "";
 
             Interactable = true;
+
+            InteractabilityCondition = () => true;
         }
 
         /// <summary>
@@ -94,6 +96,8 @@ namespace bullethellwhatever.DrawCode.UI
             Name = "";
 
             Interactable = true;
+
+            InteractabilityCondition = () => true;
         }
 
         public virtual void Update()
@@ -272,7 +276,7 @@ namespace bullethellwhatever.DrawCode.UI
 
         public bool InteractableAndHovered()
         {
-            return IsSelected() && Interactable;
+            return IsSelected() && InteractabilityCondition() && Interactable;
         }
 
         public virtual Color ColourIfSelected()

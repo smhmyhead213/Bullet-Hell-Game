@@ -129,7 +129,18 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static UIElement? InteractableUIElement()
         {
-            return IndexOfInteractable == -1 ? null : ActiveUIElements[IndexOfInteractable];
+            //return IndexOfInteractable == -1 ? null : ActiveUIElements[IndexOfInteractable];
+            UIElement interactable = ActiveUIElements[IndexOfInteractable];
+
+            if (interactable is not Menu menu)
+            {
+                return interactable;
+            }
+            else
+            {
+                Menu deepestMenu = DeepestFocusedMenu(menu);
+                return deepestMenu.GetSelectedElement();
+            }
         }
 
         public static void ResetAllSelections()
