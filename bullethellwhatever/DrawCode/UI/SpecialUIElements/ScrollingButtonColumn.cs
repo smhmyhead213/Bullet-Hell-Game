@@ -19,6 +19,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public float ScrollAmount;
         public RenderTarget2D MenuRenderTarget;
         public float TotalButtonHeight;
+        public Dictionary<UIElement, float> DefaultElementHeights;
         public ScrollingButtonColumn(string texture, Vector2 size, Vector2 position, float scrollSpeed) : base(texture, size, position)
         {
             ScrollSpeed = scrollSpeed;
@@ -32,15 +33,17 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
         public void ScrollBy(float height)
         {
-            foreach (UIElement uIElement in UIElements)
-            {
-                uIElement.PositionInMenu -= new Vector2(0f, height);
-            }
+            ScrollAmount += height;
         }
 
         public override void Update()
         {
             base.Update();
+
+            foreach (UIElement uIElement in UIElements)
+            {
+                uIElement.PositionInMenu.Y = DefaultElementHeights[uIElement] - ScrollAmount;
+            }
 
             //if (AITimer == 30)
             //{
@@ -56,9 +59,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             if (IsKeyPressed(Keys.W))
             {
                 // figure out if we are less than 1SS from the bottom
-                float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - ScrollAmount - Height());
+                float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - Height() - ScrollAmount);
                 ScrollBy(scrollDistance);
-                ScrollAmount += scrollDistance;                
             }
             
             if (IsKeyPressed(Keys.S))
@@ -66,7 +68,6 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 // figure out if we are less than 1SS from the top
                 float scrollDistance = Min(ScrollSpeed, ScrollAmount);
                 ScrollBy(-scrollDistance);
-                ScrollAmount -= scrollDistance;
             }
 
             foreach (UIElement uIElement in UIElements)
@@ -85,6 +86,13 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 MenuRenderTarget = Drawing.CreateRTWithPreferredDefaults((int)Size.X, (int)Size.Y);
 
             TotalButtonHeight = CalculateTotalHeight();
+
+            DefaultElementHeights = new Dictionary<UIElement, float>();
+
+            foreach (UIElement uIElement in UIElements)
+            {
+                DefaultElementHeights.Add(uIElement, uIElement.PositionInMenu.Y);
+            }
         }
         public override void Draw(SpriteBatch s)
         {
