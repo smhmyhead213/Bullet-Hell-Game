@@ -45,6 +45,22 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 uIElement.PositionInMenu.Y = DefaultElementHeights[uIElement] - ScrollAmount;
             }
 
+            UIElement focused = UIManager.InteractableUIElement();
+
+            if (UIElements.Contains(focused))
+            {
+                int index = UIElements.IndexOf(focused);
+
+                Vector2 bottomRight = focused.BottomRight();
+
+                if (!InsideBoundingBox().Contains(bottomRight))
+                {
+                    float scrollAmount = bottomRight.Y - Height(); //asjdkvasduyk
+                    ScrollBy(scrollAmount);
+                }
+            }
+               
+
             //if (AITimer == 30)
             //{
             //    //File.Create("test.jpg");

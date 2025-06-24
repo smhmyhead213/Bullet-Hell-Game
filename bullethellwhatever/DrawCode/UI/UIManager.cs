@@ -18,6 +18,7 @@ namespace bullethellwhatever.DrawCode.UI
         public static List<UIElement> UIElementsToAddNextFrame;
 
         public static PlayerHUD PlayerHUD;
+
         /// <summary>
         /// The one menu at a time that can be naviagted using the Tab key.
         /// </summary>
@@ -75,10 +76,10 @@ namespace bullethellwhatever.DrawCode.UI
 
             UIElementsToAddNextFrame.Clear();
 
-            foreach (UIElement element in ActiveUIElements)
-            {
-                element.Update();
-            }
+            //foreach (UIElement element in ActiveUIElements)
+            //{
+            //    element.Update();
+            //}
 
             if (IsKeyPressed(Keys.Enter) && !WasKeyPressedLastFrame(Keys.Enter) && IndexOfInteractable >= 0)
             {
@@ -101,6 +102,11 @@ namespace bullethellwhatever.DrawCode.UI
             {
                 UI.CreatePauseMenu();
             }
+
+            foreach (UIElement element in ActiveUIElements)
+            {
+                element.Update();
+            }            
         }
 
         public static void IncrementIndexOfInteractable()
@@ -165,11 +171,6 @@ namespace bullethellwhatever.DrawCode.UI
 
             //Drawing.DrawText("Main Interactable Index = " + IndexOfInteractable.ToString(), new Vector2(GameWidth / 2, GameHeight / 1.5f), spriteBatch, font, Color.White, Vector2.One);
             _spriteBatch.End();
-        }
-
-        public static UIElement Focused()
-        {
-            return ActiveUIElements[IndexOfInteractable];
         }
 
         public static Menu? DeepestFocusedMenu(Menu menu)

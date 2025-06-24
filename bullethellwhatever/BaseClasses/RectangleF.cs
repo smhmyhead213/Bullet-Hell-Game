@@ -43,7 +43,7 @@ namespace bullethellwhatever.BaseClasses
 
         public bool Contains(float x, float y)
         {
-            if (X <= x && x < X + Width && Y <= y)
+            if (X <= x && x <= X + Width && Y <= y)
             {
                 return y < Y + Height;
             }

@@ -273,6 +273,10 @@ namespace bullethellwhatever.DrawCode.UI
         {
             return Position - Size / 2f;
         }
+        public virtual Vector2 BottomRight()
+        {
+            return Position + Size / 2f;
+        }
 
         public bool InteractableAndHovered()
         {

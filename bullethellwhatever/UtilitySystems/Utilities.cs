@@ -345,7 +345,7 @@ namespace bullethellwhatever
         }
 
         /// <summary>
-        /// Converts an angle to an equivalent angle as close to zero as possible
+        /// Converts an angle to an equivalent angle as close to zero as possible.
         /// </summary>
         /// <param name="angle"></param>
         /// <returns></returns>
