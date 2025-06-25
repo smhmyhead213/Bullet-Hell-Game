@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.AssetManagement;
 
 using bullethellwhatever.UtilitySystems.SoundSystems;
+using log4net.Config;
 
 namespace bullethellwhatever.DrawCode.UI
 {
@@ -276,6 +277,11 @@ namespace bullethellwhatever.DrawCode.UI
         public virtual Vector2 BottomRight()
         {
             return Position + Size / 2f;
+        }
+
+        public virtual Vector2 BottomRight(Vector2 position)
+        {
+            return position + Size / 2f;
         }
 
         public bool InteractableAndHovered()

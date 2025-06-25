@@ -34,6 +34,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public void ScrollBy(float height)
         {
             ScrollAmount += height;
+            ScrollAmount = MathHelper.Clamp(ScrollAmount, 0f, TotalButtonHeight - Height());
         }
 
         public override void Update()
@@ -44,6 +45,18 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             {
                 uIElement.PositionInMenu.Y = DefaultElementHeights[uIElement] - ScrollAmount;
             }
+            //if (AITimer == 30)
+            //{
+            //    //File.Create("test.jpg");
+            //    Stream stream = File.OpenWrite("test.jpg");
+            //    //string place = Path.GetFullPath("test.jpg");
+            //    MenuRenderTarget.SaveAsJpeg(stream, MenuRenderTarget.Width, MenuRenderTarget.Height);
+            //}
+        }
+
+        public override void HandleTab()
+        {
+            base.HandleTab();
 
             UIElement focused = UIManager.InteractableUIElement();
 
@@ -55,35 +68,25 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
                 if (!InsideBoundingBox().Contains(bottomRight))
                 {
-                    float scrollAmount = bottomRight.Y - Height(); //asjdkvasduyk
+                    float scrollAmount = bottomRight.Y - LowestVisibleY(); //asjdkvasduyk
                     ScrollBy(scrollAmount);
                 }
             }
-               
-
-            //if (AITimer == 30)
-            //{
-            //    //File.Create("test.jpg");
-            //    Stream stream = File.OpenWrite("test.jpg");
-            //    //string place = Path.GetFullPath("test.jpg");
-            //    MenuRenderTarget.SaveAsJpeg(stream, MenuRenderTarget.Width, MenuRenderTarget.Height);
-            //}
         }
-
         public override void AI()
         {
             if (IsKeyPressed(Keys.W))
             {
                 // figure out if we are less than 1SS from the bottom
-                float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - Height() - ScrollAmount);
-                ScrollBy(scrollDistance);
+                //float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - Height() - ScrollAmount);
+                ScrollBy(ScrollSpeed);
             }
             
             if (IsKeyPressed(Keys.S))
             {
                 // figure out if we are less than 1SS from the top
-                float scrollDistance = Min(ScrollSpeed, ScrollAmount);
-                ScrollBy(-scrollDistance);
+                //float scrollDistance = Min(ScrollSpeed, ScrollAmount);
+                ScrollBy(-ScrollSpeed);
             }
 
             foreach (UIElement uIElement in UIElements)
@@ -110,6 +113,17 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 DefaultElementHeights.Add(uIElement, uIElement.PositionInMenu.Y);
             }
         }
+
+        public float LowestVisibleY()
+        {
+            return Min(BottomRight().Y, GameHeight);
+        }
+
+        public float HighestVisibleY()
+        {
+            return Max(TopLeft().Y, 0);
+        }
+
         public override void Draw(SpriteBatch s)
         {
             s.End();
@@ -133,8 +147,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
 
             s.Begin(samplerState: SamplerState.PointWrap);
-
+            
             Drawing.BetterDraw(MenuRenderTarget, Position, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
+
+            foreach (UIElement uIElement in UIElements)
+            {
+                Drawing.DrawBox(uIElement.BottomRight(), Color.Red, 1f);
+            }
+
             //Drawing.DrawText(ScrollAmount.ToString(), TopLeft() - new Vector2(200f), s, font, Color.White, Vector2.One);
         }
     }

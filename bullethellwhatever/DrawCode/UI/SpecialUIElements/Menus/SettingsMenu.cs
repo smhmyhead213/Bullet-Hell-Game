@@ -132,7 +132,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             mainSettingsColumn.StartMenuBuilder(settingsMenuMarginX, settingsMenuMarginY, 0f);
             float availableWidth = mainSettingsColumn.AvailableWidth();
 
-            ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(availableWidth, GameHeight), Vector2.Zero, 5f);
+            ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(availableWidth, GameHeight - 2 * MarginY), Vector2.Zero, 5f);
             settingsScrollColumn.StartMenuBuilder(0f, 0f, 0f);
 
             string[] attributes = ["skibidi", "rizz", "gyatt", "ohio", "sigma", "huzz", "locked in"];

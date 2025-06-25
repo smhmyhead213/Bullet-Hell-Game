@@ -91,6 +91,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             Vector2 grabberPos = GrabberPosition(position);
             Drawing.BetterDraw(grabbingCircle, grabberPos, null, grabberColour, 0f, Vector2.One, SpriteEffects.None, 1f);
 
+            //Drawing.DrawBox(BottomRight(PositionInMenu), Color.Red, 1f);
+
             Drawing.DrawText(SliderText(Round(Value, 0)), position - Size / 2f + new Vector2(30f), s, font, Color.White, Vector2.One);
         }
     }
