@@ -201,6 +201,8 @@ namespace bullethellwhatever.MainFiles
 
             _spriteBatch.Draw(MainRT, Vector2.Zero, Color.White);
 
+            Drawing.DrawText(IsKeyPressed(Keys.None).ToString(), Utilities.CentreOfScreen(), _spriteBatch, font, Color.White, Vector2.One);
+
             //Drawing.DrawBox(Mouse.GetState().Position.ToVector2(), Color.Red, 1f);
 
             _spriteBatch.End();

@@ -135,13 +135,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(availableWidth, GameHeight - 2 * MarginY), Vector2.Zero, 5f);
             settingsScrollColumn.StartMenuBuilder(0f, 0f, 0f);
 
-            string[] attributes = ["skibidi", "rizz", "gyatt", "ohio", "sigma", "huzz", "locked in"];
+            string[] attributes = ["Master Volume", "SFX Volume", "Music Volume"];
+            float sliderHeight = 170f;
 
             for (int i = 0; i < attributes.Length; i++)
             {
                 int locali = i;
-                Slider tester = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 50f);
-                tester.SliderText = (float val) => $"{attributes[locali]}: {Round(val, 0)}";
+                Slider tester = new Slider("box", new Vector2(availableWidth, sliderHeight), Vector2.Zero, 0f, 100f, 50f);
+                tester.SliderText = (float val) => $"{attributes[locali]}: {Round(val, 0)}%";
                 bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
             }
 
