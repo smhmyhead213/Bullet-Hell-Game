@@ -157,9 +157,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
         {
             base.Draw(s);
 
-            Drawing.DrawText("Main Interactable Index = " + UIManager.IndexOfInteractable.ToString(), new Vector2(GameWidth / 6f, GameHeight * 0.7f), s, font, Color.White, Vector2.One);
-            Drawing.DrawText("Settings Interactable Index = " + IndexOfSelected.ToString(), new Vector2(GameWidth / 6f, GameHeight * 0.8f), s, font, Color.White, Vector2.One);
-            Drawing.DrawText("Selected Index = " + UIManager.DeepestFocusedMenu(this).IndexOfSelected.ToString(), new Vector2(GameWidth / 6f, GameHeight * 0.9f), s, font, Color.White, Vector2.One);
+            bool debugInfo = false;
+
+            if (debugInfo)
+            {
+                Drawing.DrawText("Main Interactable Index = " + UIManager.IndexOfInteractable.ToString(), new Vector2(GameWidth / 6f, GameHeight * 0.7f), s, font, Color.White, Vector2.One);
+                Drawing.DrawText("Settings Interactable Index = " + IndexOfSelected.ToString(), new Vector2(GameWidth / 6f, GameHeight * 0.8f), s, font, Color.White, Vector2.One);
+                Drawing.DrawText("Selected Index = " + UIManager.DeepestFocusedMenu(this).IndexOfSelected.ToString(), new Vector2(GameWidth / 6f, GameHeight * 0.9f), s, font, Color.White, Vector2.One);
+            }
         }
     }
 }

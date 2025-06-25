@@ -20,10 +20,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public RenderTarget2D MenuRenderTarget;
         public float TotalButtonHeight;
         public Dictionary<UIElement, float> DefaultElementHeights;
+        public Dictionary<string, float> ScrollCheckpoints;
+        public Action AutoScroller;
+        public int AutoScrollTimer;
         public ScrollingButtonColumn(string texture, Vector2 size, Vector2 position, float scrollSpeed) : base(texture, size, position)
         {
             ScrollSpeed = scrollSpeed;
             ScrollAmount = 0;
+            ScrollCheckpoints = new Dictionary<string, float>();
         }
 
         public override bool VerticalSpaceAvailableFor(int row, float requestedHeight)
@@ -34,6 +38,30 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public void ScrollBy(float height)
         {
             ScrollAmount += height;
+            ClampScroll();
+        }
+
+        public void ScrollTo(float height, int time)
+        {
+            // dont pass a direct ref to scrollamount
+            float currentScroll = ScrollAmount;
+            AutoScrollTimer = 0;
+
+            AutoScroller = new Action(() =>
+            {
+                AutoScrollTimer++;
+
+                ScrollAmount = MathHelper.Lerp(currentScroll, height, (float)AutoScrollTimer / time);
+
+                if (AutoScrollTimer == time)
+                {
+                    CancelAutoScroll(); // KILL YOURSELF
+                }
+            });
+        }
+
+        public void ClampScroll()
+        {
             ScrollAmount = MathHelper.Clamp(ScrollAmount, 0f, TotalButtonHeight - Height());
         }
 
@@ -52,6 +80,13 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             //    //string place = Path.GetFullPath("test.jpg");
             //    MenuRenderTarget.SaveAsJpeg(stream, MenuRenderTarget.Width, MenuRenderTarget.Height);
             //}
+
+            if (AutoScroller is not null)
+            {
+                AutoScroller();
+            }
+
+            ClampScroll();
         }
 
         public override void HandleTab()
@@ -69,7 +104,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 if (!InsideBoundingBox().Contains(bottomRight))
                 {
                     float scrollAmount = bottomRight.Y - LowestVisibleY(); //asjdkvasduyk
-                    ScrollBy(scrollAmount);
+                    //ScrollBy(scrollAmount);
+                    ScrollTo(ScrollAmount + scrollAmount, 10);
                 }
             }
         }
@@ -79,6 +115,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             {
                 // figure out if we are less than 1SS from the bottom
                 //float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - Height() - ScrollAmount);
+                CancelAutoScroll();
                 ScrollBy(ScrollSpeed);
             }
             
@@ -86,6 +123,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             {
                 // figure out if we are less than 1SS from the top
                 //float scrollDistance = Min(ScrollSpeed, ScrollAmount);
+                CancelAutoScroll();
                 ScrollBy(-ScrollSpeed);
             }
 
@@ -94,6 +132,12 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 // this is why some elements in scrolling menu are uninteractable
                 uIElement.InteractabilityCondition = () => uIElement.BoundingBox().Intersects(InsideBoundingBox());
             }
+        }
+
+        public void CancelAutoScroll()
+        {
+            AutoScroller = null;
+            AutoScrollTimer = 0;
         }
 
         public override void Display()
@@ -107,7 +151,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             TotalButtonHeight = CalculateTotalHeight();
 
             DefaultElementHeights = new Dictionary<UIElement, float>();
-
+            
             foreach (UIElement uIElement in UIElements)
             {
                 DefaultElementHeights.Add(uIElement, uIElement.PositionInMenu.Y);
@@ -122,6 +166,18 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public float HighestVisibleY()
         {
             return Max(TopLeft().Y, 0);
+        }
+
+        public void AddScrollCheckPoint(string name, float scrollAmount)
+        {
+            if (ScrollCheckpoints.ContainsKey(name))
+            {
+                ScrollCheckpoints[name] = scrollAmount;
+            }
+            else
+            {
+                ScrollCheckpoints.Add(name, scrollAmount);
+            }
         }
 
         public override void Draw(SpriteBatch s)
@@ -150,10 +206,10 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             
             Drawing.BetterDraw(MenuRenderTarget, Position, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 1f);
 
-            foreach (UIElement uIElement in UIElements)
-            {
-                Drawing.DrawBox(uIElement.BottomRight(), Color.Red, 1f);
-            }
+            //foreach (UIElement uIElement in UIElements)
+            //{
+            //    Drawing.DrawBox(uIElement.BottomRight(), Color.Red, 1f);
+            //}
 
             //Drawing.DrawText(ScrollAmount.ToString(), TopLeft() - new Vector2(200f), s, font, Color.White, Vector2.One);
         }
