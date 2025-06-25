@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.BaseClasses;
+using Microsoft.Xna.Framework.Input;
 
 namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 {
@@ -40,7 +41,25 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
                 float interpolant = Utilities.InverseLerp(leftEnd, rightEnd, MousePosition.X);
                 Value = MathHelper.Lerp(MinValue, MaxValue, interpolant);
-            }           
+            }
+            
+            if (IsFocusedElement())
+            {
+                float sliderSpeed = 0.01f;
+                float valueChange = (MaxValue - MinValue) * sliderSpeed;
+
+                if (IsKeyPressed(Keys.D))
+                {
+                    Value += valueChange;
+                }
+
+                if (IsKeyPressed(Keys.A))
+                {
+                    Value -= valueChange;
+                }
+            }
+
+            Value = MathHelper.Clamp(Value, MinValue, MaxValue);
         }
 
         public override RectangleF CalculateClickbox()
