@@ -19,6 +19,8 @@ namespace bullethellwhatever.DrawCode.UI.Buttons
         }
         public override void HandleClick()
         {
+            SaveSystem.Save();
+
             MainInstance.Exit();
 
             base.HandleClick();

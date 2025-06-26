@@ -45,14 +45,17 @@ namespace bullethellwhatever.MainFiles
             saveStream.Dispose();
 
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(Keybinds.DefaultKeybindsPrimitiveTypes(), options);
+            string jsonString = JsonSerializer.Serialize(Keybinds.KeybindMapToStrings(Keybinds.DefaultKeybinds()), options);
 
             File.WriteAllText(SaveFilePath(), jsonString);
         }
 
         public static void Save()
         {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(Keybinds.KeybindMapToStrings(Keybinds.KeybindMap), options);
 
+            File.WriteAllText(SaveFilePath(), jsonString);
         }
     }
 }

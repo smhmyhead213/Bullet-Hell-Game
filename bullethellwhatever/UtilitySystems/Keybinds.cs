@@ -112,19 +112,6 @@ namespace bullethellwhatever.UtilitySystems
             
         }
 
-        public static MouseButtons StringToMouseButton(string mouseButton)
-        {
-            MouseButtons result;
-            bool success = Enum.TryParse(mouseButton, out result);
-            if (success)
-            {
-                return result;
-            }
-            else
-            {
-                throw new Exception("uh oh");
-            }
-        }
         public static Dictionary<string, Keybind> DefaultKeybinds()
         {
             Dictionary<string, char> keyboardBinds = new Dictionary<string, char>
@@ -160,9 +147,8 @@ namespace bullethellwhatever.UtilitySystems
             return output;
         }
 
-        public static Dictionary<string, string> DefaultKeybindsPrimitiveTypes()
+        public static Dictionary<string, string> KeybindMapToStrings(Dictionary<string, Keybind> input)
         {
-            Dictionary<string, Keybind> input = DefaultKeybinds();
             Dictionary<string, string> output = new Dictionary<string, string>();
 
             foreach (KeyValuePair<string, Keybind> pair in input)
