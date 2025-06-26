@@ -18,28 +18,7 @@ namespace bullethellwhatever.UtilitySystems
         Mouse5,
         None
     }
-    public struct Keybind
-    {
-        // i hate that mouse buttons arent actually counted as buttons the way keys are so i just have to do this
-        public Keys Key;
-        public MouseButtons MouseButton;
-
-        public Keybind(Keys key)
-        {
-            Key = key;
-            MouseButton = MouseButtons.None;
-        }
-
-        public Keybind(MouseButtons button)
-        {
-            MouseButton = button;
-            Key = Keys.None;
-        }
-        public bool IsPressed()
-        {
-            return IsKeyPressed(Key) || IsMouseButtonPressed(MouseButton);
-        }
-    }
+    
     public static class InputSystem
     {
         public static KeyboardState KeyboardState;

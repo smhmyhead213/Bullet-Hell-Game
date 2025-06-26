@@ -97,7 +97,9 @@ namespace bullethellwhatever.MainFiles
         }
 
         protected override void Initialize()
-        {          
+        {
+            SaveSystem.LoadSave();
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             PrimitiveManager.Initialise();

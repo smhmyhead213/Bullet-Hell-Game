@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -18,12 +20,12 @@ namespace bullethellwhatever.MainFiles
             if (folderExists)
             {
                 bool saveFileExists = File.Exists(SaveFilePath());
+                CreateDefaultSave(SaveFilePath());
             }
             else
             {
                 Directory.CreateDirectory(SaveFolderName);
                 CreateDefaultSave(SaveFilePath());
-
             }
         }
 
@@ -31,9 +33,20 @@ namespace bullethellwhatever.MainFiles
         {
             return $"{SaveFolderName}\\{SaveFileName}";
         }
+
         public static void CreateDefaultSave(string filepath)
         {
             FileStream saveStream = File.Create(SaveFilePath());
+            saveStream.Dispose();
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(Keybinds.DefaultKeybinds(), options);
+
+            File.WriteAllText(SaveFilePath(), jsonString);
+        }
+
+        public static void Save()
+        {
 
         }
     }
