@@ -102,6 +102,18 @@ namespace bullethellwhatever.UtilitySystems
     }
     public static class Keybinds
     {
+        public static string Dash => "Dash";
+        public static string Up => "Up";
+        public static string Down => "Down";
+        public static string Left => "Left";
+        public static string Right => "Right";
+        public static string Precision => "Precision";
+        public static string MenuTab => "MenuTab";
+        public static string MenuSelect => "MenuSelect";
+        public static string LeftClick => "LeftClick";
+        public static string RightClick => "RightClick";
+
+
         public static Dictionary<string, Keybind> KeybindMap;
 
         public static void Initialise()
@@ -116,20 +128,20 @@ namespace bullethellwhatever.UtilitySystems
         {
             Dictionary<string, char> keyboardBinds = new Dictionary<string, char>
             {
-                { "Dash", (char)32 }, //Keys.Space = 32
-                { "Up", 'W' },
-                { "Down", 'S' },
-                { "Left", 'A' },
-                { "Right", 'D' },
-                { "Precision", (char)160 }, //Keys.LeftShift = 160
-                { "MenuTab", (char)9 }, //Keys.Tab = 9
-                { "MenuSelect", (char)13 } //Keys.Enter = 13
+                { Dash, (char)32 }, //Keys.Space = 32
+                { Up, 'W' },
+                { Down, 'S' },
+                { Left, 'A' },
+                { Right, 'D' },
+                { Precision, (char)160 }, //Keys.LeftShift = 160
+                { MenuTab, (char)9 }, //Keys.Tab = 9
+                { MenuSelect, (char)13 } //Keys.Enter = 13
             };
 
             Dictionary<string, MouseButtons> mouseBinds = new Dictionary<string, MouseButtons>
             {
-                { "LeftClick", MouseButtons.LeftClick },
-                { "RightClick", MouseButtons.RightClick }
+                { LeftClick, MouseButtons.LeftClick },
+                { RightClick, MouseButtons.RightClick }
             };
 
             Dictionary<string, Keybind> output = new Dictionary<string, Keybind>();
@@ -189,15 +201,6 @@ namespace bullethellwhatever.UtilitySystems
 
             foreach (KeyValuePair<string, string> pair in savedData)
             {
-                //if (IsKey(pair.Value)) // hacky detection for whether this is a key or mouse button
-                //{
-                //    output.Add(pair.Key, new Keybind(pair.Value)); // actual misery
-                //}
-                //else
-                //{
-                //    output.Add(pair.Key, new Keybind(StringToMouseButton(pair.Value)));
-                //}
-
                 output.Add(pair.Key, new Keybind(pair.Value));
             }
 

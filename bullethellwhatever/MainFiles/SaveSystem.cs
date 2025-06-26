@@ -31,7 +31,7 @@ namespace bullethellwhatever.MainFiles
             string jsonString = File.ReadAllText(SaveFilePath());
             Dictionary<string, string> readData = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
             
-            Keybinds.KeybindMap = Keybinds.ReadSave(readData);
+            KeybindMap = ReadSave(readData);
         }
 
         public static string SaveFilePath()
@@ -45,7 +45,7 @@ namespace bullethellwhatever.MainFiles
             saveStream.Dispose();
 
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(Keybinds.KeybindMapToStrings(Keybinds.DefaultKeybinds()), options);
+            string jsonString = JsonSerializer.Serialize(KeybindMapToStrings(DefaultKeybinds()), options);
 
             File.WriteAllText(SaveFilePath(), jsonString);
         }
@@ -53,7 +53,7 @@ namespace bullethellwhatever.MainFiles
         public static void Save()
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(Keybinds.KeybindMapToStrings(Keybinds.KeybindMap), options);
+            string jsonString = JsonSerializer.Serialize(KeybindMapToStrings(KeybindMap), options);
 
             File.WriteAllText(SaveFilePath(), jsonString);
         }

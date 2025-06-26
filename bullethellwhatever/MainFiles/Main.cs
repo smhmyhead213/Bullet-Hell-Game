@@ -4,6 +4,7 @@ global using static bullethellwhatever.MainFiles.GameInfoMethods;
 global using static bullethellwhatever.Projectiles.CommonProjectileMethods;
 global using static bullethellwhatever.UtilitySystems.ScreenManager;
 global using static System.Diagnostics.Debug;
+global using static bullethellwhatever.UtilitySystems.Keybinds;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
