@@ -27,6 +27,11 @@ namespace bullethellwhatever.MainFiles
                 Directory.CreateDirectory(SaveFolderName);
                 CreateDefaultSave(SaveFilePath());
             }
+
+            string jsonString = File.ReadAllText(SaveFilePath());
+            Dictionary<string, string> readData = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+            
+            Keybinds.KeybindMap = Keybinds.ReadSave(readData);
         }
 
         public static string SaveFilePath()
@@ -40,7 +45,7 @@ namespace bullethellwhatever.MainFiles
             saveStream.Dispose();
 
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(Keybinds.DefaultKeybinds(), options);
+            string jsonString = JsonSerializer.Serialize(Keybinds.DefaultKeybindsPrimitiveTypes(), options);
 
             File.WriteAllText(SaveFilePath(), jsonString);
         }

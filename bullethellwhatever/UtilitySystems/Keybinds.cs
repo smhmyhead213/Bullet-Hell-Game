@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FMOD;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.DXGI;
 
 namespace bullethellwhatever.UtilitySystems
 {
@@ -24,6 +25,22 @@ namespace bullethellwhatever.UtilitySystems
             MouseButton = MouseButtons.None;
         }
 
+        public Keybind(string button)
+        {
+            bool keySuccess = Enum.TryParse(button, out Key);
+            MouseButton = MouseButtons.None;
+
+            if (!keySuccess)
+            {
+                Key = Keys.None;
+                bool mouseSuccess = Enum.TryParse(button, out MouseButton);
+
+                if (!mouseSuccess)
+                {
+                    throw new Exception("invalid key");
+                }
+            }
+        }
         public Keybind(Keys key)
         {
             Key = key;
@@ -45,6 +62,17 @@ namespace bullethellwhatever.UtilitySystems
         {
             return IsKeyPressed(Key) || IsMouseButtonPressed(MouseButton);
         }
+    }
+
+    // thank you microsoft!
+    public enum MouseButtons
+    {
+        LeftClick,
+        RightClick,
+        MiddleClick,
+        Mouse4,
+        Mouse5,
+        None
     }
 
     public class KeybindJsonConverter : JsonConverter<Keybind>
@@ -84,6 +112,19 @@ namespace bullethellwhatever.UtilitySystems
             
         }
 
+        public static MouseButtons StringToMouseButton(string mouseButton)
+        {
+            MouseButtons result;
+            bool success = Enum.TryParse(mouseButton, out result);
+            if (success)
+            {
+                return result;
+            }
+            else
+            {
+                throw new Exception("uh oh");
+            }
+        }
         public static Dictionary<string, Keybind> DefaultKeybinds()
         {
             Dictionary<string, char> keyboardBinds = new Dictionary<string, char>
@@ -113,6 +154,64 @@ namespace bullethellwhatever.UtilitySystems
 
             foreach (KeyValuePair<string, MouseButtons> pair in mouseBinds)
             {
+                output.Add(pair.Key, new Keybind(pair.Value));
+            }
+
+            return output;
+        }
+
+        public static Dictionary<string, string> DefaultKeybindsPrimitiveTypes()
+        {
+            Dictionary<string, Keybind> input = DefaultKeybinds();
+            Dictionary<string, string> output = new Dictionary<string, string>();
+
+            foreach (KeyValuePair<string, Keybind> pair in input)
+            {
+                string keybind = pair.Value.Key.ToString();
+
+                if (IsKey(keybind))
+                {
+                    output.Add(pair.Key, keybind);
+                }
+                else
+                {
+                    output.Add(pair.Key, pair.Value.MouseButton.ToString());
+                }
+            }
+
+            return output;
+        }
+
+        public static bool IsKey(string stored)
+        {
+            // oh boy.
+
+            foreach (MouseButtons mousebutton in Enum.GetValues(typeof(MouseButtons)))
+            {
+                if (stored == mousebutton.ToString())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static Dictionary<string, Keybind> ReadSave(Dictionary<string, string> savedData)
+        {
+            Dictionary<string, Keybind> output = new Dictionary<string, Keybind>();
+
+            foreach (KeyValuePair<string, string> pair in savedData)
+            {
+                //if (IsKey(pair.Value)) // hacky detection for whether this is a key or mouse button
+                //{
+                //    output.Add(pair.Key, new Keybind(pair.Value)); // actual misery
+                //}
+                //else
+                //{
+                //    output.Add(pair.Key, new Keybind(StringToMouseButton(pair.Value)));
+                //}
+
                 output.Add(pair.Key, new Keybind(pair.Value));
             }
 

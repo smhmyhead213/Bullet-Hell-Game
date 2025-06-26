@@ -8,16 +8,6 @@ using Microsoft.Xna.Framework;
 
 namespace bullethellwhatever.UtilitySystems
 {
-    // thank you microsoft!
-    public enum MouseButtons
-    {
-        LeftClick,
-        RightClick,
-        MiddleClick,
-        Mouse4,
-        Mouse5,
-        None
-    }
     
     public static class InputSystem
     {
