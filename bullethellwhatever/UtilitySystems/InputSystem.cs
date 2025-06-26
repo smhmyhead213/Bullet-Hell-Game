@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using System.Security.Cryptography;
 
 namespace bullethellwhatever.UtilitySystems
 {
@@ -39,7 +40,8 @@ namespace bullethellwhatever.UtilitySystems
 
             foreach (MouseButtons mouseButton in Enum.GetValues(typeof(MouseButtons)))
             {
-                KeyStates.Add(new Keybind(mouseButton), new KeyData());
+                if (mouseButton != MouseButtons.None)
+                    KeyStates.Add(new Keybind(mouseButton), new KeyData());
             }
         }
 
@@ -79,6 +81,11 @@ namespace bullethellwhatever.UtilitySystems
             foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
                 GetKeyData(key).IsDown = KeyboardState.IsKeyDown(key);
+            }
+
+            foreach (MouseButtons mouseButton in Enum.GetValues(typeof(MouseButtons)))
+            {
+                GetKeyData(mouseButton).IsDown = IsMouseButtonPressed(mouseButton);
             }
         }
 
@@ -126,8 +133,8 @@ namespace bullethellwhatever.UtilitySystems
         {
             switch (mouseButton)
             {
-                case MouseButtons.LeftClick: return IsLeftClickDown();
-                case MouseButtons.RightClick: return IsRightClickDown();
+                case MouseButtons.LeftClick: return MouseState.LeftButton == ButtonState.Pressed;
+                case MouseButtons.RightClick: return MouseState.RightButton == ButtonState.Pressed;
                 case MouseButtons.MiddleClick: return MouseState.MiddleButton == ButtonState.Pressed;
                 case MouseButtons.Mouse4: return MouseState.XButton1 == ButtonState.Pressed;
                 case MouseButtons.Mouse5: return MouseState.XButton2 == ButtonState.Pressed;

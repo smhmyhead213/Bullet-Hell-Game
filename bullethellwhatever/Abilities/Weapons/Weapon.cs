@@ -64,7 +64,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             HandleCooldowns();
 
-            if (IsLeftClickDown() && WasMouseDownLastFrame)
+            if (IsLeftClickDown() && LeftClickDownLastFrame())
             {
                 LeftClickHeldBehaviour();
             }
