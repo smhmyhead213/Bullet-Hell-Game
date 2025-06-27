@@ -62,6 +62,11 @@ namespace bullethellwhatever.UtilitySystems
         {
             return IsKeyPressed(Key) || IsMouseButtonPressed(MouseButton);
         }
+
+        public override string ToString()
+        {
+            return Key == Keys.None ? MouseButton.ToString() : Key.ToString();
+        }
     }
 
     // thank you microsoft!

@@ -5,6 +5,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -99,7 +100,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
                 sectionButton.ScaleTextToFit = false;
                 sectionButton.TextScale = new Vector2(textScale);
-                sectionButton.Colour = Color.White;
+                sectionButton.Colour = Color.Black;
                 sectionButton.TextMarginX = sectionButtonsTextMarginX;
                 sectionButton.CentreTextVertically();
                 sectionButton.RightAlignText();
@@ -145,6 +146,13 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
                 tester.SliderText = (float val) => $"{attributes[locali]}: {Round(val, 0)}%";
                 bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
             }
+
+            //foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
+            //{
+            //    Func<string> textFunc = () => $"{keybind.Key} : {keybind.Value.ToString()}";
+            //    TextButton textButton = new TextButton(textFunc, 0f, 20f, new Vector2(availableWidth, 200f), Vector2.Zero);
+            //    settingsScrollColumn.AddUIElementAuto(textButton);
+            //}
 
             //Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
 
