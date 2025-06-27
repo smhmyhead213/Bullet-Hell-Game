@@ -198,10 +198,21 @@ namespace bullethellwhatever.UtilitySystems
         public static Dictionary<string, Keybind> ReadSave(Dictionary<string, string> savedData)
         {
             Dictionary<string, Keybind> output = new Dictionary<string, Keybind>();
+            Dictionary<string, Keybind> defaults = DefaultKeybinds();
+            List<string> missingKeybinds = defaults.Keys.ToList();
 
             foreach (KeyValuePair<string, string> pair in savedData)
             {
                 output.Add(pair.Key, new Keybind(pair.Value));
+
+                // check if any keybinds are missing (for example, if the save was tampered with or a new keybind is added
+                missingKeybinds.Remove(pair.Key);
+            }
+
+            // replace any missing keybinds with their defaults
+            foreach (string missingFromSave in missingKeybinds)
+            {
+                output.Add(missingFromSave, defaults[missingFromSave]);
             }
 
             return output;
