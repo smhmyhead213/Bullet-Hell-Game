@@ -89,6 +89,20 @@ namespace bullethellwhatever.UtilitySystems
             }
         }
 
+        public static bool IsKeyDown(string name)
+        {
+            return KeyStates[KeybindMap[name]].IsDown;
+        }
+
+        public static bool KeyDownLastFrame(string name)
+        {
+            return KeyStates[KeybindMap[name]].WasDownLastFrame;
+        }
+
+        public static bool KeyReleased(string name)
+        {
+            return !IsKeyDown(name) && KeyDownLastFrame(name);
+        }
         public static bool IsLeftClickDown()
         {
             return KeyStates[KeybindMap[LeftClick]].IsDown;

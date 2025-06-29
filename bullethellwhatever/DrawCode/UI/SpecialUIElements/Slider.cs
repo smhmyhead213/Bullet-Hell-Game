@@ -96,7 +96,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         }
         public override void DrawAtPosition(SpriteBatch s, Vector2 position)
         {
-            Color colour = Colour;
+            //Color colour = Colour;
+            Color colour = IsFocusedElement() ? Color.Red : Colour;
             Color sliderlineColour = IsFocusedElement() ? Color.Red : Color.White;
             Color grabberColour = Color.White;
 

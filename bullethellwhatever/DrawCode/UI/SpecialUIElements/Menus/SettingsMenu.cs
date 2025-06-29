@@ -56,7 +56,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
         public void CreateColumns()
         {
-            float sectionColumnWidth = GameWidth * 0.35f; // the width of the column containing the shortcut button to each section
+            float sectionColumnWidth = GameWidth * 0.6f; // the width of the column containing the shortcut button to each section
             float optionsColumnWidth = Width() - 2 * MarginX - sectionColumnWidth; // the width of the column containing the actual settings
             
             float headingHeight = 200f;
@@ -123,7 +123,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             // -- LEFT SIDEBAR END --
             // -- RIGHT SETTINGS STUFF BEGIN --
 
-            Menu mainSettingsColumn = new Menu("MenuBG", new Vector2(optionsColumnWidth, Height() - 2 * MarginY), Vector2.Zero);
+            Menu mainSettingsColumn = new Menu("box", new Vector2(optionsColumnWidth, Height() - 2 * MarginY), Vector2.Zero);
+            mainSettingsColumn.Colour = Color.Black;
+            mainSettingsColumn.AddOutline(Color.White, 0.2f);
 
             // use the automatic adder to add the settings column, then move it up
             bool addedSettingsColumn = AddUIElementAuto(mainSettingsColumn);
@@ -133,19 +135,19 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             mainSettingsColumn.StartMenuBuilder(settingsMenuMarginX, settingsMenuMarginY, 0f);
             float availableWidth = mainSettingsColumn.AvailableWidth();
 
-            ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("MenuBG", new Vector2(availableWidth, GameHeight - 2 * MarginY), Vector2.Zero, 5f);
-            settingsScrollColumn.StartMenuBuilder(0f, 0f, 0f);
+            //ScrollingButtonColumn settingsScrollColumn = new ScrollingButtonColumn("box", new Vector2(availableWidth, GameHeight - 2 * MarginY), Vector2.Zero, 5f);
+            //settingsScrollColumn.StartMenuBuilder(0f, 0f, 0f);
 
-            string[] attributes = ["Master Volume", "SFX Volume", "Music Volume"];
-            float sliderHeight = 170f;
+            //string[] attributes = ["Master Volume", "SFX Volume", "Music Volume"];
+            //float sliderHeight = 170f;
 
-            for (int i = 0; i < attributes.Length; i++)
-            {
-                int locali = i;
-                Slider tester = new Slider("box", new Vector2(availableWidth, sliderHeight), Vector2.Zero, 0f, 100f, 50f);
-                tester.SliderText = (float val) => $"{attributes[locali]}: {Round(val, 0)}%";
-                bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
-            }
+            //for (int i = 0; i < attributes.Length; i++)
+            //{
+            //    int locali = i;
+            //    Slider tester = new Slider("box", new Vector2(availableWidth, sliderHeight), Vector2.Zero, 0f, 100f, 50f);
+            //    tester.SliderText = (float val) => $"{attributes[locali]}: {Round(val, 0)}%";
+            //    //bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
+            //}
 
             //foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
             //{
@@ -158,8 +160,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             //settingsScrollColumn.AddUIElementAuto(testSlider);
            
-            bool finishedProperly = mainSettingsColumn.AddUIElementAuto(settingsScrollColumn);
-            settingsScrollColumn.Display();
+            //bool finishedProperly = mainSettingsColumn.AddUIElementAuto(settingsScrollColumn);
+            //settingsScrollColumn.Display();
         }
 
         public override void Draw(SpriteBatch s)

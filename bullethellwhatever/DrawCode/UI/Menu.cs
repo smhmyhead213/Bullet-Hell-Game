@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses;
+using Microsoft.VisualBasic.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -26,6 +27,11 @@ namespace bullethellwhatever.DrawCode.UI
         public float Padding;
         public bool BuildingMode;
         public bool HeldByMouse;
+
+        public bool Outline;
+        public float OutlineThickness;
+        public Color OutlineColour;
+
         public int IndexOfSelected
         {
             get;
@@ -54,7 +60,8 @@ namespace bullethellwhatever.DrawCode.UI
              
             Important = false;
             Draggable = false;
-
+            Outline = false;
+            OutlineThickness = 0;
             IndexOfSelected = -1;
 
             //UIManager.ResetAllSelections();
@@ -452,6 +459,18 @@ namespace bullethellwhatever.DrawCode.UI
             UIElements.Add(uiElement);
         }
 
+        /// <summary>
+        /// Thickness is a fraction of UV.
+        /// </summary>
+        /// <param name="outlineColour"></param>
+        /// <param name="thickness"></param>
+        public void AddOutline(Color outlineColour, float thickness)
+        {
+            Outline = true;
+            OutlineColour = outlineColour;
+            OutlineThickness = thickness;
+        }
+
         public float Width() => Size.X;
 
         public float Height() => Size.Y;
@@ -473,7 +492,22 @@ namespace bullethellwhatever.DrawCode.UI
         {
             //Colour = HeldByMouse ? Color.Red : Color.Green;
 
-            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size           
+            if (Outline)
+            {
+                Drawing.RestartSB(s, true, false);
+                Shader outline = AssetRegistry.GetShader("MenuOutline");
+                outline.SetColour(OutlineColour);
+                outline.SetParameter("backgroundColour", Colour);
+                outline.SetParameter("thickness", OutlineThickness);
+                outline.Apply();
+            }
+
+            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
+
+            if (Outline)
+            {
+                Drawing.RestartSB(s, false, false);
+            }
 
             foreach (UIElement uiElement in UIElements)
             {

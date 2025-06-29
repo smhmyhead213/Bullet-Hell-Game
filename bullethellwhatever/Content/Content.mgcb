@@ -648,6 +648,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/LightningShader.fx
 
+#begin Shaders/MenuOutline.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/MenuOutline.fx
+
 #begin Shaders/OutlineTelegraphShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
