@@ -20,7 +20,6 @@ namespace bullethellwhatever.MainFiles
             if (folderExists)
             {
                 bool saveFileExists = File.Exists(SaveFilePath());
-                CreateDefaultSave(SaveFilePath());
             }
             else
             {
