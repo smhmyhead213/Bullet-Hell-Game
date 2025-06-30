@@ -29,7 +29,7 @@ namespace bullethellwhatever.DrawCode.UI
         public bool HeldByMouse;
 
         public bool Outline;
-        public float OutlineThickness;
+        public Vector2 OutlineThickness;
         public Color OutlineColour;
 
         public int IndexOfSelected
@@ -61,7 +61,7 @@ namespace bullethellwhatever.DrawCode.UI
             Important = false;
             Draggable = false;
             Outline = false;
-            OutlineThickness = 0;
+            OutlineThickness = Vector2.Zero;
             IndexOfSelected = -1;
 
             //UIManager.ResetAllSelections();
@@ -464,7 +464,7 @@ namespace bullethellwhatever.DrawCode.UI
         /// </summary>
         /// <param name="outlineColour"></param>
         /// <param name="thickness"></param>
-        public void AddOutline(Color outlineColour, float thickness)
+        public void AddOutline(Color outlineColour, Vector2 thickness)
         {
             Outline = true;
             OutlineColour = outlineColour;
@@ -498,7 +498,8 @@ namespace bullethellwhatever.DrawCode.UI
                 Shader outline = AssetRegistry.GetShader("MenuOutline");
                 outline.SetColour(OutlineColour);
                 outline.SetParameter("backgroundColour", Colour);
-                outline.SetParameter("thickness", OutlineThickness);
+                outline.SetParameter("xThickness", OutlineThickness.X / Width());
+                outline.SetParameter("yThickness", OutlineThickness.Y / Height());
                 outline.Apply();
             }
 

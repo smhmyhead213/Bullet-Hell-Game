@@ -26,7 +26,8 @@ sampler NoiseSampler : register(s1)
 float uTime;
 float3 colour;
 float3 backgroundColour;
-float thickness;
+float xThickness;
+float yThickness;
 float scrollSpeed;
 
 struct VertexShaderInput
@@ -65,12 +66,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
 
-    bool withinXThickness = abs(0.5 - uv.x) > 0.5 - thickness;
-    bool withinYThickness = abs(0.5 - uv.y) > 0.5 - thickness;
+    bool withinXThickness = abs(0.5 - uv.x) > 0.5 - xThickness;
+    bool withinYThickness = abs(0.5 - uv.y) > 0.5 - yThickness;
     bool inBorder = withinXThickness || withinYThickness;
     
     //return float4(1, 0, 0, 1);
-    return lerp(float4(colour, 1), float4(backgroundColour, 1), inBorder);
+    return lerp(float4(backgroundColour, 1), float4(colour, 1), inBorder);
 }
 
 Technique Technique1
