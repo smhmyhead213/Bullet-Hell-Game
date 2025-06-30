@@ -149,6 +149,16 @@ namespace bullethellwhatever.UtilitySystems
             return KeyStates[new Keybind(key)].IsDown;
         }
 
+        public static bool IsKeybindPressed(string key)
+        {
+            return KeybindMap[key].IsPressed();
+        }
+
+        public static bool WasKeybindPressedLastFrame(string key)
+        {
+            return KeyStates[KeybindMap[key]].WasDownLastFrame;
+        }
+
         public static bool WasKeyPressedLastFrame(string key)
         {
             return KeyStates[new Keybind(key)].WasDownLastFrame;

@@ -11,19 +11,20 @@ namespace bullethellwhatever.DrawCode.UI
     public class UITextComponent : UIComponent
     {
         public Func<string> TextFunction;
-        public Vector2 TextScale;
+        public Vector2 TextSize;
         public Vector2 TextPosition;
         public Color TextColour;
-        public UITextComponent(Vector2 position, Vector2 scale, Func<string> textFunction) : base()
+        public UITextComponent(Vector2 position, Vector2 textSize, Func<string> textFunction) : base()
         {
             TextFunction = textFunction;
-            TextScale = scale;
+            TextSize = textSize;
             TextPosition = position;
+            TextColour = Color.White;
         }
         public override void Initialise()
         {
             TextFunction = () => "";
-            TextScale = Vector2.One;
+            TextSize = Vector2.One;
         }
         public override void Update()
         {
@@ -32,7 +33,9 @@ namespace bullethellwhatever.DrawCode.UI
 
         public override void Draw(SpriteBatch s)
         {
-            Drawing.DrawText(TextFunction(), TextPosition, s, font, TextColour, TextScale);
+            Vector2 textSizeCurrent = font.MeasureString(TextFunction());
+
+            Drawing.DrawText(TextFunction(), TextPosition, s, font, TextColour, new Vector2(TextSize.X / textSizeCurrent.X, TextSize.Y / textSizeCurrent.Y));
         }
     }
 }

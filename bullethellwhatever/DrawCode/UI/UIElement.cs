@@ -286,14 +286,14 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual bool WasClickedLastFrame()
         {
-            bool mouseClicked = WasKeyPressedLastFrame(LeftClick) || WasKeyPressedLastFrame(MenuSelect);
+            bool mouseClicked = WasKeybindPressedLastFrame(LeftClick) || WasKeybindPressedLastFrame(MenuSelect);
 
             // this may be inaccurate by a frame if interactability changes
             return InteractableAndHovered() && mouseClicked;
         }
         public virtual bool IsClicked()
         {
-            bool mouseClicked = IsLeftClickDown() || IsKeyPressed(MenuSelect);
+            bool mouseClicked = IsLeftClickDown() || IsKeybindPressed(MenuSelect);
             return InteractableAndHovered() && mouseClicked;
         }
         public bool ClickedButNotLastFrame()
@@ -305,6 +305,12 @@ namespace bullethellwhatever.DrawCode.UI
         {
             return Position - Size / 2f;
         }
+
+        public virtual Vector2 TopLeftInMenu()
+        {
+            return PositionInMenu - Size / 2f;
+        }
+
         public virtual Vector2 BottomRight()
         {
             return Position + Size / 2f;
@@ -330,15 +336,15 @@ namespace bullethellwhatever.DrawCode.UI
             Color colour = ColourIfSelected();
 
             Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
-        }
-        public virtual void Draw(SpriteBatch s)
-        {
-            DrawAtPosition(s, Position);
 
             foreach (UIComponent uIComponent in Components)
             {
                 uIComponent.Draw(s);
             }
+        }
+        public virtual void Draw(SpriteBatch s)
+        {
+            DrawAtPosition(s, Position);
         }
     }
 }

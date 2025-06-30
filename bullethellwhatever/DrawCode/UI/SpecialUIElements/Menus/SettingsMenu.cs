@@ -151,8 +151,18 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
             {
-                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth, 300f), Vector2.Zero, keybind.Key);
+                float keybindChangerHeight = 170f;
+
+                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth, keybindChangerHeight), Vector2.Zero, keybind.Key);
+                keybindChanger.Colour = Color.Black;
+                float textPadding = 20f;
                 settingsScrollColumn.AddUIElementAuto(keybindChanger);
+
+                // im not sure if the textfunction passes by value or reference
+                UITextComponent uITextComponent = new UITextComponent(keybindChanger.TopLeftInMenu() + new Vector2(textPadding), new Vector2(availableWidth - 2 * textPadding, keybindChangerHeight - 2 * textPadding),
+                    keybindChanger.TextFunction);
+
+                keybindChanger.Components.Add(uITextComponent);
             }
 
             //Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
