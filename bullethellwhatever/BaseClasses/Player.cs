@@ -125,10 +125,10 @@ namespace bullethellwhatever.BaseClasses
 
             var mouseState = Mouse.GetState();
 
-            bool upPressed = IsKeyPressed(Keys.W);
-            bool downPressed = IsKeyPressed(Keys.S);
-            bool rightPressed = IsKeyPressed(Keys.D);
-            bool leftPressed = IsKeyPressed(Keys.A);
+            bool upPressed = IsKeybindPressed(Up);
+            bool downPressed = IsKeybindPressed(Down);
+            bool rightPressed = IsKeybindPressed(Right);
+            bool leftPressed = IsKeybindPressed(Left);
 
             if (upPressed && !TouchingTop())
             {

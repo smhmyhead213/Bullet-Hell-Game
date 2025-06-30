@@ -101,20 +101,11 @@ namespace bullethellwhatever.UtilitySystems
 
             return rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y) / ScreenScaleFactor();
         }
-        public static bool IsKeyDown(string name)
-        {
-            return KeyStates[KeybindMap[name]].IsDown;
-        }
-
         public static bool KeyDownLastFrame(string name)
         {
             return KeyStates[KeybindMap[name]].WasDownLastFrame;
         }
 
-        public static bool KeyReleased(string name)
-        {
-            return !IsKeyDown(name) && KeyDownLastFrame(name);
-        }
         public static bool IsLeftClickDown()
         {
             return KeyStates[KeybindMap[LeftClick]].IsDown;
@@ -180,6 +171,7 @@ namespace bullethellwhatever.UtilitySystems
         {
             return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
         }
+
         public static List<Keybind> PressedKeys()
         {
             List<Keybind> keysPressedNow = new List<Keybind>();
@@ -195,6 +187,21 @@ namespace bullethellwhatever.UtilitySystems
             return keysPressedNow;
         }
 
+        public static List<Keybind> KeysPressedLastFrame()
+        {
+            List<Keybind> keysPressed = new List<Keybind>();
+
+            foreach (KeyValuePair<Keybind, KeyData> pair in KeyStates)
+            {
+                if (KeyStates[pair.Key].WasDownLastFrame)
+                {
+                    keysPressed.Add(pair.Key);
+                }
+            }
+
+            return keysPressed;
+        }
+
         public static bool IsAnyKeyPressed(out Keybind key)
         {
             if (PressedKeys().Any())
@@ -207,6 +214,21 @@ namespace bullethellwhatever.UtilitySystems
                 key = new Keybind(Keys.None);
                 return false;
             }
+        }
+
+        public static bool AnyKeyNewlyPressed(out Keybind key)
+        {
+            foreach (Keybind keybind in KeyStates.Keys)
+            {
+                if (!KeyStates[keybind].WasDownLastFrame && KeyStates[keybind].IsDown)
+                {
+                    key = keybind;
+                    return true;
+                }
+            }
+
+            key = new Keybind(Keys.None);
+            return false;
         }
 
         public static bool IsMouseButtonPressed(MouseButtons mouseButton)

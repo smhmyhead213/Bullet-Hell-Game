@@ -57,9 +57,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
                 Keybind newKey = new Keybind(Keys.None);
 
-                if (IsAnyKeyPressed(out newKey))
+                if (AnyKeyNewlyPressed(out newKey))
                 {
-                    if (newKey.MouseButton != MouseButtons.None && newKey.Key != Keys.None)
+                    if (!(newKey.MouseButton != MouseButtons.None && newKey.Key != Keys.None))
                     {
                         KeybindMap[KeybindName] = newKey;
                         StopRebinding();
