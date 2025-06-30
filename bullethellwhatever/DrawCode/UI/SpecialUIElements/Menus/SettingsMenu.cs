@@ -149,12 +149,11 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
                 bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
             }
 
-            //foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
-            //{
-            //    Func<string> textFunc = () => $"{keybind.Key} : {keybind.Value.ToString()}";
-            //    TextButton textButton = new TextButton(textFunc, 0f, 20f, new Vector2(availableWidth, 200f), Vector2.Zero);
-            //    settingsScrollColumn.AddUIElementAuto(textButton);
-            //}
+            foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
+            {
+                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth, 300f), Vector2.Zero, keybind.Key);
+                settingsScrollColumn.AddUIElementAuto(keybindChanger);
+            }
 
             //Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
 

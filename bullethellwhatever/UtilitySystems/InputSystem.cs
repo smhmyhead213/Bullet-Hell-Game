@@ -15,6 +15,7 @@ namespace bullethellwhatever.UtilitySystems
         public static KeyboardState KeyboardState;
         public static MouseState MouseState;
         public static Vector2 MousePosition;
+        public static Vector2 LastMousePosition;
 
         public static Dictionary<Keybind, KeyData> KeyStates;
 
@@ -56,6 +57,7 @@ namespace bullethellwhatever.UtilitySystems
 
         public static Vector2 MousePositionWithCamera()
         {
+
             return (MousePosition / MainCamera.CameraScale) + MainCamera.VisibleArea.TopLeft();
         }
         public static void UpdateInputSystem()
@@ -70,13 +72,17 @@ namespace bullethellwhatever.UtilitySystems
                 GetKeyData(mouseButton).WasDownLastFrame = IsMouseButtonPressed(mouseButton);
             }
 
+            LastMousePosition = TransformMousePositionForViewport(new Vector2(MouseState.X, MouseState.Y));
+            
             KeyboardState = Keyboard.GetState();
 
             MouseState = Mouse.GetState();
 
             Vector2 rawMousePosition = new Vector2(MouseState.X, MouseState.Y);
 
-            MousePosition = (rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y)) / ScreenScaleFactor();
+            //MousePosition = (rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y)) / ScreenScaleFactor();
+
+            MousePosition = TransformMousePositionForViewport(rawMousePosition);
 
             foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
@@ -89,6 +95,12 @@ namespace bullethellwhatever.UtilitySystems
             }
         }
 
+        public static Vector2 TransformMousePositionForViewport(Vector2 position)
+        {
+            Vector2 rawMousePosition = position;
+
+            return rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y) / ScreenScaleFactor();
+        }
         public static bool IsKeyDown(string name)
         {
             return KeyStates[KeybindMap[name]].IsDown;
@@ -126,9 +138,20 @@ namespace bullethellwhatever.UtilitySystems
         {
             return KeyStates[KeybindMap[RightClick]].IsDown;
         }
+
+        public static bool IsKeyPressed(string key)
+        {
+            return KeyStates[new Keybind(key)].IsDown;
+        }
+
         public static bool IsKeyPressed(Keys key)
         {
             return KeyStates[new Keybind(key)].IsDown;
+        }
+
+        public static bool WasKeyPressedLastFrame(string key)
+        {
+            return KeyStates[new Keybind(key)].WasDownLastFrame;
         }
         public static bool WasKeyPressedLastFrame(Keys key)
         {
@@ -138,9 +161,42 @@ namespace bullethellwhatever.UtilitySystems
         {
             return IsLeftClickDown() && !LeftClickDownLastFrame();
         }
+        public static bool IsKeyPressedAndWasntLastFrame(string key)
+        {
+            return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
+        }
+
         public static bool IsKeyPressedAndWasntLastFrame(Keys key)
         {
             return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
+        }
+        public static List<Keybind> PressedKeys()
+        {
+            List<Keybind> keysPressedNow = new List<Keybind>();
+
+            foreach (KeyValuePair<Keybind, KeyData> pair in KeyStates)
+            {
+                if (pair.Key.IsPressed())
+                {
+                    keysPressedNow.Add(pair.Key);
+                }
+            }
+
+            return keysPressedNow;
+        }
+
+        public static bool IsAnyKeyPressed(out Keybind key)
+        {
+            if (PressedKeys().Any())
+            {
+                key = PressedKeys().First(); // if multiple keys are pressed just take the first one who even cares
+                return true;
+            }
+            else
+            {
+                key = new Keybind(Keys.None);
+                return false;
+            }
         }
 
         public static bool IsMouseButtonPressed(MouseButtons mouseButton)

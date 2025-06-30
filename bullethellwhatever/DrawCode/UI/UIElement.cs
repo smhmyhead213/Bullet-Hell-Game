@@ -36,6 +36,7 @@ namespace bullethellwhatever.DrawCode.UI
         public Action ExtraAI;
         public Action ClickEvent;
         public Func<bool> InteractabilityCondition;
+        public List<UIComponent> Components;
         public bool Interactable
         {
             get;
@@ -70,6 +71,8 @@ namespace bullethellwhatever.DrawCode.UI
             Interactable = true;
 
             InteractabilityCondition = () => true;
+
+            Components = new List<UIComponent>();
         }
 
         /// <summary>
@@ -99,6 +102,8 @@ namespace bullethellwhatever.DrawCode.UI
             Interactable = true;
 
             InteractabilityCondition = () => true;
+
+            Components = new List<UIComponent>();
         }
 
         public virtual void Update()
@@ -124,6 +129,11 @@ namespace bullethellwhatever.DrawCode.UI
             }
 
             ClickBox = CalculateClickbox();
+
+            foreach (UIComponent uIComponent in Components)
+            {
+                uIComponent.Update();
+            }
 
             AITimer++;
         }
@@ -224,6 +234,10 @@ namespace bullethellwhatever.DrawCode.UI
             Opacity = opacity;
         }
 
+        /// <summary>
+        /// Returns whether the element is HOVERED but not clicked
+        /// </summary>
+        /// <returns></returns>
         public bool IsSelected()
         {
             //if (!Interactable)
@@ -270,6 +284,23 @@ namespace bullethellwhatever.DrawCode.UI
 
         }
 
+        public virtual bool WasClickedLastFrame()
+        {
+            bool mouseClicked = WasKeyPressedLastFrame(LeftClick) || WasKeyPressedLastFrame(MenuSelect);
+
+            // this may be inaccurate by a frame if interactability changes
+            return InteractableAndHovered() && mouseClicked;
+        }
+        public virtual bool IsClicked()
+        {
+            bool mouseClicked = IsLeftClickDown() || IsKeyPressed(MenuSelect);
+            return InteractableAndHovered() && mouseClicked;
+        }
+        public bool ClickedButNotLastFrame()
+        {
+            return IsClicked() && !WasClickedLastFrame();
+        }
+
         public virtual Vector2 TopLeft()
         {
             return Position - Size / 2f;
@@ -303,6 +334,11 @@ namespace bullethellwhatever.DrawCode.UI
         public virtual void Draw(SpriteBatch s)
         {
             DrawAtPosition(s, Position);
+
+            foreach (UIComponent uIComponent in Components)
+            {
+                uIComponent.Draw(s);
+            }
         }
     }
 }
