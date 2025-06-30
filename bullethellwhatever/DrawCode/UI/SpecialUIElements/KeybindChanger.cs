@@ -33,7 +33,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             return () => $"Press the button you wish to bind {KeybindName} to.";
         }
 
-        public void BeginRebindig()
+        public void BeginRebinding()
         {
             Rebinding = true;
             AITimer = 0;
@@ -48,11 +48,6 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
         public override void Update()
         {
-            if (ClickedButNotLastFrame() && !Rebinding)
-            {
-                BeginRebindig();
-            }
-
             if (Rebinding)
             {
                 if (AITimer == RebindTimeOut)
@@ -70,6 +65,11 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                         StopRebinding();
                     }
                 }
+            }
+
+            if (ClickedButNotLastFrame() && !Rebinding)
+            {
+                BeginRebinding();
             }
 
             base.Update();
