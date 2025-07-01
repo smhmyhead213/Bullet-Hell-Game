@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.DrawCode.Particles;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 {
@@ -24,34 +26,6 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             MarginY = 30f;
 
             CreateColumns();
-
-            //float menuWidth = buttonWidth + 2 * marginX;
-
-            //MarginY = 50f;
-            //float menuHeight = Height() - 2 * MarginY;
-
-            
-
-            //sidebar.SetOpacity(1f);
-
-            //sidebar.StartMenuBuilder(marginX, marginY, 0);
-
-            //string[] words = "this is good news. we can finally be bees. this isn't your world, but we can be bees. this is good news. you can be a bee. you'll live like a bee. a pet. a pet? a pet, mark. this is good news. you'll live for 30 years. this is insane!".Split(" ");
-
-            //for (int i = 0; i < words.Length; i++)
-            //{
-            //    TextButton test = new TextButton(words[i], 20, 20, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
-            //    test.Interactable = false;
-            //    sidebar.AddUIElementAuto(test);
-            //}
-
-            //sidebar.TotalButtonHeight = sidebar.CalculateTotalHeight(); // no plans to add more buttons after creation of menu for now. if this is done, this may need to be updated on button add
-
-            //float sidebarIndentFromLeft = 50f;
-            
-            //sidebar.PositionInMenu = new Vector2(sidebar.Width() / 2f + sidebarIndentFromLeft, Height() / 2f);
-            //AddUIElement(sidebar);
-            //sidebar.Display();
         }
 
         public void CreateColumns()
@@ -169,6 +143,12 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             int buttonsPerRow = 2;
             int startingRow = settingsScrollColumn.CurrentRow;
+
+            // filter keybinds that we wont allow changing
+
+            Func<KeyValuePair<string, Keybind>, bool> predicate = (KeyValuePair<string, Keybind> bindPair) => !DisallowedBindings().Contains(bindPair.Value);
+            Dictionary<string, Keybind> toDisplay = KeybindMap.Where(predicate).ToDictionary();
+
             int halfwayPoint = startingRow + (KeybindMap.Count - 1) / 2;
             
             foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)

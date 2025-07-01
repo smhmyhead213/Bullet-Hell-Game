@@ -175,7 +175,7 @@ namespace bullethellwhatever.DrawCode.UI
         public bool Clicked()
         {
             //return IsHovered() && IsLeftClickDown() && !WasMouseDownLastFrame;
-            return (IsMouseHovered() && LeftClickReleased()) || (this == UIManager.InteractableUIElement() && KeybindReleased(MenuSelect));
+            return (IsMouseHovered() && KeybindReleased(LeftClick)) || (this == UIManager.InteractableUIElement() && KeybindReleased(MenuSelect));
         }
 
         public void AddToMenu(Menu menu)
@@ -286,14 +286,14 @@ namespace bullethellwhatever.DrawCode.UI
 
         public virtual bool WasClickedLastFrame()
         {
-            bool mouseClicked = WasKeybindPressedLastFrame(LeftClick) || WasKeybindPressedLastFrame(MenuSelect);
+            bool mouseClicked = KeybindPressedLastFrame(LeftClick) || KeybindPressedLastFrame(MenuSelect);
 
             // this may be inaccurate by a frame if interactability changes
             return InteractableAndHovered() && mouseClicked;
         }
         public virtual bool IsClicked()
         {
-            bool mouseClicked = IsLeftClickDown() || IsKeybindPressed(MenuSelect);
+            bool mouseClicked = KeybindPressed(LeftClick) || KeybindPressed(MenuSelect);
             return InteractableAndHovered() && mouseClicked;
         }
         public bool ClickedButNotLastFrame()

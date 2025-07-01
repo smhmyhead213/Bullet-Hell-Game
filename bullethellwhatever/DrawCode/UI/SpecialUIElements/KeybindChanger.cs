@@ -47,12 +47,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             Rebinding = true;
             AITimer = 0;
             TextFunction = RebindingMessage();
+            IgnoreKeybindPresses = true;
         }
 
         public void StopRebinding()
         {
             Rebinding = false;
             TextFunction = DefaultMessage();
+            IgnoreKeybindPresses = false;
         }
 
         public override void Update()
@@ -73,10 +75,12 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                         if (KeybindMap.Values.Contains(newKey) && !(newKey == KeybindMap[KeybindName]))
                         {
                             Rebinding = false;
+                            IgnoreKeybindPresses = false;
                             TextFunction = DuplicateBindingMessage(newKey.ToString(), ControlBoundToKey(newKey.ToString()));
                         }
                         else if (DisallowedBindings().Contains(newKey))
                         {
+                            IgnoreKeybindPresses = false;
                             Rebinding = false;
                             TextFunction = DisallowedBindingMessage(newKey.ToString());
                         }

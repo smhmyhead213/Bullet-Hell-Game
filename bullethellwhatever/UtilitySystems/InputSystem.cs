@@ -103,60 +103,23 @@ namespace bullethellwhatever.UtilitySystems
 
             return rawMousePosition - new Vector2(ScreenViewport.X, ScreenViewport.Y) / ScreenScaleFactor();
         }
+
+        // --- for general key presses ---
         public static bool KeyDownLastFrame(string name)
         {
             return KeyStates[KeybindMap[name]].WasDownLastFrame;
         }
 
-        public static bool IsLeftClickDown()
-        {
-            return KeyStates[KeybindMap[LeftClick]].IsDown;
-        }
-
-        public static bool LeftClickDownLastFrame()
-        {
-            return KeyStates[KeybindMap[LeftClick]].WasDownLastFrame;
-        }
-        public static bool LeftClickReleased()
-        {
-            return LeftClickDownLastFrame() && !IsLeftClickDown();
-        }
-
-        public static bool RightClickReleased()
-        {
-            return KeyStates[KeybindMap[RightClick]].WasDownLastFrame && !IsRightClickDown();
-        }
-
-        public static bool IsRightClickDown()
-        {
-            return KeyStates[KeybindMap[RightClick]].IsDown;
-        }
-
-        public static bool IsKeyPressed(string key)
+        public static bool KeyPressed(string key)
         {
             return KeyStates[new Keybind(key)].IsDown;
         }
 
-        public static bool IsKeyPressed(Keys key)
+        public static bool KeyPressed(Keys key)
         {
             return KeyStates[new Keybind(key)].IsDown;
         }
-
-        public static bool KeybindReleased(string keybind)
-        {
-            return WasKeybindPressedLastFrame(keybind) && !IsKeybindPressed(keybind);
-        }
-        public static bool IsKeybindPressed(string key)
-        {
-            return KeybindMap[key].IsPressed();
-        }
-
-        public static bool WasKeybindPressedLastFrame(string key)
-        {
-            return KeyStates[KeybindMap[key]].WasDownLastFrame;
-        }
-
-        public static bool WasKeyPressedLastFrame(string key)
+        public static bool KeyPressedLastFrame(string key)
         {
             return KeyStates[new Keybind(key)].WasDownLastFrame;
         }
@@ -164,18 +127,40 @@ namespace bullethellwhatever.UtilitySystems
         {
             return KeyStates[new Keybind(key)].WasDownLastFrame;
         }
-        public static bool LeftClickDownButNotLastFrame()
+
+        public static bool KeyPressedAndWasntLastFrame(string key)
         {
-            return IsLeftClickDown() && !LeftClickDownLastFrame();
-        }
-        public static bool IsKeyPressedAndWasntLastFrame(string key)
-        {
-            return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
+            return KeyPressed(key) && !KeyPressedLastFrame(key);
         }
 
         public static bool IsKeyPressedAndWasntLastFrame(Keys key)
         {
-            return IsKeyPressed(key) && !WasKeyPressedLastFrame(key);
+            return KeyPressed(key) && !WasKeyPressedLastFrame(key);
+        }
+
+        // --------------------------------
+        // --- for specific keybind presses
+        public static bool KeybindReleased(string keybind)
+        {
+            if (IgnoreKeybindPresses)
+                return false;
+
+            return KeybindPressedLastFrame(keybind) && !KeybindPressed(keybind);
+        }
+        public static bool KeybindPressed(string key)
+        {
+            if (IgnoreKeybindPresses)
+                return false;
+
+            return KeybindMap[key].IsPressed();
+        }
+
+        public static bool KeybindPressedLastFrame(string key)
+        {
+            if (IgnoreKeybindPresses)
+                return false;
+
+            return KeyStates[KeybindMap[key]].WasDownLastFrame;
         }
 
         public static List<Keybind> PressedKeys()

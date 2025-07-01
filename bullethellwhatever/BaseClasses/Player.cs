@@ -125,10 +125,10 @@ namespace bullethellwhatever.BaseClasses
 
             var mouseState = Mouse.GetState();
 
-            bool upPressed = IsKeybindPressed(Up);
-            bool downPressed = IsKeybindPressed(Down);
-            bool rightPressed = IsKeybindPressed(Right);
-            bool leftPressed = IsKeybindPressed(Left);
+            bool upPressed = KeybindPressed(Up);
+            bool downPressed = KeybindPressed(Down);
+            bool rightPressed = KeybindPressed(Right);
+            bool leftPressed = KeybindPressed(Left);
 
             if (upPressed && !TouchingTop())
             {
@@ -172,7 +172,7 @@ namespace bullethellwhatever.BaseClasses
 
             Velocity = MoveSpeed * Utilities.SafeNormalise(Velocity);
 
-            if (IsKeyPressed(Keys.LeftShift))
+            if (KeyPressed(Keys.LeftShift))
             {
                 MoveSpeed = DefaultMoveSpeed / 2;
                 Scale = DefaultHitbox / 2;
@@ -350,7 +350,7 @@ namespace bullethellwhatever.BaseClasses
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (IsKeyPressed(Keys.K))
+            if (KeyPressed(Keys.K))
             {
                 for (int i = 0; i < EntityManager.activeProjectiles.Count; i++)
                     Drawing.DrawText(EntityManager.activeProjectiles[i].ToString() + " " + EntityManager.activeProjectiles[i].ShouldRemoveOnEdgeTouch.ToString() + " " + EntityManager.activeProjectiles[i].TimeOutsidePlayArea.ToString(), new Vector2(GameWidth / 3, GameHeight / 3 + 10 * i), spriteBatch, font, Colour, Vector2.One);

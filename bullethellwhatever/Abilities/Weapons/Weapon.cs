@@ -64,17 +64,17 @@ namespace bullethellwhatever.Abilities.Weapons
 
             HandleCooldowns();
 
-            if (IsLeftClickDown() && LeftClickDownLastFrame())
+            if (KeybindPressed(LeftClick) && KeybindPressedLastFrame(LeftClick))
             {
                 LeftClickHeldBehaviour();
             }
 
-            if (LeftClickReleased())
+            if (KeybindReleased(LeftClick))
             {
                 LeftClickReleasedBehaviour();
             }
 
-            if (RightClickReleased())
+            if (KeybindReleased(RightClick))
             {
                 RightClickReleasedBehaviour();
             }
@@ -184,11 +184,11 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public virtual bool PrimaryFiring()
         {
-            return PrimaryFireReady() && IsLeftClickDown();
+            return PrimaryFireReady() && KeybindPressed(LeftClick);
         }
         public virtual bool SecondaryFiring()
         {
-            return SecondaryFireReady() && IsRightClickDown();
+            return SecondaryFireReady() && KeybindPressed(RightClick);
         }
 
         public virtual void Draw(SpriteBatch s)

@@ -111,7 +111,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         }
         public override void AI()
         {
-            if (IsKeyPressed(Keys.W))
+            if (KeyPressed(Keys.W))
             {
                 // figure out if we are less than 1SS from the bottom
                 //float scrollDistance = Min(ScrollSpeed, TotalButtonHeight - Height() - ScrollAmount);
@@ -119,7 +119,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 ScrollBy(ScrollSpeed);
             }
             
-            if (IsKeyPressed(Keys.S))
+            if (KeyPressed(Keys.S))
             {
                 // figure out if we are less than 1SS from the top
                 //float scrollDistance = Min(ScrollSpeed, ScrollAmount);

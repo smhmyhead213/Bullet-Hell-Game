@@ -61,7 +61,7 @@ namespace bullethellwhatever.UtilitySystems
 
         public bool IsPressed()
         {
-            return IsKeyPressed(Key) || IsMouseButtonPressed(MouseButton);
+            return KeyPressed(Key) || IsMouseButtonPressed(MouseButton);
         }
 
         public override string ToString()
@@ -127,7 +127,7 @@ namespace bullethellwhatever.UtilitySystems
         public static string MenuSelect => "Menu Select";
         public static string LeftClick => "Primary Action";
         public static string RightClick => "Secondary Action";
-
+        public static string Escape => "Options";
 
         public static Dictionary<string, Keybind> KeybindMap;
 
@@ -157,7 +157,8 @@ namespace bullethellwhatever.UtilitySystems
                 { Right, 'D' },
                 { Precision, (char)160 }, //Keys.LeftShift = 160
                 { MenuTab, (char)9 }, //Keys.Tab = 9
-                { MenuSelect, (char)13 } //Keys.Enter = 13
+                { MenuSelect, (char)13 }, //Keys.Enter = 13
+                { Escape, (char)27 } //Keys.Escape = 27
             };
 
             Dictionary<string, MouseButtons> mouseBinds = new Dictionary<string, MouseButtons>

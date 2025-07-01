@@ -90,7 +90,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             if (SwingStage == SwordSwingStages.Prepare)
             {
-                if (IsLeftClickDown() || true)
+                if (KeybindPressed(LeftClick) || true)
                 {
                     ChargeTimer++;
                     Swinging = true;
@@ -99,12 +99,6 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     Swinging = false;
                 }
-
-                //if (ChargeTimer >= 0 && !IsLeftClickDown())
-                //{
-                //    ChargeTimer = 0;
-                //    Swinging = false;
-                //}
 
                 if (Charged())
                 {

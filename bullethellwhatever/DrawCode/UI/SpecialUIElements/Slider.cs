@@ -34,7 +34,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             base.Update();
             
-            if (IsLeftClickDown() && ClickBox.Contains(MousePosition))
+            if (KeybindPressed(LeftClick) && ClickBox.Contains(MousePosition))
             {
                 float leftEnd = SliderLineLeftEnd(Position).X;
                 float rightEnd = SliderLineRightEnd(Position).X;
@@ -48,12 +48,12 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 float sliderSpeed = 0.01f;
                 float valueChange = (MaxValue - MinValue) * sliderSpeed;
 
-                if (IsKeyPressed(Keys.D))
+                if (KeyPressed(Keys.D))
                 {
                     Value += valueChange;
                 }
 
-                if (IsKeyPressed(Keys.A))
+                if (KeyPressed(Keys.A))
                 {
                     Value -= valueChange;
                 }

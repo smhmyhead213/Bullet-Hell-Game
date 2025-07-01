@@ -22,7 +22,7 @@ namespace bullethellwhatever.Abilities
         public bool IsKeyDown;
         public virtual void Execute()
         {
-            IsKeyDown = IsKeybindPressed(KeyBind);
+            IsKeyDown = KeybindPressed(KeyBind);
 
             if (!IsExecuting)
             {

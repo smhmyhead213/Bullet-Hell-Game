@@ -73,7 +73,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 for (int i = 0; i < AvailableWeapons.Length; i++)
                 {
-                    if (IsKeyPressed(Keybinds[AvailableWeapons[i]]))
+                    if (KeyPressed(Keybinds[AvailableWeapons[i]]))
                     {
                         SwitchWeapon(i);
                         break; // to prevent multiple weapons being held at once and casuing issues

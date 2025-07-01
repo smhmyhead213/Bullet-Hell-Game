@@ -304,12 +304,12 @@ namespace bullethellwhatever.DrawCode.UI
 
             if (Draggable)
             {
-                if (!IsLeftClickDown() || LeftClickReleased())
+                if (!KeybindPressed(LeftClick) || KeybindReleased(LeftClick))
                 {
                     HeldByMouse = false;
                 }
 
-                if (ClickBox.Contains(MousePosition) && IsLeftClickDown() && !HoveringOverAnyUI())
+                if (ClickBox.Contains(MousePosition) && KeybindPressed(LeftClick) && !HoveringOverAnyUI())
                 {
                     HeldByMouse = true;
                 }

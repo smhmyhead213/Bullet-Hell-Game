@@ -81,12 +81,12 @@ namespace bullethellwhatever.DrawCode.UI
             //    element.Update();
             //}
 
-            if (IsKeybindPressed(MenuSelect) && !WasKeybindPressedLastFrame(MenuSelect) && IndexOfInteractable >= 0)
+            if (KeybindPressed(MenuSelect) && !KeybindPressedLastFrame(MenuSelect) && IndexOfInteractable >= 0)
             {
                 ActiveUIElements[IndexOfInteractable].HandleEnter();
             }
 
-            if (IsKeybindPressed(MenuTab) && !WasKeybindPressedLastFrame(MenuTab))
+            if (KeybindPressed(MenuTab) && !KeybindPressedLastFrame(MenuTab))
             {
                 if (IndexOfInteractable == -1)
                 {
@@ -98,7 +98,7 @@ namespace bullethellwhatever.DrawCode.UI
                 }
             }
 
-            if (IsKeyPressed(Keys.Escape) && !WasKeyPressedLastFrame(Keys.Escape) && !UIElementExists("PauseMenu"))
+            if (KeybindPressed(Escape) && !KeybindPressedLastFrame(Escape) && !UIElementExists("PauseMenu"))
             {
                 UI.CreatePauseMenu();
             }
