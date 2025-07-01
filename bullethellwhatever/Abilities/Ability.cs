@@ -18,11 +18,11 @@ namespace bullethellwhatever.Abilities
         public int Timer;
         public bool IsExecuting;
         public bool JustActivated;
-        public Keys KeyBind;
+        public string KeyBind;
         public bool IsKeyDown;
         public virtual void Execute()
         {
-            IsKeyDown = IsKeyPressed(KeyBind);
+            IsKeyDown = IsKeybindPressed(KeyBind);
 
             if (!IsExecuting)
             {

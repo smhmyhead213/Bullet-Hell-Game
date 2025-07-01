@@ -68,6 +68,15 @@ namespace bullethellwhatever.UtilitySystems
         {
             return Key == Keys.None ? MouseButton.ToString() : Key.ToString();
         }
+
+        public static bool operator == (Keybind k1, Keybind k2)
+        {
+            return k1.MouseButton == k2.MouseButton && k1.Key == k2.Key;
+        }
+        public static bool operator !=(Keybind k1, Keybind k2)
+        {
+            return !(k1 == k2);
+        }
     }
 
     // thank you microsoft!
@@ -184,6 +193,19 @@ namespace bullethellwhatever.UtilitySystems
             }
 
             return output;
+        }
+
+        public static string ControlBoundToKey(string keybind)
+        {
+            foreach (KeyValuePair<string, Keybind> pair in KeybindMap)
+            {
+                if (pair.Value.ToString() == keybind)
+                {
+                    return pair.Key;
+                }
+            }
+
+            return "None";
         }
 
         public static bool IsKey(string stored)

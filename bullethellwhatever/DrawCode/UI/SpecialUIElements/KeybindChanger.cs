@@ -33,6 +33,11 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             return () => $"Press the button you wish to bind {KeybindName} to.";
         }
 
+        public Func<string> DuplicateBindingMessage(string badBind, string control)
+        {
+            return () => $"{badBind} is already bound to {control}. Reselect to try again.";
+        }
+
         public void BeginRebinding()
         {
             Rebinding = true;
@@ -61,8 +66,16 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 {
                     if (!(newKey.MouseButton != MouseButtons.None && newKey.Key != Keys.None))
                     {
-                        KeybindMap[KeybindName] = newKey;
-                        StopRebinding();
+                        if (KeybindMap.Values.Contains(newKey) && !(newKey == KeybindMap[KeybindName]))
+                        {
+                            Rebinding = false;
+                            TextFunction = DuplicateBindingMessage(newKey.ToString(), ControlBoundToKey(newKey.ToString()));
+                        }
+                        else
+                        {
+                            KeybindMap[KeybindName] = newKey;
+                            StopRebinding();
+                        }
                     }
                 }
             }
@@ -73,6 +86,17 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             }
 
             base.Update();
+        }
+
+        public override void DrawAtPosition(SpriteBatch s, Vector2 position)
+        {
+            base.DrawAtPosition(s, position);
+
+            Vector2 textSize = font.MeasureString(TextFunction());
+
+            float textPadding = 20f;
+
+            Drawing.DrawText(TextFunction(), position - Size / 2f + new Vector2(textPadding), s, font, Color.White, new Vector2((Size.X - 2 * textPadding) / textSize.X, (Size.Y - 2 * textPadding) / textSize.Y));
         }
     }
 }

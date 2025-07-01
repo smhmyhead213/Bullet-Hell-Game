@@ -71,7 +71,8 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             TextButton settingsHeading = new TextButton("box", "SETTINGS", 20f, 10f, new Vector2(sectionColumnWidth - 2 * sectionColumnMarginX, headingHeight), Vector2.Zero);
             settingsHeading.Interactable = false;
-            
+            settingsHeading.ScaleTextToFit();
+
             string[] sections = ["AUDIO", "CONTROLS", "DISPLAY", "MISC"];
 
             float longestStringLength = Utilities.LongestStringByPixelLength(sections, font);
@@ -98,7 +99,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
                 TextButton sectionButton = new TextButton("ButtonBlankRound", sections[i], sectionButtonsTextMarginX, sectionButtonsTextMarginY, new Vector2(buttonWidth, buttonHeight), Vector2.Zero);
 
-                sectionButton.ScaleTextToFit = false;
+                //sectionButton.ScaleTextToFit = false;
                 sectionButton.TextScale = new Vector2(textScale);
                 sectionButton.Colour = Color.Black;
                 sectionButton.TextMarginX = sectionButtonsTextMarginX;
@@ -149,20 +150,25 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
                 bool addedSuccessfully = settingsScrollColumn.AddUIElementAuto(tester);
             }
 
+            TextButton resetKeybinds = new TextButton("Reset to default keybinds", 40f, 40f, new Vector2(availableWidth, 200f), Vector2.Zero);
+
+            resetKeybinds.ScaleTextToFit();
+            resetKeybinds.CentreText();
+
+            resetKeybinds.SetClickEvent(new Action(() =>
+            {
+                KeybindMap = DefaultKeybinds();
+            }));
+
+            settingsScrollColumn.AddUIElementAuto(resetKeybinds);
+
             foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
             {
-                float keybindChangerHeight = 170f;
+                float keybindChangerHeight = 70f;
 
-                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth, keybindChangerHeight), Vector2.Zero, keybind.Key);
+                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth / 2f, keybindChangerHeight), Vector2.Zero, keybind.Key);
                 keybindChanger.Colour = Color.Black;
-                float textPadding = 20f;
                 settingsScrollColumn.AddUIElementAuto(keybindChanger);
-
-                // im not sure if the textfunction passes by value or reference
-                UITextComponent uITextComponent = new UITextComponent(keybindChanger.TopLeftInMenu() + new Vector2(textPadding), new Vector2(availableWidth - 2 * textPadding, keybindChangerHeight - 2 * textPadding),
-                    keybindChanger.TextFunction);
-
-                keybindChanger.Components.Add(uITextComponent);
             }
 
             //Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);

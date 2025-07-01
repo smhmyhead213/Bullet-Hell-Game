@@ -345,7 +345,7 @@ namespace bullethellwhatever.DrawCode.UI
         {
             foreach (UIElement uIElement in UIElements)
             {
-                if (uIElement.IsHovered())
+                if (uIElement.IsMouseHovered())
                 {
                     return true;
                 }

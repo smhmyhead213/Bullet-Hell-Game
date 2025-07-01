@@ -23,7 +23,6 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         public float TextVerticalPaddingTop;
         public float TextMarginX;
         public float TextMarginY;
-        public bool ScaleTextToFit;
         public Vector2 TextScale;
 
         public Shader BGShader;
@@ -58,7 +57,6 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             TextScale = Vector2.One;
             TextMarginX = 0f;
             TextMarginY = 0f;
-            ScaleTextToFit = true;
 
             BGShader = AssetRegistry.GetShader("ColourShader");
         }
@@ -99,6 +97,14 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             CentreTextVertically();
         }
 
+        public void ScaleTextToFit()
+        {
+            Vector2 textSizeNow = TextSize();
+            Vector2 availableSpace = new Vector2(Size.X - 2 * TextHorizontalPaddingLeft, Size.Y - 2 * TextVerticalPaddingTop);
+
+            float scaleFactor = Min(availableSpace.X / textSizeNow.X, availableSpace.Y / textSizeNow.Y);
+            TextScale = new Vector2(scaleFactor);
+        }
         public Vector2 TextSize()
         {
             Vector2 textSize = font.MeasureString(GetText());
@@ -131,20 +137,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             Vector2 scale = TextScale;
 
-            if (ScaleTextToFit)
-            {
-                Vector2 textSize = TextSize();
-
-                float availableWidth = Size.X - 2 * TextMarginX - TextHorizontalPaddingLeft;
-                float availableHeight = Size.Y - 2 * TextMarginY - TextVerticalPaddingTop;
-
-                float widthScale = availableWidth / textSize.X;
-                float heightScale = availableHeight / textSize.Y;
-                scale = new Vector2(Min(widthScale, heightScale));
-            }
-
             // for some reason when the font is drawn it draws ever so slightly below where its told to, 5 added to combat this
             Vector2 pos = topLeft + new Vector2(TextMarginX + TextHorizontalPaddingLeft, TextMarginY + TextVerticalPaddingTop + 6f);
+
             //pos = topLeft + new Vector2(TextMarginX + TextHorizontalPaddingLeft, 0);
 
             //one of these should always have a value

@@ -15,7 +15,7 @@ namespace bullethellwhatever.Abilities
 {
     public class Dash : Ability
     {
-        public Dash(int duration, int cooldown, Keys keyBind, Player owner)
+        public Dash(int duration, int cooldown, string keyBind, Player owner)
         { 
             Duration = duration;
             KeyBind = keyBind;

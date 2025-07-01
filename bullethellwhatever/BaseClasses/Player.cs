@@ -51,7 +51,7 @@ namespace bullethellwhatever.BaseClasses
         #region Spawning
         public Player(string texture)
         {
-            DashAbility = new Dash(DashDuration, DashCooldownDuration, Keys.Space, this);
+            DashAbility = new Dash(DashDuration, DashCooldownDuration, Keybinds.Dash, this);
             Texture = AssetRegistry.GetTexture2D(texture);
             InputLocked = false;
         }

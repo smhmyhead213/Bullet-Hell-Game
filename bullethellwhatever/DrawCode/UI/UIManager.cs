@@ -81,12 +81,12 @@ namespace bullethellwhatever.DrawCode.UI
             //    element.Update();
             //}
 
-            if (IsKeyPressed(Keys.Enter) && !WasKeyPressedLastFrame(Keys.Enter) && IndexOfInteractable >= 0)
+            if (IsKeybindPressed(MenuSelect) && !WasKeybindPressedLastFrame(MenuSelect) && IndexOfInteractable >= 0)
             {
                 ActiveUIElements[IndexOfInteractable].HandleEnter();
             }
 
-            if (IsKeyPressed(Keys.Tab) && !WasKeyPressedLastFrame(Keys.Tab))
+            if (IsKeybindPressed(MenuTab) && !WasKeybindPressedLastFrame(MenuTab))
             {
                 if (IndexOfInteractable == -1)
                 {
@@ -136,6 +136,12 @@ namespace bullethellwhatever.DrawCode.UI
         public static UIElement? InteractableUIElement()
         {
             //return IndexOfInteractable == -1 ? null : ActiveUIElements[IndexOfInteractable];
+
+            if (ActiveUIElements.Count == 0)
+            {
+                return null;
+            }
+
             UIElement interactable = ActiveUIElements[IndexOfInteractable];
 
             if (interactable is not Menu menu)

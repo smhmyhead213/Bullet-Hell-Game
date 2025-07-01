@@ -118,7 +118,7 @@ namespace bullethellwhatever.DrawCode.UI
             if (ExtraAI is not null)
                 ExtraAI();
 
-            if (this is not Menu && IsHovered() && Owner is not null && Owner == UIManager.InteractableUIElement())
+            if (this is not Menu && IsMouseHovered() && Owner is not null && Owner == UIManager.InteractableUIElement())
             {
                 Owner.IndexOfSelected = -1; // if a button is hovered over, abort tab navigation
             }
@@ -168,14 +168,14 @@ namespace bullethellwhatever.DrawCode.UI
             //SoundSystem.PlaySound("testsound");
         }
 
-        public bool IsHovered()
+        public bool IsMouseHovered()
         {
             return ClickBox.Contains(MousePosition);
         }
         public bool Clicked()
         {
             //return IsHovered() && IsLeftClickDown() && !WasMouseDownLastFrame;
-            return IsHovered() && LeftClickReleased();
+            return (IsMouseHovered() && LeftClickReleased()) || (this == UIManager.InteractableUIElement() && KeybindReleased(MenuSelect));
         }
 
         public void AddToMenu(Menu menu)
