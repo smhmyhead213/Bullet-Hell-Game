@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.MainFiles;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,7 +44,18 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             int floatInTime = 30;
 
-            TextButton settingsHeading = new TextButton("box", "SETTINGS", 20f, 10f, new Vector2(sectionColumnWidth - 2 * sectionColumnMarginX, headingHeight), Vector2.Zero);
+            float availableSectionColumnWidth = sectionColumnWidth - 2 * sectionColumnMarginX;
+            float backButtonWidth = 50f;
+            float headingWidth = availableSectionColumnWidth - backButtonWidth;
+
+            UIElement backButton = new UIElement("box", new Vector2(backButtonWidth));
+            backButton.SetClickEvent(new Action(() =>
+            {
+                GameState.SetGameState(GameState.GameStates.TitleScreen);
+                Remove();
+            }));
+
+            TextButton settingsHeading = new TextButton("box", "SETTINGS", 20f, 10f, new Vector2(headingWidth, headingHeight), Vector2.Zero);
             settingsHeading.Interactable = false;
             settingsHeading.ScaleTextToFit();
 
@@ -60,7 +72,10 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             Menu sidebar = new Menu("box", new Vector2(sectionColumnWidth, sidebarHeight), Vector2.Zero);
             sidebar.StartMenuBuilder(sectionColumnMarginX, sectionColumnPaddingY, 0f);
-            bool addedHeading = sidebar.AddUIElementAuto(settingsHeading);
+
+            sidebar.AddUIElementAuto(backButton);
+            sidebar.AddUIElementAuto(settingsHeading);
+
 
             float leftHandEmptySpace = sectionColumnWidth - buttonWidth - 2 * sectionColumnMarginX - 1; // subtract one because of floating point imprecision when theres exactly enough space
             float paddingBetweenButtons = 40f;
