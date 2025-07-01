@@ -17,6 +17,18 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.DrawCode
 {
+    public struct SpriteBatchSettings
+    {
+        public bool DrawingShaders;
+        public bool UsingCamera;
+
+        public SpriteBatchSettings(bool drawingShaders, bool usingCamera)
+        {
+            DrawingShaders = drawingShaders;
+            UsingCamera = usingCamera;
+        }
+    }
+
     public static class Drawing
     {
         public static bool AreButtonsDrawn;
@@ -27,12 +39,12 @@ namespace bullethellwhatever.DrawCode
         public static bool IsScreenShaking => ScreenShakeTimer > 0;
         public static int Timer;
 
-        public static bool DrawingShaders;
+        public static SpriteBatchSettings SBSettings;
 
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
-            DrawingShaders = false;
+            SBSettings = new SpriteBatchSettings(false, true);
         }
 
         public static void UpdateDrawer()
@@ -48,7 +60,7 @@ namespace bullethellwhatever.DrawCode
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
             s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointWrap, transformMatrix: transform);
-            DrawingShaders = true;
+            SBSettings.DrawingShaders = true;
         }
 
         public static void RestartSpriteBatchForNotShaders(SpriteBatch s, bool useCamera)
@@ -57,7 +69,7 @@ namespace bullethellwhatever.DrawCode
             MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
             System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
             s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: transform);
-            DrawingShaders = false;
+            SBSettings.DrawingShaders = false;
         }
 
         public static void RestartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
@@ -69,7 +81,7 @@ namespace bullethellwhatever.DrawCode
 
             SpriteSortMode SBsortMode = shaderDrawing ? SpriteSortMode.Immediate : SpriteSortMode.Deferred;
 
-            DrawingShaders = shaderDrawing;
+            SBSettings.DrawingShaders = shaderDrawing;
 
             System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
 
@@ -78,14 +90,14 @@ namespace bullethellwhatever.DrawCode
 
         public static void EnterShaderMode(SpriteBatch s)
         {
-            if (!DrawingShaders)
+            if (!SBSettings.DrawingShaders)
             {
                 RestartSpriteBatchForShaders(s, true);
             }
         }
         public static void ExitShaderMode(SpriteBatch s)
         {
-            if (DrawingShaders)
+            if (SBSettings.DrawingShaders)
             {
                 RestartSpriteBatchForNotShaders(s, true);
             }

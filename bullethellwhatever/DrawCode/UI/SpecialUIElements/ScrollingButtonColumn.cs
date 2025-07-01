@@ -184,7 +184,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
         {
             s.End();
 
-            MainInstance.GraphicsDevice.SetRenderTarget(MenuRenderTarget);
+            RenderTargetManager.SetRenderTarget(MenuRenderTarget);
 
             s.Begin(samplerState: SamplerState.PointWrap); // this is UI so dont use camera
 
@@ -200,7 +200,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
 
             s.End();
 
-            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
+            RenderTargetManager.SetRenderTarget(MainRT);
 
             s.Begin(samplerState: SamplerState.PointWrap);
             

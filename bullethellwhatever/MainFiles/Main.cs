@@ -176,7 +176,7 @@ namespace bullethellwhatever.MainFiles
             //_spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
             //_spriteBatch.Begin(transformMatrix: System.Numerics.Matrix4x4.Identity);
 
-            GraphicsDevice.SetRenderTarget(MainRT);
+            RenderTargetManager.SetRenderTarget(MainRT);
             GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
@@ -198,7 +198,7 @@ namespace bullethellwhatever.MainFiles
 
             _spriteBatch.End();
 
-            GraphicsDevice.SetRenderTarget(null);
+            RenderTargetManager.SetRenderTarget(null);
             GraphicsDevice.Viewport = ScreenViewport;
 
             _spriteBatch.Begin(transformMatrix: ScreenMatrix);
