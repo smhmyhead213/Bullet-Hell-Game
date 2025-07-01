@@ -38,6 +38,10 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
             return () => $"{badBind} is already bound to {control}. Reselect to try again.";
         }
 
+        public Func<string> DisallowedBindingMessage(string badBind)
+        {
+            return () => $"You may not bind {badBind}. Reselect and choose a different key.";
+        }
         public void BeginRebinding()
         {
             Rebinding = true;
@@ -70,6 +74,11 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                         {
                             Rebinding = false;
                             TextFunction = DuplicateBindingMessage(newKey.ToString(), ControlBoundToKey(newKey.ToString()));
+                        }
+                        else if (DisallowedBindings().Contains(newKey))
+                        {
+                            Rebinding = false;
+                            TextFunction = DisallowedBindingMessage(newKey.ToString());
                         }
                         else
                         {

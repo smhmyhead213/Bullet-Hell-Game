@@ -18,7 +18,7 @@ namespace bullethellwhatever.UtilitySystems
         public static Vector2 LastMousePosition;
 
         public static Dictionary<Keybind, KeyData> KeyStates;
-
+        public static bool IgnoreKeybindPresses;
         public class KeyData
         {
             public bool WasDownLastFrame;
@@ -32,6 +32,8 @@ namespace bullethellwhatever.UtilitySystems
         }
         public static void Initialise()
         {
+            IgnoreKeybindPresses = false;
+
             KeyStates = new Dictionary<Keybind, KeyData>();
 
             foreach (Keys key in Enum.GetValues(typeof(Keys)))

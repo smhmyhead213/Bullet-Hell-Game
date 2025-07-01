@@ -217,12 +217,6 @@ namespace bullethellwhatever.BaseClasses
                 WeaponSwitchCooldownTimer--;
             }
 
-            if (IsKeyPressedAndWasntLastFrame(Keys.R))
-            {
-                EntityManager.Clear();
-                EntityManager.SpawnBoss();
-            }
-
             if (!InputLocked)
             {
                 HandleKeyPresses();

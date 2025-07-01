@@ -123,10 +123,10 @@ namespace bullethellwhatever.UtilitySystems
         public static string Left => "Left";
         public static string Right => "Right";
         public static string Precision => "Precision";
-        public static string MenuTab => "MenuTab";
-        public static string MenuSelect => "MenuSelect";
-        public static string LeftClick => "LeftClick";
-        public static string RightClick => "RightClick";
+        public static string MenuTab => "Menu Tab";
+        public static string MenuSelect => "Menu Select";
+        public static string LeftClick => "Primary Action";
+        public static string RightClick => "Secondary Action";
 
 
         public static Dictionary<string, Keybind> KeybindMap;
@@ -139,6 +139,13 @@ namespace bullethellwhatever.UtilitySystems
             
         }
 
+        public static List<Keybind> DisallowedBindings()
+        {
+            return new List<Keybind>
+            {
+                new Keybind("Escape")
+            };
+        }
         public static Dictionary<string, Keybind> DefaultKeybinds()
         {
             Dictionary<string, char> keyboardBinds = new Dictionary<string, char>
@@ -231,7 +238,8 @@ namespace bullethellwhatever.UtilitySystems
 
             foreach (KeyValuePair<string, string> pair in savedData)
             {
-                output.Add(pair.Key, new Keybind(pair.Value));
+                if (defaults.Keys.Contains(pair.Key))
+                    output.Add(pair.Key, new Keybind(pair.Value));
 
                 // check if any keybinds are missing (for example, if the save was tampered with or a new keybind is added
                 missingKeybinds.Remove(pair.Key);
