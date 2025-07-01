@@ -71,7 +71,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                 if (AnyKeyNewlyPressed(out newKey))
                 {
                     if (!(newKey.MouseButton != MouseButtons.None && newKey.Key != Keys.None))
-                    {
+                    {                   
                         if (KeybindMap.Values.Contains(newKey) && !(newKey == KeybindMap[KeybindName]))
                         {
                             Rebinding = false;
@@ -90,6 +90,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements
                             StopRebinding();
                         }
                     }
+
+                    // if we try to bind something to enter, it runs the begin rebind block. dont do this.
+                    return;
                 }
             }
 

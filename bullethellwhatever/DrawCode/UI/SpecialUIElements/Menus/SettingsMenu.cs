@@ -164,9 +164,9 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
             Func<KeyValuePair<string, Keybind>, bool> predicate = (KeyValuePair<string, Keybind> bindPair) => !DisallowedBindings().Contains(bindPair.Value);
             Dictionary<string, Keybind> toDisplay = KeybindMap.Where(predicate).ToDictionary();
 
-            int halfwayPoint = startingRow + (KeybindMap.Count - 1) / 2;
+            int halfwayPoint = startingRow + (toDisplay.Count - 1) / 2;
             
-            foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
+            foreach (KeyValuePair<string, Keybind> keybind in toDisplay)
             {
                 if (settingsScrollColumn.CurrentRow > halfwayPoint)
                 {
