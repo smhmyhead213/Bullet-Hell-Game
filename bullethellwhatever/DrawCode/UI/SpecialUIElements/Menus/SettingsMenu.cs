@@ -162,13 +162,28 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             settingsScrollColumn.AddUIElementAuto(resetKeybinds);
 
+            // we are going to add keybind changers in columns instead of rows to keep tab ordering nice.
+            // keep track of the first row
+
+            settingsScrollColumn.MoveToNextRow();
+
+            int buttonsPerRow = 2;
+            int startingRow = settingsScrollColumn.CurrentRow;
+            int halfwayPoint = startingRow + (KeybindMap.Count - 1) / 2;
+            
             foreach (KeyValuePair<string, Keybind> keybind in KeybindMap)
             {
+                if (settingsScrollColumn.CurrentRow > halfwayPoint)
+                {
+                    settingsScrollColumn.CurrentRow = startingRow;
+                }
+
                 float keybindChangerHeight = 70f;
 
-                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth / 2f, keybindChangerHeight), Vector2.Zero, keybind.Key);
+                KeybindChanger keybindChanger = new KeybindChanger("box", new Vector2(availableWidth / buttonsPerRow, keybindChangerHeight), Vector2.Zero, keybind.Key);
                 keybindChanger.Colour = Color.Black;
                 settingsScrollColumn.AddUIElementAuto(keybindChanger);
+                settingsScrollColumn.MoveToNextRow();
             }
 
             //Slider testSlider = new Slider("box", new Vector2(availableWidth, 300f), Vector2.Zero, 0f, 100f, 30f);
