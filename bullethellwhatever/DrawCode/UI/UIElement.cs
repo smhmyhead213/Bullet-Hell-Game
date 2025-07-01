@@ -37,6 +37,10 @@ namespace bullethellwhatever.DrawCode.UI
         public Action ClickEvent;
         public Func<bool> InteractabilityCondition;
         public List<UIComponent> Components;
+
+        public bool Outline;
+        public Vector2 OutlineThickness;
+        public Color OutlineColour;
         public bool Interactable
         {
             get;
@@ -321,6 +325,9 @@ namespace bullethellwhatever.DrawCode.UI
             return position + Size / 2f;
         }
 
+        public float Width() => Size.X;
+        public float Height() => Size.Y;
+
         public bool InteractableAndHovered()
         {
             return IsSelected() && InteractabilityCondition() && Interactable;
@@ -330,12 +337,35 @@ namespace bullethellwhatever.DrawCode.UI
         {
             return InteractableAndHovered() ? HoveredColour() : Colour; // in the future make the colour more red, not just red
         }
-
+        public void AddOutline(Color outlineColour, Vector2 thickness)
+        {
+            Outline = true;
+            OutlineColour = outlineColour;
+            OutlineThickness = thickness;
+        }
         public virtual void DrawAtPosition(SpriteBatch s, Vector2 position)
         {
             Color colour = ColourIfSelected();
 
-            Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+            //Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1);
+
+            if (Outline)
+            {
+                Drawing.RestartSB(s, true, false);
+                Shader outline = AssetRegistry.GetShader("MenuOutline");
+                outline.SetColour(OutlineColour);
+                outline.SetParameter("backgroundColour", Colour);
+                outline.SetParameter("xThickness", OutlineThickness.X / Width());
+                outline.SetParameter("yThickness", OutlineThickness.Y / Height());
+                outline.Apply();
+            }
+
+            Drawing.BetterDraw(Texture, position, null, colour * Opacity, 0, new Vector2(Size.X / Texture.Width, Size.Y / Texture.Height), SpriteEffects.None, 1); // scale texture up to required size
+
+            if (Outline)
+            {
+                Drawing.RestartSB(s, false, false);
+            }
 
             foreach (UIComponent uIComponent in Components)
             {

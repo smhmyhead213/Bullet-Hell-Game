@@ -141,6 +141,7 @@ namespace bullethellwhatever.DrawCode.UI.SpecialUIElements.Menus
 
             TextButton resetKeybinds = new TextButton("Reset to default keybinds", 40f, 40f, new Vector2(availableWidth, 200f), Vector2.Zero);
 
+            resetKeybinds.AddOutline(Color.White, new Vector2(10f));
             resetKeybinds.ScaleTextToFit();
             resetKeybinds.CentreText();
 

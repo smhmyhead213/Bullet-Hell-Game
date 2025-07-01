@@ -28,9 +28,7 @@ namespace bullethellwhatever.DrawCode.UI
         public bool BuildingMode;
         public bool HeldByMouse;
 
-        public bool Outline;
-        public Vector2 OutlineThickness;
-        public Color OutlineColour;
+
 
         public int IndexOfSelected
         {
@@ -458,22 +456,6 @@ namespace bullethellwhatever.DrawCode.UI
             uiElement.Owner = this;
             UIElements.Add(uiElement);
         }
-
-        /// <summary>
-        /// Thickness is a fraction of UV.
-        /// </summary>
-        /// <param name="outlineColour"></param>
-        /// <param name="thickness"></param>
-        public void AddOutline(Color outlineColour, Vector2 thickness)
-        {
-            Outline = true;
-            OutlineColour = outlineColour;
-            OutlineThickness = thickness;
-        }
-
-        public float Width() => Size.X;
-
-        public float Height() => Size.Y;
 
         public Vector2 RelativeCentreOfMenu() => new Vector2(Width(), Height()) / 2f;
 
