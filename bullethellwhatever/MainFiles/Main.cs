@@ -177,10 +177,9 @@ namespace bullethellwhatever.MainFiles
             //_spriteBatch.Begin(transformMatrix: System.Numerics.Matrix4x4.Identity);
 
             RenderTargetManager.SetRenderTarget(MainRT);
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Gray);
 
             _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
-
             switch (GameState.State)
             {
                 case GameState.GameStates.Credits:
@@ -192,9 +191,10 @@ namespace bullethellwhatever.MainFiles
             UIManager.DrawUI(_spriteBatch);
 
             _spriteBatch.Begin();
-
-            //Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
-            //Drawing.DrawBox(MainCamera.VisibleArea.BottomRight(), Color.Red, 5f);
+            Drawing.RestartSB(_spriteBatch, true, false);
+                
+            ChainSwap.ControlTest();
+            ChainSwap.Test();
 
             _spriteBatch.End();
 

@@ -238,7 +238,7 @@ namespace bullethellwhatever.DrawCode
         {
             if (IndiceCount != 0)
             {
-                bool wasDrawingShaders = Drawing.DrawingShaders;
+                bool wasDrawingShaders = Drawing.SBSettings.DrawingShaders;
                 bool shouldSwitchToShaderDrawing = !wasDrawingShaders && Shader is not null;
 
                 if (shouldSwitchToShaderDrawing)

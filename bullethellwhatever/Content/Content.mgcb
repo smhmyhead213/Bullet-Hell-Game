@@ -582,6 +582,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/DeathrayShader2.fx
 
+#begin Shaders/DrawVerticalBlackLine.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/DrawVerticalBlackLine.fx
+
 #begin Shaders/EnergyParticleShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

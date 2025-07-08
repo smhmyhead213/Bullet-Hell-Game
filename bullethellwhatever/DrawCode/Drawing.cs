@@ -72,10 +72,8 @@ namespace bullethellwhatever.DrawCode
             SBSettings.DrawingShaders = false;
         }
 
-        public static void RestartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
+        public static void StartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
         {
-            s.End();
-
             if (returnToMainRT)
                 MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
 
@@ -84,6 +82,29 @@ namespace bullethellwhatever.DrawCode
             SBSettings.DrawingShaders = shaderDrawing;
 
             System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
+
+            s.Begin(sortMode: SBsortMode, samplerState: SamplerState.PointWrap, transformMatrix: transform);
+        }
+
+        public static void RestartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
+        {
+            s.End();
+
+            StartSB(s, shaderDrawing, useCamera, returnToMainRT);
+        }
+
+        public static void RestartSB(SpriteBatch s, SpriteBatchSettings spriteBatchSettings, bool returnToMainRT = true)
+        {
+            s.End();
+
+            if (returnToMainRT)
+                MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
+
+            SpriteSortMode SBsortMode = spriteBatchSettings.DrawingShaders ? SpriteSortMode.Immediate : SpriteSortMode.Deferred;
+
+            SBSettings.DrawingShaders = spriteBatchSettings.DrawingShaders;
+
+            System.Numerics.Matrix4x4 transform = spriteBatchSettings.UsingCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
 
             s.Begin(sortMode: SBsortMode, samplerState: SamplerState.PointWrap, transformMatrix: transform);
         }
