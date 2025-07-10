@@ -195,5 +195,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             return new CrabNeutralState(CrabOwner);
         }
+        public override List<Type> BannedFollowUps()
+        {
+            return new List<Type>
+            {
+                typeof(CrabSpray),
+            };
+        }
     }
 }

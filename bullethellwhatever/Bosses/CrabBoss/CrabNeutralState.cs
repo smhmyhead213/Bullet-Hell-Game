@@ -35,7 +35,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     0.15f,
                     0.22f,
                     0.23f,
-                    0.15f]; // 0.15f
+                    0.7f]; // 0.15f
+
+            // crashes if probabilities length != attacks.length
+
+            for (int i = attacks.Count - 1; i >= 0; i--)
+            {
+                if (Owner.PreviousAttack is not null && Owner.PreviousAttack.BannedFollowUps().Contains(attacks[i].GetType()))
+                {
+                    attacks.RemoveAt(i);
+                    probabilities.RemoveAt(i);
+                }
+            }
 
             float totalProbability = probabilities.Sum();
             probabilities = probabilities.Select(p => p / totalProbability).ToList(); // normalise probabilities

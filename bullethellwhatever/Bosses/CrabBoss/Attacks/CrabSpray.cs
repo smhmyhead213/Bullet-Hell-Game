@@ -138,6 +138,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             }
         }
 
+        public override List<Type> BannedFollowUps()
+        {
+            return new List<Type>
+            {
+                typeof(CrabSpray),
+            };
+        }
         public override void ExtraDraw(SpriteBatch s, int AITimer)
         {
             // try to make prim cones to show danger zone

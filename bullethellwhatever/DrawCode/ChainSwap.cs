@@ -28,8 +28,8 @@ namespace bullethellwhatever.DrawCode
             ShadersToApply = shadersToApply;
             int width = (int)(Texture.Width * Scale.X);
             int height = (int)(Texture.Height * Scale.Y);
-            RT1 = new RenderTarget2D(MainInstance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
-            RT2 = new RenderTarget2D(MainInstance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
+            RT1 = new RenderTarget2D(MainInstance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            RT2 = new RenderTarget2D(MainInstance.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             Position = position;
         }
 
@@ -47,16 +47,19 @@ namespace bullethellwhatever.DrawCode
                 RenderTargetManager.SetRenderTarget(rtToUse);
 
                 // dont return to main RT automatically - we are gonna do this manually
+                // start SB in immediate mode
+
                 Drawing.StartSB(_spriteBatch, true, false, false);
+
+                ShadersToApply[i].Apply();
 
                 currentTextureStep.SaveAsImage($"testbefore{i + 1}.jpg");
 
-                ShadersToApply[i].Apply();
+                MainInstance.GraphicsDevice.Textures[0] = currentTextureStep;
+
                 _spriteBatch.Draw(currentTextureStep, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
                 currentTextureStep = rtToUse;
-
-                //rtToUse.SaveAsImage($"test{i + 1}.jpg");
 
                 currentTextureStep.SaveAsImage($"test{i + 1}.jpg");
 
@@ -66,6 +69,7 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
+            // restore to original state
             Drawing.SBSettings = originalSpriteBatchSettings;
             Drawing.RestartSB(_spriteBatch, originalSpriteBatchSettings);
 

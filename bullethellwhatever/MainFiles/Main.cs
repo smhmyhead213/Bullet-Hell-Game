@@ -177,7 +177,7 @@ namespace bullethellwhatever.MainFiles
             //_spriteBatch.Begin(transformMatrix: System.Numerics.Matrix4x4.Identity);
 
             RenderTargetManager.SetRenderTarget(MainRT);
-            GraphicsDevice.Clear(Color.Gray);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin(transformMatrix: MainCamera.Matrix);
             switch (GameState.State)
@@ -190,13 +190,13 @@ namespace bullethellwhatever.MainFiles
             DrawGame.DrawTheGame(gameTime, _spriteBatch);
             UIManager.DrawUI(_spriteBatch);
 
-            _spriteBatch.Begin();
-            Drawing.RestartSB(_spriteBatch, true, false);
+            //_spriteBatch.Begin();
+            //Drawing.RestartSB(_spriteBatch, true, false);
                 
-            ChainSwap.ControlTest();
-            ChainSwap.Test();
+            //ChainSwap.ControlTest();
+            //ChainSwap.Test();
 
-            _spriteBatch.End();
+            //_spriteBatch.End();
 
             RenderTargetManager.SetRenderTarget(null);
             GraphicsDevice.Viewport = ScreenViewport;

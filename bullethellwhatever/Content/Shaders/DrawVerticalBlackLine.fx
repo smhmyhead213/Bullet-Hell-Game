@@ -65,8 +65,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
     bool inLine = uv.x > 0.4 && uv.x < 0.6;
     
-    //return lerp(baseColor, float4(0, 0, 0, 0), inLine);
-    return baseColor;
+    return lerp(baseColor, float4(0, 0, 0, 0), inLine);
+    //return baseColor;
 }
 
 Technique Technique1
