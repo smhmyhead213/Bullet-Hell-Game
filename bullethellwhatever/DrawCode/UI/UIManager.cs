@@ -137,7 +137,7 @@ namespace bullethellwhatever.DrawCode.UI
         {
             //return IndexOfInteractable == -1 ? null : ActiveUIElements[IndexOfInteractable];
 
-            if (ActiveUIElements.Count == 0)
+            if (ActiveUIElements.Count == 0 || IndexOfInteractable == -1)
             {
                 return null;
             }

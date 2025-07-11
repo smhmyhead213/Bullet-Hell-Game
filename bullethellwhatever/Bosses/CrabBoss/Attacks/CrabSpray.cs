@@ -134,6 +134,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 if (AITimer == timeHere + sprayTime + windDownTime)
                 {
                     End();
+                    return;
                 }
             }
         }

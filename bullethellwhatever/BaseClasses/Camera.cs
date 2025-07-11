@@ -264,8 +264,8 @@ namespace bullethellwhatever.BaseClasses
             Matrix4x4 zoomMatrix = goback * zoom * gothere;
 
             float aspectRatio = Utilities.AspectRatio();
-            Matrix4x4 rotation = Utilities.ScaleMatrix(aspectRatio, 1) * Matrix4x4.CreateRotationZ(-CameraRotation) * Utilities.ScaleMatrix(1 / aspectRatio, 1);
-            return rotation * translation * zoomMatrix;
+            Matrix4x4 rotation = Utilities.ScaleMatrix(aspectRatio, 1) * Matrix4x4.CreateRotationZ(-CameraRotation + ScreenShakeRotationOffset) * Utilities.ScaleMatrix(1 / aspectRatio, 1);
+            return translation * rotation * zoomMatrix;
 
             // https://learnopengl.com/Getting-Started/Coordinate-Systems
         }

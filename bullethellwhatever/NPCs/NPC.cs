@@ -52,7 +52,11 @@ namespace bullethellwhatever.NPCs
             }
         }
 
-        public BossAttack PreviousAttack;
+        public BossAttack PreviousAttack
+        {
+            get;
+            set;
+        }
 
         public virtual void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool harmfulToPlayer, bool harmfulToEnemy)
         {

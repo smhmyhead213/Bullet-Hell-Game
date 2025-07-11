@@ -205,7 +205,9 @@ namespace bullethellwhatever.DrawCode
             if (!Utilities.ImportantMenusPresent() && MainInstance.IsActive && IsScreenShaking) 
             {
                 MainCamera.ScreenShakeOffset = Utilities.RandomFloat(-ScreenShakeMagnitude, ScreenShakeMagnitude);
-                MainCamera.ScreenShakeRotationOffset = Utilities.RandomAngle(ScreenShakeRotationMagnitude);
+                //MainCamera.ScreenShakeOffset = 100f;
+                //MainCamera.ScreenShakeRotationOffset = Utilities.RandomAngle(ScreenShakeRotationMagnitude);
+                //MainCamera.ScreenShakeRotationOffset = 0f;
             }
             
             if (!IsScreenShaking)
