@@ -37,6 +37,9 @@ namespace bullethellwhatever.DrawCode
         public static RasterizerState RasteriserState;
         public static BasicEffect BasicEffect;
 
+        public static int VertexCounter;
+        public static int IndexCounter;
+
         public static void Initialise()
         {
             RasteriserState = new RasterizerState();
@@ -51,7 +54,22 @@ namespace bullethellwhatever.DrawCode
             VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), MaxVertices, BufferUsage.WriteOnly);
 
             IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), MaxIndices, BufferUsage.WriteOnly);
+
+            VertexCounter = 0;
+            IndexCounter = 0;
         }
+
+        public static void AddVertex(Vector2 coords, Color colour, Vector2 texCoords)
+        {
+            MainVertices[VertexCounter] = CreateVertex(coords, colour, texCoords);
+            VertexCounter++;
+        }
+        public static void AddIndex(int index)
+        {
+            MainIndices[IndexCounter] = (short)index;
+            IndexCounter++;
+        }
+
         public static void AddPoint(int index, Vector2 point, Color colour, Vector2 texCoord)
         {
             MainVertices[index] = CreateVertex(point, colour, texCoord);
@@ -236,6 +254,9 @@ namespace bullethellwhatever.DrawCode
         }
         public void Draw()
         {
+            PrimitiveManager.VertexCounter = 0;
+            PrimitiveManager.IndexCounter = 0;
+
             if (IndiceCount != 0)
             {
                 bool wasDrawingShaders = Drawing.SBSettings.DrawingShaders;
