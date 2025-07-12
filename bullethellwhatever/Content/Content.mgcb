@@ -708,6 +708,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/TelegraphLineShader.fx
 
+#begin Shaders/ThermalSwordShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ThermalSwordShader.fx
+
 #begin Sounds/bullethellgamesounds.bank
 /copy:Sounds/bullethellgamesounds.bank
 

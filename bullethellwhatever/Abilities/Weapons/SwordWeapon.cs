@@ -12,6 +12,7 @@ using bullethellwhatever.UtilitySystems;
 using bullethellwhatever.NPCs;
 using System.Windows.Forms;
 using bullethellwhatever.AssetManagement;
+using bullethellwhatever.DrawCode.Particles;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -24,12 +25,15 @@ namespace bullethellwhatever.Abilities.Weapons
     {
         public float WeaponRotation;
 
-        public float PullBackAngle => -PI / 4;
+        public float PullBackAngle => -PI / 2.4f;
         public float SwingAngle => -PullBackAngle * 2;
 
-        public int SwingDuration => 30;
+        public int SwingDuration => 7;
         public int ChargeDuration => 30;
         public int ChargeTimer = 0;
+        public int ChargeHoldDuration => 15;
+        public int SwingEndLag = 20;
+        public int MaximumExtraChargeTime = 30;
 
         public SwordSwingStages SwingStage;
 
@@ -43,9 +47,12 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public float TrailOffsetFromSwordTip => 10f;
         public float TrailWidth => 2 * TrailOffsetFromSwordTip;
+
+        public Shader ThermalEffect;
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             TrailPoints = new List<Vector2>();
+            ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
         }
 
         public override void WeaponInitialise()
@@ -86,51 +93,116 @@ namespace bullethellwhatever.Abilities.Weapons
         }
         public override void AI()
         {
-            return;
-
             if (SwingStage == SwordSwingStages.Prepare)
             {
-                if (KeybindPressed(LeftClick) || true)
+                if (KeybindPressed(LeftClick))
                 {
                     ChargeTimer++;
-                    Swinging = true;
-                }
-                else
-                {
-                    Swinging = false;
                 }
 
                 if (Charged())
                 {
-                    SwingStage = SwordSwingStages.Swing;
-                    ChargeTimer = 0;
-                    AITimer = 0;
-                }
+                    if (TimeCharged() == 0)
+                    {
+                        int particles = 10;
 
-                float interpolant = EasingFunctions.EaseOutCubic((float)ChargeTimer / ChargeDuration);
-                WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
-                SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
+                        for (int i = 0; i < particles; i++)
+                        {
+                            Particle particle = new Particle();
+                            float direction = Utilities.RandomAngle();
+                            float speed = Utilities.RandomFloat(2f, 7f);
+                            int lifetime = Utilities.RandomInt(25, 35);
+                            float initialOpacity = 0.4f;
+                            Vector2 velocity = direction.ToVector() * speed;
+
+                            particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
+                            particle.AddTrail(10);
+                            particle.SetExtraAI(new Action(() =>
+                            {
+                                particle.Opacity = MathHelper.Lerp(initialOpacity, 0f, (float)particle.AITimer / lifetime);
+                            }));
+                        }
+                    }
+
+                    if (TimeCharged() == MaximumExtraChargeTime)
+                    {
+                        int particles = 20;
+
+                        for (int i = 0; i < particles; i++)
+                        {
+                            Particle particle = new Particle();
+                            float direction = Utilities.RandomAngle();
+                            float speed = Utilities.RandomFloat(4f, 9f);
+                            int lifetime = Utilities.RandomInt(25, 35);
+                            float initialOpacity = 0.4f;
+                            Vector2 velocity = direction.ToVector() * speed;
+
+                            particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
+                            particle.AddTrail(10);
+                            particle.SetExtraAI(new Action(() =>
+                            {
+                                particle.Opacity = MathHelper.Lerp(initialOpacity, 0f, (float)particle.AITimer / lifetime);
+                            }));
+                        }
+                    }
+
+                    // if the swing is fully charged, await release to swing
+                    if (KeybindReleased(LeftClick))
+                    {
+                        SwingStage = SwordSwingStages.Swing;
+                        ChargeTimer = 0;
+                        AITimer = 0;
+                        return;
+                    }
+                }
+                else
+                {
+                    Swinging = KeybindPressed(LeftClick);
+
+                    // if we are not fully charged, allow releasing mouse to abort swing
+                    if (KeybindReleased(LeftClick))
+                    {
+                        ChargeTimer = 0;
+                        Swinging = false;
+                    }
+
+                    // perform charge
+                    float chargeTimeSpent = MathHelper.Clamp(ChargeTimer, 0f, ChargeDuration);
+                    float interpolant = EasingFunctions.EaseOutCubic((float)chargeTimeSpent / ChargeDuration);
+                    WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
+                    SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
+                }
             }
             else if (SwingStage == SwordSwingStages.Swing)
             {
-                int extraTrailPoints = 2;
+                int extraTrailPoints = 0;
 
-                for (int i = 0; i < extraTrailPoints; i++)
+                if (AITimer <= SwingDuration)
                 {
-                    float extraInterpolant = i / (float)extraTrailPoints;
-                    WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration));
-                    Vector2 toSwordEnd = CalculateEnd(WeaponRotation + SwingDirection) - Owner.Position;
-                    Vector2 point = Owner.Position + toSwordEnd.SetLength(Length - TrailOffsetFromSwordTip);
-                    TrailPoints.Add(point);
+                    for (int i = 0; i <= extraTrailPoints; i++)
+                    {
+                        float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
+                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration));
+                        Vector2 point = SwordEnd(TrailOffsetFromSwordTip);
+                        TrailPoints.Add(point);
+                    }
                 }
 
-                if (AITimer == SwingDuration + 1)
+                if (AITimer == SwingDuration + 1 + SwingEndLag)
                 {
                     Reset();
                 }
             }
 
-            WeaponRotation += SwingDirection; // face mouse
+            //WeaponRotation += SwingDirection; // face mouse
+        }
+
+        public Vector2 SwordEnd(float offset = 0f)
+        {
+            // re-add swingdirection
+            Vector2 toSwordEnd = CalculateEnd(WeaponRotation) - Owner.Position;
+            Vector2 point = Owner.Position + toSwordEnd.SetLength(Length - offset);
+            return point;
         }
 
         public override void PrimaryFire()
@@ -145,7 +217,12 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public bool Charged()
         {
-            return ChargeTimer == ChargeDuration;
+            return ChargeTimer >= ChargeDuration;
+        }
+
+        public int TimeCharged()
+        {
+            return ChargeTimer - ChargeDuration;
         }
         public override void OnHit(NPC npc)
         {
@@ -223,10 +300,20 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             if (Swinging)
             {
+                Drawing.RestartSB(s, true, true);
+
+                Color colour = Color.Orange;
+
+                ThermalEffect.SetParameter("heatYRatio", EasingFunctions.EaseInQuart(TimeCharged() / (float)MaximumExtraChargeTime));
+                ThermalEffect.SetColour(colour);
+                ThermalEffect.Apply();
+
                 Texture2D texture = AssetRegistry.GetTexture2D("SwordWeapon");
                 float xscale = Width / texture.Width;
                 float yscale = Length / texture.Height;
-                Drawing.BetterDraw(texture, Owner.Position, null, Color.Orange, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
+                Drawing.BetterDraw(texture, Owner.Position, null, colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
+
+                Drawing.RevertToPreviousSBState(s);
             }
 
             //foreach (Vector2 point in TrailVertices())
@@ -234,7 +321,7 @@ namespace bullethellwhatever.Abilities.Weapons
             //    Drawing.DrawBox(point, Color.Red, 0.5f);
             //}
 
-            DrawTrail();
+            //DrawTrail();
         }
     }
 }

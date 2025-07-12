@@ -109,7 +109,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
         public override void Draw(SpriteBatch s)
         {
-            Drawing.RestartSpriteBatchForShaders(s, false);
+            Drawing.RestartSB(s, true, false);
 
             float opacity = 1f;
 
@@ -121,7 +121,7 @@ namespace bullethellwhatever.DrawCode.UI.Player
 
             Drawing.BetterDraw(AssetRegistry.GetTexture2D("box"), new Vector2(GameWidth / 7.6f, GameHeight / 8.8f), null, Color.White * opacity, 0, new Vector2(12.6f, 0.7f), SpriteEffects.None, 0);
 
-            Drawing.RestartSpriteBatchForShaders(s, false);
+            Drawing.RestartSB(s, true, false);
 
             Drawing.BetterDraw(Texture, new Vector2(GameWidth / 10f, GameHeight / 10f), null, Color.White * opacity, 0, Vector2.One, SpriteEffects.None, 1);
 

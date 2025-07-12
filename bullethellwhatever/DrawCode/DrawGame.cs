@@ -83,7 +83,7 @@ namespace bullethellwhatever.DrawCode
                     entity.Draw(_spriteBatch);
             }
 
-            Drawing.RestartSpriteBatchForShaders(s, true);
+            Drawing.RestartSB(s, true, true);
 
             foreach (Entity entity in ProjectilestoDrawWithShader)
             {
@@ -126,7 +126,7 @@ namespace bullethellwhatever.DrawCode
                 }
             }
 
-            Drawing.RestartSpriteBatchForNotShaders(s, true);
+            Drawing.RestartSB(s, false, true);
 
             foreach (Entity entity in NPCstoDrawWithoutShader)
             {

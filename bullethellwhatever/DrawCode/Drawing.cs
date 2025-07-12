@@ -40,11 +40,13 @@ namespace bullethellwhatever.DrawCode
         public static int Timer;
 
         public static SpriteBatchSettings SBSettings;
+        public static SpriteBatchSettings PreviousSBSettings;
 
         public static SpriteBatch PreviousSpriteBatch;
         public static void Initialise()
         {
             SBSettings = new SpriteBatchSettings(false, true);
+            PreviousSBSettings = SBSettings;
         }
 
         public static void UpdateDrawer()
@@ -56,36 +58,28 @@ namespace bullethellwhatever.DrawCode
 
             HandleScreenShake();
         }
-        public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera)
-        {
-            s.End();
-            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-            System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
-            s.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointWrap, transformMatrix: transform);
-            SBSettings.DrawingShaders = true;
-        }
-
-        public static void RestartSpriteBatchForNotShaders(SpriteBatch s, bool useCamera)
-        {
-            s.End();
-            MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-            System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
-            s.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: transform);
-            SBSettings.DrawingShaders = false;
-        }
 
         public static void StartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
         {
+            // replaces previousSB whnever Sb is restarted regardless of no change
+            PreviousSBSettings = SBSettings;
+
             if (returnToMainRT)
                 MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
 
             SpriteSortMode SBsortMode = shaderDrawing ? SpriteSortMode.Immediate : SpriteSortMode.Deferred;
 
             SBSettings.DrawingShaders = shaderDrawing;
+            SBSettings.UsingCamera = useCamera;
 
             System.Numerics.Matrix4x4 transform = useCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
 
             s.Begin(sortMode: SBsortMode, samplerState: SamplerState.PointWrap, transformMatrix: transform);
+        }
+
+        public static void StartSB(SpriteBatch s, SpriteBatchSettings settings, bool returnToMainRT = true)
+        {
+            StartSB(s, settings.DrawingShaders, settings.UsingCamera, returnToMainRT);
         }
 
         public static void RestartSB(SpriteBatch s, bool shaderDrawing, bool useCamera, bool returnToMainRT = true)
@@ -99,33 +93,13 @@ namespace bullethellwhatever.DrawCode
         {
             s.End();
 
-            if (returnToMainRT)
-                MainInstance.GraphicsDevice.SetRenderTarget(MainRT);
-
-            SpriteSortMode SBsortMode = spriteBatchSettings.DrawingShaders ? SpriteSortMode.Immediate : SpriteSortMode.Deferred;
-
-            SBSettings.DrawingShaders = spriteBatchSettings.DrawingShaders;
-
-            System.Numerics.Matrix4x4 transform = spriteBatchSettings.UsingCamera ? MainCamera.Matrix : System.Numerics.Matrix4x4.Identity;
-
-            s.Begin(sortMode: SBsortMode, samplerState: SamplerState.PointWrap, transformMatrix: transform);
+            StartSB(s, spriteBatchSettings, returnToMainRT);
         }
 
-        public static void EnterShaderMode(SpriteBatch s)
+        public static void RevertToPreviousSBState(SpriteBatch s, bool returnToMainRT = true)
         {
-            if (!SBSettings.DrawingShaders)
-            {
-                RestartSpriteBatchForShaders(s, true);
-            }
+            RestartSB(s, PreviousSBSettings, returnToMainRT);
         }
-        public static void ExitShaderMode(SpriteBatch s)
-        {
-            if (SBSettings.DrawingShaders)
-            {
-                RestartSpriteBatchForNotShaders(s, true);
-            }
-        }
-
         public static void DrawText(string stringg, Vector2 position, SpriteBatch _spriteBatch, SpriteFont font, Color colour, Vector2 scale)
         {
             _spriteBatch.DrawString(font, stringg, position, colour, 0f, Vector2.Zero, scale, SpriteEffects.None, 0); // fix later

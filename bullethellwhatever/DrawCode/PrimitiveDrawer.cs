@@ -243,7 +243,7 @@ namespace bullethellwhatever.DrawCode
 
                 if (shouldSwitchToShaderDrawing)
                 {
-                    Drawing.RestartSpriteBatchForShaders(_spriteBatch, true);
+                    Drawing.RestartSB(_spriteBatch, true, true);
                 }
 
                 PrimitiveManager.GraphicsDevice.SetVertexBuffer(PrimitiveManager.VertexBuffer);
@@ -273,7 +273,7 @@ namespace bullethellwhatever.DrawCode
 
                 if (shouldSwitchToShaderDrawing)
                 {
-                    Drawing.RestartSpriteBatchForNotShaders(_spriteBatch, true);
+                    Drawing.RestartSB(_spriteBatch, false, true);
                 }
             }
         }

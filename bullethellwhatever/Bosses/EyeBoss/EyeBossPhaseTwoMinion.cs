@@ -166,7 +166,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (!npcHasShader)
             {
-                Drawing.RestartSpriteBatchForShaders(spriteBatch, true);
+                Drawing.RestartSB(spriteBatch, true, true);
             }
 
             Effect circleShader = AssetRegistry.GetEffect("CircleOutlineShader");
@@ -184,7 +184,7 @@ namespace bullethellwhatever.Bosses.EyeBoss
 
             if (!npcHasShader)
             {
-                Drawing.RestartSpriteBatchForNotShaders(spriteBatch, true);
+                Drawing.RestartSB(spriteBatch, false, true);
             }
         }
     }

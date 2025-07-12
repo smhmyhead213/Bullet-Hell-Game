@@ -226,14 +226,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 //Func<float, float> easing = EasingFunctions.JoinedCurves([EasingFunctions.EaseInQuart, EasingFunctions.EaseOutExpo], [] )
                 float opacity = EasingFunctions.Linear(progress);
                 float radius = maxRadius * EasingFunctions.EaseOutQuad(progress);
-                Drawing.EnterShaderMode(s);
+
+                Drawing.RestartSB(s, true, true);
 
                 Shader shader = new Shader("GlowShader", Color.White * opacity);
                 shader.Apply();
 
                 Drawing.DrawCircle(Arm(CrabBoss.GrabPunishArm).WristPosition(), radius, Color.White);
 
-                Drawing.ExitShaderMode(s);
+                Drawing.RestartSB(s, false, true);
             }
         }
     }
