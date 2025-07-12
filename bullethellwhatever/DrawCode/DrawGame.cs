@@ -21,8 +21,6 @@ namespace bullethellwhatever.DrawCode
     {
         public static void DrawTheGame(GameTime gameTime, SpriteBatch s)
         {
-            Drawing.HandleScreenShake();
-
             DialogueSystem.DrawDialogues(s);
 
             // FPS counter.

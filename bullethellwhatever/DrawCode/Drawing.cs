@@ -53,6 +53,8 @@ namespace bullethellwhatever.DrawCode
             {
                 ScreenShakeTimer--;
             }
+
+            HandleScreenShake();
         }
         public static void RestartSpriteBatchForShaders(SpriteBatch s, bool useCamera)
         {
@@ -159,6 +161,8 @@ namespace bullethellwhatever.DrawCode
         }
         public static void ScreenShake(int magnitude, int duration, float rotationMag = 0f)
         {
+            //return;
+
             if (magnitude >= ScreenShakeMagnitude) //always apply strongest screen shake
             { 
                 ScreenShakeMagnitude = magnitude;
@@ -206,7 +210,7 @@ namespace bullethellwhatever.DrawCode
             {
                 MainCamera.ScreenShakeOffset = Utilities.RandomFloat(-ScreenShakeMagnitude, ScreenShakeMagnitude);
                 //MainCamera.ScreenShakeOffset = 100f;
-                //MainCamera.ScreenShakeRotationOffset = Utilities.RandomAngle(ScreenShakeRotationMagnitude);
+                MainCamera.ScreenShakeRotationOffset = Utilities.RandomAngle(ScreenShakeRotationMagnitude);
                 //MainCamera.ScreenShakeRotationOffset = 0f;
             }
             
