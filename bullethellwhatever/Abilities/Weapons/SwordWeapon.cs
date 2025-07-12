@@ -13,6 +13,7 @@ using bullethellwhatever.NPCs;
 using System.Windows.Forms;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode.Particles;
+using SharpDX.DirectWrite;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -175,10 +176,16 @@ namespace bullethellwhatever.Abilities.Weapons
             }
             else if (SwingStage == SwordSwingStages.Swing)
             {
-                int extraTrailPoints = 0;
+                int extraTrailPoints = 3;
 
                 if (AITimer <= SwingDuration)
                 {
+                    // prevent extra swing angle with extra trail points
+                    if (AITimer == SwingDuration)
+                    {
+                        extraTrailPoints = 0;
+                    }
+
                     for (int i = 0; i <= extraTrailPoints; i++)
                     {
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
@@ -239,59 +246,54 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 Hitbox = Utilities.FillRectWithCircles(Owner.Position + 0.5f * (CalculateEnd() - Owner.Position), (int)Width, (int)Length, WeaponRotation);
             }
-        }
+        }        
 
         public List<Vector2> TrailVertices()
         {
-            List<Vector2> output = new List<Vector2>();
-
-            for (int i = 0; i < TrailPoints.Count - 1; i++)
+            if (TrailPoints.Count == 0)
             {
-                // generate a point for each side of the trail
-                // get a vector to the next point
-                Vector2 toNext = TrailPoints[i + 1] - TrailPoints[i];
-                
-                Vector2 above = TrailPoints[i] + toNext.SetLength(TrailWidth / 2).Rotate(PI / 2);
-                Vector2 below = TrailPoints[i] + toNext.SetLength(TrailWidth / 2).Rotate(-PI / 2);
+                // explodes pancakes with mind
+                return new List<Vector2>();
+            }
+            
+            List<Vector2> vertices = new List<Vector2>();
 
-                output.Add(above);
-                output.Add(below);
+            for (int i = 0;  i < TrailPoints.Count - 1; i++)
+            {
+                vertices.Add(TrailPoints[i]);
+                vertices.Add(TrailPoints[i + 1]);
+                vertices.Add(player.Position);
             }
 
-            return output;
+            return vertices;
         }
 
-        public void DrawTrail()
+        public void DrawSweepTrail(List<Vector2> vertices, Color colour)
         {
-            List<Vector2> vertices = TrailVertices();
+            int vertexCount = vertices.Count;
 
-            if (vertices.Count == 0)
+            if (vertexCount == 0) return;
+
+            for (int i = 0; i < vertexCount / 3; i++) // this is okay because vertices come in triplets
             {
-                return; // explodes pancakes with mind
+                int startIndex = i * 3;
+                float progress = (float)i / (vertexCount / 3);
+                float nextProgress = (float)(i + 1) / (vertexCount / 3);
+                PrimitiveManager.MainVertices[startIndex] = PrimitiveManager.CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
+                PrimitiveManager.MainVertices[startIndex + 1] = PrimitiveManager.CreateVertex(vertices[startIndex + 1], colour, new Vector2(0f, nextProgress));
+                PrimitiveManager.MainVertices[startIndex + 2] = PrimitiveManager.CreateVertex(vertices[startIndex + 2], colour, new Vector2(1f, progress));
             }
 
-            for (int i = 0; i < vertices.Count; i += 2)
-            {
-                float progress = i / (float)vertices.Count;
-                PrimitiveManager.MainVertices[i] = PrimitiveManager.CreateVertex(vertices[i], Color.Red, new Vector2(0f, progress));
-                PrimitiveManager.MainVertices[i + 1] = PrimitiveManager.CreateVertex(vertices[i + 1], Color.Red, new Vector2(1f, progress));
-            }
-
-            int numberOfTriangles = vertices.Count - 2;
+            int numberOfTriangles = (vertexCount - 1) / 2;
 
             int indexCount = numberOfTriangles * 3;
 
-            for (int i = 0; i < numberOfTriangles; i++)
+            for (int i = 0; i < indexCount; i++)
             {
-                int startingIndex = i * 3;
-                PrimitiveManager.MainIndices[startingIndex] = (short)i;
-                PrimitiveManager.MainIndices[startingIndex + 1] = (short)(i + 1);
-                PrimitiveManager.MainIndices[startingIndex + 2] = (short)(i + 2);
+                PrimitiveManager.MainIndices[i] = (short)i;
             }
 
-            //Utilities.drawTextInDrawMethod((StartPosition - positions.Last()).Length().ToString(), player.Position + new Vector2(50f, 0f), s, font, Color.White);
-
-            PrimitiveSet primSet = new PrimitiveSet(vertices.Count, indexCount);
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount);
 
             primSet.Draw();
         }
@@ -321,7 +323,12 @@ namespace bullethellwhatever.Abilities.Weapons
             //    Drawing.DrawBox(point, Color.Red, 0.5f);
             //}
 
-            //DrawTrail();
+            //foreach (Vector2 point in TrailVertices())
+            //{
+            //    Drawing.DrawBox(point, Color.Red, 1.5f);
+            //}
+
+            DrawSweepTrail(TrailVertices(), Color.Red);
         }
     }
 }
