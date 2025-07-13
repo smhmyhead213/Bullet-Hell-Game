@@ -279,9 +279,9 @@ namespace bullethellwhatever.Abilities.Weapons
                 int startIndex = i * 3;
                 float progress = (float)i / (vertexCount / 3);
                 float nextProgress = (float)(i + 1) / (vertexCount / 3);
-                PrimitiveManager.MainVertices[startIndex] = PrimitiveManager.CreateVertex(vertices[startIndex], colour, new Vector2(0f, progress));
-                PrimitiveManager.MainVertices[startIndex + 1] = PrimitiveManager.CreateVertex(vertices[startIndex + 1], colour, new Vector2(0f, nextProgress));
-                PrimitiveManager.MainVertices[startIndex + 2] = PrimitiveManager.CreateVertex(vertices[startIndex + 2], colour, new Vector2(1f, progress));
+                PrimitiveManager.AddVertex(vertices[startIndex], colour, new Vector2(0f, progress));
+                PrimitiveManager.AddVertex(vertices[startIndex + 1], colour, new Vector2(0f, nextProgress));
+                PrimitiveManager.AddVertex(vertices[startIndex + 2], colour, new Vector2(1f, progress));
             }
 
             int numberOfTriangles = (vertexCount - 1) / 2;
@@ -290,7 +290,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             for (int i = 0; i < indexCount; i++)
             {
-                PrimitiveManager.MainIndices[i] = (short)i;
+                PrimitiveManager.AddIndex(i);
             }
 
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount);

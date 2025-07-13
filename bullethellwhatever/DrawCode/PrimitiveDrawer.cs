@@ -42,12 +42,11 @@ namespace bullethellwhatever.DrawCode
 
         public static void Initialise()
         {
+            InitialiseArrays();
+
             RasteriserState = new RasterizerState();
 
             RasteriserState.CullMode = CullMode.None; // do i cull? no idae
-
-            MainVertices = new VertexPositionColorTexture[MaxVertices];
-            MainIndices = new short[MaxIndices];
 
             BasicEffect = new BasicEffect(GraphicsDevice);
 
@@ -57,6 +56,12 @@ namespace bullethellwhatever.DrawCode
 
             VertexCounter = 0;
             IndexCounter = 0;
+        }
+
+        public static void InitialiseArrays()
+        {
+            MainVertices = new VertexPositionColorTexture[MaxVertices];
+            MainIndices = new short[MaxIndices];
         }
 
         public static void AddVertex(Vector2 coords, Color colour, Vector2 texCoords)
@@ -296,6 +301,8 @@ namespace bullethellwhatever.DrawCode
                 {
                     Drawing.RestartSB(_spriteBatch, false, true);
                 }
+
+                PrimitiveManager.InitialiseArrays();
             }
         }
 
