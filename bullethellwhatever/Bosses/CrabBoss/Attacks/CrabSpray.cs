@@ -216,8 +216,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float progress = i / (float)points; // this might be wrong
                 Color colToUse = colour * (1f - progress);
 
-                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colToUse, new Vector2(0f, progress));
-                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i + 1], colToUse, new Vector2(1f, progress));
+                float width = progress;
+
+                float leftCurrentTextureCoord = 0.5f - width * 0.5f;
+                float rightCurrentTextureCoord = 0.5f + width * 0.5f;
+
+                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colToUse, new Vector3(leftCurrentTextureCoord, progress, width));
+                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i + 1], colToUse, new Vector3(rightCurrentTextureCoord, progress, width));
             }
 
             int numberOfTriangles = vertexCount - 2;

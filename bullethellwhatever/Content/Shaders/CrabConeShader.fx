@@ -62,6 +62,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {        
     // sample to avoid compiling out
     float2 uv = input.TextureCoordinates;
+    
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
 

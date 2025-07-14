@@ -311,7 +311,7 @@ namespace bullethellwhatever.BaseClasses
 
         public override void TakeDamage(float damage)
         {
-            Drawing.ScreenShake(15, 70);
+            Drawing.ScreenShake(5, 7);
 
             base.TakeDamage(damage);
         }

@@ -31,7 +31,7 @@ namespace bullethellwhatever.DrawCode
         public static readonly int MaxVertices = 6144;
         public static readonly int MaxIndices = 16384;
 
-        public static VertexPositionColorTexture[] MainVertices;
+        public static VertexPositionColourTexture3[] MainVertices;
         public static short[] MainIndices;
 
         public static RasterizerState RasteriserState;
@@ -50,7 +50,7 @@ namespace bullethellwhatever.DrawCode
 
             BasicEffect = new BasicEffect(GraphicsDevice);
 
-            VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), MaxVertices, BufferUsage.WriteOnly);
+            VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColourTexture3), MaxVertices, BufferUsage.WriteOnly);
 
             IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(short), MaxIndices, BufferUsage.WriteOnly);
 
@@ -60,11 +60,11 @@ namespace bullethellwhatever.DrawCode
 
         public static void InitialiseArrays()
         {
-            MainVertices = new VertexPositionColorTexture[MaxVertices];
+            MainVertices = new VertexPositionColourTexture3[MaxVertices];
             MainIndices = new short[MaxIndices];
         }
 
-        public static void AddVertex(Vector2 coords, Color colour, Vector2 texCoords)
+        public static void AddVertex(Vector2 coords, Color colour, Vector3 texCoords)
         {
             MainVertices[VertexCounter] = CreateVertex(coords, colour, texCoords);
             VertexCounter++;
@@ -75,7 +75,7 @@ namespace bullethellwhatever.DrawCode
             IndexCounter++;
         }
 
-        public static void AddPoint(int index, Vector2 point, Color colour, Vector2 texCoord)
+        public static void AddPoint(int index, Vector2 point, Color colour, Vector3 texCoord)
         {
             MainVertices[index] = CreateVertex(point, colour, texCoord);
         }
@@ -142,6 +142,7 @@ namespace bullethellwhatever.DrawCode
 
         public static Vector3 GameCoordsToVertexCoords(Vector2 coords)
         {
+            float z = 0.5f;
             Vector3 output =  new Vector3(coords.X, coords.Y, 1).Transfom(GameCoordsToVertexCoordsMatrix());
             return output;
         }
@@ -156,9 +157,9 @@ namespace bullethellwhatever.DrawCode
 
             return coords;
         }
-        public static VertexPositionColorTexture CreateVertex(Vector2 coords, Color colour, Vector2 texCoords)
+        public static VertexPositionColourTexture3 CreateVertex(Vector2 coords, Color colour, Vector3 texCoords)
         {
-            return new VertexPositionColorTexture(GameCoordsToVertexCoords(coords), colour, texCoords);
+            return new VertexPositionColourTexture3(GameCoordsToVertexCoords(coords), colour, texCoords);
         }
 
         // width function takes a progress ratio from 0-1 and returns an absolute width
@@ -200,8 +201,9 @@ namespace bullethellwhatever.DrawCode
             {
                 int startIndex = i * 2;
                 float progress = (float)i / (vertexCount / 2);
-                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour * opacity(progress), new Vector2(0f, progress));
-                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour * opacity(progress), new Vector2(1f, progress));
+                float width = 1f; // for now
+                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour * opacity(progress), new Vector3(0f, progress, width));
+                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour * opacity(progress), new Vector3(1f, progress, width));
             }
 
             int numberOfTriangles = vertexCount - 2;
