@@ -132,7 +132,8 @@ namespace bullethellwhatever.Abilities.Weapons
                         for (int i = 0; i < particles; i++)
                         {
                             Particle particle = new Particle();
-                            float direction = Utilities.RandomAngle();
+                            float spread = PI / 12f;
+                            float direction = Utilities.RandomAngle(WeaponRotation - spread, WeaponRotation + spread);
                             float speed = Utilities.RandomFloat(4f, 9f);
                             int lifetime = Utilities.RandomInt(25, 35);
                             float initialOpacity = 0.4f;
@@ -284,7 +285,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 PrimitiveManager.AddVertex(vertices[startIndex + 2], colour, new Vector2(1f, progress));
             }
 
-            int numberOfTriangles = (vertexCount - 1) / 2;
+            int numberOfTriangles = vertexCount / 3;
 
             int indexCount = numberOfTriangles * 3;
 
