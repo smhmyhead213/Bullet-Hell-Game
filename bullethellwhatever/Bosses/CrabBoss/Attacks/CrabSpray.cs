@@ -156,7 +156,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             //    Drawing.DrawBox(point, Color.Red, 1f);
             //}
 
-            float length = 800;
+            float length = 400;
 
             Color colour = Color.Red;
 
@@ -213,7 +213,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             for (int i = 0; i < vertexCount; i += 2)
             {
                 int startingIndex = i;
-                float progress = i / (float)points; // this might be wrong
+                float progress = i / (float)(2 * points); // this might be wrong
                 Color colToUse = colour * (1f - progress);
 
                 float width = progress;

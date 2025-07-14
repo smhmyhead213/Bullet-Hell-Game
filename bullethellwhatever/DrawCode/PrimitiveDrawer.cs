@@ -303,8 +303,6 @@ namespace bullethellwhatever.DrawCode
                 {
                     Drawing.RestartSB(_spriteBatch, false, true);
                 }
-
-                PrimitiveManager.InitialiseArrays();
             }
         }
 

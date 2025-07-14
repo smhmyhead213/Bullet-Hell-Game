@@ -61,27 +61,34 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {        
     // sample to avoid compiling out
-    float2 uv = input.TextureCoordinates;
-    //uv.x = (uv.x - 0.5) / input.TextureCoordinates.z + 0.5;
+    float2 uv = input.TextureCoordinates.xy;
+    float width = input.TextureCoordinates.z;
+    
+    return float4(1 - width, 1 - width, 1 - width, 1);
+    
+    uv.x = (uv.x - 0.5) / width + 0.5;
     
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
 
     float4 samp = NoiseTexture.Sample(TextureSampler2, uv);
 
-    float4 white = float4(1, 1.0 - dummy, 1, 0);
+    float4 white = float4(1, 1.0 - pow(dummy, 4), 1, 0);
     float4 black = float4(0, 0, 0, 0);
     float4 midColour = float4(colour.x, colour.y, colour.z, 0) * 0.6f;
     float finalOpacity = (1.0 - uv.y) * opacity;
     float maxWidthFrac = maxWidth * uv.y;
     
-    if (uv.x < 0.1)
+    float leftXForOutline = 0.1;
+    float rightXForOutline = 0.9;
+    
+    if (uv.x < leftXForOutline)
     {
-        return lerp(white, midColour, uv.x * 10) * finalOpacity;
+        return lerp(white, midColour, uv.x / leftXForOutline) * finalOpacity;
     }
-    if (uv.x > 0.9)
+    if (uv.x > rightXForOutline)
     {
-        return lerp(white, midColour, (1 - uv.x) * 10) * finalOpacity;
+        return lerp(white, midColour, (1 - uv.x) / (1 - rightXForOutline)) * finalOpacity;
     }
     
     return (samp + midColour) * finalOpacity;
