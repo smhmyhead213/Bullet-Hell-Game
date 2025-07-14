@@ -205,6 +205,9 @@ namespace bullethellwhatever.MainFiles
 
             _spriteBatch.Draw(MainRT, Vector2.Zero, Color.White);
 
+            // FPS counter.
+            Drawing.DrawText((1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(GameWidth / 4, GameHeight / 4), _spriteBatch, font, Color.White, Vector2.One);
+
             //Drawing.DrawText(IsKeyPressed(Keys.None).ToString(), Utilities.CentreOfScreen(), _spriteBatch, font, Color.White, Vector2.One);
 
             //Drawing.DrawBox(Mouse.GetState().Position.ToVector2(), Color.Red, 1f);
