@@ -3,20 +3,23 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace bullethellwhatever.DrawCode
 {
     // this code is copied and edited from decompiled VertexPositionColor code. CHECK IF THIS IS ALLOWED.
-    public struct VertexPositionColourTextureExtra : IVertexType
+
+    [StructLayout(LayoutKind.Sequential)]
+    public readonly struct VertexPositionColourTextureExtra : IVertexType
     {
-        public Vector3 Position;
+        public readonly Vector3 Position;
 
-        public Color Color;
+        public readonly Color Color;
 
-        public Vector2 TextureCoordinate;
-        public Vector2 ExtraData;
+        public readonly Vector2 TextureCoordinate;
+        public readonly Vector2 ExtraData;
 
         public static readonly VertexDeclaration VertexDeclaration;
         VertexDeclaration IVertexType.VertexDeclaration => VertexDeclaration;

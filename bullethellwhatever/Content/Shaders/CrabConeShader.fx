@@ -67,7 +67,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 uv = input.TextureCoordinates;
     float width = input.ExtraData.x;
     
-    //return float4(1 - width, 1 - width, 1 - width, 1);
+    return float4(1 - width, 1 - width, 1 - width, 1);
     
     //uv.x = (uv.x - 0.5) / width + 0.5;
     
