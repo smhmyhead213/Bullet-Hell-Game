@@ -9,25 +9,31 @@ using System.Threading.Tasks;
 namespace bullethellwhatever.DrawCode
 {
     // this code is copied and edited from decompiled VertexPositionColor code. CHECK IF THIS IS ALLOWED.
-    public struct VertexPositionColourTexture3 : IVertexType
+    public struct VertexPositionColourTextureExtra : IVertexType
     {
         public Vector3 Position;
 
         public Color Color;
 
-        public Vector3 TextureCoordinate;
+        public Vector2 TextureCoordinate;
+        public Vector2 ExtraData;
 
         public static readonly VertexDeclaration VertexDeclaration;
         VertexDeclaration IVertexType.VertexDeclaration => VertexDeclaration;
-        public VertexPositionColourTexture3(Vector3 position, Color color, Vector3 textureCoordinate)
+        public VertexPositionColourTextureExtra(Vector3 position, Color color, Vector2 textureCoordinate, Vector2 extraData)
         {
             Position = position;
             Color = color;
             TextureCoordinate = textureCoordinate;
+            ExtraData = extraData;
         }
-        static VertexPositionColourTexture3()
+        static VertexPositionColourTextureExtra()
         {
-            VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0), new VertexElement(12, VertexElementFormat.Color, VertexElementUsage.Color, 0), new VertexElement(16, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 0));
+            VertexDeclaration = new VertexDeclaration(
+                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+                new VertexElement(12, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+                new VertexElement(16, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
+                new VertexElement(24, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 1));
         }
         public override int GetHashCode()
         {
