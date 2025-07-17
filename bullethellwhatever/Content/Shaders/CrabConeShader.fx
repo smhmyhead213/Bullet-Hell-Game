@@ -68,9 +68,9 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 uv = input.TextureCoordinates;
     float width = input.ExtraData.x;
     
-    return float4(1 - width, 1 - width, 1 - width, 1);
+    //return float4(1 - width, 1 - width, 1 - width, 1);
     
-    //uv.x = (uv.x - 0.5) / width + 0.5;
+    uv.x = (uv.x - 0.5) / width + 0.5;
     
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
