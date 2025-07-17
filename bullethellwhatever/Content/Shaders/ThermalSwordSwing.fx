@@ -67,7 +67,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float4 white = float4(1, 1, 1, 1);
     float interpolant = pow(1 - uv.y, 4);
-    return white * interpolant;
+    float opacity = uv.x;
+    return white * interpolant * opacity;
 }
 
 Technique Technique1

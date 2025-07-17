@@ -33,7 +33,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public int ChargeDuration => 30;
         public int ChargeTimer = 0;
         public int ChargeHoldDuration => 15;
-        public int SwingEndLag = 20;
+        public int SwingEndLag = 8;
         public int MaximumExtraChargeTime = 30;
 
         public SwordSwingStages SwingStage;
@@ -43,6 +43,9 @@ namespace bullethellwhatever.Abilities.Weapons
         public float Length => 90f;
 
         public bool Swinging;
+
+        public Vector2 ShakeOffset;
+        public float MaxShakeOffset = 3f;
 
         public List<float> TrailPointAngles;
 
@@ -57,6 +60,12 @@ namespace bullethellwhatever.Abilities.Weapons
             TrailPointAngles = new List<float>();
             ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
             SwingEffect = AssetRegistry.GetShader("ThermalSwordSwing");
+            ShakeOffset = Vector2.Zero;
+        }
+
+        public Vector2 Position()
+        {
+            return Owner.Position + ShakeOffset;
         }
 
         public override void WeaponInitialise()
@@ -151,12 +160,19 @@ namespace bullethellwhatever.Abilities.Weapons
                         }
                     }
 
+                    if (TimeCharged() >= MaximumExtraChargeTime)
+                    {
+                        ShakeOffset = new Vector2(Utilities.RandomFloat(MaxShakeOffset), Utilities.RandomFloat(MaxShakeOffset));
+                    }
+
                     // if the swing is fully charged, await release to swing
                     if (KeybindReleased(LeftClick))
                     {
                         SwingStage = SwordSwingStages.Swing;
                         ChargeTimer = 0;
                         AITimer = 0;
+                        ShakeOffset = Vector2.Zero;
+                        HitEnemies.Clear();
                         return;
                     }
                 }
@@ -177,7 +193,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
 
                     WeaponRotation += SwingDirection;
-                }
+                }               
 
                 SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction before start of swing
             }
@@ -213,8 +229,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public Vector2 SwordEnd(float offset = 0f)
         {
             // re-add swingdirection
-            Vector2 toSwordEnd = CalculateEnd(WeaponRotation) - Owner.Position;
-            Vector2 point = Owner.Position + toSwordEnd.SetLength(Length - offset);
+            Vector2 toSwordEnd = CalculateEnd(WeaponRotation) - Position();
+            Vector2 point = Position() + toSwordEnd.SetLength(Length - offset);
             return point;
         }
 
@@ -250,7 +266,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             if (Swinging)
             {
-                Hitbox = Utilities.FillRectWithCircles(Owner.Position + 0.5f * (CalculateEnd() - Owner.Position), (int)Width, (int)Length, WeaponRotation);
+                Hitbox = Utilities.FillRectWithCircles(Owner.Position + 0.5f * (CalculateEnd() - Position()), (int)Width, (int)Length, WeaponRotation);
             }
         }        
 
@@ -268,7 +284,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 vertices.Add(CalculateEnd(TrailPointAngles[i]));
                 vertices.Add(CalculateEnd(TrailPointAngles[i + 1]));
-                vertices.Add(player.Position);
+                vertices.Add(Position());
             }
 
             return vertices;
@@ -321,7 +337,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 Texture2D texture = AssetRegistry.GetTexture2D("SwordWeapon");
                 float xscale = Width / texture.Width;
                 float yscale = Length / texture.Height;
-                Drawing.BetterDraw(texture, Owner.Position, null, colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
+                Drawing.BetterDraw(texture, Position(), null, colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
 
                 Drawing.RevertToPreviousSBState(s);
             }
