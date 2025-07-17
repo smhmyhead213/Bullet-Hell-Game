@@ -55,6 +55,9 @@ namespace bullethellwhatever.Abilities.Weapons
         public Shader ThermalEffect;
         public Shader SwingEffect;
 
+        public Color Colour => Color.Orange;
+
+
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             TrailPointAngles = new List<float>();
@@ -216,6 +219,27 @@ namespace bullethellwhatever.Abilities.Weapons
                         WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration)) + SwingDirection;
                         TrailPointAngles.Add(WeaponRotation);
                     }
+
+                    int particles = 4;
+
+                    for (int i = 0; i < particles; i++)
+                    {
+                        Particle p = new Particle();
+                        int lifetime = 30;
+                        Color colour = Colour;
+                        float rotation = WeaponRotation - PI / 2 + Utilities.RandomAngle(PI / 15);
+                        Vector2 velocity = rotation.ToVector() * Utilities.RandomFloat(2f, 4f);
+                        float opacity = 0.3f;
+
+                        p.Spawn("box", SwordEnd(TrailOffsetFromSwordTip), velocity, -velocity / lifetime, Vector2.One * 0.4f, rotation, colour, opacity, lifetime);
+
+                        p.SetExtraAI(new Action(() =>
+                        {
+                            p.Opacity = MathHelper.Lerp(opacity, 0f, (float)p.AITimer / lifetime);
+                        }));
+
+                        p.AddTrail(10);
+                    }
                 }
 
                 if (AITimer == SwingDuration + 1 + SwingEndLag)
@@ -327,16 +351,14 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 Drawing.RestartSB(s, true, true);
 
-                Color colour = Color.Orange;
-
                 ThermalEffect.SetParameter("heatYRatio", EasingFunctions.EaseInQuart(TimeCharged() / (float)MaximumExtraChargeTime));
-                ThermalEffect.SetColour(colour);
+                ThermalEffect.SetColour(Colour);
                 ThermalEffect.Apply();
 
                 Texture2D texture = AssetRegistry.GetTexture2D("SwordWeapon");
                 float xscale = Width / texture.Width;
                 float yscale = Length / texture.Height;
-                Drawing.BetterDraw(texture, Position(), null, colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
+                Drawing.BetterDraw(texture, Position(), null, Colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
 
                 Drawing.RevertToPreviousSBState(s);
             }
