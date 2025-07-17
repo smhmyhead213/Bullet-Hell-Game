@@ -175,8 +175,11 @@ namespace bullethellwhatever.Abilities.Weapons
                     float chargeTimeSpent = MathHelper.Clamp(ChargeTimer, 0f, ChargeDuration);
                     float interpolant = EasingFunctions.EaseOutCubic((float)chargeTimeSpent / ChargeDuration);
                     WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
-                    SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
+
+                    WeaponRotation += SwingDirection;
                 }
+
+                SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction before start of swing
             }
             else if (SwingStage == SwordSwingStages.Swing)
             {
@@ -193,7 +196,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     for (int i = 0; i <= extraTrailPoints; i++)
                     {
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
-                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration));
+                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration)) + SwingDirection;
                         TrailPointAngles.Add(WeaponRotation);
                     }
                 }
