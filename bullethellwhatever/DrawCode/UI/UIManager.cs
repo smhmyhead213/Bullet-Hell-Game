@@ -94,6 +94,7 @@ namespace bullethellwhatever.DrawCode.UI
                 }
                 else
                 {
+                    
                     ActiveUIElements[IndexOfInteractable].HandleTab();
                 }
             }
@@ -111,6 +112,22 @@ namespace bullethellwhatever.DrawCode.UI
 
         public static void IncrementIndexOfInteractable()
         {
+            bool anythingToIncrementTo = false;
+
+            foreach (UIElement uiel in ActiveUIElements)
+            {
+                if (uiel.Interactable)
+                {
+                    anythingToIncrementTo = true;
+                }
+            }
+
+            // make sure we dont get caught in an infinite loop if theres nothing interactable
+            if (!anythingToIncrementTo)
+            {
+                return;
+            }
+
             do
             {
                 MoveIndexToNextInteractable();

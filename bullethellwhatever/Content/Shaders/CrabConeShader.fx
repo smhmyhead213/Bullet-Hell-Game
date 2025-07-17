@@ -52,7 +52,8 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    output.Position = mul(input.Position, view_projection);
+    //output.Position = mul(input.Position, view_projection);
+    output.Position = input.Position;
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
     return output;
@@ -64,7 +65,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 uv = input.TextureCoordinates.xy;
     float width = input.TextureCoordinates.z;
     
-    return float4(1 - width, 1 - width, 1 - width, 1);
+    //return float4(1 - width, 1 - width, 1 - width, 1);
     
     uv.x = (uv.x - 0.5) / width + 0.5;
     
@@ -98,7 +99,7 @@ Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 MainVS();
+        VertexShader = compile vs_4_0 MainVS();
         PixelShader = compile ps_4_0 MainPS();
         
     }

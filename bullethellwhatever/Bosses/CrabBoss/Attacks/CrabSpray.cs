@@ -240,6 +240,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, shader);
 
             primSet.Draw();
+
+            List<Vector4> transformed = new List<Vector4>();
+
+            Matrix matrix = MainCamera.ShaderMatrix();
+
+            for (int i = 0; i < vertexCount; i++)
+            {
+                transformed.Add(Vector4.Transform(PrimitiveManager.MainVertices[i].Position, MainCamera.ShaderMatrix()));           
+            }
         }
 
         public List<Vector2> GenerateConePrimPoints(Vector2 startPoint, float rotation, float angleSubtended, float length, int points = 20)
