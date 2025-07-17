@@ -221,8 +221,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float leftCurrentTextureCoord = 0.5f - width * 0.5f;
                 float rightCurrentTextureCoord = 0.5f + width * 0.5f;
 
-                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colToUse, new Vector3(leftCurrentTextureCoord, progress, width));
-                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i + 1], colToUse, new Vector3(rightCurrentTextureCoord, progress, width));
+                PrimitiveManager.AddPoint(startingIndex, inpPoints[i], colToUse, new Vector2(leftCurrentTextureCoord, progress), new Vector2(width, 0f));
+                PrimitiveManager.AddPoint(startingIndex + 1, inpPoints[i + 1], colToUse, new Vector2(rightCurrentTextureCoord, progress), new Vector2(width, 0f));
             }
 
             int numberOfTriangles = vertexCount - 2;
