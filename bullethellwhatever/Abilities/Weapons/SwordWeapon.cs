@@ -175,6 +175,8 @@ namespace bullethellwhatever.Abilities.Weapons
                         HitEnemies.Clear();
                         return;
                     }
+
+                    WeaponRotation = PullBackAngle + SwingDirection;
                 }
                 else
                 {
@@ -191,9 +193,8 @@ namespace bullethellwhatever.Abilities.Weapons
                     float chargeTimeSpent = MathHelper.Clamp(ChargeTimer, 0f, ChargeDuration);
                     float interpolant = EasingFunctions.EaseOutCubic((float)chargeTimeSpent / ChargeDuration);
                     WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
-
                     WeaponRotation += SwingDirection;
-                }               
+                }
 
                 SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction before start of swing
             }
@@ -222,8 +223,6 @@ namespace bullethellwhatever.Abilities.Weapons
                     Reset();
                 }
             }
-
-            //WeaponRotation += SwingDirection; // face mouse
         }
 
         public Vector2 SwordEnd(float offset = 0f)
@@ -341,16 +340,6 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 Drawing.RevertToPreviousSBState(s);
             }
-
-            //foreach (Vector2 point in TrailVertices())
-            //{
-            //    Drawing.DrawBox(point, Color.Red, 0.5f);
-            //}
-
-            //foreach (Vector2 point in TrailVertices())
-            //{
-            //    Drawing.DrawBox(point, Color.Red, 1.5f);
-            //}
 
             DrawSweepTrail(TrailVertices(), Color.Red);
         }
