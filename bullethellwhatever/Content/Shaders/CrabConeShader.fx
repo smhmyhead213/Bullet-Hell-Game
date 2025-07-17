@@ -33,8 +33,7 @@ struct VertexShaderInput
 {
     float4 Position : POSITION0;
     float4 Color : COLOR0;
-    float2 TextureCoordinates : TEXCOORD0;
-    float2 ExtraData : TEXCOORD1;
+    float3 TextureCoordinates : TEXCOORD0;
     // TODO: add input channels such as texture
     // coordinates and vertex colors here.
 };
@@ -44,8 +43,7 @@ struct VertexShaderOutput
 {
     float4 Position : POSITION0;
     float4 Color : COLOR0;
-    float2 TextureCoordinates : TEXCOORD0;
-    float2 ExtraData : TEXCOORD1;
+    float3 TextureCoordinates : TEXCOORD0;
     // TODO: add vertex shader outputs such as colors and texture
     // coordinates here. These values will automatically be interpolated
     // over the triangle, and provided as input to your pixel shader.
@@ -54,19 +52,18 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    //output.Position = mul(input.Position, view_projection);
-    output.Position = input.Position;
+    output.Position = mul(input.Position, view_projection);
+    //output.Position = input.Position;
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
-    output.ExtraData = input.ExtraData;
     return output;
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {        
     // sample to avoid compiling out
-    float2 uv = input.TextureCoordinates;
-    float width = input.ExtraData.x;
+    float2 uv = input.TextureCoordinates.xy;
+    float width = input.TextureCoordinates.z;
     
     //return float4(1 - width, 1 - width, 1 - width, 1);
     
