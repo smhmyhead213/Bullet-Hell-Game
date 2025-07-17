@@ -7,7 +7,7 @@
 #define PS_SHADERMODEL ps_4_0
 #endif
 
-float4x4 view_projection;
+float4x4 worldViewProjection;
 
 sampler TextureSampler : register(s0);
 
@@ -31,9 +31,8 @@ struct VertexShaderInput
 {
     float4 Position : POSITION0;
     float4 Color : COLOR0;
-    float2 TextureCoordinates : TEXCOORD0;
-    // TODO: add input channels such as texture
-    // coordinates and vertex colors here.
+    float3 TextureCoordinates : TEXCOORD0;
+    // z component used for arbitrary extra byte like width
 };
 
 
@@ -41,7 +40,7 @@ struct VertexShaderOutput
 {
     float4 Position : POSITION0;
     float4 Color : COLOR0;
-    float2 TextureCoordinates : TEXCOORD0;
+    float3 TextureCoordinates : TEXCOORD0;
     // TODO: add vertex shader outputs such as colors and texture
     // coordinates here. These values will automatically be interpolated
     // over the triangle, and provided as input to your pixel shader.
@@ -50,7 +49,7 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    output.Position = mul(input.Position, view_projection);
+    output.Position = mul(input.Position, worldViewProjection);
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
     return output;
@@ -59,7 +58,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {       
     // sample to avoid compiling out
-    float2 uv = input.TextureCoordinates;
+    float2 uv = input.TextureCoordinates.xy;
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
 
@@ -73,7 +72,7 @@ Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 MainVS();
+        VertexShader = compile vs_4_0 MainVS();
         PixelShader = compile ps_4_0 MainPS();
         
     }
