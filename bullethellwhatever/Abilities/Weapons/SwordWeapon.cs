@@ -50,10 +50,13 @@ namespace bullethellwhatever.Abilities.Weapons
         public float TrailWidth => 2 * TrailOffsetFromSwordTip;
 
         public Shader ThermalEffect;
+        public Shader SwingEffect;
+
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             TrailPoints = new List<Vector2>();
             ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
+            SwingEffect = AssetRegistry.GetShader("ThermalSwordSwing");
         }
 
         public override void WeaponInitialise()
@@ -281,9 +284,10 @@ namespace bullethellwhatever.Abilities.Weapons
                 float progress = (float)i / (vertexCount / 3);
                 float nextProgress = (float)(i + 1) / (vertexCount / 3);
                 float width = 1f;
-                PrimitiveManager.AddVertex(vertices[startIndex], colour, new Vector3(0f, progress, width));
-                PrimitiveManager.AddVertex(vertices[startIndex + 1], colour, new Vector3(0f, nextProgress, width));
-                PrimitiveManager.AddVertex(vertices[startIndex + 2], colour, new Vector3(1f, progress, width));
+
+                PrimitiveManager.AddVertex(vertices[startIndex], colour, new Vector3(progress, 0f, width));
+                PrimitiveManager.AddVertex(vertices[startIndex + 1], colour, new Vector3(nextProgress, 0f, width));
+                PrimitiveManager.AddVertex(vertices[startIndex + 2], colour, new Vector3(progress, 1f, width));
             }
 
             int numberOfTriangles = vertexCount / 3;
@@ -295,7 +299,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 PrimitiveManager.AddIndex(i);
             }
 
-            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount);
+            PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, SwingEffect);
 
             primSet.Draw();
         }

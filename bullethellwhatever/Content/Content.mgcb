@@ -714,6 +714,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/ThermalSwordShader.fx
 
+#begin Shaders/ThermalSwordSwing.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ThermalSwordSwing.fx
+
 #begin Sounds/bullethellgamesounds.bank
 /copy:Sounds/bullethellgamesounds.bank
 

@@ -13,7 +13,7 @@ sampler TextureSampler : register(s0);
 
 // we need samplers for both the main texture and noise texture to prevent the compiler getting trigger happy
 Texture2D NoiseTexture;
-sampler TextureSampler2 : register(s1)
+sampler NoiseSampler : register(s1)
 {
     Texture = (NoiseTexture);
     magfilter = LINEAR;
@@ -26,16 +26,13 @@ sampler TextureSampler2 : register(s1)
 float uTime;
 float3 colour;
 float scrollSpeed;
-float opacity;
-float maxWidth;
 
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
     float4 Color : COLOR0;
     float3 TextureCoordinates : TEXCOORD0;
-    // TODO: add input channels such as texture
-    // coordinates and vertex colors here.
+    // z component used for arbitrary extra byte like width
 };
 
 
@@ -53,44 +50,24 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
     output.Position = mul(input.Position, worldViewProjection);
-    //output.Position = input.Position;
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
     return output;
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
-{        
+{
     // sample to avoid compiling out
     float2 uv = input.TextureCoordinates.xy;
-    float width = input.TextureCoordinates.z;
-
-    uv.x = (uv.x - 0.5) / width + 0.5;
-    
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
     float dummy = baseColor.r * 0.001;
+    
+    float width = input.TextureCoordinates.z;
 
-    float4 samp = NoiseTexture.Sample(TextureSampler2, uv);
-
-    float4 white = float4(1, 1.0 - pow(dummy, 4), 1, 0);
-    float4 black = float4(0, 0, 0, 0);
-    float4 midColour = float4(colour.x, colour.y, colour.z, 0) * 0.6f;
-    float finalOpacity = (1.0 - uv.y) * opacity;
-    float maxWidthFrac = maxWidth * uv.y;
     
-    float leftXForOutline = 0.1;
-    float rightXForOutline = 0.9;
-    
-    if (uv.x < leftXForOutline)
-    {
-        return lerp(white, midColour, uv.x / leftXForOutline) * finalOpacity;
-    }
-    if (uv.x > rightXForOutline)
-    {
-        return lerp(white, midColour, (1 - uv.x) / (1 - rightXForOutline)) * finalOpacity;
-    }
-    
-    return (samp + midColour) * finalOpacity;
+    float4 white = float4(1, 1, 1, 1);
+    float interpolant = pow(1 - uv.y, 4);
+    return white * interpolant;
 }
 
 Technique Technique1
