@@ -247,6 +247,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             for (int i = 0; i < vertexCount; i++)
             {
+                // ugh
                 transformed.Add(Vector4.Transform(PrimitiveManager.MainVertices[i].Position, MainCamera.ShaderMatrix()));           
             }
         }
