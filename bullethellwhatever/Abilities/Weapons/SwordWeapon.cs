@@ -44,7 +44,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public bool Swinging;
 
-        public List<Vector2> TrailPoints;
+        public List<float> TrailPointAngles;
 
         public float TrailOffsetFromSwordTip => 10f;
         public float TrailWidth => 2 * TrailOffsetFromSwordTip;
@@ -54,7 +54,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
-            TrailPoints = new List<Vector2>();
+            TrailPointAngles = new List<float>();
             ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
             SwingEffect = AssetRegistry.GetShader("ThermalSwordSwing");
         }
@@ -93,7 +93,7 @@ namespace bullethellwhatever.Abilities.Weapons
             HitEnemies.Clear();
             Swinging = false;
             SwingStage = SwordSwingStages.Prepare;
-            TrailPoints = new List<Vector2>();
+            TrailPointAngles = new List<float>();
         }
         public override void AI()
         {
@@ -194,8 +194,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
                         WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration));
-                        Vector2 point = SwordEnd(TrailOffsetFromSwordTip);
-                        TrailPoints.Add(point);
+                        TrailPointAngles.Add(WeaponRotation);
                     }
                 }
 
@@ -254,7 +253,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public List<Vector2> TrailVertices()
         {
-            if (TrailPoints.Count == 0)
+            if (TrailPointAngles.Count == 0)
             {
                 // explodes pancakes with mind
                 return new List<Vector2>();
@@ -262,10 +261,10 @@ namespace bullethellwhatever.Abilities.Weapons
             
             List<Vector2> vertices = new List<Vector2>();
 
-            for (int i = 0;  i < TrailPoints.Count - 1; i++)
+            for (int i = 0;  i < TrailPointAngles.Count - 1; i++)
             {
-                vertices.Add(TrailPoints[i]);
-                vertices.Add(TrailPoints[i + 1]);
+                vertices.Add(CalculateEnd(TrailPointAngles[i]));
+                vertices.Add(CalculateEnd(TrailPointAngles[i + 1]));
                 vertices.Add(player.Position);
             }
 
