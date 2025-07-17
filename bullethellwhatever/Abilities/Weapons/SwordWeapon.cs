@@ -131,8 +131,8 @@ namespace bullethellwhatever.Abilities.Weapons
                             float initialOpacity = 0.4f;
                             Vector2 velocity = direction.ToVector() * speed;
 
-                            particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
-                            particle.AddTrail(10);
+                            //particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
+                            //particle.AddTrail(10);
                             particle.SetExtraAI(new Action(() =>
                             {
                                 particle.Opacity = MathHelper.Lerp(initialOpacity, 0f, (float)particle.AITimer / lifetime);
@@ -154,8 +154,8 @@ namespace bullethellwhatever.Abilities.Weapons
                             float initialOpacity = 0.4f;
                             Vector2 velocity = direction.ToVector() * speed;
 
-                            particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
-                            particle.AddTrail(10);
+                            //particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
+                            //particle.AddTrail(10);
                             particle.SetExtraAI(new Action(() =>
                             {
                                 particle.Opacity = MathHelper.Lerp(initialOpacity, 0f, (float)particle.AITimer / lifetime);
@@ -228,17 +228,19 @@ namespace bullethellwhatever.Abilities.Weapons
                         int lifetime = 30;
                         Color colour = Colour;
                         float rotation = WeaponRotation - PI / 2 + Utilities.RandomAngle(PI / 15);
-                        Vector2 velocity = rotation.ToVector() * Utilities.RandomFloat(2f, 4f);
+                        Vector2 velocity = rotation.ToVector() * Utilities.RandomFloat(1f, 1.4f);
                         float opacity = 0.3f;
 
-                        p.Spawn("box", SwordEnd(TrailOffsetFromSwordTip), velocity, -velocity / lifetime, Vector2.One * 0.4f, rotation, colour, opacity, lifetime);
+                        p.Spawn("Circle", SwordEnd(TrailOffsetFromSwordTip), velocity, -velocity / lifetime, Vector2.One, rotation, colour, opacity, lifetime);
 
                         p.SetExtraAI(new Action(() =>
                         {
                             p.Opacity = MathHelper.Lerp(opacity, 0f, (float)p.AITimer / lifetime);
                         }));
 
-                        p.AddTrail(10);
+                        p.SetShader("FireSwordParticleShader");
+
+                        //p.AddTrail(10);
                     }
                 }
 

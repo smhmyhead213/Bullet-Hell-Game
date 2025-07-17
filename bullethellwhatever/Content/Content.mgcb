@@ -630,6 +630,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/FirePunchShader.fx
 
+#begin Shaders/FireSwordParticleShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/FireSwordParticleShader.fx
+
 #begin Shaders/GlowShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

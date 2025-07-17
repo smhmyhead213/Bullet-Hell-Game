@@ -95,9 +95,9 @@ namespace bullethellwhatever.DrawCode.Particles
             Die();
         }
 
-        //public override void Draw(SpriteBatch spriteBatch)
-        //{
-        //    base.Draw(spriteBatch);
-        //}
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+        }
     }
 }
