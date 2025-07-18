@@ -60,7 +60,11 @@ namespace bullethellwhatever.DrawCode
         {
             Effect.Parameters[name]?.SetValue(matrix);
         }
-        public void Apply(int pass = 0)
+        public void SetParameter(string name, Matrix matrix)
+        {
+            Effect.Parameters[name]?.SetValue(matrix);
+        }
+        public void Apply(int pass = 0, bool prims = false)
         {
             if (Map is not null)
             {
@@ -71,12 +75,18 @@ namespace bullethellwhatever.DrawCode
                 // probably move this out of the if?
                 //Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
 
-                Effect.Parameters["NoiseTexture"]?.SetValue(Map.Texture);
+                //Effect.Parameters["NoiseTexture"]?.SetValue(Map.Texture);
+                SetParameter("NoiseTexture", Map.Texture);
             }
 
-            Effect.Parameters["view_projection"]?.SetValue(MainCamera.Matrix);
+            Matrix matrix = prims ? MainCamera.ShaderMatrix() : Matrix.Identity;
 
-            Effect.Parameters["colour"]?.SetValue(Colour.ToVector3());
+            //Effect.Parameters["worldViewProjection"]?.SetValue(matrix);
+
+            SetParameter("worldViewProjection", matrix);
+
+            //Effect.Parameters["colour"]?.SetValue(Colour.ToVector3());
+            SetParameter("colour", Colour);
 
             Effect.CurrentTechnique.Passes[pass].Apply();
         }

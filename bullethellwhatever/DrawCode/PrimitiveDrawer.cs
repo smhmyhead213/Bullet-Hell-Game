@@ -288,8 +288,8 @@ namespace bullethellwhatever.DrawCode
 
                 if (Shader is not null)
                 {
-                    Shader.SetParameter("worldViewProjection", matrix);
-                    Shader.Apply();
+                    //Shader.SetParameter("worldViewProjection", matrix);
+                    Shader.Apply(prims: true);
                 }
                 else
                 {

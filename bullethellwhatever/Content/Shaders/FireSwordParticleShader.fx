@@ -24,6 +24,7 @@ sampler NoiseSampler : register(s1)
 };
 
 float uTime;
+float fadeOutProgress;
 float3 colour;
 float scrollSpeed;
 
@@ -50,30 +51,29 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
     output.Position = mul(input.Position, worldViewProjection);
-    //output.Position = input.Position;
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
-    return output;
+    return input;
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    // sample to avoid compiling out
     float2 uv = input.TextureCoordinates.xy;
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
-    float dummy = baseColor.r * 0.001;
-
-    float scrollOffset = (scrollSpeed * uTime) % 1 + dummy;
-    float4 samp = NoiseTexture.Sample(NoiseSampler, uv + float2(scrollOffset, scrollOffset));
+    float opacity = 1 - fadeOutProgress;
+    float circleAlpha = baseColor.a;
     
-    return float4(1, 1, 0, 1);
+    float4 samp = NoiseTexture.Sample(NoiseSampler, uv);
+    opacity = pow(samp.r * (1.4 - fadeOutProgress), 6);
+    float3 outColour = colour * opacity;
+    return float4(outColour, 1) * circleAlpha;
 }
 
 Technique Technique1
 {
     pass ShaderPass
     {
-        VertexShader = compile vs_4_0 MainVS();
+        //VertexShader = compile vs_4_0 MainVS();
         PixelShader = compile ps_4_0 MainPS();
         
     }

@@ -7,7 +7,7 @@
 #define PS_SHADERMODEL ps_4_0
 #endif
 
-float4x4 view_projection;
+float4x4 worldViewProjection;
 
 sampler TextureSampler : register(s0);
 
@@ -51,7 +51,7 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     VertexShaderOutput output = (VertexShaderOutput) 0;
-    output.Position = mul(input.Position, view_projection);
+    output.Position = mul(input.Position, worldViewProjection);
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
     return output;

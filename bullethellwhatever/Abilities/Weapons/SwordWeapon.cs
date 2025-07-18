@@ -220,7 +220,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         TrailPointAngles.Add(WeaponRotation);
                     }
 
-                    int particles = 4;
+                    int particles = 1;
 
                     for (int i = 0; i < particles; i++)
                     {
@@ -229,16 +229,20 @@ namespace bullethellwhatever.Abilities.Weapons
                         Color colour = Colour;
                         float rotation = WeaponRotation - PI / 2 + Utilities.RandomAngle(PI / 15);
                         Vector2 velocity = rotation.ToVector() * Utilities.RandomFloat(1f, 1.4f);
-                        float opacity = 0.3f;
+                        float opacity = 1f;
 
                         p.Spawn("Circle", SwordEnd(TrailOffsetFromSwordTip), velocity, -velocity / lifetime, Vector2.One, rotation, colour, opacity, lifetime);
 
                         p.SetExtraAI(new Action(() =>
                         {
-                            p.Opacity = MathHelper.Lerp(opacity, 0f, (float)p.AITimer / lifetime);
+                            float progress = (float)p.AITimer / lifetime;
+                            p.Opacity = MathHelper.Lerp(opacity, 0f, progress);
+                            p.Shader.SetParameter("fadeOutProgress", progress);
                         }));
 
                         p.SetShader("FireSwordParticleShader");
+                        p.SetNoiseMap("RandomNoise", 0f);
+                        p.Shader.Colour = colour;
 
                         //p.AddTrail(10);
                     }

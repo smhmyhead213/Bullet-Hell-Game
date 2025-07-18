@@ -144,6 +144,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             return new List<Type>
             {
                 typeof(CrabSpray),
+                typeof(CrabPunch)
             };
         }
         public override void ExtraDraw(SpriteBatch s, int AITimer)
