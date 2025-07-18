@@ -64,8 +64,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float circleAlpha = baseColor.a;
     
     float4 samp = NoiseTexture.Sample(NoiseSampler, uv);
-    opacity = pow(samp.r * (1.4 - fadeOutProgress), 6);
-    float3 outColour = colour * opacity;
+    
+    // use a certain grayness in the noise texture as the value from which we are brightest.
+    float bestGrey = frac(uTime / 20);
+    float closenessToBest = frac(samp.r + bestGrey);
+    opacity = pow(closenessToBest, 6);
+    float3 outColour = colour * (1 - opacity);
     return float4(outColour, 1) * circleAlpha;
 }
 

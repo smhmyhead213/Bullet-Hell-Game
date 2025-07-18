@@ -55,6 +55,11 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     return output;
 }
 
+float easeInExpo(float x)
+{
+    return x == 0 ? 0 : pow(2, 10 * x - 10);
+}
+
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     // sample to avoid compiling out
@@ -64,11 +69,9 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float width = input.TextureCoordinates.z;
 
-    
-    float4 white = float4(1, 1, 1, 1);
     float interpolant = pow(1 - uv.y, 4);
     float opacity = uv.x;
-    return white * interpolant * opacity;
+    return float4(colour, 1) * interpolant * opacity;
 }
 
 Technique Technique1

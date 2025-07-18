@@ -26,7 +26,8 @@ namespace bullethellwhatever.Abilities.Weapons
     {
         public float WeaponRotation;
 
-        public float PullBackAngle => -PI / 2.4f;
+        public float InitialAngle => -PI / 2.3f;
+        public float PullBackAngle => -PI / 1.4f;
         public float SwingAngle => -PullBackAngle * 2;
 
         public int SwingDuration => 7;
@@ -150,7 +151,7 @@ namespace bullethellwhatever.Abilities.Weapons
                             float spread = PI / 12f;
                             float direction = Utilities.RandomAngle(WeaponRotation - spread, WeaponRotation + spread);
                             float speed = Utilities.RandomFloat(4f, 9f);
-                            int lifetime = Utilities.RandomInt(25, 35);
+                            int lifetime = 7;
                             float initialOpacity = 0.4f;
                             Vector2 velocity = direction.ToVector() * speed;
 
@@ -195,7 +196,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     // perform charge
                     float chargeTimeSpent = MathHelper.Clamp(ChargeTimer, 0f, ChargeDuration);
                     float interpolant = EasingFunctions.EaseOutCubic((float)chargeTimeSpent / ChargeDuration);
-                    WeaponRotation = MathHelper.Lerp(0f, PullBackAngle, interpolant);
+                    WeaponRotation = MathHelper.Lerp(InitialAngle, PullBackAngle, interpolant);
                     WeaponRotation += SwingDirection;
                 }
 
@@ -220,15 +221,15 @@ namespace bullethellwhatever.Abilities.Weapons
                         TrailPointAngles.Add(WeaponRotation);
                     }
 
-                    int particles = 1;
+                    int particles = 0;
 
                     for (int i = 0; i < particles; i++)
                     {
                         Particle p = new Particle();
                         int lifetime = 30;
                         Color colour = Colour;
-                        float rotation = WeaponRotation - PI / 2 + Utilities.RandomAngle(PI / 15);
-                        Vector2 velocity = rotation.ToVector() * Utilities.RandomFloat(1f, 1.4f);
+                        float rotation = WeaponRotation + Utilities.RandomAngle(PI / 15);
+                        Vector2 velocity = rotation.ToVector() * Utilities.RandomFloat(2f, 3f);
                         float opacity = 1f;
 
                         p.Spawn("Circle", SwordEnd(TrailOffsetFromSwordTip), velocity, -velocity / lifetime, Vector2.One, rotation, colour, opacity, lifetime);
@@ -346,6 +347,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 PrimitiveManager.AddIndex(i);
             }
 
+            SwingEffect.SetColour(Colour);
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, SwingEffect);
 
             primSet.Draw();
