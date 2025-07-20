@@ -191,7 +191,7 @@ namespace bullethellwhatever.DrawCode
             return vertices;
         }
 
-        public static void DrawVertexStrip(Vector2[] vertices, Color colour, Shader shader, Func<float, float> opacity)
+        public static void DrawVertexStrip(Vector2[] vertices, Color colour, Func<float, float> opacity, Shader shader = null)
         {
             int vertexCount = vertices.Length;
 

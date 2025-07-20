@@ -366,7 +366,7 @@ namespace bullethellwhatever.BaseClasses
 
             foreach (Component component in AdditionalComponents)
             {
-                component.Draw(spriteBatch);
+                //component.Draw(spriteBatch);
             }
         }
     }

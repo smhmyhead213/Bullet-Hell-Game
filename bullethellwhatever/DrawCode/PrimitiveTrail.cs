@@ -112,7 +112,7 @@ namespace bullethellwhatever.DrawCode
             }
 
             Vector2[] vertices = GenerateVertices(positions);
-            PrimitiveManager.DrawVertexStrip(vertices, Colour, Shader, (progress) => Opacity * (1f - progress));
+            PrimitiveManager.DrawVertexStrip(vertices, Colour, (progress) => Opacity * (1f - progress), Shader);
         }
     }
 }

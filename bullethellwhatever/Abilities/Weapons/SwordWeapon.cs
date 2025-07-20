@@ -49,7 +49,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float MaxShakeOffset = 3f;
 
         public List<float> TrailPointAngles;
-
+        public List<Vector2> FireTrailPoints;
         public float TrailOffsetFromSwordTip => 10f;
         public float TrailWidth => 2 * TrailOffsetFromSwordTip;
 
@@ -62,6 +62,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             TrailPointAngles = new List<float>();
+            FireTrailPoints = new List<Vector2>();
             ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
             SwingEffect = AssetRegistry.GetShader("ThermalSwordSwing");
             ShakeOffset = Vector2.Zero;
@@ -107,6 +108,7 @@ namespace bullethellwhatever.Abilities.Weapons
             Swinging = false;
             SwingStage = SwordSwingStages.Prepare;
             TrailPointAngles = new List<float>();
+            FireTrailPoints = new List<Vector2>();
         }
         public override void AI()
         {
@@ -219,6 +221,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
                         WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration)) + SwingDirection;
                         TrailPointAngles.Add(WeaponRotation);
+                        FireTrailPoints.Add(SwordEnd(TrailOffsetFromSwordTip));
                     }
 
                     int particles = 0;
@@ -372,6 +375,9 @@ namespace bullethellwhatever.Abilities.Weapons
             }
 
             DrawSweepTrail(TrailVertices(), Color.Red);
+
+            Vector2[] vertices = PrimitiveManager.GenerateStripVertices(FireTrailPoints.ToArray(), (x) => 50f);
+            PrimitiveManager.DrawVertexStrip(vertices, Color.Red, (x) => x); 
         }
     }
 }
