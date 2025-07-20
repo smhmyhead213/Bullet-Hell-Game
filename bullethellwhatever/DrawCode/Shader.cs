@@ -30,6 +30,7 @@ namespace bullethellwhatever.DrawCode
         public void SetColour(Color colour)
         {
             Colour = colour;
+            SetParameter("colour", Colour);
         }
 
         public void UpdateShaderParameters(float AITimer)

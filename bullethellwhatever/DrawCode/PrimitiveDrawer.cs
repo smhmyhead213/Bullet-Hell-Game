@@ -203,8 +203,8 @@ namespace bullethellwhatever.DrawCode
                 float progress = (float)i / (vertexCount / 2);
                 float width = 1f; // for now
 
-                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour * opacity(progress), new Vector3(0f, progress, width));
-                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour * opacity(progress), new Vector3(1f, progress, width));
+                MainVertices[startIndex] = CreateVertex(vertices[startIndex], colour * opacity(progress), new Vector3(progress, 0f, width));
+                MainVertices[startIndex + 1] = CreateVertex(vertices[startIndex + 1], colour * opacity(progress), new Vector3(progress, 1f, width));
             }
 
             int numberOfTriangles = vertexCount - 2;

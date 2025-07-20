@@ -53,31 +53,42 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     output.Position = mul(input.Position, worldViewProjection);
     output.Color = input.Color;
     output.TextureCoordinates = input.TextureCoordinates;
-    return input;
+    return output;
+}
+
+float easeInExpo(float x)
+{
+    return x == 0 ? 0 : pow(2, 10 * x - 10);
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 uv = input.TextureCoordinates.xy;
+    
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
-    float opacity = 1 - fadeOutProgress;
-    float circleAlpha = baseColor.a;
+
+    float opacity = 1 - fadeOutProgress + baseColor.r / 1000;
     
     float4 samp = NoiseTexture.Sample(NoiseSampler, uv);
     
     // use a certain grayness in the noise texture as the value from which we are brightest.
     float bestGrey = frac(uTime / 20);
-    float closenessToBest = frac(samp.r + bestGrey);
-    opacity = pow(closenessToBest, 6);
-    float3 outColour = colour * (1 - opacity);
-    return float4(outColour, 1) * circleAlpha;
+    float closenessToBest = (uv.x + 0.7) * frac(samp.r + bestGrey);
+    float taperOffFactor = easeInExpo(uv.y);
+    opacity = pow(closenessToBest, 6) * taperOffFactor;
+    
+    float distanceToEdge = 1 - uv.x;
+    float3 whiteness = 0.07 / distanceToEdge * smoothstep(float3(0, 0, 0), float3(1, 1, 1), distanceToEdge);
+    
+    float3 outColour = (colour + whiteness) * opacity;
+    return float4(outColour, 0);
 }
 
 Technique Technique1
 {
     pass ShaderPass
     {
-        //VertexShader = compile vs_4_0 MainVS();
+        VertexShader = compile vs_4_0 MainVS();
         PixelShader = compile ps_4_0 MainPS();
         
     }

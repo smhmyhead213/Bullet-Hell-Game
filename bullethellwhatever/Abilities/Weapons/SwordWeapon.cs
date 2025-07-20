@@ -14,6 +14,9 @@ using System.Windows.Forms;
 using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode.Particles;
 using SharpDX.DirectWrite;
+using System.Diagnostics;
+using System.CodeDom;
+using System.ComponentModel.DataAnnotations;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -49,22 +52,22 @@ namespace bullethellwhatever.Abilities.Weapons
         public float MaxShakeOffset = 3f;
 
         public List<float> TrailPointAngles;
-        public List<Vector2> FireTrailPoints;
         public float TrailOffsetFromSwordTip => 10f;
         public float TrailWidth => 2 * TrailOffsetFromSwordTip;
 
         public Shader ThermalEffect;
         public Shader SwingEffect;
-
+        public Shader FireEffect;
         public Color Colour => Color.Orange;
 
-
+        public float TrailThickness => Length;
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
             TrailPointAngles = new List<float>();
-            FireTrailPoints = new List<Vector2>();
             ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
             SwingEffect = AssetRegistry.GetShader("ThermalSwordSwing");
+            FireEffect = AssetRegistry.GetShader("FireSwordParticleShader");
+
             ShakeOffset = Vector2.Zero;
         }
 
@@ -108,7 +111,6 @@ namespace bullethellwhatever.Abilities.Weapons
             Swinging = false;
             SwingStage = SwordSwingStages.Prepare;
             TrailPointAngles = new List<float>();
-            FireTrailPoints = new List<Vector2>();
         }
         public override void AI()
         {
@@ -210,8 +212,9 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 if (AITimer <= SwingDuration)
                 {
+                    bool lastAdd = AITimer == SwingDuration;
                     // prevent extra swing angle with extra trail points
-                    if (AITimer == SwingDuration)
+                    if (lastAdd)
                     {
                         extraTrailPoints = 0;
                     }
@@ -220,8 +223,12 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
                         WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration)) + SwingDirection;
-                        TrailPointAngles.Add(WeaponRotation);
-                        FireTrailPoints.Add(SwordEnd(TrailOffsetFromSwordTip));
+                        Vector2 swordEnd = SwordEnd(TrailThickness / 2);
+                     
+                        if (i != extraTrailPoints || lastAdd)
+                        {
+                            TrailPointAngles.Add(WeaponRotation);
+                        }
                     }
 
                     int particles = 0;
@@ -241,12 +248,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         {
                             float progress = (float)p.AITimer / lifetime;
                             p.Opacity = MathHelper.Lerp(opacity, 0f, progress);
-                            p.Shader.SetParameter("fadeOutProgress", progress);
                         }));
-
-                        p.SetShader("FireSwordParticleShader");
-                        p.SetNoiseMap("RandomNoise", 0f);
-                        p.Shader.Colour = colour;
 
                         //p.AddTrail(10);
                     }
@@ -376,8 +378,19 @@ namespace bullethellwhatever.Abilities.Weapons
 
             DrawSweepTrail(TrailVertices(), Color.Red);
 
-            Vector2[] vertices = PrimitiveManager.GenerateStripVertices(FireTrailPoints.ToArray(), (x) => 50f);
-            PrimitiveManager.DrawVertexStrip(vertices, Color.Red, (x) => x); 
+            if (SwingStage == SwordSwingStages.Swing)
+            {
+                int timer = MathHelper.Clamp(AITimer, 0, SwingDuration);
+                FireEffect.SetParameter("fadeOutProgress", timer / (float)SwingDuration);
+                FireEffect.SetNoiseMap("RandomNoise", 0f);
+                FireEffect.SetColour(Colour);
+                FireEffect.SetParameter("uTime", AITimer);
+
+                List<Vector2> trailPoints = TrailPointAngles.Select((float angle) => Owner.Position + TrailThickness / 2 * angle.ToVector()).ToList();
+
+                Vector2[] vertices = PrimitiveManager.GenerateStripVertices(trailPoints.ToArray(), (x) => TrailThickness);
+                PrimitiveManager.DrawVertexStrip(vertices, Color.Red, (x) => x, FireEffect);
+            }
         }
     }
 }
