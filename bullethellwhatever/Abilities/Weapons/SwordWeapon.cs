@@ -411,7 +411,36 @@ namespace bullethellwhatever.Abilities.Weapons
                     vertices.Add(Owner.Position + SwordEndOffsets[i]);
                 }
 
-                PrimitiveManager.DrawVertexStrip(vertices.ToArray(), Color.Red, (x) => x, FireEffect);
+                int vertexCount = vertices.Count;
+
+                if (vertexCount == 0) return;
+
+                for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
+                {
+                    int startIndex = i * 2;
+                    float progress = (float)i / (vertexCount / 2);
+
+                    float width = 1f;
+
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour * progress, new Vector3(progress, 0f, width));
+                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, width));
+                }
+
+                int numberOfTriangles = vertexCount - 2;
+
+                int indexCount = numberOfTriangles * 3;
+
+                for (int i = 0; i < numberOfTriangles; i++)
+                {
+                    int startingIndex = i * 3;
+                    PrimitiveManager.AddIndex(i);
+                    PrimitiveManager.AddIndex(i + 1);
+                    PrimitiveManager.AddIndex(i + 2);
+                }
+
+                PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, FireEffect);
+
+                primSet.Draw();
             }        
         }
     }
