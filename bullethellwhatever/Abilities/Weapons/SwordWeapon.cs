@@ -420,10 +420,13 @@ namespace bullethellwhatever.Abilities.Weapons
                     int startIndex = i * 2;
                     float progress = (float)i / (vertexCount / 2);
 
-                    float width = 1f;
+                    float width = progress;
 
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour * progress, new Vector3(progress, 0f, width));
-                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, width));
+                    float leftCurrentTextureCoord = 0.5f - width * 0.5f;
+                    float rightCurrentTextureCoord = 0.5f + width * 0.5f;
+
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour * progress, new Vector3(progress, leftCurrentTextureCoord, width));
+                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, rightCurrentTextureCoord, width));
                 }
 
                 int numberOfTriangles = vertexCount - 2;

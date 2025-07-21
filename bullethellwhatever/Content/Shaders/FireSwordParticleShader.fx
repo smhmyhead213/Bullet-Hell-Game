@@ -64,6 +64,9 @@ float easeInExpo(float x)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 uv = input.TextureCoordinates.xy;
+    float width = input.TextureCoordinates.z;
+    
+    uv.y = (uv.y - 0.5) / width + 0.5;
     
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
 
