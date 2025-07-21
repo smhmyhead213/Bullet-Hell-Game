@@ -126,7 +126,9 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public float LengthModifierThroughSwing(float progress)
         {
-            return 1f + 1f * EasingFunctions.EaseParabolic(progress);
+            float maximumStretch = 1.3f;
+            float easeFactor = EasingFunctions.EaseParabolic(progress);
+            return 1f + maximumStretch * easeFactor;
         }
         public override void AI()
         {
@@ -194,7 +196,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         SwingStage = SwordSwingStages.Swing;
                         ChargeTimer = 0;
-                        AITimer = 0;
+                        AITimer = -1; // so that it can be 0 on the first frame of swinging
                         ShakeOffset = Vector2.Zero;
                         HitEnemies.Clear();
                         return;
@@ -216,6 +218,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     // perform charge
                     float chargeTimeSpent = MathHelper.Clamp(ChargeTimer, 0f, ChargeDuration);
                     float interpolant = EasingFunctions.EaseOutCubic((float)chargeTimeSpent / ChargeDuration);
+                    LengthModifier = interpolant;
                     WeaponRotation = MathHelper.Lerp(InitialAngle, PullBackAngle, interpolant);
                     WeaponRotation += SwingDirection;
                 }
