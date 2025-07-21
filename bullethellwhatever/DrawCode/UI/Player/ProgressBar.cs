@@ -7,22 +7,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpDX.WIC;
 
 namespace bullethellwhatever.DrawCode.UI.Player
 {
     public class ProgressBar : UIElement
     {
         public float Progress;
+        public bool DisplayPercentage;
         public ProgressBar(string texture, Vector2 size, Vector2 position = default, float progress = 1) : base(texture, size, position)
         {
             Progress = progress;
+            DisplayPercentage = false;
         }
-
-        public static void DrawHealthBar(SpriteBatch _spriteBatch, float progress, Vector2 positionOfBar, float BarWidth, float BarHeight)
-        {
-
-        }
-
         public override bool CanBeClicked()
         {
             return false;
@@ -44,6 +41,11 @@ namespace bullethellwhatever.DrawCode.UI.Player
             _spriteBatch.Draw(texture, Position, null, Color.LimeGreen * opacity, 0f, new Vector2(texture.Width / 2, texture.Height / 2), size, SpriteEffects.None, 0f);
 
             _spriteBatch.Draw(texture, new Vector2(Position.X - emptySpaceOnLeft * Size.X, Position.Y), null, Color.Red * opacity, 0f, new Vector2(texture.Width / 2, texture.Height / 2), new Vector2(size.X * progress, size.Y), SpriteEffects.None, 0f);
+
+            if (DisplayPercentage)
+            {
+                Drawing.DrawText(Round(Progress * 100, 1).ToString() + "%", Position + new Vector2(Size.X / 2 + 100f, 0), s, font, Color.White, Vector2.One);
+            }
         }
     }
 }
