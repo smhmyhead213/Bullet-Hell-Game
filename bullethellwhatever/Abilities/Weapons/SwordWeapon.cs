@@ -37,7 +37,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public int SwingDuration => 7;
         public int ChargeDuration => 30;
         public int ChargeTimer = 0;
-        public int ChargeHoldDuration => 15;
+
         public int SwingEndLag = 8;
         public int MaximumExtraChargeTime = 30;
 
@@ -66,6 +66,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public int DrillHitCooldown = 5;
         public float DrillDamage = 0.1f;
         public float SwordDamage = 5f;
+        public float MaximumExtraChargeSwordDamage = 3f;
         public Color Colour => Color.Orange;
 
         public float TrailThickness => Length;
@@ -147,47 +148,12 @@ namespace bullethellwhatever.Abilities.Weapons
                 {
                     if (TimeCharged() == 0)
                     {
-                        int particles = 10;
-
-                        for (int i = 0; i < particles; i++)
-                        {
-                            Particle particle = new Particle();
-                            float direction = Utilities.RandomAngle();
-                            float speed = Utilities.RandomFloat(2f, 7f);
-                            int lifetime = Utilities.RandomInt(25, 35);
-                            float initialOpacity = 0.4f;
-                            Vector2 velocity = direction.ToVector() * speed;
-
-                            //particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
-                            //particle.AddTrail(10);
-                            particle.SetExtraAI(new Action(() =>
-                            {
-                                particle.Opacity = MathHelper.Lerp(initialOpacity, 0f, (float)particle.AITimer / lifetime);
-                            }));
-                        }
+                        
                     }
 
                     if (TimeCharged() == MaximumExtraChargeTime)
                     {
-                        int particles = 20;
 
-                        for (int i = 0; i < particles; i++)
-                        {
-                            Particle particle = new Particle();
-                            float spread = PI / 12f;
-                            float direction = Utilities.RandomAngle(WeaponRotation - spread, WeaponRotation + spread);
-                            float speed = Utilities.RandomFloat(4f, 9f);
-                            int lifetime = 7;
-                            float initialOpacity = 0.4f;
-                            Vector2 velocity = direction.ToVector() * speed;
-
-                            //particle.Spawn("box", SwordEnd(), velocity, -velocity / lifetime, Vector2.One * 0.4f, direction, Color.Brown, initialOpacity, lifetime);
-                            //particle.AddTrail(10);
-                            particle.SetExtraAI(new Action(() =>
-                            {
-                                particle.Opacity = MathHelper.Lerp(initialOpacity, 0f, (float)particle.AITimer / lifetime);
-                            }));
-                        }
                     }
 
                     if (TimeCharged() >= MaximumExtraChargeTime)
@@ -204,7 +170,6 @@ namespace bullethellwhatever.Abilities.Weapons
                     if (KeybindReleased(LeftClick))
                     {
                         SwingStage = SwordSwingStages.Swing;
-                        ChargeTimer = 0;
                         AITimer = -1; // so that it can be 0 on the first frame of swinging
                         ShakeOffset = Vector2.Zero;
                         HitEnemies.Clear();
@@ -318,6 +283,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             return ChargeTimer - ChargeDuration;
         }
+
         public override void OnHit(NPC npc)
         {
             // to do: centralised damage system
@@ -335,7 +301,8 @@ namespace bullethellwhatever.Abilities.Weapons
             }
             else
             {
-                DealDamage(npc, SwordDamage);
+                float damageInterpolant = MathHelper.Clamp(TimeCharged() / (float)MaximumExtraChargeTime, 0f, 1f);
+                DealDamage(npc, SwordDamage + damageInterpolant * MaximumExtraChargeSwordDamage);
                 HitEnemies.Add(npc);
 
                 Drawing.ScreenShake(10, 3);
@@ -445,7 +412,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 }
 
                 PrimitiveManager.DrawVertexStrip(vertices.ToArray(), Color.Red, (x) => x, FireEffect);
-            }
+            }        
         }
     }
 }
