@@ -74,7 +74,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     // use a certain grayness in the noise texture as the value from which we are brightest.
     float bestGrey = frac(uTime / 20);
     float closenessToBest = (uv.x + 0.7) * frac(samp.r + bestGrey);
-    float taperOffFactor = easeInExpo(uv.y) * pow(uv.x, 2);
+    float taperOffFactor = easeInExpo(uv.y);// * pow(uv.x, 2);
     opacity = pow(closenessToBest, 6) * taperOffFactor;
     
     float distanceToEdge = 1 - uv.x;

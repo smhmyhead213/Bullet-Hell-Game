@@ -144,7 +144,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
             for (int i = 0; i < particles; i++)
             {
-                CommonParticles.Spark(Position, particleSpeed, particleLifetime + Utilities.RandomInt(-lifetimeSpread, lifetimeSpread), Colour);
+                CommonParticles.Spark(Position, Utilities.RandomDirection() * particleSpeed, particleLifetime + Utilities.RandomInt(-lifetimeSpread, lifetimeSpread), Colour);
             }
         }
         public override void UpdatePosition()

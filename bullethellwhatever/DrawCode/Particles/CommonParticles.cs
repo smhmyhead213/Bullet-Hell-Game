@@ -10,11 +10,11 @@ namespace bullethellwhatever.DrawCode.Particles
 {
     public static class CommonParticles
     {
-        public static Particle Spark(Vector2 position, float particleSpeed, int particleLifetime, Color colour)
+        public static Particle Spark(Vector2 position, Vector2 particleVelocity, int particleLifetime, Color colour)
         {
-            float angle = Utilities.RandomAngle();
+            float angle = particleVelocity.ToAngle();
             Particle p = new Particle();
-            p.Spawn("box", position, particleSpeed * Utilities.RandomFloat(0.5f, 1.5f) * Utilities.AngleToVector(angle), Vector2.Zero, new Vector2(0.5f, 2.5f), angle, colour, 1f, particleLifetime);
+            p.Spawn("box", position, particleVelocity, Vector2.Zero, new Vector2(0.5f, 2.5f), angle, colour, 1f, particleLifetime);
 
             p.SetExtraAI(new Action(() =>
             {

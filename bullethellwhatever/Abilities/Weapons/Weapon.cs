@@ -83,11 +83,16 @@ namespace bullethellwhatever.Abilities.Weapons
             CheckAndHitEnemies();
         }
 
+        public virtual bool IsDamaging()
+        {
+            return true;
+        }
+
         public void CheckAndHitEnemies()
         {
             foreach (NPC npc in EntityManager.activeNPCs)
             {
-                if (!npc.IsInvincible && npc.Participating && !HitEnemies.Contains(npc))
+                if (IsDamaging() && !npc.IsInvincible && npc.Participating && !HitEnemies.Contains(npc))
                 {
                     foreach (Circle circle in Hitbox)
                     {

@@ -62,6 +62,10 @@ namespace bullethellwhatever.Abilities.Weapons
         public Shader ThermalEffect;
         public Shader SwingEffect;
         public Shader FireEffect;
+
+        public int DrillHitCooldown = 5;
+        public float DrillDamage = 0.1f;
+        public float SwordDamage = 5f;
         public Color Colour => Color.Orange;
 
         public float TrailThickness => Length;
@@ -189,6 +193,11 @@ namespace bullethellwhatever.Abilities.Weapons
                     if (TimeCharged() >= MaximumExtraChargeTime)
                     {
                         ShakeOffset = new Vector2(Utilities.RandomFloat(MaxShakeOffset), Utilities.RandomFloat(MaxShakeOffset));
+
+                        if (TimeCharged() % DrillHitCooldown == 0)
+                        {
+                            HitEnemies.Clear();
+                        }
                     }
 
                     // if the swing is fully charged, await release to swing
@@ -313,10 +322,24 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             // to do: centralised damage system
 
-            DealDamage(npc, 5f);
-            HitEnemies.Add(npc);
+            if (SwingStage == SwordSwingStages.Prepare)
+            {
+                DealDamage(npc, DrillDamage);
+                HitEnemies.Add(npc);
 
-            Drawing.ScreenShake(10, 3);
+                float sparkSpread = PI / 9;
+                float sparkDirection = WeaponRotation + PI + Utilities.RandomFloat(sparkSpread);
+                float sparkSpeed = 5f;
+
+                CommonParticles.Spark(SwordEnd(), sparkSpeed * sparkDirection.ToVector(), 20, Color.Orange);
+            }
+            else
+            {
+                DealDamage(npc, SwordDamage);
+                HitEnemies.Add(npc);
+
+                Drawing.ScreenShake(10, 3);
+            }
         }
         public override void UpdateHitbox()
         {

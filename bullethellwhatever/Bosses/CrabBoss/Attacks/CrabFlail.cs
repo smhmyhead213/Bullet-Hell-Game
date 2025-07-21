@@ -144,7 +144,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         //    particle.GetComponent<PrimitiveTrail>().Opacity = particle.Opacity;
                         //}));
 
-                        particle = CommonParticles.Spark(spawnPos, particleSpeed, lifetime, Color.Orange);
+                        particle = CommonParticles.Spark(spawnPos, Utilities.RandomDirection() * particleSpeed, lifetime, Color.Orange);
                     }
                 }
             }
