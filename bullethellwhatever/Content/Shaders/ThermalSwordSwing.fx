@@ -26,6 +26,7 @@ sampler NoiseSampler : register(s1)
 float uTime;
 float3 colour;
 float scrollSpeed;
+float fadeOutProgress;
 
 struct VertexShaderInput
 {
@@ -70,7 +71,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float width = input.TextureCoordinates.z;
 
     float interpolant = pow(1 - uv.y, 4);
-    float opacity = uv.x;
+    float opacity = uv.x * (1 - fadeOutProgress);
     return float4(colour, 1) * interpolant * opacity;
 }
 

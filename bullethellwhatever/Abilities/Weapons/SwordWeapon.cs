@@ -17,6 +17,7 @@ using SharpDX.DirectWrite;
 using System.Diagnostics;
 using System.CodeDom;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -46,12 +47,15 @@ namespace bullethellwhatever.Abilities.Weapons
         public float Width => 22.5f;
         public float Length => 90f;
 
+        public float LengthModifier;
+
         public bool Swinging;
 
         public Vector2 ShakeOffset;
         public float MaxShakeOffset = 3f;
 
-        public List<float> TrailPointAngles;
+        public List<Vector2> SwordEndOffsets;
+
         public float TrailOffsetFromSwordTip => 10f;
         public float TrailWidth => 2 * TrailOffsetFromSwordTip;
 
@@ -63,12 +67,14 @@ namespace bullethellwhatever.Abilities.Weapons
         public float TrailThickness => Length;
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
         {
-            TrailPointAngles = new List<float>();
+            SwordEndOffsets = new List<Vector2>();
             ThermalEffect = AssetRegistry.GetShader("ThermalSwordShader");
             SwingEffect = AssetRegistry.GetShader("ThermalSwordSwing");
             FireEffect = AssetRegistry.GetShader("FireSwordParticleShader");
 
             ShakeOffset = Vector2.Zero;
+
+            LengthModifier = 1f;
         }
 
         public Vector2 Position()
@@ -110,7 +116,17 @@ namespace bullethellwhatever.Abilities.Weapons
             HitEnemies.Clear();
             Swinging = false;
             SwingStage = SwordSwingStages.Prepare;
-            TrailPointAngles = new List<float>();
+            SwordEndOffsets = new List<Vector2>();
+        }
+
+        public float FinalLength()
+        {
+            return LengthModifier * Length;
+        }
+
+        public float LengthModifierThroughSwing(float progress)
+        {
+            return 1f + 1f * EasingFunctions.EaseParabolic(progress);
         }
         public override void AI()
         {
@@ -222,12 +238,14 @@ namespace bullethellwhatever.Abilities.Weapons
                     for (int i = 0; i <= extraTrailPoints; i++)
                     {
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
-                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad((AITimer + extraInterpolant) / SwingDuration)) + SwingDirection;
-                        Vector2 swordEnd = SwordEnd(TrailThickness / 2);
-                     
-                        if (i != extraTrailPoints || lastAdd)
+                        float finalInterpolant = (AITimer + extraInterpolant) / SwingDuration;
+                        LengthModifier = LengthModifierThroughSwing(finalInterpolant);
+                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad(finalInterpolant)) + SwingDirection;
+                        Vector2 swordEnd = SwordEnd(0);
+
+                        if (i != 0 || lastAdd)
                         {
-                            TrailPointAngles.Add(WeaponRotation);
+                            SwordEndOffsets.Add(swordEnd - Owner.Position);
                         }
                     }
 
@@ -265,7 +283,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             // re-add swingdirection
             Vector2 toSwordEnd = CalculateEnd(WeaponRotation) - Position();
-            Vector2 point = Position() + toSwordEnd.SetLength(Length - offset);
+            Vector2 point = Position() + toSwordEnd.SetLength(FinalLength() - offset);
             return point;
         }
 
@@ -307,7 +325,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public List<Vector2> TrailVertices()
         {
-            if (TrailPointAngles.Count == 0)
+            if (SwordEndOffsets.Count == 0)
             {
                 // explodes pancakes with mind
                 return new List<Vector2>();
@@ -315,11 +333,11 @@ namespace bullethellwhatever.Abilities.Weapons
             
             List<Vector2> vertices = new List<Vector2>();
 
-            for (int i = 0;  i < TrailPointAngles.Count - 1; i++)
+            for (int i = 0;  i < SwordEndOffsets.Count - 1; i++)
             {
-                vertices.Add(CalculateEnd(TrailPointAngles[i]));
-                vertices.Add(CalculateEnd(TrailPointAngles[i + 1]));
-                vertices.Add(Position());
+                vertices.Add(Owner.Position + SwordEndOffsets[i]);
+                vertices.Add(Owner.Position + SwordEndOffsets[i + 1]);
+                vertices.Add(Owner.Position);
             }
 
             return vertices;
@@ -353,6 +371,12 @@ namespace bullethellwhatever.Abilities.Weapons
             }
 
             SwingEffect.SetColour(Colour);
+
+            if (AITimer >= SwingDuration)
+                SwingEffect.SetParameter("fadeOutProgress", (AITimer - SwingDuration) / (float)SwingEndLag);
+            else
+                SwingEffect.SetParameter("fadeOutProgress", 0f);
+
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, SwingEffect);
 
             primSet.Draw();
@@ -370,8 +394,8 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 Texture2D texture = AssetRegistry.GetTexture2D("SwordWeapon");
                 float xscale = Width / texture.Width;
-                float yscale = Length / texture.Height;
-                Drawing.BetterDraw(texture, Position(), null, Colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, Length / yscale));
+                float yscale = FinalLength() / texture.Height;
+                Drawing.BetterDraw(texture, Position(), null, Colour, WeaponRotation, new Vector2(xscale, yscale), SpriteEffects.None, 0f, new Vector2(Width / 2 / xscale, FinalLength() / yscale));
 
                 Drawing.RevertToPreviousSBState(s);
             }
@@ -381,15 +405,20 @@ namespace bullethellwhatever.Abilities.Weapons
             if (SwingStage == SwordSwingStages.Swing)
             {
                 int timer = MathHelper.Clamp(AITimer, 0, SwingDuration);
-                FireEffect.SetParameter("fadeOutProgress", timer / (float)SwingDuration);
+                FireEffect.SetParameter("fadeOutProgress", EasingFunctions.Linear(timer / (float)SwingDuration));
                 FireEffect.SetNoiseMap("RandomNoise", 0f);
                 FireEffect.SetColour(Colour);
                 FireEffect.SetParameter("uTime", AITimer);
 
-                List<Vector2> trailPoints = TrailPointAngles.Select((float angle) => Owner.Position + TrailThickness / 2 * angle.ToVector()).ToList();
+                List<Vector2> vertices = new List<Vector2>();
+                
+                for (int i = 0; i < SwordEndOffsets.Count; i++)
+                {
+                    vertices.Add(Owner.Position);
+                    vertices.Add(Owner.Position + SwordEndOffsets[i]);
+                }
 
-                Vector2[] vertices = PrimitiveManager.GenerateStripVertices(trailPoints.ToArray(), (x) => TrailThickness);
-                PrimitiveManager.DrawVertexStrip(vertices, Color.Red, (x) => x, FireEffect);
+                PrimitiveManager.DrawVertexStrip(vertices.ToArray(), Color.Red, (x) => x, FireEffect);
             }
         }
     }
