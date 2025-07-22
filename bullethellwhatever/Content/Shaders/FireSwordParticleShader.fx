@@ -65,8 +65,10 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 uv = input.TextureCoordinates.xy;
     float width = input.TextureCoordinates.z;
-    
+
     uv.y = (uv.y - 0.5) / width + 0.5;
+    
+    //return float4(0, uv.x, 0, 1);
     
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
 
@@ -83,7 +85,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float distanceToEdge = 1 - uv.x;
     float3 whiteness = 0.07 / distanceToEdge * smoothstep(float3(0, 0, 0), float3(1, 1, 1), distanceToEdge);
     
-    float3 outColour = (colour + whiteness) * opacity;
+    float3 outColour = (input.Color.rgb + whiteness) * opacity;
     return float4(outColour, 0);
 }
 

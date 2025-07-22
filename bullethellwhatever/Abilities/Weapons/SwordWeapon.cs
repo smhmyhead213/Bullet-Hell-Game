@@ -415,7 +415,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 if (vertexCount == 0) return;
 
-                for (int i = 0; i < vertexCount / 2; i++) // this is okay because vertices come in pairs
+                for (int i = 0; i < vertexCount / 2; i++)
                 {
                     int startIndex = i * 2;
                     float progress = (float)i / (vertexCount / 2);
@@ -425,7 +425,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     float leftCurrentTextureCoord = 0.5f - width * 0.5f;
                     float rightCurrentTextureCoord = 0.5f + width * 0.5f;
 
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour * progress, new Vector3(progress, leftCurrentTextureCoord, width));
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(progress, leftCurrentTextureCoord, width));
                     PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, rightCurrentTextureCoord, width));
                 }
 
