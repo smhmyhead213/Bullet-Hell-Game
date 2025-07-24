@@ -206,6 +206,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 if (AITimer <= SwingDuration)
                 {
                     bool lastAdd = AITimer == SwingDuration;
+
                     // prevent extra swing angle with extra trail points
                     if (lastAdd)
                     {
@@ -428,9 +429,6 @@ namespace bullethellwhatever.Abilities.Weapons
 
                     float width = progress;
 
-                    float leftCurrentTextureCoord = 0.5f - width * 0.5f;
-                    float rightCurrentTextureCoord = 0.5f + width * 0.5f;
-
                     PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0f, 0f, width));
                     PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, width));
                 }
@@ -450,12 +448,13 @@ namespace bullethellwhatever.Abilities.Weapons
                 PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, FireEffect);
 
                 primSet.Draw();
-            }        
+            }
 
-            //foreach (Vector2 point in GenerateVertices(0.06f))
-            //{
-            //    Drawing.DrawBox(point, Color.Red, 0.3f);
-            //}
+            Func<float, float>[] easingCurves = { EasingFunctions.Linear, EasingFunctions.Linear, EasingFunctions.Linear };
+            float[] progressValues = { 0, 1f / 4, 3f / 4, 1};
+            float[] endValues = { 0f, -1f, -3f, -6f };
+
+            //Func<float, float> func = EasingFunctions.JoinedCurves(easingCurves, progressValues, endValues);
         }
     }
 }

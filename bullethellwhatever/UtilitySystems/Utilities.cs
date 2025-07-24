@@ -604,11 +604,11 @@ namespace bullethellwhatever
         /// <param name="value"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static int IndexValueIsAtInList(float value, List<float> list)
+        public static int IndexValueIsBetweenInList(float value, List<float> list)
         {
             for (int i = 0; i < list.Count - 1; i++)
             {
-                if (value > list[i] && value < list[i + 1])
+                if (value >= list[i] && value <= list[i + 1])
                 { 
                     return i;
                 }

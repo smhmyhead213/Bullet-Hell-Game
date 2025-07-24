@@ -24,29 +24,35 @@ namespace bullethellwhatever.UtilitySystems
         /// <param name="endValues"></param>
         /// <param name="progressValues"></param>
         /// <returns></returns>
-        public static Func<float, float> JoinedCurves(Func<float, float>[] easingCurves, float[] endValues, float[] progressValues, float start = 0)
+        public static Func<float, float> JoinedCurves(Func<float, float>[] easingCurves, float[] progressValues, float[] endValues)
         {
-            if (!(easingCurves.Length == endValues.Length && endValues.Length == progressValues.Length))
+            if (!(easingCurves.Length == endValues.Length - 1 && endValues.Length == progressValues.Length))
             {
                 return Linear;
             }
             
             List<Func<float, float>> output = new List<Func<float, float>>();
 
-            for (int i = 0; i < easingCurves.Length; i++)
+            for (int i = 1; i <= easingCurves.Length; i++)
             {
-                float startVal = i == 0 ? start : endValues[i - 1];
-                float endVal = endValues[i];
+                float startProgressVal = progressValues[i - 1];
+                float endProgressVal = progressValues[i];
 
-                Func<float, float> section = x => startVal + easingCurves[i](x) * endValues[i];
+                float startVal = endValues[i - 1];
+                float endVal = endValues[i];
+                float range = Abs(endVal - startVal);
+
+                // transfrom f(x) |-> (0,1) to f'(x) |-> (startVal, endVal)
+                int backwards = endVal < startVal ? -1 : 1;
+                int locali = i;
+                Func<float, float> section = x => backwards * (range * easingCurves[locali - 1](Utilities.InverseLerp(0, endProgressVal - startProgressVal, x - startProgressVal))) + startVal;
                 output.Add(section);
             }
 
             return x =>
             {
-                int index = Utilities.IndexValueIsAtInList(x, progressValues.ToList());
-                float localTime = x - progressValues[index];
-                return output[index](localTime);
+                int index = Utilities.IndexValueIsBetweenInList(x, progressValues.ToList());
+                return output[index](x);
             };
         }
 

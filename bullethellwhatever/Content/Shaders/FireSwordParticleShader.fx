@@ -85,7 +85,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float distanceToEdge = 1 - uv.x;
     float3 whiteness = 0.07 / distanceToEdge * smoothstep(float3(0, 0, 0), float3(1, 1, 1), distanceToEdge);
     
-    float3 outColour = (input.Color.rgb + whiteness) * opacity;
+    float3 outColour = (colour + whiteness) * opacity;
     return float4(outColour, 0);
 }
 
