@@ -223,6 +223,13 @@ namespace bullethellwhatever.DrawCode
 
             primSet.Draw();
         }
+
+        public static void VisualiseTriangles(int indexCount)
+        {
+            for (int i = 0; i < indexCount; i += 3)
+            {
+            }
+        }
     }
     public class PrimitiveSet
     {
@@ -296,8 +303,7 @@ namespace bullethellwhatever.DrawCode
                     PrimitiveManager.BasicEffect.Parameters["WorldViewProj"]?.SetValue(matrix);
                     PrimitiveManager.BasicEffect.CurrentTechnique.Passes[0].Apply();
                 }
-
-                // dont ask what the division by 3 is. i dont know. it doesnt work otherwise.
+      
                 PrimitiveManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndiceCount / 3);
 
                 if (shouldSwitchToShaderDrawing)

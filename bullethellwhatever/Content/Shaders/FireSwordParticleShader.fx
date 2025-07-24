@@ -66,7 +66,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 uv = input.TextureCoordinates.xy;
     float width = input.TextureCoordinates.z;
 
-    uv.y = (uv.y - 0.5) / width + 0.5;
+    //uv.y = (uv.y - 0.5) / width + 0.5;
     
     //return float4(0, uv.x, 0, 1);
     

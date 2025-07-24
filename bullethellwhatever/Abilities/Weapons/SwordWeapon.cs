@@ -375,6 +375,18 @@ namespace bullethellwhatever.Abilities.Weapons
             primSet.Draw();
         }
 
+        public List<Vector2> GenerateVertices(float distanceFromOwner)
+        {
+            List<Vector2> vertices = new List<Vector2>();
+
+            for (int i = 0; i < SwordEndOffsets.Count; i++)
+            {
+                vertices.Add(Owner.Position + distanceFromOwner * SwordEndOffsets[i]);
+                vertices.Add(Owner.Position + SwordEndOffsets[i]);
+            }
+
+            return vertices;
+        }
         public override void Draw(SpriteBatch s)
         {
             if (Swinging)
@@ -403,13 +415,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 FireEffect.SetColour(Colour);
                 FireEffect.SetParameter("uTime", AITimer);
 
-                List<Vector2> vertices = new List<Vector2>();
-                
-                for (int i = 0; i < SwordEndOffsets.Count; i++)
-                {
-                    vertices.Add(Owner.Position);
-                    vertices.Add(Owner.Position + SwordEndOffsets[i]);
-                }
+                List<Vector2> vertices = GenerateVertices(0f);
 
                 int vertexCount = vertices.Count;
 
@@ -425,8 +431,8 @@ namespace bullethellwhatever.Abilities.Weapons
                     float leftCurrentTextureCoord = 0.5f - width * 0.5f;
                     float rightCurrentTextureCoord = 0.5f + width * 0.5f;
 
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(progress, leftCurrentTextureCoord, width));
-                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, rightCurrentTextureCoord, width));
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0f, 0f, width));
+                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, width));
                 }
 
                 int numberOfTriangles = vertexCount - 2;
@@ -445,6 +451,11 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 primSet.Draw();
             }        
+
+            //foreach (Vector2 point in GenerateVertices(0.06f))
+            //{
+            //    Drawing.DrawBox(point, Color.Red, 0.3f);
+            //}
         }
     }
 }
