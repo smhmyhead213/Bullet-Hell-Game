@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.CodeDom;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Policy;
+using System.Runtime.Intrinsics.X86;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -34,7 +35,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float PullBackAngle => -PI / 1.4f;
         public float SwingAngle => -PullBackAngle * 2;
 
-        public int SwingDuration => 7;
+        public int SwingDuration => 7; //7
         public int ChargeDuration => 30;
         public int ChargeTimer = 0;
 
@@ -205,6 +206,14 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 if (AITimer <= SwingDuration)
                 {
+                    // LOAD THE CANNON.
+                    float progressToBeginSlowing = 0.9f;
+                    Func<float, float> mainSwingFunction = EasingFunctions.EaseInQuad;
+                    Func<float, float>[] easings = { mainSwingFunction, EasingFunctions.EaseOutCubic };
+                    float[] progressValues = { 0f, progressToBeginSlowing, 1f };
+                    float[] endValues = { 0f, mainSwingFunction(progressToBeginSlowing), 1f};
+                    Func<float, float> swordMotion = EasingFunctions.JoinedCurves(easings, progressValues, endValues);
+
                     bool lastAdd = AITimer == SwingDuration;
 
                     // prevent extra swing angle with extra trail points
@@ -218,7 +227,7 @@ namespace bullethellwhatever.Abilities.Weapons
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
                         float finalInterpolant = (AITimer + extraInterpolant) / SwingDuration;
                         LengthModifier = LengthModifierThroughSwing(finalInterpolant);
-                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, EasingFunctions.EaseInQuad(finalInterpolant)) + SwingDirection;
+                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, mainSwingFunction(finalInterpolant)) + SwingDirection;
                         Vector2 swordEnd = SwordEnd(0);
 
                         if (i != 0 || lastAdd)
