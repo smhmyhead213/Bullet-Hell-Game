@@ -110,7 +110,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         d.HitboxWidth = MathHelper.Lerp(regularRayWidth, 0f, 1f - opacityProgress);
                         //d.Shader.SetParameter("opacity", opacityInterpolant);
                     }
-                    
+
+                    d.Shader.SetParameter("uTime", d.AITimer);
                     //d.Rotation = Arm(armIndex).LowerArm.RotationFromV();
                 }));
 
