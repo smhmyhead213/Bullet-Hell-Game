@@ -32,14 +32,16 @@ namespace bullethellwhatever.Abilities.Weapons
         public float WeaponRotation;
 
         public float InitialAngle => -PI / 2.3f;
-        public float PullBackAngle => -PI / 1.4f;
+        public float PullBackAngle => -(PI / 2 + PI / 36);
         public float SwingAngle => -PullBackAngle * 2;
 
         public int SwingDuration => 7; //7
         public int ChargeDuration => 30;
         public int ChargeTimer = 0;
 
-        public int SwingEndLag = 8;
+        public int OverswingDuration = 8;
+        public int SwingEndLag = 6;
+
         public int MaximumExtraChargeTime = 30;
 
         public SwordSwingStages SwingStage;
@@ -68,7 +70,7 @@ namespace bullethellwhatever.Abilities.Weapons
         public float DrillDamage = 0.1f;
         public float SwordDamage = 5f;
         public float MaximumExtraChargeSwordDamage = 3f;
-        public Color Colour => Color.Orange;
+        public Color Colour => new Color(252, 140, 3);
 
         public float TrailThickness => Length;
         public SwordWeapon(Player player, string iconTexture) : base(player, iconTexture)
@@ -202,17 +204,11 @@ namespace bullethellwhatever.Abilities.Weapons
             }
             else if (SwingStage == SwordSwingStages.Swing)
             {
-                int extraTrailPoints = 3;
+                int extraTrailPoints = 21 / SwingDuration;
 
                 if (AITimer <= SwingDuration)
                 {
-                    // LOAD THE CANNON.
-                    float progressToBeginSlowing = 0.9f;
                     Func<float, float> mainSwingFunction = EasingFunctions.EaseInQuad;
-                    Func<float, float>[] easings = { mainSwingFunction, EasingFunctions.EaseOutCubic };
-                    float[] progressValues = { 0f, progressToBeginSlowing, 1f };
-                    float[] endValues = { 0f, mainSwingFunction(progressToBeginSlowing), 1f};
-                    Func<float, float> swordMotion = EasingFunctions.JoinedCurves(easings, progressValues, endValues);
 
                     bool lastAdd = AITimer == SwingDuration;
 
@@ -226,13 +222,15 @@ namespace bullethellwhatever.Abilities.Weapons
                     {
                         float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
                         float finalInterpolant = (AITimer + extraInterpolant) / SwingDuration;
+                        float swingProgress = mainSwingFunction(finalInterpolant);
                         LengthModifier = LengthModifierThroughSwing(finalInterpolant);
-                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, mainSwingFunction(finalInterpolant)) + SwingDirection;
+                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, swingProgress) + SwingDirection;
                         Vector2 swordEnd = SwordEnd(0);
+                        Vector2 swordEndOffset = swordEnd - Owner.Position;
 
                         if (i != 0 || lastAdd)
                         {
-                            SwordEndOffsets.Add(swordEnd - Owner.Position);
+                            SwordEndOffsets.Add(swordEndOffset);
                         }
                     }
 
@@ -259,7 +257,16 @@ namespace bullethellwhatever.Abilities.Weapons
                     }
                 }
 
-                if (AITimer == SwingDuration + 1 + SwingEndLag)
+                if (AITimer > SwingDuration && AITimer <= SwingDuration + OverswingDuration)
+                {
+                    float extraSwingAngle = PI / 18;
+                    float swingProgress = (AITimer - SwingDuration) / (float)OverswingDuration;
+                    float startAngle = PullBackAngle + SwingAngle;
+                    WeaponRotation = MathHelper.Lerp(startAngle, startAngle + extraSwingAngle , swingProgress) + SwingDirection;
+
+                }
+
+                if (AITimer == SwingDuration + 1 + OverswingDuration + SwingEndLag)
                 {
                     Reset();
                 }
@@ -375,8 +382,8 @@ namespace bullethellwhatever.Abilities.Weapons
 
             SwingEffect.SetColour(Colour);
 
-            if (AITimer >= SwingDuration)
-                SwingEffect.SetParameter("fadeOutProgress", (AITimer - SwingDuration) / (float)SwingEndLag);
+            if (AITimer >= 0 && SwingStage == SwordSwingStages.Swing)
+                SwingEffect.SetParameter("fadeOutProgress", AITimer / (float)SwingDuration);
             else
                 SwingEffect.SetParameter("fadeOutProgress", 0f);
 
@@ -415,7 +422,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 Drawing.RevertToPreviousSBState(s);
             }
 
-            DrawSweepTrail(TrailVertices(), Color.Red);
+            //DrawSweepTrail(TrailVertices(), Color.Red);
 
             if (SwingStage == SwordSwingStages.Swing)
             {
@@ -458,12 +465,6 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 primSet.Draw();
             }
-
-            Func<float, float>[] easingCurves = { EasingFunctions.Linear, EasingFunctions.Linear, EasingFunctions.Linear };
-            float[] progressValues = { 0, 1f / 4, 3f / 4, 1};
-            float[] endValues = { 0f, -1f, -3f, -6f };
-
-            //Func<float, float> func = EasingFunctions.JoinedCurves(easingCurves, progressValues, endValues);
         }
     }
 }

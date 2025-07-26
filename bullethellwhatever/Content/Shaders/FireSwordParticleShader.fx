@@ -65,28 +65,25 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 uv = input.TextureCoordinates.xy;
     float width = input.TextureCoordinates.z;
-
-    //uv.y = (uv.y - 0.5) / width + 0.5;
     
-    //return float4(0, uv.x, 0, 1);
+    float4 white = float4(1, 1, 1, 0);
+    float4 black = float4(0, 0, 0, 0);
     
     float4 baseColor = tex2D(TextureSampler, uv).rgba;
 
     float opacity = 1 - fadeOutProgress + baseColor.r / 1000;
     
     float4 samp = NoiseTexture.Sample(NoiseSampler, uv);
-    
-    // use a certain grayness in the noise texture as the value from which we are brightest.
-    float bestGrey = frac(uTime / 20);
-    float closenessToBest = (uv.x + 0.7) * frac(samp.r + bestGrey);
-    float taperOffFactor = easeInExpo(uv.y);// * pow(uv.x, 2);
-    opacity = pow(closenessToBest, 6) * taperOffFactor;
-    
-    float distanceToEdge = 1 - uv.x;
-    float3 whiteness = 0.07 / distanceToEdge * smoothstep(float3(0, 0, 0), float3(1, 1, 1), distanceToEdge);
-    
-    float3 outColour = (colour + whiteness) * opacity;
-    return float4(outColour, 0);
+    float noiseGreynessCutoff = 0.9;
+    float currentGreyness = samp.r;
+
+    // figure out how close we are to being cutoff - if we're close but not cut off, be white
+    float brightness = lerp(1, 0, abs(currentGreyness - noiseGreynessCutoff));
+    float toleranceDistance = 0.15;
+    float interpolant = pow(brightness + toleranceDistance, 14);
+    float4 colourIfEdge = lerp(float4(colour, 1), white, interpolant);
+    colourIfEdge = lerp(colourIfEdge, black, currentGreyness >= noiseGreynessCutoff);
+    return colourIfEdge;
 }
 
 Technique Technique1
