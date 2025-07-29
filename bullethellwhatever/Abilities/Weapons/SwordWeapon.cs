@@ -443,7 +443,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     int startIndex = i * 2;
                     float progress = (float)i / (vertexCount / 2);
 
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0f, 0f, progress));
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0.5f, 0f, progress));
                     PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, progress));
                 }
 

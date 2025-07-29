@@ -64,9 +64,9 @@ float easeInExpo(float x)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 uv = input.TextureCoordinates.xy; // make x go along the trail
-    uv.x = input.TextureCoordinates.z;
+    //uv.x = input.TextureCoordinates.z;
     
-    //float value = lerp(0, 0.3, uv.y > 0.5);
+    //float value = lerp(0, 0.3, uv.x > 0.5);
     //return float4(value + colour.x, value + colour.y, value + colour.z, 1);
     
     float4 white = float4(1, 1, 1, 0);
@@ -80,7 +80,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
     // figure out how close we are to being cutoff - if we're close but not cut off, be white
     float whiteness = uv.x;
-    opacity = uv.x;
+    opacity = uv.x - fadeOutProgress;
     
     return float4(colour.x + whiteness, colour.y + whiteness, colour.z + whiteness, 1) * opacity;
 }
