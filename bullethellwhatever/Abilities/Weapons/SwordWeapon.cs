@@ -368,7 +368,7 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 PrimitiveManager.AddVertex(vertices[startIndex], colour, new Vector3(progress, 0f, width));
                 PrimitiveManager.AddVertex(vertices[startIndex + 1], colour, new Vector3(nextProgress, 0f, width));
-                PrimitiveManager.AddVertex(vertices[startIndex + 2], colour, new Vector3(progress, 1f, width));
+                PrimitiveManager.AddVertex(vertices[startIndex + 2], colour, new Vector3(progress, 1f, width)); // progress in x
             }
 
             int numberOfTriangles = vertexCount / 3;
@@ -443,10 +443,8 @@ namespace bullethellwhatever.Abilities.Weapons
                     int startIndex = i * 2;
                     float progress = (float)i / (vertexCount / 2);
 
-                    float width = progress;
-
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0f, 0f, width));
-                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, width));
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0f, 0f, progress));
+                    PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, progress));
                 }
 
                 int numberOfTriangles = vertexCount - 2;
