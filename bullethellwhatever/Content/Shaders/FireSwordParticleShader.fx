@@ -79,8 +79,10 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 samp = NoiseTexture.Sample(NoiseSampler, uv);
 
     // figure out how close we are to being cutoff - if we're close but not cut off, be white
-    float whiteness = uv.x * 0.1;
-    return float4(colour.x + whiteness, colour.y + whiteness, colour.z + whiteness, 1);
+    float whiteness = uv.x;
+    opacity = uv.x;
+    
+    return float4(colour.x + whiteness, colour.y + whiteness, colour.z + whiteness, 1) * opacity;
 }
 
 Technique Technique1
