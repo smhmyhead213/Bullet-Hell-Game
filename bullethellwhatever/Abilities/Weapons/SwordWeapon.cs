@@ -432,7 +432,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 FireEffect.SetColour(Colour);
                 FireEffect.SetParameter("uTime", AITimer);
 
-                List<Vector2> vertices = GenerateVertices(0f);
+                List<Vector2> vertices = GenerateVertices(0.05f);
 
                 int vertexCount = vertices.Count;
 
@@ -441,9 +441,9 @@ namespace bullethellwhatever.Abilities.Weapons
                 for (int i = 0; i < vertexCount / 2; i++)
                 {
                     int startIndex = i * 2;
-                    float progress = (float)i / (vertexCount / 2);
+                    float progress = (float)i / ((vertexCount / 2) - 1);
 
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0.5f, 0f, progress));
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(progress, 0f, 0));
                     PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, progress));
                 }
 

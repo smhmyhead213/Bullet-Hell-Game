@@ -66,8 +66,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 uv = input.TextureCoordinates.xy; // make x go along the trail
     //uv.x = input.TextureCoordinates.z;
     
-    //float value = lerp(0, 0.3, uv.x > 0.5);
+    //float value = lerp(0, 0.3, uv.x > 0.9);
     //return float4(value + colour.x, value + colour.y, value + colour.z, 1);
+    
+    return float4(uv.xxx, 1);
+    
+    //return float4(1, 1, 1, 1);
     
     float4 white = float4(1, 1, 1, 0);
     float4 black = float4(0, 0, 0, 0);
