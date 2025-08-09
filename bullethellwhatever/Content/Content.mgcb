@@ -735,6 +735,18 @@
 #begin Sounds/Master.strings.bank
 /copy:Sounds/Master.strings.bank
 
+#begin Super Perlin 4 - 512x512.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Super Perlin 4 - 512x512.png;FireStreaksNoise.png
+
 #begin SwordWeapon.png
 /importer:TextureImporter
 /processor:TextureProcessor

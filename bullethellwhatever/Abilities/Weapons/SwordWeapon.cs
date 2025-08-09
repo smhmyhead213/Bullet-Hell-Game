@@ -428,7 +428,7 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 int timer = MathHelper.Clamp(AITimer, 0, SwingDuration);
                 FireEffect.SetParameter("fadeOutProgress", EasingFunctions.Linear(timer / (float)SwingDuration));
-                FireEffect.SetNoiseMap("RandomNoise", 0f);
+                FireEffect.SetNoiseMap("FireStreaksNoise", 0f);
                 FireEffect.SetColour(Colour);
                 FireEffect.SetParameter("uTime", AITimer);
 
@@ -443,7 +443,7 @@ namespace bullethellwhatever.Abilities.Weapons
                     int startIndex = i * 2;
                     float progress = (float)i / ((vertexCount / 2) - 1);
 
-                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(progress, 0f, 0));
+                    PrimitiveManager.AddVertex(vertices[startIndex], Colour, new Vector3(0f, 0f, 0));
                     PrimitiveManager.AddVertex(vertices[startIndex + 1], Colour * progress, new Vector3(progress, 1f, progress));
                 }
 
