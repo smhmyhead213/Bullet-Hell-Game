@@ -92,8 +92,10 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //float whiteInterpolant = (1 - uv.y) / (1 - whiteThreshold);
     //opacity = uv.x - fadeOutProgress;
 
-    float3 final = lerp(fireColour + float3(whiteness, whiteness, whiteness), black, samp.r < 0.5);
-    opacity = uv.x; // * (1 - easeInExpo(fadeOutProgress));
+    float idealR = 0.5;
+    float distanceToIdeal = abs(samp.r - idealR);
+    float3 final = lerp(fireColour + float3(whiteness, whiteness, whiteness), black, distanceToIdeal > 0.3);
+    opacity = pow(uv.x, 2) - easeInExpo(fadeOutProgress); // * (1 - easeInExpo(fadeOutProgress));
     
     return float4(final, 1) * opacity;
 }
