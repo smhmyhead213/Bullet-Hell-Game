@@ -23,6 +23,17 @@ sampler NoiseSampler : register(s1)
     AddressV = wrap;
 };
 
+Texture2D RandomNoise;
+sampler RandomNoiseSampler : register(s2)
+{
+    Texture = (RandomNoise);
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+
 float uTime;
 float fadeOutProgress;
 float3 colour;
@@ -79,24 +90,28 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
     float opacity = 1 + baseColor.r * 0.001;
     
-    float2 scrollAmount = float2(0.005 * uTime, 0);
+    float2 scrollAmount = float2(0, 0);
     
     float4 samp = NoiseTexture.Sample(NoiseSampler, uv - scrollAmount);
+    float4 randomSample = RandomNoise.Sample(RandomNoiseSampler, uv);
+    
     float whiteThreshold = 0.9;
     float3 fireColour = colour;
 
     float3 black = float3(0, 0, 0);
-    float whiteness = (uv.y) * samp.r;
+    float whiteness = easeInExpo(uv.y) * 1.3;
 
     // fade edge from white to out
     //float whiteInterpolant = (1 - uv.y) / (1 - whiteThreshold);
     //opacity = uv.x - fadeOutProgress;
 
-    float idealR = 0.5;
+    float idealR = 0.5 + 0.1 * sin(uTime * 0.2);
+    float tolerance = 0.7;
     float distanceToIdeal = abs(samp.r - idealR);
-    float3 final = lerp(fireColour + float3(whiteness, whiteness, whiteness), black, distanceToIdeal > 0.3);
-    opacity = pow(uv.x, 2) - easeInExpo(fadeOutProgress); // * (1 - easeInExpo(fadeOutProgress));
     
+    float3 final = lerp(fireColour + float3(whiteness, whiteness, whiteness), black, distanceToIdeal > tolerance);
+    opacity = pow(uv.x, 2) - easeInExpo(fadeOutProgress); // * (1 - easeInExpo(fadeOutProgress));
+  
     return float4(final, 1) * opacity;
 }
 

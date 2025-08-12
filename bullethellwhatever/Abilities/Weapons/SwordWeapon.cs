@@ -429,6 +429,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 int timer = MathHelper.Clamp(AITimer, 0, SwingDuration);
                 FireEffect.SetParameter("fadeOutProgress", EasingFunctions.Linear(timer / (float)SwingDuration));
                 FireEffect.SetNoiseMap("FireStreaksNoise", 0f);
+                FireEffect.SetParameter("RandomNoise", AssetRegistry.GetTexture2D("RandomNoise"));
                 FireEffect.SetColour(Colour);
                 FireEffect.SetParameter("uTime", AITimer);
 
