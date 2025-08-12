@@ -433,7 +433,7 @@ namespace bullethellwhatever.Abilities.Weapons
                 FireEffect.SetColour(Colour);
                 FireEffect.SetParameter("uTime", AITimer);
 
-                List<Vector2> vertices = GenerateVertices(0.05f);
+                List<Vector2> vertices = GenerateVertices(0.4f);
 
                 int vertexCount = vertices.Count;
 

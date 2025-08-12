@@ -93,7 +93,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 scrollAmount = float2(0, 0);
     
     float4 samp = NoiseTexture.Sample(NoiseSampler, uv - scrollAmount);
-    float4 randomSample = RandomNoise.Sample(RandomNoiseSampler, uv);
     
     float whiteThreshold = 0.9;
     float3 fireColour = colour;
@@ -105,12 +104,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //float whiteInterpolant = (1 - uv.y) / (1 - whiteThreshold);
     //opacity = uv.x - fadeOutProgress;
 
-    float idealR = 0.5 + 0.1 * sin(uTime * 0.2);
-    float tolerance = 0.7;
-    float distanceToIdeal = abs(samp.r - idealR);
+    float fadeInterpolant = 1 - uv.y;
+    float randomSampleOpacity = RandomNoise.Sample(RandomNoiseSampler, float2(uv.y, 0.5));
     
-    float3 final = lerp(fireColour + float3(whiteness, whiteness, whiteness), black, distanceToIdeal > tolerance);
-    opacity = pow(uv.x, 2) - easeInExpo(fadeOutProgress); // * (1 - easeInExpo(fadeOutProgress));
+    float3 final = lerp(fireColour + float3(whiteness, whiteness, whiteness), black, fadeInterpolant);
+    final = final * lerp(randomSampleOpacity, 1, fadeInterpolant + uv.x);
+
+    //opacity = pow(uv.x, 2) - easeInExpo(fadeOutProgress); // * (1 - easeInExpo(fadeOutProgress));
   
     return float4(final, 1) * opacity;
 }
