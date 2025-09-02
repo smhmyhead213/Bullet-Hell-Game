@@ -94,6 +94,8 @@ namespace bullethellwhatever.Abilities.Weapons
             {
                 Drawing.BetterDraw("TargetReticle", ReflectorTarget, null, Color.White, 0f, Vector2.One, SpriteEffects.None, 0f);
             }
+
+            Drawing.DrawBox(MousePositionWithCamera(), Color.Red, 1f);
         }
     }
 }

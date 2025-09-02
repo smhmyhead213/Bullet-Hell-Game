@@ -135,6 +135,8 @@ namespace bullethellwhatever.DrawCode
                 npc.DrawHPBar(_spriteBatch);
             }
 
+            Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
+
             s.End();
         }
     }
