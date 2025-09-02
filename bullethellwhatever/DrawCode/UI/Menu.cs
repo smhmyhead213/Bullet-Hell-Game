@@ -1,5 +1,6 @@
 ﻿using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses;
+using bullethellwhatever.BaseClasses.Entities;
 using Microsoft.VisualBasic.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -269,6 +270,17 @@ namespace bullethellwhatever.DrawCode.UI
 
             return total;
         }
+
+        public override void SetAssociatedEntity(Entity entity)
+        {
+            base.SetAssociatedEntity(entity);
+
+            foreach (UIElement uIElement in UIElements)
+            {
+                uIElement.SetAssociatedEntity(entity);
+            }
+        }
+
         public void SetImportant(bool important)
         {
             Important = important;

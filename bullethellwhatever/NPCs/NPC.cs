@@ -218,6 +218,7 @@ namespace bullethellwhatever.NPCs
         public override void Delete()
         {
             DeleteNextFrame = true;
+            DeleteAssociatedUI();
         }
 
         public virtual void DrawHPBar(SpriteBatch spriteBatch)

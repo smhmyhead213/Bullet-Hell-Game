@@ -35,6 +35,14 @@ namespace bullethellwhatever.BaseClasses
             CurrentAttack.Execute(AITimer);
         }
 
+        public virtual void DisplayBossHPBar()
+        {
+            HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
+            hpBar.SetAssociatedEntity(this);
+            hpBar.DisplayPercentage = true;
+            hpBar.Display();
+        }
+
         public override void Die()
         {
             base.Die();

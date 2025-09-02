@@ -150,7 +150,7 @@ namespace bullethellwhatever.BaseClasses
 
         public void UpdateVisibleArea()
         {
-            // only with translation for now, add zoom later possibly
+            // how will this work with rotation??? maybe just make it a big box that encapsulates the whole rotated rectangle whatever
 
             Microsoft.Xna.Framework.Vector2 visibleCentre = position;
             Microsoft.Xna.Framework.Vector2 topLeft = position - new Microsoft.Xna.Framework.Vector2(GameWidth, GameHeight) / 2 / cameraScale;

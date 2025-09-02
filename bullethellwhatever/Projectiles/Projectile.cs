@@ -227,6 +227,7 @@ namespace bullethellwhatever.Projectiles
         public override void Delete()
         {
             DeleteNextFrame = true;
+            DeleteAssociatedUI();
         }
 
         public virtual void CheckForHits()

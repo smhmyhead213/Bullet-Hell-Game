@@ -26,8 +26,7 @@ namespace bullethellwhatever
     {
         public static void InitialiseGame()
         {
-            EntityManager.activeNPCs.Clear();
-            EntityManager.activeProjectiles.Clear();
+            EntityManager.Clear();
         }
         /// <summary>
         /// Returns -1 if index is 0 and 1 if index is 1.

@@ -11,6 +11,7 @@ using bullethellwhatever.BaseClasses.Hitboxes;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.AssetManagement;
 using System.Linq;
+using bullethellwhatever.DrawCode.UI;
 
 namespace bullethellwhatever.BaseClasses.Entities
 {
@@ -52,6 +53,7 @@ namespace bullethellwhatever.BaseClasses.Entities
         
         public float MaxHP;
         public bool DeleteNextFrame;
+
         public virtual float Rotation // virtual because things need to update immediately when rotation is set
         {
             get;
@@ -280,6 +282,8 @@ namespace bullethellwhatever.BaseClasses.Entities
             }
 
             DeleteNextFrame = true;
+
+            DeleteAssociatedUI();
         }
 
         /// <summary>
@@ -287,6 +291,16 @@ namespace bullethellwhatever.BaseClasses.Entities
         /// </summary>
         public abstract void Delete();
 
+        public void DeleteAssociatedUI()
+        {
+            foreach (UIElement uIElement in UIManager.ActiveUIElements)
+            {
+                if (uIElement.AssociatedEntity == this)
+                {
+                    uIElement.Remove();
+                }
+            }
+        }
         public virtual void DealDamage(NPC target)
         {
             target.TakeDamage(Damage);

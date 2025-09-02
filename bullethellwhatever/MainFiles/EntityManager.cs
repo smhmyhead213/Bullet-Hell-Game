@@ -146,7 +146,7 @@ namespace bullethellwhatever.MainFiles
         {
             foreach (Projectile p in activeProjectiles)
             {
-                p.Delete();
+                p.Delete();              
             }
 
             foreach (NPC npc in activeNPCs)

@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.BaseClasses;
+﻿using bullethellwhatever.BaseClasses.Entities;
+using bullethellwhatever.BaseClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,6 +25,10 @@ namespace bullethellwhatever.DrawCode.UI
         public Vector2 Size;
         public Texture2D Texture;
         public Menu Owner;
+        public Entity AssociatedEntity
+        {
+            get; private set;
+        }
 
         public Color Colour;
 
@@ -161,6 +166,11 @@ namespace bullethellwhatever.DrawCode.UI
         public virtual void SetExtraAI(Action extraAI)
         {
             ExtraAI = extraAI;
+        }
+
+        public virtual void SetAssociatedEntity(Entity entity)
+        {
+            AssociatedEntity = entity;
         }
         public virtual void HandleClick()
         {

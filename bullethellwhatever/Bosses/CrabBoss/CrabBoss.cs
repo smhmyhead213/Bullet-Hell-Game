@@ -95,9 +95,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             CurrentAttack = new CrabGrab(this);
             ContactDamage = true;
-            HealthBar hpBar = new HealthBar("box", new Vector2(900f, 30f), this, new Vector2(GameWidth / 2, GameHeight / 20 * 19));
-            hpBar.DisplayPercentage = true;
-            hpBar.Display();
+            DisplayBossHPBar();
         }
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
