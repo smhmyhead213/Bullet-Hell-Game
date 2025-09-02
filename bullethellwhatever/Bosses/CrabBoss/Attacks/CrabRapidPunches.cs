@@ -194,6 +194,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Owner.Velocity = Owner.Velocity.Length() * (Owner.Rotation + PI).ToVector(); // rotate velocity
 
                 Owner.Velocity = Utilities.SafeNormalise(Owner.Velocity) * MathHelper.Lerp(initialDashSpeed, 0f, interpolant);
+
+                // make arms return to original size
+
+                foreach (CrabArm arm in CrabOwner.Arms)
+                {
+                    arm.SetScale(MathHelper.Lerp(arm.Scale(), 1f, interpolant));
+                }
             }
 
             if (AITimer == rapidPunchesDuration + restTime)

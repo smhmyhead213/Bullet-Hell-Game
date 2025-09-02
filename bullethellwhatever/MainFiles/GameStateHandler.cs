@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using bullethellwhatever.Projectiles;
 using bullethellwhatever.NPCs;
 using bullethellwhatever.UtilitySystems.Dialogue;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.MainFiles
 {
@@ -25,6 +26,8 @@ namespace bullethellwhatever.MainFiles
 
         public static void HandleGame()
         {
+            BoxDrawer.Clear();
+
             switch (State)
             {
                 case GameStates.TitleScreen:

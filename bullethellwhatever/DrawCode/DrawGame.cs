@@ -14,6 +14,7 @@ using bullethellwhatever.AssetManagement;
 using bullethellwhatever.DrawCode.UI.Player;
 using bullethellwhatever.BaseClasses.Entities;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.DrawCode
 {
@@ -135,7 +136,8 @@ namespace bullethellwhatever.DrawCode
                 npc.DrawHPBar(_spriteBatch);
             }
 
-            Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
+            BoxDrawer.DrawBoxes();
+            //Drawing.DrawBox(MainCamera.VisibleArea.TopLeft(), Color.Red, 5f);
 
             s.End();
         }

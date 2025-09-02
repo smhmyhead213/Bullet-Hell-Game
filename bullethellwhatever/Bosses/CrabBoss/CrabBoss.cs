@@ -93,7 +93,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ArmRestingEnds[i] = lowerArmEnd - pos;
             }
 
-            CurrentAttack = new CrabGrab(this);
+            CurrentAttack = new CrabDoubleArmSmash(this);
             ContactDamage = true;
             DisplayBossHPBar();
         }
