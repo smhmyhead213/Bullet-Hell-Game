@@ -15,14 +15,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
     public class CrabDoubleArmSmash : CrabBossAttack
     {
+        public Vector2 SlamTargetPosition;
         public CrabDoubleArmSmash(CrabBoss owner) : base(owner)
         {
-
+            SlamTargetPosition = Vector2.Zero;
         }
         public override void Execute(int AITimer)
         {
             int preparationTime = 120;
-            float spaceOnEachSideOfPlayer = 100f;
 
             for (int i = 0; i < 2; i++)
             {
@@ -31,7 +31,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     // make arms longer so they actually reach
 
                     float distanceToPlayer = Utilities.DistanceBetweenVectors(Owner.Position, player.Position);
-                    float scaleFactor = distanceToPlayer / Arm(i).Length();
+                    float spaceOnEachSideOfPlayer = distanceToPlayer * 0.67f;
+
+                    // become longer so arms bend to look like crushing the player
+                    float additionalScale = 1.6f;
+                    float scaleFactor = distanceToPlayer / Arm(i).OriginalLength() * additionalScale;
 
                     float interpolant = (float)AITimer / preparationTime;
                     int expandedi = Utilities.ExpandedIndex(i);

@@ -37,6 +37,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         private float rotationToAdd;
 
+        public Vector2 OriginalScale;
+
         public float RotationToAdd
         {
             get => rotationToAdd;
@@ -81,6 +83,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             Texture = AssetRegistry.GetTexture2D(texture);
             Scale = Vector2.One * scale;
+            OriginalScale = Scale;
             HarmfulToPlayer = true;
             Damage = 1f;
 
@@ -196,6 +199,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public float Length()
         {
             return Texture.Height * GetSize().Y;
+        }
+
+        public float OriginalLength()
+        {
+            return Texture.Height * OriginalScale.Y;
         }
 
         public override void DeductHealth(float damage)

@@ -76,6 +76,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
              return WristLength() + UpperClaw.Length();
         }
+
+        public float OriginalWristLength()
+        {
+            return UpperArm.OriginalLength() + LowerArm.OriginalLength();
+        }
+
+        public float OriginalLength()
+        {
+            return OriginalWristLength() + UpperClaw.OriginalLength();
+        }
+
         public void ResetRotations()
         {
             UpperArm.RotationToAdd = 0f;
