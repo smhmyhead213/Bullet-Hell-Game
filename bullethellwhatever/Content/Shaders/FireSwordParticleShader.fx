@@ -112,6 +112,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
     //opacity = pow(uv.x, 2) - easeInExpo(fadeOutProgress); // * (1 - easeInExpo(fadeOutProgress));
   
+    opacity *= (1 - fadeOutProgress);
     return float4(final, 1) * opacity;
 }
 

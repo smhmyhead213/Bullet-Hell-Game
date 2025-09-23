@@ -16,9 +16,6 @@ using bullethellwhatever.DrawCode.Particles;
 using SharpDX.DirectWrite;
 using System.Diagnostics;
 using System.CodeDom;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Policy;
-using System.Runtime.Intrinsics.X86;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -70,6 +67,8 @@ namespace bullethellwhatever.Abilities.Weapons
         public float DrillDamage = 0.1f;
         public float SwordDamage = 5f;
         public float MaximumExtraChargeSwordDamage = 3f;
+
+        public int TrailAnimationTimer;
         public Color Colour => new Color(252, 140, 3);
 
         public float TrailThickness => Length;
@@ -96,6 +95,7 @@ namespace bullethellwhatever.Abilities.Weapons
             SwingStage = SwordSwingStages.Prepare;
             AITimer = 0;
             Swinging = false;
+            TrailAnimationTimer = -1; // do not draw at -1
         }
         public override bool CanSwitchWeapon()
         {
@@ -117,13 +117,10 @@ namespace bullethellwhatever.Abilities.Weapons
 
         public void Reset()
         {
-            AITimer = 0;
-            WeaponRotation = 0f;
+            WeaponInitialise();
             ChargeTimer = 0;
             SwingDirection = (MousePositionWithCamera() - Owner.Position).ToAngle(); // lock in swing direction at start of swing
             HitEnemies.Clear();
-            Swinging = false;
-            SwingStage = SwordSwingStages.Prepare;
             SwordEndOffsets = new List<Vector2>();
         }
 
@@ -218,21 +215,23 @@ namespace bullethellwhatever.Abilities.Weapons
                         extraTrailPoints = 0;
                     }
 
-                    for (int i = 0; i <= extraTrailPoints; i++)
-                    {
-                        float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
-                        float finalInterpolant = (AITimer + extraInterpolant) / SwingDuration;
-                        float swingProgress = mainSwingFunction(finalInterpolant);
-                        LengthModifier = LengthModifierThroughSwing(finalInterpolant);
-                        WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, swingProgress) + SwingDirection;
-                        Vector2 swordEnd = SwordEnd(0);
-                        Vector2 swordEndOffset = swordEnd - Owner.Position;
+                    //for (int i = 0; i <= extraTrailPoints; i++)
+                    //{
+                    //    float extraInterpolant = i == 0 ? 0 : i / (float)extraTrailPoints;
+                    //    float finalInterpolant = (AITimer + extraInterpolant) / SwingDuration;
+                    //    float swingProgress = mainSwingFunction(finalInterpolant);
+                    //    LengthModifier = LengthModifierThroughSwing(finalInterpolant);
+                    //    WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, swingProgress) + SwingDirection;
+                    //    Vector2 swordEnd = SwordEnd(0);
+                    //    Vector2 swordEndOffset = swordEnd - Owner.Position;
 
-                        if (i != 0 || lastAdd)
-                        {
-                            SwordEndOffsets.Add(swordEndOffset);
-                        }
-                    }
+                    //    if (i != 0 || lastAdd)
+                    //    {
+                    //        SwordEndOffsets.Add(swordEndOffset);
+                    //    }
+                    //}
+
+                    SwingThrough(PullBackAngle, PullBackAngle + SwingAngle, extraTrailPoints, mainSwingFunction);
 
                     int particles = 0;
 
@@ -259,16 +258,41 @@ namespace bullethellwhatever.Abilities.Weapons
 
                 if (AITimer > SwingDuration && AITimer <= SwingDuration + OverswingDuration)
                 {
-                    float extraSwingAngle = PI / 18;
-                    float swingProgress = (AITimer - SwingDuration) / (float)OverswingDuration;
-                    float startAngle = PullBackAngle + SwingAngle;
-                    WeaponRotation = MathHelper.Lerp(startAngle, startAngle + extraSwingAngle , swingProgress) + SwingDirection;
+                    //float extraSwingAngle = PI / 18;
+                    //float swingProgress = (AITimer - SwingDuration) / (float)OverswingDuration;
+                    //float startAngle = PullBackAngle + SwingAngle;
+                    //WeaponRotation = MathHelper.Lerp(startAngle, startAngle + extraSwingAngle , swingProgress) + SwingDirection;
 
+                    float extraSwingAngle = PI / 18;
+                    float startAngle = PullBackAngle + SwingAngle;
+
+                    SwingThrough(startAngle, startAngle + extraSwingAngle, 0, EasingFunctions.Linear);
                 }
 
                 if (AITimer == SwingDuration + 1 + OverswingDuration + SwingEndLag)
                 {
                     Reset();
+                }
+            }
+        }
+
+        public void SwingThrough(float startAngle, float endAngle, float extraPoints, Func<float, float> swingFunction)
+        {
+            for (int i = 0; i <= extraPoints; i++)
+            {
+                float extraInterpolant = i == 0 ? 0 : i / (float)extraPoints;
+                float finalInterpolant = (AITimer + extraInterpolant) / SwingDuration;
+                float swingProgress = swingFunction(finalInterpolant);
+                LengthModifier = LengthModifierThroughSwing(finalInterpolant);
+                WeaponRotation = MathHelper.Lerp(PullBackAngle, PullBackAngle + SwingAngle, swingProgress) + SwingDirection;
+                Vector2 swordEnd = SwordEnd(0);
+                Vector2 swordEndOffset = swordEnd - Owner.Position;
+
+                bool lastAdd = AITimer == SwingDuration;
+
+                if (i != 0 || lastAdd)
+                {
+                    SwordEndOffsets.Add(swordEndOffset);
                 }
             }
         }
@@ -385,7 +409,7 @@ namespace bullethellwhatever.Abilities.Weapons
             if (AITimer >= 0 && SwingStage == SwordSwingStages.Swing)
                 SwingEffect.SetParameter("fadeOutProgress", AITimer / (float)SwingDuration);
             else
-                SwingEffect.SetParameter("fadeOutProgress", 0f);
+                SwingEffect.SetParameter("fadeOutProgress", 1f);
 
             PrimitiveSet primSet = new PrimitiveSet(vertexCount, indexCount, SwingEffect);
 
@@ -426,8 +450,13 @@ namespace bullethellwhatever.Abilities.Weapons
 
             if (SwingStage == SwordSwingStages.Swing)
             {
-                int timer = MathHelper.Clamp(AITimer, 0, SwingDuration);
-                FireEffect.SetParameter("fadeOutProgress", EasingFunctions.Linear(timer / (float)SwingDuration));
+                int fadeOutDelay = 1;
+
+                if (AITimer >= fadeOutDelay)
+                    FireEffect.SetParameter("fadeOutProgress", (AITimer - fadeOutDelay) / (float)(SwingDuration - fadeOutDelay));
+                else
+                    FireEffect.SetParameter("fadeOutProgress", 0f);
+
                 FireEffect.SetNoiseMap("FireStreaksNoise", 0f);
                 FireEffect.SetParameter("RandomNoise", AssetRegistry.GetTexture2D("RandomNoise"));
                 FireEffect.SetColour(Colour);
