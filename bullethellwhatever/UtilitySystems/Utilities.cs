@@ -452,11 +452,10 @@ namespace bullethellwhatever
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
                     int radius = height >= 2 ? height / 2 : 1;
-                    int numCircles = width / radius - 1; // add a circle every radius
-
-                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
-
-                    int totalRadiusCovered = radius * (numCircles + 1);
+                    int diameter = radius * 2;
+                    int numCircles = width / diameter + 1;
+                   
+                    // figure out roughly how to divide up space between circles, then fill circles in and use the last one to ensure space is covered fully
                     int leftOnEnd = (width - totalRadiusCovered) / 2;
 
                     Vector2 startPos = centre - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius - leftOnEnd, 0), rotation);

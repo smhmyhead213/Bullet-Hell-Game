@@ -125,6 +125,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             base.Draw(spriteBatch);
 
+            DrawHitbox();
+
             for (int i = 0; i < 2; i++)
             {
                 //Drawing.DrawBox(Arms[i].RestPositionEnd(), Color.Red, 1f);

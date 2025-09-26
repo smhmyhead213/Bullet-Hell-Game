@@ -56,11 +56,29 @@ namespace bullethellwhatever.UtilitySystems
             };
         }
 
+        public static float EasingCurveDifference(Func<float, float> easing, float start, float end)
+        {
+            return easing(end) - easing(start);
+        }
+
+        public static float EasingCurveDiffTimes(Func<float, float> easing, int startTime, int endTime, int duration)
+        {
+            return easing((float)endTime / duration) - easing((float)startTime / duration);
+        }
+
+        public static float EasingNextFrameDiff(Func<float, float> easing, int start, int duration)
+        {
+            return EasingCurveDiffTimes(easing, start, start + 1, duration);
+        }
         public static float Linear(float progress)
         {
             return progress;
         }
 
+        public static float EaseInOutCubic(float progress)
+        {
+            return progress < 0.5 ? 4 * progress * progress * progress : 1 - Pow(-2 * progress + 2, 3) / 2;
+        }
         public static float EaseOutElastic(float progress)
         {
             float c4 = 2f * PI / 3f;
@@ -74,7 +92,7 @@ namespace bullethellwhatever.UtilitySystems
         {
             return 1 - Pow(1 - progress, 3);
         }
-    public static float EaseInQuint(float progress)
+        public static float EaseInQuint(float progress)
         {
             return Pow(progress, 5);
         }

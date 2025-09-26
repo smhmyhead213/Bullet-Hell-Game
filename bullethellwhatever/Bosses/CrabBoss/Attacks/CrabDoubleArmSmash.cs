@@ -23,6 +23,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public override void Execute(int AITimer)
         {
             int preparationTime = 120;
+            float clawOpenAngle = PI / 5f;
 
             for (int i = 0; i < 2; i++)
             {
@@ -43,8 +44,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     BoxDrawer.DrawBox(targetPosition);
 
-                    Arm(i).LerpToPoint(targetPosition, interpolant);
+                    Arm(i).LerpToPoint(targetPosition, interpolant, false);
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
+
+                    if (AITimer != preparationTime)
+                    {
+                        float clawInterpolant = EasingFunctions.EasingNextFrameDiff(EasingFunctions.EaseOutCubic, AITimer, preparationTime);
+                        float rotationThisFrame = expandedi * clawOpenAngle / preparationTime;
+                        Arm(i).LowerClaw.Rotate(-rotationThisFrame);
+                        Arm(i).UpperClaw.Rotate(rotationThisFrame);
+                    }
                 }
             }
         }

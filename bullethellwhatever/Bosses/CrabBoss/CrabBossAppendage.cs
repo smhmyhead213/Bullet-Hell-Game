@@ -13,6 +13,7 @@ using bullethellwhatever.AssetManagement;
 using bullethellwhatever.BaseClasses.Entities;
 using Microsoft.Xna.Framework.Media;
 using bullethellwhatever.BaseClasses.Hitboxes;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -223,12 +224,18 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                return Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)Height(), Rotation);
+                BoxDrawer.DrawBox(upperPartCentre);
+                int width = (int)Width();
+                int height = (int)Height();
+                return Utilities.FillRectWithCircles(upperPartCentre, width, height, Rotation);
             }
             else // lower claw
             {
                 Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                return Utilities.FillRectWithCircles(upperPartCentre, (int)Width(), (int)(Height()), Rotation);
+                BoxDrawer.DrawBox(upperPartCentre);
+                int width = (int)Width();
+                int height = (int)Height();
+                return Utilities.FillRectWithCircles(upperPartCentre, width, height, Rotation);
             }
         }
 
