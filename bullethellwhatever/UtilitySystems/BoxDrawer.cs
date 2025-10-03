@@ -19,7 +19,7 @@ namespace bullethellwhatever.UtilitySystems
         {
             foreach (Vector2 box in BoxPositions)
             {
-                Drawing.DrawBox(box, Color.Red, 1f);
+                Drawing.DrawBox(box, Color.Green, 1f);
             }
         }
         public static void Clear()

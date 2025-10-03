@@ -452,20 +452,22 @@ namespace bullethellwhatever
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
                     int radius = height >= 2 ? height / 2 : 1;
-                    int diameter = radius * 2;
-                    int numCircles = width / diameter + 1;
-                   
+                    int spaceBetweenCentres = radius;
+                    int numCircles = width / spaceBetweenCentres + 1;
                     // figure out roughly how to divide up space between circles, then fill circles in and use the last one to ensure space is covered fully
-                    int leftOnEnd = (width - totalRadiusCovered) / 2;
+                    // use all circles but last to fill as much space as possible
 
-                    Vector2 startPos = centre - Utilities.RotateVectorClockwise(new Vector2(width / 2 - radius - leftOnEnd, 0), rotation);
-
-                    output.Add(new Circle(startPos, radius));
-
-                    for (int i = 1; i < numCircles; i++)
+                    for (int i = 0; i < numCircles - 1; i++)
                     {
-                        output.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), rotation), radius));
+                        Vector2 circleCentre = centre - new Vector2(width / 2 - radius - i * spaceBetweenCentres, 0).Rotate(rotation);
+                        output.Add(new Circle(circleCentre, radius));
                     }
+
+                    // lmao just stick the final circle on the end and call it a day
+
+                    Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, 0).Rotate(rotation);
+                    output.Add(new Circle(finalCircleCentre, radius));
+                    BoxDrawer.DrawBox(finalCircleCentre);
                 }
                 else
                 {
