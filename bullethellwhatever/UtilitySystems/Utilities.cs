@@ -435,66 +435,6 @@ namespace bullethellwhatever
             return new Color(RandomFloat(0f, 1f), RandomFloat(0f, 1f), RandomFloat(0f, 1f));
         }
 
-        public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation)
-        {
-            List<Circle> output = new List<Circle>();
-
-            if (width == height)
-            {
-                output.Add(new Circle(centre, width / 2f));
-                return output; // use one circle for things of equal width and height
-            }
-
-            else
-            {
-                if (width > height)
-                {
-                    // figure out how many circles to fit in
-                    // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
-                    int radius = height >= 2 ? height / 2 : 1;
-                    float spaceBetweenCentres = radius * 1.5f;
-                    int numCircles = (int)(width / spaceBetweenCentres) + 1;
-                    // figure out roughly how to divide up space between circles, then fill circles in and use the last one to ensure space is covered fully
-                    // use all circles but last to fill as much space as possible
-
-                    for (int i = 0; i < numCircles - 2; i++)
-                    {
-                        Vector2 circleCentre = centre - new Vector2(width / 2 - radius - i * spaceBetweenCentres, 0).Rotate(rotation);
-                        output.Add(new Circle(circleCentre, radius));
-                    }
-
-                    // lmao just stick the final circle on the end and call it a day
-
-                    Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, 0).Rotate(rotation);
-                    output.Add(new Circle(finalCircleCentre, radius));
-                    BoxDrawer.DrawBox(finalCircleCentre);
-                }
-                else
-                {
-                    // figure out how many circles to fit in
-                    int radius = width >= 2 ? width / 2 : 1;
-                    int numCircles = height / radius - 1; // add a circle every radius
-                    float adjustedRotation = rotation - PI / 2f;
-
-                    // try to figure out how much would be left on the end, and try to split it evenly between both sides
-
-                    int totalRadiusCovered = radius * (numCircles + 1);
-                    int leftOnEnd = (height - totalRadiusCovered) / 2;
-
-                    Vector2 startPos = centre - Utilities.RotateVectorClockwise(new Vector2(height / 2 - radius - leftOnEnd, 0), adjustedRotation);
-
-                    output.Add(new Circle(startPos, radius));
-
-                    for (int i = 1; i < numCircles; i++)
-                    {
-                        output.Add(new Circle(startPos + Utilities.RotateVectorClockwise(new Vector2(i * radius, 0), adjustedRotation), radius));
-                    }
-                }
-
-                return output;
-            }
-        }
-
         public static float WithinTau(this float angle)
         {
             return BringAngleIntoRange(angle);

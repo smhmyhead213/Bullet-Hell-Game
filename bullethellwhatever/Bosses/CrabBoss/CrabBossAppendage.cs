@@ -224,7 +224,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                BoxDrawer.DrawBox(upperPartCentre);
+                //BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
                 return Utilities.FillRectWithCircles(upperPartCentre, width, height, Rotation);
