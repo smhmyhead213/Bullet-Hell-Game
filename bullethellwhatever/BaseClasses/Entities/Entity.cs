@@ -332,7 +332,7 @@ namespace bullethellwhatever.BaseClasses.Entities
                 Vector2 describingVec = Raycast.DescribingVector();
                 int dir = Raycast.Direction;
 
-                List<Circle> raycast = Utilities.FillRectWithCircles(Position + dir * describingVec / 2f, (int)Width(), (int)describingVec.Length(), Utilities.VectorToAngle(describingVec));
+                List<Circle> raycast = HitboxUtils.FillRectWithCircles(Position + dir * describingVec / 2f, (int)Width(), (int)describingVec.Length(), Utilities.VectorToAngle(describingVec));
 
                 //Assert(describingVec.Length() < 1000f);
 
@@ -428,7 +428,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
             if (Raycast is not null)
             {
-                List<Circle> raycast = Utilities.FillRectWithCircles(Position + Raycast.Direction * Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
+                List<Circle> raycast = HitboxUtils.FillRectWithCircles(Position + Raycast.Direction * Velocity / 2f, (int)Width(), (int)Velocity.Length(), Utilities.VectorToAngle(Velocity));
 
                 Drawing.DrawCircles(raycast, Color.Red, opacity);
             }
@@ -440,7 +440,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public virtual void UpdateHitbox() //call this before everything else so after AIs proper hitboxes get sent to EntityManager
         {
-            Hitbox = Utilities.FillRectWithCircles(Position, (int)Width(), (int)Height(), Rotation);
+            Hitbox = HitboxUtils.FillRectWithCircles(Position, (int)Width(), (int)Height(), Rotation);
         }
     }
 }

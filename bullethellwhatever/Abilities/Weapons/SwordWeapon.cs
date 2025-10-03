@@ -16,6 +16,7 @@ using bullethellwhatever.DrawCode.Particles;
 using SharpDX.DirectWrite;
 using System.Diagnostics;
 using System.CodeDom;
+using bullethellwhatever.BaseClasses.Hitboxes;
 
 namespace bullethellwhatever.Abilities.Weapons
 {
@@ -353,7 +354,7 @@ namespace bullethellwhatever.Abilities.Weapons
         {
             if (Swinging)
             {
-                Hitbox = Utilities.FillRectWithCircles(Owner.Position + 0.5f * (CalculateEnd() - Position()), (int)Width, (int)Length, WeaponRotation);
+                Hitbox = HitboxUtils.FillRectWithCircles(Owner.Position + 0.5f * (CalculateEnd() - Position()), (int)Width, (int)Length, WeaponRotation);
             }
         }        
 

@@ -217,25 +217,25 @@ namespace bullethellwhatever.Bosses.CrabBoss
             if (Type == AppendageType.UpperArm || Type == AppendageType.LowerArm)
             {
                 Vector2 centre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                return Utilities.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
+                return HitboxUtils.FillRectWithCircles(centre, (int)Width(), (int)Height(), Rotation);
             }
             else if (Type == AppendageType.UpperClaw)
             {
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                //BoxDrawer.DrawBox(upperPartCentre);
+                BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
-                return Utilities.FillRectWithCircles(upperPartCentre, width, height, Rotation);
+                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, HitboxUtils.DefaultCentreOffset, (x) => 0.5f, 0.5f);
             }
             else // lower claw
             {
                 Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                BoxDrawer.DrawBox(upperPartCentre);
+                //BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
-                return Utilities.FillRectWithCircles(upperPartCentre, width, height, Rotation);
+                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation);
             }
         }
 

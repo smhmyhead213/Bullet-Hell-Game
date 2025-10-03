@@ -153,7 +153,7 @@ namespace bullethellwhatever.Projectiles.Base
 
             if (HitboxWidth >= 2f)
             {
-                Hitbox = Utilities.FillRectWithCircles(centre, (int)HitboxWidth, (int)Length, Rotation);
+                Hitbox = HitboxUtils.FillRectWithCircles(centre, (int)HitboxWidth, (int)Length, Rotation);
             }
             else
             {
