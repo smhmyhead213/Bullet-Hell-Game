@@ -452,12 +452,12 @@ namespace bullethellwhatever
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
                     int radius = height >= 2 ? height / 2 : 1;
-                    int spaceBetweenCentres = radius;
-                    int numCircles = width / spaceBetweenCentres + 1;
+                    float spaceBetweenCentres = radius * 1.5f;
+                    int numCircles = (int)(width / spaceBetweenCentres) + 1;
                     // figure out roughly how to divide up space between circles, then fill circles in and use the last one to ensure space is covered fully
                     // use all circles but last to fill as much space as possible
 
-                    for (int i = 0; i < numCircles - 1; i++)
+                    for (int i = 0; i < numCircles - 2; i++)
                     {
                         Vector2 circleCentre = centre - new Vector2(width / 2 - radius - i * spaceBetweenCentres, 0).Rotate(rotation);
                         output.Add(new Circle(circleCentre, radius));
