@@ -75,6 +75,11 @@ namespace bullethellwhatever.UtilitySystems
             return progress;
         }
 
+        public static float EaseInCubic(float progress)
+        {
+            return progress * progress * progress;
+        }
+
         public static float EaseInOutCubic(float progress)
         {
             return progress < 0.5 ? 4 * progress * progress * progress : 1 - Pow(-2 * progress + 2, 3) / 2;

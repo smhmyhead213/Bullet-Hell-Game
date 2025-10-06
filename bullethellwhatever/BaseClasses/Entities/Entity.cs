@@ -130,7 +130,7 @@ namespace bullethellwhatever.BaseClasses.Entities
             return Velocity;
         }
 
-        public virtual Vector2 GetSize() // get a size that corresponds to the current depth
+        public virtual Vector2 GetSize()
         {
             return Scale;
         }

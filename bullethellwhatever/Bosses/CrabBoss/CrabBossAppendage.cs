@@ -227,7 +227,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
-                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, HitboxUtils.DefaultCentreOffset, (x) => 0.5f, 0.5f);
+                Func<float, float> clawCurve = (x) => (EasingFunctions.EaseInCubic(1 - x) - 0.5f) * Height() / 2;
+                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, (x) => 0.7f);
             }
             else // lower claw
             {
@@ -267,7 +268,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 spriteEffect = SpriteEffects.FlipHorizontally;
             }
 
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
+            Drawing.BetterDraw(Texture, Position, null, Colour * 0.3f, Rotation, GetSize(), spriteEffect, 1f, originOffset);
             //Utilities.drawTextInDrawMethod(CalculateFinalRotation().ToString(), Position + new Vector2(50f, 0f), spriteBatch, font, Color.White, 1f);
             //Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
             //Drawing.DrawBox(Position, Color.Blue, 0.5f);

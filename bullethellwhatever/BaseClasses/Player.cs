@@ -229,6 +229,7 @@ namespace bullethellwhatever.BaseClasses
             //Position = Position + Velocity;
 
             RotateBasedOnDirection();
+            //Rotation += PI / 120;
 
             if (Health > 0)
             {

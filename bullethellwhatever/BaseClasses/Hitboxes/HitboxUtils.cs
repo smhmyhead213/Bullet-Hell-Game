@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,13 +46,14 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                     for (int i = 0; i < upperLimit; i++)
                     {
                         float progress = (float)i / upperLimit;
-                        Vector2 circleCentre = centre - new Vector2(width / 2 - radius - i * spaceBetweenCentres, centreOffsetFunction(progress)).Rotate(rotation);
+                        float centreOffset = centreOffsetFunction(progress);
+                        Vector2 circleCentre = centre - new Vector2(width / 2 - radius - i * spaceBetweenCentres, centreOffset).Rotate(rotation);
                         output.Add(new Circle(circleCentre, radius * circleScaleFunction(progress)));
                     }
 
                     // lmao just stick the final circle on the end and call it a day
 
-                    Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, 0).Rotate(rotation);
+                    Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, centreOffsetFunction(1)).Rotate(rotation);
                     output.Add(new Circle(finalCircleCentre, radius * circleScaleFunction(1)));
                     //BoxDrawer.DrawBox(finalCircleCentre);
                 }
@@ -75,7 +77,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 
                     // lmao just stick the final circle on the end and call it a day
 
-                    Vector2 finalCircleCentre = centre + new Vector2(0, height / 2 - radius).Rotate(rotation);
+                    Vector2 finalCircleCentre = centre + new Vector2(centreOffsetFunction(1), height / 2 - radius).Rotate(rotation);
                     output.Add(new Circle(finalCircleCentre, radius * circleScaleFunction(1)));
                     BoxDrawer.DrawBox(finalCircleCentre);
                 }
