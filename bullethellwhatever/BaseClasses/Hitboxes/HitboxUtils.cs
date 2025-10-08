@@ -17,11 +17,12 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         {
             return FillRectWithCircles(centre, width, height, rotation, DefaultCentreOffset, DefaultCircleScale);
         }
-        public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation, Func<float, float> centreOffsetFunction, Func<float, float> circleScaleFunction, float distanceBetweenModifier = 1f)
+        public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation, Func<float, float> centreOffsetFunction, Func<float, float> circleScaleFunction, float distanceBetweenModifier = 1f, bool packBasedOnConstantSize = false)
         {
             // IMPORTANT IMPORTANT IMPORTANT IMPORTANT
             // centre offset function [0,1] -> signed distance from 0, the regular position of the hitbox
             // circle scale function [0,1] -> scale factor for circle at progress x. affects positioning of circles insofar as lateral packing is preserved
+            // use the final bool ONLY IF THE SCALE IS CONSTANT - untold horrors await otherwise
             List<Circle> output = new List<Circle>();
 
             if (width == height)
@@ -36,18 +37,24 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                 {
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
-                    int radius = height >= 2 ? height / 2 : 1;
+                    float factorScaleIntoRadius = packBasedOnConstantSize ? circleScaleFunction(0) : 1;
+                    float radius = height >= 2 ? height / 2 : 1;
                     float spaceBetweenCentres = radius * distanceBetweenModifier;
-                    int numCircles = (int)(width / spaceBetweenCentres) + 1;
+
+                    // for derivation of this formula see random piece of paper i scrawled it onto on 8/10/25 at 13:07 in IOOP2 in the joseph black building middle column fifth row from the back fourth seat from the left
+                    int numCircles = (int)Floor((width / radius - 2) / distanceBetweenModifier + 1);
                     // figure out roughly how to divide up space between circles, then fill circles in and use the last one to ensure space is covered fully
                     // use all circles but last to fill as much space as possible
 
-                    int upperLimit = numCircles - 2;
+                    int upperLimit = numCircles;
+                    float firstCircleOffsetFromEdge = radius;
+
                     for (int i = 0; i < upperLimit; i++)
                     {
                         float progress = (float)i / upperLimit;
                         float centreOffset = centreOffsetFunction(progress);
-                        Vector2 circleCentre = centre - new Vector2(width / 2 - radius - i * spaceBetweenCentres, centreOffset).Rotate(rotation);
+                        Vector2 circleCentre = centre - new Vector2(width / 2 - firstCircleOffsetFromEdge - i * spaceBetweenCentres, centreOffset).Rotate(rotation);
+                        //BoxDrawer.DrawBox(circleCentre);
                         output.Add(new Circle(circleCentre, radius * circleScaleFunction(progress)));
                     }
 
@@ -63,11 +70,12 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
                     int radius = width >= 2 ? width / 2 : 1;
                     float spaceBetweenCentres = radius * distanceBetweenModifier;
-                    int numCircles = (int)(height / spaceBetweenCentres) + 1;
+                    // for derivation of this formula see random piece of paper i scrawled it onto on 8/10/25 at 13:07 in IOOP2 in the joseph black building middle column fifth row from the back fourth seat from the left
+                    int numCircles = (int)Floor((height / radius - 2) / distanceBetweenModifier + 1);
                     // figure out roughly how to divide up space between circles, then fill circles in and use the last one to ensure space is covered fully
                     // use all circles but last to fill as much space as possible
 
-                    int upperLimit = numCircles - 2;
+                    int upperLimit = numCircles;
                     for (int i = 0; i < upperLimit; i++)
                     {
                         float progress = (float)i / upperLimit;
@@ -77,9 +85,9 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 
                     // lmao just stick the final circle on the end and call it a day
 
-                    Vector2 finalCircleCentre = centre + new Vector2(centreOffsetFunction(1), height / 2 - radius).Rotate(rotation);
+                    Vector2 finalCircleCentre = centre + new Vector2(-centreOffsetFunction(1), height / 2 - radius).Rotate(rotation);
                     output.Add(new Circle(finalCircleCentre, radius * circleScaleFunction(1)));
-                    BoxDrawer.DrawBox(finalCircleCentre);
+                    //BoxDrawer.DrawBox(finalCircleCentre);
                 }
 
                 return output;

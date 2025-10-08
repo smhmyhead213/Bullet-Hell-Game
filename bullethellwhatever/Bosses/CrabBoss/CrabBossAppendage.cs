@@ -224,23 +224,26 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                BoxDrawer.DrawBox(Position + new Vector2(expandedi * Width(), Height()).Rotate(Rotation));
-                BoxDrawer.DrawBox(Position + new Vector2(expandedi * Width(), 0).Rotate(Rotation));
-                BoxDrawer.DrawBox(Position + new Vector2(0, Height()).Rotate(Rotation));     
-                BoxDrawer.DrawBox(Position);
-                BoxDrawer.DrawBox(upperPartCentre);
+                //BoxDrawer.DrawBox(Position + new Vector2(expandedi * Width(), Height()).Rotate(Rotation));
+                //BoxDrawer.DrawBox(Position + new Vector2(expandedi * Width(), 0).Rotate(Rotation));
+                //BoxDrawer.DrawBox(Position + new Vector2(0, Height()).Rotate(Rotation));     
+                //BoxDrawer.DrawBox(Position);
+                //BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
-                Func<float, float> clawCurve = (x) => expandedi * (EasingFunctions.EaseInCubic(x) - 0.5f) * Height() / 2 * 0;// + Height() / 4;
-                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, (x) => 0.7f);
+                Func<float, float> curveInput = (x) => ArmIndex == 1 ? 1 - x : x;
+                Func<float, float> clawCurve = (x) => -(0.3f * EasingFunctions.EaseInCubic(curveInput(x)) - 0.5f) * Height() / 2;
+                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, (x) => 0.6f, 0.5f);
             }
             else // lower claw
             {
                 Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                //BoxDrawer.DrawBox(upperPartCentre);
+                BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
-                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation);
+                Func<float, float> curveInput = (x) => ArmIndex == 1 ? 1 - x : x;
+                Func<float, float> clawCurve = (x) => -(0.3f * EasingFunctions.EaseInCubic(curveInput(x)) - 0.5f) * Height() / 2;
+                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, (x) => 0, (x) => 0.5f, 0.2f, true);
             }
         }
 
