@@ -37,6 +37,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                 {
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
+                    // YOU WERE DOING THIS
                     float factorScaleIntoRadius = packBasedOnConstantSize ? circleScaleFunction(0) : 1;
                     float radius = height >= 2 ? height / 2 : 1;
                     float spaceBetweenCentres = radius * distanceBetweenModifier;
