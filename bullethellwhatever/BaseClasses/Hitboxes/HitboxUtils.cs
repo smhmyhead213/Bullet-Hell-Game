@@ -21,7 +21,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
         {
             // IMPORTANT IMPORTANT IMPORTANT IMPORTANT
             // centre offset function [0,1] -> signed distance from 0, the regular position of the hitbox
-            // circle scale function [0,1] -> scale factor for circle at progress x. does not affect positioning of circles whatsoever
+            // circle scale function [0,1] -> scale factor for circle at progress x. affects positioning of circles insofar as lateral packing is preserved
             List<Circle> output = new List<Circle>();
 
             if (width == height)
@@ -53,7 +53,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
 
                     // lmao just stick the final circle on the end and call it a day
 
-                    Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, centreOffsetFunction(1)).Rotate(rotation);
+                    Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, -centreOffsetFunction(1)).Rotate(rotation);
                     output.Add(new Circle(finalCircleCentre, radius * circleScaleFunction(1)));
                     //BoxDrawer.DrawBox(finalCircleCentre);
                 }
