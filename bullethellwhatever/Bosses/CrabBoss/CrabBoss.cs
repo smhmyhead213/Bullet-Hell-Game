@@ -125,7 +125,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             base.Draw(spriteBatch);
 
-            DrawHitbox();
+            //DrawHitbox();
 
             for (int i = 0; i < 2; i++)
             {
