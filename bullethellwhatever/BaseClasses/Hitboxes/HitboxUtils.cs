@@ -12,16 +12,15 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
     public static class HitboxUtils
     {
         public static Func<float, float> DefaultCentreOffset => (x) => 0;
-        public static Func<float, float> DefaultCircleScale => (x) => 1;
         public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation)
         {
-            return FillRectWithCircles(centre, width, height, rotation, DefaultCentreOffset, DefaultCircleScale);
+            return FillRectWithCircles(centre, width, height, rotation, DefaultCentreOffset, 1f);
         }
-        public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation, Func<float, float> centreOffsetFunction, Func<float, float> circleScaleFunction, float distanceBetweenModifier = 1f, bool packBasedOnConstantSize = false)
+        public static List<Circle> FillRectWithCircles(Vector2 centre, int width, int height, float rotation, Func<float, float> centreOffsetFunction, float circleScale, float distanceBetweenModifier = 1f)
         {
             // IMPORTANT IMPORTANT IMPORTANT IMPORTANT
             // centre offset function [0,1] -> signed distance from 0, the regular position of the hitbox
-            // circle scale function [0,1] -> scale factor for circle at progress x. affects positioning of circles insofar as lateral packing is preserved
+            // it was infeasible to make circle scale be a function of progress so its just a scalar, you can edit it afterwards 
             // use the final bool ONLY IF THE SCALE IS CONSTANT - untold horrors await otherwise
             List<Circle> output = new List<Circle>();
 
@@ -37,9 +36,7 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                 {
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
-                    // YOU WERE DOING THIS
-                    float factorScaleIntoRadius = packBasedOnConstantSize ? circleScaleFunction(0) : 1;
-                    float radius = height >= 2 ? height / 2 : 1;
+                    float radius = height >= 2 ? height / 2 * circleScale : 1;
                     float spaceBetweenCentres = radius * distanceBetweenModifier;
 
                     // for derivation of this formula see random piece of paper i scrawled it onto on 8/10/25 at 13:07 in IOOP2 in the joseph black building middle column fifth row from the back fourth seat from the left
@@ -56,20 +53,20 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                         float centreOffset = centreOffsetFunction(progress);
                         Vector2 circleCentre = centre - new Vector2(width / 2 - firstCircleOffsetFromEdge - i * spaceBetweenCentres, centreOffset).Rotate(rotation);
                         //BoxDrawer.DrawBox(circleCentre);
-                        output.Add(new Circle(circleCentre, radius * circleScaleFunction(progress)));
+                        output.Add(new Circle(circleCentre, radius));
                     }
 
                     // lmao just stick the final circle on the end and call it a day
 
                     Vector2 finalCircleCentre = centre + new Vector2(width / 2 - radius, -centreOffsetFunction(1)).Rotate(rotation);
-                    output.Add(new Circle(finalCircleCentre, radius * circleScaleFunction(1)));
+                    output.Add(new Circle(finalCircleCentre, radius));
                     //BoxDrawer.DrawBox(finalCircleCentre);
                 }
                 else
                 {
                     // figure out how many circles to fit in
                     // the use of 1 when the radius is probably supposed to be less might cause an unfair hit, this is why
-                    int radius = width >= 2 ? width / 2 : 1;
+                    float radius = width >= 2 ? width / 2 * circleScale : 1;
                     float spaceBetweenCentres = radius * distanceBetweenModifier;
                     // for derivation of this formula see random piece of paper i scrawled it onto on 8/10/25 at 13:07 in IOOP2 in the joseph black building middle column fifth row from the back fourth seat from the left
                     int numCircles = (int)Floor((height / radius - 2) / distanceBetweenModifier + 1);
@@ -81,13 +78,13 @@ namespace bullethellwhatever.BaseClasses.Hitboxes
                     {
                         float progress = (float)i / upperLimit;
                         Vector2 circleCentre = centre - new Vector2(centreOffsetFunction(progress), height / 2 - radius - i * spaceBetweenCentres).Rotate(rotation);
-                        output.Add(new Circle(circleCentre, radius * circleScaleFunction(progress)));
+                        output.Add(new Circle(circleCentre, radius * circleScale));
                     }
 
                     // lmao just stick the final circle on the end and call it a day
 
                     Vector2 finalCircleCentre = centre + new Vector2(-centreOffsetFunction(1), height / 2 - radius).Rotate(rotation);
-                    output.Add(new Circle(finalCircleCentre, radius * circleScaleFunction(1)));
+                    output.Add(new Circle(finalCircleCentre, radius));
                     //BoxDrawer.DrawBox(finalCircleCentre);
                 }
 

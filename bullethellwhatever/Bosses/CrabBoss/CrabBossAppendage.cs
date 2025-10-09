@@ -232,8 +232,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int width = (int)Width();
                 int height = (int)Height();
                 Func<float, float> curveInput = (x) => ArmIndex == 1 ? 1 - x : x;
-                Func<float, float> clawCurve = (x) => -(0.3f * EasingFunctions.EaseInCubic(curveInput(x)) - 0.5f) * Height() / 2;
-                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, (x) => 0.6f, 0.5f);
+                Func<float, float> clawCurve = (x) => -(0.6f * EasingFunctions.EaseInCubic(curveInput(x)) - 0.5f) * Height() / 2;
+                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, 0.6f, 0.5f);
             }
             else // lower claw
             {
@@ -241,9 +241,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
-                Func<float, float> curveInput = (x) => ArmIndex == 1 ? 1 - x : x;
-                Func<float, float> clawCurve = (x) => -(0.3f * EasingFunctions.EaseInCubic(curveInput(x)) - 0.5f) * Height() / 2;
-                return HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, (x) => 0, (x) => 0.5f, 0.2f, true);
+                Func<float, float> curveInput = (x) => ArmIndex == 0 ? 1 - x : x;
+                Func<float, float> clawCurve = (x) => (0.85f * EasingFunctions.EaseInQuint(curveInput(x)) - 0.5f) * Height() / 2;
+                List<Circle> circles =  HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, 0.5f, 0.2f);
+                
             }
         }
 
