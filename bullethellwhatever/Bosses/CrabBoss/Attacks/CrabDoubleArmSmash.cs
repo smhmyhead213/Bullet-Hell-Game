@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +47,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 int expandedi = Utilities.ExpandedIndex(i);
 
                 if (AITimer <= preparationTime)
-                {                   
+                {
                     float scaleFactor = distanceToPlayer / Arm(i).OriginalLength() * additionalScale;
 
                     float interpolant = (float)AITimer / preparationTime;
@@ -66,11 +67,77 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     if (AITimer != preparationTime)
                     {
-                        //float clawInterpolant = EasingFunctions.EasingNextFrameDiff(EasingFunctions.EaseOutCubic, AITimer, preparationTime);
-                        float lowerClawRotationThisFrame = expandedi * lowerClawOpenAngle / preparationTime;
-                        float upperClawRotationThisFrame = expandedi * upperClawOpenAngle / preparationTime;
-                        Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
-                        Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+                        Func<float, float, bool> rotateUpperClaw = (angle, duration) =>
+                        {
+                            float upperClawRotationThisFrame = expandedi * angle / duration;
+                            Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+
+                            return false;
+                        };
+
+                        Func<float, float, bool> rotateLowerClaw = (angle, duration) =>
+                        {
+                            float lowerClawRotationThisFrame = expandedi * angle / duration;
+                            Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
+
+                            return false;
+                        };
+
+                        // do one claw without clicking
+                        if (i == 0)
+                        {
+                            rotateUpperClaw(upperClawOpenAngle, preparationTime);
+                            rotateLowerClaw(lowerClawOpenAngle, preparationTime);
+                        }
+
+                        // cause other claw to click twice to shoot
+                        else
+                        {
+                            int clicks = 3;
+
+                            int preClicksTime = 12;
+                            int postClicksTime = 10;
+                            int clickFrequency = (preparationTime - postClicksTime - preClicksTime) / clicks;
+
+                            Func<float, float>[] clickEasings = new Func<float, float>[2 * clicks];
+
+                            int numPoints = 2 * clicks + 1;
+                            float[] lerpEndPoints = new float[numPoints];
+                            float[] progressValues = new float[numPoints];
+
+                            int upperLimit = clicks * 2;
+
+                            for (int j = 0; j < upperLimit; j += 2)
+                            {
+                                clickEasings[j] = EasingFunctions.EaseOutSin;
+                                clickEasings[j + 1] = EasingFunctions.EaseOutSin;
+
+                                lerpEndPoints[j] = 0f;
+                                lerpEndPoints[j + 1] = 1f;
+
+                                progressValues[j] = j / (float)upperLimit;
+                                progressValues[j + 1] = (j + 1) / (float)upperLimit;                              
+                            }
+
+                            lerpEndPoints[upperLimit] = 0f;
+                            progressValues[upperLimit] = 1f;
+
+                            Func<float, float> clawClickingFunction = EasingFunctions.JoinedCurves(clickEasings, progressValues, lerpEndPoints);
+
+                            if (AITimer >= preClicksTime && AITimer <= preparationTime - postClicksTime)
+                            {
+                                int clicksDuration = preparationTime - postClicksTime - preClicksTime;
+                                float clicksProgress = (AITimer - preClicksTime) / (float)clicksDuration;
+
+                                Arm(i).LowerClaw.RotationToAdd = clawClickingFunction(clicksProgress) * -expandedi * lowerClawOpenAngle;
+                                Arm(i).UpperClaw.RotationToAdd = clawClickingFunction(clicksProgress) * expandedi * upperClawOpenAngle;
+                            }
+                            else if (AITimer >= preparationTime - postClicksTime)
+                            {
+                                rotateUpperClaw(upperClawOpenAngle, postClicksTime);
+                                rotateLowerClaw(lowerClawOpenAngle, postClicksTime);
+                            }
+                        }
                     }
 
                     CrabOwner.FacePlayer();
@@ -113,13 +180,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
 
-                    float lowerClawAfterSlamAngle = PI / 2;
-                    float upperClawAfterSlamAngle = PI / 2;
+                    //float lowerClawAfterSlamAngle = PI / 2;
+                    //float upperClawAfterSlamAngle = PI / 2;
 
-                    float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - lowerClawOpenAngle) / slamDuration;
-                    float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - upperClawOpenAngle) / slamDuration;
-                    Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
-                    Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+                    //float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - lowerClawOpenAngle) / slamDuration;
+                    //float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - upperClawOpenAngle) / slamDuration;
+                    //Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
+                    //Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
                 }
             }
 
