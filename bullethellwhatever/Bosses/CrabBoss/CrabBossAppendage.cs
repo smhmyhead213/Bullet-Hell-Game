@@ -242,9 +242,19 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int width = (int)Width();
                 int height = (int)Height();
                 Func<float, float> curveInput = (x) => ArmIndex == 0 ? 1 - x : x;
-                Func<float, float> clawCurve = (x) => (0.85f * EasingFunctions.EaseInQuint(curveInput(x)) - 0.5f) * Height() / 2;
+                Func<float, float> clawCurve = (x) => (1f * EasingFunctions.EaseInCubic(curveInput(x)) - 0.8f) * Height() / 2;
                 List<Circle> circles =  HitboxUtils.FillRectWithCircles(upperPartCentre, width, height, Rotation, clawCurve, 0.5f, 0.2f);
-                
+
+                for (int i = 0; i < circles.Count; i++)
+                {
+                    float progress = (float)i / circles.Count;
+                    float startScale = 1.2f;
+                    float endScale = 0.4f;
+                    float interpolant = ArmIndex == 0 ? progress : 1 - progress;
+                    circles[i].Radius *= MathHelper.Lerp(startScale, endScale, interpolant);
+                }
+
+                return circles;
             }
         }
 
