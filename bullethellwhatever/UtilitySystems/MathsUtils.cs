@@ -21,7 +21,7 @@ namespace bullethellwhatever.UtilitySystems
             towardsPlayerParallel *= toPlayerDistance * Cos(initialAngle);
             towardsPlayerLateral *= toPlayerDistance * Sin(initialAngle);
 
-            Func<float, Vector2> path = (x) => initialPosition + parallelEasing(x) * towardsPlayerParallel + lateralEasing(x) * towardsPlayerLateral;
+            Func<float, Vector2> path = (x) => initialPosition + EasingFunctions.EaseInCubic(x) * towardsPlayerParallel + EasingFunctions.EaseInExpo(x) * towardsPlayerLateral;
             return path;
         }
     }

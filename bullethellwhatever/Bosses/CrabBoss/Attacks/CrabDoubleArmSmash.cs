@@ -209,7 +209,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public Func<float, Vector2> ChooseSlamPath(Vector2 initialPosition, Vector2 targetPosition, float initialAngle)
         {
-            return MathsUtils.PathBetweenPoints(initialPosition, targetPosition, initialAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInExpo);
+            Vector2 towardsPlayerFromWrist = targetPosition - initialPosition;
+            float toPlayerDistance = towardsPlayerFromWrist.Length();
+            towardsPlayerFromWrist = Utilities.SafeNormalise(towardsPlayerFromWrist);
+
+            Vector2 towardsPlayerParallel = towardsPlayerFromWrist.Rotate(initialAngle);
+            Vector2 towardsPlayerLateral = towardsPlayerParallel.Rotate(-PI / 2);
+
+            towardsPlayerParallel *= toPlayerDistance * Cos(initialAngle);
+            towardsPlayerLateral *= toPlayerDistance * Sin(initialAngle);
+
+            Func<float, Vector2> path = (x) => initialPosition + EasingFunctions.EaseInCubic(x) * towardsPlayerParallel + EasingFunctions.EaseInExpo(x) * towardsPlayerLateral;
+            return path;
         }
     }
 }
