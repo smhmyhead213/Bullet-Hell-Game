@@ -134,7 +134,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                                 Vector2 clawDimensions = Arm(i).LowerClaw.GetSize();
                                 //clawDimensions.X *= -1;
-                                Vector2 clawEndPoint = Arm(i).LowerClaw.Position;// + clawDimensions.Rotate(Owner.Rotation);
+                                Vector2 clawEndPoint = Arm(i).LowerClaw.CalculateEnd();// + clawDimensions.Rotate(Owner.Rotation);
                                 BoxDrawer.DrawBox(clawEndPoint);
 
                                 if (clicksTime % clickFrequency == 0)

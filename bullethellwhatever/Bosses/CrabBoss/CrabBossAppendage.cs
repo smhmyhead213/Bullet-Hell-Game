@@ -145,7 +145,20 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual Vector2 CalculateEnd()
         {
-            return Position + new Vector2(-Sin(CalculateFinalRotation()), Cos(CalculateFinalRotation())) * Texture.Height * GetScale().Y;
+            float rotation = CalculateFinalRotation();
+            Vector2 end = Position + new Vector2(-Sin(rotation), Cos(rotation)) * Texture.Height * GetScale().Y;
+
+            if (Type == AppendageType.LowerClaw)
+            {
+                // make it so that the end lies on the tip of the claw
+                return end + new Vector2(-Utilities.ExpandedIndex(ArmIndex) * Width() / 2f, -Height() / 4f).Rotate(rotation);
+            }
+            else if (Type == AppendageType.UpperClaw)
+            {
+                return end + new Vector2(-Utilities.ExpandedIndex(ArmIndex) * Width(), 0).Rotate(rotation);
+            }
+
+            return end;
         }
 
         public void Rotate(float angle)
@@ -274,6 +287,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             {
                 originOffset = new Vector2(Texture.Width, 0);
             }
+
+            Drawing.DrawBox(CalculateEnd(), Color.Red, 1f);
 
             if (ArmIndex == 0)
             {
