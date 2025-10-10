@@ -64,7 +64,7 @@ namespace bullethellwhatever.UtilitySystems.Dialogue
             {
                 float heightAboveEntity = 50f;
 
-                Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetSize().Y) - heightAboveEntity);
+                Position = new Vector2(Owner.Position.X, Owner.Position.Y - (Owner.Texture.Height * Owner.GetScale().Y) - heightAboveEntity);
             }
 
             // either the owner or the position is given in constructors, so if the owner is null the position is already given

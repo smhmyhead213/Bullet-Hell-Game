@@ -63,7 +63,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public Vector2 PlayerPositionInGrab(int armIndex)
         {
-            float armScale = Arm(armIndex).UpperArm.GetSize().X;
+            float armScale = Arm(armIndex).UpperArm.GetScale().X;
             return Arm(armIndex).WristOffsetBy(new Vector2(15f * armScale, -15f * armScale));
         }
 

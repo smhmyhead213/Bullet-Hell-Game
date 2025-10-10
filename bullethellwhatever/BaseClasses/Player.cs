@@ -137,7 +137,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (upPressed && TouchingTop())
             {
-                Position.Y = MainCamera.VisibleArea.Top + Texture.Height / 2f * GetSize().Y;
+                Position.Y = MainCamera.VisibleArea.Top + Texture.Height / 2f * GetScale().Y;
             }
 
             if (downPressed && !TouchingBottom())
@@ -147,7 +147,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (TouchingBottom() && downPressed)
             {
-                Position.Y = MainCamera.VisibleArea.Bottom + GameHeight - (Texture.Height / 2f * GetSize().Y);
+                Position.Y = MainCamera.VisibleArea.Bottom + GameHeight - (Texture.Height / 2f * GetScale().Y);
             }
 
             if (leftPressed && !TouchingLeft())
@@ -157,7 +157,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (leftPressed && TouchingLeft())
             {
-                Position.X = MainCamera.VisibleArea.Left + Texture.Width / 2f * GetSize().X;
+                Position.X = MainCamera.VisibleArea.Left + Texture.Width / 2f * GetScale().X;
             }
 
             if (rightPressed && !TouchingRight())
@@ -167,7 +167,7 @@ namespace bullethellwhatever.BaseClasses
 
             if (rightPressed && TouchingRight())
             {
-                Position.X = MainCamera.VisibleArea.Right + GameWidth - (Texture.Width / 2f * GetSize().X);
+                Position.X = MainCamera.VisibleArea.Right + GameWidth - (Texture.Width / 2f * GetScale().X);
             }
 
             Velocity = MoveSpeed * Utilities.SafeNormalise(Velocity);
@@ -363,7 +363,7 @@ namespace bullethellwhatever.BaseClasses
 
             //Draw the player, accounting for immunity frame transparency.
 
-            Drawing.BetterDraw(Texture, Position, null, Color.White * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Texture, Position, null, Color.White * Opacity, Rotation, GetScale(), SpriteEffects.None, 0f);
 
             foreach (Component component in AdditionalComponents)
             {

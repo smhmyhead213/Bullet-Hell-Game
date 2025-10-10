@@ -36,7 +36,7 @@ namespace bullethellwhatever.DrawCode
             Owner = owner;
             Opacity = 1f;
             afterimagesPositions = new Vector2[length];
-            Width = Owner.GetSize().X * Owner.Texture.Width;
+            Width = Owner.GetScale().X * Owner.Texture.Width;
 
             Colour = Owner.Colour;
             AccountForOwnerOpacity = false;

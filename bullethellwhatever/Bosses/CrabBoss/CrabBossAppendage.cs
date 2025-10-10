@@ -145,7 +145,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public virtual Vector2 CalculateEnd()
         {
-            return Position + new Vector2(-Sin(CalculateFinalRotation()), Cos(CalculateFinalRotation())) * Texture.Height * GetSize().Y;
+            return Position + new Vector2(-Sin(CalculateFinalRotation()), Cos(CalculateFinalRotation())) * Texture.Height * GetScale().Y;
         }
 
         public void Rotate(float angle)
@@ -199,7 +199,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public float Length()
         {
-            return Texture.Height * GetSize().Y;
+            return Texture.Height * GetScale().Y;
         }
 
         public float OriginalLength()
@@ -238,7 +238,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             else // lower claw
             {
                 Vector2 upperPartCentre = Position + new Vector2(0f, Height() / 2f).Rotate(Rotation);
-                BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
                 Func<float, float> curveInput = (x) => ArmIndex == 0 ? 1 - x : x;
@@ -286,7 +285,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 spriteEffect = SpriteEffects.FlipHorizontally;
             }
 
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetSize(), spriteEffect, 1f, originOffset);
+            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetScale(), spriteEffect, 1f, originOffset);
             //Utilities.drawTextInDrawMethod(CalculateFinalRotation().ToString(), Position + new Vector2(50f, 0f), spriteBatch, font, Color.White, 1f);
             //Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
             //Drawing.DrawBox(Position, Color.Blue, 0.5f);

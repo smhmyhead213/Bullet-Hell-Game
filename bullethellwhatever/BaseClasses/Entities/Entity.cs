@@ -130,11 +130,15 @@ namespace bullethellwhatever.BaseClasses.Entities
             return Velocity;
         }
 
-        public virtual Vector2 GetSize()
+        public virtual Vector2 GetScale()
         {
             return Scale;
         }
 
+        public virtual Vector2 GetSize()
+        {
+            return new Vector2(Width(), Height());
+        }
         public float Width()
         {
             return Scale.X * Texture.Width;
@@ -171,7 +175,7 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public bool TouchingBottom()
         {
-            if (Position.Y + Texture.Height * GetSize().Y / 2 >= MainCamera.VisibleArea.Bottom)
+            if (Position.Y + Texture.Height * GetScale().Y / 2 >= MainCamera.VisibleArea.Bottom)
                 return true;
             else return false;
             //if at the bottom
@@ -179,21 +183,21 @@ namespace bullethellwhatever.BaseClasses.Entities
 
         public bool TouchingTop()
         {
-            if (Position.Y - Texture.Height * GetSize().Y / 2 <= MainCamera.VisibleArea.Top)
+            if (Position.Y - Texture.Height * GetScale().Y / 2 <= MainCamera.VisibleArea.Top)
                 return true;
             else return false;
         }
 
         public bool TouchingRight()
         {
-            if (Position.X + Texture.Width * GetSize().X / 2 >= MainCamera.VisibleArea.Right)
+            if (Position.X + Texture.Width * GetScale().X / 2 >= MainCamera.VisibleArea.Right)
                 return true;
             else return false;
         }
 
         public bool TouchingLeft()
         {
-            if (Position.X - Texture.Width * GetSize().X / 2 <= MainCamera.VisibleArea.Left)
+            if (Position.X - Texture.Width * GetScale().X / 2 <= MainCamera.VisibleArea.Left)
                 return true;
             else return false;
         }
@@ -306,11 +310,12 @@ namespace bullethellwhatever.BaseClasses.Entities
             target.TakeDamage(Damage);
         }
 
-        public virtual void AddTrail(int length, string shader = null)
+        public virtual Entity AddTrail(int length, string shader = null)
         {
             PrimitiveTrail trail = new PrimitiveTrail(this, length, shader);
             trail.AddPoint(Position); // this might warrant changing
             AdditionalComponents.Add(trail);
+            return this;
         }
 
         public virtual bool IsCollidingWith(Entity other)
@@ -365,7 +370,7 @@ namespace bullethellwhatever.BaseClasses.Entities
                 Shader.Apply();
             }
 
-            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetSize(), SpriteEffects.None, 0f);
+            Drawing.BetterDraw(Texture, Position, null, Colour * Opacity, Rotation, GetScale(), SpriteEffects.None, 0f);
 
             foreach (Component component in AdditionalComponents)
             {
