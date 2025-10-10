@@ -34,6 +34,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             float upperClawOpenAngle = PI / 5f;
             float lowerClawOpenAngle = PI / 5f;
+            float additionalAngleSoClawsTouch = PI / 12;
+
             // make arms longer so they actually reach
 
             float distanceToPlayer = Utilities.DistanceBetweenVectors(Owner.Position, player.Position);
@@ -135,7 +137,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                                 Vector2 clawDimensions = Arm(i).LowerClaw.GetSize();
                                 //clawDimensions.X *= -1;
                                 Vector2 clawEndPoint = Arm(i).LowerClaw.CalculateEnd();// + clawDimensions.Rotate(Owner.Rotation);
-                                BoxDrawer.DrawBox(clawEndPoint);
+                                //BoxDrawer.DrawBox(clawEndPoint);
 
                                 if (clicksTime % clickFrequency == 0)
                                 { 
@@ -150,13 +152,14 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                                     }));
                                 }
 
-                                Arm(i).LowerClaw.RotationToAdd = clawClickingFunction(clicksProgress) * -expandedi * lowerClawOpenAngle;
-                                Arm(i).UpperClaw.RotationToAdd = clawClickingFunction(clicksProgress) * expandedi * upperClawOpenAngle;
+                                float clickInterpolant = clawClickingFunction(clicksProgress);
+                                Arm(i).LowerClaw.RotationToAdd = MathHelper.Lerp(expandedi * additionalAngleSoClawsTouch, -expandedi * lowerClawOpenAngle, clickInterpolant);
+                                Arm(i).UpperClaw.RotationToAdd = MathHelper.Lerp(-expandedi * additionalAngleSoClawsTouch, expandedi * upperClawOpenAngle, clickInterpolant);
                             }
                             else if (AITimer >= preparationTime - postClicksTime)
                             {
-                                rotateUpperClaw(upperClawOpenAngle, postClicksTime);
-                                rotateLowerClaw(lowerClawOpenAngle, postClicksTime);
+                                rotateUpperClaw(upperClawOpenAngle + additionalAngleSoClawsTouch, postClicksTime);
+                                rotateLowerClaw(lowerClawOpenAngle + additionalAngleSoClawsTouch, postClicksTime);
                             }
                         }
                     }
@@ -164,8 +167,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     CrabOwner.FacePlayer();
 
                     if (AITimer == preparationTime)
-                    {
-                        LockSlamPath(i);
+                    {   
+                        // might be awesome to put a sound effect or glint to show a lock on here?
+                        SlamTargetPosition = player.Position;
+                        PreSlamArmPositions[i] = Arm(i).WristPosition();
+
+                        float initialAngle = Owner.Rotation - Arm(i).WristPosition().ToPlayer().ToAngle();
+                        SlamArmPaths[i] = ChooseSlamPath(PreSlamArmPositions[i], SlamTargetPosition, initialAngle);
                     }                    
                 }
 
@@ -199,27 +207,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             }
         }
 
-        public void LockSlamPath(int i)
+        public Func<float, Vector2> ChooseSlamPath(Vector2 initialPosition, Vector2 targetPosition, float initialAngle)
         {
-            // might be awesome to put a sound effect or glint to show a lock on here?
-            SlamTargetPosition = player.Position;
-            PreSlamArmPositions[i] = Arm(i).WristPosition();
-
-            Vector2 towardsPlayerFromWrist = Arm(i).WristPosition().ToPlayer();
-            float toPlayerDistance = towardsPlayerFromWrist.Length();
-            towardsPlayerFromWrist = Utilities.SafeNormalise(towardsPlayerFromWrist);
-
-            float angle = Owner.Rotation - towardsPlayerFromWrist.ToAngle();
-            Vector2 towardsPlayerParallel = towardsPlayerFromWrist.Rotate(angle);
-            Vector2 towardsPlayerLateral = towardsPlayerParallel.Rotate(-PI / 2);
-
-            towardsPlayerParallel *= toPlayerDistance * Cos(angle);
-            towardsPlayerLateral *= toPlayerDistance * Sin(angle);
-
-            int locali = i;
-
-            Func<float, Vector2> path = (x) => PreSlamArmPositions[locali] + EasingFunctions.EaseInCubic(x) * towardsPlayerParallel + EasingFunctions.EaseInExpo(x) * towardsPlayerLateral;
-            SlamArmPaths[i] = path;
+            return MathsUtils.PathBetweenPoints(initialPosition, targetPosition, initialAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInExpo);
         }
     }
 }

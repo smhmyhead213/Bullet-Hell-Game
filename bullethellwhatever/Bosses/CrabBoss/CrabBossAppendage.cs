@@ -288,7 +288,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 originOffset = new Vector2(Texture.Width, 0);
             }
 
-            Drawing.DrawBox(CalculateEnd(), Color.Red, 1f);
+            //Drawing.DrawBox(CalculateEnd(), Color.Red, 1f);
 
             if (ArmIndex == 0)
             {
