@@ -21,9 +21,11 @@ using System.Diagnostics;
 namespace bullethellwhatever.Bosses.CrabBoss
 {
     
-    public class CrabBoss : Boss
+    public partial class CrabBoss : Boss
     {
         public CrabArm[] Arms;
+        public CrabArmBehaviour[] ArmBehaviours;
+
         public Vector2[] ArmPositionsOnBody;
         public Vector2[] ArmRestingEnds
         {
@@ -61,6 +63,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Phase = 1;
 
             Arms = new CrabArm[2];
+            ArmBehaviours = new CrabArmBehaviour[2];
             ArmPositionsOnBody = new Vector2[2];
             ArmRestingEnds = new Vector2[2];
         }
@@ -139,8 +142,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void AI()
         {
             base.AI();
-            //Velocity = Vector2.Zero;
-            //Rotation = 0f;
+            
+            foreach (CrabArmBehaviour armBehaviour in ArmBehaviours)
+            {
+                armBehaviour.Execute();
+            }
         }
 
         public void ResetArmRotations()
