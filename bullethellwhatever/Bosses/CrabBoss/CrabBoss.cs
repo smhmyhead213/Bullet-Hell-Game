@@ -15,7 +15,7 @@ using bullethellwhatever.DrawCode;
 using bullethellwhatever.DrawCode.UI;
 
 using bullethellwhatever.AssetManagement;
-using bullethellwhatever.Bosses.CrabBoss.Attacks;
+using bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam;
 using System.Diagnostics;
 
 namespace bullethellwhatever.Bosses.CrabBoss

@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bullethellwhatever.Bosses.CrabBoss.Attacks
+namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 {
     public class CrabDoubleArmSmash : CrabBossAttack
     {
@@ -28,7 +28,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override void Execute(int AITimer)
         {
-            int preparationTime = 60;
+            int PreparationTime = 60;
             int anticipationTime = 15;
             int slamDuration = 20;
 
@@ -50,11 +50,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             {
                 int expandedi = Utilities.ExpandedIndex(i);
 
-                if (AITimer <= preparationTime)
+                if (AITimer <= PreparationTime)
                 {
                     float scaleFactor = distanceToPlayer / Arm(i).OriginalLength() * additionalScale;
 
-                    float interpolant = (float)AITimer / preparationTime;
+                    float interpolant = (float)AITimer / PreparationTime;
                     float arcOutLength = 0f;
                     Func<float, float> arc = EasingFunctions.EaseOutCubic;
 
@@ -69,7 +69,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Arm(i).LerpToPoint(targetPosition, interpolant, false);
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
 
-                    if (AITimer != preparationTime)
+                    if (AITimer != PreparationTime)
                     {
                         Func<float, float, bool> rotateUpperClaw = (angle, duration) =>
                         {
@@ -90,8 +90,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         // do one claw without clicking
                         if (i == 0)
                         {
-                            rotateUpperClaw(upperClawOpenAngle, preparationTime);
-                            rotateLowerClaw(lowerClawOpenAngle, preparationTime);
+                            rotateUpperClaw(upperClawOpenAngle, PreparationTime);
+                            rotateLowerClaw(lowerClawOpenAngle, PreparationTime);
                         }
 
                         // cause other claw to click twice to shoot
@@ -101,7 +101,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                             int preClicksTime = 12;
                             int postClicksTime = 10;
-                            int clickFrequency = (preparationTime - postClicksTime - preClicksTime) / clicks;
+                            int clickFrequency = (PreparationTime - postClicksTime - preClicksTime) / clicks;
 
                             Func<float, float>[] clickEasings = new Func<float, float>[2 * clicks];
 
@@ -128,9 +128,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                             Func<float, float> clawClickingFunction = EasingFunctions.JoinedCurves(clickEasings, progressValues, lerpEndPoints);
 
-                            if (AITimer >= preClicksTime && AITimer <= preparationTime - postClicksTime)
+                            if (AITimer >= preClicksTime && AITimer <= PreparationTime - postClicksTime)
                             {
-                                int clicksDuration = preparationTime - postClicksTime - preClicksTime;
+                                int clicksDuration = PreparationTime - postClicksTime - preClicksTime;
                                 int clicksTime = AITimer - preClicksTime;
                                 float clicksProgress = clicksTime / (float)clicksDuration;
 
@@ -156,7 +156,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                                 Arm(i).LowerClaw.RotationToAdd = MathHelper.Lerp(expandedi * additionalAngleSoClawsTouch, -expandedi * lowerClawOpenAngle, clickInterpolant);
                                 Arm(i).UpperClaw.RotationToAdd = MathHelper.Lerp(-expandedi * additionalAngleSoClawsTouch, expandedi * upperClawOpenAngle, clickInterpolant);
                             }
-                            else if (AITimer >= preparationTime - postClicksTime)
+                            else if (AITimer >= PreparationTime - postClicksTime)
                             {
                                 rotateUpperClaw(upperClawOpenAngle + additionalAngleSoClawsTouch, postClicksTime);
                                 rotateLowerClaw(lowerClawOpenAngle + additionalAngleSoClawsTouch, postClicksTime);
@@ -166,7 +166,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                     CrabOwner.FacePlayer();
 
-                    if (AITimer == preparationTime)
+                    if (AITimer == PreparationTime)
                     {   
                         // might be awesome to put a sound effect or glint to show a lock on here?
                         SlamTargetPosition = player.Position;
@@ -185,9 +185,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
                 //}
 
-                if (AITimer >= preparationTime && AITimer <= preparationTime + slamDuration)
+                if (AITimer >= PreparationTime && AITimer <= PreparationTime + slamDuration)
                 {
-                    float progress = (AITimer - preparationTime) / (float)slamDuration;
+                    float progress = (AITimer - PreparationTime) / (float)slamDuration;
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
 
@@ -201,7 +201,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 }
             }
 
-            if (AITimer == preparationTime + slamDuration)
+            if (AITimer == PreparationTime + slamDuration)
             {
                 Drawing.ScreenShake(10, 30);
             }
