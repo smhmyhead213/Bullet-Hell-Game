@@ -173,7 +173,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                         PreSlamArmPositions[i] = Arm(i).WristPosition();
 
                         float initialAngle = Owner.Rotation - Arm(i).WristPosition().ToPlayer().ToAngle();
-                        SlamArmPaths[i] = ChooseSlamPath(PreSlamArmPositions[i], SlamTargetPosition, initialAngle);
+                        SlamArmPaths[i] = ChooseSlamPath(PreSlamArmPositions[i], SlamTargetPosition, initialAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInExpo);
                     }                    
                 }
 
@@ -207,7 +207,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             }
         }
 
-        public Func<float, Vector2> ChooseSlamPath(Vector2 initialPosition, Vector2 targetPosition, float initialAngle)
+        public Func<float, Vector2> ChooseSlamPath(Vector2 initialPosition, Vector2 targetPosition, float initialAngle, Func<float, float> parallelEasing, Func<float, float> lateralEasing)
         {
             Vector2 towardsPlayerFromWrist = targetPosition - initialPosition;
             float toPlayerDistance = towardsPlayerFromWrist.Length();
@@ -219,7 +219,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             towardsPlayerParallel *= toPlayerDistance * Cos(initialAngle);
             towardsPlayerLateral *= toPlayerDistance * Sin(initialAngle);
 
-            Func<float, Vector2> path = (x) => initialPosition + EasingFunctions.EaseInCubic(x) * towardsPlayerParallel + EasingFunctions.EaseInExpo(x) * towardsPlayerLateral;
+            Func<float, Vector2> path = (x) => initialPosition + parallelEasing(x) * towardsPlayerParallel + lateralEasing(x) * towardsPlayerLateral;
             return path;
         }
     }
