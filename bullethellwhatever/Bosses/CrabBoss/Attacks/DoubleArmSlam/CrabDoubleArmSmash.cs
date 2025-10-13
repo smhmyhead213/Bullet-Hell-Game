@@ -26,15 +26,16 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             PreSlamArmPositions = new Vector2[2];
             SlamArmPaths = new Func<float, Vector2>[2];
         }
-        public override void Execute(int AITimer)
+        public override void Execute(int AITimer)   
         {
             int PreparationTime = 60;
             int anticipationTime = 15;
             int slamDuration = 20;
+            int idleTimeAtEnd = 15;
 
-            float upperClawOpenAngle = PI / 5f;
-            float lowerClawOpenAngle = PI / 5f;
-            float additionalAngleSoClawsTouch = PI / 12;
+            float upperClawOpenAngle = CrabBoss.UpperClawOpenAngle;
+            float lowerClawOpenAngle = CrabBoss.LowerClawOpenAngle;
+            float additionalAngleSoClawsTouch = CrabBoss.AngleToCloseClaw;
 
             // make arms longer so they actually reach
 
@@ -52,8 +53,6 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                 if (AITimer <= PreparationTime)
                 {
-                    float scaleFactor = distanceToPlayer / Arm(i).OriginalLength() * additionalScale;
-
                     float interpolant = (float)AITimer / PreparationTime;
                     float arcOutLength = 0f;
                     Func<float, float> arc = EasingFunctions.EaseOutCubic;
@@ -67,6 +66,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     //BoxDrawer.DrawBox(targetPosition);
 
                     Arm(i).LerpToPoint(targetPosition, interpolant, false);
+
+                    float scaleFactor = distanceToPlayer / Arm(i).OriginalLength() * additionalScale;
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
 
                     if (AITimer != PreparationTime)
@@ -164,26 +165,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                         }
                     }
 
-                    CrabOwner.FacePlayer();
-
-                    if (AITimer == PreparationTime)
-                    {   
-                        // might be awesome to put a sound effect or glint to show a lock on here?
-                        SlamTargetPosition = player.Position;
-                        PreSlamArmPositions[i] = Arm(i).WristPosition();
-
-                        float initialAngle = Owner.Rotation - Arm(i).WristPosition().ToPlayer().ToAngle();
-                        SlamArmPaths[i] = ChooseSlamPath(PreSlamArmPositions[i], SlamTargetPosition, initialAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInExpo);
-                    }                    
+                    CrabOwner.FacePlayer();                    
                 }
 
-                //if (AITimer >= preparationTime && AITimer <= preparationTime + anticipationTime)
-                //{
-                //    float progress = (AITimer - preparationTime) / (float)anticipationTime;
+                if (AITimer == PreparationTime)
+                {
+                    // might be awesome to put a sound effect or glint to show a lock on here?
+                    SlamTargetPosition = player.Position;
+                    PreSlamArmPositions[i] = Arm(i).WristPosition();
 
-                //    Arm(i).LerpToPoint(SlamTargetPosition, progress, false);
-
-                //}
+                    float initialAngle = Owner.Rotation - Arm(i).WristPosition().ToPlayer().ToAngle();
+                    SlamArmPaths[i] = ChooseSlamPath(PreSlamArmPositions[i], SlamTargetPosition, initialAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInExpo);
+                }
 
                 if (AITimer >= PreparationTime && AITimer <= PreparationTime + slamDuration)
                 {
@@ -205,22 +198,21 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             {
                 Drawing.ScreenShake(10, 30);
             }
+
+            if (AITimer == PreparationTime + slamDuration + idleTimeAtEnd)
+            {
+                End();
+            }
         }
 
         public Func<float, Vector2> ChooseSlamPath(Vector2 initialPosition, Vector2 targetPosition, float initialAngle, Func<float, float> parallelEasing, Func<float, float> lateralEasing)
         {
-            Vector2 towardsPlayerFromWrist = targetPosition - initialPosition;
-            float toPlayerDistance = towardsPlayerFromWrist.Length();
-            towardsPlayerFromWrist = Utilities.SafeNormalise(towardsPlayerFromWrist);
+            return MathsUtils.PathBetweenPoints(initialPosition, targetPosition, initialAngle, parallelEasing, lateralEasing);
+        }
 
-            Vector2 towardsPlayerParallel = towardsPlayerFromWrist.Rotate(initialAngle);
-            Vector2 towardsPlayerLateral = towardsPlayerParallel.Rotate(-PI / 2);
-
-            towardsPlayerParallel *= toPlayerDistance * Cos(initialAngle);
-            towardsPlayerLateral *= toPlayerDistance * Sin(initialAngle);
-
-            Func<float, Vector2> path = (x) => initialPosition + parallelEasing(x) * towardsPlayerParallel + lateralEasing(x) * towardsPlayerLateral;
-            return path;
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabDoubleArmSmashRepeat(CrabOwner);
         }
     }
 }

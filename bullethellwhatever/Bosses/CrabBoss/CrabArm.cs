@@ -23,10 +23,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
         //public bool LockPosition;
 
         public CrabBossAppendage[] ArmParts;
-        public CrabBossAppendage UpperArm => ArmParts[0];
-        public CrabBossAppendage LowerArm => ArmParts[1];
-        public CrabBossAppendage UpperClaw => ArmParts[2];
-        public CrabBossAppendage LowerClaw => ArmParts[3];
+
+        public int UpperArmIndex = 0;
+        public int LowerArmIndex = 1;
+        public int UpperClawIndex = 2;
+        public int LowerClawIndex = 3;
+        public CrabBossAppendage UpperArm => ArmParts[UpperArmIndex];
+        public CrabBossAppendage LowerArm => ArmParts[LowerArmIndex];
+        public CrabBossAppendage UpperClaw => ArmParts[UpperClawIndex];
+        public CrabBossAppendage LowerClaw => ArmParts[LowerClawIndex];
 
         public bool HorizontalFlip;
 
@@ -93,6 +98,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
             LowerArm.RotationToAdd = 0f;
             UpperClaw.RotationToAdd = 0f;
             LowerClaw.RotationToAdd = 0f;
+        }
+
+        public Vector2[] GetPartScales()
+        {
+            return new Vector2[] { UpperArm.Scale, LowerArm.Scale, UpperClaw.Scale, LowerClaw.Scale };
+        }
+
+        public float[] GetPartRotations()
+        {
+            return new float[] { UpperArm.RotationToAdd, LowerArm.RotationToAdd, UpperClaw.RotationToAdd, LowerClaw.RotationToAdd };
         }
 
         public void PointLegInDirection(float angle)

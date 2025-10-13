@@ -237,11 +237,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int expandedi = -Utilities.ExpandedIndex(ArmIndex);
 
                 Vector2 upperPartCentre = Position + new Vector2(expandedi * Width() / 2f, Height() / 2f).Rotate(Rotation);
-                //BoxDrawer.DrawBox(Position + new Vector2(expandedi * Width(), Height()).Rotate(Rotation));
-                //BoxDrawer.DrawBox(Position + new Vector2(expandedi * Width(), 0).Rotate(Rotation));
-                //BoxDrawer.DrawBox(Position + new Vector2(0, Height()).Rotate(Rotation));     
-                //BoxDrawer.DrawBox(Position);
-                //BoxDrawer.DrawBox(upperPartCentre);
                 int width = (int)Width();
                 int height = (int)Height();
                 Func<float, float> curveInput = (x) => ArmIndex == 1 ? 1 - x : x;
@@ -282,6 +277,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
             SpriteEffects spriteEffect = SpriteEffects.None;
+            float opacity = Type == AppendageType.UpperClaw || Type == AppendageType.LowerClaw ? 1f : 0.1f;
 
             if (Type == AppendageType.UpperClaw)
             {
@@ -300,7 +296,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 spriteEffect = SpriteEffects.FlipHorizontally;
             }
 
-            Drawing.BetterDraw(Texture, Position, null, Colour, Rotation, GetScale(), spriteEffect, 1f, originOffset);
+            Drawing.BetterDraw(Texture, Position, null, Colour * opacity, Rotation, GetScale(), spriteEffect, 1f, originOffset);
             //Utilities.drawTextInDrawMethod(CalculateFinalRotation().ToString(), Position + new Vector2(50f, 0f), spriteBatch, font, Color.White, 1f);
             //Drawing.DrawBox(CalculateEnd(), Color.MediumPurple, 0.5f);
             //Drawing.DrawBox(Position, Color.Blue, 0.5f);

@@ -78,7 +78,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 Vector2 pos = CalculateArmPostions(expandedi);
 
-                Arms[i] = new CrabArm(pos, this, i, ScaleFactor / BodyToArmSizeRatio);
+                Arms[i] = new CrabArm(pos, this, i, DefaultArmScale());
 
                 ArmPositionsOnBody[i] = pos;
 
@@ -107,6 +107,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public Vector2 CalculateArmPostions(int expandedi)
         {
             return Position + CalculateArmPostionsRelativeToCentre(expandedi);
+        }
+
+        public float DefaultArmScale()
+        {
+            return ScaleFactor / BodyToArmSizeRatio;
         }
 
         public override void UpdateHitbox()
@@ -145,7 +150,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             
             foreach (CrabArmBehaviour armBehaviour in ArmBehaviours)
             {
-                armBehaviour.Execute();
+                //armBehaviour.Execute();
             }
         }
 

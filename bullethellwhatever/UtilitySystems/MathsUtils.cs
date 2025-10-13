@@ -9,7 +9,7 @@ namespace bullethellwhatever.UtilitySystems
 {
     public static class MathsUtils
     {
-        public static Func<float, Vector2> PathBetweenPoints(Vector2 targetPosition, Vector2 initialPosition, float initialAngle, Func<float, float> parallelEasing, Func<float, float> lateralEasing)
+        public static Func<float, Vector2> PathBetweenPoints(Vector2 initialPosition, Vector2 targetPosition, float initialAngle, Func<float, float> parallelEasing, Func<float, float> lateralEasing)
         {
             Vector2 towardsPlayerFromWrist = targetPosition - initialPosition;
             float toPlayerDistance = towardsPlayerFromWrist.Length();
@@ -21,7 +21,8 @@ namespace bullethellwhatever.UtilitySystems
             towardsPlayerParallel *= toPlayerDistance * Cos(initialAngle);
             towardsPlayerLateral *= toPlayerDistance * Sin(initialAngle);
 
-            Func<float, Vector2> path = (x) => initialPosition + EasingFunctions.EaseInCubic(x) * towardsPlayerParallel + EasingFunctions.EaseInExpo(x) * towardsPlayerLateral;
+            Func<float, Vector2> path = (x) => initialPosition + parallelEasing(x) * towardsPlayerParallel + lateralEasing(x) * towardsPlayerLateral;
+
             return path;
         }
     }
