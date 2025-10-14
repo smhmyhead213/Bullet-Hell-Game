@@ -1,4 +1,5 @@
 ﻿using bullethellwhatever.UtilitySystems;
+using log4net.Util;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -48,9 +49,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                 if (AITimer == 0)
                 {
-                    float moveOutwardAngle = PI / 4;
+                    float moveOutwardAngle = PI / 3;
 
-                    float distanceFromPlayerToMoveTo = distanceToPlayer * 0.7f;
+                    float distanceFromPlayerToMoveTo = distanceToPlayer * 0.9f;
                     Vector2 targetPosition = player.Position + distanceFromPlayerToMoveTo * Utilities.SafeNormalise(Owner.Position - player.Position).Rotate(expandedi * moveOutwardAngle);
                     SlamArmPaths[i] = MathsUtils.PathBetweenPoints(Arm(i).WristPosition(), targetPosition, -expandedi * moveOutwardAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInQuad);
                 }
@@ -64,10 +65,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](interpolant), 1f, false);
 
-                    float upperClawRotationThisFrame = (-UpperClawsInitialRotations[i] + expandedi * 0 * CrabBoss.UpperClawOpenAngle) / PreparationTime;
+                    float upperClawRotationThisFrame = (-UpperClawsInitialRotations[i] + expandedi * CrabBoss.UpperClawOpenAngle) / PreparationTime;
                     Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
 
-                    float lowerClawRotationThisFrame = (-LowerClawsInitialRotations[i] - expandedi * 0 * CrabBoss.LowerClawOpenAngle) / PreparationTime;
+                    float lowerClawRotationThisFrame = (-LowerClawsInitialRotations[i] - expandedi * CrabBoss.LowerClawOpenAngle) / PreparationTime;
                     Arm(i).LowerClaw.Rotate(lowerClawRotationThisFrame);
                 }
 
@@ -87,13 +88,20 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
 
-                    float lowerClawAfterSlamAngle = PI / 2;
-                    float upperClawAfterSlamAngle = PI / 2;
+                    float lowerClawAfterSlamAngle = CrabBoss.LowerClawAfterSlamAngle;
+                    float upperClawAfterSlamAngle = CrabBoss.UpperClawAfterSlamAngle;
 
-                    //float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - lowerClawOpenAngle) / slamDuration;
-                    //float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - upperClawOpenAngle) / slamDuration;
-                    //Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
-                    //Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+                    float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - CrabBoss.LowerClawOpenAngle) / SlamDuration;
+                    float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - CrabBoss.UpperClawOpenAngle) / SlamDuration;
+                    Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
+                    Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+                }
+
+                int endLag = 10;
+
+                if (AITimer == PreparationTime + SlamDuration + endLag)
+                {
+                    End();
                 }
                 //if (AITimer >= PreparationTime && AITimer <= PreparationTime + slamDuration)
                 //{
@@ -115,6 +123,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             //{
             //    Drawing.ScreenShake(10, 30);
             //}
-}
+        }
+
+        public override BossAttack PickNextAttack()
+        {
+            return new CrabDoubleArmSmashRepeat(CrabOwner);
+        }
     }
 }

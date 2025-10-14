@@ -15,5 +15,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public static readonly float LowerClawOpenAngle = PI / 5f;
 
         public static readonly float AngleToCloseClaw = PI / 12;
+
+        public static readonly float LowerClawAfterSlamAngle = PI / 2;
+        public static readonly float UpperClawAfterSlamAngle = PI / 2;
     }
 }

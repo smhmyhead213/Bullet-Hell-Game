@@ -184,8 +184,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
 
-                    float lowerClawAfterSlamAngle = PI / 2;
-                    float upperClawAfterSlamAngle = PI / 2;
+                    float lowerClawAfterSlamAngle = CrabBoss.LowerClawAfterSlamAngle;
+                    float upperClawAfterSlamAngle = CrabBoss.UpperClawAfterSlamAngle;
 
                     float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - lowerClawOpenAngle) / slamDuration;
                     float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - upperClawOpenAngle) / slamDuration;
