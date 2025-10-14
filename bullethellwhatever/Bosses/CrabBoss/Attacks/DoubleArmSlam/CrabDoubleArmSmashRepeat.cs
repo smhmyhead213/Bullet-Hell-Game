@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 {
@@ -46,6 +47,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             // make the boss move slightly forward with each additional slam. also need to adjust the final slam position to account for this
             float distanceToShiftForwards = 100f;
 
+            float minimumTargetDistance = 250f;
+            float maximumTargetDistance = 700f;
+
             for (int i = 0; i < 2; i++)
             {
                 int expandedi = Utilities.ExpandedIndex(i);
@@ -54,15 +58,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                 {
                     // lock on to player position early to avoid cheap hit
 
-                    float minimumTargetDistance = 0f;
-                    float targetDistance = Max(minimumTargetDistance, distanceToPlayer);
-                    SlamTargetPosition = Owner.Position + targetDistance * Owner.Position.DirectionToPlayer();
-
                     float moveOutwardAngle = PI / 3;
+                    float swingOutwards = distanceToPlayer * 0.3f;
 
                     float distanceFromPlayerToMoveTo = distanceToPlayer * 0.9f;
-                    Vector2 targetPosition = player.Position + distanceFromPlayerToMoveTo * Utilities.SafeNormalise(Owner.Position - player.Position).Rotate(expandedi * moveOutwardAngle);
-                    SlamArmPaths[i] = MathsUtils.PathBetweenPoints(Arm(i).WristPosition(), targetPosition, -expandedi * moveOutwardAngle, EasingFunctions.EaseInCubic, EasingFunctions.EaseInQuad);
+                    Vector2 targetPosition = Owner.Position + distanceFromPlayerToMoveTo * Utilities.SafeNormalise(player.Position - Owner.Position).Rotate(expandedi * -moveOutwardAngle);
+                    Vector2 wristPosition = Arm(i).WristPosition();
+                    Vector2 toTarget = targetPosition - wristPosition;
+
+                    SlamArmPaths[i] = (x) => wristPosition + x * toTarget + Sin(x * PI) * swingOutwards * Utilities.SafeNormalise(toTarget.Rotate(expandedi * -PI / 2));
                 }
 
                 if (AITimer <= PreparationTime)
@@ -70,7 +74,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float interpolant = AITimer / (float)PreparationTime;
 
                     float minScale = 0f;
-                    float scaleFactor = Max(minScale, distanceToPlayer / Arm(i).OriginalLength() * additionalScale);
+                    float maxScale = 9999f;
+
+                    float scaleFactor = Max(minScale, (player.Position - Owner.Position).Length() / Arm(i).OriginalLength() * additionalScale);
+                    scaleFactor = Min(scaleFactor, maxScale);
+
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](interpolant), 1f, false);
@@ -80,11 +88,18 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     float lowerClawRotationThisFrame = (-LowerClawsInitialRotations[i] - expandedi * CrabBoss.LowerClawOpenAngle) / PreparationTime;
                     Arm(i).LowerClaw.Rotate(lowerClawRotationThisFrame);
+
+                    CrabOwner.LerpToFacePlayer();
                 }
 
                 if (AITimer == PreparationTime)
                 {
                     // might be awesome to put a sound effect or glint to show a lock on here?
+
+                    float targetDistance = Max(minimumTargetDistance, distanceToPlayer);
+                    targetDistance = Min(targetDistance, maximumTargetDistance);
+
+                    SlamTargetPosition = Owner.Position + targetDistance * Owner.Position.DirectionToPlayer();
                     PreSlamArmPositions[i] = Arm(i).WristPosition();
 
                     float initialAngle = Owner.Rotation - Arm(i).WristPosition().ToPlayer().ToAngle();
@@ -97,6 +112,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float progress = framesDone / (float)SlamDuration;
 
                     if (AITimer != PreparationTime + SlamDuration)
+                    {
+
+                    }
                         //Owner.Position += Owner.Position.DirectionToPlayer() * distanceToShiftForwards * EasingFunctions.EasingNextFrameDiff(EasingFunctions.Linear, framesDone, SlamDuration);
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
