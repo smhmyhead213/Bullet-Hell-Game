@@ -5,6 +5,7 @@ using bullethellwhatever.Projectiles;
 using bullethellwhatever.Projectiles.TelegraphLines;
 using bullethellwhatever.UtilitySystems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -192,7 +193,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
                     Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
 
-                    Arm(i).UpperClaw.Opacity = MathHelper.Lerp(1f, 0f, progress);
+                    //Arm(i).UpperClaw.Opacity = MathHelper.Lerp(1f, 0f, progress);
                 }
             }
 
@@ -215,6 +216,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
         public override BossAttack PickNextAttack()
         {
             return new CrabDoubleArmSmashRepeat(CrabOwner, 0);
+        }
+
+        public override void ExtraDraw(SpriteBatch s, int AITimer)
+        {
+            Drawing.BetterDraw("box", SlamTargetPosition, null, Color.Red, 0f, Vector2.One * 3f, SpriteEffects.None, 0f);
         }
     }
 }

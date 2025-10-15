@@ -140,8 +140,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Health = MaxHP;
             }
         }
+        public virtual float ObjectiveRotation()
+        {
+            return Position.DirectionTo(CalculateEnd()).ToAngle();
+        }
+
         public virtual float RotationFromV() // rotation from vertical
         {
+            // why did i write it like this?????? whatever just use CalculateFinalRotation
             return PI + CalculateFinalRotation();
         }
         public virtual Vector2 CalculateEnd()
@@ -278,7 +284,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
             SpriteEffects spriteEffect = SpriteEffects.None;
-            float opacity = Type == AppendageType.UpperClaw || Type == AppendageType.LowerClaw ? Opacity : Opacity;
+            float opacity = Type == AppendageType.UpperClaw || Type == AppendageType.LowerClaw ? Opacity : 0.1f;
 
             if (Type == AppendageType.UpperClaw)
             {

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using bullethellwhatever.Bosses.CrabBoss.Attacks;
+using bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using bullethellwhatever.Bosses.CrabBoss.Attacks;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -27,7 +28,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     new CrabProjectilePunches(CrabOwner),
                     new NeutralToCrabFlailChargeTransition(CrabOwner),
                     new CrabBombThrow(CrabOwner),
-                    new CrabSpray(CrabOwner)];
+                    new CrabSpray(CrabOwner),
+                    new CrabDoubleArmSmash(CrabOwner)];
 
             List<float> probabilities =
                 [0.03f, // big chance for grab atatck if player is close
@@ -35,7 +37,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
                     0.15f,
                     0.22f,
                     0.23f,
-                    0.7f]; // 0.15f
+                    0.5f,
+                    0.999f]; // 0.15f
 
             // crashes if probabilities length != attacks.length
 

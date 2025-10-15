@@ -79,7 +79,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     float moveOutwards = Owner.Position.Distance(player.Position) * 0.1f;
                     Vector2 linearPath = targetPosition - startPosition;
 
-                    PathToStance[i] = (x) => x * linearPath + 0.1f * moveOutwards * Utilities.SafeNormalise(linearPath.Rotate(-expandedi * PI / 2));
+                    PathToStance[i] = (x) => startPosition + x * linearPath + moveOutwards * Utilities.SafeNormalise(linearPath.Rotate(-expandedi * PI / 2));
                 }
 
                 if (telegraphing)
