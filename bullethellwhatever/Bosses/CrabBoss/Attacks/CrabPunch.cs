@@ -166,12 +166,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             // spawn particles
             if (AITimer > startSpawningParticlesTime && AITimer < swingTime)
             {
-                float angleVariation = 0f * PI / 36f;
-                float rotation = Owner.Velocity.ToAngle() + Utilities.RandomAngle(angleVariation);
-                Vector2 spawnPos = Owner.Position + new Vector2(Owner.Width() * Utilities.RandomFloat(-0.5f, 0.5f), 0f).Rotate(rotation);
-                Particle p = new Particle();
-                float scaleLength = Owner.Velocity.Length() / 4f;
-                p.Spawn("box", spawnPos, Vector2.Zero, Vector2.Zero, new Vector2(0.25f, scaleLength), rotation, Color.White, 1f, 6);
+                CreateTerribleSpeedEffect();
             }
 
             Assert(!float.IsNaN(Owner.Rotation));

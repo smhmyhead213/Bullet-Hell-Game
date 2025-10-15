@@ -100,6 +100,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             RotationalVelocity = 0;
 
             Colour = Color.White;
+            Opacity = 1f;
         }
 
         public override void PostUpdate()
@@ -277,7 +278,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             Vector2 originOffset = new Vector2(Texture.Width / 2, 0f);
             SpriteEffects spriteEffect = SpriteEffects.None;
-            float opacity = Type == AppendageType.UpperClaw || Type == AppendageType.LowerClaw ? 1f : 1f;
+            float opacity = Type == AppendageType.UpperClaw || Type == AppendageType.LowerClaw ? Opacity : Opacity;
 
             if (Type == AppendageType.UpperClaw)
             {

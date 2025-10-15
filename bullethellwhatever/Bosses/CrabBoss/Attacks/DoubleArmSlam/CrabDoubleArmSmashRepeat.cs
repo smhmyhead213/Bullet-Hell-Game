@@ -24,7 +24,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
         public int PreparationTime = 40;
         public int SlamDuration = 20;
-        public CrabDoubleArmSmashRepeat(CrabBoss owner) : base(owner)
+        public int Repetition = 1;
+        public static int MaxRepititions = 2;
+        public CrabDoubleArmSmashRepeat(CrabBoss owner, int repetitions) : base(owner)
         {
             SlamTargetPosition = Vector2.Zero;
             PreSlamArmPositions = new Vector2[2];
@@ -37,7 +39,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             {
                 UpperClawsInitialRotations[i] = Arm(i).UpperClaw.RotationToAdd;
                 LowerClawsInitialRotations[i] = Arm(i).LowerClaw.RotationToAdd;
-            }           
+            }
+
+            Repetition = repetitions;
         }
 
         public override void Execute(int AITimer)
@@ -60,15 +64,15 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     // lock on to player position early to avoid cheap hit
 
                     float moveOutwardAngle = PI / 3;
-                    float swingOutwards = distanceToPlayer * 0.3f;
+                    float swingOutwards = distanceToPlayer * 0.6f;
 
                     float distanceFromPlayerToMoveTo = distanceToPlayer * 0.9f;
                     Vector2 targetPosition = Owner.Position + distanceFromPlayerToMoveTo * Utilities.SafeNormalise(player.Position - Owner.Position).Rotate(expandedi * -moveOutwardAngle);
                     Vector2 wristPosition = Arm(i).WristPosition();
                     Vector2 toTarget = targetPosition - wristPosition;
 
-                    Func<float, float> outwardsEasing = EasingFunctions.JoinedCurves([EasingFunctions.EaseOutQuad, EasingFunctions.EaseOutQuad], [0f, 0.5f, 1f], [0f, 1f, 0f]);
-                    SlamArmPaths[i] = (x) => wristPosition + x * toTarget + outwardsEasing(x) * swingOutwards * Utilities.SafeNormalise(toTarget.Rotate(expandedi * -PI / 2));
+                    Func<float, float> outwardsEasing = EasingFunctions.JoinedCurves([EasingFunctions.Linear, EasingFunctions.Linear], [0f, 0.5f, 1f], [0f, 1f, 0f]);
+                    SlamArmPaths[i] = (x) => wristPosition + x * toTarget;// + outwardsEasing(x) * swingOutwards * Utilities.SafeNormalise(toTarget);
                 }
 
                 if (AITimer <= PreparationTime)
@@ -83,7 +87,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
 
-                    Arm(i).LerpToPoint(SlamArmPaths[i](interpolant), 1f, false);
+                    Vector2 targetPosition = SlamArmPaths[i](interpolant);
+                    BoxDrawer.DrawBox(targetPosition);
+                    Arm(i).LerpToPoint(targetPosition, 1f, false);
 
                     float upperClawRotationThisFrame = (-UpperClawsInitialRotations[i] + expandedi * CrabBoss.UpperClawOpenAngle) / PreparationTime;
                     Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
@@ -115,10 +121,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     if (AITimer != PreparationTime + SlamDuration)
                     {
-
+                        Owner.Position += Owner.Position.DirectionTo(SlamTargetPosition) * distanceToShiftForwards * EasingFunctions.EasingNextFrameDiff(EasingFunctions.EaseOutSin, framesDone, SlamDuration);
+                        CreateTerribleSpeedEffect();                    
                     }
-                        //Owner.Position += Owner.Position.DirectionToPlayer() * distanceToShiftForwards * EasingFunctions.EasingNextFrameDiff(EasingFunctions.Linear, framesDone, SlamDuration);
-
+                    
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
 
                     float lowerClawAfterSlamAngle = CrabBoss.LowerClawAfterSlamAngle;
@@ -165,7 +171,12 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabDoubleArmSmashRepeat(CrabOwner);
+            if (Repetition != MaxRepititions - 1)
+                return new CrabDoubleArmSmashRepeat(CrabOwner, Repetition + 1);
+            else
+            {
+                return new CrabSpray(CrabOwner);
+            }
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿
-using bullethellwhatever.BaseClasses;
-using bullethellwhatever.NPCs;
-using bullethellwhatever.UtilitySystems;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using bullethellwhatever.BaseClasses;
+using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.NPCs;
+using bullethellwhatever.UtilitySystems;
+using Microsoft.Xna.Framework;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -59,6 +60,16 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void HandleBounces()
         {
             
+        }
+        
+        public void CreateTerribleSpeedEffect(float velocityMult = 1f)
+        {
+            float angleVariation = 0f * PI / 36f;
+            float rotation = Owner.Velocity.ToAngle() + Utilities.RandomAngle(angleVariation);
+            Vector2 spawnPos = Owner.Position + new Vector2(Owner.Width() * Utilities.RandomFloat(-0.5f, 0.5f), 0f).Rotate(rotation);
+            Particle p = new Particle();
+            float scaleLength = Owner.Velocity.Length() / 4f;
+            p.Spawn("box", spawnPos, Vector2.Zero, Vector2.Zero, new Vector2(0.25f, scaleLength), rotation, Color.White, 1f, 6);
         }
 
         public Vector2 PlayerPositionInGrab(int armIndex)

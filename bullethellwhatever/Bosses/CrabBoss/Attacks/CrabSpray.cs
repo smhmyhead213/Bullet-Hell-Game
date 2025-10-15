@@ -22,9 +22,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         public const int windDownTime = 30;
         public float maxSprayAngle => PI / 4f;
         public int projectileReleaseTime => chargeUpTime + waitTime;
+
+        public Func<float, Vector2>[] PathToStance;
         public CrabSpray(CrabBoss owner) : base(owner)
         {
-
+            PathToStance = new Func<float, Vector2>[2];
         }
 
         public override bool SelectionCondition()
@@ -36,7 +38,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             float holdOutAngle = PI / 12f;
             float finalHoldAngle = PI / 3f;
-            float armLength = Arm(0).WristLength();
+            
             float moveTowardsPlayerSpeed = 2.7f;
 
             int slowDownTime = 10;
@@ -57,6 +59,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
             for (int i = 0; i < 2; i++)
             {
+                float armLength = Arm(i).WristLength();
+
                 bool telegraphing = AITimer < chargeUpTime;
 
                 int expandedi = Utilities.ExpandedIndex(i);
@@ -67,17 +71,24 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                 float initialScale = 1f;
                 float finalScale = 1.3f;
 
+                if (AITimer == 0)
+                {
+                    float finalLength = armLength * 0.88f;
+                    Vector2 targetPosition = Arm(i).Position + new Vector2(0, finalLength).Rotate(holdOutAngle * -expandedi).Rotate(Owner.Rotation);
+                    Vector2 startPosition = Arm(i).WristPosition();
+                    float moveOutwards = Owner.Position.Distance(player.Position) * 0.1f;
+                    Vector2 linearPath = targetPosition - startPosition;
+
+                    PathToStance[i] = (x) => x * linearPath + 0.1f * moveOutwards * Utilities.SafeNormalise(linearPath.Rotate(-expandedi * PI / 2));
+                }
+
                 if (telegraphing)
                 {                  
                     float interpolant = AITimer / (float)chargeUpTime;
 
-                    Arm(i).SetScale(MathHelper.Lerp(initialScale, finalScale, interpolant));
+                    Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), finalScale, interpolant));
 
-                    float finalLength = armLength * 0.88f;
-                    float usedLength = MathHelper.Lerp(armLength, finalLength, interpolant);
-                    float usedAngle = MathHelper.Lerp(0f, holdOutAngle, interpolant);
-
-                    Arm(i).TouchPoint(Arm(i).Position + new Vector2(0, usedLength).Rotate(usedAngle * -expandedi).Rotate(Owner.Rotation));
+                    Arm(i).LerpToPoint(PathToStance[i](interpolant), 0.5f);
                 }
 
                 int timeHere = chargeUpTime + waitTime;

@@ -191,6 +191,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - upperClawOpenAngle) / slamDuration;
                     Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
                     Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+
+                    Arm(i).UpperClaw.Opacity = MathHelper.Lerp(1f, 0f, progress);
                 }
             }
 
@@ -212,7 +214,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabDoubleArmSmashRepeat(CrabOwner);
+            return new CrabDoubleArmSmashRepeat(CrabOwner, 0);
         }
     }
 }

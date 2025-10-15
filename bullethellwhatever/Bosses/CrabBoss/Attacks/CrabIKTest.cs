@@ -25,6 +25,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         {
             foreach (CrabArm leg in CrabOwner.Arms)
             {
+                leg.SetScale(2f);
                 Vector2 targetPosition = leg.Position + 1f * (MousePositionWithCamera() - leg.Position); // change this to make bend testing easier
                 leg.TouchPoint(targetPosition);
             }
