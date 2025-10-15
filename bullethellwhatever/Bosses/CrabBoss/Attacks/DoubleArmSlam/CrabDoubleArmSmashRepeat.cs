@@ -1,4 +1,5 @@
-﻿using bullethellwhatever.UtilitySystems;
+﻿using bullethellwhatever.DrawCode;
+using bullethellwhatever.UtilitySystems;
 using log4net.Util;
 using Microsoft.Xna.Framework;
 using System;
@@ -66,7 +67,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     Vector2 wristPosition = Arm(i).WristPosition();
                     Vector2 toTarget = targetPosition - wristPosition;
 
-                    SlamArmPaths[i] = (x) => wristPosition + x * toTarget + Sin(x * PI) * swingOutwards * Utilities.SafeNormalise(toTarget.Rotate(expandedi * -PI / 2));
+                    Func<float, float> outwardsEasing = EasingFunctions.JoinedCurves([EasingFunctions.EaseOutQuad, EasingFunctions.EaseOutQuad], [0f, 0.5f, 1f], [0f, 1f, 0f]);
+                    SlamArmPaths[i] = (x) => wristPosition + x * toTarget + outwardsEasing(x) * swingOutwards * Utilities.SafeNormalise(toTarget.Rotate(expandedi * -PI / 2));
                 }
 
                 if (AITimer <= PreparationTime)
@@ -126,6 +128,11 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - CrabBoss.UpperClawOpenAngle) / SlamDuration;
                     Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
                     Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
+                }
+
+                if (AITimer == PreparationTime + SlamDuration)
+                {
+                    Drawing.ScreenShake(10, 30);
                 }
 
                 int endLag = 10;
