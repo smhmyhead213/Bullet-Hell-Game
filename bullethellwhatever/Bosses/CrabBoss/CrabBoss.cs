@@ -164,6 +164,24 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 Arms[i].ResetRotations();
             }
         }
+        public void AssumeKeyframe(CrabArmKeyframe keyframe)
+        {
+            // loop each arm
+            for (int arm = 0; arm < keyframe.ArmPartScales.Length; arm++)
+            {
+                for (int i = 0; i < keyframe.ArmPartScales[arm].Length; i++)
+                {
+                    // scales and arms have same dimensions so we can do both in one loop
+                    Arms[arm].ArmParts[i].Scale = keyframe.ArmPartScales[arm][i];
+                    Arms[arm].ArmParts[i].RotationToAdd = keyframe.ArmPartRotations[arm][i];
+                }
+            }
+        }
+
+        public CrabArmKeyframe CurrentStance()
+        {
+            return new CrabArmKeyframe(this);
+        }
 
         public void LerpToFacePlayer(float rotateFraction = 0.2f)
         {

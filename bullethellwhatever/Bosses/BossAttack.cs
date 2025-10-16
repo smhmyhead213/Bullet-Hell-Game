@@ -48,7 +48,6 @@ namespace bullethellwhatever.Bosses
         public virtual void End()
         {
             EndNow = true;
-            //Owner.PreviousAttack = Owner.CurrentAttack;
             Owner.CurrentAttack = PickNextAttack();
             Owner.AITimer = -1; // will be increased in update() immediately after
 

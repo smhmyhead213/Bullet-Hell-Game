@@ -15,10 +15,14 @@ namespace bullethellwhatever.Bosses.CrabBoss
     public class CrabBossAttack : BossAttack
     {
         public CrabBoss CrabOwner;
+        public CrabArmKeyframe StanceAtBeginningOfAttack;
 
         public CrabBossAttack(CrabBoss owner) : base(owner) 
         {
             CrabOwner = owner;
+
+            // assumes that no attack logic happens between this and the attack happenign because the boss might move from residual velocity
+            StanceAtBeginningOfAttack = new CrabArmKeyframe(owner);
         }
         public override void InitialiseAttackValues()
         {
@@ -57,6 +61,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             return new CrabNeutralState(CrabOwner);
         }
+
         public override void HandleBounces()
         {
             
@@ -72,6 +77,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
             p.Spawn("box", spawnPos, Vector2.Zero, Vector2.Zero, new Vector2(0.25f, scaleLength), rotation, Color.White, 1f, 6);
         }
 
+
+        public void StoreWristPositionsAndClawRotations()
+        {
+
+        }
         public Vector2 PlayerPositionInGrab(int armIndex)
         {
             float armScale = Arm(armIndex).UpperArm.GetScale().X;

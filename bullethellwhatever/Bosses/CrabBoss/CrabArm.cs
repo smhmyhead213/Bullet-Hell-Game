@@ -111,13 +111,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
             return new float[] { UpperArm.RotationToAdd, LowerArm.RotationToAdd, UpperClaw.RotationToAdd, LowerClaw.RotationToAdd };
         }
 
-        public void PointLegInDirection(float angle)
-        {
-            UpperArm.Rotate(-UpperArm.Rotation + angle + PI);
-            //LowerArm.Rotate(-LowerArm.Rotation + angle + PI);
-            //UpperClaw.Rotate(-UpperClaw.Rotation + angle + PI);
-            //LowerClaw.Rotate(-LowerClaw.Rotation + angle + PI);
-        }
         public void ContactDamage(bool on)
         {
             UpperArm.ContactDamage = on;
@@ -185,60 +178,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
         /// <param name="targetPosition"></param>
         public void TouchPoint(Vector2 targetPosition, bool pointClaw = true)
         {
-            // decide how far to stretch arms.
-            //float upperArmLength = UpperArm.Length();
-            //float lowerArmLength = LowerArm.Length();
-
-            //float lengthOfLeg = upperArmLength + lowerArmLength;
-
-            //// decide on a target. if the target it out of reach, choose a new target in the same direction that's reachable
-
-            //// an inaccuracy arises from the subtraction taking place here
-            //Vector2 direction = Utilities.SafeNormalise(targetPosition - Position);
-
-            //if (Utilities.DistanceBetweenVectors(Position, targetPosition) > lengthOfLeg)
-            //{
-            //    // get the direction vector               
-            //    targetPosition = Position + lengthOfLeg * direction;
-            //}
-
-            //// the distance between the start of the arm and the target
-            //float distance = Utilities.DistanceBetweenVectors(Position, targetPosition);
-
-            //if (distance > lengthOfLeg)
-            //{
-            //    distance = lengthOfLeg;
-            //}
-
-            //// check that triangle inequality is not violated
-
-            //if (upperArmLength - lowerArmLength > distance)
-            //{
-            //    distance = upperArmLength - lowerArmLength;
-            //}
-
-            //// cosine rule
-            //float upperArmSquared = Pow(upperArmLength, 2);
-            //float lowerArmSquared = Pow(lowerArmLength, 2);
-            //float distanceSquared = Pow(distance, 2);
-
-            //float withinAcos = (upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance);
-            //float upperArmAngle = withinAcos < 1.0001f && withinAcos >= 1f ? 0 : Acos(withinAcos); // prevent NaN for exactly 1 and imprecisions
-
-            //Assert(!float.IsNaN(upperArmAngle));
-
-            //int expandedi = -Utilities.ExpandedIndex(LegIndex);
-
-            //// direction of rotation should be opposite for each arm
-            //Vector2 elbowPos = Position + Utilities.RotateVectorClockwise(direction * upperArmLength, expandedi * upperArmAngle);
-
-            //UpperArm.PointInDirection(Utilities.VectorToAngle(elbowPos - Position));
-
-            //float lowerArmRotation = Utilities.VectorToAngle(targetPosition - elbowPos);
-
-            //// the arm seems to be touching the correct point before executing this line, but afterwards seems to be slightly off
-            //LowerArm.PointInDirection(lowerArmRotation);
-
             float[] rotations = MathsUtils.SolveTwoPartIK(Position, targetPosition, UpperArm.Length(), LowerArm.Length(), -Utilities.ExpandedIndex(LegIndex));
 
             UpperArm.PointInDirection(rotations[0]);
@@ -269,13 +208,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             UpperArm.LerpRotation(startAngle, endAngle, interpolant);
         }
 
-        public void LerpToRestPosition(float interpolant, bool pointClaws = true, bool breakpoint = false)
+        public void LerpToRestPosition(float interpolant, bool pointClaws = true)
         {
-            //if (breakpoint)
-            //{
-            //    Assert(false);
-            //}
-
             TouchPoint(Vector2.LerpPrecise(WristPosition(), RestPositionEnd(), interpolant), pointClaws);
         }
         public void LerpToPoint(Vector2 point, float interpolant, bool pointClaws = true)

@@ -218,6 +218,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             return new CrabDoubleArmSmashRepeat(CrabOwner, 0);
         }
 
+        public override bool SelectionCondition()
+        {
+            return Owner.Position.Distance(player.Position) < 1000f;
+        }
         public override void ExtraDraw(SpriteBatch s, int AITimer)
         {
             Drawing.BetterDraw("box", SlamTargetPosition, null, Color.Red, 0f, Vector2.One * 3f, SpriteEffects.None, 0f);

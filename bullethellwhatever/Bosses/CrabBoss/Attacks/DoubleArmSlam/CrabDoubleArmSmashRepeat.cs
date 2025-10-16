@@ -91,7 +91,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float minScale = 0f;
                     float maxScale = 9999f;
 
-                    float scaleFactor = Max(minScale, (player.Position - Owner.Position).Length() / Arm(i).OriginalLength() * additionalScale);
+                    float scaleFactor = Max(minScale, (SlamTargetPosition - Owner.Position).Length() / Arm(i).OriginalLength() * additionalScale);
                     scaleFactor = Min(scaleFactor, maxScale);
 
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
