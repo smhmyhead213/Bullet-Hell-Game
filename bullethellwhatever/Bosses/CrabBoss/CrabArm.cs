@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using bullethellwhatever.BaseClasses;
 using bullethellwhatever.MainFiles;
 using System.Diagnostics;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -184,59 +185,66 @@ namespace bullethellwhatever.Bosses.CrabBoss
         /// <param name="targetPosition"></param>
         public void TouchPoint(Vector2 targetPosition, bool pointClaw = true)
         {
-            // decide how far to stretch arms. the length includes the claw but the following claculations ignore it, this will be the source of any issues where the claws lie past the target position.
-            float upperArmLength = UpperArm.Length();
-            float lowerArmLength = LowerArm.Length();
+            // decide how far to stretch arms.
+            //float upperArmLength = UpperArm.Length();
+            //float lowerArmLength = LowerArm.Length();
 
-            float lengthOfLeg = upperArmLength + lowerArmLength;
+            //float lengthOfLeg = upperArmLength + lowerArmLength;
 
-            // decide on a target. if the target it out of reach, choose a new target in the same direction that's reachable
-            
-            // an inaccuracy arises from the subtraction taking place here
-            Vector2 direction = Utilities.SafeNormalise(targetPosition - Position);
+            //// decide on a target. if the target it out of reach, choose a new target in the same direction that's reachable
 
-            if (Utilities.DistanceBetweenVectors(Position, targetPosition) > lengthOfLeg)
-            {
-                // get the direction vector               
-                targetPosition = Position + lengthOfLeg * direction;
-            }
+            //// an inaccuracy arises from the subtraction taking place here
+            //Vector2 direction = Utilities.SafeNormalise(targetPosition - Position);
 
-            // the distance between the start of the arm and the target
-            float distance = Utilities.DistanceBetweenVectors(Position, targetPosition);
+            //if (Utilities.DistanceBetweenVectors(Position, targetPosition) > lengthOfLeg)
+            //{
+            //    // get the direction vector               
+            //    targetPosition = Position + lengthOfLeg * direction;
+            //}
 
-            if (distance > lengthOfLeg)
-            {
-                distance = lengthOfLeg;
-            }
+            //// the distance between the start of the arm and the target
+            //float distance = Utilities.DistanceBetweenVectors(Position, targetPosition);
 
-            // check that triangle inequality is not violated
+            //if (distance > lengthOfLeg)
+            //{
+            //    distance = lengthOfLeg;
+            //}
 
-            if (upperArmLength - lowerArmLength > distance)
-            {
-                distance = upperArmLength - lowerArmLength;
-            }
+            //// check that triangle inequality is not violated
 
-            // cosine rule
-            float upperArmSquared = Pow(upperArmLength, 2);
-            float lowerArmSquared = Pow(lowerArmLength, 2);
-            float distanceSquared = Pow(distance, 2);
+            //if (upperArmLength - lowerArmLength > distance)
+            //{
+            //    distance = upperArmLength - lowerArmLength;
+            //}
 
-            float withinAcos = (upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance);
-            float upperArmAngle = withinAcos < 1.0001f && withinAcos >= 1f ? 0 : Acos(withinAcos); // prevent NaN for exactly 1 and imprecisions
+            //// cosine rule
+            //float upperArmSquared = Pow(upperArmLength, 2);
+            //float lowerArmSquared = Pow(lowerArmLength, 2);
+            //float distanceSquared = Pow(distance, 2);
 
-            Assert(!float.IsNaN(upperArmAngle));
+            //float withinAcos = (upperArmSquared + distanceSquared - lowerArmSquared) / (2 * upperArmLength * distance);
+            //float upperArmAngle = withinAcos < 1.0001f && withinAcos >= 1f ? 0 : Acos(withinAcos); // prevent NaN for exactly 1 and imprecisions
 
-            int expandedi = -Utilities.ExpandedIndex(LegIndex);
+            //Assert(!float.IsNaN(upperArmAngle));
 
-            // direction of rotation should be opposite for each arm
-            Vector2 elbowPos = Position + Utilities.RotateVectorClockwise(direction * upperArmLength, expandedi * upperArmAngle);
+            //int expandedi = -Utilities.ExpandedIndex(LegIndex);
 
-            UpperArm.PointInDirection(Utilities.VectorToAngle(elbowPos - Position));
+            //// direction of rotation should be opposite for each arm
+            //Vector2 elbowPos = Position + Utilities.RotateVectorClockwise(direction * upperArmLength, expandedi * upperArmAngle);
 
-            float lowerArmRotation = Utilities.VectorToAngle(targetPosition - elbowPos);
+            //UpperArm.PointInDirection(Utilities.VectorToAngle(elbowPos - Position));
 
-            // the arm seems to be touching the correct point before executing this line, but afterwards seems to be slightly off
-            LowerArm.PointInDirection(lowerArmRotation);
+            //float lowerArmRotation = Utilities.VectorToAngle(targetPosition - elbowPos);
+
+            //// the arm seems to be touching the correct point before executing this line, but afterwards seems to be slightly off
+            //LowerArm.PointInDirection(lowerArmRotation);
+
+            float[] rotations = MathsUtils.SolveTwoPartIK(Position, targetPosition, UpperArm.Length(), LowerArm.Length(), -Utilities.ExpandedIndex(LegIndex));
+
+            UpperArm.PointInDirection(rotations[0]);
+            LowerArm.PointInDirection(rotations[1]);
+
+            float lowerArmRotation = rotations[1];
 
             if (pointClaw)
             {

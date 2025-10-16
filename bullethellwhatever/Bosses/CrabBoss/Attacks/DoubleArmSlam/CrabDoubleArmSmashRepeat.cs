@@ -51,7 +51,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             float additionalScale = 1.6f;
 
             // make the boss move slightly forward with each additional slam. also need to adjust the final slam position to account for this
-            float distanceToShiftForwards = 100f;
+            float distanceToShiftForwards = 0f;
 
             float minimumTargetDistance = 250f;
             float maximumTargetDistance = 700f;
@@ -80,7 +80,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float targetDistance = Max(minimumTargetDistance, distanceToPlayer);
                     targetDistance = Min(targetDistance, maximumTargetDistance);
 
-                    SlamTargetPosition = Owner.Position + targetDistance * Owner.Position.DirectionToPlayer();
+                    // take into account forward shift
+                    SlamTargetPosition = Owner.Position + (targetDistance + distanceToShiftForwards) * Owner.Position.DirectionToPlayer();
                 }
 
                 if (AITimer < PreparationTime)
@@ -125,18 +126,19 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     {
                         Owner.Position += Owner.Position.DirectionTo(SlamTargetPosition) * distanceToShiftForwards * EasingFunctions.EasingNextFrameDiff(EasingFunctions.EaseOutSin, framesDone, SlamDuration);
                         CreateTerribleSpeedEffect();
+
+                        float upperArmRotation = Arm(i).LowerArm.CalculateFinalRotation();
+
+                        // future: maybe write code that makes the claws always orient so that theres a safe zone regardless of arm orientation
+                        float lowerClawAfterSlamAngle = CrabBoss.LowerClawAfterSlamAngle;
+                        float upperClawAfterSlamAngle = CrabBoss.UpperClawAfterSlamAngle;
+
+                        float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - CrabBoss.LowerClawOpenAngle) / SlamDuration;
+                        float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - CrabBoss.UpperClawOpenAngle) / SlamDuration;
+
+                        Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
+                        Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
                     }
-
-                    float upperArmRotation = Arm(i).LowerArm.CalculateFinalRotation();
-
-                    float lowerClawAfterSlamAngle = PI + expandedi * upperArmRotation;
-                    float upperClawAfterSlamAngle = CrabBoss.UpperClawAfterSlamAngle;
-
-                    float lowerClawRotationThisFrame = expandedi * (lowerClawAfterSlamAngle - CrabBoss.LowerClawOpenAngle) / SlamDuration;
-                    float upperClawRotationThisFrame = expandedi * (upperClawAfterSlamAngle - CrabBoss.UpperClawOpenAngle) / SlamDuration;
-                    
-                    Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
-                    Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
 
                     Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);                    
                 }
