@@ -34,5 +34,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
             ArmPartScales = armPartScales;
             ArmPartRotations = armPartRotations;
         }
+
+        public float GetPartRotation(AppendageType appendageType, int index)
+        {
+            return ArmPartRotations[index][(int)appendageType];
+        }
     }
 }

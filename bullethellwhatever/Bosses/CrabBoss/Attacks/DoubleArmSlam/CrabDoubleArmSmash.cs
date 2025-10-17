@@ -75,7 +75,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     {
                         Func<float, float, bool> rotateUpperClaw = (angle, duration) =>
                         {
-                            float upperClawRotationThisFrame = expandedi * angle / duration;
+                            float upperClawRotationThisFrame = angle / duration;
                             Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
 
                             return false;
@@ -83,17 +83,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                         Func<float, float, bool> rotateLowerClaw = (angle, duration) =>
                         {
-                            float lowerClawRotationThisFrame = expandedi * angle / duration;
-                            Arm(i).LowerClaw.Rotate(-lowerClawRotationThisFrame);
+                            float lowerClawRotationThisFrame = angle / duration;
+                            Arm(i).LowerClaw.Rotate(lowerClawRotationThisFrame);
 
                             return false;
                         };
 
                         // do one claw without clicking
-                        if (i == 0)
+                        if (true)
                         {
-                            rotateUpperClaw(upperClawOpenAngle, PreparationTime);
-                            rotateLowerClaw(lowerClawOpenAngle, PreparationTime);
+                            rotateUpperClaw(expandedi * upperClawOpenAngle - StanceAtBeginningOfAttack.GetPartRotation(AppendageType.UpperClaw, i), PreparationTime);
+                            rotateLowerClaw(expandedi * -lowerClawOpenAngle - StanceAtBeginningOfAttack.GetPartRotation(AppendageType.LowerClaw, i), PreparationTime);
                         }
 
                         // cause other claw to click twice to shoot
@@ -216,6 +216,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
         public override BossAttack PickNextAttack()
         {
             return new CrabDoubleArmSmashRepeat(CrabOwner, 0);
+            //return new CrabDoubleArmSmash(CrabOwner);
         }
 
         public override bool SelectionCondition()

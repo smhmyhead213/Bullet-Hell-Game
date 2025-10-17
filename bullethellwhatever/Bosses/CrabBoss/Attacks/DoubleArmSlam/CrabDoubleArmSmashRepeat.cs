@@ -20,13 +20,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
         public Vector2[] PreSlamArmPositions;
         public Func<float, Vector2>[] SlamArmPaths;
 
+        // some of these probabaly arent necessary with keyframe system but i cant be bothered
         public float[] UpperClawsInitialRotations;
         public float[] LowerClawsInitialRotations;
+
+        public float[] UpperClawsTargetRotations;
+        public float[] LowerClawsTargetRotations;
 
         public int PreparationTime = 40;
         public int SlamDuration = 20;
         public int Repetition = 1;
-        public static int MaxRepititions = 2;
+        public static int MaxRepititions = 20;
         public CrabDoubleArmSmashRepeat(CrabBoss owner, int repetitions) : base(owner)
         {
             SlamTargetPosition = Vector2.Zero;
@@ -35,6 +39,9 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
             UpperClawsInitialRotations = new float[2];
             LowerClawsInitialRotations = new float[2];
+
+            UpperClawsTargetRotations = new float[2];
+            LowerClawsTargetRotations = new float[2];
 
             for (int i = 0; i < 2; i++)
             {
@@ -48,10 +55,13 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
         public override void Execute(int AITimer)
         {
             float distanceToPlayer = Utilities.DistanceBetweenVectors(player.Position, Owner.Position);
+
             float additionalScale = 1.6f;
 
+            float scaleFactor = (SlamTargetPosition - Owner.Position).Length() / Arm(0).OriginalLength() * additionalScale;
+
             // make the boss move slightly forward with each additional slam. also need to adjust the final slam position to account for this
-            float distanceToShiftForwards = 0f;
+            float distanceToShiftForwards = 100f;
 
             float minimumTargetDistance = 250f;
             float maximumTargetDistance = 700f;
@@ -79,20 +89,24 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     float targetDistance = Max(minimumTargetDistance, distanceToPlayer);
                     targetDistance = Min(targetDistance, maximumTargetDistance);
+                    Vector2 directionToPlayer = Owner.Position.DirectionToPlayer();
 
                     // take into account forward shift
-                    SlamTargetPosition = Owner.Position + (targetDistance + distanceToShiftForwards) * Owner.Position.DirectionToPlayer();
+                    SlamTargetPosition = Owner.Position + (targetDistance + distanceToShiftForwards) * directionToPlayer;
+
+                    // project future arm positions to think about what rotations will be needed for the claws so they always give the safe spot
+
+                    Vector2 futureArmRootPosition = wristPosition + distanceToShiftForwards * directionToPlayer;
+                    float[] armRotations = MathsUtils.SolveTwoPartIK(futureArmRootPosition, SlamTargetPosition, Arm(i).UpperArm.Length(), Arm(i).LowerArm.Length(), -expandedi);
+
+                    float lowerArmFinalRotation = armRotations[1];
+                    UpperClawsTargetRotations[i] = lowerArmFinalRotation;
+                    LowerClawsTargetRotations[i] = PI - lowerArmFinalRotation;
                 }
 
                 if (AITimer < PreparationTime)
                 {
                     float interpolant = (AITimer + 1) / (float)PreparationTime;
-
-                    float minScale = 0f;
-                    float maxScale = 9999f;
-
-                    float scaleFactor = Max(minScale, (SlamTargetPosition - Owner.Position).Length() / Arm(i).OriginalLength() * additionalScale);
-                    scaleFactor = Min(scaleFactor, maxScale);
 
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), scaleFactor, interpolant));
 
@@ -124,10 +138,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
 
                     if (AITimer != PreparationTime + SlamDuration)
                     {
-                        Owner.Position += Owner.Position.DirectionTo(SlamTargetPosition) * distanceToShiftForwards * EasingFunctions.EasingNextFrameDiff(EasingFunctions.EaseOutSin, framesDone, SlamDuration);
+                        Owner.Velocity = Owner.Position.DirectionTo(SlamTargetPosition) * distanceToShiftForwards * EasingFunctions.EasingNextFrameDiff(EasingFunctions.EaseOutSin, framesDone, SlamDuration);
                         CreateTerribleSpeedEffect();
-
-                        float upperArmRotation = Arm(i).LowerArm.CalculateFinalRotation();
 
                         // future: maybe write code that makes the claws always orient so that theres a safe zone regardless of arm orientation
                         float lowerClawAfterSlamAngle = CrabBoss.LowerClawAfterSlamAngle;
@@ -140,7 +152,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                         Arm(i).UpperClaw.Rotate(upperClawRotationThisFrame);
                     }
 
-                    Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);                    
+                    Arm(i).LerpToPoint(SlamArmPaths[i](progress), 1f, false);
                 }
 
                 if (AITimer == PreparationTime + SlamDuration)

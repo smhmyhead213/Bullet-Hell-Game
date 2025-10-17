@@ -10,6 +10,7 @@ using System.Diagnostics;
 using bullethellwhatever.DrawCode;
 using Microsoft.Xna.Framework.Graphics;
 using bullethellwhatever.DrawCode.Particles;
+using bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam;
 
 namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 {
@@ -213,7 +214,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
 
         public override BossAttack PickNextAttack()
         {
-            return new CrabNeutralState(CrabOwner);
+            return new CrabDoubleArmSmash(CrabOwner);
         }
     }
 }

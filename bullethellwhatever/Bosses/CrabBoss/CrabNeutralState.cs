@@ -25,7 +25,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             List<CrabBossAttack> attacks =
                 [new CrabGrab(CrabOwner),
                     new CrabPunch(CrabOwner),
-                    new CrabProjectilePunches(CrabOwner),
+                    //new CrabProjectilePunches(CrabOwner),
                     new NeutralToCrabFlailChargeTransition(CrabOwner),
                     new CrabBombThrow(CrabOwner),
                     new CrabSpray(CrabOwner),
@@ -34,7 +34,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             List<float> probabilities =
                 [0.03f, // big chance for grab atatck if player is close
                     0.14f,
-                    0.15f,
+                    //0.15f,
                     0.22f,
                     0.23f,
                     0.5f,
