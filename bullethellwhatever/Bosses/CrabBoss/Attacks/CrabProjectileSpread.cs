@@ -93,7 +93,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 int localTime = AITimer - (slowDownTime + swingTime + bufferTimeAfterSwing);
                 float interpolant = localTime / (float)resetTime;
 
-                ChosenArm().LerpToRestPosition(interpolant, true, true);
+                ChosenArm().LerpToRestPosition(interpolant, true);
             }
             if (AITimer == slowDownTime + swingTime + bufferTimeAfterSwing + resetTime)
             {

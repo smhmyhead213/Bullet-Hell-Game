@@ -213,7 +213,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
                 RotateArm(ChosenArmIndex(), -expandedi * totalSwingAngle, AITimer, armRotateBackToNeutralTime, EasingFunctions.Linear);
 
-                ChosenArm().LerpToRestPosition(EasingFunctions.EaseOutQuad(interpolant), true, true);
+                ChosenArm().LerpToRestPosition(EasingFunctions.EaseOutQuad(interpolant), true);
             }
 
             if (AITimer == armRotateBackToNeutralTime)
