@@ -54,7 +54,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public void Update(Vector2 rootVelocity)
         {
             float distanceToBeginMovingForth = Length();
-            int timeToReachTarget = 60;
+            int timeToReachTarget = 200;
             float progress = (float)MoveForwardTimer / timeToReachTarget;
 
             if (Position.Distance(EndPosition) > distanceToBeginMovingForth && !TryingToReachTarget)
