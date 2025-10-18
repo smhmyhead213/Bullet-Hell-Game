@@ -18,6 +18,8 @@ using bullethellwhatever.AssetManagement;
 using bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam;
 using System.Diagnostics;
 using bullethellwhatever.Bosses.CrabBoss.Attacks;
+using System.Buffers;
+using bullethellwhatever.UtilitySystems;
 
 namespace bullethellwhatever.Bosses.CrabBoss
 {
@@ -42,9 +44,13 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public const int GrabbingArm = 1;
         public const int GrabPunishArm = 0;
 
-        public const int ScuttleLegsOnEachSide = 3;
+        public const int ScuttleLegsOnEachSide = 4;
         public int ScuttleLegCount => ScuttleLegsOnEachSide * 2;
-
+        public Vector2[][] ScuttleLegPositions;
+        public Vector2[][] ScuttleLegTargetPositions;
+        public int ScuttlerUpperPartLength = 30;
+        public int ScuttlerLowerPartLength = 20;
+        public int ScuttlerLength => ScuttlerUpperPartLength + ScuttlerLowerPartLength;
         public override float Rotation
         { 
             get => base.Rotation;
@@ -70,6 +76,15 @@ namespace bullethellwhatever.Bosses.CrabBoss
             ArmBehaviours = new CrabArmBehaviour[2];
             ArmPositionsOnBody = new Vector2[2];
             ArmRestingEnds = new Vector2[2];
+
+            ScuttleLegPositions = new Vector2[2][];
+            ScuttleLegTargetPositions = new Vector2[2][];
+
+            for (int i = 0; i < ScuttleLegPositions.Length; i++)
+            {
+                ScuttleLegPositions[i] = new Vector2[ScuttleLegsOnEachSide];
+                ScuttleLegTargetPositions[i] = new Vector2[ScuttleLegsOnEachSide];
+            }
         }
 
         public override void Spawn(Vector2 position, Vector2 velocity, float damage, string texture, Vector2 size, float MaxHealth, int pierceToTake, Color colour, bool shouldRemoveOnEdgeTouch, bool harmfulToPlayer, bool harmfulToEnemy)
@@ -103,6 +118,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
             CurrentAttack = new CrabDoubleArmSmash(this);
             ContactDamage = true;
             DisplayBossHPBar();
+            UpdateLegPositions();
         }
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
@@ -133,20 +149,6 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 }
             }
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-
-            //DrawHitbox();
-
-            for (int i = 0; i < 2; i++)
-            {
-                //Drawing.DrawBox(Arms[i].RestPositionEnd(), Color.Red, 1f);
-                //Drawing.DrawBox(Arms[i].LowerArm.CalculateEnd(), Color.Green, 1f);
-            }
-
-            //Utilities.drawTextInDrawMethod(Arms[0].LowerArm.RotationFromV().ToString(), Position + new Vector2(0f, 200f), spriteBatch, font, Color.White);
-        }
 
         public override void AI()
         {
@@ -162,11 +164,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
         {
             for (int i = 0; i < 2; i++)
             {
-                //int expandedi = i * 2 - 1; // i = 0, this = -1, i = 1, this = 1
-
                 Arms[i].ResetRotations();
             }
         }
+
         public void AssumeKeyframe(CrabArmKeyframe keyframe)
         {
             // loop each arm
@@ -210,6 +211,24 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PerformAdjustments(); // update arms immediately
         }
 
+        public void UpdateLegPositions()
+        {
+            for (int i = 0; i < ScuttleLegPositions.Length; i++)
+            {
+                int expandedi = Utilities.ExpandedIndex(i);
+
+                for (int j = 0; j < ScuttleLegPositions[i].Length; j++)
+                {
+                    float startingHeight = -Height() / 2f;
+                    float offsetFromCentreY = startingHeight + j * Height() / (ScuttleLegsOnEachSide - 1);
+
+                    // if you wanna flip everything round put a negative on expandedi
+                    ScuttleLegPositions[i][j] = Position + new Vector2(expandedi * Width() / 2f, offsetFromCentreY).Rotate(Rotation);
+                    ScuttleLegTargetPositions[i][j] = ScuttleLegPositions[i][j] + (ScuttlerLength - 15) * (expandedi * PI / 2 + Rotation).ToVector();
+                }
+            }
+        }
+
         public override void PerformAdjustments()
         {
             base.PerformAdjustments();
@@ -226,7 +245,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
         }
         public override void PostUpdate()
         {
-            base.PostUpdate();            
+            base.PostUpdate();
+            UpdateLegPositions();
         }
         public override void Die()
         {
@@ -244,6 +264,36 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public bool CanPerformCrabPunch()
         {
             return Utilities.DistanceBetweenVectors(player.Position, Position) > 500;
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            //DrawHitbox();
+
+            for (int i = 0; i < ScuttleLegPositions.Length; i++)
+            {
+                for (int j = 0; j < ScuttleLegPositions[i].Length; j++)
+                {
+                    Vector2 elbowPosition;
+
+                    int expandedi = Utilities.ExpandedIndex(i);
+
+                    float[] rotations = MathsUtils.SolveTwoPartIK(ScuttleLegPositions[i][j], ScuttleLegTargetPositions[i][j], ScuttlerUpperPartLength, ScuttlerLowerPartLength, out elbowPosition, -expandedi);
+
+                    Texture2D texture = AssetRegistry.GetTexture2D("box");
+                    float scuttlerWidth = 10f;
+                    Vector2 upperPartScale = new Vector2(scuttlerWidth / texture.Width, ScuttlerUpperPartLength / texture.Height);
+                    Vector2 lowerPartScale = new Vector2(scuttlerWidth / texture.Width, ScuttlerLowerPartLength / texture.Height);
+
+                    Drawing.BetterDraw(texture, ScuttleLegPositions[i][j], null, Color.White, rotations[0] + PI, upperPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
+                    Drawing.BetterDraw(texture, elbowPosition, null, Color.White, rotations[1] + PI, lowerPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
+
+                    Drawing.DrawBox(ScuttleLegPositions[i][j], Color.Red, 1f);
+                    Drawing.DrawBox(ScuttleLegTargetPositions[i][j], Color.Yellow, 1f);
+                    Drawing.DrawBox(elbowPosition, Color.Orange, 1f);
+                }
+            }
         }
     }
 }

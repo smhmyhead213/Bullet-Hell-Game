@@ -30,7 +30,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
         public int PreparationTime = 40;
         public int SlamDuration = 20;
         public int Repetition = 1;
-        public static int MaxRepititions = 20;
+        public static int MaxRepititions = 3;
         public CrabDoubleArmSmashRepeat(CrabBoss owner, int repetitions) : base(owner)
         {
             SlamTargetPosition = Vector2.Zero;
