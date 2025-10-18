@@ -63,7 +63,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             // make the boss move slightly forward with each additional slam. also need to adjust the final slam position to account for this
             float distanceToShiftForwards = 100f;
 
-            float minimumTargetDistance = 250f;
+            float minimumTargetDistance = 500f;
             float maximumTargetDistance = 700f;
 
             for (int i = 0; i < 2; i++)
@@ -78,7 +78,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
                     float swingOutwards = distanceToPlayer * 0.6f;
 
                     float distanceFromPlayerToMoveTo = distanceToPlayer * 0.9f;
-                    Vector2 targetPosition = Owner.Position + distanceFromPlayerToMoveTo * Utilities.SafeNormalise(player.Position - Owner.Position).Rotate(expandedi * -moveOutwardAngle);
+                    Vector2 targetPosition = Owner.Position + Max(minimumTargetDistance, distanceFromPlayerToMoveTo) * Utilities.SafeNormalise(player.Position - Owner.Position).Rotate(expandedi * -moveOutwardAngle);
                     Vector2 wristPosition = Arm(i).WristPosition();
                     Vector2 toTarget = targetPosition - wristPosition;
 
@@ -181,6 +181,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
         public override void ExtraDraw(SpriteBatch s, int AITimer)
         {
             Drawing.BetterDraw("box", SlamTargetPosition, null, Color.Red, 0f, Vector2.One * 3f, SpriteEffects.None, 0f);
+
+            for (int i = 0; i < SlamArmPaths.Length; i++)
+            {
+                int points = 20;
+
+                for (int j = 0; j <= points; j++)
+                {
+                    if (SlamArmPaths is not null && SlamArmPaths[i] is not null)
+                        Drawing.DrawBox(SlamArmPaths[i](j / (float)points), Color.Red, 1f);
+                }
+            }
         }
     }
 }

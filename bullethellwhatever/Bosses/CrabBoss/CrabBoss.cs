@@ -42,6 +42,9 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public const int GrabbingArm = 1;
         public const int GrabPunishArm = 0;
 
+        public const int ScuttleLegsOnEachSide = 3;
+        public int ScuttleLegCount => ScuttleLegsOnEachSide * 2;
+
         public override float Rotation
         { 
             get => base.Rotation;

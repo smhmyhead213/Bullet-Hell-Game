@@ -52,7 +52,7 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks.DoubleArmSlam
             {
                 int expandedi = Utilities.ExpandedIndex(i);
 
-                if (AITimer <= PreparationTime)
+                if (AITimer < PreparationTime)
                 {
                     float interpolant = (float)AITimer / PreparationTime;
                     float arcOutLength = 0f;
