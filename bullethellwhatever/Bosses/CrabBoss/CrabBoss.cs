@@ -46,8 +46,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public const int ScuttleLegsOnEachSide = 4;
         public int ScuttleLegCount => ScuttleLegsOnEachSide * 2;
-        public Vector2[][] ScuttleLegPositions;
-        public Vector2[][] ScuttleLegTargetPositions;
+        public CrabScuttler[][] Legs;
         public int ScuttlerUpperPartLength = 30;
         public int ScuttlerLowerPartLength = 20;
         public int ScuttlerLength => ScuttlerUpperPartLength + ScuttlerLowerPartLength;
@@ -77,13 +76,17 @@ namespace bullethellwhatever.Bosses.CrabBoss
             ArmPositionsOnBody = new Vector2[2];
             ArmRestingEnds = new Vector2[2];
 
-            ScuttleLegPositions = new Vector2[2][];
-            ScuttleLegTargetPositions = new Vector2[2][];
+            Legs = new CrabScuttler[2][];
 
-            for (int i = 0; i < ScuttleLegPositions.Length; i++)
+            for (int i = 0; i < Legs.Length; i++)
             {
-                ScuttleLegPositions[i] = new Vector2[ScuttleLegsOnEachSide];
-                ScuttleLegTargetPositions[i] = new Vector2[ScuttleLegsOnEachSide];
+                Legs[i] = new CrabScuttler[ScuttleLegsOnEachSide];
+
+                for (int j = 0; j < Legs[i].Length; j++)
+                {
+                    // these values are set in Spawn()
+                    Legs[i][j] = new CrabScuttler(Vector2.Zero, Vector2.Zero, ScuttlerUpperPartLength, ScuttlerLowerPartLength, "box", -Utilities.ExpandedIndex(i));
+                }
             }
         }
 
@@ -115,10 +118,10 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ArmRestingEnds[i] = lowerArmEnd - pos;
             }
 
-            CurrentAttack = new CrabDoubleArmSmash(this);
+            CurrentAttack = new CrabIdleState(this);
             ContactDamage = true;
             DisplayBossHPBar();
-            UpdateLegPositions();
+            UpdateLegPositions(true);
         }
         public Vector2 CalculateArmPostionsRelativeToCentre(int expandedi)
         {
@@ -211,20 +214,26 @@ namespace bullethellwhatever.Bosses.CrabBoss
             PerformAdjustments(); // update arms immediately
         }
 
-        public void UpdateLegPositions()
+        public void UpdateLegPositions(bool setEnds)
         {
-            for (int i = 0; i < ScuttleLegPositions.Length; i++)
+            for (int i = 0; i < Legs.Length; i++)
             {
                 int expandedi = Utilities.ExpandedIndex(i);
 
-                for (int j = 0; j < ScuttleLegPositions[i].Length; j++)
+                for (int j = 0; j < Legs[i].Length; j++)
                 {
                     float startingHeight = -Height() / 2f;
                     float offsetFromCentreY = startingHeight + j * Height() / (ScuttleLegsOnEachSide - 1);
 
                     // if you wanna flip everything round put a negative on expandedi
-                    ScuttleLegPositions[i][j] = Position + new Vector2(expandedi * Width() / 2f, offsetFromCentreY).Rotate(Rotation);
-                    ScuttleLegTargetPositions[i][j] = ScuttleLegPositions[i][j] + (ScuttlerLength - 15) * (expandedi * PI / 2 + Rotation).ToVector();
+                    Legs[i][j].Position = Position + new Vector2(expandedi * Width() / 2f, offsetFromCentreY).Rotate(Rotation);
+
+                    if (setEnds)
+                        Legs[i][j].EndPosition = Legs[i][j].Position + (ScuttlerLength - 15) * (expandedi * PI / 2 + Rotation).ToVector();
+                    else
+                    {
+                        Legs[i][j].Update(Velocity);
+                    }
                 }
             }
         }
@@ -246,7 +255,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public override void PostUpdate()
         {
             base.PostUpdate();
-            UpdateLegPositions();
+            UpdateLegPositions(false);
         }
         public override void Die()
         {
@@ -271,27 +280,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             //DrawHitbox();
 
-            for (int i = 0; i < ScuttleLegPositions.Length; i++)
+            for (int i = 0; i < Legs.Length; i++)
             {
-                for (int j = 0; j < ScuttleLegPositions[i].Length; j++)
+                for (int j = 0; j < Legs[i].Length; j++)
                 {
-                    Vector2 elbowPosition;
-
-                    int expandedi = Utilities.ExpandedIndex(i);
-
-                    float[] rotations = MathsUtils.SolveTwoPartIK(ScuttleLegPositions[i][j], ScuttleLegTargetPositions[i][j], ScuttlerUpperPartLength, ScuttlerLowerPartLength, out elbowPosition, -expandedi);
-
-                    Texture2D texture = AssetRegistry.GetTexture2D("box");
-                    float scuttlerWidth = 10f;
-                    Vector2 upperPartScale = new Vector2(scuttlerWidth / texture.Width, ScuttlerUpperPartLength / texture.Height);
-                    Vector2 lowerPartScale = new Vector2(scuttlerWidth / texture.Width, ScuttlerLowerPartLength / texture.Height);
-
-                    Drawing.BetterDraw(texture, ScuttleLegPositions[i][j], null, Color.White, rotations[0] + PI, upperPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
-                    Drawing.BetterDraw(texture, elbowPosition, null, Color.White, rotations[1] + PI, lowerPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
-
-                    Drawing.DrawBox(ScuttleLegPositions[i][j], Color.Red, 1f);
-                    Drawing.DrawBox(ScuttleLegTargetPositions[i][j], Color.Yellow, 1f);
-                    Drawing.DrawBox(elbowPosition, Color.Orange, 1f);
+                    Legs[i][j].Draw(spriteBatch);
                 }
             }
         }

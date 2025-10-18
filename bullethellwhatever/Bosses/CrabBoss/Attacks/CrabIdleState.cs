@@ -21,7 +21,8 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
         }
         public override void Execute(int AITimer)
         {
-            
+            Owner.Velocity = 5f * Owner.Position.DirectionToPlayer();
+            CrabOwner.FacePlayer();
         }
     }
 }
