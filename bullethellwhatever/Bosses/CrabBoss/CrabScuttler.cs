@@ -37,10 +37,11 @@ namespace bullethellwhatever.Bosses.CrabBoss
         public int MoveForwardTimer;
         public int MoveBackwardTimer;
         public Color Colour;
+        public int TimeToReachTarget;
+        public int DefaultTimeToReachTarget => 60;
         public CrabScuttler(Vector2 position, Vector2 endPosition, float upperLength, float lowerLength, string texture, int bendSign)
         {
             Position = position;
-            EndPosition = endPosition;
             UpperLength = upperLength;
             LowerLength = lowerLength;
             Texture = AssetRegistry.GetTexture2D(texture);
@@ -49,36 +50,50 @@ namespace bullethellwhatever.Bosses.CrabBoss
             MoveForwardTimer = 0;
             MoveBackwardTimer = 0;
             Colour = Color.White;
+            TimeToReachTarget = DefaultTimeToReachTarget;
+
+            // make end position start like somewhere between to give an offset
+            float interpolant = Utilities.RandomFloat(0f, 1f);
+            EndPosition = Vector2.Lerp(Position, endPosition, interpolant);
         }
 
         public void Update(Vector2 rootVelocity)
         {
-            float distanceToBeginMovingForth = Length() * 2f;
-            int timeToReachTarget = 60;
-            float progress = (float)MoveForwardTimer / timeToReachTarget;
+            float distanceToBeginMovingForth = Length() * 1.3f;
+            float progress = (float)MoveForwardTimer / TimeToReachTarget;
 
             if (Position.Distance(EndPosition) > distanceToBeginMovingForth && !TryingToReachTarget)
             {
                 TryingToReachTarget = true;
                 MoveForwardTimer = 0;
+                int minimumTime = 10;
+                int speedupCap = DefaultTimeToReachTarget - minimumTime;
+                int speedup = (int)Max(rootVelocity.Length(), speedupCap);
+                TimeToReachTarget = DefaultTimeToReachTarget - speedup;
             }
 
             if (TryingToReachTarget)
             {
-                TargetPosition = Position + Utilities.SafeNormalise(rootVelocity) * Length() + Utilities.SafeNormalise(rootVelocity.Rotate(BendSign * PI / 2)) * Length() / 2f;
+                TargetPosition = CalculateTargetPosition(rootVelocity);
                 EndPosition = Vector2.Lerp(EndPosition, TargetPosition, progress);
 
                 MoveForwardTimer++;
 
-                if (MoveForwardTimer == timeToReachTarget)
+                if (MoveForwardTimer == TimeToReachTarget)
                 {
                     TryingToReachTarget = false;
+                    MoveForwardTimer = 0;
                 }
             }
 
-            Colour = TryingToReachTarget ? Color.Red : Color.Green;
+            //Colour = TryingToReachTarget ? Color.Red : Color.Green;
+            Colour = Color.White;
         }
 
+        public Vector2 CalculateTargetPosition(Vector2 rootVelocity)
+        {
+            return Position + Utilities.SafeNormalise(rootVelocity) * Length() + Utilities.SafeNormalise(rootVelocity.Rotate(BendSign * PI / 2)) * Length() / 2f;
+        }
         public float Length()
         {
             return UpperLength + LowerLength;
