@@ -53,8 +53,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
         public void Update(Vector2 rootVelocity)
         {
-            float distanceToBeginMovingForth = Length();
-            int timeToReachTarget = 200;
+            float distanceToBeginMovingForth = Length() * 2f;
+            int timeToReachTarget = 60;
             float progress = (float)MoveForwardTimer / timeToReachTarget;
 
             if (Position.Distance(EndPosition) > distanceToBeginMovingForth && !TryingToReachTarget)
@@ -65,7 +65,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
 
             if (TryingToReachTarget)
             {
-                TargetPosition = Position + Utilities.SafeNormalise(rootVelocity) * (1 - progress) * Length() + Utilities.SafeNormalise(rootVelocity.Rotate(BendSign * PI / 2)) * Length() / 2f;
+                TargetPosition = Position + Utilities.SafeNormalise(rootVelocity) * Length() + Utilities.SafeNormalise(rootVelocity.Rotate(BendSign * PI / 2)) * Length() / 2f;
                 EndPosition = Vector2.Lerp(EndPosition, TargetPosition, progress);
 
                 MoveForwardTimer++;
