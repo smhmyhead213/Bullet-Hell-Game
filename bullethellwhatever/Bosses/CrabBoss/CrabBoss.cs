@@ -118,7 +118,7 @@ namespace bullethellwhatever.Bosses.CrabBoss
                 ArmRestingEnds[i] = lowerArmEnd - pos;
             }
 
-            CurrentAttack = new CrabPunch(this);
+            CurrentAttack = new CrabIdleState(this);
             ContactDamage = true;
             DisplayBossHPBar();
             UpdateLegPositions(true);
