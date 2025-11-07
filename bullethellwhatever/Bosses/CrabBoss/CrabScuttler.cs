@@ -109,8 +109,8 @@ namespace bullethellwhatever.Bosses.CrabBoss
             Vector2 upperPartScale = new Vector2(scuttlerWidth / texture.Width, UpperLength / texture.Height);
             Vector2 lowerPartScale = new Vector2(scuttlerWidth / texture.Width, LowerLength / texture.Height);
 
-            Drawing.BetterDraw(texture, Position, null, Colour, rotations[0] + PI, upperPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
-            Drawing.BetterDraw(texture, elbowPosition, null, Colour, rotations[1] + PI, lowerPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
+            //Drawing.BetterDraw(texture, Position, null, Colour, rotations[0] + PI, upperPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
+            //Drawing.BetterDraw(texture, elbowPosition, null, Colour, rotations[1] + PI, lowerPartScale, SpriteEffects.None, 0f, new Vector2(texture.Width / 2f, 0f));
 
             //Drawing.DrawBox(Position, Color.Red, 1f);
             //Drawing.DrawBox(EndPosition, Color.Yellow, 1f);

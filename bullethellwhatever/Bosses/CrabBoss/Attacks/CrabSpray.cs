@@ -76,10 +76,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     float finalLength = armLength * 0.88f;
                     Vector2 targetPosition = Arm(i).Position + new Vector2(0, finalLength).Rotate(holdOutAngle * -expandedi).Rotate(Owner.Rotation);
                     Vector2 startPosition = Arm(i).WristPosition();
-                    float moveOutwards = Owner.Position.Distance(player.Position) * 0.1f;
+                    float moveOutwards = Owner.Position.Distance(player.Position) * 0.7f;
                     Vector2 linearPath = targetPosition - startPosition;
 
-                    PathToStance[i] = (x) => startPosition + x * linearPath + moveOutwards * Utilities.SafeNormalise(linearPath.Rotate(-expandedi * PI / 2));
+                    PathToStance[i] = (x) => startPosition + x * (linearPath + moveOutwards * Utilities.SafeNormalise(linearPath.Rotate(-expandedi * PI / 2)));
                 }
 
                 if (telegraphing)
@@ -89,6 +89,10 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
                     Arm(i).SetScale(MathHelper.Lerp(Arm(i).Scale(), finalScale, interpolant));
 
                     Arm(i).LerpToPoint(PathToStance[i](interpolant), 0.5f);
+                }
+                else
+                {
+                    End();
                 }
 
                 int timeHere = chargeUpTime + waitTime;
@@ -163,10 +167,17 @@ namespace bullethellwhatever.Bosses.CrabBoss.Attacks
             // try to make prim cones to show danger zone
             base.ExtraDraw(s, AITimer);
 
-            //foreach (Vector2 point in GenerateConePrimPoints(Arm(0).WristPosition(), Arm(0).LowerArm.RotationFromV(), PI / 2, 400))
-            //{
-            //    Drawing.DrawBox(point, Color.Red, 1f);
-            //}
+            int pathPoints = 20;
+
+            for (int i = 0; i < pathPoints; i++)
+            {
+                // i dont even care vro
+                if (PathToStance is not null && PathToStance[0] is not null && PathToStance[1] is not null)
+                {
+                    Drawing.DrawBox(PathToStance[0](i / (float)pathPoints), Color.Red, 1f);
+                    Drawing.DrawBox(PathToStance[1](i / (float)pathPoints), Color.Red, 1f);
+                }
+            }
 
             float length = 400;
 
